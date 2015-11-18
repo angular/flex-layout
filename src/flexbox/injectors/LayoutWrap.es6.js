@@ -47,7 +47,7 @@ class LayoutWrap extends AbstractInjector {
     let self = privates.get(this);
     if ( this.isActive ) {
       let overrides = self.buildCSS();
-      logActivity("updateCSS", this, overrides, this.$log);
+      this.$log.debugNoValue("updateCSS", this, overrides);
 
       this.element.css( overrides );
     }
@@ -84,9 +84,3 @@ export default LayoutWrap;
 const privates = new WeakMap();
 
 
-function logActivity(action, injector, overrides, $log) {
-  let prefix = `<div ${injector.className}>`;
-  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}>`;
-
-  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
-}

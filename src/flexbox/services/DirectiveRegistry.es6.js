@@ -1,6 +1,6 @@
-import PRIORITIES       from "flexbox/services/Priority.es6"
 import BreakPoints      from 'mq/services/BreakPointsService.es6'
 import LayoutController from "flexbox/services/LayoutController.es6"
+import Logger           from "flexbox/utils/InjectorLogger.es6"
 
 import Flex             from 'flexbox/injectors/Flex.es6'
 import Layout           from 'flexbox/injectors/Layout.es6'
@@ -88,7 +88,6 @@ function buildConstructionFn(className) {
     switch( rootName ) {
 
       case 'layout' :
-
         ddo.compile = (tElement, tAttrs, transclude) => {
           buildLayoutController(tElement, $mdLayoutMql, $timeout, $log);
 
@@ -96,31 +95,29 @@ function buildConstructionFn(className) {
             let controller = findLayoutController(element);
 
             controller.addParent(
-              new Layout(className, scope, element, attr, $log)
+              new Layout(className, scope, element, attr, new Logger($log))
             );
           };
         };
         break;
 
       case 'flex' :
-
         ddo.link = (scope, element, attr) => {
           let controller = findLayoutController( element.parent() );
           if ( !controller ) {
             $log.warn(`Unable to find 'layout' parent ${className}`)
           }
           else {
-            let injector = new Flex(className, scope, element, attr, $log);
+            let injector = new Flex(className, scope, element, attr, new Logger($log));
             controller.addChild(injector);
           }
         };
         break;
 
         default :
-
           ddo.link = (scope, element, attr) => {
             let injectorClass = CLASS_REGISTRY[rootName];
-            $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, $log) );
+            $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, new Logger($log)) );
           };
           break;
     }
@@ -151,8 +148,7 @@ function buildConstructionFn(className) {
    * Scan parent element [of the 'flex' element] for a shared layout controller...
    */
   function findLayoutController($element) {
-    $element = angular.element($element);
-    return $element.data(LAYOUT_CONTROLLER);
+    return angular.element($element).data(LAYOUT_CONTROLLER);
   }
 
   /**
@@ -161,6 +157,7 @@ function buildConstructionFn(className) {
    * so the root directive (eg layout, flex) always runs FIRST.
    */
   function calculatePriority(rootName, className) {
+
     let priority = PRIORITIES[rootName];
     if ( priority && rootName === className) {
       priority -= 10;
@@ -170,3 +167,21 @@ function buildConstructionFn(className) {
 
 }
 
+const PRIORITIES = {
+  'layout'        : 400,
+   'flex'          : 380,
+
+   'show'          : 370,
+   'hide'          : 370,
+
+   'flex-order'    : 360,
+   'flex-offset'   : 340,
+
+   'layout-fill'   : 350,
+   'layout-align'  : 330,
+
+   'layout-padding': 310,
+   'layout-margin' : 310,
+   'layout-wrap'   : 310,
+   'layout-no-wrap': 310
+};

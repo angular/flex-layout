@@ -4,7 +4,7 @@ import Layout from 'flexbox/injectors/Layout.es6'
 /**
  * Class LayoutController
  *
- * Establishes coupling of dependent Layout child items
+ * Establishes coupling of dependent Flex child items
  * (`flex` directives) to their immediate Layout parent
  */
 class LayoutController {

@@ -139,7 +139,7 @@ class LayoutAlign extends AbstractInjector {
     let self = privates.get(this);
     if ( this.isActive ) {
       let overrides = self.buildCSS();
-      logActivity("updateCSS", this, overrides, this.$log);
+      this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
       self.stretchChildren();
@@ -190,16 +190,4 @@ const  NodeType = {
   DOCUMENT_FRAGMENT_NODE      : 11,
   NOTATION_NODE               : 12
 };
-
-
-// ************************************************************
-// Debugging
-// ************************************************************
-
-function logActivity(action, injector, overrides, $log) {
-  let prefix = `<div ${injector.className}>`;
-  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}>`;
-
-  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
-}
 

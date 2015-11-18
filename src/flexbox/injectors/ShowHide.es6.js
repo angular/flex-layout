@@ -42,7 +42,7 @@ class ShowHide extends AbstractInjector {
     let self = privates.get(this);
     if ( this.isActive ) {
       let overrides = self.buildCSS(value || this.value);
-      logActivity("updateCSS", this, overrides, this.$log);
+      this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
     }
@@ -83,9 +83,3 @@ function isTrue(value) {
   return (value == "true" || value == "1" || value == "");
 }
 
-function logActivity(action, injector, overrides, $log) {
-  let prefix = `<div ${injector.className}="${injector.value}">`;
-  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}="${injector.value}">`;
-
-  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
-}

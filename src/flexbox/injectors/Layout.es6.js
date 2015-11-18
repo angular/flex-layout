@@ -83,7 +83,7 @@ class Layout extends AbstractInjector {
       let direction = self.validateValue(value || this.value);
       let overrides = self.buildCSS(direction);
 
-      logActivity("updateCSS",this, overrides, this.$log);
+      this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
       self.notifyChildren(direction);
@@ -162,10 +162,3 @@ const privates = new WeakMap();
 
 const VALUES = ["row", "column"];
 
-
-function logActivity(action, injector, overrides, $log) {
-  let prefix = `<div ${injector.className}="${injector.value}">`;
-  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}="${injector.value}">`;
-
-  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
-}

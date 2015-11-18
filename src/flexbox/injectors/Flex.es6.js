@@ -74,7 +74,7 @@ class Flex extends AbstractInjector {
     let self = privates.get(this);
     if ( this.isActive ) {
       let overrides = self.buildCSS(value || this.value);
-      logActivity("updateCSS", this, overrides, this.$log);
+      this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
     }
@@ -130,16 +130,9 @@ export default Flex;
  */
 const privates = new WeakMap();
 
-
 const UNDEFINED = "";
 const GROW      = "grow";
 const INITIAL   = "initial";
 const AUTO      = "auto";
 const NONE      = "none";
 
-
-function logActivity(action, injector, overrides, $log) {
-  let prefix =`<div ${injector.className}="${injector.value}">`;
-  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}="${injector.value}">`;
-  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
-}
