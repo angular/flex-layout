@@ -107,15 +107,6 @@ class Layout extends AbstractInjector {
   }
 
   /**
-   * Easily clone a new Layout injector instance (for the same element/scope)
-   * with a different className (layout, layout-gt-md, etc.)
-   */
-  cloneAs(className) {
-    return new Layout(className, this.scope, this.element, this.attrs, this.$log);
-  }
-
-
-  /**
    * Add a 'flex' injector as a dependent child; which will be notified
    * any time this parent changes is configuration.
    */

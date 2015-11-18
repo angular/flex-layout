@@ -80,11 +80,6 @@ class AbstractInjector {
    */
   resetCSS() { }
 
-  /**
-   * Clone this injector with a specific className
-   * used to easily copy the scope,element, attrs, $log
-   */
-  cloneAs(className) { }
 
   // ************************************************
   // Public Methods

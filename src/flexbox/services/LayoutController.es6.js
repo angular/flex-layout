@@ -1,4 +1,3 @@
-import Flex from 'flexbox/injectors/Flex.es6'
 import Layout from 'flexbox/injectors/Layout.es6'
 
 /**
@@ -57,8 +56,8 @@ class LayoutController {
       processLayoutInjectors : (list) => {
         if ( !list.length ) return;
 
-        list = validatePrimary(list, (source) => {
-          return source.cloneAs("layout");
+        list = validatePrimary(list, (it) => {
+          return new Layout("layout", it.scope, it.element, it.attrs, it.$log);
         });
 
         list.forEach(layout => {

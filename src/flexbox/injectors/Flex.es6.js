@@ -82,15 +82,6 @@ class Flex extends AbstractInjector {
 
 
   /**
-   * Easily clone a new Layout injector instance (for the same element/scope)
-   * with a different className (layout, layout-gt-md, etc.)
-   */
-  cloneAs(className) {
-    return new Flex(className, this.scope, this.element, this.attrs, this.$log);
-  }
-
-
-  /**
    * Accessor for Layout direction (as specified by Layout parent)....
    */
   get direction() {

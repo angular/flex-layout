@@ -10,7 +10,8 @@
   "license": "ISC",
   "jspm": {
     "dependencies": {
-      "angular": "github:angular/bower-angular@^1.4.7"
+      "angular": "github:angular/bower-angular@^1.4.7",
+      "angular-material": "github:angular/bower-material@^0.11.4"
     },
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.91",
