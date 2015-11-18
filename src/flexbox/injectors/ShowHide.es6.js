@@ -1,0 +1,91 @@
+import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
+
+/**
+ * Layout is a Directive class used for the <div layout='row'></div> element
+ * attribute. This class supports
+ *
+ *   - notifications of media query breakpoint changes
+ *   - observes interpolate attribute values
+ *
+ * to update the element's css with flexbox settings for the 'layout'
+ * attribute.
+ *
+ */
+class ShowHide extends AbstractInjector {
+
+  constructor(className, scope, element, attrs, $log) {
+    super(className, scope,element, attrs, $log);
+
+    let self;
+    privates.set(this, self = {
+      _display : window.getComputedStyle(element[0]).display,
+
+      /**
+       * Build the CSS that should be assigned to the element instance
+       */
+      buildCSS : (value) => {
+        switch( this.root ) {
+          case SHOW: return { display : isTrue(value) ? self._display : NONE          };
+          case HIDE: return { display : isTrue(value) ? NONE          : self._display };
+        }
+      }
+
+    });
+  }
+
+  /**
+   * Update the CSS if active!
+   * Will update when the observed value changes or the media
+   * query range becomes active (onEnter())
+   */
+  updateCSS(value) {
+    let self = privates.get(this);
+    if ( this.isActive ) {
+      let overrides = self.buildCSS(value || this.value);
+      logActivity("updateCSS", this, overrides, this.$log);
+
+      this.element.css( overrides );
+    }
+  }
+
+  resetCSS(value) {
+    let self = privates.get(this);
+    if ( this.isActive ) {
+      this.element.css({display:self._display});
+    }
+  }
+
+}
+
+// ************************************************************
+// Module Export
+// ************************************************************
+
+
+export default ShowHide;
+
+
+// ************************************************************
+// Private static variables
+// ************************************************************
+
+/**
+ * Private cache for each Class instances' private data and methods.
+ */
+const privates = new WeakMap();
+const HIDE = "hide";
+const SHOW = "show";
+const NONE = "none";
+
+
+
+function isTrue(value) {
+  return (value == "true" || value == "1" || value == "");
+}
+
+function logActivity(action, injector, overrides, $log) {
+  let prefix = `<div ${injector.className}="${injector.value}">`;
+  if ( injector.attrs["id"] ) prefix = `<div ${injector.attrs["id"]} ${injector.className}="${injector.value}">`;
+
+  $log.debug(`${prefix}::${action}(${JSON.stringify(overrides)})`);
+}
