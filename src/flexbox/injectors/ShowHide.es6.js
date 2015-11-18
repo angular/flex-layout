@@ -13,20 +13,22 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class ShowHide extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
-      _display : window.getComputedStyle(element[0]).display,
+      _style : this.modernizr({
+        display : window.getComputedStyle(element[0]).display
+      }),
 
       /**
        * Build the CSS that should be assigned to the element instance
        */
       buildCSS : (value) => {
         switch( this.root ) {
-          case SHOW: return { display : isTrue(value) ? self._display : NONE          };
-          case HIDE: return { display : isTrue(value) ? NONE          : self._display };
+          case SHOW: return this.modernizr({ display : isTrue(value) ? self._display : NONE          });
+          case HIDE: return this.modernizr({ display : isTrue(value) ? NONE          : self._display });
         }
       }
 
@@ -51,7 +53,7 @@ class ShowHide extends AbstractInjector {
   resetCSS(value) {
     let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css({display:self._display});
+      this.element.css(self._style);
     }
   }
 

@@ -13,32 +13,32 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class LayoutFill extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
 
       _fill : (()=>{
         let styles = window.getComputedStyle(element[0]);
-        return {
+        return this.modernizr({
           'margin'    : styles.margin,
           'width'     : styles.width,
           'min-height': styles['min-height'],
           'height'    : styles.height
-        };
+        });
       })(),
 
       /**
        * Build the CSS that should be assigned to the element instance
        */
       buildCSS : () => {
-        return {
+        return this.modernizr({
           'margin'    : 0,
           'width'     : '100%',
           'min-height': '100%',
           'height'    : '100%'
-        };
+        });
       }
 
     });

@@ -13,8 +13,8 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class FlexOffset extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {

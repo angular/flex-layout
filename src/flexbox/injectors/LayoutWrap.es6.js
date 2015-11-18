@@ -13,26 +13,26 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class LayoutWrap extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
 
       _wrap : (()=>{
         let styles = window.getComputedStyle(element[0]);
-        return {
+        return this.modernizr({
           'flex-wrap' : styles['flex-wrap']
-        };
+        });
       })(),
 
       /**
        * Build the CSS that should be assigned to the element instance
        */
       buildCSS : () => {
-        return {
+        return this.modernizr({
           'flex-wrap' : this.root == "layout-wrap" ? "wrap" : "nowrap"
-        };
+        });
       }
 
     });

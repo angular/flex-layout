@@ -13,13 +13,15 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class FlexOrder extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
 
-      _order : window.getComputedStyle(element[0]).order || "0",
+      _css : this.modernizr({
+          order : window.getComputedStyle(element[0]).order || "0"
+      }),
 
       /**
        * Build the CSS that should be assigned to the element instance
@@ -27,9 +29,9 @@ class FlexOrder extends AbstractInjector {
       buildCSS : (value) => {
         value = parseInt(value, 10);
 
-        return {
+        return this.modernizr({
           order : isNaN(value) ? 0 : value
-        }
+        });
       }
 
     });
@@ -57,7 +59,7 @@ class FlexOrder extends AbstractInjector {
   resetCSS(value) {
     let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css({order:self._order});
+      this.element.css(self._css);
     }
   }
 

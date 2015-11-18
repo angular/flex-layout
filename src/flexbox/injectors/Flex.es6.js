@@ -13,8 +13,8 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class Flex extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
@@ -50,7 +50,7 @@ class Flex extends AbstractInjector {
             break;
         }
 
-        return angular.extend(css, { 'box-sizing' : 'border-box' } );
+        return this.modernizr( angular.extend(css, { 'box-sizing' : 'border-box' } ));
       }
 
     });

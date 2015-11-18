@@ -78,53 +78,56 @@ export default buildLayoutDirectives;
 function buildConstructionFn(className) {
   let rootName = className.replace(SUFFIX, "");
 
-  return ["$mdLayoutMql", "$timeout", "$log", ($mdLayoutMql, $timeout, $log) => {
-    let ddo = {
-      restrict : 'A',
-      scope    : false,
-      priority : calculatePriority(rootName, className)
-    };
+  return ["$mdLayoutMql", "$timeout", "$log",
+    ($mdLayoutMql, $timeout, $log) => {
 
-    switch( rootName ) {
-
-      case 'layout' :
-        ddo.compile = (tElement, tAttrs, transclude) => {
-          buildLayoutController(tElement, $mdLayoutMql, $timeout, $log);
-
-          return (scope, element, attr) => {
-            let controller = findLayoutController(element);
-
-            controller.addParent(
-              new Layout(className, scope, element, attr, new Logger($log))
-            );
+      let utils = { '$log' : new Logger($log)  },
+          ddo = {
+            restrict : 'A',
+            scope    : false,
+            priority : calculatePriority(rootName, className)
           };
-        };
-        break;
 
-      case 'flex' :
-        ddo.link = (scope, element, attr) => {
-          let controller = findLayoutController( element.parent() );
-          if ( !controller ) {
-            $log.warn(`Unable to find 'layout' parent ${className}`)
-          }
-          else {
-            let injector = new Flex(className, scope, element, attr, new Logger($log));
-            controller.addChild(injector);
-          }
-        };
-        break;
+      switch( rootName ) {
 
-        default :
-          ddo.link = (scope, element, attr) => {
-            let injectorClass = CLASS_REGISTRY[rootName];
-            $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, new Logger($log)) );
+        case 'layout' :
+          ddo.compile = (tElement, tAttrs, transclude) => {
+            buildLayoutController(tElement, $mdLayoutMql, $timeout, $log);
+
+            return (scope, element, attr) => {
+              let controller = findLayoutController(element);
+
+              controller.addParent(
+                new Layout(className, scope, element, attr, utils)
+              );
+            };
           };
           break;
-    }
 
-    return ddo;
+        case 'flex' :
+          ddo.link = (scope, element, attr) => {
+            let controller = findLayoutController( element.parent() );
+            if ( !controller ) {
+              $log.warn(`Unable to find 'layout' parent ${className}`)
+            }
+            else {
+              let injector = new Flex(className, scope, element, attr, utils);
+              controller.addChild(injector);
+            }
+          };
+          break;
 
-  }];
+          default :
+            ddo.link = (scope, element, attr) => {
+              let injectorClass = CLASS_REGISTRY[rootName];
+              $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, utils) );
+            };
+            break;
+      }
+
+      return ddo;
+
+    }];
 
   /**
    * Build a shared LayoutController for the element with 1..n

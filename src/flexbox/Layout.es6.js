@@ -2,6 +2,7 @@ import angular           from 'angular'
 import buildRegistry     from 'flexbox/services/DirectiveRegistry.es6'
 import LayoutMqlService  from 'flexbox/services/LayoutMqlService.es6'
 
+
 /**
  * This Layout module  provides `flexbox` Grid features for Angular Material.
  * Published as 'material.layout', this module interprets the follow HTML attributes as commands:
@@ -36,7 +37,7 @@ import LayoutMqlService  from 'flexbox/services/LayoutMqlService.es6'
  */
 let mdLayouts = angular
       .module( "material.layout", [ 'material.mediaQuery' ] )
-      .service("$mdLayoutMql"   , LayoutMqlService );
+      .service("$mdLayoutMql"       , LayoutMqlService );
 
   // Register all the Layout flexbox directives
 

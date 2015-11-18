@@ -13,20 +13,20 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class LayoutAlign extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
 
       _align : (() => {
         let styles = window.getComputedStyle(element[0]);
-        return {
+        return this.modernizr({
           'max-width'       : styles['max-width'],
           'box-sizing'      : styles['box-sizing'],
           'align-items'     : styles['align-items'],
           'justify-content' : styles['justify-content']
-        };
+        });
       })(),
 
       /**
@@ -94,7 +94,7 @@ class LayoutAlign extends AbstractInjector {
             break;
         }
 
-        return overrides;
+        return this.modernizr(overrides);
       },
 
       /**

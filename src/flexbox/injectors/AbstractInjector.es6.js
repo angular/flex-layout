@@ -1,3 +1,5 @@
+import modernizr from 'flexbox/utils/Modernizer.es6'
+
 const NOOP   = angular.noop;
 const SUFFIX = /-(gt-)?(xs|sm|md|lg|xl)/;
 
@@ -14,14 +16,19 @@ const SUFFIX = /-(gt-)?(xs|sm|md|lg|xl)/;
  */
 class AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
+  constructor(className, scope, element, attrs, utils) {
     let self;
 
     this.scope   = scope;
     this.element = element;
     this.attrs   = attrs;
-    this.$log    = $log;
 
+    angular.forEach(utils,(value, key)=>{
+      this[key] = value;
+    });
+
+    // Expose for universal subclass access
+    this.modernizr = modernizr;
 
     privates.set(this, self = {
 

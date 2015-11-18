@@ -13,8 +13,8 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
  */
 class Layout extends AbstractInjector {
 
-  constructor(className, scope, element, attrs, $log) {
-    super(className, scope,element, attrs, $log);
+  constructor(className, scope, element, attrs, utils) {
+    super(className, scope,element, attrs, utils);
 
     let self;
     privates.set(this, self = {
@@ -47,15 +47,11 @@ class Layout extends AbstractInjector {
        * Build the CSS that should be assigned to the element instance
        */
       buildCSS : (value) => {
-        return {
-          'display'         : '-webkit-box',
-          'display'         : '-webkit-flex',
-          'display'         : '-moz-box',
-          'display'         : '-ms-flexbox',
+        return this.modernizr({
           'display'         : 'flex',
           'box-sizing'      : 'border-box',
           'flex-direction'  : self._direction = self.validateValue(value)
-        };
+        });
       },
 
       /**
