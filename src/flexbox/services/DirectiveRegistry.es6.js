@@ -12,6 +12,8 @@ import LayoutAlign      from 'flexbox/injectors/LayoutAlign.es6'
 import LayoutWrap       from 'flexbox/injectors/LayoutWrap.es6'
 import MarginPadding    from 'flexbox/injectors/MarginPadding.es6'
 
+import modernizr        from 'flexbox/utils/Modernizer.es6'
+
 const  CLASS_REGISTRY = {
     'show'            : ShowHide,
     'hide'            : ShowHide,
@@ -81,7 +83,7 @@ function buildConstructionFn(className) {
   return ["$mdLayoutMql", "$timeout", "$log",
     ($mdLayoutMql, $timeout, $log) => {
 
-      let utils = { '$log' : new Logger($log)  },
+      let utils = { '$log' : new Logger($log), modernizr : modernizr  },
           ddo = {
             restrict : 'A',
             scope    : false,
