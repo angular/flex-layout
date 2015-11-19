@@ -12,8 +12,8 @@ class BreakPointsService {
         new BreakPoint('gt-md' ,'GtMd' ,'screen and (min-width: 960px)'                         ),
         new BreakPoint('lg'    ,'Lg'   ,'screen and (min-width: 960px) and (max-width: 1279px)' ),
         new BreakPoint('gt-lg' ,'GtLg' ,'screen and (min-width: 1280px)'                        ),
-        new BreakPoint('xl'    ,'Xl'   ,'screen and (min-width: 1280px) and (max-width: 1599px)'),
-        new BreakPoint('gt-xl' ,'GtXl' ,'screen and (min-width: 1600px)'                        )
+        new BreakPoint('xl'    ,'Xl'   ,'screen and (min-width: 1280px) and (max-width: 1919px)'),
+        new BreakPoint('gt-xl' ,'GtXl' ,'screen and (min-width: 1920px)'                        )
     ];
   }
 

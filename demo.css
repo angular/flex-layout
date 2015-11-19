@@ -50,6 +50,7 @@ docs-demo {
   color: white;
   text-align: center;
   padding: 8px;
+  padding-top:10px;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
