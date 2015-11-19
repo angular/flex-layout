@@ -7,7 +7,7 @@ This project represents the **re-architecture** of Angular Material's Layout fle
 Angular Material's Layout features were purposed to provide syntactic sugar and allow developers
 to easily and intuitively create responsive and adaptive layouts.
 
-#### v1 Implementation 
+#### Gen1 Implementation 
 
 Early versions used both [non-trivial] SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list.
 
@@ -68,7 +68,7 @@ This approach suffers from many issues:
 *  The CSS rules are limited to Layout values of 0 - 100 in increments of 5
 *  Breakpoints are hard-coded and very difficult to modify
 
-#### v2 Implementation
+#### Gen2 Implementation
 
 The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure-JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
 
