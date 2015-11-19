@@ -25,6 +25,7 @@ class LayoutAlign extends AbstractInjector {
           'max-width'       : styles['max-width'],
           'box-sizing'      : styles['box-sizing'],
           'align-items'     : styles['align-items'],
+          'align-content'   : styles['align-content'],
           'justify-content' : styles['justify-content']
         });
       })(),
