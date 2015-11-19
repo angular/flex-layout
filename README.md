@@ -107,9 +107,13 @@ Not only is the codebase easier to maintain and debug, other more important bene
 *  Watchers for Layout injector values
 *  Support for raw values or interpolated values
 *  Support for raw, percentage or px-suffix values
-*  Adaptive layouts are more easily created with the MediQuery Pub/Sub mechanisms and the notification processes.
 
 >  The code has been initially implemented with es6 and JSPM. A transcompile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
 
 >  Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
 
+#### Adaptive Layouts (future)
+
+Different from responsive layouts where components change sizes and positions, the concepts of Adaptive layouts provide for UX where  **different components** may be used for different breakpoints. 
+
+The v2 engine here uses a MediaQueryWatcher in a Publish/Subcribe architecture. Layout injectors use an adaptor to subscribe to breakpoint change notifications. This subscription pattern can be extended to easily support breakpoint notifications and trigger Adaptive UX changes.
