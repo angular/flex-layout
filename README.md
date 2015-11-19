@@ -72,16 +72,19 @@ This approach suffers from many issues:
 
 The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure-JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
 
-Layout directives are used to create Layout injectors; which inject specific flexbox css directly to the DOM element. For example, consider the use of the `layout="row"` and `layout-align="center center"` directives:
+Layout directives are used to create Layout injectors; which inject specific flexbox css directly to the DOM element. For example, consider the use of the `layout="row"` and `layout-align="center center"` directives.
+
+Static Markup:
 
 ```html
-<div layout="row" layout-align="center center">
+<div layout="{{vm.direction}}" layout-align="center center">
 	<div>one</div>
 	<div>two</div>
 	<div>three</div>
 </div>
 ```
-becomes
+
+is transformed to Dynamic styles:
 
 ```html
 <div layout="row" layout-align="center center"
