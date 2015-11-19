@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <title>Angular Material - Starter App</title>
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <link rel="stylesheet" href="demo.css">
+
+
+  </head>
+
+  <body ng-cloak>
+
+  <div class="small-demo colorNested" layout="row">
+    <div layout="row" flex>
+      <div flex>First item in row</div>
+      <div flex>Second item in row</div>
+    </div>
+    <div layout="column" flex>
+      <div flex>First item in column</div>
+      <div flex>Second item in column</div>
+    </div>
+  </div>
+
+    <script src="./jspm_packages/system.js" type="text/javascript"></script>
+    <script src="./config.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        System
+            .import('app/boot')
+            .catch( console.error.bind(console) ); // make sure any errors print to console
+    </script>
+
+  </body>
+</html>

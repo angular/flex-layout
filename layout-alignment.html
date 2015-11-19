@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <title>Angular Material - Starter App</title>
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <link rel="stylesheet" href="demo.css">
+
+
+  </head>
+
+  <body ng-cloak>
+
+  <div ng-controller="LayoutDemoApp" class="layout-content" ng-cloak>
+
+  <p>
+    The <code>layout-align</code> attribute takes two words.
+    The first word says how the children will be aligned in the layout's direction, and the second word says how the children will be aligned perpendicular to the layout's direction.</p>
+
+    <p>Only one word is required for the attribute. For example, <code>layout="row" layout-align="center"</code> would make the elements center horizontally and use the default behavior vertically.</p>
+
+    <p><code>layout="column" layout-align="center end"</code> would make
+    children align along the center vertically and along the end (right) horizontally. </p>
+  <table class="md-api-table">
+    <tr>
+      <td>layout-align</td>
+      <td>Sets child alignment.</td>
+    </tr>
+    <tr>
+      <td>layout-align-sm</td>
+      <td>Sets child alignment on devices less than 600px wide.</td>
+    </tr>
+    <tr>
+      <td>layout-align-gt-sm</td>
+      <td>Sets child alignment on devices greater than 600px wide.</td>
+    </tr>
+    <tr>
+      <td>layout-align-md</td>
+      <td>Sets child alignment on devices between 600px and 960px wide.</td>
+    </tr>
+    <tr>
+      <td>layout-align-gt-md</td>
+      <td>Sets child alignment on devices greater than 960px wide.
+    </tr>
+    <tr>
+      <td>layout-align-lg</td>
+      <td>Sets child alignment on devices between 960px and 1200px wide.</td>
+    </tr>
+    <tr>
+      <td>layout-align-gt-lg</td>
+      <td>Sets child alignment on devices greater than 1200px wide.</td>
+    </tr>
+  </table>
+  <p>
+   See below for more examples:
+  </p>
+
+      <docs-demo demo-title='layout="{{layoutDemo.direction}}" layout-align="{{layoutAlign()}}"'
+                 class="small-demo colorNested" interpolate-code="true">
+          <div layout="{{layoutDemo.direction}}" layout-align="{{layoutAlign()}}">
+            <div>one</div>
+            <div>two</div>
+            <div>three</div>
+          </div>
+      </docs-demo>
+
+  <div layout="row" layout-gt-sm="row" layout-align="space-around">
+
+    <div>
+      <md-subheader>Layout Direction</md-subheader>
+      <md-radio-group ng-model="layoutDemo.direction">
+        <md-radio-button value="row">row</md-radio-button>
+        <md-radio-button value="column">column</md-radio-button>
+      </md-radio-group>
+    </div>
+    <div>
+      <md-subheader>Alignment in Layout Direction ({{layoutDemo.direction == 'row' ? 'horizontal' : 'vertical'}})</md-subheader>
+      <md-radio-group ng-model="layoutDemo.mainAxis">
+        <md-radio-button value="start">start</md-radio-button>
+        <md-radio-button value="center">center</md-radio-button>
+        <md-radio-button value="end">end</md-radio-button>
+        <md-radio-button value="space-around">space-around</md-radio-button>
+        <md-radio-button value="space-between">space-between</md-radio-button>
+      </md-radio-group>
+    </div>
+    <div>
+      <md-subheader>Alignment in Perpendicular Direction ({{layoutDemo.direction == 'column' ? 'horizontal' : 'vertical'}})</md-subheader>
+      <md-radio-group ng-model="layoutDemo.crossAxis">
+        <md-radio-button value="start">start</md-radio-button>
+        <md-radio-button value="center">center</md-radio-button>
+        <md-radio-button value="end">end</md-radio-button>
+      </md-radio-group>
+    </div>
+
+  </div>
+</div>
+
+
+  <script src="./jspm_packages/system.js" type="text/javascript"></script>
+     <script src="./config.js" type="text/javascript"></script>
+     <script type="text/javascript">
+         System
+             .import('app/boot')
+             .catch( console.error.bind(console) ); // make sure any errors print to console
+     </script>
+
+   </body>
+ </html>

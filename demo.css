@@ -1,0 +1,156 @@
+[ng-cloak] {
+  display: none;
+}
+
+html {
+  line-height: 1.4;
+}
+
+.layout-content {
+  max-width: 864px;
+  margin: 16px;
+  box-sizing: border-box;
+}
+
+
+docs-demo {
+  margin-top: 16px;
+  position: relative;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.small-demo > * {
+  -webkit-box-flex: 1 1 0%;
+  -webkit-flex: 1 1 0%;
+  -moz-box-flex: 1 1 0%;
+  -moz-flex: 1 1 0%;
+  -ms-flex: 1 1 0%;
+  flex: 1 1 0%;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+}
+
+.small-demo {
+  width: 100%;
+  min-height: 128px;
+  position: relative;
+  overflow: hidden;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.colorNested > div div {
+  opacity: 0.9;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+.colorNested-noPad > div div{
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26);
+  opacity: 0.9;
+  color: white;
+  text-align: center;
+  padding-top:10px;
+}
+
+.colorNested > div div:nth-child(1),
+.colorNested-noPad > div div:nth-child(1) {
+  background-color: #009688;
+}
+
+.colorNested > div div:nth-child(2),
+.colorNested-noPad > div div:nth-child(2) {
+  background-color: #3949ab;
+}
+
+.colorNested > div div:nth-child(3),
+.colorNested-noPad > div div:nth-child(3) {
+  background-color: #9c27b0;
+}
+
+.colorNested > div div:nth-child(4),
+.colorNested-noPad > div div:nth-child(4) {
+  background-color: #8bc34a;
+}
+
+.colorNested > div div:nth-child(5),
+.colorNested-noPad > div div:nth-child(5) {
+  background-color: #deb867;
+}
+
+.colorNested > div div:nth-child(6),
+.colorNested-noPad > div div:nth-child(6) {
+  background-color: #FF5722;
+}
+
+.colorNested > div div:nth-child(7),
+.colorNested-noPad > div div:nth-child(7) {
+  background-color: #03A9F4;
+}
+
+.layout-content md-divider {
+  margin-top: 16px;
+}
+
+.layout-demo :not(.layout-row),
+.layout-demo :not(.layout-column) {
+  border: 1px solid #eee;
+  padding: 8px;
+}
+
+.layout-content .demo-box {
+  box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.26);
+  padding: 16px;
+}
+
+.layout-panel-parent {
+  height: 200px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+[ng-panel] {
+  transition: 0.45s cubic-bezier(0.35, 0, 0.25, 1);
+  -webkit-transition: 0.45s cubic-bezier(0.35, 0, 0.25, 1);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+[ng-panel].ng-enter {
+  transform: translate3d(0, -15%, 0);
+  opacity: 0.1;
+  z-index: 1;
+}
+
+[ng-panel].ng-enter.ng-enter-active,
+[ng-panel].ng-leave {
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+[ng-panel].ng-leave.ng-leave-active {
+  transform: translate3d(0, 0, 0);
+  opacity: 0.5;
+}
+
+[ng-panel] .demo-content {
+  background: white;
+}
+
+@media screen and (-ms-high-contrast: active) {
+  .colorNested > div {
+    border: 1px solid #fff !important;
+  }
+}
