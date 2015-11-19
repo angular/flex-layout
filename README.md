@@ -2,12 +2,12 @@
 
 This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure JS-only engine.
 
-#### Intro
+#### Introduction
 
 Angular Material's Layout features were purposed to provide syntactic sugar and allow developers
 to easily and intuitively create responsive and adaptive layouts.
 
-#### Implementation v1
+#### v1 Implementation 
 
 Early versions used both [non-trivial] SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list.
 
@@ -67,7 +67,7 @@ This approach suffers from many issues:
 *  The CSS rules are limited to Layout values of 0 - 100 in increments of 5
 *  Breakpoints are hard-coded and very difficult to modify
 
-#### Implementation v2
+#### v2 Implementation
 
 The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure-JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
 
