@@ -95,6 +95,13 @@ is transformed to Dynamic styles:
 </div>
 ```
 
+#### Demos
+
+The Layout docs/demos from v1 are included here to quickly demonstrate matching functionality (and more) within the v2 implementation.
+
+![demos](https://cloud.githubusercontent.com/assets/210413/11286863/1a272be0-8edd-11e5-9ea0-af279f50ef0d.jpg)
+
+
 #### Advantages
 
 Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
@@ -108,7 +115,7 @@ Not only is the codebase easier to maintain and debug, other more important bene
 *  Support for raw values or interpolated values
 *  Support for raw, percentage or px-suffix values
 
->  The code has been initially implemented with es6 and JSPM. A transcompile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
+>  The code has been initially implemented with es6 and JSPM. A trans-compile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
 
 >  Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
 
