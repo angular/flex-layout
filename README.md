@@ -4,7 +4,7 @@ This project represents the **re-architecture** of Angular Material's Layout fea
 
 #### Intro
 
-The goal of ngMaterial's Layout features to provide syntactic sugar and allows developers
+Angular Material's Layout features were purposed to provide syntactic sugar and allow developers
 to easily and intuitively create responsive and adaptive layouts.
 
 #### Implementation v1
@@ -104,6 +104,7 @@ Not only is the codebase easier to maintain and debug, other more important bene
 *  Watchers for Layout injector values
 *  Support for raw values or interpolated values
 *  Support for raw, percentage or px-suffix values
+*  Adaptive layouts are more easily created with the MediQuery Pub/Sub mechanisms and the notification processes.
 
 >  The code has been initially implemented with es6 and JSPM. A transcompile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
 
