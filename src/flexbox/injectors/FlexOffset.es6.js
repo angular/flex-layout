@@ -19,7 +19,7 @@ class FlexOffset extends AbstractInjector {
     let self;
     privates.set(this, self = {
 
-      _offset : window.getComputedStyle(element[0]).margin-left || "0",
+      _offset : window.getComputedStyle(element[0])['margin-left'] || "0",
 
       /**
        * Build the CSS that should be assigned to the element instance

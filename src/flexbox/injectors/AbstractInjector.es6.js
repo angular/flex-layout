@@ -44,7 +44,7 @@ class AbstractInjector {
       initialize : () => {
 
         // Start watching the attribute's value
-        if ( self.unWatch !== NOOP ) {
+        if ( self.unWatch === NOOP ) {
           privates.get(this).watch();
         }
       },

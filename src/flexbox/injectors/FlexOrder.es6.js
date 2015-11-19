@@ -20,7 +20,7 @@ class FlexOrder extends AbstractInjector {
     privates.set(this, self = {
 
       _css : this.modernizr({
-          order : window.getComputedStyle(element[0]).order || "0"
+          order : this.attrs['flexOrder']
       }),
 
       /**

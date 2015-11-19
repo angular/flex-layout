@@ -52,7 +52,8 @@ function buildLayoutDirectives() {
 
     angular.forEach( variants, (breakpoint) => {
       let className = breakpoint.suffix ? `${directiveName}-${breakpoint.suffix}` : `${directiveName}`;
-      let normalizedKey = `${directiveName}${breakpoint.normalizedSuffix}`;
+      let normalizedName = directiveNormalize(directiveName);
+      let normalizedKey = `${normalizedName}${breakpoint.normalizedSuffix}`;
       allDirectives[normalizedKey] =  buildConstructionFn(className);
     });
 
@@ -190,3 +191,21 @@ const PRIORITIES = {
    'layout-wrap'   : 310,
    'layout-no-wrap': 310
 };
+
+const PREFIX_REGEXP = /^((?:x|data)[\:\-_])/i;
+const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
+
+
+/**
+ * Converts snake_case to camelCase.
+ * Also there is special case for Moz prefix starting with upper case letter.
+ * @param name Name to normalize
+ */
+function directiveNormalize(name) {
+  return name
+    .replace(PREFIX_REGEXP, '')
+    .replace(SPECIAL_CHARS_REGEXP, function(_, separator, letter, offset) {
+      return offset ? letter.toUpperCase() : letter;
+    });
+}
+

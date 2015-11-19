@@ -35,9 +35,12 @@ class Flex extends AbstractInjector {
           case AUTO       : css = { 'flex'  : "1 1 auto" ,'max-width'  : null , 'max-height' : null  }; break;
           case NONE       : css = { 'flex'  : "0 0 auto" ,'max-width'  : null , 'max-height' : null  }; break;
           default :
+            let isPercent = String(value).indexOf("%")  > -1;
+            let isPx      = String(value).indexOf("px") > -1;
+
             if ( value === "33" ) value = (100/3);
             if ( value === "66" ) value = (200/3);
-            if (String(value).indexOf("px") < 0) {
+            if (!isPx && !isPercent) {
               // Defaults to percentage sizing unless `px` is explicitly set
               value = value + '%';
             }

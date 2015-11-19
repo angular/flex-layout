@@ -32,66 +32,63 @@ class LayoutAlign extends AbstractInjector {
       /**
        * Build the CSS that should be assigned to the element instance
        */
-      buildCSS : () => {
+      buildCSS : (value) => {
         let overrides = { };
+        let matches = value.split(" ");
 
-        // Main axis
-        switch(this.value) {
-          case "center":
-          case "center center":
-          case "center start":
-          case "center send":
-            overrides['justify-content'] = "center";
-            break;
+        if ( matches ) {
+          // Main axis
+          switch(matches[0]) {
+            case "start":
+              overrides['justify-content'] = "start";
+              break;
 
-          case "end":
-          case "end center":
-          case "end start":
-          case "end send":
-            overrides['justify-content'] = "flex-end";
-            break;
+            case "center":
+              overrides['justify-content'] = "center";
+              break;
 
-          case "space-around":
-          case "space-around center":
-          case "space-around start":
-          case "space-around send":
-            overrides['justify-content'] = "space-around";
-            break;
+            case "end":
+              overrides['justify-content'] = "flex-end";
+              break;
 
-          case "space-between":
-          case "space-between center":
-          case "space-between start":
-          case "space-between send":
-            overrides['justify-content'] = "space-between";
-            break;
-        }
+            case "stretch" :
+              overrides['justify-content'] = "stretch";   // default
+              break;
 
-        // Cross-axis
-        switch( this.value ) {
+            case "space-around":
+              overrides['justify-content'] = "space-around";
+              break;
 
-           case "center-start"        :
-           case "start-start"         :
-           case "end-start"           :
-           case "space-between-start" :
-           case "space-around-start"  :
-             overrides['align-items'] = "flex-start";
-             break;
+            case "space-between":
+              overrides['justify-content'] = "space-between";
+              break;
+          }
 
-          case "center-center"        :
-          case "start-center"         :
-          case "end-center"           :
-          case "space-between-center" :
-          case "space-around-center"  :
-            overrides['align-items'] = "center";
-            break;
+          // Cross-axis
+          switch( matches[1] ) {
 
-          case "center-end"        :
-          case "start-end"         :
-          case "end-end"           :
-          case "space-between-end" :
-          case "space-around-end"  :
-            overrides['align-items'] = "flex-end";
-            break;
+             case "start" :
+               overrides['align-items'] = overrides['align-content'] = "flex-start";
+               break;
+
+            case "center" :
+              overrides['align-items'] = overrides['align-content'] = "center";
+              break;
+
+            case "end" :
+              overrides['align-items'] = overrides['align-content'] = "flex-end";
+              break;
+
+            case "stretch" :
+              overrides['align-items'] = overrides['align-content'] = "stretch";   // default
+              break;
+
+            case "baseline" :
+              overrides['align-items'] = "baseline";
+              break;
+
+
+          }
         }
 
         return this.modernizr(overrides);
@@ -100,13 +97,10 @@ class LayoutAlign extends AbstractInjector {
       /**
        * Update element and immediate children to 'stretch' as needed...
        */
-      stretchChildren : () => {
-        switch(this.value) {
-          case "center-center"        :
-          case "start-center"         :
-          case "end-center"           :
-          case "space-between-center" :
-          case "space-around-center"  :
+      stretchChildren : (value) => {
+        let matches = value.split(" ");
+
+        if ( matches && matches[1] == "center") {
             let overrides = {
               'max-width'  : '100%',
               'box-sizing': "border-box"
@@ -117,12 +111,10 @@ class LayoutAlign extends AbstractInjector {
             angular.forEach(this.element[0].childNodes, (node)=>{
               switch( node.nodeType ) {
                 case NodeType.ELEMENT_NODE :
-                case NodeType.TEXT_NODE :
                   angular.element(node).css( overrides);
                   break;
               }
             });
-            break;
         }
       }
 
@@ -138,11 +130,11 @@ class LayoutAlign extends AbstractInjector {
   updateCSS(value) {
     let self = privates.get(this);
     if ( this.isActive ) {
-      let overrides = self.buildCSS();
+      let overrides = self.buildCSS(this.value);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
-      self.stretchChildren();
+      self.stretchChildren.call(this, this.value);
     }
   }
 

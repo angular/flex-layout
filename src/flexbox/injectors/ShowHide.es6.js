@@ -18,18 +18,23 @@ class ShowHide extends AbstractInjector {
 
     let self;
     privates.set(this, self = {
-      _style : this.modernizr({
-        display : window.getComputedStyle(element[0]).display
-      }),
+      _display : this.captureCss(),
 
       /**
        * Build the CSS that should be assigned to the element instance
        */
       buildCSS : (value) => {
+        let css = { };
         switch( this.root ) {
-          case SHOW: return this.modernizr({ display : isTrue(value) ? self._display : NONE          });
-          case HIDE: return this.modernizr({ display : isTrue(value) ? NONE          : self._display });
+          case SHOW:
+            css = this.modernizr({ display : isTrue(value) ? self._display : NONE });
+            break;
+
+          case HIDE:
+            css = this.modernizr({ display : isTrue(value) ? NONE : self._display });
+            break;
         }
+        return css;
       }
 
     });
@@ -53,8 +58,17 @@ class ShowHide extends AbstractInjector {
   resetCSS(value) {
     let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css(self._style);
+      let style = this.modernizr({
+        // Initial captures do not consider breakpoints
+        display : angular.isDefined(this.attrs[HIDE]) ? NONE : self._display
+      });
+
+      this.element.css(style);
     }
+  }
+
+  captureCss() {
+    return window.getComputedStyle(this.element[0]).display || "block";
   }
 
 }
