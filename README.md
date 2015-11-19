@@ -99,7 +99,8 @@ is transformed to Dynamic styles:
 
 The Layout docs/demos from v1 are included here to quickly demonstrate matching functionality (and more) within the v2 implementation.
 
-![demos](https://cloud.githubusercontent.com/assets/210413/11286863/1a272be0-8edd-11e5-9ea0-af279f50ef0d.jpg)
+![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
+
 
 
 #### Advantages
