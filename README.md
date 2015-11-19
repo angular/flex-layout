@@ -11,7 +11,7 @@ to easily and intuitively create responsive and adaptive layouts.
 
 Early versions used both [non-trivial] SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list.
 
-A separate SCSS file contained complex rules and nestings with `for-loops`; all to build CSS for both the expected mediaQuery breakpoints and for required CSS specificities:
+A separate SCSS file contained complex rules and nestings with `for-loops`; all to build CSS for the expected mediaQuery breakpoints and possible layout values:
 
 ```scss
 @mixin flex-properties-for-name($name: null) {
@@ -58,6 +58,7 @@ A separate SCSS file contained complex rules and nestings with `for-loops`; all 
   }
 }
 ```
+> Additionally, CSS specificity rules required large quantities of NON-trivial Layout CSS styles.
 
 This approach suffers from many issues:
 
