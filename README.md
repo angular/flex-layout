@@ -107,5 +107,5 @@ Not only is the codebase easier to maintain and debug, other more important bene
 
 >  The code has been initially implemented with es6 and JSPM. A transcompile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
 
->  Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which become the master version intended ngMaterial v1.x and v2.x
+>  Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
 
