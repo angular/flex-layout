@@ -97,7 +97,7 @@ is transformed to Dynamic styles:
 
 #### Demos
 
-The material.angularjs.org Layout demos are also included here to quickly demonstrate matching functionality (and more) when using the v2 implementation.
+The **[http://material.angularjs.org](https://material.angularjs.org/latest/layout/grid)** Layout demos are also included here to quickly demonstrate matching functionality (and more) when using the v2 implementation.
 
 ![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
 
