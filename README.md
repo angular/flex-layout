@@ -246,3 +246,13 @@ Not only is the codebase easier to maintain and debug, other more important bene
 Different from responsive layouts where components change sizes and positions, the concepts of Adaptive layouts provide for UX where  **different components** may be used for different breakpoints. 
 
 The Gen2 engine here uses a MediaQueryWatcher in a Publish/Subcribe architecture. Layout injectors use an adaptor to subscribe to breakpoint change notifications. This subscription pattern can be extended to easily support breakpoint notifications to trigger Adaptive UX changes.
+
+#### More possibilities (future)
+
+With the new MediaQuery Pub/Sub mechanisms and Breakpoints, it would be quite easy to extend these injector-subscriber ideas to support constructs such as:
+
+```html
+<div md-class-sm="{'role_admin' : vm.isAdmin()}">
+   ... Admin content here
+</div>
+```
