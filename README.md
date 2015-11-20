@@ -2,10 +2,9 @@
 
 This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure JS-only engine.
 
-#### Introduction
+#### Summary
 
-Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers
-to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
+Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
 
 | HTML Markup API | Allowed values (raw or interpolated) |
 |-----------------|----------------------------------------------------------------------------|
@@ -42,6 +41,7 @@ The above API can be easily enhanced to support Responsive breakpoints as specif
 | xl    | `screen and (min-width: 1280px) and (max-width: 1919px)`|
 | gt-xl | `screen and (min-width: 1920px)`                        |
                       
+<br/>
 
 Below is an example usage of the Responsive Layout API:
 
@@ -56,6 +56,7 @@ Below is an example usage of the Responsive Layout API:
 <div flex class="three"></div>
 ```
 
+---
 
 #### Gen1 Implementation 
 
