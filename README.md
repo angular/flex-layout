@@ -78,7 +78,7 @@ Below is an example usage of the Responsive Layout API:
 
 ---
 
-#### Gen1 Implementation 
+#### 'Generation 1' Implementation 
 
 Early versions used both complex SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list. A separate SCSS file contained complex rules and nestings with `for-loops`; all to build (and group by classNames) CSS styles for the expected mediaQuery breakpoints and possible layout values:
 
@@ -171,11 +171,13 @@ is run-time transformed to use CSS classNames and externally defined stylesheets
 </div>
 ```
 
+<br/>
+
 ##### Summary 
 
-This approach suffers from many issues:
+This Gen1 approach suffers from many issues:
 
-*  Conversion of layout attributes to classnames
+*  Complexity of runtime conversion of layout attributes to classnames
 *  Large filesizes for the generated, external stylesheets (170K unminified)
 *  CSS specificity rules impact Layout CSS and sometimes produces unexpected results
 *  The CSS rules are limited to values of 0 - 100 in increments of 5
@@ -185,7 +187,7 @@ This approach suffers from many issues:
 
 --- 
 
-#### Gen2 Implementation
+#### 'Generation 2' Implementation
 
 The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure, Angular JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
 
@@ -218,7 +220,7 @@ The **[http://material.angularjs.org](https://material.angularjs.org/latest/layo
 
 ![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
 
-
+<br/>
 
 ##### Summary
 
@@ -236,6 +238,8 @@ Not only is the codebase easier to maintain and debug, other more important bene
 >  The code has been initially implemented with es6 and JSPM. A trans-compile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module.
 
 >  Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
+
+<br/>
 
 #### Adaptive Layouts (future)
 
