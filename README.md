@@ -19,8 +19,8 @@ to easily and intuitively create responsive and adaptive layouts. The public api
 |  layout-margin  | px , %                                                                    |                           
 |  layout-padding | px , %                                                                    |        
 |  layout-align   | `start|center|end|stretch|space-around` `start|center|end|stretch|baseline`|                   
-|  show           | `` , `true` , `1`                                                        | 
-|  hide           | `` , `true` , `1`                                                        | 
+|  show           | ``` , `true` , `1`                                                        | 
+|  hide           | ``` , `true` , `1`                                                        | 
 
 The above API can be easily enhanced to support Responsive breakpoints. Conformant to breakpoints settings specified in Material Design:
 
