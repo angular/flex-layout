@@ -256,3 +256,10 @@ With the new MediaQuery Pub/Sub mechanisms and Breakpoints, it would be quite ea
    ... Admin content here
 </div>
 ```
+
+##### Pending Features
+
+While implementation of Karma unit tests are `in-progress`, several other pending features need to designed and implemented:
+
+*  Breakpoint support for Handset and Tablets (see Breakpoint diagram at top)
+*  Responsvie and Adaptive support for Orientation changes
