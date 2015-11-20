@@ -6,6 +6,8 @@ This project represents the **re-architecture** of Angular Material's Layout fle
 
 Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
 
+<br/>
+
 | HTML Markup API | Allowed values (raw or interpolated) |
 |-----------------|----------------------------------------------------------------------------|
 |  layout         | `row` , `column`                                                          |                  
@@ -27,6 +29,8 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 And if we use Breakpoints as specified in Material Design:
 
 ![](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)
+
+<br/>
 
 We can associate breakpoints with mediaQuery definitions using breakpoint **alias(es)**:
 
