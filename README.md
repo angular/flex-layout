@@ -1,6 +1,6 @@
 # Angular Material's Layout Engine
 
-This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure JS-only engine.
+This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure, Angularu JS-only engine.
 
 #### Summary
 
@@ -129,6 +129,50 @@ Early versions used both complex SCSS rules and JS directives to dynamically map
 ```
 > Additionally, CSS specificity rules required large quantities of NON-trivial Layout CSS styles.
 
+static HTML markup:
+
+```html
+<div>
+
+  <div layout="row">
+
+    <div flex>First item in row</div>
+    <div flex>Second item in row</div>
+
+  </div>
+  <div layout="column">
+
+    <div flex>First item in column</div>
+    <div flex>Second item in column</div>
+
+  </div>
+
+</div>
+```
+
+is run-time transformed to use CSS classNames and externally defined stylesheets:
+
+```html
+<div>
+  
+  <div class="ng-scope layout-row">
+    
+    <div class="flex">First item in row</div>
+    <div class="flex">Second item in row</div>
+
+  </div>  
+  <div class="ng-scope layout-column">
+  
+    <div class="flex">First item in column</div>
+    <div class="flex">Second item in column</div>
+  
+  </div>
+
+</div>
+```
+
+##### Summary 
+
 This approach suffers from many issues:
 
 *  Conversion of layout attributes to classnames
@@ -143,7 +187,7 @@ This approach suffers from many issues:
 
 #### Gen2 Implementation
 
-The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure-JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
+The revised architecture for Layouts eliminates `all` external stylesheets and SCSS files. This is a pure, Angular JS Layout engine that is both independent of Angular Material and easily used within ngMaterial.
 
 Layout directives are used to create Layout injectors; which inject specific flexbox css directly to the DOM element. For example, consider the use of the `layout="row"` and `layout-align="center center"` directives.
 
@@ -176,7 +220,7 @@ The **[http://material.angularjs.org](https://material.angularjs.org/latest/layo
 
 
 
-#### Advantages
+##### Summary
 
 Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
 
