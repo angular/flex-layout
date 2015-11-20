@@ -60,12 +60,16 @@ Below is an example usage of the Responsive Layout API:
 
 ```html
 <div layout='column' class="zero">
+
   <div flex="33" flex-md="{{ vm.box1Width }}" class="one" ></div>
   <div flex="33" layout="{{ vm.direction }}" layout-md="row" class="two">
+
     <div flex="22"   flex-md="10" hide-lg                         class="two_one"></div>
     <div flex="30px" show hide-md="{{ vm.hideBox }}" flex-md="25" class="two_two"></div>
     <div flex="20"   flex-md="65"                                 class="two_three"></div>
+
   </div>
+
 <div flex class="three"></div>
 ```
 
