@@ -69,6 +69,8 @@ Below is an example usage of the Responsive Layout API:
 <div flex class="three"></div>
 ```
 
+<br/>
+
 ---
 
 #### Gen1 Implementation 
