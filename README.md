@@ -7,17 +7,20 @@ This project represents the **re-architecture** of Angular Material's Layout fle
 Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers
 to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
 
-*  **layout** = "row" || "column"
-*  **flex** = "" || px || %
-*  **flex-order** = int
-*  **flex-offset** = px
-*  **layout-fill**
-*  **layout-wrap**, **layout-nowrap**
-*  **layout-margin** = px || %
-*  **layout-padding** = px || %
-*  **layout-align** = `start|center|end|stretch|space-around` `start|center|end|stretch|baseline`
-*  **show** = "" || "true" || "1"
-*  **hide** = "" || "true" || "1"
+| HTML Markup API       | Allowed values (raw or interpolated) |
+|--------|--------|
+|  **layout**         | `row` || `column`                                                          |                  
+|  **flex**           | `` || px || %                                                              |              
+|  **flex-order**     | int                                                                        |                       
+|  **flex-offset**    | px                                                                         |     
+|  **layout-fill**    |                                                                            |
+|  **layout-wrap**    |                                                                            |                   
+|  **layout-nowrap**  |                                                                            |                   
+|  **layout-margin**  | px || %                                                                    |                           
+|  **layout-padding** | px || %                                                                    |        
+|  **layout-align**   | `start|center|end|stretch|space-around` `start|center|end|stretch|baseline`|                   
+|  **show**           | `` || `true` || `1`                                                        | 
+|  **hide**           | `` || `true` || `1`                                                        | 
 
 The above API can be easily enhanced to support Responsive breakpoints. Conformant to breakpoints settings specified in Material Design:
 
