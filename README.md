@@ -23,13 +23,12 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 
 <br/>
 
-The above API can be easily enhanced to support Responsive breakpoints as specified in Material Design:
+
+Using breakpoints as specified in Material Design:
 
 ![](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)
 
-<br/>
-
-Based on the above specifications, the Layout engine has defined the breakpoint alias that can be used as suffix extensions to the Layout API. Here are the [suffix aliases] and their associated breakpoint mediaQuery definitions:
+Based on the above specifications, the Layout engine has defined the following breakpoint **alias(es)**. Here are the [suffix aliases] and their associated breakpoint mediaQuery definitions:
 
 | breakpoint | mediaQuery |
 |--------|--------|
@@ -46,6 +45,12 @@ Based on the above specifications, the Layout engine has defined the breakpoint 
 | gt-xl | `screen and (min-width: 1920px)`                        |
                       
 <br/>
+
+The above Layout API can be easily enhanced to support Responsive breakpoints by using a markup convention: the `alias` is used as suffix extensions to the Layout API.:
+
+```html
+<api>-<breakpoint alias>=<value>
+```
 
 Below is an example usage of the Responsive Layout API:
 
