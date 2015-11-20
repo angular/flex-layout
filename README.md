@@ -152,7 +152,7 @@ is transformed to Dynamic styles:
 
 #### Demos
 
-The **[http://material.angularjs.org](https://material.angularjs.org/latest/layout/grid)** Layout demos are also included here to quickly demonstrate matching functionality (and more) when using the v2 implementation.
+The **[http://material.angularjs.org](https://material.angularjs.org/latest/layout/grid)** Layout demos are also included here to quickly demonstrate matching functionality (and more) when using the Gen2 implementation.
 
 ![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
 
@@ -179,4 +179,4 @@ Not only is the codebase easier to maintain and debug, other more important bene
 
 Different from responsive layouts where components change sizes and positions, the concepts of Adaptive layouts provide for UX where  **different components** may be used for different breakpoints. 
 
-The v2 engine here uses a MediaQueryWatcher in a Publish/Subcribe architecture. Layout injectors use an adaptor to subscribe to breakpoint change notifications. This subscription pattern can be extended to easily support breakpoint notifications and trigger Adaptive UX changes.
+The Gen2 engine here uses a MediaQueryWatcher in a Publish/Subcribe architecture. Layout injectors use an adaptor to subscribe to breakpoint change notifications. This subscription pattern can be extended to easily support breakpoint notifications to trigger Adaptive UX changes.
