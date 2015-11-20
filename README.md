@@ -132,6 +132,8 @@ This approach suffers from many issues:
 *  The CSS rules are limited to values of 0 - 100 in increments of 5
 *  Breakpoints are hard-coded and very difficult to extend or configure
 
+<br/>
+
 --- 
 
 #### Gen2 Implementation
