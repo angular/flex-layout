@@ -29,7 +29,7 @@ The above API can be easily enhanced to support Responsive breakpoints as specif
 
 <br/>
 
-> Based on the above specifications, the Layout engine has defined the following breakpoint [suffix aliases] and their associated mediaQuery definitions:
+Based on the above specifications, the Layout engine has defined the breakpoint alias that can be used as suffix extensions to the Layout API. Here are the [suffix aliases] and their associated breakpoint mediaQuery definitions:
 
 | breakpoint | mediaQuery |
 |--------|--------|
@@ -120,6 +120,8 @@ This approach suffers from many issues:
 *  CSS specificity rules impact Layout CSS and sometimes produces unexpected results
 *  The CSS rules are limited to Layout values of 0 - 100 in increments of 5
 *  Breakpoints are hard-coded and very difficult to modify
+
+--- 
 
 #### Gen2 Implementation
 
