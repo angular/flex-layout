@@ -69,8 +69,9 @@ Below is an example usage of the Responsive Layout API:
     <div flex="20"   flex-md="65"                                 class="two_three"></div>
 
   </div>
+  <div flex class="three"></div>
 
-<div flex class="three"></div>
+</div>
 ```
 
 <br/>
