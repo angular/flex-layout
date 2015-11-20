@@ -177,7 +177,7 @@ is run-time transformed to use CSS classNames and externally defined stylesheets
 
 This Gen1 approach suffers from many issues:
 
-*  Complexity of runtime conversion of layout attributes to classnames
+*  Complexity of runtime conversion of layout attributes to classnames (required due to huge performance issues with IE)
 *  Large filesizes for the generated, external stylesheets (170K unminified)
 *  CSS specificity rules impact Layout CSS and sometimes produces unexpected results
 *  The CSS rules are limited to values of 0 - 100 in increments of 5
