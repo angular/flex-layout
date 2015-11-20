@@ -19,7 +19,7 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 |  layout-nowrap  |                                                                            |                   
 |  layout-margin  | px , %                                                                    |                           
 |  layout-padding | px , %                                                                    |        
-|  layout-align   | `start|center|end|stretch|space-around` `start|center|end|stretch|baseline`|                   
+|  layout-align   | `start|center|end|stretch|space-around|space-between` `start|center|end|stretch|baseline`|                   
 |  show           | "" , `true` , `1`                                                        | 
 |  hide           | "" , `true` , `1`                                                        | 
 
