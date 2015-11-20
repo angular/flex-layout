@@ -118,8 +118,8 @@ This approach suffers from many issues:
 *  Conversion of layout attributes to classnames
 *  Large filesizes for the generated, external stylesheets (170K unminified)
 *  CSS specificity rules impact Layout CSS and sometimes produces unexpected results
-*  The CSS rules are limited to Layout values of 0 - 100 in increments of 5
-*  Breakpoints are hard-coded and very difficult to modify
+*  The CSS rules are limited to values of 0 - 100 in increments of 5
+*  Breakpoints are hard-coded and very difficult to extend or configure
 
 --- 
 
