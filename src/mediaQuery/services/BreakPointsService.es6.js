@@ -3,17 +3,16 @@ class BreakPointsService {
 
   constructor() {
     this.breakpoints = [
-        new BreakPoint(''      ,''     ,'screen'                                                ),
-        new BreakPoint('xs'    ,'Xs'   ,'screen and (max-width: 479px)'                         ),
-        new BreakPoint('gt-xs' ,'GtXs' ,'screen and (min-width: 480px)'                         ),
-        new BreakPoint('sm'    ,'Sm'   ,'screen and (max-width: 599px)'                         ),
-        new BreakPoint('gt-sm' ,'GtSm' ,'screen and (min-width: 600px)'                         ),
-        new BreakPoint('md'    ,'Md'   ,'screen and (min-width: 600px) and (max-width: 959px)'  ),
-        new BreakPoint('gt-md' ,'GtMd' ,'screen and (min-width: 960px)'                         ),
-        new BreakPoint('lg'    ,'Lg'   ,'screen and (min-width: 960px) and (max-width: 1279px)' ),
-        new BreakPoint('gt-lg' ,'GtLg' ,'screen and (min-width: 1280px)'                        ),
-        new BreakPoint('xl'    ,'Xl'   ,'screen and (min-width: 1280px) and (max-width: 1919px)'),
-        new BreakPoint('gt-xl' ,'GtXl' ,'screen and (min-width: 1920px)'                        )
+        new BreakPoint(''     , ''    , 'screen'                                                ),
+        new BreakPoint('xs'   , 'Xs'  , 'screen and (max-width: 599px)'                         ),
+        new BreakPoint('gt-xs', 'GtXs', 'screen and (min-width: 600px)'                         ),
+        new BreakPoint('sm'   , 'Sm'  , 'screen and (min-width: 600px) and (max-width: 959px)'  ),
+        new BreakPoint('gt-sm', 'GtSm', 'screen and (min-width: 960px)'                         ),
+        new BreakPoint('md'   , 'Md'  , 'screen and (min-width: 960px) and (max-width: 1279px)' ),
+        new BreakPoint('gt-md', 'GtMd', 'screen and (min-width: 1280px)'                        ),
+        new BreakPoint('lg'   , 'Lg'  , 'screen and (min-width: 1280px) and (max-width: 1919px)'),
+        new BreakPoint('gt-lg', 'GtLg', 'screen and (min-width: 1920px)'                        ), // The same as xl
+        new BreakPoint('xl'   , 'Xl'  , 'screen and (min-width: 1920px)'                        )
     ];
   }
 
