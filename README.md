@@ -4,8 +4,43 @@ This project represents the **re-architecture** of Angular Material's Layout fle
 
 #### Introduction
 
-Angular Material's Layout features were purposed to provide syntactic sugar and allow developers
-to easily and intuitively create responsive and adaptive layouts.
+Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers
+to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
+
+*  layout = "row" || "column"
+*  flex = "" || px || %
+*  flex-order = int
+*  flex-offset = px
+*  layout-fill
+*  layout-wrap
+*  layout-nowrap
+*  layout-margin
+*  layout-padding
+*  layout-align = start|center|end|stretch|space-around start|center|end|stretch|baseline
+*  show
+*  hide
+
+The above API can be easily enhanced to support Responsive breakpoints: 
+
+*  xs, gt-xs
+*  sm, gt-sm
+*  md, gt-md
+*  lg, gt-lg
+*  xl, gt-xl
+
+Below is an example usage of the Responsive Layout API:
+
+```html
+<div layout='column' class="zero">
+  <div flex="33" flex-md="{{ vm.box1Width }}" class="one" ></div>
+  <div flex="33" layout="{{ vm.direction }}" layout-md="row" class="two">
+    <div flex="22"   flex-md="10" hide-lg                         class="two_one"></div>
+    <div flex="30px" show hide-md="{{ vm.hideBox }}" flex-md="25" class="two_two"></div>
+    <div flex="20"   flex-md="65"                                 class="two_three"></div>
+  </div>
+<div flex class="three"></div>
+```
+
 
 #### Gen1 Implementation 
 
