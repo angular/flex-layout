@@ -32,8 +32,8 @@ class MarginPadding extends AbstractInjector {
       /**
        * Build the CSS that should be assigned to the element instance
        */
-      buildCSS : (value) => {
-        let key = this.root == "layout-padding" ? "padding" : "margin";
+      buildCSS : (value, root) => {
+        let key = root == "layout-padding" ? "padding" : "margin";
         let css = { };
 
           css[key] = self.validateValue(value);
@@ -123,11 +123,11 @@ class MarginPadding extends AbstractInjector {
   updateCSS(value) {
     let self = privates.get(this);
     if ( this.isActive && self.hasLayout() ) {
-      let overrides = self.buildCSS(value || this.value);
+      let overrides = self.buildCSS(value || this.value, this.root);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
-      self.padChildren(overrides);
+      self.padChildren.call(this,  overrides);
     }
   }
 
