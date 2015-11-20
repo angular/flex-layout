@@ -9,7 +9,7 @@ to easily and intuitively create responsive and adaptive layouts.
 
 #### Gen1 Implementation 
 
-Early versions used both [non-trivial] SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list.
+Early versions used both complex SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list.
 
 A separate SCSS file contained complex rules and nestings with `for-loops`; all to build CSS for the expected mediaQuery breakpoints and possible layout values:
 
