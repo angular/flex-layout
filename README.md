@@ -21,9 +21,13 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 |  show           | "" , `true` , `1`                                                        | 
 |  hide           | "" , `true` , `1`                                                        | 
 
+<br/>
+
 The above API can be easily enhanced to support Responsive breakpoints as specified in Material Design:
 
 ![](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)
+
+<br/>
 
 > Based on the above specifications, the Layout engine has defined the following breakpoint [suffix aliases] and their associated mediaQuery definitions:
 
