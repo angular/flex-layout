@@ -23,20 +23,22 @@ The above API can be easily enhanced to support Responsive breakpoints. Conforma
 
 ![](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)
 
-| breakpoint | mediaQuery |
-| **""**    | `screen`                                                |
-| **xs**    | `screen and (max-width: 479px)`                         |
-| **gt-xs** | `screen and (min-width: 480px)`                         |
-| **sm**    | `screen and (max-width: 599px)`                         |
-| **gt-sm** | `screen and (min-width: 600px)`                         |
-| **md**    | `screen and (min-width: 600px) and (max-width: 959px)`  |
-| **gt-md** | `screen and (min-width: 960px)`                         |
-| **lg**    | `screen and (min-width: 960px) and (max-width: 1279px)` |
-| **gt-lg** | `screen and (min-width: 1280px)`                        |
-| **xl**    | `screen and (min-width: 1280px) and (max-width: 1919px)`|
-| **gt-xl** | `screen and (min-width: 1920px)`                        |
-                      
+The Layout engine has defined the following breakpoint [suffix aliases] and their associated mediaQuery definitions:
 
+| breakpoint | mediaQuery |
+|--------|--------|
+| ""    | `screen`                                                |
+| xs    | `screen and (max-width: 479px)`                         |
+| gt-xs | `screen and (min-width: 480px)`                         |
+| sm    | `screen and (max-width: 599px)`                         |
+| gt-sm | `screen and (min-width: 600px)`                         |
+| md    | `screen and (min-width: 600px) and (max-width: 959px)`  |
+| gt-md | `screen and (min-width: 960px)`                         |
+| lg    | `screen and (min-width: 960px) and (max-width: 1279px)` |
+| gt-lg | `screen and (min-width: 1280px)`                        |
+| xl    | `screen and (min-width: 1280px) and (max-width: 1919px)`|
+| gt-xl | `screen and (min-width: 1920px)`                        |
+                      
 
 Below is an example usage of the Responsive Layout API:
 
