@@ -36,18 +36,16 @@ We can associate breakpoints with mediaQuery definitions using breakpoint **alia
 
 | breakpoint | mediaQuery |
 |--------|--------|
-| ""    | `screen`                                                |
-| xs    | `screen and (max-width: 479px)`                         |
-| gt-xs | `screen and (min-width: 480px)`                         |
-| sm    | `screen and (max-width: 599px)`                         |
-| gt-sm | `screen and (min-width: 600px)`                         |
-| md    | `screen and (min-width: 600px) and (max-width: 959px)`  |
-| gt-md | `screen and (min-width: 960px)`                         |
-| lg    | `screen and (min-width: 960px) and (max-width: 1279px)` |
-| gt-lg | `screen and (min-width: 1280px)`                        |
-| xl    | `screen and (min-width: 1280px) and (max-width: 1919px)`|
-| gt-xl | `screen and (min-width: 1920px)`                        |
-                      
+| ""    | 'screen'                                                |
+| xs    | 'screen and (max-width: 599px)'                         |
+| gt-xs | 'screen and (min-width: 600px)'                         |
+| sm    | 'screen and (min-width: 600px) and (max-width: 959px)'  |
+| gt-sm | 'screen and (min-width: 960px)'                         |
+| md    | 'screen and (min-width: 960px) and (max-width: 1279px)' |
+| gt-md | 'screen and (min-width: 1280px)'                        |
+| lg    | 'screen and (min-width: 1280px) and (max-width: 1919px)'|
+| gt-lg | 'screen and (min-width: 1920px)'                        |
+| xl    | 'screen and (min-width: 1920px)'                        |
 <br/>
 
 If we combine the breakpoint `alias` with the Layout API we can easily support Responsive breakpoints with a simple markup convention: the `alias` is used as suffix extensions to the Layout API.:
