@@ -216,7 +216,7 @@ is transformed to Dynamic styles:
 
 #### Demos
 
-The **[http://material.angularjs.org](https://material.angularjs.org/latest/layout/grid)** Layout demos are also included here to quickly demonstrate matching functionality (and more) when using the Gen2 implementation.
+The **Generation 1** [layout demos](https://material.angularjs.org/latest/layout/grid) are included here to quickly demonstrate matching functionality (and more) when using the Gen2 implementation.
 
 ![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
 
