@@ -11,8 +11,8 @@ to easily and intuitively create responsive and adaptive layouts. The public api
 *  **flex** = "" || px || %
 *  **flex-order** = int
 *  **flex-offset** = px
-*  **layout-fill
-*  **layout-wrap, layout-nowrap
+*  **layout-fill**
+*  **layout-wrap**, **layout-nowrap**
 *  **layout-margin** = px || %
 *  **layout-padding** = px || %
 *  **layout-align** = `start|center|end|stretch|space-around` `start|center|end|stretch|baseline`
@@ -26,6 +26,8 @@ The above API can be easily enhanced to support Responsive breakpoints:
 *  **md**, **gt-md**
 *  **lg**, **gt-lg**
 *  **xl**, **gt-xl**
+
+![](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)
 
 Below is an example usage of the Responsive Layout API:
 
