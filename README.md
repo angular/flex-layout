@@ -241,6 +241,8 @@ Not only is the codebase easier to maintain and debug, other more important bene
 
 <br/>
 
+---
+
 #### Adaptive Layouts (future)
 
 Different from responsive layouts where components change sizes and positions, the concepts of Adaptive layouts provide for UX where  **different components** may be used for different breakpoints. 
