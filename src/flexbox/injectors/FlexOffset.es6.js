@@ -16,30 +16,42 @@ class FlexOffset extends AbstractInjector {
   constructor(className, scope, element, attrs, utils) {
     super(className, scope,element, attrs, utils);
 
-    let self;
-    privates.set(this, self = {
-
-      _offset : window.getComputedStyle(element[0])['margin-left'] || "0",
-
-      /**
-       * Build the CSS that should be assigned to the element instance
-       */
-      buildCSS : (value) => {
-        if ( value === "33" ) value = (100/3);
-        if ( value === "66" ) value = (200/3);
-        if (String(value).indexOf("px") < 0) {
-          // Defaults to percentage sizing unless `px` is explicitly set
-          value = value + '%';
-        }
-
-        return {
-          'margin-left' : `${value}`
-        };
-
-      }
-
-    });
+    this._offset = this._captureCSS();
   }
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+
+  /**
+    * Capture initialize styles for this injector's element
+    */
+   _captureCSS() {
+     let styles = window.getComputedStyle(this.element[0]);
+     return styles['margin-left'] || "0";
+   }
+
+
+  /**
+   * Build the CSS that should be assigned to the element instance
+   */
+  _buildCSS(value) {
+    if ( value === "33" ) value = (100/3);
+    if ( value === "66" ) value = (200/3);
+    if (String(value).indexOf("px") < 0) {
+      // Defaults to percentage sizing unless `px` is explicitly set
+      value = value + '%';
+    }
+
+    return {
+      'margin-left' : `${value}`
+    };
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Update the CSS if active!
@@ -47,7 +59,6 @@ class FlexOffset extends AbstractInjector {
    * query range becomes active (onEnter())
    */
   updateCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
       let overrides = self.buildCSS(value || this.value);
       this.$log.debug("updateCSS", this, overrides);
@@ -61,9 +72,10 @@ class FlexOffset extends AbstractInjector {
    * injector (without breakpoints) will NOT be issued a breakpoint 'enter' notification
    */
   resetCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css({ 'margin-left' : self._offset });
+      this.element.css({
+        'margin-left' : this._offset
+      });
     }
   }
 
@@ -81,12 +93,3 @@ export default FlexOffset;
 // Private static variables
 // ************************************************************
 
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
-
-
-function isTrue(value) {
-  return (value == "true" || value == "1" || value == "");
-}

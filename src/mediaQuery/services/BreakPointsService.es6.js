@@ -16,6 +16,10 @@ class BreakPointsService {
     ];
   }
 
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
   /**
    * Search registered breakpoints for matching suffix
    */
@@ -40,5 +44,10 @@ class BreakPoint {
 
   }
 }
+
+
+// ************************************************************
+// Module Export
+// ************************************************************
 
 export default BreakPointsService;

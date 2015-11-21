@@ -1,7 +1,6 @@
 import angular           from 'angular'
-import buildRegistry     from 'flexbox/services/DirectiveRegistry.es6'
 import LayoutMqlService  from 'flexbox/services/LayoutMqlService.es6'
-
+import buildRegistry     from 'flexbox/services/DirectiveRegistry.es6'
 
 /**
  * This Layout module  provides `flexbox` Grid features for Angular Material.

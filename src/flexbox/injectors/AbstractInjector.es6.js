@@ -15,57 +15,61 @@ const SUFFIX = /-(gt-)?(xs|sm|md|lg|xl)/;
 class AbstractInjector {
 
   constructor(className, scope, element, attrs, utils) {
-    let self;
 
-    this.scope      = scope;
-    this.element    = element;
-    this.attrs      = attrs;
+    // Private properties
+    this._isActive      = false;
+    this._$destroyed    = false;
+    this._unWatch       = NOOP;
+    this._mqAlias       = extractAlias(className);
+    this._className     = className;
+
+    // Public properties
+    this.scope          = scope;
+    this.element        = element;
+    this.attrs          = attrs;
 
     // Expose utils (css modernizer, $log) for universal subclass access
     angular.forEach(utils,(value, key)=>{
       this[key] = value;
+
+      // this.$log = utils.$log;
+      // this.modernizr = utils.modernizer
     });
+  }
 
-    privates.set(this, self = {
+  // ************************************************
+  // Private Methods
+  // ************************************************
 
-      className : className,
-      isActive  : false,
-      mqAlias   : extractAlias(className),
+  /**
+   * Make sure the element has a shared controller
+   * so multiple layout attributes on the same element tag
+   * can share
+   */
+  _initialize() {
+    // Start watching the attribute's value
+    this._watch();
+  }
 
-      $destroyed: false,
-      unWatch   : NOOP,
-      stopListener : NOOP,
+  /**
+   * Watch the attribute value (which may be an interpolated
+   * expression) and call `::updateCss( )` with the validated
+   * value
+   */
+  _watch() {
+    if ( this._unWatch === NOOP ) {
+      let stopObserver = this.attrs.$observe( this.key, this.updateCSS.bind(this) );
+      this._unWatch = this.scope.$on("$destroy", () => {
+        stopObserver();
+        this._unWatch();
 
-      /**
-       * Make sure the element has a shared controller
-       * so multiple layout attributes on the same element tag
-       * can share
-       */
-      initialize : () => {
+        this._unWatch     = NOOP;
+        this._isActive    = false;
+        this._$destroyed  = true;
 
-        // Start watching the attribute's value
-        if ( self.unWatch === NOOP ) {
-          privates.get(this).watch();
-        }
-      },
-
-      /**
-       * Watch the attribute value (which may be an interpolated
-       * expression) and call `::updateCss( )` with the validated
-       * value
-       */
-      watch : () => {
-        self.unWatch = attrs.$observe( this.key, this.updateCSS.bind(this) );
-        self.stopListener = this.scope.$on("$destroy", () => {
-          self.unWatch();
-          self.unWatch = NOOP;
-          self.isActive = false;
-          self.$destroyed = true;
-        });
-      }
-
-    });
-
+        stopObserver = undefined;
+      });
+    }
   }
 
 
@@ -94,11 +98,9 @@ class AbstractInjector {
    * `entered` or activated
    */
   activate() {
-    let self = privates.get(this);
-    if ( !self.$destroyed ) {
-      self.isActive = true;
-
-      self.initialize();
+    if ( !this._$destroyed ) {
+      this._isActive = true;
+      this._initialize();
       this.updateCSS();
     }
     return this;
@@ -110,15 +112,10 @@ class AbstractInjector {
    * `left` due to a different mediaQuery activating
    */
   deactivate() {
-    let self = privates.get(this);
-    if ( self.isActive ) {
+    if ( this.isActive ) {
       this.resetCSS();
-
-      self.unWatch();
-      self.stopListener();
-      self.unwatch = self.stopListener = NOOP;
-
-      self.isActive = false;
+      this._unWatch();
+      this._isActive = false;
     }
     return this;
   }
@@ -133,8 +130,7 @@ class AbstractInjector {
    * e.g.   layout-gt-sm ===> layoutGtSm
    */
   get key() {
-    let self = privates.get(this);
-    return this.attrs.$normalize(self.className);
+    return this.attrs.$normalize(this._className);
   }
 
   /**
@@ -147,26 +143,24 @@ class AbstractInjector {
   /**
    * Read-only accessor to the active state
    */
-  get isActive() { return privates.get(this).isActive;  }
+  get isActive() { return this._isActive;  }
 
   /**
    * Get the mediaQuery alias for this element's attribute
    * If the markup === ' flex-gt-md ' then the
    * alias === 'gt-md'.
    */
-  get mqAlias() { return privates.get(this).mqAlias; }
+  get mqAlias() { return this._mqAlias; }
 
   /**
    * Determine the attribute/directive name without a breakpoint suffix
    */
   get root() {
-    let self = privates.get(this);
-    return self.className.replace(SUFFIX, "");
+    return this._className.replace(SUFFIX, "");
   }
 
   get className() {
-    let self = privates.get(this);
-    return self.className;
+    return this._className;
   }
 
 }
@@ -183,16 +177,4 @@ function extractAlias(className) {
 
 
 export default AbstractInjector;
-
-
-// ************************************************************
-// Private static variables
-// ************************************************************
-
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
-
-
 

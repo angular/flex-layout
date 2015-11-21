@@ -15,6 +15,21 @@ class LayoutMqlService {
     this.$log            = $log;
   }
 
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+  _logActivity(action, mq, injector) {
+    let value = injector.value || "";
+    let node = injector.attrs["id"] ? `<div ${injector.attrs["id"]} ${injector.className}="${value}">` : `<div ${injector.className}="${value}">`;
+    this.$log.warn(`${action}(${injector.mqAlias}) - ${node} ${mq}`);
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
   /**
    * Subscribe the Layout injector to the MediaQueryWatcher
    * notifications... Delegate subscriber notifications to
@@ -29,13 +44,13 @@ class LayoutMqlService {
     let breakpoint = this.$mdBreakpoints.findBreakpointBy(injector.mqAlias);
     let mediaQuery = breakpoint ? breakpoint.mediaQuery : null;
 
-    logActivity("subscribe", '',  injector, this.$log);
+    this._logActivity("subscribe", '',  injector, this.$log);
 
     let subscriber = this.$mdMediaWatcher.attach( mediaQuery, {
 
       enter : (mq) => {
         this.$timeout(()=>{
-          logActivity("enter", '- '+mq,  injector, this.$log);
+          this._logActivity("enter", '- '+mq,  injector);
 
           // Since injector 'leave' resets CSS on the element, delay so the `leave` event
           // dispatches BEFORE the `enter` event
@@ -45,7 +60,7 @@ class LayoutMqlService {
       },
 
       leave : (mq) => {
-        logActivity("leave", mq,  injector, this.$log);
+        this._logActivity("leave", mq,  injector);
 
         injector.deactivate();
       }
@@ -71,8 +86,4 @@ class LayoutMqlService {
 
 export default ["$mdMediaWatcher", "$mdBreakpoints", "$timeout", "$log", LayoutMqlService];
 
-function logActivity(action, mq, injector, $log) {
-  let value = injector.value || "";
-  let node = injector.attrs["id"] ? `<div ${injector.attrs["id"]} ${injector.className}="${value}">` : `<div ${injector.className}="${value}">`;
-  $log.warn(`${action}(${injector.mqAlias}) - ${node} ${mq}`);
-}
+

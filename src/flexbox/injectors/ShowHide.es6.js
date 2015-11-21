@@ -14,31 +14,46 @@ import AbstractInjector from 'flexbox/injectors/AbstractInjector.es6'
 class ShowHide extends AbstractInjector {
 
   constructor(className, scope, element, attrs, utils) {
-    super(className, scope,element, attrs, utils);
-
-    let self;
-    privates.set(this, self = {
-      _display : this.captureCss(),
-
-      /**
-       * Build the CSS that should be assigned to the element instance
-       */
-      buildCSS : (value) => {
-        let css = { };
-        switch( this.root ) {
-          case SHOW:
-            css = this.modernizr({ display : isTrue(value) ? self._display : NONE });
-            break;
-
-          case HIDE:
-            css = this.modernizr({ display : isTrue(value) ? NONE : self._display });
-            break;
-        }
-        return css;
-      }
-
-    });
+    super(className, scope, element, attrs, utils);
+    this._display = this._captureCSS();
   }
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+  /**
+   * Capture initialize styles for this injector's element
+   */
+  _captureCSS() {
+    let styles = window.getComputedStyle(this.element[0]);
+    return styles.display || "block";
+  }
+
+  /**
+   * Build the CSS that should be assigned to the element instance
+   */
+  _buildCSS(value) {
+    let css = { };
+    switch( this.root ) {
+      case SHOW:
+        css = this.modernizr({ display : this._isTrue(value) ? this._display : NONE });
+        break;
+
+      case HIDE:
+        css = this.modernizr({ display : this._isTrue(value) ? NONE : this._display });
+        break;
+    }
+    return css;
+  }
+
+  _isTrue(value) {
+    return (value == "true" || value == "1" || value == "");
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Update the CSS if active!
@@ -46,9 +61,8 @@ class ShowHide extends AbstractInjector {
    * query range becomes active (onEnter())
    */
   updateCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      let overrides = self.buildCSS(value || this.value);
+      let overrides = this._buildCSS(value || this.value);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
@@ -56,19 +70,14 @@ class ShowHide extends AbstractInjector {
   }
 
   resetCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
       let style = this.modernizr({
         // Initial captures do not consider breakpoints
-        display : angular.isDefined(this.attrs[HIDE]) ? NONE : self._display
+        display : angular.isDefined(this.attrs[HIDE]) ? NONE : this._display
       });
 
       this.element.css(style);
     }
-  }
-
-  captureCss() {
-    return window.getComputedStyle(this.element[0]).display || "block";
   }
 
 }
@@ -85,17 +94,11 @@ export default ShowHide;
 // Private static variables
 // ************************************************************
 
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
 const HIDE = "hide";
 const SHOW = "show";
 const NONE = "none";
 
 
 
-function isTrue(value) {
-  return (value == "true" || value == "1" || value == "");
-}
+
 

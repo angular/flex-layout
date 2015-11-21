@@ -29,7 +29,7 @@ const  CLASS_REGISTRY = {
 
 const LAYOUT_CONTROLLER = "$$layoutController";
 
-const SUFFIX = /-(gt-)?(sm|md|lg)/g;
+const SUFFIX = /-(gt-)?(xs|sm|md|lg|xl)/g;
 
 /**
  * For each standard Layout directive, build variants based on
@@ -123,7 +123,9 @@ function buildConstructionFn(className) {
           default :
             ddo.link = (scope, element, attr) => {
               let injectorClass = CLASS_REGISTRY[rootName];
-              $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, utils) );
+              if ( injectorClass ) {
+                $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, utils) );
+              }
             };
             break;
       }

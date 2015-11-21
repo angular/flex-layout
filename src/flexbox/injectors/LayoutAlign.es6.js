@@ -15,113 +15,121 @@ class LayoutAlign extends AbstractInjector {
 
   constructor(className, scope, element, attrs, utils) {
     super(className, scope,element, attrs, utils);
+    this._align = this._captureCSS();
+  }
 
-    let self;
-    privates.set(this, self = {
+  // ************************************************
+  // Private Methods
+  // ************************************************
 
-      _align : (() => {
-        let styles = window.getComputedStyle(element[0]);
-        return this.modernizr({
-          'max-width'       : styles['max-width'],
-          'box-sizing'      : styles['box-sizing'],
-          'align-items'     : styles['align-items'],
-          'align-content'   : styles['align-content'],
-          'justify-content' : styles['justify-content']
-        });
-      })(),
-
-      /**
-       * Build the CSS that should be assigned to the element instance
-       */
-      buildCSS : (value) => {
-        let overrides = { };
-        let matches = value.split(" ");
-
-        if ( matches ) {
-          // Main axis
-          switch(matches[0]) {
-            case "start":
-              overrides['justify-content'] = "start";
-              break;
-
-            case "center":
-              overrides['justify-content'] = "center";
-              break;
-
-            case "end":
-              overrides['justify-content'] = "flex-end";
-              break;
-
-            case "stretch" :
-              overrides['justify-content'] = "stretch";   // default
-              break;
-
-            case "space-around":
-              overrides['justify-content'] = "space-around";
-              break;
-
-            case "space-between":
-              overrides['justify-content'] = "space-between";
-              break;
-          }
-
-          // Cross-axis
-          switch( matches[1] ) {
-
-             case "start" :
-               overrides['align-items'] = overrides['align-content'] = "flex-start";
-               break;
-
-            case "center" :
-              overrides['align-items'] = overrides['align-content'] = "center";
-              break;
-
-            case "end" :
-              overrides['align-items'] = overrides['align-content'] = "flex-end";
-              break;
-
-            case "stretch" :
-              overrides['align-items'] = overrides['align-content'] = "stretch";   // default
-              break;
-
-            case "baseline" :
-              overrides['align-items'] = "baseline";
-              break;
-
-
-          }
-        }
-
-        return this.modernizr(overrides);
-      },
-
-      /**
-       * Update element and immediate children to 'stretch' as needed...
-       */
-      stretchChildren : (value) => {
-        let matches = value.split(" ");
-
-        if ( matches && matches[1] == "center") {
-            let overrides = {
-              'max-width'  : '100%',
-              'box-sizing': "border-box"
-            };
-
-            this.element.css(overrides);
-
-            angular.forEach(this.element[0].childNodes, (node)=>{
-              switch( node.nodeType ) {
-                case NodeType.ELEMENT_NODE :
-                  angular.element(node).css( overrides);
-                  break;
-              }
-            });
-        }
-      }
-
-
+  /**
+   * Capture initialize styles for this injector's element
+   */
+  _captureCSS() {
+    let styles = window.getComputedStyle(this.element[0]);
+    return this.modernizr({
+      'max-width'       : styles['max-width'],
+      'box-sizing'      : styles['box-sizing'],
+      'align-items'     : styles['align-items'],
+      'align-content'   : styles['align-content'],
+      'justify-content' : styles['justify-content']
     });
   }
+
+  /**
+    * Build the CSS that should be assigned to the element instance
+    */
+   _buildCSS(value) {
+     let overrides = { };
+     let matches = value.split(" ");
+
+     overrides['justify-content'] = "stretch";   // default
+     overrides['align-items'] = overrides['align-content'] = "stretch";   // default
+
+     if ( matches ) {
+     
+       // Main axis
+       switch(matches[0]) {
+         case "stretch" :
+           overrides['justify-content'] = "stretch";   // default
+           break;
+
+         case "start":
+           overrides['justify-content'] = "start";
+           break;
+
+         case "center":
+           overrides['justify-content'] = "center";
+           break;
+
+         case "end":
+           overrides['justify-content'] = "flex-end";
+           break;
+
+         case "space-around":
+           overrides['justify-content'] = "space-around";
+           break;
+
+         case "space-between":
+           overrides['justify-content'] = "space-between";
+           break;
+       }
+
+       // Cross-axis
+       switch( matches[1] ) {
+
+          case "start" :
+            overrides['align-items'] = overrides['align-content'] = "flex-start";
+            break;
+
+         case "center" :
+           overrides['align-items'] = overrides['align-content'] = "center";
+           break;
+
+         case "end" :
+           overrides['align-items'] = overrides['align-content'] = "flex-end";
+           break;
+
+         case "stretch" :
+           overrides['align-items'] = overrides['align-content'] = "stretch";   // default
+           break;
+
+         case "baseline" :
+           overrides['align-items'] = "baseline";
+           break;
+       }
+     }
+
+     return this.modernizr(overrides);
+   }
+
+   /**
+    * Update element and immediate children to 'stretch' as needed...
+    */
+   _stretchChildren(value) {
+     let matches = value.split(" ");
+
+     if ( matches && matches[1] == "center") {
+         let overrides = {
+           'max-width'  : '100%',
+           'box-sizing': "border-box"
+         };
+
+         this.element.css(overrides);
+
+         angular.forEach(this.element[0].childNodes, (node)=>{
+           switch( node.nodeType ) {
+             case NodeType.ELEMENT_NODE :
+               angular.element(node).css( overrides);
+               break;
+           }
+         });
+     }
+   }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Update the CSS if active!
@@ -129,13 +137,12 @@ class LayoutAlign extends AbstractInjector {
    * query range becomes active (onEnter())
    */
   updateCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      let overrides = self.buildCSS(this.value);
+      let overrides = this._buildCSS(this.value);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
-      self.stretchChildren.call(this, this.value);
+      this._stretchChildren.call(this, this.value);
     }
   }
 
@@ -144,30 +151,16 @@ class LayoutAlign extends AbstractInjector {
    * injector (without breakpoints) will NOT be issued a breakpoint 'enter' notification
    */
   resetCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css(self._align);
+      this.element.css(this._align);
     }
   }
 
 }
 
 // ************************************************************
-// Module Export
-// ************************************************************
-
-
-export default LayoutAlign;
-
-
-// ************************************************************
 // Private static variables
 // ************************************************************
-
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
 
 const  NodeType = {
   ELEMENT_NODE                :  1,
@@ -184,3 +177,8 @@ const  NodeType = {
   NOTATION_NODE               : 12
 };
 
+// ************************************************************
+// Module Export
+// ************************************************************
+
+export default LayoutAlign;

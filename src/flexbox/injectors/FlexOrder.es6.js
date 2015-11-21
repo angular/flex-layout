@@ -16,26 +16,30 @@ class FlexOrder extends AbstractInjector {
   constructor(className, scope, element, attrs, utils) {
     super(className, scope,element, attrs, utils);
 
-    let self;
-    privates.set(this, self = {
-
-      _css : this.modernizr({
-          order : this.attrs['flexOrder']
-      }),
-
-      /**
-       * Build the CSS that should be assigned to the element instance
-       */
-      buildCSS : (value) => {
-        value = parseInt(value, 10);
-
-        return this.modernizr({
-          order : isNaN(value) ? 0 : value
-        });
-      }
-
+    this._css = this.modernizr({
+        order : this.attrs['flexOrder']
     });
   }
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+  /**
+   * Build the CSS that should be assigned to the element instance
+   */
+  buildCSS(value) {
+    value = parseInt(value, 10);
+
+    return this.modernizr({
+      order : isNaN(value) ? 0 : value
+    });
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
 
   /**
    * Update the CSS if active!
@@ -43,9 +47,8 @@ class FlexOrder extends AbstractInjector {
    * query range becomes active (onEnter())
    */
   updateCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      let overrides = self.buildCSS(value || this.value);
+      let overrides = this._buildCSS(value || this.value);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
@@ -57,9 +60,8 @@ class FlexOrder extends AbstractInjector {
    * injector (without breakpoints) will NOT be issued a breakpoint 'enter' notification
    */
   resetCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css(self._css);
+      this.element.css(this._css);
     }
   }
 
@@ -72,17 +74,3 @@ class FlexOrder extends AbstractInjector {
 
 export default FlexOrder;
 
-
-// ************************************************************
-// Private static variables
-// ************************************************************
-
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
-
-
-function isTrue(value) {
-  return (value == "true" || value == "1" || value == "");
-}

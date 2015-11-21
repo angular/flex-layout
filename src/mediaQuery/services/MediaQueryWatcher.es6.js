@@ -10,132 +10,125 @@
  *      layout_sm    = "screen and (min-width:0px) and (max-width:599px)",
  *      layout_gt_sm = "screen and (min-width:600px)",
  *      callbacks    = {
- *        initialize : (mq) => { $log.debug(`init : ${mq}`); },
- *        enter      : (mq) => { $log.debug(`enter: ${mq}`); },
- *        leave      : (mq) => { $log.debug(`leave: ${mq}`); }
+ *        initialize(mq) => { $log.debug(`init : ${mq}`); },
+ *        enter     (mq) => { $log.debug(`enter: ${mq}`); },
+ *        leave     (mq) => { $log.debug(`leave: ${mq}`); }
  *      };
  *
- *  self.subscribers = [
+ *  this._subscribers = [
  *    $mediaWatcher.attach(layout_sm    ,callbacks),
  *    $mediaWatcher.attach(layout_gt_sm ,callbacks)
  *  ];
  *
- *  self.ignoreGtSm = () => $mediaWatcher.detach(self.subscribers[1]);
- *  self.watchGtSm  = () => $mediaWatcher.attach(self.subscribers[1]);
+ *  this._ignoreGtSm = () => $mediaWatcher.detach(this._subscribers[1]);
+ *  this._watchGtSm  = () => $mediaWatcher.attach(this._subscribers[1]);
  *
  */
 class MediaQueryWatcher {
 
-  /**
-   * For the specified mediaQuery, attach a set of
-   * callbacks (initialize, enter, leave).
-   *
-   * @param mediaQuery string
-   * @param callbacks object { initialize:fn(), enter:fn(), leave:fn() }
-   *
-   * @return Subcriber instance
-   */
-  attach(mediaQuery, callbacks) {
-    if ( !mediaQuery ) return;
-
-    let self  = privates.get(this);
-    let subscriber = new Subscriber(mediaQuery, callbacks );
-
-    self.connect(subscriber);
-    self.announce(mediaQuery);
-
-    return subscriber;
-  }
-
-  /**
-   * Deactivate the subscriber (and notify subscribers) that the
-   * mediaQuery value has changed; so `leave` notifications should be issued
-   *
-   */
-  detach(subscriber) {
-    let self  = privates.get(this);
-
-    if ( !subscriber        ) return;
-    if ( !subscriber.active ) return;
-
-    self.disconnect(subscriber);
-  }
-
-  /**
+    /**
    * Constructor
    */
   constructor() {
-    let subscriptions = new SubscriberGroups();
-
-    // !! Configure private methods
-    privates.set(this,  {
-
-      subscriptions : subscriptions,
-      watchers      : new QueryWatchers(subscriptions),
-
-      /**
-       * Prepare a shared watcher (if needed) for the
-       * subscriber, then add the subscriber to the
-       * known subscriptions registry...
-       */
-      connect : (subscriber)  => {
-        let self     = privates.get(this);
-        let watchers = self.watchers;
-        let query    = subscriber.query;
-
-        self.subscriptions.add(subscriber);
-
-        if ( !watchers.has(query) ) {
-          watchers.add(query, (watcher) => {
-
-            let isActive = watcher.matches;
-            self.notifySubscribers(query, isActive);
-
-          });
-        }
-      },
-
-      /**
-       * Remove subscriber from the subscriptions registry
-       * and clear the shared mediaQuery change listener (if appropriate)
-       */
-      disconnect : (subscriber)  => {
-        let self  = privates.get(this);
-        let query = subscriber.query;
-
-        self.subscriptions.remove(subscriber);
-        self.watchers.remove(query);
-      },
-
-      /**
-       * Only if the current mediaQuery is active,
-       * then process all known subscribers
-       */
-      announce : (query) => {
-        let self  = privates.get(this);
-
-        if ( self.watchers.isActive(query) ) {
-          self.notifySubscribers(query, true);
-        }
-      },
-
-      /**
-       *  Notify all subscribers in the mediaQuery group
-       *  to either activate or deactivate.
-       *
-       *  NOTE: This is called from the mediaQuery change listener!
-       */
-      notifySubscribers : (query, isActive) => {
-        let self  = privates.get(this);
-        let group = self.subscriptions.findGroup(query);
-
-        angular.forEach(group,(subscriber) => {
-          subscriber.activate(isActive);
-        });
-      }
-
-    });
+    this._subscriptions = new SubscriberGroups();
+    this._watchers      = new QueryWatchers(this._subscriptions);
   }
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+   /**
+    * Prepare a shared watcher (if needed) for the
+    * subscriber, then add the subscriber to the
+    * known subscriptions registry...
+    */
+   _connect(subscriber){
+     let watchers = this._watchers;
+     let query    = subscriber.query;
+  
+     this._subscriptions.add(subscriber);
+  
+     if ( !watchers.has(query) ) {
+       watchers.add(query, (watcher) => {
+  
+         let isActive = watcher.matches;
+         this._notifySubscribers(query, isActive);
+  
+       });
+     }
+   }
+  
+   /**
+    * Remove subscriber from the subscriptions registry
+    * and clear the shared mediaQuery change listener (if appropriate)
+    */
+   _disconnect(subscriber){
+     let query = subscriber.query;
+     this._subscriptions.remove(subscriber);
+     this._watchers.remove(query);
+   }
+  
+   /**
+    * Only if the current mediaQuery is active,
+    * then process all known subscribers
+    */
+   _announce(query) {
+     if ( this._watchers.isActive(query) ) {
+       this._notifySubscribers(query, true);
+     }
+   }
+  
+   /**
+    *  Notify all subscribers in the mediaQuery group
+    *  to either activate or deactivate.
+    *
+    *  NOTE: This is called from the mediaQuery change listener!
+    */
+   _notifySubscribers(query, isActive) {
+     let group = this._subscriptions.findGroup(query);
+  
+     angular.forEach(group,(subscriber) => {
+       subscriber.activate(isActive);
+     });
+   }
+
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
+  /**
+     * For the specified mediaQuery, attach a set of
+     * callbacks (initialize, enter, leave).
+     *
+     * @param mediaQuery string
+     * @param callbacks object { initialize:fn(), enter:fn(), leave:fn() }
+     *
+     * @return Subcriber instance
+     */
+    attach(mediaQuery, callbacks) {
+      if ( !mediaQuery ) return;
+      let subscriber = new Subscriber(mediaQuery, callbacks );
+
+      this._connect(subscriber);
+      this._announce(mediaQuery);
+
+      return subscriber;
+    }
+
+    /**
+     * Deactivate the subscriber (and notify subscribers) that the
+     * mediaQuery value has changed; so `leave` notifications should be issued
+     *
+     */
+    detach(subscriber) {
+      if ( !subscriber        ) return;
+      if ( !subscriber.active ) return;
+
+      this._disconnect(subscriber);
+    }
+
 
 
 }
@@ -155,56 +148,74 @@ class QueryWatchers {
    * Constructor
    */
   constructor(subscriptions) {
-    privates.set(this,  {
+    /**
+     * Internal registry of all subscribers (grouped by query)
+     */
+    this._subscriptions = subscriptions;
+  }
 
-      /**
-       * Internal registry of all subscribers (grouped by query)
-       */
-      subscriptions : subscriptions,
+  // ************************************************
+  // Private Methods
+  // ************************************************
 
-      /**
-       * Use `window.matchMedia(<query>)` to attach listeners
-       * to mediaQuery notifications.
-       *
-       * @Todo - use polyfill to avoid a `mockMedia`
-       */
-      build : (query) => {
-        if ( window.matchMedia ) {
-          // For modern webkits:
-          let canListen = angular.isDefined(window.matchMedia('all').addListener);
-          let hasQuery = canListen && angular.isDefined(allWatchers[query]);
+  /**
+   * Use `window.matchMedia(<query>)` to attach listeners
+   * to mediaQuery notifications.
+   *
+   * @Todo - use polyfill to avoid a `mockMedia`
+   */
+  _build(query) {
+    if ( window.matchMedia ) {
+      // For modern webkits:
+      let canListen = angular.isDefined(window.matchMedia('all').addListener);
+      let hasQuery = canListen && angular.isDefined(ALL_WATCHERS[query]);
 
-          if (!hasQuery) {
-            // Returns a new MediaQueryList object representing the
-            // parsed results of the specified media query string.
+      if (!hasQuery) {
+        // Returns a new MediaQueryList object representing the
+        // parsed results of the specified media query string.
 
-            allWatchers[query] = window.matchMedia(query);
-            hasQuery = true;
-          }
-
-          // Return cached or mocked listener...
-          if ( hasQuery ) return allWatchers[query];
-        }
-
-        return allWatchers[query] = buildMQLMock();
+        ALL_WATCHERS[query] = window.matchMedia(query);
+        hasQuery = true;
       }
 
-    });
+      // Return cached or mocked listener...
+      if ( hasQuery ) return ALL_WATCHERS[query];
+    }
+
+    return ALL_WATCHERS[query] = this._buildMQLMock();
   }
+
+
+  /**
+    * Factory to build faux mediaQuery watcher with its
+    * requisite properties
+    */
+   _buildMQLMock() {
+     return {
+       matches        : false,
+       sharedListener : void 0,
+       addListener    : angular.noop,
+       removeListener : angular.noop
+     };
+   }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Does the specified mediaQuery already have a registered
    * watcher ?
    */
   has(query) {
-    return angular.isDefined(allWatchers[query]);
+    return angular.isDefined(ALL_WATCHERS[query]);
   }
 
   /**
    * Lookup the registered watcher for the specified query
    */
   find(query) {
-    return allWatchers[query];
+    return ALL_WATCHERS[query];
   }
 
   /**
@@ -217,8 +228,7 @@ class QueryWatchers {
     */
   add(query, onMediaChange) {
     if ( !this.has(query) ) {
-      let self = privates.get(this);
-      let watcher = self.build(query);
+      let watcher = this._build(query);
 
       watcher.addListener(onMediaChange);
       watcher.sharedListener = onMediaChange;
@@ -240,6 +250,10 @@ class QueryWatchers {
     }
   }
 
+  // ************************************************
+  // Public Accessors
+  // ************************************************
+
   /**
    * Is the specified mediaQuery currently active?
    */
@@ -247,13 +261,11 @@ class QueryWatchers {
     return this.find(query).matches;
   }
 
-
   /**
    * Read-only accessor
    */
   get subscribers() {
-    let self = privates.get(this);
-    return self.subscriptions;
+    return this._subscriptions;
   }
 
 }
@@ -265,14 +277,66 @@ class QueryWatchers {
  */
 class SubscriberGroups {
 
-  add(subscriber) {
-    let self = privates.get(this);
-    
-    if ( subscriber ) {
-      let query = self.findQuery(subscriber);
-      let group = self.scanBy(query);
+  constructor() {
+    this._groups = { };
+  }
 
-      self.prepare(query);
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+  _findQuery(source) {
+    return  angular.isString(source) ? source : (source ? source.query : null);
+  }
+
+  _scanBy(query){
+    if ( !query ) return [ ];
+
+    this._groups[query] = this._groups[query] || [ ];
+    return this._groups[query];
+  }
+
+  _updateGroup(query, group){
+    this._groups[query] = group || [ ];
+  }
+
+  /**
+   * For Webkit engines that only trigger the MediaQueryListListener
+   * when there is at least one CSS selector for the respective media query.
+   *
+   * @param query string The mediaQuery used to create a faux CSS selector
+   *
+   */
+  _prepare(query){
+
+    if ( !ALL_STYLES[query] ) {
+      let style = document.createElement('style');
+
+      style.setAttribute('type', 'text/css');
+      document.getElementsByTagName('head')[0].appendChild(style);
+
+      if ( !style.styleSheet ) {
+        let textNode = document.createTextNode(
+          `@media ${query} {.md-query-test{ }}`
+        );
+        style.appendChild(textNode);
+      }
+
+      // Store in private global registry
+      ALL_STYLES[query] = style;
+    }
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
+  add(subscriber) {
+    if ( subscriber ) {
+      let query = this._findQuery(subscriber);
+      let group = this._scanBy(query);
+
+      this._prepare(query);
       group.push(subscriber);
     }
 
@@ -280,12 +344,11 @@ class SubscriberGroups {
   }
 
   remove(subscriber) {
-    let self = privates.get(this);
-    let query = self.findQuery(subscriber);
-    let group = self.scanBy(query);
+    let query = this._findQuery(subscriber);
+    let group = this._scanBy(query);
 
     // Update the query group
-    self.updateGroup(query, group.filter(it => {
+    this._updateGroup(query, group.filter(it => {
       return (it !== subscriber);
     }));
 
@@ -293,72 +356,16 @@ class SubscriberGroups {
   }
 
   hasGroup(subscriber) {
-    let self = privates.get(this);
-    let query = self.findQuery(subscriber);
-    let group = self.scanBy(query);
+    let query = this._findQuery(subscriber);
+    let group = this._scanBy(query);
 
     return (group.length > 0);
   }
 
   findGroup(query) {
-    let self = privates.get(this);
-    return self.scanBy(query);
+    return this._scanBy(query);
   }
 
-  /**
-   * Constructor
-   */
-  constructor() {
-    privates.set(this,  {
-
-      groups : { },
-
-      findQuery : (source) => {
-        return  angular.isString(source) ? source : (source ? source.query : null);
-      },
-
-      scanBy : (query)  => {
-        if ( !query ) return [ ];
-
-        let self = privates.get(this);
-        self.groups[query] = self.groups[query] || [ ];
-
-        return self.groups[query];
-      },
-
-      updateGroup : (query, group)  => {
-        let self = privates.get(this);
-        self.groups[query] = group || [ ];
-      },
-
-      /**
-       * For Webkit engines that only trigger the MediaQueryListListener
-       * when there is at least one CSS selector for the respective media query.
-       *
-       * @param query string The mediaQuery used to create a faux CSS selector
-       *
-       */
-      prepare : (query)  => {
-
-        if ( !allStyles[query] ) {
-          let style = document.createElement('style');
-
-          style.setAttribute('type', 'text/css');
-          document.getElementsByTagName('head')[0].appendChild(style);
-
-          if ( !style.styleSheet ) {
-            let textNode = document.createTextNode(
-              `@media ${query} {.md-query-test{ }}`
-            );
-            style.appendChild(textNode);
-          }
-
-          // Store in private global registry
-          allStyles[query] = style;
-        }
-      }
-    });
-  }
 }
 
 /**
@@ -372,15 +379,32 @@ class Subscriber {
    * Constructor
    */
   constructor(mediaQuery, callbacks){
-    privates.set(this,  {
-
-      isActive    : false,
-      initialized : false,
-      announce    : validate(callbacks),
-      mediaQuery  : mediaQuery
-
-    });
+      this._isActive    = false;
+      this._initialized = false;
+      this._announce    = this._validate(callbacks);
+      this._mediaQuery  = mediaQuery;
   }
+
+
+  // ************************************************
+  // Private Methods
+  // ************************************************
+
+
+  /**
+    * Safeguard callbacks with fallback noop; for all future method calls
+    */
+   _validate(callbacks) {
+     return angular.extend({},{
+       initialize: angular.noop,
+       enter     : angular.noop,
+       leave     : angular.noop
+     }, callbacks || { });
+   }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Issue the enter or leave announcements for the current
@@ -399,16 +423,15 @@ class Subscriber {
    * and activate.
    */
   get enter() {
-    let self = privates.get(this);
     return () => {
-      self.isActive = true;
+      this._isActive = true;
 
-      if ( !self.initialized ) {
-        self.initialized = true;
-        self.announce.initialize(this.query);
+      if ( !this._initialized ) {
+        this._initialized = true;
+        this._announce.initialize(this.query);
       }
 
-      self.announce.enter(this.query);
+      this._announce.enter(this.query);
     };
   }
 
@@ -417,10 +440,9 @@ class Subscriber {
    * mediaQuery state... and then deactivate.
    */
   get leave() {
-    let self = privates.get(this);
     return () => {
-      self.isActive = false;
-      self.announce.leave(this.query);
+      this._isActive = false;
+      this._announce.leave(this.query);
     };
   }
 
@@ -429,16 +451,14 @@ class Subscriber {
    * for this subscriber
    */
   get query() {
-    let self = privates.get(this);
-    return self.mediaQuery;
+    return this._mediaQuery;
   }
   
   /**
    * Read-only accessor to current activation state
    */
   get active() {
-    let self = privates.get(this);
-    return self.isActive;
+    return this._isActive;
   }
 
 }
@@ -448,51 +468,19 @@ class Subscriber {
 // ************************************************************
 
 /**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
-
-/**
  * Private cache of all registered, `window.matchMedia(query)` listeners
  */
-const allWatchers = { };
+const ALL_WATCHERS = { };
 
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
-const allStyles = { };
+const ALL_STYLES = { };
+
 
 // ************************************************************
-// Private static utility functions
-// ************************************************************
-
-/**
- * Safeguard callbacks with fallback noop; for all future method calls
- */
-function validate(callbacks) {
-  return angular.extend({},{
-    initialize: angular.noop,
-    enter     : angular.noop,
-    leave     : angular.noop
-  }, callbacks || { });
-}
-
-/**
- * Factory to build faux mediaQuery watcher with its
- * requisite properties
- */
-function buildMQLMock() {
-  return {
-    matches        : false,
-    sharedListener : void 0,
-    addListener    : angular.noop,
-    removeListener : angular.noop
-  };
-}
-
-// ************************************************************
-// Export only the MediaQueryWatcher
+// Export Module
 // ************************************************************
 
 

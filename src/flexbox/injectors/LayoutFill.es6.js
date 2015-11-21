@@ -15,34 +15,43 @@ class LayoutFill extends AbstractInjector {
 
   constructor(className, scope, element, attrs, utils) {
     super(className, scope,element, attrs, utils);
+    this._fill = this._captureCSS();
+  }
 
-    let self;
-    privates.set(this, self = {
+  // ************************************************
+  // Private Methods
+  // ************************************************
 
-      _fill : (()=>{
-        let styles = window.getComputedStyle(element[0]);
-        return this.modernizr({
-          'margin'    : styles.margin,
-          'width'     : styles.width,
-          'min-height': styles['min-height'],
-          'height'    : styles.height
-        });
-      })(),
-
-      /**
-       * Build the CSS that should be assigned to the element instance
-       */
-      buildCSS : () => {
-        return this.modernizr({
-          'margin'    : 0,
-          'width'     : '100%',
-          'min-height': '100%',
-          'height'    : '100%'
-        });
-      }
-
+  /**
+   * Capture initialize styles for this injector's element
+   */
+  _captureCSS() {
+    let styles = window.getComputedStyle(this.element[0]);
+    return this.modernizr({
+      'margin'    : styles.margin,
+      'width'     : styles.width,
+      'min-height': styles['min-height'],
+      'height'    : styles.height
     });
   }
+
+
+  /**
+   * Build the CSS that should be assigned to the element instance
+   */
+  _buildCSS() {
+    return this.modernizr({
+      'margin'    : 0,
+      'width'     : '100%',
+      'min-height': '100%',
+      'height'    : '100%'
+    });
+  }
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
 
   /**
    * Update the CSS if active!
@@ -50,9 +59,8 @@ class LayoutFill extends AbstractInjector {
    * query range becomes active (onEnter())
    */
   updateCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      let overrides = self.buildCSS();
+      let overrides = this._buildCSS();
       this.$log.debugNoValue("updateCSS", this, overrides);
 
       this.element.css( overrides );
@@ -64,9 +72,8 @@ class LayoutFill extends AbstractInjector {
    * injector (without breakpoints) will NOT be issued a breakpoint 'enter' notification
    */
   resetCSS(value) {
-    let self = privates.get(this);
     if ( this.isActive ) {
-      this.element.css(self._fill);
+      this.element.css(this._fill);
     }
   }
 
@@ -78,15 +85,4 @@ class LayoutFill extends AbstractInjector {
 
 
 export default LayoutFill;
-
-
-// ************************************************************
-// Private static variables
-// ************************************************************
-
-/**
- * Private cache for each Class instances' private data and methods.
- */
-const privates = new WeakMap();
-
 

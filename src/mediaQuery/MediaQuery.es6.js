@@ -1,5 +1,4 @@
 import angular           from 'angular'
-
 import MediaQueryWatcher from 'mq/services/MediaQueryWatcher.es6'
 import BreakPointsService  from 'mq/services/BreakPointsService.es6'
 
