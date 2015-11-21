@@ -1,6 +1,6 @@
 # Angular Material's Layout Engine
 
-This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure, Angularu JS-only engine.
+This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure, AngularJS-only engine.
 
 ![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
 
