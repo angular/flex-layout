@@ -2,6 +2,8 @@
 
 This project represents the **re-architecture** of Angular Material's Layout flexbox features as a pure, Angularu JS-only engine.
 
+![demos2](https://cloud.githubusercontent.com/assets/210413/11286935/cc5b325c-8edd-11e5-9723-f866ec69fd97.jpg)
+
 #### Summary
 
 Angular Material's Layout features were purposed to provide syntactic ng sugar and allow developers to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
