@@ -47,7 +47,7 @@ class LayoutAlign extends AbstractInjector {
      overrides['align-items'] = overrides['align-content'] = "stretch";   // default
 
      if ( matches ) {
-     
+
        // Main axis
        switch(matches[0]) {
          case "stretch" :

@@ -19,12 +19,12 @@
   <div ng-controller="LayoutDemoApp" class="layout-content layout-options" ng-cloak>
 
   <docs-demo demo-title="Responsive Layout" class="small-demo colorNested">
-      <div layout="row" layout-sm="column">
+      <div layout="column" layout-gt-xs="row">
         <div flex>
-          I'm above on mobile, and to the left on larger devices.
+          I'm 'above' on mobile, and to the 'left' on larger devices.
         </div>
         <div flex>
-          I'm below on mobile, and to the right on larger devices.
+          I'm 'below' on mobile, and to the 'right' on larger devices.
         </div>
       </div>
   </docs-demo>
