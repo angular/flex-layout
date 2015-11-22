@@ -25,8 +25,8 @@ class FlexOffset extends AbstractInjector {
 
 
   /**
-    * Capture initialize styles for this injector's element
-    */
+   * Capture initialize styles for this injector's element
+   */
    _captureCSS() {
      let styles = window.getComputedStyle(this.element[0]);
      return styles['margin-left'] || "0";

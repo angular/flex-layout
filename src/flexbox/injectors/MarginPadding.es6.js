@@ -55,7 +55,7 @@ class MarginPadding extends AbstractInjector {
 
   /**
    * Does the current element have 1 or more Layout injectors ?
-   * Layout-Padding is only support for `layout` containers and their
+   * Layout-Padding is only supported for `layout` containers and their
    * immediate children
    */
   _hasLayout() {

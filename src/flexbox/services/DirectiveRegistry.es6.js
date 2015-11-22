@@ -94,7 +94,7 @@ function buildConstructionFn(className) {
       switch( rootName ) {
 
         case 'layout' :
-          ddo.compile = (tElement, tAttrs, transclude) => {
+          ddo.compile = ( tElement ) => {
             buildLayoutController(tElement, $mdLayoutMql, $timeout, $log);
 
             return (scope, element, attr) => {
@@ -110,13 +110,10 @@ function buildConstructionFn(className) {
         case 'flex' :
           ddo.link = (scope, element, attr) => {
             let controller = findLayoutController( element.parent() );
-            if ( !controller ) {
-              $log.warn(`Unable to find 'layout' parent ${className}`)
+            if ( controller ) {
+              controller.addChild( new Flex(className, scope, element, attr, utils) );
             }
-            else {
-              let injector = new Flex(className, scope, element, attr, utils);
-              controller.addChild(injector);
-            }
+            else $log.warn(`Unable to find 'layout' parent ${className}`)
           };
           break;
 
