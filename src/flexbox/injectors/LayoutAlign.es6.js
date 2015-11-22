@@ -46,58 +46,55 @@ class LayoutAlign extends AbstractInjector {
      overrides['justify-content'] = "stretch";   // default
      overrides['align-items'] = overrides['align-content'] = "stretch";   // default
 
-     if ( matches ) {
+     // Main axis
+     switch( main_axis ){
+       case "stretch" :
+         overrides['justify-content'] = "stretch";   // default
+         break;
 
-       // Main axis
-       switch( main_axis ){
-         case "stretch" :
-           overrides['justify-content'] = "stretch";   // default
-           break;
+       case "start":
+         overrides['justify-content'] = "start";
+         break;
 
-         case "start":
-           overrides['justify-content'] = "start";
-           break;
+       case "center":
+         overrides['justify-content'] = "center";
+         break;
 
-         case "center":
-           overrides['justify-content'] = "center";
-           break;
+       case "end":
+         overrides['justify-content'] = "flex-end";
+         break;
 
-         case "end":
-           overrides['justify-content'] = "flex-end";
-           break;
+       case "space-around":
+         overrides['justify-content'] = "space-around";
+         break;
 
-         case "space-around":
-           overrides['justify-content'] = "space-around";
-           break;
+       case "space-between":
+         overrides['justify-content'] = "space-between";
+         break;
+     }
 
-         case "space-between":
-           overrides['justify-content'] = "space-between";
-           break;
-       }
+     // Cross-axis
+     switch( cross_axis ){
 
-       // Cross-axis
-       switch( cross_axis ){
+        case "start" :
+          overrides['align-items'] = overrides['align-content'] = "flex-start";
+          break;
 
-          case "start" :
-            overrides['align-items'] = overrides['align-content'] = "flex-start";
-            break;
+       case "center" :
+         overrides['align-items'] = overrides['align-content'] = "center";
+         break;
 
-         case "center" :
-           overrides['align-items'] = overrides['align-content'] = "center";
-           break;
+       case "end" :
+         overrides['align-items'] = overrides['align-content'] = "flex-end";
+         break;
 
-         case "end" :
-           overrides['align-items'] = overrides['align-content'] = "flex-end";
-           break;
+       case "stretch" :
+         overrides['align-items'] = overrides['align-content'] = "stretch";   // default
+         break;
 
-         case "stretch" :
-           overrides['align-items'] = overrides['align-content'] = "stretch";   // default
-           break;
-
-         case "baseline" :
-           overrides['align-items'] = "baseline";
-           break;
-       }
+       case "baseline" :
+         overrides['align-items'] = "baseline";
+         break;
      }
 
      return this.modernizr(overrides);
