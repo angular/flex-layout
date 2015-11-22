@@ -41,7 +41,7 @@ class LayoutAlign extends AbstractInjector {
     */
    _buildCSS(value) {
      let overrides = { };
-     let matches = value.split(" ");
+     let [ main_axis, cross_axis ] = value.split(" ");
 
      overrides['justify-content'] = "stretch";   // default
      overrides['align-items'] = overrides['align-content'] = "stretch";   // default
@@ -49,7 +49,7 @@ class LayoutAlign extends AbstractInjector {
      if ( matches ) {
 
        // Main axis
-       switch(matches[0]) {
+       switch( main_axis ){
          case "stretch" :
            overrides['justify-content'] = "stretch";   // default
            break;
@@ -76,7 +76,7 @@ class LayoutAlign extends AbstractInjector {
        }
 
        // Cross-axis
-       switch( matches[1] ) {
+       switch( cross_axis ){
 
           case "start" :
             overrides['align-items'] = overrides['align-content'] = "flex-start";
@@ -107,9 +107,9 @@ class LayoutAlign extends AbstractInjector {
     * Update element and immediate children to 'stretch' as needed...
     */
    _stretchChildren(value) {
-     let matches = value.split(" ");
+     let [, cross_axis] = value.split(" ");
 
-     if ( matches && matches[1] == "center") {
+     if ( cross_axis == "center") {
          let overrides = {
            'max-width'  : '100%',
            'box-sizing': "border-box"
