@@ -8,6 +8,11 @@ import material from 'angular-material'
 import mdMediaQuery from 'mq/MediaQuery.es6'
 import mdLayouts from 'flexbox/Layout.es6'
 
+// Demo Apps and Controllers
+
+import TestController from 'demo/TestController.es6'
+import LayoutDemoApp from 'demo/LayoutDemoApp.es'
+
 
 /**
  * Manually bootstrap the application when AngularJS and
@@ -22,23 +27,8 @@ angular
     let body = document.getElementsByTagName("body")[0];
     let app  = angular
           .module( appName, [ mdMediaQuery, mdLayouts, 'ngMaterial'] )
-          .controller("TestController", function() {
-            let vm = this;
-            vm.box1Width = "11";
-            vm.direction = "column";
-            vm.hideBox = false;
-
-          })
-          .controller("LayoutDemoApp", ($scope) => {
-            $scope.layoutDemo = {
-                mainAxis: 'center',
-                crossAxis: 'center',
-                direction: 'row'
-              };
-              $scope.layoutAlign = function() {
-                return $scope.layoutDemo.mainAxis + ' ' + $scope.layoutDemo.crossAxis;
-              };
-          });
+          .controller("TestController", TestController)
+          .controller("LayoutDemoApp" , LayoutDemoApp);
 
     angular.bootstrap( body, [ app.name ], { strictDi: false })
 

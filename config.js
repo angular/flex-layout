@@ -3,8 +3,9 @@ System.config({
   defaultJSExtensions: true,
   transpiler: "traceur",
   paths: {
-    "mq/*": "src/mediaQuery/*.js",
     "app/*": "src/*.js",
+    "demo/*": "src/demos/*.js",
+    "mq/*": "src/mediaQuery/*.js",
     "flexbox/*": "src/flexbox/*.js",
     "github:*": "jspm_packages/github/*"
   },
