@@ -16,19 +16,27 @@ class FlexOrder extends AbstractInjector {
   constructor(className, scope, element, attrs, utils) {
     super(className, scope,element, attrs, utils);
 
-    this._css = this.modernizr({
-        order : this.attrs['flexOrder']
-    });
+    this._css = this._captureCSS();
   }
 
   // ************************************************
   // Private Methods
   // ************************************************
 
+
+  /**
+   * Capture initialize styles for this injector's element
+   */
+  _captureCSS() {
+    return this.modernizr({
+        order : this.attrs['flexOrder']
+    });
+  }
+
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  buildCSS(value) {
+  _buildCSS(value) {
     value = parseInt(value, 10);
 
     return this.modernizr({
