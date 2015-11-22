@@ -60,7 +60,7 @@ class FlexOffset extends AbstractInjector {
    */
   updateCSS(value) {
     if ( this.isActive ) {
-      let overrides = self.buildCSS(value || this.value);
+      let overrides = this._buildCSS(value || this.value);
       this.$log.debug("updateCSS", this, overrides);
 
       this.element.css( overrides );
