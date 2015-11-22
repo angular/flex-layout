@@ -80,12 +80,16 @@ class AbstractInjector {
   /**
    * Inject the style CSS for this injector type
    */
-  updateCSS() { }
+  updateCSS() {
+    $log.warn("Unexpected call to abtract method AbstractInjector::updateCSS()!");
+  }
 
   /**
    * Reset the style CSS that was injected during updateCSS()
    */
-  resetCSS() { }
+  resetCSS() {
+    $log.warn("Unexpected call to abtract method AbstractInjector::resetCSS()!");
+  }
 
 
   // ************************************************
