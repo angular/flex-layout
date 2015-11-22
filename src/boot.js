@@ -5,6 +5,8 @@ import 'angular-material/angular-material.css!'
 
 import material from 'angular-material'
 
+// Load Layout modules
+
 import mdMediaQuery from 'mq/MediaQuery.es6'
 import mdLayouts from 'flexbox/Layout.es6'
 

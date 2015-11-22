@@ -51,6 +51,11 @@ class ShowHide extends AbstractInjector {
     return (value == "true" || value == "1" || value == "");
   }
 
+  _isFallback(attrKey) {
+    let value = this.attrs[attrKey];
+    return angular.isDefined(value) && this._isTrue(value);
+  }
+
   // ************************************************
   // Public Methods
   // ************************************************
@@ -73,7 +78,7 @@ class ShowHide extends AbstractInjector {
     if ( this.isActive ) {
       let style = this.modernizr({
         // Initial captures do not consider breakpoints
-        display : angular.isDefined(this.attrs[HIDE]) ? NONE : this._display
+        display : this._isFallback(HIDE) ? NONE : this._display
       });
 
       this.element.css(style);
@@ -81,6 +86,7 @@ class ShowHide extends AbstractInjector {
   }
 
 }
+
 
 // ************************************************************
 // Module Export
