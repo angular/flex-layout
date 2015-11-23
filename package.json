@@ -1,25 +1,64 @@
 {
-  "name": "untitled1",
-  "version": "1.0.0",
-  "description": "",
+  "name": "material.layouts",
+  "version": "0.1.0",
+  "description": "Angular Layouts javascript library for super-easy flexbox features",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angular/material-layouts.git"
   },
-  "author": "",
-  "license": "ISC",
+  "bugs": "https://github.com/angular/material-layouts/issues",
+  "author": {
+    "name": "Thomas Burleson",
+    "email": "ThomasBurleson@gmail.com",
+    "url": "http://solutionoptimist.com"
+  },
+  "scripts": {
+    "test": "karma start",
+    "test:watch": "karma start --no-single-run",
+    "build": "gulp build",
+    "start": "gulp",
+    "buildjs": "jspm bundle-sfx js/boot dist/app.min.js --minify --skip-source-maps",
+    "jsdocs": "esdoc -c .esdoc.json"
+  },
+  "license": "MIT",
   "jspm": {
+    "format": "es6",
+    "configFile": "jspm.conf.js",
     "dependencies": {
       "angular": "github:angular/bower-angular@^1.4.7",
       "angular-animate": "github:angular/bower-angular-animate@^1.4.7",
       "angular-aria": "github:angular/bower-angular-aria@^1.4.7",
       "angular-material": "github:angular/bower-material@^0.11.4",
       "angular-messages": "github:angular/bower-angular-messages@^1.4.7",
+      "angular-mocks": "npm:angular-mocks@^1.4.8",
       "css": "github:systemjs/plugin-css@^0.1.19"
     },
     "devDependencies": {
+      "core-js": "npm:core-js@^0.9.4",
       "traceur": "github:jmcriffey/bower-traceur@0.0.91",
       "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91"
     }
-  }
+  },
+  "devDependencies": {
+    "core-js": "^1.2.6",
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "jasmine-reporters": "^2.0.7",
+    "jspm": "^0.16.15",
+    "karma": "^0.13.15",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-traceur-preprocessor": "^0.4.0",
+    "traceur": "0.0.92"
+  },
+  "keywords": [
+    "es6",
+    "jspm",
+    "gulp",
+    "material",
+    "layouts",
+    "babel",
+    "systemjs"
+  ]
 }

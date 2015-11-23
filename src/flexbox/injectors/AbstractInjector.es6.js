@@ -14,7 +14,7 @@ const SUFFIX = /-(gt-)?(xs|sm|md|lg|xl)/;
  */
 class AbstractInjector {
 
-  constructor(className, scope, element, attrs, utils) {
+  constructor(className, scope, element, attrs = { }, utils = { }) {
 
     // Private properties
     this._isActive      = false;
