@@ -2,10 +2,9 @@ System.config({
   baseURL: "/",
   defaultJSExtensions: true,
   paths: {
-    "app/*": "src/*.js",
-    "demo/*": "src/demos/*.js",
-    "mq/*": "src/mediaQuery/*.js",
-    "flexbox/*": "src/flexbox/*.js",
+    "demo/*": "demos/assets/js/*",
+    "mq/*": "src/mediaQuery/*",
+    "flexbox/*": "src/flexbox/*",
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*"
   },

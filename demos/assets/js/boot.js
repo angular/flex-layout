@@ -8,12 +8,12 @@ import material from 'angular-material'
 // Load Layout modules
 
 import mdMediaQuery from 'mq/MediaQuery.es6'
-import mdLayouts from 'flexbox/Layout.es6'
+import mdLayouts from 'src/Layout.es6.js'
 
 // Demo Apps and Controllers
 
-import TestController from 'demo/TestController.es6'
-import LayoutDemoApp from 'demo/LayoutDemoApp.es'
+import TestController from 'demo/controllers/TestController.es6'
+import LayoutDemoApp from 'demo/controllers/LayoutDemoApp.es'
 
 
 /**
