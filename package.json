@@ -41,6 +41,7 @@
     }
   },
   "devDependencies": {
+    "babel-plugin-uglify": "^1.0.2",
     "core-js": "^1.2.6",
     "jasmine": "^2.3.2",
     "jasmine-core": "^2.3.4",
