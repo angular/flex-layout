@@ -43,8 +43,9 @@ class LayoutAlign extends AbstractInjector {
      let overrides = { };
      let [ main_axis, cross_axis ] = value.split(" ");
 
-     overrides['justify-content'] = "stretch";   // default
-     overrides['align-items'] = overrides['align-content'] = "stretch";   // default
+     overrides['justify-content'] = "start";     // default
+     overrides['align-items']     = "stretch";   // default
+     overrides['align-content']   = "stretch";   // default
 
      // Main axis
      switch( main_axis ){
