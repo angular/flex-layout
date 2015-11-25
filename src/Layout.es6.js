@@ -1,4 +1,6 @@
 import angular           from 'angular'
+
+import mdMediaQuery      from 'mq/MediaQuery.es6'
 import LayoutMqlService  from 'flexbox/services/LayoutMqlService.es6'
 import buildRegistry     from 'flexbox/services/DirectiveRegistry.es6'
 
@@ -35,7 +37,7 @@ import buildRegistry     from 'flexbox/services/DirectiveRegistry.es6'
  *
  */
 let mdLayouts = angular
-      .module( "material.layout", [ 'material.mediaQuery' ] )
+      .module( "material.layouts", [ mdMediaQuery ] )
       .service("$mdLayoutMql"       , LayoutMqlService );
 
   // Register all the Layout flexbox directives

@@ -7,7 +7,6 @@ import material from 'angular-material'
 
 // Load Layout modules
 
-import mdMediaQuery from 'mq/MediaQuery.es6'
 import mdLayouts from 'src/Layout.es6.js'
 
 // Demo Apps and Controllers
@@ -28,7 +27,7 @@ angular
 
     let body = document.getElementsByTagName("body")[0];
     let app  = angular
-          .module( appName, [ mdMediaQuery, mdLayouts, 'ngMaterial'] )
+          .module( appName, [ mdLayouts, 'ngMaterial'] )
           .controller("TestController", TestController)
           .controller("LayoutDemoApp" , LayoutDemoApp);
 

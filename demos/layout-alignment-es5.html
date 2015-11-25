@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en" >
   <head>
@@ -11,14 +9,15 @@
     <title>Angular Material - Starter App</title>
 
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
+    <link rel='stylesheet' href="/jspm_packages/github/angular/bower-material@0.11.4/angular-material.css">
     <link rel="stylesheet" href="assets/css/demo.css">
 
 
   </head>
 
-  <body ng-cloak>
+  <body>
 
-  <div ng-controller="LayoutDemoApp" class="layout-content" ng-cloak>
+  <div ng-app="starterApp" ng-controller="DemoController" class="layout-content" ng-cloak>
 
   <p>
     The <code>layout-align</code> attribute takes two words.
@@ -105,13 +104,30 @@
 </div>
 
 
-  <script src="../jspm_packages/system.js" type="text/javascript"></script>
-     <script src="../jspm.conf.js" type="text/javascript"></script>
-     <script type="text/javascript">
-         System
-             .import('demos/assets/js/boot')
-             .catch( console.error.bind(console) ); // make sure any errors print to console
-     </script>
+  <script src="/jspm_packages/github/angular/bower-angular@1.4.8/angular.js"></script>
+  <script src="/jspm_packages/github/angular/bower-angular-animate@1.4.8/angular-animate.js"></script>
+  <script src="/jspm_packages/github/angular/bower-angular-aria@1.4.8/angular-aria.js"></script>
+  <script src="/jspm_packages/github/angular/bower-material@0.11.4/angular-material.js"></script>
+  <script src="/dist/material.layouts.min.js"></script>
+
+  <script type="text/javascript">
+
+        angular
+            .module('starterApp', ['ngMaterial', 'material.layouts'])
+            .controller('DemoController',function($scope){
+              $scope.layoutDemo = {
+                    mainAxis: 'center',
+                    crossAxis: 'center',
+                    direction: 'row'
+                  };
+
+              $scope.layoutAlign = function() {
+                var box = $scope.layoutDemo;
+                return box.mainAxis + " " + box.crossAxis;
+              };
+            });
+
+  </script>
 
    </body>
  </html>

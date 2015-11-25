@@ -1,6 +1,7 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
+  transpiler: "traceur",
   paths: {
     "demo/*": "demos/assets/js/*",
     "mq/*": "src/mediaQuery/*",
@@ -16,12 +17,10 @@ System.config({
     "angular-material": "github:angular/bower-material@0.11.4",
     "angular-messages": "github:angular/bower-angular-messages@1.4.8",
     "angular-mocks": "npm:angular-mocks@1.4.8",
-
     "core-js": "npm:core-js@0.9.18",
+    "css": "github:systemjs/plugin-css@0.1.19",
     "traceur": "github:jmcriffey/bower-traceur@0.0.91",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
-
-    "css": "github:systemjs/plugin-css@0.1.19",
     "github:angular/bower-angular-animate@1.4.8": {
       "angular": "github:angular/bower-angular@1.4.8"
     },
