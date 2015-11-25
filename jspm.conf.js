@@ -1,7 +1,23 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
+
   transpiler: "traceur",
+  traceurOptions: {
+    generators: false,
+    properTailCalls: false,
+    symbols: false,
+    forOn: false,
+    arrayComprehension: false,
+    asyncFunctions: false,
+    asyncGenerators: false,
+    generatorComprehension: false,
+    annotations: false,
+    require:false,
+    spread:false,
+    async:false
+  },
+
   paths: {
     "demo/*": "demos/assets/js/*",
     "mq/*": "src/mediaQuery/*",
@@ -61,4 +77,6 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }
+
+
 });

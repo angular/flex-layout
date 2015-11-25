@@ -222,6 +222,40 @@ The **Generation 1** [layout demos](https://material.angularjs.org/latest/layout
 
 <br/>
 
+##### Build
+
+
+Use JSPM to build a self-extracting, minified, es5 dist file `material.layouts.min.js`:
+
+```console
+jspm bundle-sfx src/Layout.es6 - angular dist/material.layouts.min.js --globals "{'angular':'angular'}" -m
+```
+
+> Note that this deployable bundle excludes the Angular library as part of the bundle itself:
+
+<br/>
+
+To use the bundle and the required, external AngularJS framework:
+
+```html
+<script src="/jspm_packages/github/angular/bower-angular@1.4.8/angular.js"></script>
+<script src="/dist/material.layouts.min.js"></script>
+
+<script type="text/javascript">
+
+      angular
+          .module('starterApp', ['ngMaterial', 'material.layouts'])
+          .controller('DemoController',function($scope){
+            
+          });
+
+</script>
+```
+
+> See the **[JSMP Configuration API](https://github.com/systemjs/systemjs/blob/master/docs/config-api.md#packages)** for details on build options.
+
+<br/>
+
 ##### Summary
 
 Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
