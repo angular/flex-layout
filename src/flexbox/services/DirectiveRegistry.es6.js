@@ -54,7 +54,7 @@ function buildLayoutDirectives() {
       let className = breakpoint.suffix ? `${directiveName}-${breakpoint.suffix}` : `${directiveName}`;
       let normalizedName = directiveNormalize(directiveName);
       let normalizedKey = `${normalizedName}${breakpoint.normalizedSuffix}`;
-      allDirectives[normalizedKey] =  buildConstructionFn(className);
+      allDirectives[normalizedKey] =  buildConstructionFn(className, breakpoint);
     });
 
   });
@@ -78,7 +78,7 @@ export default buildLayoutDirectives;
  * Create a Directive constructor function for a primary Grid
  * Flexbox directive: 'layout'
  */
-function buildConstructionFn(className) {
+function buildConstructionFn(className, breakpoint) {
   let rootName = className.replace(SUFFIX, "");
 
   return ["$mdLayoutMql", "$timeout", "$log",
@@ -88,18 +88,19 @@ function buildConstructionFn(className) {
           ddo = {
             restrict : 'A',
             scope    : false,
-            priority : calculatePriority(rootName, className)
+            priority : calculatePriority(rootName, className, breakpoint)
           };
 
       switch( rootName ) {
 
         case 'layout' :
-          ddo.compile = ( tElement ) => {
+          ddo.compile = ( tElement, tAttrs ) => {
             buildLayoutController(tElement, $mdLayoutMql, $timeout, $log);
 
+            // publish post-link fn
             return (scope, element, attr) => {
-              let controller = findLayoutController(element);
 
+              let controller = findLayoutController(element);
               controller.addParent(
                 new Layout(className, scope, element, attr, utils)
               );
@@ -108,23 +109,33 @@ function buildConstructionFn(className) {
           break;
 
         case 'flex' :
-          ddo.link = (scope, element, attr) => {
-            let controller = findLayoutController( element.parent() );
-            if ( controller ) {
-              controller.addChild( new Flex(className, scope, element, attr, utils) );
-            }
-            else $log.warn(`Unable to find 'layout' parent ${className}`)
+          ddo.compile = ( tElement, tAttrs ) => {
+            // publish post-link fn
+            return (scope, element, attr) => {
+              let controller = findLayoutController( element.parent() );
+              if ( controller ) {
+                controller.addChild( new Flex(className, scope, element, attr, utils) );
+              }
+              else {
+                let node = `<${element[0].nodeName} ${className}>`;
+                $log.warn(`Unable to find 'layout' parent for ${node}`)
+              }
+            };
           };
           break;
 
-          default :
-            ddo.link = (scope, element, attr) => {
+        default :
+          ddo.compile = ( tElement, tAttrs ) => {
+            // publish post-link fn
+            return (scope, element, attr) => {
               let injectorClass = CLASS_REGISTRY[rootName];
               if ( injectorClass ) {
                 $mdLayoutMql.subscribe( new injectorClass(className, scope, element, attr, utils) );
               }
             };
-            break;
+          };
+
+          break;
       }
 
       return ddo;
@@ -160,35 +171,36 @@ function buildConstructionFn(className) {
    * Lookup the directive priority. If the breakpoint is used
    * (eg  layout-sm, flex-gt-lg, etc) then reduce the priority
    * so the root directive (eg layout, flex) always runs FIRST.
+   *
+   * NOTE: Directives with greater numerical priority are compiled first,
+   *       but post-link functions are run in reverse order.
    */
-  function calculatePriority(rootName, className) {
-
+  function calculatePriority(rootName, className, breakpoint) {
     let priority = PRIORITIES[rootName];
-    if ( priority && rootName === className) {
-      priority -= 10;
-    }
-    return priority;
+
+    // Lowest priority runs FIRST in post-link
+    return priority - breakpoint.order;
   }
 
 }
 
 const PRIORITIES = {
-  'layout'        : 400,
-   'flex'          : 380,
+   'layout'        : 400,
+   'flex'          : 370,
 
-   'show'          : 370,
-   'hide'          : 370,
+   'show'          : 350,
+   'hide'          : 350,
 
-   'flex-order'    : 360,
-   'flex-offset'   : 340,
+   'flex-order'    : 330,
+   'flex-offset'   : 310,
 
-   'layout-fill'   : 350,
-   'layout-align'  : 330,
+   'layout-fill'   : 200,
+   'layout-align'  : 270,
 
-   'layout-padding': 310,
-   'layout-margin' : 310,
-   'layout-wrap'   : 310,
-   'layout-no-wrap': 310
+   'layout-padding': 250,
+   'layout-margin' : 250,
+   'layout-wrap'   : 250,
+   'layout-no-wrap': 250
 };
 
 const PREFIX_REGEXP = /^((?:x|data)[\:\-_])/i;

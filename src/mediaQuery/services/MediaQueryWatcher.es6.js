@@ -52,11 +52,38 @@ class MediaQueryWatcher {
      if ( !watchers.has(query) ) {
        watchers.add(query, (watcher) => {
   
-         let isActive = watcher.matches;
-         this._notifySubscribers(query, isActive);
+         let isEntering = watcher.matches;
+         this._notifySubscribers(query, isEntering);
+
+          // If we are 'leaving'... simulate enter
+          // for the next active/overlapped breakpoint
+         if ( !isEntering ) {
+          this._simulateEnter(query);
+         }
   
        });
      }
+   }
+
+  /**
+   * For overlapping breakpoints, a leave will be generated but NOT an enter (since it is still active)
+   * So we simulate an 'enter' notification to allow the injectors to fire properly.
+   * Consider:
+   *
+   *   <div flex flex-gt-sm="xx" flex-gt-lg="xx" />
+   *
+   * When we 'leave' flex-gt-lg, then the flex-gt-sm should fire.
+   */
+  _simulateEnter(query) {
+     let group = this._subscriptions.findGroupToReactivate(query);
+
+     angular.forEach(group,(subscriber) => {
+       // Simulate enter
+       if ( subscriber.active ) {
+         subscriber.enter();
+       }
+
+     });
    }
   
    /**
@@ -107,12 +134,12 @@ class MediaQueryWatcher {
      *
      * @return Subcriber instance
      */
-    attach(mediaQuery, callbacks) {
-      if ( !mediaQuery ) return;
-      let subscriber = new Subscriber(mediaQuery, callbacks );
+    attach(breakpoint, callbacks) {
+      if ( !breakpoint ) return;
+      let subscriber = new Subscriber(breakpoint, callbacks );
 
       this._connect(subscriber);
-      this._announce(mediaQuery);
+      this._announce(breakpoint.mediaQuery);
 
       return subscriber;
     }
@@ -366,6 +393,62 @@ class SubscriberGroups {
     return this._scanBy(query);
   }
 
+  /**
+   * MediaQuery listeners are NOT triggered with 'enter' events if breakpoints
+   * overlap.
+   *
+   * Nodes with multiple `-gt-<xxxx>` breakpoints, may not work as expected.
+   * Leave events will fire but 'enter' events will not fire for overlapped.
+   * Consider:
+   *
+   *    <div flex-gt-sm="50" flex-gt-md="25" />
+   *
+   * When the viewport shrinks and flex-gt-md injector 'leaves', then
+   * the flex-gt-sm injector should also activate/enter.
+   *
+   * For overlapping breakpoints, multiple groups may be
+   * active. When leaving a mediaQuery, find (if any)
+   * other active groups (except the default/global).
+   *
+   */
+  findGroupToReactivate(leaveQuery) {
+    let allGroups = this.groupsByPrecedence(this._groups);
+    let groupToActivate = [ ];
+
+    // Note: each group has 1..n subscriber instances.
+
+    angular.forEach(allGroups, function(subscribers){
+      let mq = subscribers[0].query;
+      let isActive = subscribers[0].active;
+      let isGlobal = (mq == "screen");
+
+      if ( isActive && !isGlobal && (mq != leaveQuery) ) {
+        groupToActivate = subscribers;
+      }
+    });
+
+    return groupToActivate;
+  }
+
+  /**
+   * Sort groups from lowest precedence to highest;
+   * where HIGHER precedence == small viewPort size
+   */
+  groupsByPrecedence(groups) {
+    let sorted = {}, keys = [ ];
+
+    angular.forEach(groups, function(group){
+      sorted[group[0].queryOrder] = group;
+      keys.push(group[0].queryOrder);
+    });
+
+    return keys
+      .sort((a,b)=> a-b)    // numeric, ascending sort
+      .map(function(key){
+        return sorted[key];
+      });
+  }
+
 }
 
 /**
@@ -378,11 +461,11 @@ class Subscriber {
   /**
    * Constructor
    */
-  constructor(mediaQuery, callbacks){
+  constructor(breakpoint, callbacks){
       this._isActive    = false;
       this._initialized = false;
       this._announce    = this._validate(callbacks);
-      this._mediaQuery  = mediaQuery;
+      this._breakpoint  = breakpoint;
   }
 
 
@@ -451,7 +534,15 @@ class Subscriber {
    * for this subscriber
    */
   get query() {
-    return this._mediaQuery;
+    return this._breakpoint.mediaQuery;
+  }
+
+  /**
+   * Read-only accessor to the associated mediaQuery
+   * priority
+   */
+  get queryOrder() {
+    return this._breakpoint.order;
   }
   
   /**

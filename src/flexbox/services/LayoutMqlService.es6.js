@@ -42,11 +42,9 @@ class LayoutMqlService {
     if ( injector.$$subscribed ) return;
 
     let breakpoint = this.$mdBreakpoints.findBreakpointBy(injector.mqAlias);
-    let mediaQuery = breakpoint ? breakpoint.mediaQuery : null;
-
     this._logActivity("subscribe", '',  injector, this.$log);
 
-    let subscriber = this.$mdMediaWatcher.attach( mediaQuery, {
+    let subscriber = this.$mdMediaWatcher.attach( breakpoint, {
 
       enter : (mq) => {
         this.$timeout(()=>{
