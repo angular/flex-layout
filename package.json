@@ -16,9 +16,8 @@
   "scripts": {
     "test": "karma start",
     "test:watch": "karma start --no-single-run",
-    "build": "gulp build",
     "start": "gulp",
-    "buildjs": "jspm bundle-sfx js/boot dist/app.min.js --minify --skip-source-maps",
+    "build": "jspm bundle-sfx src/Layout.es6 - angular dist/material.layouts.min.js --globals \"{'angular':'angular'}\" --minify --skip-source-maps",
     "jsdocs": "esdoc -c .esdoc.json"
   },
   "license": "MIT",
