@@ -36,10 +36,35 @@ class LayoutWrap extends AbstractInjector {
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  _buildCSS() {
+  _buildCSS(value) {
     return this.modernizr({
-      'flex-wrap' : this.root == "layout-wrap" ? "wrap" : "nowrap"
+      'flex-wrap' : this._validateValue(value)
     });
+  }
+
+  /**
+   * Convert layout-wrap="<value>" to expected flex-wrap style
+   */
+  _validateValue( value ) {
+    switch(value) {
+
+      case "reverse":
+      case "wrap-reverse":
+        value = "wrap-reverse";
+        break;
+
+      case "no":
+      case "none":
+      case "nowrap":
+        value = "nowrap";
+        break;
+
+      // All other values fallback to "wrap"
+      default :
+        value = "wrap";
+        break;
+    }
+    return value;
   }
 
   // ************************************************
@@ -53,7 +78,7 @@ class LayoutWrap extends AbstractInjector {
    */
   updateCSS(value) {
     if ( this.isActive ) {
-      let overrides = this._buildCSS();
+      let overrides = this._buildCSS(value || this.value );
       this.$log.debugNoValue("updateCSS", this, overrides);
 
       this.element.css( overrides );
