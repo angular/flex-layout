@@ -6,7 +6,7 @@ This project represents the **re-architecture** and isolation of Angular Materia
 
 #### Summary
 
-Angular Material's Layout features were originally purposed as syntactic CSS sugar to allow developers to easily and intuitively create responsive and adaptive layouts. The public api is a simply list of HTML attributes that can be use on HTML containers and elements:
+Angular Material's Layout features were originally purposed as syntactic CSS sugar to allow developers to easily and intuitively create responsive and adaptive layouts. The public **Layout API** is a simply list of HTML attributes that can be use on HTML containers and elements:
 
 <br/>
 
