@@ -113,7 +113,7 @@ class LayoutController {
      }
 
      // Filter out primary
-     list = list.filter(it => { return it !== primary; }).reverse();
+     list = list.filter(it => it !== primary ).reverse();
 
      // Now publish list with primary as FIRST
      return [primary].concat(list);

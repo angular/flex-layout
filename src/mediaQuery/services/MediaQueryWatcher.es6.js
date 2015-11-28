@@ -46,22 +46,21 @@ class MediaQueryWatcher {
    _connect(subscriber){
      let watchers = this._watchers;
      let query    = subscriber.query;
+     let onChange = (watcher) => {
+           let isEntering = watcher.matches;
+           this._notifySubscribers(query, isEntering);
+
+           if ( !isEntering ) {
+            // If we are 'leaving'... simulate enter
+            // for the next active/overlapped breakpoint
+
+            this._simulateEnter(query);
+           }
+         };
   
      this._subscriptions.add(subscriber);
-  
      if ( !watchers.has(query) ) {
-       watchers.add(query, (watcher) => {
-  
-         let isEntering = watcher.matches;
-         this._notifySubscribers(query, isEntering);
-
-          // If we are 'leaving'... simulate enter
-          // for the next active/overlapped breakpoint
-         if ( !isEntering ) {
-          this._simulateEnter(query);
-         }
-  
-       });
+       watchers.add(query, onChange);
      }
    }
 
@@ -77,12 +76,11 @@ class MediaQueryWatcher {
   _simulateEnter(query) {
      let group = this._subscriptions.findGroupToReactivate(query);
 
-     angular.forEach(group,(subscriber) => {
-       // Simulate enter
+     angular.forEach(group || [ ],(subscriber) => {
        if ( subscriber.active ) {
+         // Simulate 'fresh' enter
          subscriber.enter();
        }
-
      });
    }
   
