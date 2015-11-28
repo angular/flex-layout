@@ -49,10 +49,6 @@ class LayoutAlign extends AbstractInjector {
 
      // Main axis
      switch( main_axis ){
-       case "stretch" :
-         overrides['justify-content'] = "stretch";   // default
-         break;
-
        case "start":
          overrides['justify-content'] = "start";
          break;
@@ -76,7 +72,6 @@ class LayoutAlign extends AbstractInjector {
 
      // Cross-axis
      switch( cross_axis ){
-
         case "start" :
           overrides['align-items'] = overrides['align-content'] = "flex-start";
           break;
