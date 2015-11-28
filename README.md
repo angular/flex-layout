@@ -222,7 +222,7 @@ The **Generation 1** [layout demos](https://material.angularjs.org/latest/layout
 
 <br/>
 
-##### Build
+#### Build
 
 
 Use JSPM to build a self-extracting, minified, es5 dist file `material.layouts.min.js`:
@@ -256,7 +256,7 @@ To use the bundle and the required, external AngularJS framework:
 
 <br/>
 
-##### Summary
+#### Summary
 
 Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
 
