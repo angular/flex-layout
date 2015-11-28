@@ -12,6 +12,7 @@ import mdLayouts from 'src/Layout.es6.js'
 // Demo Apps and Controllers
 
 import TestController from 'demo/controllers/TestController.es6'
+import RowWrapController from 'demo/controllers/RowWrapController.es6'
 import LayoutDemoApp from 'demo/controllers/LayoutDemoApp.es'
 
 
@@ -29,6 +30,7 @@ angular
     let app  = angular
           .module( appName, [ mdLayouts, 'ngMaterial'] )
           .controller("TestController", TestController)
+          .controller("RowWrapController", RowWrapController)
           .controller("LayoutDemoApp" , LayoutDemoApp);
 
     angular.bootstrap( body, [ app.name ], { strictDi: false })

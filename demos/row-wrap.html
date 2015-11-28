@@ -29,7 +29,7 @@
       background-color: blue;
     }
 
-    md-content {
+    .demo_content  {
       height: 100px;
     }
 
@@ -38,31 +38,49 @@
       height: 1000px;
       box-sizing: border-box;
     }
+
+    .md-subheader {
+      background-color: rgba(0,0,0,0);
+    }
   </style>
 
 
 </head>
 
-<body class="bkgrnd" ng-cloak>
+<body class="bkgrnd" ng-cloak ng-controller="RowWrapController as vm">
 
 <p>
   This demo was a <a href="https://github.com/angular/material/issues/5876">reported issue #5876</a> at Angular Material.
 </p>
 
-<md-content layout="column" layout-gt-sm="row" layout-wrap-md="reverse" flex class="md-whiteframe-3dp">
+<div style="margin-bottom: 50px;"">
+  <md-subheader>Choose a Layout-Wrap option:</md-subheader>
 
-  <div flex flex-gt-sm="50" flex-gt-md="33" class="one">
-    One
+  <div style="margin-left:25px; margin-bottom: 10px;">
+    <md-radio-group ng-model="vm.wrapWith" >
+      <md-radio-button value="wrap">wrap</md-radio-button>
+      <md-radio-button value="nowrap">nowrap</md-radio-button>
+      <md-radio-button value="reverse">reverse</md-radio-button>
+      <md-radio-button value="none">none</md-radio-button>
+      <md-radio-button value="invalid">invalid</md-radio-button>
+    </md-radio-group>
   </div>
 
-  <div flex flex-gt-sm="50" flex-gt-md="33" class="two">
-    Two
-  </div>
+  <md-subheader>Note: this works only for the breakpoint `layout-wrap-md`</md-subheader>
+</div>
 
-  <div flex flex-gt-sm="50" flex-gt-md="33" class="three">
-    Three
-  </div>
+<md-content layout="column" layout-gt-sm="row" layout-wrap-md="{{ vm.wrapWith }}" flex class="demo_content md-whiteframe-3dp" >
+    <div flex flex-gt-sm="50" flex-gt-md="33" class="one">
+      One
+    </div>
 
+    <div flex flex-gt-sm="50" flex-gt-md="33" class="two">
+      Two
+    </div>
+
+    <div flex flex-gt-sm="50" flex-gt-md="33" class="three">
+      Three
+    </div>
 </md-content>
 
 
