@@ -12,17 +12,17 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 
 | HTML Markup API | Allowed values (raw or interpolated) |
 |-----------------|----------------------------------------------------------------------------|
-|  layout         | `row` | `column`                                                          |                  
+|  layout         | `row | column`                                                          |                  
 |  flex           | "" , px , %                                                              |              
 |  flex-order     | int                                                                        |                       
 |  flex-offset    | px                                                                         |     
 |  layout-fill    |                                                                            |
-|  layout-wrap    | "" | `wrap` | `none` | `nowrap` | `reverse`                                     |                   
+|  layout-wrap    | `"" | wrap | none | nowrap | reverse`                                     |                   
 |  layout-margin  | px , %                                                                    |                           
 |  layout-padding | px , %                                                                    |        
 |  layout-align   | `start|center|end|space-around|space-between` `start|center|end|stretch`|                   
-|  show           | ""  | `true`  | `1`                                                        | 
-|  hide           | ""  | `true`  | `1`                                                        | 
+|  show           | `""  | true  | 1`                                                        | 
+|  hide           | `""  | true  | 1`                                                        | 
 
 <br/>
 
