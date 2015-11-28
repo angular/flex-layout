@@ -17,8 +17,7 @@ Angular Material's Layout features were purposed to provide syntactic ng sugar a
 |  flex-order     | int                                                                        |                       
 |  flex-offset    | px                                                                         |     
 |  layout-fill    |                                                                            |
-|  layout-wrap    |                                                                            |                   
-|  layout-nowrap  |                                                                            |                   
+|  layout-wrap    | "", `wrap`, `none`, `nowrap`, `reverse`                                     |                   
 |  layout-margin  | px , %                                                                    |                           
 |  layout-padding | px , %                                                                    |        
 |  layout-align   | `start|center|end|stretch|space-around|space-between` `start|center|end|stretch|baseline`|                   
