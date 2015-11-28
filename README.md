@@ -221,6 +221,29 @@ The **Generation 1** [layout demos](https://material.angularjs.org/latest/layout
 
 <br/>
 
+
+#### Summary
+
+Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
+
+*  No external CSS requirements
+*  Support for modified/additional breakpoints
+*  Notifications for breakpoints changes
+  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints; see [**fix mediaQueryWatcher**](https://github.com/angular/material-layouts/commit/2d0406d308eb880113855d0e750df25091f7bb29)
+*  Support (future) for Handset/Tablet and Orientation breakpoints
+*  Support for **ANY** Layout injector value (instead of increments for 5)
+*  Watchers for Layout injector values
+*  Support for raw values or interpolated values
+*  Support for raw, percentage or px-suffix values
+
+<br/>
+
+>  The code has been initially implemented with es6 and JSPM. A trans-compile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module. Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
+
+<br/>
+
+---
+
 #### Build
 
 
@@ -255,27 +278,7 @@ To use the bundle and the required, external AngularJS framework:
 
 <br/>
 
-#### Summary
-
-Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
-
-*  No external CSS requirements
-*  Support for modified/additional breakpoints
-*  Notifications for breakpoints changes
-  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints; see [**fix mediaQueryWatcher**](https://github.com/angular/material-layouts/commit/2d0406d308eb880113855d0e750df25091f7bb29)
-*  Support (future) for Handset/Tablet and Orientation breakpoints
-*  Support for **ANY** Layout injector value (instead of increments for 5)
-*  Watchers for Layout injector values
-*  Support for raw values or interpolated values
-*  Support for raw, percentage or px-suffix values
-
-<br/>
-
->  The code has been initially implemented with es6 and JSPM. A trans-compile process will be used to generate es5 versions and subsequent modifications will allow those files to be compiled into a `material.layout` module. Efforts in 2016 will focus on quickly converting the es6 codebase to TypeScript; which may become the master version used for both ngMaterial v1.x and v2.x
-
-<br/>
-
----
+----
 
 #### Adaptive Layouts (future)
 
