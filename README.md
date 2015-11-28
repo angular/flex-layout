@@ -79,7 +79,11 @@ Below is an example usage of the Responsive Layout API:
 
 #### 'Generation 1' Implementation 
 
-Early versions used both complex SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list. A separate SCSS file contained complex rules and nestings with `for-loops`; all to build (and group by classNames) CSS styles for the expected mediaQuery breakpoints and possible layout values:
+Early versions used both complex SCSS rules and JS directives to dynamically map Layout DOM attributes/markup to equivalent CSS classNames... and inject those classNames into the DOM element class list. A separate SCSS file contained complex rules and nestings with `for-loops`.
+
+This complexity of SCSS and Angular Layout directives was used to build (and group by classNames) CSS styles for the supported mediaQuery breakpoints and possible layout values.
+
+Here is a sample of the SCSS rule generators:
 
 ```scss
 @mixin flex-properties-for-name($name: null) {
@@ -128,7 +132,7 @@ Early versions used both complex SCSS rules and JS directives to dynamically map
 ```
 > Additionally, CSS specificity rules required large quantities of NON-trivial Layout CSS styles.
 
-static HTML markup:
+And here is the static HTML markup that could be used:
 
 ```html
 <div>
@@ -149,7 +153,7 @@ static HTML markup:
 </div>
 ```
 
-is run-time transformed to use CSS classNames and externally defined stylesheets:
+Which - at run-time - is transformed to use CSS classNames and externally defined stylesheets:
 
 ```html
 <div>
