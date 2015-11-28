@@ -253,7 +253,9 @@ Use JSPM to build a self-extracting, minified, es5 dist file `material.layouts.m
 jspm bundle-sfx src/Layout.es6 - angular dist/material.layouts.min.js --globals "{'angular':'angular'}" -m
 ```
 
-> Note that this deployable bundle excludes the Angular library (considered an external dependency) and has a filesize < 75Kb!
+> Note that this deployable bundle:
+> *  excludes the Angular library (considered an external dependency), and 
+> *  has a file size < 75Kb!
 
 <br/>
 
