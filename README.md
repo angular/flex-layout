@@ -263,6 +263,7 @@ Not only is the codebase easier to maintain and debug, other more important bene
 *  No external CSS requirements
 *  Support for modified/additional breakpoints
 *  Notifications for breakpoints changes
+  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints; see SHA 2d0406d308eb8
 *  Support (future) for Handset/Tablet and Orientation breakpoints
 *  Support for **ANY** Layout injector value (instead of increments for 5)
 *  Watchers for Layout injector values
