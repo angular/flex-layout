@@ -224,7 +224,7 @@ The **Generation 1** [layout demos](https://material.angularjs.org/latest/layout
 
 #### Summary
 
-Not only is the codebase easier to maintain and debug, other more important benefits have been realized:
+Not only is the generation-2 codebase easier to maintain and debug, other more important benefits have been realized:
 
 *  No external CSS requirements
 *  Support for modified/additional breakpoints
@@ -295,10 +295,3 @@ With the new MediaQuery Pub/Sub mechanisms and Breakpoints, it would be quite ea
    ... Admin content here
 </div>
 ```
-
-##### Pending Features
-
-While implementation of Karma unit tests are `in-progress`, several other pending features need to designed and implemented:
-
-*  Breakpoint support for Handset and Tablets (see Breakpoint diagram at top)
-*  Responsvie and Adaptive support for Orientation changes
