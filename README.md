@@ -263,7 +263,7 @@ Not only is the codebase easier to maintain and debug, other more important bene
 *  No external CSS requirements
 *  Support for modified/additional breakpoints
 *  Notifications for breakpoints changes
-  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints; see [fix fediaQueryWatcher](https://github.com/angular/material-layouts/commit/2d0406d308eb880113855d0e750df25091f7bb29)
+  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints; see [**fix mediaQueryWatcher**](https://github.com/angular/material-layouts/commit/2d0406d308eb880113855d0e750df25091f7bb29)
 *  Support (future) for Handset/Tablet and Orientation breakpoints
 *  Support for **ANY** Layout injector value (instead of increments for 5)
 *  Watchers for Layout injector values
