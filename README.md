@@ -130,7 +130,7 @@ Here is a sample of the SCSS rule generators:
   }
 }
 ```
-> In order to apply the styles with correct CSS specificity, large quantities of NON-trivial, cumbersome Layout CSS styles were requred.
+> In order to apply the styles with correct CSS specificity, large quantities of NON-trivial, cumbersome Layout CSS styles were required.
 
 And here is the static HTML markup that could be used:
 
