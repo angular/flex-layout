@@ -24,6 +24,9 @@ class Layout extends AbstractInjector {
      * 'flex' children should be notified.
      */
     this._flexChildren  = [ ];
+
+    // Make sure the parent element has a display:<xxx> setting.
+    this._validateParentDisplay();
   }
 
   // ************************************************
@@ -62,6 +65,18 @@ class Layout extends AbstractInjector {
    */
   _validateValue(value) {
     return VALUES.find(x => x === value) ? value : VALUES[0];  // "row"
+  }
+
+
+  /**
+   * If the parent element does not have a 'display' CSS style (eg <ui-view>),
+   * then inject a `display:block` style
+   */
+  _validateParentDisplay() {
+    var parent = angular.element(this.element.parent());
+    if ( !parent.css('display') ) {
+      parent.css({ display : 'block' });
+    }
   }
 
   // ************************************************
