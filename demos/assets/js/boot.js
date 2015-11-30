@@ -1,13 +1,8 @@
+import angular  from 'angular'                  // Load Angular library
+import material from 'angular-material'         // Load Angular Material library
+import 'angular-material/angular-material.css!' // Load Material CSS styles
 
-import 'angular-material/angular-material.css!'
-
-// Load Angular libraries
-
-import material from 'angular-material'
-
-// Load Layout modules
-
-import mdLayouts from 'src/Layout.es6.js'
+import mdLayouts from 'src/Layout.es6.js'       // Load Gen2 Layout modules
 
 // Demo Apps and Controllers
 

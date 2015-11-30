@@ -286,6 +286,59 @@ To use the bundle and the required, external AngularJS framework:
 
 ----
 
+#### Angular Material
+
+This library can be easily used with Angular Material, but the Material *Layout* directives need to be disabled so this Gen2 code will work properly:
+
+Install latest version of Angular Material using:
+
+```console
+jspm install angular-material=github:angular/bower-material@master;
+```
+
+Modify the `boot.js` to include Angular Material resources:
+
+```js
+import angular  from 'angular'             // Load Angular library
+import material from 'angular-material'    // Load Angular Material library
+import mdLayouts from 'src/Layout.es6.js'  // Load Gen2 Layout modules
+
+import 'angular-material/angular-material.css!' // Load Material CSS styles
+
+
+/**
+ * Manually bootstrap the application when AngularJS and
+ * the application classes have been loaded.
+ */
+angular
+  .element( document )
+  .ready( function() {
+
+    let appName = 'test-app';
+
+    let body = document.getElementsByTagName("body")[0];
+    let app  = angular
+          .module( appName, [ mdLayouts, 'ngMaterial'] );
+
+    angular.bootstrap( body, [ app.name ], { strictDi: false })
+
+  });
+```
+
+
+Modify each demo with this simply change:
+
+```html
+<body md-layout-css ng-cloak>
+...
+</body>
+```
+
+
+<br/>
+
+----
+
 #### Adaptive Layouts (future)
 
 Different from responsive layouts where components change sizes and positions, the concepts of Adaptive layouts provide for UX where  **different components** may be used for different breakpoints. 
