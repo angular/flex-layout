@@ -28,15 +28,15 @@
       "angular": "github:angular/bower-angular@^1.4.7",
       "angular-animate": "github:angular/bower-angular-animate@^1.4.7",
       "angular-aria": "github:angular/bower-angular-aria@^1.4.7",
-      "angular-material": "github:angular/bower-material@^0.11.4",
+      "angular-material": "github:angular/bower-material@master",
       "angular-messages": "github:angular/bower-angular-messages@^1.4.7",
       "angular-mocks": "npm:angular-mocks@^1.4.8",
       "css": "github:systemjs/plugin-css@^0.1.19"
     },
     "devDependencies": {
       "core-js": "npm:core-js@^0.9.4",
-      "traceur": "github:jmcriffey/bower-traceur@0.0.91",
-      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91"
+      "traceur": "github:jmcriffey/bower-traceur@0.0.92",
+      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.92"
     }
   },
   "devDependencies": {

@@ -73,9 +73,12 @@ class Layout extends AbstractInjector {
    * then inject a `display:block` style
    */
   _validateParentDisplay() {
-    var parent = angular.element(this.element.parent());
-    if ( !parent.css('display') ) {
-      parent.css({ display : 'block' });
+    if ( this.className == "layout") {
+      var parent = angular.element(this.element.parent());
+      var styles = window.getComputedStyle(parent[0]);
+      if ( !styles.display ) {
+        parent.css({ display : 'block' });
+      }
     }
   }
 

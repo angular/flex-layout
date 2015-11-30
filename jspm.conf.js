@@ -1,23 +1,21 @@
 System.config({
   baseURL: "/",
   defaultJSExtensions: true,
-
   transpiler: "traceur",
   traceurOptions: {
-    generators: false,
-    properTailCalls: false,
-    symbols: false,
-    forOn: false,
-    arrayComprehension: false,
-    asyncFunctions: false,
-    asyncGenerators: false,
-    generatorComprehension: false,
-    annotations: false,
-    require:false,
-    spread:false,
-    async:false
+    "generators": false,
+    "properTailCalls": false,
+    "symbols": false,
+    "forOn": false,
+    "arrayComprehension": false,
+    "asyncFunctions": false,
+    "asyncGenerators": false,
+    "generatorComprehension": false,
+    "annotations": false,
+    "require": false,
+    "spread": false,
+    "async": false
   },
-
   paths: {
     "demo/*": "demos/assets/js/*",
     "mq/*": "src/mediaQuery/*",
@@ -30,24 +28,24 @@ System.config({
     "angular": "github:angular/bower-angular@1.4.8",
     "angular-animate": "github:angular/bower-angular-animate@1.4.8",
     "angular-aria": "github:angular/bower-angular-aria@1.4.8",
-    "angular-material": "github:angular/bower-material@0.11.4",
+    "angular-material": "github:angular/bower-material@master",
     "angular-messages": "github:angular/bower-angular-messages@1.4.8",
     "angular-mocks": "npm:angular-mocks@1.4.8",
     "core-js": "npm:core-js@0.9.18",
-    "css": "github:systemjs/plugin-css@0.1.19",
-    "traceur": "github:jmcriffey/bower-traceur@0.0.91",
-    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.91",
+    "css": "github:systemjs/plugin-css@0.1.20",
+    "traceur": "github:jmcriffey/bower-traceur@0.0.92",
+    "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.92",
     "github:angular/bower-angular-animate@1.4.8": {
       "angular": "github:angular/bower-angular@1.4.8"
     },
     "github:angular/bower-angular-aria@1.4.8": {
       "angular": "github:angular/bower-angular@1.4.8"
     },
-    "github:angular/bower-material@0.11.4": {
+    "github:angular/bower-material@master": {
       "angular": "github:angular/bower-angular@1.4.8",
       "angular-animate": "github:angular/bower-angular-animate@1.4.8",
       "angular-aria": "github:angular/bower-angular-aria@1.4.8",
-      "css": "github:systemjs/plugin-css@0.1.19"
+      "css": "github:systemjs/plugin-css@0.1.20"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -77,6 +75,4 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
   }
-
-
 });
