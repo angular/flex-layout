@@ -23,8 +23,7 @@ const  CLASS_REGISTRY = {
     'layout-align'    : LayoutAlign,
     'layout-padding'  : MarginPadding,
     'layout-margin'   : MarginPadding,
-    'layout-wrap'     : LayoutWrap,
-    'layout-nowrap'   : LayoutWrap
+    'layout-wrap'     : LayoutWrap
 };
 
 const LAYOUT_CONTROLLER = "$$layoutController";
@@ -48,18 +47,19 @@ function buildLayoutDirectives() {
   });
 
   angular.forEach(features,(directiveName) => {
-    // For each breakpoint (sm, gt-sm, md, gt-md, lg, gt-lg, etc), register a directive
 
+    // For each breakpoint (sm, gt-sm, md, gt-md, lg, gt-lg, etc), register a directive
     angular.forEach( variants, (breakpoint) => {
       let className = breakpoint.suffix ? `${directiveName}-${breakpoint.suffix}` : `${directiveName}`;
       let normalizedName = directiveNormalize(directiveName);
       let normalizedKey = `${normalizedName}${breakpoint.normalizedSuffix}`;
+
       allDirectives[normalizedKey] =  buildConstructionFn(className, breakpoint);
     });
 
   });
 
-  return allDirectives;
+  return addCloakInterceptor(allDirectives);
 }
 
 // ************************************************************
@@ -99,7 +99,6 @@ function buildConstructionFn(className, breakpoint) {
 
             // publish post-link fn
             return (scope, element, attr) => {
-
               let controller = findLayoutController(element);
               controller.addParent(
                 new Layout(className, scope, element, attr, utils)
@@ -182,6 +181,34 @@ function buildConstructionFn(className, breakpoint) {
     return priority - breakpoint.order;
   }
 
+}
+
+
+/**
+ * Tail-hook ngCloak to delay the uncloaking while Layout injectors
+ * finish processing. Eliminates flicker with Material.Layoouts
+ */
+function addCloakInterceptor(registry) {
+  const CLOAK = 'ng-cloak';
+
+  registry[ directiveNormalize(CLOAK) ] = [ '$timeout', ($timeout)=>{
+    return {
+      priority : -10,   // run after normal ng-cloak
+      restrict : 'A',
+      compile  : function( element ) {
+        // Re-add the cloak
+        element.addClass(CLOAK);
+
+        return ( scope, element ) => {
+          // Wait while layout injectors configure, then uncload
+          $timeout( function(){
+            element.removeClass(CLOAK);
+          }, 10, false);
+        };
+      }
+    };
+  }];
+  return registry;
 }
 
 const PRIORITIES = {
