@@ -34,6 +34,32 @@ class Layout extends AbstractInjector {
   // ************************************************
 
   /**
+   * Capture initialize styles for this injector's element
+   */
+   _captureCSS() {
+     return {
+      height : window.getComputedStyle(this.element[0]).height
+     };
+   }
+
+  /**
+   * Build the CSS that should be assigned to the element instance
+   */
+  _buildCSS(value) {
+    /**
+     *  @TODO
+     *  BUG - min-height on a column flex container won’t apply to its flex item children in IE 10-11.
+     *  Use height instead if possible.
+     */
+    return this.modernizr({
+      'display'         : 'flex',
+      'box-sizing'      : 'border-box',
+      'flex-direction'  : this._direction = this._validateValue(value)
+    });
+  }
+
+
+  /**
    * For all Grid flexChildren of the Layout parent,
    * when the value changes or the active mediaQuery changes
    * then update the Layout css and notify the flexChildren
@@ -42,22 +68,11 @@ class Layout extends AbstractInjector {
    * !! Since the children a flex items simply set their direction value.
    *
    */
-  _notifyChildren (direction) {
+   _notifyChildren (direction) {
     this._flexChildren.forEach(child => {
       child.direction = direction;
     });
-  }
-
-  /**
-   * Build the CSS that should be assigned to the element instance
-   */
-  _buildCSS(value) {
-    return this.modernizr({
-      'display'         : 'flex',
-      'box-sizing'      : 'border-box',
-      'flex-direction'  : this._direction = this._validateValue(value)
-    });
-  }
+   }
 
   /**
    * Validate the value to be one of the acceptable value options
@@ -156,5 +171,6 @@ export default Layout;
 // Private static variables
 // ************************************************************
 
-const VALUES = ["row", "column"];
-
+const COLUMN = "column";
+const ROW = "row";
+const VALUES = [ ROW, COLUMN ];
