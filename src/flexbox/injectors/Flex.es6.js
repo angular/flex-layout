@@ -33,7 +33,7 @@ class Flex extends AbstractInjector {
     let css;
 
     switch(value || "") {
-      case UNDEFINED  : css = { 'flex'  : '1 1 auto' ,'max-width'  : null , 'max-height' : null  }; break;
+      case UNDEFINED  : css = { 'flex'  : '1'        ,'max-width'  : null , 'max-height' : null  }; break;
       case GROW       : css = { 'flex'  : "1 1 100%" ,'max-width'  : null , 'max-height' : null  }; break;
       case INITIAL    : css = { 'flex'  : "0 1 auto" ,'max-width'  : null , 'max-height' : null  }; break;
       case AUTO       : css = { 'flex'  : "1 1 auto" ,'max-width'  : null , 'max-height' : null  }; break;
