@@ -61,6 +61,23 @@ class Flex extends AbstractInjector {
     return this.modernizr( angular.extend(css, { 'box-sizing' : 'border-box' } ));
   }
 
+  _validateUsages( value ){
+    let nodeName = this.element[0].nodeName.toLowerCase();
+
+    switch(nodeName) {
+      case "md-button":   // replaced with <button>
+      case "fieldset":
+        // @see https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers
+        // Use <div flex> wrapper inside (preferred) or outside
+
+        let usage = `<${nodeName} ${this.className}></${nodeName}>`;
+        let url = 'https://github.com/philipwalton/flexbugs#9-some-html-elements-cant-be-flex-containers';
+
+        this.$log.warn(`${usage} may not work as expected in IE Browsers. Consult ${url} for details.`);
+        break;
+    }
+  }
+
   // ************************************************
   // Public Methods
   // ************************************************
@@ -80,6 +97,8 @@ class Flex extends AbstractInjector {
    */
   updateCSS(value) {
     if ( this.isActive ) {
+      this._validateUsages(value || this.value);
+
       let overrides = this._buildCSS(value || this.value);
       this.$log.debug("updateCSS", this, overrides);
 

@@ -200,7 +200,7 @@ function addCloakInterceptor(registry) {
         element.addClass(CLOAK);
 
         return ( scope, element ) => {
-          // Wait while layout injectors configure, then uncload
+          // Wait while layout injectors configure, then uncloak
           $timeout( function(){
             element.removeClass(CLOAK);
           }, 10, false);
