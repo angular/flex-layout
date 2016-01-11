@@ -20,7 +20,12 @@
     "build": "jspm bundle-sfx src/Layout.es6 - angular dist/material.layouts.min.js --globals \"{'angular':'angular'}\" --minify --skip-source-maps",
     "jsdocs": "esdoc -c .esdoc.json"
   },
-  "license": "MIT",
+  "licenses": [
+   {
+     "type": "MIT",
+     "url": "https://github.com/angular/material/blob/master/LICENSE"
+   }
+  ],
   "jspm": {
     "format": "es6",
     "configFile": "jspm.conf.js",
