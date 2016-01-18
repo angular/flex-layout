@@ -8,11 +8,18 @@
     "url": "git+https://github.com/angular/material-layouts.git"
   },
   "bugs": "https://github.com/angular/material-layouts/issues",
-  "author": {
-    "name": "Thomas Burleson",
-    "email": "ThomasBurleson@gmail.com",
-    "url": "http://solutionoptimist.com"
-  },
+  "authors": [
+    {
+      "name": "Thomas Burleson",
+      "email": "ThomasBurleson@gmail.com",
+      "url": "http://solutionoptimist.com"
+    },
+    {
+      "name": "Ryan Schmukler",
+      "email": "ryan@slingingcode.com",
+      "url": "http://slingingcode.com"
+    }
+  ],
   "scripts": {
     "test": "karma start",
     "test:watch": "karma start --no-single-run",
@@ -21,32 +28,18 @@
     "jsdocs": "esdoc -c .esdoc.json"
   },
   "licenses": [
-   {
-     "type": "MIT",
-     "url": "https://github.com/angular/material/blob/master/LICENSE"
-   }
-  ],
-  "jspm": {
-    "format": "es6",
-    "configFile": "jspm.conf.js",
-    "dependencies": {
-      "angular": "github:angular/bower-angular@^1.4.7",
-      "angular-animate": "github:angular/bower-angular-animate@^1.4.7",
-      "angular-aria": "github:angular/bower-angular-aria@^1.4.7",
-      "angular-material": "github:angular/bower-material@master",
-      "angular-messages": "github:angular/bower-angular-messages@^1.4.7",
-      "angular-mocks": "npm:angular-mocks@^1.4.8",
-      "css": "github:systemjs/plugin-css@^0.1.19"
-    },
-    "devDependencies": {
-      "core-js": "npm:core-js@^0.9.4",
-      "traceur": "github:jmcriffey/bower-traceur@0.0.92",
-      "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.92"
+    {
+      "type": "MIT",
+      "url": "https://github.com/angular/material/blob/master/LICENSE"
     }
+  ],
+  "peerDependencies": {
+    "angular": "^1.4.8"
   },
   "devDependencies": {
-    "babel-plugin-uglify": "^1.0.2",
-    "core-js": "^1.2.6",
+    "gulp": "^3.9.0",
+    "gulp-typescript": "^2.10.0",
+    "gulp-watch": "^4.3.5",
     "jasmine": "^2.3.2",
     "jasmine-core": "^2.3.4",
     "jasmine-reporters": "^2.0.7",
@@ -54,8 +47,8 @@
     "karma": "^0.13.15",
     "karma-chrome-launcher": "^0.2.1",
     "karma-jasmine": "^0.3.6",
-    "karma-traceur-preprocessor": "^0.4.0",
-    "traceur": "0.0.92"
+    "typescript": "^1.7.5",
+    "typings": "^0.6.1"
   },
   "keywords": [
     "es6",
