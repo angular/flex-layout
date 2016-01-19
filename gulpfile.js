@@ -13,6 +13,7 @@ var CONFIG = {
 // Create a gulp.Typescript project allowing for incremental compilation
 // which means faster builds.
 var tsProject = ts.createProject('tsconfig.json', {
+  module: 'commonjs',
   typescript: typescript
 });
 
