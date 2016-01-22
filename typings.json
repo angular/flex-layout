@@ -2,7 +2,8 @@
   "dependencies": {},
   "devDependencies": {},
   "ambientDependencies": {
-    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts"
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts",
+    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d2dd0dbfc70f5bd50aab635156620b3a2578a48d"
   },
   "ambientDevDependencies": {
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts"
