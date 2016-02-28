@@ -47,7 +47,7 @@
     "karma-webpack": "^1.7.0",
     "ts-loader": "^0.8.0",
     "typescript": "^1.7.5",
-    "typings": "^0.6.1",
+    "typings": "^0.6.2",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },

@@ -1,17 +1,30 @@
 {
+  "version" : "2.0.0",
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es5",
     "module": "commonjs",
     "isolatedModules": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noImplicitAny": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "removeComments": true,
+    "outDir": "dist/js/cjs"
   },
   "exclude": [
     "node_modules",
     "typings/main",
     "typings/main.d.ts"
+  ],
+  "fileGlobs": [
+      "./modules/**/*.ts",
+      "./tools/**/*.ts",
+      "!./jspm_packages/**",
+      "!./node_modules/**",
+      "!./packages/**",
+      "!./dist/**",
+      "!./temp/**"
   ]
+
 }
