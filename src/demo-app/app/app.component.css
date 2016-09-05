@@ -1,0 +1,35 @@
+body {
+  margin: 50px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: #eee;
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+h3 {
+  background-color: #cdb295;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+.small-demo {
+  min-height: 128px;
+}
+
+div.colorNested > div > div {
+    padding: 8px;
+    box-shadow: 0px 2px 5px 0 rgba(52, 47, 51, 0.63);
+    opacity: 0.9;
+    color: #fff;
+    text-align: center;
+}
+div.colorNested > div > div:nth-child(1) {
+  background-color: #009688;
+}
+
+div.colorNested > div > div:nth-child(2) {
+  background-color: #3949ab;
+}

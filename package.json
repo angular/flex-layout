@@ -1,7 +1,7 @@
 {
   "name": "material.layouts",
-  "version": "0.1.0",
-  "description": "Angular Layouts javascript library for super-easy flexbox features",
+  "version": "2.0.0-alpha.1",
+  "description": "Angular Layouts",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -13,51 +13,73 @@
       "name": "Thomas Burleson",
       "email": "ThomasBurleson@gmail.com",
       "url": "http://solutionoptimist.com"
-    },
-    {
-      "name": "Ryan Schmukler",
-      "email": "ryan@slingingcode.com",
-      "url": "http://slingingcode.com"
     }
   ],
   "scripts": {
-    "test": "karma start",
-    "test:watch": "karma start --no-single-run",
-    "start": "gulp",
-    "build": "webpack",
-    "dev": "webpack --watch",
-    "jsdocs": "esdoc -c .esdoc.json"
+    "start": "concurrently \"npm run dev\" \"npm run open\"",
+    "open": "opn http://localhost:8080/",
+    "postinstall": "typings install",
+    "reinstall": "npm cache clean && npm install",
+    "dev": "webpack-dev-server --inline -d --hot --content-base ./src --watch --progress --port 8080"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/angular/material/blob/master/LICENSE"
-    }
-  ],
-  "peerDependencies": {
-    "angular": "^1.4.8"
+  "license": "MIT",
+  "dependencies": {
+    "@angular/compiler-cli": "^0.6.0",
+    "@angular/platform-server": "2.0.0-rc.6",
+    "@angular/tsc-wrapped": "^0.3.0",
+
+    "@angular/common": "2.0.0-rc.6",
+    "@angular/compiler": "2.0.0-rc.6",
+    "@angular/core": "2.0.0-rc.6",
+    "@angular/forms": "0.3.0",
+    "@angular/http": "2.0.0-rc.6",
+    "@angular/platform-browser": "2.0.0-rc.6",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.6",
+    "@angular/router": "3.0.0-rc.2",
+
+    "@angularclass/webpack-toolkit": "^1.3.3",
+    "@angularclass/request-idle-callback": "^1.0.7",
+    "@angularclass/conventions-loader": "^1.0.2",
+    "angular2-template-loader": "^0.5.0",
+
+    "core-js": "^2.4.1",
+    "rxjs": "5.0.0-beta.11",
+    "zone.js": "~0.6.17",
+    "systemjs": "0.19.37",
+    "es6-module-loader": "^0.17.8",
+    "reflect-metadata": "^0.1.8"
   },
   "devDependencies": {
-    "angular": "^1.4.9",
-    "jasmine-core": "^2.4.1",
-    "karma": "^0.13.19",
-    "karma-chrome-launcher": "^0.2.2",
-    "karma-jasmine": "^0.3.6",
-    "karma-source-map-support": "^1.1.0",
-    "karma-webpack": "^1.7.0",
-    "ts-loader": "^0.8.0",
-    "typescript": "^1.7.5",
-    "typings": "^0.6.2",
-    "webpack": "^1.12.11",
-    "webpack-dev-server": "^1.14.1"
-  },
-  "keywords": [
-    "es6",
-    "jspm",
-    "gulp",
-    "material",
-    "layouts",
-    "babel",
-    "systemjs"
-  ]
+    "angular2-hmr": "~0.8.0",
+    "@angularclass/hmr": "^1.0.1",
+    "@angularclass/hmr-loader": "^1.0.1",
+    "angular2-template-loader": "^0.5.0",
+
+    "awesome-typescript-loader": "1.1.1",
+    "source-map-loader": "^0.1.5",
+    "gulp-typescript": "^2.13.6",
+
+    "copy-webpack-plugin": "^3.0.1",
+
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.22.0",
+    "null-loader": "^0.1.1",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.13.1",
+    "ts-loader": "^0.8.2",
+    "typescript": "^2.0.2",
+    "ts-helpers": "1.1.1",
+    "typings": "^1.3.2",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.1.0-beta.21",
+    "webpack-dev-server": "^2.1.0-beta.0",
+    "webpack-livereload-plugin": "^0.8.2",
+    "webpack-md5-hash": "^0.0.5",
+    "webpack-merge": "^0.14.0",
+    "opn-cli": "^3.1.0",
+    "concurrently": "^2.2.0"
+  }
 }
