@@ -1,14 +1,17 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'demo-app',
   styleUrls : ['app.component.css'],
-  templateUrl: 'app.component.html',
+  templateUrl: `
+      <simple-row-column class="small-demo"></simple-row-column>
+      
+      <flex-row-fill class="small-demo" ></flex-row-fill>
+      
+      <flex-row-fill-wrap class="small-demo" ></flex-row-fill-wrap>
+      
+  `,
   encapsulation: ViewEncapsulation.None,
 })
-export class LayoutDemosComponent implements  OnInit {
-
-  ngOnInit() {
-    console.log("testing ngOnit(Saving);")
-  }
+export class LayoutDemosComponent {
 }

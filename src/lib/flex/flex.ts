@@ -7,14 +7,27 @@ import { NgModule, Directive, Input, HostBinding } from '@angular/core';
 @Directive({
   selector:'[flex]'
 })
-export class FlexDirective{
+export class FlexDirective {
     @Input() shrink:number = 1;
     @Input() grow:number = 1;
     @Input() flex:string;
 
     @HostBinding('style.flex')
-    get style(){
-        return `${this.grow} ${this.shrink} ${this.flex === '' ? '0':this.flex}%`;
+    get style_flex(){
+        let basis = (this.flex === '') ? '0' : this.flex;
+        return `${this.grow} ${this.shrink} ${basis}%`;
+    }
+
+    @HostBinding('style.max-width')
+    get style_maxWidth() {
+      let basis = (this.flex === '') ? '100' : this.flex;
+      return `${basis}%`
+    }
+
+    @HostBinding('style.max-height')
+    get style_maxHeight() {
+      let basis = 100;
+      return `${basis}%`
     }
 }
 

@@ -60,7 +60,7 @@ module.exports = {
           'angular2-template-loader',
           '@angularclass/hmr-loader'
         ],
-        exclude: [/\.(spec|e2e)\.ts$/,  /node_modules/],
+        exclude: [/\.(spec|e2e)\.ts$/,  /node_modules/, /demos/, /deprecated/],
         noParse : [ /angular/ ]
       },
       { test: /\.html$/, loader: 'html-loader' },
