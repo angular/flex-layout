@@ -1,7 +1,7 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 
-import { NgLayoutModule } from '../layout/layout';
-import { NgFlexModule } from '../flex/flex';
+import { NgLayoutModule } from '../api/layout';
+import { NgFlexModule } from '../api/flex';
 
 
 

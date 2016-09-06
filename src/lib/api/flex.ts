@@ -19,13 +19,13 @@ export class FlexDirective {
     }
 
     @HostBinding('style.max-width')
-    get style_maxWidth() {
+    get maxWidth() {
       let basis = (this.flex === '') ? '100' : this.flex;
       return `${basis}%`
     }
 
     @HostBinding('style.max-height')
-    get style_maxHeight() {
+    get maxHeight() {
       let basis = 100;
       return `${basis}%`
     }
