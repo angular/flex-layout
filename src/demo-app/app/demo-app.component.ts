@@ -2,7 +2,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 
 @Component({
   selector: 'demo-app',
-  styleUrls : ['app.component.css'],
+  styleUrls : ['demo-app.component.css'],
   templateUrl: `
       <simple-row-column class="small-demo"></simple-row-column>
       
@@ -13,5 +13,5 @@ import {Component, ViewEncapsulation} from '@angular/core';
   `,
   encapsulation: ViewEncapsulation.None,
 })
-export class LayoutDemosComponent {
+export class DemoAppComponent {
 }

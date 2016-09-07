@@ -1,12 +1,12 @@
 import {Renderer, ElementRef} from "@angular/core";
-import modernizer from './utils/modernizer';
+import modernizer from '../utils/modernizer';
 
 export type StyleUpdateFn = (key:string|Object, value?:string) => void;
 
 /**
  * Abstract base class for the Layout flexbox styling directives
  */
-export class StyleBaseDirective {
+export class BaseStyleDirective {
 
   // Initialize to no-op
   public _updateStyle : StyleUpdateFn = (key:string|Object, value?:string) => { };

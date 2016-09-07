@@ -3,7 +3,8 @@ import {
   Directive, Renderer, ElementRef, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 
-import { StyleBaseDirective } from "../StyleBaseDirective";
+import { BaseStyleDirective } from "./_styleDirective";
+import {Observable, Subject, BehaviorSubject} from "rxjs";
 
 // ************************************************************
 // Private static variables
@@ -14,17 +15,23 @@ const ROW = "row";
 const LAYOUT_VALUES = [ ROW, COLUMN ];
 
 /**
- * Flexbox Styling directive for 'layout'
+ * FlexBox styling directive for 'layout'
  */
 @Directive({
   selector: '[layout]'
 })
-export class LayoutDirective extends StyleBaseDirective implements OnChanges{
-  @Input()
-  layout : string = 'row';
+export class LayoutDirective extends BaseStyleDirective implements OnChanges {
+  /**
+   * Create Observable for nested/child 'flex' directives. This allows
+   * child flex directives to subscribe/listen for flexbox direction changes.
+   */
+  private _layout: BehaviorSubject<string> = new BehaviorSubject<string>(this.layout);
+  public onLayoutChange: Observable<string> = this._layout.asObservable();
+
+  @Input() layout = 'row';
 
   constructor(public elRef: ElementRef, public renderer: Renderer) {
-    super(elRef, renderer)
+    super(elRef, renderer);
   }
 
   // *********************************************
@@ -34,6 +41,9 @@ export class LayoutDirective extends StyleBaseDirective implements OnChanges{
   ngOnChanges( changes:SimpleChanges ) {
     let direction = (this.layout === 'column') ? 'column':'row';
     this._updateStyle(this._buildCSS(direction));
+
+    // Announce to subscribers a layout direction change
+    this._layout.next(direction);
   }
 
   // *********************************************
@@ -72,7 +82,7 @@ export class LayoutDirective extends StyleBaseDirective implements OnChanges{
 @Directive({
   selector: '[layout-wrap]'
 })
-export class LayoutWrapDirective extends StyleBaseDirective implements OnChanges{
+export class LayoutWrapDirective extends BaseStyleDirective implements OnChanges{
   @Input('layout-wrap')
   wrap : string = 'wrap';
 
@@ -100,12 +110,12 @@ export class LayoutWrapDirective extends StyleBaseDirective implements OnChanges
       'flex-wrap' : this._validateValue(value)
     });
   }
-  
+
   /**
    * Convert layout-wrap="<value>" to expected flex-wrap style
    */
   _validateValue( value ) {
-    switch(value) {
+    switch(value.toLowerCase()) {
 
       case "reverse":
       case "wrap-reverse":

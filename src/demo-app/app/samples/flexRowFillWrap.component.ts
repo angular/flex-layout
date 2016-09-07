@@ -10,7 +10,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
   ],
   template: `
     <p>Using layout-wrap to row items with layout="row"</p>        
-    <div layout="row" layout-wrap class="colored wrapped" >
+    <div [layout]="direction" layout-wrap class="colored wrapped" (click)="toggleDirection()">
     
       <div flex="30"> [flex="30"] </div>
       <div flex="45"> [flex="45"] </div>
@@ -24,4 +24,13 @@ import {Component, ViewEncapsulation} from '@angular/core';
   `,
   encapsulation: ViewEncapsulation.None,
 })
-export class flexRowFillWrapComponent  { }
+export class flexRowFillWrapComponent  {
+  direction = "row";
+
+  /**
+   *
+   */
+  toggleDirection() {
+    this.direction = (this.direction === "row") ? "column" : "row";
+  }
+}
