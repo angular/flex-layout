@@ -3,12 +3,12 @@ import {Component, ViewEncapsulation} from '@angular/core';
 @Component({
   selector: 'flex-row-fill',
   template: `
-    <div layout="row" class="colored" >
+    <div [layout]="direction" (click)="toggleDirection()" class="colored" style="height:200px;">
       <div flex="20">
         flex="20"
       </div>
-      <div flex="70">
-        flex="70"
+      <div flex="60">
+        flex="60"
       </div>
       <div flex >
         flex
@@ -17,4 +17,13 @@ import {Component, ViewEncapsulation} from '@angular/core';
   `,
   encapsulation: ViewEncapsulation.None,
 })
-export class FlexRowFillComponent  { }
+export class FlexRowFillComponent  {
+  direction = 'row';
+
+  /**
+   *
+   */
+  toggleDirection() {
+    this.direction = (this.direction === "row") ? "column" : "row";
+  }
+}

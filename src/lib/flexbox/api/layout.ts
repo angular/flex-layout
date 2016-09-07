@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 import { BaseStyleDirective } from "./_styleDirective";
-import {Observable, Subject, BehaviorSubject} from "rxjs";
+import {Observable, BehaviorSubject} from "rxjs";
 
 // ************************************************************
 // Private static variables

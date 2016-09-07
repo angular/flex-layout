@@ -1,5 +1,5 @@
 import {Renderer, ElementRef} from "@angular/core";
-import modernizer from '../utils/modernizer';
+import modernizer from '../../utils/modernizer';
 
 export type StyleUpdateFn = (key:string|Object, value?:string) => void;
 

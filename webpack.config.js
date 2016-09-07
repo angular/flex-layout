@@ -15,9 +15,9 @@ module.exports = {
      */
     entry: {
 
-      'polyfills': './src/browser/polyfills.ts',
-      'vendor':    './src/browser/vendor.ts',
-      'main':      './src/browser/main.ts'
+      'polyfills': './src/demo-app/browser/polyfills.ts',
+      'vendor':    './src/demo-app/browser/vendor.ts',
+      'main':      './src/demo-app/browser/main.ts'
 
     },
 

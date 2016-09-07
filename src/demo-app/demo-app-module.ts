@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { LayoutsModule } from "../lib/all/all";
+import { LayoutsModule } from "../lib/flexbox/all";
 
 import { DemoAppComponent } from './app/demo-app.component';
 import { SimpleRowColumnComponent } from './app/samples/simpleRowColumn';
