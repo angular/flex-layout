@@ -6,8 +6,8 @@ import { NgFlexModule } from './api/flex';
 
 
 const LAYOUTS_MODULES = [
-   NgLayoutModule,
-   NgFlexModule
+  NgLayoutModule,
+  NgFlexModule
 ];
 
 @NgModule({

@@ -23,6 +23,10 @@ div {
   margin-top: 40px;
 }
 
+.colorNested, .colored {
+  height:200px;
+}
+
 div.colorNested > div > div {
   padding: 8px;
   box-shadow: 0px 2px 5px 0 rgba(52, 47, 51, 0.63);

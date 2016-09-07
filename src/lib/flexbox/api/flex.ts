@@ -1,12 +1,12 @@
 import {
   NgModule,
   Directive, Input, ElementRef, Renderer,
-  SimpleChanges, OnChanges, Optional
+  SimpleChanges, OnChanges, Optional, OnDestroy
 } from '@angular/core';
 
 import { BaseStyleDirective } from "./_styleDirective";
 import {LayoutDirective} from "./layout";
-
+import {Subscription} from "rxjs";
 
 
 /**
@@ -15,18 +15,22 @@ import {LayoutDirective} from "./layout";
 @Directive({
   selector:'[flex]',
 })
-export class FlexDirective extends BaseStyleDirective implements OnChanges {
-    @Input() shrink:number = 1;
-    @Input() grow:number = 1;
-    @Input() flex:string;
+export class FlexDirective extends BaseStyleDirective implements OnChanges, OnDestroy {
+  private _layout = 'row';   // default flex-direction
+  private _layoutWatcher : Subscription;
 
-    private _layout = 'row';   // default flex-direction
+  @Input() shrink:number = 1;
+  @Input() grow:number = 1;
+  @Input() flex:string;
 
   constructor(@Optional() public container:LayoutDirective, public elRef: ElementRef, public renderer: Renderer) {
     super(elRef, renderer);
 
-    // Subscribe to layout parent direction changes
-    container.onLayoutChange.subscribe(this._onLayoutChange.bind(this));
+    if (container) {
+      // Subscribe to layout parent direction changes
+      // @TODO - the element with the Layout directive must be an immediate parent.
+      this._layoutWatcher = container.onLayoutChange.subscribe(this._onLayoutChange.bind(this));
+    }
 
   }
 
@@ -34,8 +38,15 @@ export class FlexDirective extends BaseStyleDirective implements OnChanges {
   // Lifecycle Methods
   // *********************************************
 
+  /**
+   * For any @Input changes, delegate to the onLayoutChange()
+   */
   ngOnChanges( changes?:SimpleChanges ) {
     this._onLayoutChange(this._layout);
+  }
+
+  ngOnDestroy(){
+    this._layoutWatcher.unsubscribe();
   }
 
   // *********************************************

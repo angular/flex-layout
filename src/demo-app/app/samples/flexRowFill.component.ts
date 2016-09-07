@@ -3,7 +3,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 @Component({
   selector: 'flex-row-fill',
   template: `
-    <div [layout]="direction" (click)="toggleDirection()" class="colored" style="height:200px;">
+    <div [layout]="direction" (click)="toggleDirection()" class="colored" >
       <div flex="20">
         flex="20"
       </div>

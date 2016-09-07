@@ -4,7 +4,6 @@ import {Component, ViewEncapsulation} from '@angular/core';
   selector: 'flex-row-fill-wrap',
   styles : [
     `.wrapped {
-        height:128px;
         line-height: 22px;
     }`
   ],
