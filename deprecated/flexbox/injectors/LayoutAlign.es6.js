@@ -40,60 +40,32 @@ class LayoutAlign extends AbstractInjector {
     * Build the CSS that should be assigned to the element instance
     */
    _buildCSS(value) {
-     let overrides = { };
+     let css = { };
      let [ main_axis, cross_axis ] = value.split(" ");
 
-     overrides['justify-content'] = "start";     // default
-     overrides['align-items']     = "stretch";   // default
-     overrides['align-content']   = "stretch";   // default
+     css['align-items']     = "stretch";   // default
+     css['justify-content'] = "start";     // default
+     css['align-content']   = "stretch";   // default
 
      // Main axis
      switch( main_axis ){
-       case "start":
-         overrides['justify-content'] = "start";
-         break;
-
-       case "center":
-         overrides['justify-content'] = "center";
-         break;
-
-       case "end":
-         overrides['justify-content'] = "flex-end";
-         break;
-
-       case "space-around":
-         overrides['justify-content'] = "space-around";
-         break;
-
-       case "space-between":
-         overrides['justify-content'] = "space-between";
-         break;
+       case "start"         : css['justify-content'] = "start";         break;
+       case "center"        : css['justify-content'] = "center";        break;
+       case "end"           : css['justify-content'] = "flex-end";      break;
+       case "space-around"  : css['justify-content'] = "space-around";  break;
+       case "space-between" : css['justify-content'] = "space-between"; break;
      }
 
      // Cross-axis
      switch( cross_axis ){
-        case "start" :
-          overrides['align-items'] = overrides['align-content'] = "flex-start";
-          break;
-
-       case "center" :
-         overrides['align-items'] = overrides['align-content'] = "center";
-         break;
-
-       case "end" :
-         overrides['align-items'] = overrides['align-content'] = "flex-end";
-         break;
-
-       case "stretch" :
-         overrides['align-items'] = overrides['align-content'] = "stretch";   // default
-         break;
-
-       case "baseline" :
-         overrides['align-items'] = "baseline";
-         break;
+        case "start"   : css['align-items'] = css['align-content'] = "flex-start";   break;
+        case "center"  : css['align-items'] = css['align-content'] = "center";       break;
+        case "end"     : css['align-items'] = css['align-content'] = "flex-end";     break;
+        case "stretch" : css['align-items'] = css['align-content'] = "stretch";      break; //default
+        case "baseline": css['align-items'] = "baseline";                            break;
      }
 
-     return this.modernizr(overrides);
+     return this.modernizr(css);
    }
 
    /**

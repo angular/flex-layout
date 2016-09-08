@@ -9,7 +9,7 @@ export type StyleUpdateFn = (key:string|Object, value?:string) => void;
 export class BaseStyleDirective {
 
   // Initialize to no-op
-  public _updateStyle : StyleUpdateFn = (key:string|Object, value?:string) => { };
+  protected _updateStyle : StyleUpdateFn = (key:string|Object, value?:string) => { };
 
   constructor(elRef: ElementRef, renderer: Renderer) {
     this._updateStyle = this._buildUpdater(elRef, renderer);

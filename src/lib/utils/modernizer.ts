@@ -45,9 +45,15 @@ export default function modernizr(target) {
       case 'align-items' :
         target['-ms-flex-align']           = value;
         target['-webkit-align-items']      = value;
+        target['-webkit-box-align']        = toBoxAlign(value);
         break;
     }
   }
 
   return target;
+}
+
+function toBoxAlign(value) {
+  return (value == 'flex-start)') ? 'start' :
+         (value == 'flex-end)')   ? 'end'   : value;
 }
