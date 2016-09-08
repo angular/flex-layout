@@ -8,7 +8,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
     }`
   ],
   template: `
-    <p>Using layout-wrap to row items with layout="row"</p>        
+    <p>Using layout-wrap to wrap items with layout="row"</p>        
     <div [layout]="direction" layout-wrap class="colored wrapped" (click)="toggleDirection()">
     
       <div flex="30"> [flex="30"] </div>
