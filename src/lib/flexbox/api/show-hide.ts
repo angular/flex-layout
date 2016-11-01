@@ -19,7 +19,7 @@ const FALSY = [ "false", "0", false,  0];
  *
  */
 @Directive({
-  selector: '[ng-show]'
+  selector: '[fl-show]'
 })
 export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
 
@@ -36,21 +36,21 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    * Default layout property with default visible === true
    */
-  @Input('ng-show')        show = true;
+  @Input('fl-show')        show = true;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-show.xs')     showXs;
-  @Input('ng-show.gt-xs')  showGtXs;
-  @Input('ng-show.sm')     showSm;
-  @Input('ng-show.gt-sm')  showGtSm;
-  @Input('ng-show.md')     showMd;
-  @Input('ng-show.gt-md')  showGtMd;
-  @Input('ng-show.lg')     showLg;
-  @Input('ng-show.gt-lg')  showGtLg;
-  @Input('ng-show.xl')     showXl;
+  @Input('fl-show.xs')     showXs;
+  @Input('fl-show.gt-xs')  showGtXs;
+  @Input('fl-show.sm')     showSm;
+  @Input('fl-show.gt-sm')  showGtSm;
+  @Input('fl-show.md')     showMd;
+  @Input('fl-show.gt-md')  showGtMd;
+  @Input('fl-show.lg')     showLg;
+  @Input('fl-show.gt-lg')  showGtLg;
+  @Input('fl-show.xl')     showXl;
 
   /**
    *
@@ -65,7 +65,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('ng-show')
+   * Default to use the non-responsive Input value ('fl-show')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges( changes:SimpleChanges ) {
@@ -143,7 +143,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
  *
  */
 @Directive({
-  selector: '[ng-hide]'
+  selector: '[fl-hide]'
 })
 export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -159,21 +159,21 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    * Default layout property with default visible === true
    */
-  @Input('ng-hide')        hide = true;
+  @Input('fl-hide')        hide = true;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-hide.xs')     hideXs;
-  @Input('ng-hide.gt-xs')  hideGtXs;
-  @Input('ng-hide.sm')     hideSm;
-  @Input('ng-hide.gt-sm')  hideGtSm;
-  @Input('ng-hide.md')     hideMd;
-  @Input('ng-hide.gt-md')  hideGtMd;
-  @Input('ng-hide.lg')     hideLg;
-  @Input('ng-hide.gt-lg')  hideGtLg;
-  @Input('ng-hide.xl')     hideXl;
+  @Input('fl-hide.xs')     hideXs;
+  @Input('fl-hide.gt-xs')  hideGtXs;
+  @Input('fl-hide.sm')     hideSm;
+  @Input('fl-hide.gt-sm')  hideGtSm;
+  @Input('fl-hide.md')     hideMd;
+  @Input('fl-hide.gt-md')  hideGtMd;
+  @Input('fl-hide.lg')     hideLg;
+  @Input('fl-hide.gt-lg')  hideGtLg;
+  @Input('fl-hide.xl')     hideXl;
 
   /**
    *
@@ -188,7 +188,7 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('ng-hide')
+   * Default to use the non-responsive Input value ('fl-hide')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges( changes?:SimpleChanges ) {

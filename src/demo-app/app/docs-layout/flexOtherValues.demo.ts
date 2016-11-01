@@ -11,20 +11,20 @@ import {Component} from '@angular/core';
       <md-card-subtitle>Explore impact of non-numerical values for the 'flex' API:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div ng-layout="row" ng-layout-wrap class="colored box nopad" >
-            <div ng-flex="none">     [flex="none"]       </div>
-            <div ng-flex>            [flex]              </div>
-            <div ng-flex="nogrow">   [flex="nogrow"]     </div>
-            <div ng-flex="grow">     [flex="grow"]       </div>
-            <div ng-flex="initial">  [flex="initial"]    </div>
-            <div ng-flex="auto">     [flex="auto"]       </div>
-            <div ng-flex="noshrink"> [flex="noshrink"]   </div>
-            <div ng-flex="0">        [flex="0"]          </div>
+          <div fl-layout="row" fl-layout-wrap class="colored box nopad" >
+            <div fl-flex="none">     [flex="none"]       </div>
+            <div fl-flex>            [flex]              </div>
+            <div fl-flex="nogrow">   [flex="nogrow"]     </div>
+            <div fl-flex="grow">     [flex="grow"]       </div>
+            <div fl-flex="initial">  [flex="initial"]    </div>
+            <div fl-flex="auto">     [flex="auto"]       </div>
+            <div fl-flex="noshrink"> [flex="noshrink"]   </div>
+            <div fl-flex="0">        [flex="0"]          </div>
           </div>          
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt; ng-layout = "row" ng-layout-wrap &gt;</div>
+        <div class="hint">&lt; fl-layout = "row" fl-layout-wrap &gt;</div>
       </md-card-footer>
     </md-card>
   `

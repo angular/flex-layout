@@ -13,14 +13,14 @@ import {BreakPoint} from "../../../lib/media-query/break-points";
       <md-card-subtitle>Use the show hide APIs to responsively show or hide elements:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div ng-layout="row"  class="coloredContainerX box" >
-            <div ng-flex.gt-sm="67" ng-flex="33"> flex 33% on mobile, <br>and 66% on gt-sm devices.  </div>
-            <div ng-flex.gt-sm="33" ng-flex="67"> flex 67%  on mobile, <br>and 33% on gt-sm devices. </div>
+          <div fl-layout="row"  class="coloredContainerX box" >
+            <div fl-flex.gt-sm="67" fl-flex="33"> flex 33% on mobile, <br>and 66% on gt-sm devices.  </div>
+            <div fl-flex.gt-sm="33" fl-flex="67"> flex 67%  on mobile, <br>and 33% on gt-sm devices. </div>
           </div>
         </div>
       </md-card-content>
       <md-card-footer style="width:95%">
-        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+        <div class="hint" >Active mediaQuery: <span style="paddifl-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
       </md-card-footer>      
     </md-card>
   `

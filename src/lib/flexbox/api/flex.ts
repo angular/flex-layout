@@ -16,12 +16,12 @@ import { Subscription } from "rxjs/Subscription";
 
 
 /**
- * FlexBox styling directive for 'ng-flex'
+ * FlexBox styling directive for 'fl-flex'
  * Configures the width/height sizing of the element within a layout container
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({
-  selector:'[ng-flex]',
+  selector:'[fl-flex]',
 
 })
 export class FlexDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
@@ -34,23 +34,23 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   private _layout = 'row';   // default flex-direction
   private _layoutWatcher : Subscription;
 
-  @Input('ng-flex')    flex   :string = "";
-  @Input('ng-shrink')  shrink :number = 1;
-  @Input('ng-grow')    grow   :number = 1;
+  @Input('fl-flex')    flex   :string = "";
+  @Input('fl-shrink')  shrink :number = 1;
+  @Input('fl-grow')    grow   :number = 1;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-flex.xs')     flexXs;
-  @Input('ng-flex.gt-xs')  flexGtXs;
-  @Input('ng-flex.sm')     flexSm;
-  @Input('ng-flex.gt-sm')  flexGtSm;
-  @Input('ng-flex.md')     flexMd;
-  @Input('ng-flex.gt-md')  flexGtMd;
-  @Input('ng-flex.lg')     flexLg;
-  @Input('ng-flex.gt-lg')  flexGtLg;
-  @Input('ng-flex.xl')     flexXl;
+  @Input('fl-flex.xs')     flexXs;
+  @Input('fl-flex.gt-xs')  flexGtXs;
+  @Input('fl-flex.sm')     flexSm;
+  @Input('fl-flex.gt-sm')  flexGtSm;
+  @Input('fl-flex.md')     flexMd;
+  @Input('fl-flex.gt-md')  flexGtMd;
+  @Input('fl-flex.lg')     flexLg;
+  @Input('fl-flex.gt-lg')  flexGtLg;
+  @Input('fl-flex.xl')     flexXl;
 
   /**
    * Note: the optional `layout="column|row"` directive must be PARENT container.
@@ -117,7 +117,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   // ***************************************s******
 
   /**
-   * Cache the parent container 'flex-direction' and update the 'ng-flex' styles
+   * Cache the parent container 'flex-direction' and update the 'fl-flex' styles
    */
   _onLayoutChange(direction?:string) {
     this._layout = direction || this._layout;
@@ -189,7 +189,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
          if ( basis === "0px" )                     basis = "0%";
 
          // Set max-width = basis if using layout-wrap
-         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrapping-flex-items
+         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
          css = Object.assign(clearStyles, {
            'flex' : `${grow} ${shrink} ${ (isPx || this._wrap) ? basis : '100%' }`,     // fix issue #5345
@@ -214,7 +214,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 @Directive({
-  selector:'[ng-flex-order]'
+  selector:'[fl-flex-order]'
 })
 export class FlexOrderDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -222,21 +222,21 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('ng-flex-order') order;
+  @Input('fl-flex-order') order;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-flex-order.xs')     orderXs;
-  @Input('ng-flex-order.gt-xs')  orderGtXs;
-  @Input('ng-flex-order.sm')     orderSm;
-  @Input('ng-flex-order.gt-sm')  orderGtSm;
-  @Input('ng-flex-order.md')     orderMd;
-  @Input('ng-flex-order.gt-md')  orderGtMd;
-  @Input('ng-flex-order.lg')     orderLg;
-  @Input('ng-flex-order.gt-lg')  orderGtLg;
-  @Input('ng-flex-order.xl')     orderXl;
+  @Input('fl-flex-order.xs')     orderXs;
+  @Input('fl-flex-order.gt-xs')  orderGtXs;
+  @Input('fl-flex-order.sm')     orderSm;
+  @Input('fl-flex-order.gt-sm')  orderGtSm;
+  @Input('fl-flex-order.md')     orderMd;
+  @Input('fl-flex-order.gt-md')  orderGtMd;
+  @Input('fl-flex-order.lg')     orderLg;
+  @Input('fl-flex-order.gt-lg')  orderGtLg;
+  @Input('fl-flex-order.xl')     orderXl;
 
   constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
@@ -301,7 +301,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
  * Configures the 'margin-left' of the element in a layout container
  */
 @Directive({
-  selector:'[ng-flex-offset]'
+  selector:'[fl-flex-offset]'
 })
 export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -309,21 +309,21 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('ng-flex-offset')       offset:string|number;
+  @Input('fl-flex-offset')       offset:string|number;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-flex-offset.xs')     offsetXs   :string|number;
-  @Input('ng-flex-offset.gt-xs')  offsetGtXs :string|number;
-  @Input('ng-flex-offset.sm')     offsetSm   :string|number;
-  @Input('ng-flex-offset.gt-sm')  offsetGtSm :string|number;
-  @Input('ng-flex-offset.md')     offsetMd   :string|number;
-  @Input('ng-flex-offset.gt-md')  offsetGtMd :string|number;
-  @Input('ng-flex-offset.lg')     offsetLg   :string|number;
-  @Input('ng-flex-offset.gt-lg')  offsetGtLg :string|number;
-  @Input('ng-flex-offset.xl')     offsetXl   :string|number;
+  @Input('fl-flex-offset.xs')     offsetXs   :string|number;
+  @Input('fl-flex-offset.gt-xs')  offsetGtXs :string|number;
+  @Input('fl-flex-offset.sm')     offsetSm   :string|number;
+  @Input('fl-flex-offset.gt-sm')  offsetGtSm :string|number;
+  @Input('fl-flex-offset.md')     offsetMd   :string|number;
+  @Input('fl-flex-offset.gt-md')  offsetGtMd :string|number;
+  @Input('fl-flex-offset.lg')     offsetLg   :string|number;
+  @Input('fl-flex-offset.gt-lg')  offsetGtLg :string|number;
+  @Input('fl-flex-offset.xl')     offsetXl   :string|number;
 
   constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
@@ -391,7 +391,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
 @Directive({
-  selector: '[ng-flex-align]'
+  selector: '[fl-flex-align]'
 })
 export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -399,21 +399,21 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('ng-flex-align') align : string = "stretch";    // default
+  @Input('fl-flex-align') align : string = "stretch";    // default
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-flex-align.xs')     alignXs;
-  @Input('ng-flex-align.gt-xs')  alignGtXs;
-  @Input('ng-flex-align.sm')     alignSm;
-  @Input('ng-flex-align.gt-sm')  alignGtSm;
-  @Input('ng-flex-align.md')     alignMd;
-  @Input('ng-flex-align.gt-md')  alignGtMd;
-  @Input('ng-flex-align.lg')     alignLg;
-  @Input('ng-flex-align.gt-lg')  alignGtLg;
-  @Input('ng-flex-align.xl')     alignXl;
+  @Input('fl-flex-align.xs')     alignXs;
+  @Input('fl-flex-align.gt-xs')  alignGtXs;
+  @Input('fl-flex-align.sm')     alignSm;
+  @Input('fl-flex-align.gt-sm')  alignGtSm;
+  @Input('fl-flex-align.md')     alignMd;
+  @Input('fl-flex-align.gt-md')  alignGtMd;
+  @Input('fl-flex-align.lg')     alignLg;
+  @Input('fl-flex-align.gt-lg')  alignGtLg;
+  @Input('fl-flex-align.xl')     alignXl;
 
 
   constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
@@ -482,13 +482,13 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
 }
 
 /**
- * 'ng-flex-fill' flexbox styling directive
+ * 'fl-flex-fill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
  *
- *  NOTE: [ng-flexFill] is NOT responsive ng-flex
+ *  NOTE: [fl-flexFill] is NOT responsive fl-flex
  */
 @Directive({
-  selector: '[ng-flex-fill]'
+  selector: '[fl-flex-fill]'
 })
 export class FlexFillDirective extends BaseStyleDirective {
   constructor(public elRef: ElementRef, public renderer: Renderer) {

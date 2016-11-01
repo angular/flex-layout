@@ -23,7 +23,7 @@ import { isDefined } from '../../utils/global';
  *
  */
 @Directive({
-  selector: '[ng-layout]'
+  selector: '[fl-layout]'
 })
 export class LayoutDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -46,21 +46,21 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
   /**
    * Default layout property with default direction value
    */
-  @Input('ng-layout')        layout = 'row';
+  @Input('fl-layout')        layout = 'row';
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-layout.xs')     layoutXs;
-  @Input('ng-layout.gt-xs')  layoutGtXs;
-  @Input('ng-layout.sm')     layoutSm;
-  @Input('ng-layout.gt-sm')  layoutGtSm;
-  @Input('ng-layout.md')     layoutMd;
-  @Input('ng-layout.gt-md')  layoutGtMd;
-  @Input('ng-layout.lg')     layoutLg;
-  @Input('ng-layout.gt-lg')  layoutGtLg;
-  @Input('ng-layout.xl')     layoutXl;
+  @Input('fl-layout.xs')     layoutXs;
+  @Input('fl-layout.gt-xs')  layoutGtXs;
+  @Input('fl-layout.sm')     layoutSm;
+  @Input('fl-layout.gt-sm')  layoutGtSm;
+  @Input('fl-layout.md')     layoutMd;
+  @Input('fl-layout.gt-md')  layoutGtMd;
+  @Input('fl-layout.lg')     layoutLg;
+  @Input('fl-layout.gt-lg')  layoutGtLg;
+  @Input('fl-layout.xl')     layoutXl;
 
   /**
    *
@@ -75,7 +75,7 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('ng-layout')
+   * Default to use the non-responsive Input value ('fl-layout')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges( changes:SimpleChanges ) {
@@ -163,7 +163,7 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({
-  selector: '[ng-layout-wrap]'
+  selector: '[fl-layout-wrap]'
 })
 export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -171,21 +171,21 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('ng-layout-wrap')        wrap : string = 'wrap';
+  @Input('fl-layout-wrap')        wrap : string = 'wrap';
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-layout-wrap.xs')     wrapXs;
-  @Input('ng-layout-wrap.gt-xs')  wrapGtXs;
-  @Input('ng-layout-wrap.sm')     wrapSm;
-  @Input('ng-layout-wrap.gt-sm')  wrapGtSm;
-  @Input('ng-layout-wrap.md')     wrapMd;
-  @Input('ng-layout-wrap.gt-md')  wrapGtMd;
-  @Input('ng-layout-wrap.lg')     wrapLg;
-  @Input('ng-layout-wrap.gt-lg')  wrapGtLg;
-  @Input('ng-layout-wrap.xl')     wrapXl;
+  @Input('fl-layout-wrap.xs')     wrapXs;
+  @Input('fl-layout-wrap.gt-xs')  wrapGtXs;
+  @Input('fl-layout-wrap.sm')     wrapSm;
+  @Input('fl-layout-wrap.gt-sm')  wrapGtSm;
+  @Input('fl-layout-wrap.md')     wrapMd;
+  @Input('fl-layout-wrap.gt-md')  wrapGtMd;
+  @Input('fl-layout-wrap.lg')     wrapLg;
+  @Input('fl-layout-wrap.gt-lg')  wrapGtLg;
+  @Input('fl-layout-wrap.xl')     wrapXl;
 
   constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer)
@@ -285,7 +285,7 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({
-  selector:'[ng-layout-align]'
+  selector:'[fl-layout-align]'
 })
 export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
   /**
@@ -296,21 +296,21 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
   private _layout = 'row';   // default flex-direction
   private _layoutWatcher : Subscription;
 
-  @Input('ng-layout-align') align : string = "start stretch";
+  @Input('fl-layout-align') align : string = "start stretch";
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('ng-layout-align.xs')     alignXs;
-  @Input('ng-layout-align.gt-xs')  alignGtXs;
-  @Input('ng-layout-align.sm')     alignSm;
-  @Input('ng-layout-align.gt-sm')  alignGtSm;
-  @Input('ng-layout-align.md')     alignMd;
-  @Input('ng-layout-align.gt-md')  alignGtMd;
-  @Input('ng-layout-align.lg')     alignLg;
-  @Input('ng-layout-align.gt-lg')  alignGtLg;
-  @Input('ng-layout-align.xl')     alignXl;
+  @Input('fl-layout-align.xs')     alignXs;
+  @Input('fl-layout-align.gt-xs')  alignGtXs;
+  @Input('fl-layout-align.sm')     alignSm;
+  @Input('fl-layout-align.gt-sm')  alignGtSm;
+  @Input('fl-layout-align.md')     alignMd;
+  @Input('fl-layout-align.gt-md')  alignGtMd;
+  @Input('fl-layout-align.lg')     alignLg;
+  @Input('fl-layout-align.gt-lg')  alignGtLg;
+  @Input('fl-layout-align.xl')     alignXl;
 
   constructor(@Optional() public container:LayoutDirective, private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);

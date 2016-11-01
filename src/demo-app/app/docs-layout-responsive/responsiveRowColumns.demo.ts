@@ -14,35 +14,35 @@ import { MediaQueries } from '../../../lib/media-query/';
       <md-card-content>
         <div class="containerX">
             
-            <div class="colorNested box" ng-layout="row" *ngIf="isVisible">
-              <div  [ng-layout]="firstCol" 
-                    [ng-layout.xs]="firstColXs" 
-                    [ng-layout.md]="firstColMd" 
-                    [ng-layout.lg]="firstColLg"  
-                    [ng-layout.gt-lg]="firstColGtLg" 
-                    ng-flex="50%" 
-                    ng-flex.gt-sm="25"
-                    ng-show="true"
-                    ng-show.md="false" 
+            <div class="colorNested box" fl-layout="row" *ngIf="isVisible">
+              <div  [fl-layout]="firstCol" 
+                    [fl-layout.xs]="firstColXs" 
+                    [fl-layout.md]="firstColMd" 
+                    [fl-layout.lg]="firstColLg"  
+                    [fl-layout.gt-lg]="firstColGtLg" 
+                    fl-flex="50%" 
+                    fl-flex.gt-sm="25"
+                    fl-show="true"
+                    fl-show.md="false" 
                     (click)="toggleLayoutFor(1)" >
-                <div ng-flex>Col #1: First item in row</div>
-                <div ng-flex>Col #1: Second item in row</div>
+                <div fl-flex>Col #1: First item in row</div>
+                <div fl-flex>Col #1: Second item in row</div>
               </div>
-              <div [ng-layout]="secondCol" ng-flex (click)="toggleLayoutFor(2)">
-                <div ng-flex>Col #2: First item in column</div>
-                <div ng-flex>Col #2: Second item in column</div>
+              <div [fl-layout]="secondCol" fl-flex (click)="toggleLayoutFor(2)">
+                <div fl-flex>Col #2: First item in column</div>
+                <div fl-flex>Col #2: Second item in column</div>
               </div>
             </div>
         </div>
       </md-card-content>
-      <!--<md-card-actions ng-layout="row" ng-layout-align="center">-->
+      <!--<md-card-actions fl-layout="row" fl-layout-align="center">-->
         <!--<button md-raised-button (click)="isVisible = !isVisible">{{ isVisible ? 'Remove' : 'Show' }}</button>-->
       <!--</md-card-actions>-->
       <md-card-footer style="width:95%">
-         <div ng-layout="row" class="hint" ng-layout-align="space-around" > 
-            <div>&lt; ng-layout="{{ firstCol }}" ng-flex="50%" ng-flex.gt-sm="25%" ng-show.md="false" &gt;</div>
-            <div ng-flex></div>
-            <div>&lt;div ng-layout="{{ secondCol }}" ng-flex&gt;</div>
+         <div fl-layout="row" class="hint" fl-layout-align="space-around" > 
+            <div>&lt; fl-layout="{{ firstCol }}" fl-flex="50%" fl-flex.gt-sm="25%" fl-show.md="false" &gt;</div>
+            <div fl-flex></div>
+            <div>&lt;div fl-layout="{{ secondCol }}" fl-flex&gt;</div>
          </div>
       </md-card-footer>
     </md-card>

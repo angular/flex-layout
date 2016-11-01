@@ -13,26 +13,26 @@ import {BreakPoint} from "../../../lib/media-query/break-points";
       <md-card-subtitle>Add the flex-order directive to a layout child to set its order position within the layout container:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div ng-layout="row"  class="coloredContainerX box" >
-            <div ng-flex ng-flex-order="-1">
+          <div fl-layout="row"  class="coloredContainerX box" >
+            <div fl-flex fl-flex-order="-1">
               <p>[flex-order="-1"]</p>
             </div>
-            <div ng-flex ng-flex-order="1" ng-flex-order.gt-md="3">
-              <p ng-hide="false" ng-hide.gt-md>   [flex-order="1"]        </p>
-              <p ng-show="false" ng-show.gt-md>   [flex-order.gt-md="3"]  </p>
+            <div fl-flex fl-flex-order="1" fl-flex-order.gt-md="3">
+              <p fl-hide="false" fl-hide.gt-md>   [flex-order="1"]        </p>
+              <p fl-show="false" fl-show.gt-md>   [flex-order.gt-md="3"]  </p>
             </div>
-            <div ng-flex ng-flex-order="2">
+            <div fl-flex fl-flex-order="2">
               <p>[flex-order="2"]</p>
             </div>
-            <div ng-flex ng-flex-order="3" ng-flex-order.gt-md="1">
-              <p ng-hide="false" ng-hide.gt-md>   [flex-order="3"]        </p>
-              <p ng-show="false" ng-show.gt-md>   [flex-order.gt-md="1"]  </p>
+            <div fl-flex fl-flex-order="3" fl-flex-order.gt-md="1">
+              <p fl-hide="false" fl-hide.gt-md>   [flex-order="3"]        </p>
+              <p fl-show="false" fl-show.gt-md>   [flex-order.gt-md="1"]  </p>
             </div>
           </div>          
         </div>
       </md-card-content>
       <md-card-footer style="width:95%">
-        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+        <div class="hint" >Active mediaQuery: <span style="paddifl-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
       </md-card-footer>      
     </md-card>
   `

@@ -27,4 +27,4 @@ import 'zone.js/dist/zone';
 import 'ts-helpers';
 
 Error.stackTraceLimit = Infinity;
-require('zone.js/dist/long-stack-trace-zone');
+require('zone.js/dist/lofl-stack-trace-zone');

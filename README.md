@@ -35,8 +35,8 @@ Use the following Terminal command(s) to start the WebPack server and launch the
 non-responsive and responsive demos:
 
 ```
-npm update
-npm run start	
+npm install
+npm run start 
 ```
 
 ----
@@ -51,6 +51,29 @@ npm install @angular/layouts -save
 
 
 > Note: This ^ feature is pending public release of the Github repository!
+
+
+---
+
+#### Build Instructions
+
+
+Use Gulp and Rollup to build a UMD `layouts.umd.js`:
+
+```console
+gulp build:components
+```
+
+To use the bundle and the required, external AngularJS framework:
+
+```html
+<script src="/dist/@angular/layouts/layouts.umd.js"></script>
+
+
+```
+
+<br/>
+
 
 ----
 
@@ -76,14 +99,14 @@ In their component templates, developers easily use the Layout API to build
 complex, dynamic layouts:
 
 ```html
-<div ng-layout="row">
-  <div [ng-layout]="firstCol" [ng-flex]="firstColWidth" >
-    <div ng-flex="27%"> First item in row  </div>
-    <div ng-flex      > Second item in row </div>
+<div fl-layout="row">
+  <div [fl-layout]="firstCol" [fl-flex]="firstColWidth" >
+    <div fl-flex="27%"> First item in row  </div>
+    <div fl-flex      > Second item in row </div>
   </div>
-  <div [ng-layout]="secondCol" flex >
-    <div ng-flex       > First item in column  </div>
-    <div ng-flex="33px"> Second item in column </div>
+  <div [fl-layout]="secondCol" flex >
+    <div fl-flex       > First item in column  </div>
+    <div fl-flex="33px"> Second item in column </div>
   </div>
 </div>
 ``` 
@@ -98,29 +121,29 @@ can be used on HTML containers and elements:
 
 | HTML Markup API | Allowed values (raw or interpolated) |
 |-----------------|----------------------------------------------------------------------------|
-|  ng-layout         | `row | column | row-reverse | column-reverse`                                                          |                  
-|  ng-layout-wrap    | `"" | wrap | none | nowrap | reverse`                                     |                   
-|  ng-layout-align   | `start|center|end|space-around|space-between` `start|center|end|stretch`|                   
-|  ng-flex           | "" , px , %                                                              |              
-|  ng-flex-fill      |                                                                            |
-|  ng-flex-order     | int                                                                        |                       
-|  ng-flex-offset    | %, px                                                                         |     
-|  ng-flex-align     | `start|baseline|center|end` |                   
+|  fl-layout         | `row | column | row-reverse | column-reverse`                                                          |                  
+|  fl-layout-wrap    | `"" | wrap | none | nowrap | reverse`                                     |                   
+|  fl-layout-align   | `start|center|end|space-around|space-between` `start|center|end|stretch`|                   
+|  fl-flex           | "" , px , %                                                              |              
+|  fl-flex-fill      |                                                                            |
+|  fl-flex-order     | int                                                                        |                       
+|  fl-flex-offset    | %, px                                                                         |     
+|  fl-flex-align     | `start|baseline|center|end` |                   
 
 Static Markup Example:
 
 ```html
-<div ng-layout='column' class="zero">
+<div fl-layout='column' class="zero">
 
-  <div ng-flex="33" class="one" ></div>
-  <div ng-flex="33" ng-layout="{{ vm.direction }}" class="two">
+  <div fl-flex="33" class="one" ></div>
+  <div fl-flex="33" fl-layout="{{ vm.direction }}" class="two">
 
-    <div ng-flex="22"    class="two_one"></div>
-    <div ng-flex="205"   class="two_two"></div>
-    <div ng-flex="30px"  class="two_three"></div>
+    <div fl-flex="22"    class="two_one"></div>
+    <div fl-flex="205"   class="two_two"></div>
+    <div fl-flex="30px"  class="two_three"></div>
 
   </div>
-  <div ng-flex class="three"></div>
+  <div fl-flex class="three"></div>
 
 </div>
 ```
@@ -159,17 +182,17 @@ simple markup convention: the `alias` is used as suffix extensions to the Layout
 Below is an example usage of the Responsive Layout API:
 
 ```html
-<div ng-layout='column' class="zero">
+<div fl-layout='column' class="zero">
 
-  <div ng-flex="33" ng-flex.md="{{ vm.box1Width }}" class="one" ></div>
-  <div ng-flex="33" ng-layout="{{ vm.direction }}" layout.md="row" class="two">
+  <div fl-flex="33" fl-flex.md="{{ vm.box1Width }}" class="one" ></div>
+  <div fl-flex="33" fl-layout="{{ vm.direction }}" layout.md="row" class="two">
 
-    <div ng-flex="22"    ng-flex.md="10px" hide.lg                       class="two_one"></div>
-    <div ng-flex="205"   ng-flex.md="65"                                 class="two_two"></div>
-    <div ng-flex="30px"  ng-show hide.md="{{ hideBox }}" ng-flex.md="25" class="two_three"></div>
+    <div fl-flex="22"    fl-flex.md="10px" hide.lg                       class="two_one"></div>
+    <div fl-flex="205"   fl-flex.md="65"                                 class="two_two"></div>
+    <div fl-flex="30px"  fl-show hide.md="{{ hideBox }}" fl-flex.md="25" class="two_three"></div>
 
   </div>
-  <div ng-flex class="three"></div>
+  <div fl-flex class="three"></div>
 
 </div>
 ```
@@ -185,22 +208,22 @@ independent of Angular Material yet can be used easily within any Material 2 app
 The Layout API directives are used to create DOM element style injectors which inject specific, custom Flexbox 
 CSS directly as inline styles onto the DOM element. 
 
-For example, consider the use of the `ng-layout="row"` and `ng-layout-align="center center"` directives.
+For example, consider the use of the `fl-layout="row"` and `fl-layout-align="center center"` directives.
 
 Static Markup:
 
 ```html
-<div ng-layout="{{vm.direction}}" ng-layout-align="center center">
-	<div>one</div>
-	<div>two</div>
-	<div>three</div>
+<div fl-layout="{{vm.direction}}" fl-layout-align="center center">
+  <div>one</div>
+  <div>two</div>
+  <div>three</div>
 </div>
 ```
 
 is transformed with inline, injected styles:
 
 ```html
-<div ng-layout="row" ng-layout-align="center center"
+<div fl-layout="row" fl-layout-align="center center"
       style="display: flex; flex-direction: row; max-width: 100%; box-sizing: border-box; justify-content: center; align-content: center; align-items: center;">
   <div style="max-width: 100%; box-sizing: border-box;">one</div>
   <div style="max-width: 100%; box-sizing: border-box;">two</div>
@@ -216,6 +239,9 @@ is transformed with inline, injected styles:
 
 
 ### User stories 
+
+These user-stories will be detailed in a separate design doc (pending). The current implementation, however, provides 
+features/solutions for all user stories. 
 
 ##### Non-responsive Use Cases:
 
@@ -250,47 +276,6 @@ is transformed with inline, injected styles:
   * Custom set of breakpoints can be defined as a Provider
   * Custom breakpoints will override ALL default breakpoints (no merging)
   
-  
-----
-
-
-#### Summary
-
-Not only is the generation-2 codebase easier to maintain and debug, other more important benefits have been realized:
-
-*  No external CSS requirements
-*  Override provide to supply custom breakpoints
-*  Notifications for breakpoints changes
-  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints
-*  Support (future) for Handset/Tablet and Orientation breakpoints
-*  Support for **ANY** Layout injector value (instead of increments for 5)
-*  Change detection for Layout injector values
-*  MediaQuery Activation detection 
-*  Support for raw values or interpolated values
-*  Support for raw, percentage or px-suffix values
-
-<br/>
-
----
-
-#### Build Instructions
-
-
-Use Gulp and Rollup to build a UMD `layouts.umd.js`:
-
-```console
-gulp build:components
-```
-
-To use the bundle and the required, external AngularJS framework:
-
-```html
-<script src="/dist/@angular/layouts/layouts.umd.js"></script>
-
-
-```
-
-<br/>
 
 ----
 
@@ -302,3 +287,24 @@ provide for UX where  **different components** may be used for different breakpo
 Animations can also be extended to support MediaQuery activations: different animations will run for different viewport sizes.
 
 
+  
+----
+
+
+#### Summary
+
+Compared to the Layout API in Angular Material v1.x, this codebase easier to maintain and debug, other more important benefits have been realized:
+
+*  Independent of Angular Material 
+*  No external CSS requirements
+*  Use provider to supply custom breakpoints
+*  Notifications for breakpoints changes
+  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints
+*  Support (future) for Handset/Tablet and Orientation breakpoints
+*  Support for **ANY** Layout injector value (instead of increments for 5)
+*  Change detection for Layout injector values
+*  MediaQuery Activation detection 
+*  Support for raw values or interpolated values
+*  Support for raw, percentage or px-suffix values
+
+<br/>
