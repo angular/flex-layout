@@ -1,0 +1,34 @@
+{
+  "version": "2.0.0",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "pretty": true,
+    "removeComments": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noEmitHelpers": true
+  },
+  "exclude": [
+    "../node_modules",
+    "../demos",
+    "../deprecated",
+    "../dist",
+    "node_modules",
+    "dist",
+    "deprecated",
+    "demos"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
+    "useWebpackText": true
+  },
+  "compileOnSave": false,
+  "buildOnSave": false
+}

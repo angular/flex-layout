@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "lib": ["es6", "es2015"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../../dist/gulp",
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "es5",
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "inlineSources": true,
+    "stripInternal": true,
+
+    "baseUrl": "",
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
+    "types": [
+      "node"
+    ]
+  }
+}

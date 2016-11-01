@@ -1,0 +1,54 @@
+<md-card class="card-demo" >
+      <md-card-title>Layout Children with 'layout-align'</md-card-title>
+      <md-card-subtitle></md-card-subtitle>
+      <md-card-content>
+        <div class="containerX">
+          <div class="colorNested box" >
+            <div [ng-layout]="direction" [ng-layout-align]="layoutAlign()" style="height: 100%;">
+              <div>one</div>
+              <div>two</div>
+              <div>three</div>
+            </div>
+          </div>
+        </div>
+      </md-card-content>
+      <md-card-actions ng-layout="row" ng-layout-align="center" ng-hide="false" ng-hide.sm ng-hide.xs >
+        <div ng-layout="row" ng-layout.sm="column" ng-layout-align="space-around stretch" class="demo_controls">
+          <div>
+            <div>Layout Direction</div>
+            <md-radio-group [(ngModel)]="direction" ng-layout="column">
+              <md-radio-button value="row">row</md-radio-button>
+              <md-radio-button value="column">column</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div>
+            <div>Alignment in Layout Direction ({{direction == 'row' ? 'horizontal' : 'vertical'}})</div>
+            <md-radio-group name="mainAxisOptions" [(ngModel)]="mainAxis" ng-layout="column">
+              <md-radio-button value="">none</md-radio-button>
+              <md-radio-button value="start">start (default)</md-radio-button>
+              <md-radio-button value="center">center</md-radio-button>
+              <md-radio-button value="end">end</md-radio-button>
+              <md-radio-button value="space-around">space-around</md-radio-button>
+              <md-radio-button value="space-between">space-between</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div>
+            <div>Alignment in Perpendicular Direction ({{direction == 'column' ? 'horizontal' : 'vertical'}})</div>
+            <md-radio-group name="crossAxisOptions"  [(ngModel)]="crossAxis" ng-layout="column">
+              <md-radio-button value="none"><em>none</em></md-radio-button>
+              <md-radio-button value="start">start</md-radio-button>
+              <md-radio-button value="center">center</md-radio-button>
+              <md-radio-button value="end">end</md-radio-button>
+              <md-radio-button value="stretch">stretch (default)</md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
+      </md-card-actions>
+      <md-card-footer style="width:95%;">
+        <div class="hint forceAbove" >
+          &lt; ng-layout = "{{ direction }}
+          <span style="padding-left: 30px">ng-layout-align = "{{ layoutAlign() }}"</span>
+          &gt;
+        </div>
+      </md-card-footer>
+    </md-card>

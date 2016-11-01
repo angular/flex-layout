@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "noEmitOnError": true,
+    "inlineSources": true,
+    "stripInternal": false,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "lib": ["es6", "es2015", "dom"],
+    "mapRoot": "",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "../../dist/",
+    "rootDir": ".",
+    "sourceMap": false,
+    "target": "es5",
+    "baseUrl": "",
+    "paths": {
+      "@angular/layouts": [
+          "../../dist/@angular/layouts"
+      ]
+    },
+    "typeRoots": [
+      "../../node_modules/@types"
+    ],
+    "types": [
+    ]
+  },
+  "exclude": [
+    "**/*.spec.*",
+    "system-config-spec"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "../../dist",
+    "skipTemplateCodegen": true,
+    "debug": true
+  }
+}

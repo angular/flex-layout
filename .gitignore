@@ -1,0 +1,6 @@
+.idea
+jspm_packages/
+node_modules/
+typings/
+dist/
+demos/
