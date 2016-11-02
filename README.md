@@ -136,7 +136,7 @@ Static Markup Example:
 <div fl-layout='column' class="zero">
 
   <div fl-flex="33" class="one" ></div>
-  <div fl-flex="33" fl-layout="{{ vm.direction }}" class="two">
+  <div fl-flex="33" [fl-layout]="direction" class="two">
 
     <div fl-flex="22"    class="two_one"></div>
     <div fl-flex="205"   class="two_two"></div>
@@ -184,12 +184,12 @@ Below is an example usage of the Responsive Layout API:
 ```html
 <div fl-layout='column' class="zero">
 
-  <div fl-flex="33" fl-flex.md="{{ vm.box1Width }}" class="one" ></div>
-  <div fl-flex="33" fl-layout="{{ vm.direction }}" layout.md="row" class="two">
+  <div fl-flex="33" [fl-flex.md]="box1Width" class="one" ></div>
+  <div fl-flex="33" [fl-layout]="direction" layout.md="row" class="two">
 
     <div fl-flex="22"    fl-flex.md="10px" hide.lg                       class="two_one"></div>
     <div fl-flex="205"   fl-flex.md="65"                                 class="two_two"></div>
-    <div fl-flex="30px"  fl-show hide.md="{{ hideBox }}" fl-flex.md="25" class="two_three"></div>
+    <div fl-flex="30px"  [fl-show hide.md]="hideBox" fl-flex.md="25"     class="two_three"></div>
 
   </div>
   <div fl-flex class="three"></div>
@@ -213,7 +213,7 @@ For example, consider the use of the `fl-layout="row"` and `fl-layout-align="cen
 Static Markup:
 
 ```html
-<div fl-layout="{{vm.direction}}" fl-layout-align="center center">
+<div [fl-layout]="direction" fl-layout-align="center center">
   <div>one</div>
   <div>two</div>
   <div>three</div>
@@ -225,9 +225,9 @@ is transformed with inline, injected styles:
 ```html
 <div fl-layout="row" fl-layout-align="center center"
       style="display: flex; flex-direction: row; max-width: 100%; box-sizing: border-box; justify-content: center; align-content: center; align-items: center;">
-  <div style="max-width: 100%; box-sizing: border-box;">one</div>
-  <div style="max-width: 100%; box-sizing: border-box;">two</div>
-  <div style="max-width: 100%; box-sizing: border-box;">three</div>
+  <div>one</div>
+  <div>two</div>
+  <div>three</div>
 </div>
 ```
 
