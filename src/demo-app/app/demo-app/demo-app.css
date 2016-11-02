@@ -131,3 +131,9 @@ div.colored.box.nopad > div {
   margin-left: 15px;
   color: #5c5c5c;
 }
+
+
+.blocks {
+  min-width: 75px;
+  min-height: 50px;
+}

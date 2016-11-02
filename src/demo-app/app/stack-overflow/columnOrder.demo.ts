@@ -11,16 +11,16 @@ import {Component, ViewEncapsulation} from '@angular/core';
     <md-card-title> <a href="http://stackoverflow.com/questions/36988183/flex-box-out-of-borders?rq=1" target="_blank">StackOverflow</a></md-card-title>
     <md-card-subtitle>Complex column ordering to wrap items to align to items above </md-card-subtitle>
     <md-card-content>
-      <div class="containerX" (click)="toggleDirection()" [fl-layout]="direction" fl-layout-wrap>
-        <div class="one   flexitem "                    > 1 <div class="markup">&lt;div fl-flex-order="1"&gt;</div> </div>
-        <div class="two   flexitem "  fl-flex-order="3" > 2 <div class="markup">&lt;div fl-flex-order="3"&gt;</div> </div>
-        <div class="three flexitem "  fl-flex-order="5" > 3 <div class="markup">&lt;div fl-flex-order="5"&gt;</div> </div>
-        <div class="four  flexitem "                    > 4 <div class="markup">&lt;div fl-flex-order="2"&gt;</div> </div>
-        <div class="five  flexitem "  fl-flex-order="4" > 5 <div class="markup">&lt;div fl-flex-order="4"&gt;</div> </div>
+      <div class="containerX" (click)="toggleDirection()" [fx-layout]="direction" fx-layout-wrap>
+        <div class="one   flexitem "                    > 1 <div class="markup">&lt;div fx-flex-order="1"&gt;</div> </div>
+        <div class="two   flexitem "  fx-flex-order="3" > 2 <div class="markup">&lt;div fx-flex-order="3"&gt;</div> </div>
+        <div class="three flexitem "  fx-flex-order="5" > 3 <div class="markup">&lt;div fx-flex-order="5"&gt;</div> </div>
+        <div class="four  flexitem "                    > 4 <div class="markup">&lt;div fx-flex-order="2"&gt;</div> </div>
+        <div class="five  flexitem "  fx-flex-order="4" > 5 <div class="markup">&lt;div fx-flex-order="4"&gt;</div> </div>
       </div>
     </md-card-content>
     <md-card-footer class="bottomPad">
-      <div class="hint">&lt;fl-layout = "{{ direction }}"&gt;</div>
+      <div class="hint">&lt;fx-layout="{{ direction }}"&gt;</div>
     </md-card-footer>
   </md-card>
   `

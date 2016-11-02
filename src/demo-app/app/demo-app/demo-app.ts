@@ -11,7 +11,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <button md-raised-button color="primary" [routerLink]="['issues']">         Github        </button>
       <button md-raised-button color="primary" [routerLink]="['stackoverflow']">  StackOverflow </button>
       
-      <div fl-flex></div>
+      <div fx-flex></div>
       
       <span class="title" style="font-size: 0.6em; font-weight:normal; padding-left: 20px;">
         Hint: Click on any of the samples below to toggle the layout direction(s).

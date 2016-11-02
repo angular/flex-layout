@@ -12,22 +12,22 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Visualize the affects of 'flex' and 'flex-offset' with %, px, or raw values.</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fl-layout]="direction" class="md-whiteframe-2dp">
-            <div fl-flex fl-flex-offset="20" class="one">&lt;div <b>fl-flex-offset="20"</b> fl-flex &gt;</div>
-            <div fl-flex="150px" class="two">&lt;div fl-flex="150px"&gt;</div>
+          <div [fx-layout]="direction" class="md-whiteframe-2dp">
+            <div fx-flex fx-flex-offset="20" class="one">&lt;div <b>fx-flex-offset="20"</b> fx-flex &gt;</div>
+            <div fx-flex="150px" class="two">&lt;div fx-flex="150px"&gt;</div>
           </div>
-          <div [fl-layout]="direction" class="md-whiteframe-3dp">
-            <div fl-flex fl-flex-offset="50%" class="three">&lt;div <b>fl-flex-offset="50%"</b> fl-flex &gt;</div>
-            <div fl-flex class="four">&lt;div fl-flex&gt;</div>
+          <div [fx-layout]="direction" class="md-whiteframe-3dp">
+            <div fx-flex fx-flex-offset="50%" class="three">&lt;div <b>fx-flex-offset="50%"</b> fx-flex &gt;</div>
+            <div fx-flex class="four">&lt;div fx-flex&gt;</div>
           </div>
-          <div [fl-layout]="direction" class="md-whiteframe-3dp">
-            <div fl-flex="25%" fl-flex-offset="25" class="five">&lt;div <b>fl-flex-offset="25"</b> fl-flex="25%" &gt;</div>
-            <div fl-flex="50" fl-flex-offset="20" class="six">&lt;div <b>fl-flex-offset="20"</b> fl-flex="50" &gt;</div>
+          <div [fx-layout]="direction" class="md-whiteframe-3dp">
+            <div fx-flex="25%" fx-flex-offset="25" class="five">&lt;div <b>fx-flex-offset="25"</b> fx-flex="25%" &gt;</div>
+            <div fx-flex="50" fx-flex-offset="20" class="six">&lt;div <b>fx-flex-offset="20"</b> fx-flex="50" &gt;</div>
           </div>
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt;fl-layout = "{{ direction }}"&gt;</div>
+        <div class="hint">&lt;div fx-layout="{{ direction }}" &gt;</div>
       </md-card-footer>
     </md-card>
   `

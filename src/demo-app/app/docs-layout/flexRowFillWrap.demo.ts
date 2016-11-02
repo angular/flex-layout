@@ -11,21 +11,21 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Using "layout-wrap" to wrap positioned items within a layout container</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fl-layout]="direction" fl-layout-wrap class="colored wrapped box" (click)="toggleDirection()">
+          <div [fx-layout]="direction" fx-layout-wrap class="colored wrapped box" (click)="toggleDirection()">
             
-              <div fl-flex="30"> fl-flex="30" </div>
-              <div fl-flex="45"> fl-flex="45" </div>
-              <div fl-flex="19"> fl-flex="19" </div>
-              <div fl-flex="33"> fl-flex="33" </div>
-              <div fl-flex="67"> fl-flex="67" </div>
-              <div fl-flex="50"> fl-flex="50" </div>
-              <div fl-flex>      fl-flex      </div>
+              <div fx-flex="30"> fx-flex="30" </div>
+              <div fx-flex="45"> fx-flex="45" </div>
+              <div fx-flex="19"> fx-flex="19" </div>
+              <div fx-flex="33"> fx-flex="33" </div>
+              <div fx-flex="67"> fx-flex="67" </div>
+              <div fx-flex="50"> fx-flex="50" </div>
+              <div fx-flex>      fx-flex      </div>
               
             </div>            
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt;fl-layout = "{{ direction }}"&gt;</div>
+        <div class="hint">&lt;div fx-layout="{{ direction }}" &gt;</div>
       </md-card-footer>
     </md-card>
   `

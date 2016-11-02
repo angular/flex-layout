@@ -14,12 +14,12 @@ import { Subscription } from "rxjs/Subscription";
 import { isDefined } from '../../utils/global';
 
 /**
- * FlexBox styling directive for 'fl-flex'
+ * FlexBox styling directive for 'fx-flex'
  * Configures the width/height sizing of the element within a layout container
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({
-  selector:'[fl-flex]',
+  selector:'[fx-flex]',
 
 })
 export class FlexDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
@@ -32,23 +32,23 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   private _layout = 'row';   // default flex-direction
   private _layoutWatcher : Subscription;
 
-  @Input('fl-flex')    flex   :string = "";
-  @Input('fl-shrink')  shrink :number = 1;
-  @Input('fl-grow')    grow   :number = 1;
+  @Input('fx-flex')    flex   :string = "";
+  @Input('fx-shrink')  shrink :number = 1;
+  @Input('fx-grow')    grow   :number = 1;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fl-flex.xs')     flexXs;
-  @Input('fl-flex.gt-xs')  flexGtXs;
-  @Input('fl-flex.sm')     flexSm;
-  @Input('fl-flex.gt-sm')  flexGtSm;
-  @Input('fl-flex.md')     flexMd;
-  @Input('fl-flex.gt-md')  flexGtMd;
-  @Input('fl-flex.lg')     flexLg;
-  @Input('fl-flex.gt-lg')  flexGtLg;
-  @Input('fl-flex.xl')     flexXl;
+  @Input('fx-flex.xs')     flexXs;
+  @Input('fx-flex.gt-xs')  flexGtXs;
+  @Input('fx-flex.sm')     flexSm;
+  @Input('fx-flex.gt-sm')  flexGtSm;
+  @Input('fx-flex.md')     flexMd;
+  @Input('fx-flex.gt-md')  flexGtMd;
+  @Input('fx-flex.lg')     flexLg;
+  @Input('fx-flex.gt-lg')  flexGtLg;
+  @Input('fx-flex.xl')     flexXl;
 
   /**
    * Note: the optional `layout="column|row"` directive must be PARENT container.
@@ -115,7 +115,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   // ***************************************s******
 
   /**
-   * Cache the parent container 'flex-direction' and update the 'fl-flex' styles
+   * Cache the parent container 'flex-direction' and update the 'fx-flex' styles
    */
   _onLayoutChange(direction?:string) {
     this._layout = direction || this._layout;
@@ -201,7 +201,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 @Directive({
-  selector:'[fl-flex-order]'
+  selector:'[fx-flex-order]'
 })
 export class FlexOrderDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
@@ -209,21 +209,21 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('fl-flex-order') order;
+  @Input('fx-flex-order') order;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fl-flex-order.xs')     orderXs;
-  @Input('fl-flex-order.gt-xs')  orderGtXs;
-  @Input('fl-flex-order.sm')     orderSm;
-  @Input('fl-flex-order.gt-sm')  orderGtSm;
-  @Input('fl-flex-order.md')     orderMd;
-  @Input('fl-flex-order.gt-md')  orderGtMd;
-  @Input('fl-flex-order.lg')     orderLg;
-  @Input('fl-flex-order.gt-lg')  orderGtLg;
-  @Input('fl-flex-order.xl')     orderXl;
+  @Input('fx-flex-order.xs')     orderXs;
+  @Input('fx-flex-order.gt-xs')  orderGtXs;
+  @Input('fx-flex-order.sm')     orderSm;
+  @Input('fx-flex-order.gt-sm')  orderGtSm;
+  @Input('fx-flex-order.md')     orderMd;
+  @Input('fx-flex-order.gt-md')  orderGtMd;
+  @Input('fx-flex-order.lg')     orderLg;
+  @Input('fx-flex-order.gt-lg')  orderGtLg;
+  @Input('fx-flex-order.xl')     orderXl;
 
   constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
@@ -288,7 +288,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
  * Configures the 'margin-left' of the element in a layout container
  */
 @Directive({
-  selector:'[fl-flex-offset]'
+  selector:'[fx-flex-offset]'
 })
 export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, OnChanges, OnMediaQueryChanges {
   /**
@@ -296,21 +296,21 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('fl-flex-offset')       offset:string|number;
+  @Input('fx-flex-offset')       offset:string|number;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fl-flex-offset.xs')     offsetXs   :string|number;
-  @Input('fl-flex-offset.gt-xs')  offsetGtXs :string|number;
-  @Input('fl-flex-offset.sm')     offsetSm   :string|number;
-  @Input('fl-flex-offset.gt-sm')  offsetGtSm :string|number;
-  @Input('fl-flex-offset.md')     offsetMd   :string|number;
-  @Input('fl-flex-offset.gt-md')  offsetGtMd :string|number;
-  @Input('fl-flex-offset.lg')     offsetLg   :string|number;
-  @Input('fl-flex-offset.gt-lg')  offsetGtLg :string|number;
-  @Input('fl-flex-offset.xl')     offsetXl   :string|number;
+  @Input('fx-flex-offset.xs')     offsetXs   :string|number;
+  @Input('fx-flex-offset.gt-xs')  offsetGtXs :string|number;
+  @Input('fx-flex-offset.sm')     offsetSm   :string|number;
+  @Input('fx-flex-offset.gt-sm')  offsetGtSm :string|number;
+  @Input('fx-flex-offset.md')     offsetMd   :string|number;
+  @Input('fx-flex-offset.gt-md')  offsetGtMd :string|number;
+  @Input('fx-flex-offset.lg')     offsetLg   :string|number;
+  @Input('fx-flex-offset.gt-lg')  offsetGtLg :string|number;
+  @Input('fx-flex-offset.xl')     offsetXl   :string|number;
 
   constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
@@ -378,7 +378,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
 @Directive({
-  selector: '[fl-flex-align]'
+  selector: '[fx-flex-align]'
 })
 export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
@@ -386,21 +386,21 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
    */
   private _mqActivation : MediaQueryActivation;
 
-  @Input('fl-flex-align') align : string = "stretch";    // default
+  @Input('fx-flex-align') align : string = "stretch";    // default
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fl-flex-align.xs')     alignXs;
-  @Input('fl-flex-align.gt-xs')  alignGtXs;
-  @Input('fl-flex-align.sm')     alignSm;
-  @Input('fl-flex-align.gt-sm')  alignGtSm;
-  @Input('fl-flex-align.md')     alignMd;
-  @Input('fl-flex-align.gt-md')  alignGtMd;
-  @Input('fl-flex-align.lg')     alignLg;
-  @Input('fl-flex-align.gt-lg')  alignGtLg;
-  @Input('fl-flex-align.xl')     alignXl;
+  @Input('fx-flex-align.xs')     alignXs;
+  @Input('fx-flex-align.gt-xs')  alignGtXs;
+  @Input('fx-flex-align.sm')     alignSm;
+  @Input('fx-flex-align.gt-sm')  alignGtSm;
+  @Input('fx-flex-align.md')     alignMd;
+  @Input('fx-flex-align.gt-md')  alignGtMd;
+  @Input('fx-flex-align.lg')     alignLg;
+  @Input('fx-flex-align.gt-lg')  alignGtLg;
+  @Input('fx-flex-align.xl')     alignXl;
 
 
   constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
@@ -469,13 +469,13 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
 }
 
 /**
- * 'fl-flex-fill' flexbox styling directive
+ * 'fx-flex-fill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
  *
- *  NOTE: [fl-flexFill] is NOT responsive fl-flex
+ *  NOTE: [fx-flexFill] is NOT responsive fx-flex
  */
 @Directive({
-  selector: '[fl-flex-fill]'
+  selector: '[fx-flex-fill]'
 })
 export class FlexFillDirective extends BaseStyleDirective {
   constructor(public elRef: ElementRef, public renderer: Renderer) {

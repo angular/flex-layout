@@ -11,15 +11,15 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Simple row using "flex" on 3rd element to fill available main axis.</md-card-subtitle>
       <md-card-content>
         <div class="containerX"> 
-          <div [fl-layout]="direction" (click)="toggleDirection()" class="colored box" >
-            <div fl-flex="20">  fl-flex="20"  </div>
-            <div fl-flex="60">  fl-flex="60"  </div>
-            <div fl-flex >      fl-flex       </div>
+          <div [fx-layout]="direction" (click)="toggleDirection()" class="colored box" >
+            <div fx-flex="20">  fx-flex="20"  </div>
+            <div fx-flex="60">  fx-flex="60"  </div>
+            <div fx-flex >      fx-flex       </div>
           </div>
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt; fl-layout = "{{ direction }}" &gt;</div>
+        <div class="hint">&lt;div  fx-layout="{{ direction }}" &gt;</div>
       </md-card-footer>
     </md-card>
   `

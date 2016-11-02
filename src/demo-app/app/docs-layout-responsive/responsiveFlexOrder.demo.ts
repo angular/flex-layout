@@ -13,20 +13,20 @@ import {BreakPoint} from "../../../lib/media-query/break-points";
       <md-card-subtitle>Add the flex-order directive to a layout child to set its order position within the layout container:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div fl-layout="row"  class="coloredContainerX box" >
-            <div fl-flex fl-flex-order="-1">
+          <div fx-layout="row"  class="coloredContainerX box" >
+            <div fx-flex fx-flex-order="-1">
               <p>[flex-order="-1"]</p>
             </div>
-            <div fl-flex fl-flex-order="1" fl-flex-order.gt-md="3">
-              <p fl-hide="false" fl-hide.gt-md>   [flex-order="1"]        </p>
-              <p fl-show="false" fl-show.gt-md>   [flex-order.gt-md="3"]  </p>
+            <div fx-flex fx-flex-order="1" fx-flex-order.gt-md="3">
+              <p fx-hide="false" fx-hide.gt-md>   [flex-order="1"]        </p>
+              <p fx-show="false" fx-show.gt-md>   [flex-order.gt-md="3"]  </p>
             </div>
-            <div fl-flex fl-flex-order="2">
+            <div fx-flex fx-flex-order="2">
               <p>[flex-order="2"]</p>
             </div>
-            <div fl-flex fl-flex-order="3" fl-flex-order.gt-md="1">
-              <p fl-hide="false" fl-hide.gt-md>   [flex-order="3"]        </p>
-              <p fl-show="false" fl-show.gt-md>   [flex-order.gt-md="1"]  </p>
+            <div fx-flex fx-flex-order="3" fx-flex-order.gt-md="1">
+              <p fx-hide="false" fx-hide.gt-md>   [flex-order="3"]        </p>
+              <p fx-show="false" fx-show.gt-md>   [flex-order.gt-md="1"]  </p>
             </div>
           </div>          
         </div>
