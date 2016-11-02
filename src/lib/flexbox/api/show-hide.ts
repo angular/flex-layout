@@ -21,7 +21,7 @@ const FALSY = [ "false", "0", false,  0];
 @Directive({
   selector: '[fl-show]'
 })
-export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
 
   /**
    * Original dom Elements CSS display style
@@ -120,10 +120,9 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(isFalsy) {
-    // console.log(`ShowDirective::_buildCss( ${isFalsy} )`);
-    return this._modernizer({
+    return {
       'display' : !isFalsy ? this._display : 'none'
-    });
+    };
   }
 
   /**
@@ -145,7 +144,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
 @Directive({
   selector: '[fl-hide]'
 })
-export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
    */
@@ -249,11 +248,9 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(value) {
-    // console.log(`HideDirective::_buildCss( ${value} )`);
-
-    return this._modernizer({
+    return {
       'display' : value ? 'none' : this._display
-    });
+    };
   }
 
   /**

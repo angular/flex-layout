@@ -38,7 +38,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.webpack.js', '.ts', '.js'],
     alias : {
-      "@angular/layouts" : "./src/lib/"
+      "@angular/layouts" : "src/lib/"
     }
   },
 
@@ -75,7 +75,7 @@ module.exports = {
         exclude: [/\.(spec|e2e)\.ts$/,  /node_modules/, /demos/, /deprecated/],
         noParse : [ /angular/, /\@angular/ ]
       },
-      { test: /\.html$/, loader: 'html-loader' },
+      { test: /\.html$/, loader: 'raw-loader' },
       { test: /\.css$/, loader: "raw" },
 
       /**

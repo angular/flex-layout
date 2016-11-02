@@ -25,6 +25,3 @@ import 'zone.js/dist/zone';
 
 // Typescript emit helpers polyfill
 import 'ts-helpers';
-
-Error.stackTraceLimit = Infinity;
-require('zone.js/dist/lofl-stack-trace-zone');

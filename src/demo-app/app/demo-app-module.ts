@@ -1,7 +1,7 @@
 import { NgModule }       from '@angular/core';
-import { BrowserModule }  from '@angular/platform-browser';
 import { RouterModule }   from "@angular/router";
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { BrowserModule }  from '@angular/platform-browser';
 import { MaterialModule } from "@angular/material";
 
 import { LayoutsModule }  from "../../lib/flexbox/"; //"@angular/layouts";

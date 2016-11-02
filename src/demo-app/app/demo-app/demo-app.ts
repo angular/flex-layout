@@ -6,7 +6,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
   templateUrl: `
     <md-toolbar fl-layout="row">
       <h2>Demos: </h2>
-      <button md-raised-button color="primary" [routerLink]="['']">               Layout Docs         </button>
+      <button md-raised-button color="primary" [routerLink]="['']">               Static Layouts      </button>
       <button md-raised-button color="primary" [routerLink]="['responsive']">     Responsive Layouts  </button>
       <button md-raised-button color="primary" [routerLink]="['issues']">         Github Issues       </button>
       <button md-raised-button color="primary" [routerLink]="['stackoverflow']">  StackOverflow       </button>

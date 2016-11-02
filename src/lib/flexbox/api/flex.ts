@@ -131,18 +131,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   }
 
   _updateWithValue( value:string ) {
-    let css = this._validateValue( this.grow, this.shrink, value );
-    this._updateStyle(this._buildCSS( css ));
-  }
-
-  /**
-   * Build the CSS that should be assigned to the element instance
-   *
-   *  BUG - min-height on a column flex container won’t apply to its flex item children in IE 10-11.
-   *  Use height instead if possible.
-   */
-  _buildCSS(css) {
-    return this._modernizer(css);
+    this._updateStyle(this._validateValue( this.grow, this.shrink, value ));
   }
 
   /**
@@ -216,7 +205,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
 @Directive({
   selector:'[fl-flex-order]'
 })
-export class FlexOrderDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class FlexOrderDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
    */
@@ -290,9 +279,9 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
 
   _buildCSS(value) {
     value = parseInt(value, 10);
-    return this._modernizer({
+    return {
       order : isNaN(value) ? 0 : value
-    });
+    };
   }
 }
 
@@ -303,7 +292,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
 @Directive({
   selector:'[fl-flex-offset]'
 })
-export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, OnChanges, OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
    */
@@ -379,9 +368,9 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
     let isPx      = String(offset).indexOf("px") > -1;
     if (!isPx && !isPercent && !isNaN(offset))  offset = offset + '%';
 
-    return this._modernizer({
+    return {
       'margin-left' : `${offset}`
-    });
+    };
   }
 }
 
@@ -393,7 +382,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
 @Directive({
   selector: '[fl-flex-align]'
 })
-export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
    */
@@ -477,7 +466,7 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
        default        : css['align-self'] = "stretch";      break;  // default
     }
 
-    return this._modernizer(css);
+    return css;
   }
 }
 
@@ -497,13 +486,13 @@ export class FlexFillDirective extends BaseStyleDirective {
   }
 
   _buildCSS() {
-    return this._modernizer({
+    return {
       'margin'    : 0,
       'width'     : '100%',
       'height'    : '100%',
       'min-width' : '100%',
       'min-height': '100%'
-    });
+    };
   }
 }
 

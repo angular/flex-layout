@@ -23,9 +23,9 @@ import { isDefined } from '../../utils/global';
  *
  */
 @Directive({
-  selector: '[fl-layout]'
+  selector: '[fl-layout], [fl-layout.md]'
 })
-export class LayoutDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+export class LayoutDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
    */
@@ -137,11 +137,11 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
    *      Use height instead if possible; height : <xxx>vh;
    */
   _buildCSS(value) {
-    return this._modernizer({
+    return {
       'display'         : 'flex',
       'box-sizing'      : 'border-box',
       'flex-direction'  : value
-    });
+    };
   }
 
   /**
@@ -242,10 +242,10 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(value) {
-    return this._modernizer({
+    return {
       'flex-wrap' : value,
       '-webkit-flex-wrap' : value
-    });
+    };
   }
 
   /**
@@ -407,7 +407,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
        case "end"     : css['align-items'] = css['align-content'] = "flex-end";     break;
     }
 
-    return this._modernizer(css);
+    return css;
   }
 
    /**
@@ -418,11 +418,11 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
 
      if ( cross_axis == "stretch") {
        // Use `null` values to remove style
-       this._updateStyle(this._modernizer({
+       this._updateStyle({
          'box-sizing' : "border-box",
          'max-width'  : (layout === 'column') ? '100%' : null,
          'max-height' : (layout === 'row') ? '100%' : null
-       }));
+       });
      }
    }
 }

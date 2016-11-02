@@ -1,2 +1,2 @@
-export * from './modernizer';
+export * from './auto-prefixer';
 export * from './global';

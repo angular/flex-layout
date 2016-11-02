@@ -1,8 +1,7 @@
 
 /**
- * Modernizes the Layout injector CSS.
- * Eliminates the need for external CSS and a modernizer task
- *
+ * Auto Prefixes applies CSS prefixes to appropriate style keys
+ * Eliminates the need for external auto-prefixer
  */
 export function applyCssPrefixes(target) {
   for (var key in target) {
