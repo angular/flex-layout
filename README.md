@@ -187,9 +187,9 @@ Below is an example usage of the Responsive Layout API:
   <div fl-flex="33" [fl-flex.md]="box1Width" class="one" ></div>
   <div fl-flex="33" [fl-layout]="direction" layout.md="row" class="two">
 
-    <div fl-flex="22"    fl-flex.md="10px" hide.lg                       class="two_one"></div>
-    <div fl-flex="205"   fl-flex.md="65"                                 class="two_two"></div>
-    <div fl-flex="30px"  [fl-show hide.md]="hideBox" fl-flex.md="25"     class="two_three"></div>
+    <div fl-flex="22"    fl-flex.md="10px" fl-hide.lg                       class="two_one"></div>
+    <div fl-flex="205"   fl-flex.md="65"                                    class="two_two"></div>
+    <div fl-flex="30px"  fl-flex.md="25"   fl-show [fl-hide.md]="hideBox"   class="two_three"></div>
 
   </div>
   <div fl-flex class="three"></div>
