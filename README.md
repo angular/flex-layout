@@ -135,12 +135,12 @@ Static Markup Example:
 ```html
 <div fl-layout='column' class="zero">
 
-  <div fl-flex="33" class="one" ></div>
-  <div fl-flex="33" [fl-layout]="direction" class="two">
+  <div fl-flex="33"                          class="one" ></div>
+  <div fl-flex="33%" [fl-layout]="direction" class="two">
 
-    <div fl-flex="22"    class="two_one"></div>
-    <div fl-flex="205"   class="two_two"></div>
-    <div fl-flex="30px"  class="two_three"></div>
+    <div fl-flex="22%"    class="two_one"></div>
+    <div fl-flex="205px"  class="two_two"></div>
+    <div fl-flex="30"     class="two_three"></div>
 
   </div>
   <div fl-flex class="three"></div>
