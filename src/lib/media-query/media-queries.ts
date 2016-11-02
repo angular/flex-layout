@@ -4,7 +4,7 @@ import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { BreakPoint, BreakPoints } from './break-points';
-import { MediaQueryList, MediaQueryListFactory} from "./media-query-factory";
+import { MediaQueryList, MediaQueryListFactory } from "./media-query-factory";
 import { isDefined } from "../utils/global";
 
 // RxJS Operators used by the classes...

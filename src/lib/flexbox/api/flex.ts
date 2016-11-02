@@ -5,10 +5,10 @@ import {
 
 import { BaseStyleDirective } from "./abstract";
 import { LayoutDirective, LayoutWrapDirective } from "./layout";
-import {
-  MediaQueryAdapter, MediaQueryChanges,
-  OnMediaQueryChanges, MediaQueryActivation
-} from "../media-query/media-query-adapter";
+
+import { MediaQueryAdapter } from "../media-query/media-query-adapter";
+import { MediaQueryActivation } from "../media-query/media-query-activation";
+import { MediaQueryChanges, OnMediaQueryChanges} from "../media-query/media-query-changes";
 
 import { Subscription } from "rxjs/Subscription";
 import { isDefined } from '../../utils/global';

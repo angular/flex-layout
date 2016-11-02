@@ -25,15 +25,14 @@ const ALL_DIRECTIVES = [
   HideDirective
 ];
 
-const ALL_MODULES = [
-  MediaQueriesModule
-];
-
+/**
+ *
+ */
 @NgModule({
   declarations  : ALL_DIRECTIVES,
-  imports       : [ MediaQueriesModule],
+  imports       : [ MediaQueriesModule ],
   exports       : [ MediaQueriesModule, ...ALL_DIRECTIVES ],
-  providers     : [ MediaQueryAdapter ]
+  providers     : [ ]
 })
 export class LayoutsModule {
   static forRoot(): ModuleWithProviders {

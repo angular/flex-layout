@@ -125,3 +125,9 @@ md-toolbar-row  button {
 div.colored.box.nopad > div {
   padding: 0;
 }
+
+.intro {
+  margin-top: -31px;
+  margin-left: 15px;
+  color: #5c5c5c;
+}
