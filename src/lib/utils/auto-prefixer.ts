@@ -4,7 +4,7 @@
  * Eliminates the need for external CSS and a modernizer task
  *
  */
-export default function modernizr(target) {
+export function applyCssPrefixes(target) {
   for (var key in target) {
     let value = target[key];
 
