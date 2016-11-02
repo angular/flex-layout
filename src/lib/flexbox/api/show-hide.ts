@@ -1,6 +1,6 @@
 import {
   Directive, Renderer, ElementRef, Input,
-  SimpleChanges, Optional, OnChanges, OnDestroy, OnInit,
+  SimpleChanges, OnChanges, OnInit,
 } from '@angular/core';
 
 import { BaseStyleDirective } from "./abstract";
@@ -55,7 +55,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    *
    */
-  constructor(private _$mq: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -82,7 +82,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._$mq.attach(this, "show", "true");
+    this._mqActivation = this._mqa.attach(this, "show", "true");
     this._updateWithValue();
   }
 
@@ -90,8 +90,6 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   ngOnMediaQueryChanges(changes: MediaQueryChanges) {
-    // console.log("ShowDirective::ngOnMediaChanges()");
-
     delay(()=>{
       this._updateWithValue( changes.current.value );
     });
@@ -129,7 +127,6 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * Validate the value to be not FALSY
    */
   _validateValue(value) {
-    // console.log(`ShowDirective::_validateValue( ${value} )`);
     return isDefined(FALSY.find(x => x === value ));
   }
 
@@ -177,7 +174,7 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    *
    */
-  constructor(private _$mq: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -205,8 +202,7 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-
-    this._mqActivation = this._$mq.attach(this, "hide", "true");
+    this._mqActivation = this._mqa.attach(this, "hide", "true");
     this._updateWithValue( );
   }
 
@@ -214,8 +210,6 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   ngOnMediaQueryChanges(changes: MediaQueryChanges) {
-    // console.log("HideDirective::ngOnMediaChanges()");
-
     delay(()=>{
       this._updateWithValue( changes.current.value );
     });
@@ -260,12 +254,5 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
     // console.log(`HideDirective::_validateValue( ${value} )`);
     return !isDefined(FALSY.find(x => x === value ));
   }
-
 }
 
-
-
-function calculateDisplayStyle(elRef: ElementRef):string {
-  let domEl = elRef.nativeElement;
-  return window.getComputedStyle(domEl).display;
-}

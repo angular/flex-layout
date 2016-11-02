@@ -1,5 +1,3 @@
-import { isDefined } from '../../utils/global';
-
 import {
   Directive, Input, ElementRef, Renderer,
   SimpleChanges, Optional, OnChanges, OnDestroy, SkipSelf, OnInit
@@ -13,7 +11,7 @@ import {
 } from "../media-query/media-query-adapter";
 
 import { Subscription } from "rxjs/Subscription";
-
+import { isDefined } from '../../utils/global';
 
 /**
  * FlexBox styling directive for 'fl-flex'
@@ -62,7 +60,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
    * </div>
    */
   constructor(
-    private _$mq: MediaQueryAdapter,
+    private _mqa: MediaQueryAdapter,
     @Optional() @SkipSelf() private _container:LayoutDirective,
     @Optional() @SkipSelf() private _wrap:LayoutWrapDirective,
     elRef: ElementRef, renderer: Renderer) {
@@ -95,7 +93,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
     * mql change events to onMediaQueryChange handlers
     */
    ngOnInit() {
-     this._mqActivation = this._$mq.attach(this, "flex", "");
+     this._mqActivation = this._mqa.attach(this, "flex", "");
      this._onLayoutChange();
    }
 
@@ -227,7 +225,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
   @Input('fl-flex-order.gt-lg')  orderGtLg;
   @Input('fl-flex-order.xl')     orderXl;
 
-  constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -252,7 +250,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit() {
-      this._mqActivation = this._$mq.attach(this, "order", "1");
+      this._mqActivation = this._mqa.attach(this, "order", "1");
       this._updateWithValue();
     }
 
@@ -314,7 +312,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
   @Input('fl-flex-offset.gt-lg')  offsetGtLg :string|number;
   @Input('fl-flex-offset.xl')     offsetXl   :string|number;
 
-  constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -338,7 +336,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit() {
-      this._mqActivation = this._$mq.attach(this, "offset", 0);
+      this._mqActivation = this._mqa.attach(this, "offset", 0);
     }
 
     /**
@@ -405,7 +403,7 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
   @Input('fl-flex-align.xl')     alignXl;
 
 
-  constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -430,7 +428,7 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit() {
-      this._mqActivation = this._$mq.attach(this, "align", "stretch");
+      this._mqActivation = this._mqa.attach(this, "align", "stretch");
       this._updateWithValue();
     }
 

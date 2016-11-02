@@ -65,7 +65,7 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
   /**
    *
    */
-  constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -93,7 +93,7 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._$mq.attach(this, "layout", "row");
+    this._mqActivation = this._mqa.attach(this, "layout", "row");
     this._updateWithDirection();
   }
 
@@ -187,7 +187,7 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
   @Input('fl-layout-wrap.gt-lg')  wrapGtLg;
   @Input('fl-layout-wrap.xl')     wrapXl;
 
-  constructor(private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer)
   }
 
@@ -209,7 +209,7 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._$mq.attach(this, "wrap", "wrap");
+    this._mqActivation = this._mqa.attach(this, "wrap", "wrap");
     this._updateWithValue();
   }
 
@@ -312,7 +312,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
   @Input('fl-layout-align.gt-lg')  alignGtLg;
   @Input('fl-layout-align.xl')     alignXl;
 
-  constructor(@Optional() public container:LayoutDirective, private _$mq: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
+  constructor(@Optional() public container:LayoutDirective, private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
     super(elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
@@ -339,7 +339,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._$mq.attach(this, "align", "start stretch");
+    this._mqActivation = this._mqa.attach(this, "align", "start stretch");
     this._updateWithValue();
   }
 
