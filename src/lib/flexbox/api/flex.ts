@@ -100,7 +100,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
    /**
     *  Special mql callback used by MediaQueryActivation when a mql event occurs
     */
-   ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+   fxOnMediaQueryChanges(changes: MediaQueryChanges) {
      this._updateWithValue( changes.current.value );
    }
 
@@ -257,7 +257,7 @@ export class FlexOrderDirective extends BaseStyleDirective implements OnInit, On
     /**
      *  Special mql callback used by MediaQueryActivation when a mql event occurs
      */
-    ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+    fxOnMediaQueryChanges(changes: MediaQueryChanges) {
       this._updateWithValue( changes.current.value );
     }
 
@@ -342,7 +342,7 @@ export class FlexOffsetDirective extends BaseStyleDirective implements  OnInit, 
     /**
      *  Special mql callback used by MediaQueryActivation when a mql event occurs
      */
-    ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+    fxOnMediaQueryChanges(changes: MediaQueryChanges) {
       this._updateWithValue( changes.current.value );
     }
 
@@ -435,7 +435,7 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
     /**
      *  Special mql callback used by MediaQueryActivation when a mql event occurs
      */
-    ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+    fxOnMediaQueryChanges(changes: MediaQueryChanges) {
       this._updateWithValue( changes.current.value );
     }
 

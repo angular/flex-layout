@@ -90,7 +90,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
-  ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+  fxOnMediaQueryChanges(changes: MediaQueryChanges) {
     delay(()=>{
       this._updateWithValue( changes.current.value );
     });
@@ -210,7 +210,7 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
-  ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+  fxOnMediaQueryChanges(changes: MediaQueryChanges) {
     delay(()=>{
       this._updateWithValue( changes.current.value );
     });

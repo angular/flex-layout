@@ -100,7 +100,7 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
-  ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+  fxOnMediaQueryChanges(changes: MediaQueryChanges) {
     this._updateWithDirection( changes.current.value );
   }
 
@@ -216,7 +216,7 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
-  ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+  fxOnMediaQueryChanges(changes: MediaQueryChanges) {
     this._updateWithValue( changes.current.value );
   }
 
@@ -346,7 +346,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
-  ngOnMediaQueryChanges(changes: MediaQueryChanges) {
+  fxOnMediaQueryChanges(changes: MediaQueryChanges) {
     this._updateWithValue( changes.current.value );
   }
 
