@@ -4,7 +4,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
   selector: 'demo-app',
   styleUrls : [ 'demo-app.css' ],
   templateUrl: `
-    <md-toolbar>
+    <md-toolbar class="bigger">
         <div fx-layout="row" fx-layout-align="start center" style="height:40px; min-height:40px;">
           <h2>Layout Demos: </h2>
           <button md-raised-button color="primary" [routerLink]="['']">               Static        </button>

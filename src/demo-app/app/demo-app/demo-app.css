@@ -17,14 +17,17 @@ div {
 
 .small-demo {
   min-height: 128px;
-}
-
-.small-demo > * {
-  margin-top: 40px;
+  padding-bottom: 40px;
+  display: block;
+  background-color: #eee;
 }
 
 .colorNested, .colored, .coloredContainerX {
   height:200px;
+}
+
+md-card {
+  background-color: white;
 }
 
 div.coloredContainerX > div, div.colorNested > div > div {
@@ -138,9 +141,18 @@ div.colored.box.nopad > div {
   min-height: 50px;
 }
 
+md-toolbar.bigger {
+  min-height: 125px;
+  padding: 10px;
+}
+
 md-toolbar .md-toolbar-layout md-toolbar-row {
   flex-direction: column;
   align-content: flex-start;
   align-items: flex-start;
-  min-height: 120px;
+  min-height: 40px;
+}
+
+.demo-content .small-demo:first-child {
+  margin-top: 40px;
 }

@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var path = require('path');
 var ROOT = path.resolve(__dirname, '..');
@@ -93,7 +94,11 @@ module.exports = {
   plugins: [
     new LiveReloadPlugin({
           appendScriptTag: true
-        }),
+    }),
+
+    new CopyWebpackPlugin([
+      { from: 'assets', to: __dirname + "/dist" }
+    ]),
 
      /**
       * Plugin: ForkCheckerPlugin
