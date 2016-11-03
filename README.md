@@ -99,14 +99,14 @@ In their component templates, developers easily use the Layout API to build
 complex, dynamic layouts:
 
 ```html
-<div fl-layout="row">
-  <div [fl-layout]="firstCol" [fl-flex]="firstColWidth" >
-    <div fl-flex="27%"> First item in row  </div>
-    <div fl-flex      > Second item in row </div>
+<div fx-layout="row">
+  <div [fx-layout]="firstCol" [fx-flex]="firstColWidth" >
+    <div fx-flex="27%"> First item in row  </div>
+    <div fx-flex      > Second item in row </div>
   </div>
-  <div [fl-layout]="secondCol" flex >
-    <div fl-flex       > First item in column  </div>
-    <div fl-flex="33px"> Second item in column </div>
+  <div [fx-layout]="secondCol" flex >
+    <div fx-flex       > First item in column  </div>
+    <div fx-flex="33px"> Second item in column </div>
   </div>
 </div>
 ``` 
@@ -121,29 +121,29 @@ can be used on HTML containers and elements:
 
 | HTML Markup API | Allowed values (raw or interpolated) |
 |-----------------|----------------------------------------------------------------------------|
-|  fl-layout         | `row | column | row-reverse | column-reverse`                                                          |                  
-|  fl-layout-wrap    | `"" | wrap | none | nowrap | reverse`                                     |                   
-|  fl-layout-align   | `start|center|end|space-around|space-between` `start|center|end|stretch`|                   
-|  fl-flex           | "" , px , %                                                              |              
-|  fl-flex-fill      |                                                                            |
-|  fl-flex-order     | int                                                                        |                       
-|  fl-flex-offset    | %, px                                                                         |     
-|  fl-flex-align     | `start|baseline|center|end` |                   
+|  fx-layout         | `row | column | row-reverse | column-reverse`                                                          |                  
+|  fx-layout-wrap    | `"" | wrap | none | nowrap | reverse`                                     |                   
+|  fx-layout-align   | `start|center|end|space-around|space-between` `start|center|end|stretch`|                   
+|  fx-flex           | "" , px , %                                                              |              
+|  fx-flex-fill      |                                                                            |
+|  fx-flex-order     | int                                                                        |                       
+|  fx-flex-offset    | %, px                                                                         |     
+|  fx-flex-align     | `start|baseline|center|end` |                   
 
 Static Markup Example:
 
 ```html
-<div fl-layout='column' class="zero">
+<div fx-layout='column' class="zero">
 
-  <div fl-flex="33"                          class="one" ></div>
-  <div fl-flex="33%" [fl-layout]="direction" class="two">
+  <div fx-flex="33"                          class="one" ></div>
+  <div fx-flex="33%" [fx-layout]="direction" class="two">
 
-    <div fl-flex="22%"    class="two_one"></div>
-    <div fl-flex="205px"  class="two_two"></div>
-    <div fl-flex="30"     class="two_three"></div>
+    <div fx-flex="22%"    class="two_one"></div>
+    <div fx-flex="205px"  class="two_two"></div>
+    <div fx-flex="30"     class="two_three"></div>
 
   </div>
-  <div fl-flex class="three"></div>
+  <div fx-flex class="three"></div>
 
 </div>
 ```
@@ -182,17 +182,17 @@ simple markup convention: the `alias` is used as suffix extensions to the Layout
 Below is an example usage of the Responsive Layout API:
 
 ```html
-<div fl-layout='column' class="zero">
+<div fx-layout='column' class="zero">
 
-  <div fl-flex="33" [fl-flex.md]="box1Width" class="one" ></div>
-  <div fl-flex="33" [fl-layout]="direction" layout.md="row" class="two">
+  <div fx-flex="33" [fx-flex.md]="box1Width" class="one" ></div>
+  <div fx-flex="33" [fx-layout]="direction" layout.md="row" class="two">
 
-    <div fl-flex="22"    fl-flex.md="10px" fl-hide.lg                       class="two_one"></div>
-    <div fl-flex="205"   fl-flex.md="65"                                    class="two_two"></div>
-    <div fl-flex="30px"  fl-flex.md="25"   fl-show [fl-hide.md]="hideBox"   class="two_three"></div>
+    <div fx-flex="22"    fx-flex.md="10px" fx-hide.lg                       class="two_one"></div>
+    <div fx-flex="205"   fx-flex.md="65"                                    class="two_two"></div>
+    <div fx-flex="30px"  fx-flex.md="25"   fx-show [fx-hide.md]="hideBox"   class="two_three"></div>
 
   </div>
-  <div fl-flex class="three"></div>
+  <div fx-flex class="three"></div>
 
 </div>
 ```
@@ -208,12 +208,12 @@ independent of Angular Material yet can be used easily within any Material 2 app
 The Layout API directives are used to create DOM element style injectors which inject specific, custom Flexbox 
 CSS directly as inline styles onto the DOM element. 
 
-For example, consider the use of the `fl-layout="row"` and `fl-layout-align="center center"` directives.
+For example, consider the use of the `fx-layout="row"` and `fx-layout-align="center center"` directives.
 
 Static Markup:
 
 ```html
-<div [fl-layout]="direction" fl-layout-align="center center">
+<div [fx-layout]="direction" fx-layout-align="center center">
   <div>one</div>
   <div>two</div>
   <div>three</div>
@@ -223,7 +223,7 @@ Static Markup:
 is transformed with inline, injected styles:
 
 ```html
-<div fl-layout="row" fl-layout-align="center center"
+<div fx-layout="row" fx-layout-align="center center"
       style="display: flex; flex-direction: row; max-width: 100%; box-sizing: border-box; justify-content: center; align-content: center; align-items: center;">
   <div>one</div>
   <div>two</div>
