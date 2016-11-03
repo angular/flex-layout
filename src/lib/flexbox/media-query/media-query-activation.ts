@@ -9,7 +9,7 @@ import { MediaQueries }                           from "../../media-query/media-
 import { isDefined }                              from '../../utils/global';
 
 const ON_DESTROY = 'ngOnDestroy';
-const ON_MEDIA_CHANGES = 'fxOnMediaQueryChanges';
+const ON_MEDIA_CHANGES = 'onMediaQueryChanges';
 /**
  *
  */
@@ -50,7 +50,7 @@ export class MediaQueryActivation implements OnMediaQueryChanges, OnDestroy {
    * MediaQueryChanges interceptor that tracks the current mq-activated @Input and calculates the
    * mq-activated input value or the default value
    */
-  fxOnMediaQueryChanges( changes:MediaQueryChanges ) {
+  onMediaQueryChanges( changes:MediaQueryChanges ) {
     let currentKey = (this._baseKey + changes.current.suffix);
 
     // !! change events may arrive out-of-order (activate before deactivate)
@@ -96,7 +96,7 @@ export class MediaQueryActivation implements OnMediaQueryChanges, OnDestroy {
     }
 
     this._onMediaQueryChanges = this._directive[ ON_MEDIA_CHANGES ].bind(this._directive);
-    this._directive[ ON_MEDIA_CHANGES ] = this.fxOnMediaQueryChanges.bind(this);
+    this._directive[ ON_MEDIA_CHANGES ] = this.onMediaQueryChanges.bind(this);
   }
 
   /**
