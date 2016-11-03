@@ -4,7 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserModule }  from '@angular/platform-browser';
 import { MaterialModule } from "@angular/material";
 
-import { LayoutsModule }  from "../../lib/flexbox/"; //"@angular/layouts";
+import { LayoutsModule }  from "@angular/layouts";
 
 import { DemoApp }                  from './demo-app/demo-app';
 import { DEMO_APP_ROUTES }          from "./demo-app-routes";
