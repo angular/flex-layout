@@ -100,7 +100,6 @@ export class MediaQueryActivation implements OnMediaQueryChanges, OnDestroy {
   }
 
   /**
-   * Internal Logging mechanism
    */
   private _logMediaQueryChanges( changes:MediaQueryChanges ) {
     let current = changes.current, previous = changes.previous;

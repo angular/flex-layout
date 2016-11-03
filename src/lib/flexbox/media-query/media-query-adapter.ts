@@ -11,8 +11,8 @@ import { isDefined } from '../../utils/global';
 
 export declare type SubscriptionList = Array<Subscription>;
 
-const ON_MEDIA_CHANGES = 'ngOnMediaQueryChanges';
 const ON_DESTROY = 'ngOnDestroy';
+const ON_MEDIA_CHANGES = 'onMediaQueryChanges';
 
 /**
  *  Adapter between Layout API directives and the MediaQueries mdl service
@@ -49,7 +49,7 @@ export class MediaQueryAdapter {
    *
    */
   private _linkOnMediaChanges(directive : Directive,  property :string) {
-    let list : SubscriptionList,
+    let list : SubscriptionList = [ ],
         handler : MediaQuerySubscriber = directive[ ON_MEDIA_CHANGES ];
 
     if ( handler  ) {

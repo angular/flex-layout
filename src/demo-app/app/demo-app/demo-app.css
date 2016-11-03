@@ -137,3 +137,10 @@ div.colored.box.nopad > div {
   min-width: 75px;
   min-height: 50px;
 }
+
+md-toolbar .md-toolbar-layout md-toolbar-row {
+  flex-direction: column;
+  align-content: flex-start;
+  align-items: flex-start;
+  min-height: 120px;
+}
