@@ -1,13 +1,12 @@
-import { Directive, Injectable, NgZone } from "@angular/core";
+import {Directive, Injectable, NgZone} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
 
-import { Subscription } from "rxjs/Subscription";
+import {BreakPoints} from '../../media-query/break-points';
+import {MediaQueries, MediaQueryChange} from '../../media-query/media-queries';
+import {isDefined} from '../../utils/global';
 
-import { MediaQueryActivation }                   from "./media-query-activation";
-import { MediaQuerySubscriber, MediaQueryChanges} from "./media-query-changes";
-import { BreakPoints }                            from "../../media-query/break-points";
-import { MediaQueries, MediaQueryChange }         from "../../media-query/media-queries";
-
-import { isDefined } from '../../utils/global';
+import {MediaQueryActivation} from './media-query-activation';
+import {MediaQueryChanges, MediaQuerySubscriber} from './media-query-changes';
 
 export declare type SubscriptionList = Array<Subscription>;
 
@@ -23,24 +22,26 @@ const ON_MEDIA_CHANGES = 'onMediaQueryChanges';
  */
 @Injectable()
 export class MediaQueryAdapter {
-  private _mq : MediaQueries;
+  private _mq: MediaQueries;
 
   /**
    *
    */
-  constructor(private _breakpoints : BreakPoints, zone: NgZone) {
-    this._mq = new MediaQueries( _breakpoints, zone );
+  constructor(private _breakpoints: BreakPoints, zone: NgZone) {
+    this._mq = new MediaQueries(_breakpoints, zone);
   }
 
   /**
    * Create a custom MQ Activation instance for each directive instance; the activation object
-   * tracks the current mq-activated input and manages the calls to the directive's `onMediaQueryChanges( )`
+   * tracks the current mq-activated input and manages the calls to the directive's
+   * `onMediaQueryChanges( )`
    */
-  attach(directive : Directive,  property :string, defaultVal:string|number ) : MediaQueryActivation {
-    let activation : MediaQueryActivation = new MediaQueryActivation(this._mq, directive, property, defaultVal );
-    let list : SubscriptionList = this._linkOnMediaChanges( directive, property );
+  attach(directive: Directive, property: string, defaultVal: string|number): MediaQueryActivation {
+    let activation: MediaQueryActivation =
+        new MediaQueryActivation(this._mq, directive, property, defaultVal);
+    let list: SubscriptionList = this._linkOnMediaChanges(directive, property);
 
-    this._listenOnDestroy( directive, list );
+    this._listenOnDestroy(directive, list);
 
     return activation;
   }
@@ -48,13 +49,12 @@ export class MediaQueryAdapter {
   /**
    *
    */
-  private _linkOnMediaChanges(directive : Directive,  property :string) {
-    let list : SubscriptionList = [ ],
-        handler : MediaQuerySubscriber = directive[ ON_MEDIA_CHANGES ];
+  private _linkOnMediaChanges(directive: Directive, property: string) {
+    let list: SubscriptionList = [], handler: MediaQuerySubscriber = directive[ON_MEDIA_CHANGES];
 
-    if ( handler  ) {
+    if (handler) {
       let keys = this._buildRegistryMap(directive, property);
-      list = this._configureChangeObservers(directive, keys, handler );
+      list = this._configureChangeObservers(directive, keys, handler);
     }
     return list;
   }
@@ -63,19 +63,19 @@ export class MediaQueryAdapter {
   /**
    *
    */
-  private _listenOnDestroy ( directive : Directive, subscribers:SubscriptionList ) {
-    let onDestroyFn = directive[ ON_DESTROY ];
-    if ( onDestroyFn ){
-      directive[ ON_DESTROY ] = function () {
+  private _listenOnDestroy(directive: Directive, subscribers: SubscriptionList) {
+    let onDestroyFn = directive[ON_DESTROY];
+    if (onDestroyFn) {
+      directive[ON_DESTROY] = function() {
         // Unsubscribe all for this directive
-        subscribers.forEach( (s:Subscription) => {
+        subscribers.forEach((s: Subscription) => {
           s.unsubscribe();
         });
         onDestroyFn();
 
         // release array and restore original fn
         subscribers.length = 0;
-        directive[ ON_DESTROY ] = onDestroyFn
+        directive[ON_DESTROY] = onDestroyFn
       };
     }
   }
@@ -84,38 +84,41 @@ export class MediaQueryAdapter {
   /**
    * Build mediaQuery key-hashmap; only for the directive properties that are actually defined
    */
-  private _buildRegistryMap(directive : Directive, key:string) {
+  private _buildRegistryMap(directive: Directive, key: string) {
     return this._breakpoints.registry
-      .map(it => {
-        return {
-          alias : it.alias,           // e.g.  gt-sm, md, gt-lg
-          key   : key + it.suffix     // e.g.  layoutGtSm, layoutMd, layoutGtLg
-        }
-      }).filter( it => isDefined(directive[ it.key ]) );
+        .map(it => {
+          return {
+            alias: it.alias,      // e.g.  gt-sm, md, gt-lg
+            key: key + it.suffix  // e.g.  layoutGtSm, layoutMd, layoutGtLg
+          }
+        })
+        .filter(it => isDefined(directive[it.key]));
   }
   /**
    * For each API property, register a callback to `onMediaQueryChanges( )`(e:MediaQueryEvent)
-   * Cache 1..n subscriptions for internal auto-unsubscribes during the directive ngOnDestory() notification
+   * Cache 1..n subscriptions for internal auto-unsubscribes during the directive ngOnDestory()
+   * notification
    */
-  private _configureChangeObservers(directive : Directive, keys : any, subscriber : MediaQuerySubscriber ) : SubscriptionList {
-    let subscriptions = [ ];
+  private _configureChangeObservers(
+      directive: Directive, keys: any, subscriber: MediaQuerySubscriber): SubscriptionList {
+    let subscriptions = [];
 
     keys.forEach(it => {
       // Only subscribe if the directive API is defined (in use)
-      if (isDefined( directive[it.key] )) {
-          let lastEvent : MediaQueryChange,
-              mergeWithLastEvent = (current:MediaQueryChange) : MediaQueryChanges => {
-                let previous = lastEvent;
-                if ( this._isDifferentChange(previous, current) ) lastEvent = current;
+      if (isDefined(directive[it.key])) {
+        let lastEvent: MediaQueryChange,
+            mergeWithLastEvent = (current: MediaQueryChange):
+                MediaQueryChanges => {
+                  let previous = lastEvent;
+                  if (this._isDifferentChange(previous, current))
+                    lastEvent = current;
 
-                return new MediaQueryChanges(previous, current);
-              },
-              // Create subscription for mq changes for each alias (e.g. gt-sm, md, etc)
-              subscription = this._mq.observe( it.alias )
-                  .map( mergeWithLastEvent )
-                  .subscribe( subscriber );
+                  return new MediaQueryChanges(previous, current);
+                },
+            // Create subscription for mq changes for each alias (e.g. gt-sm, md, etc)
+            subscription = this._mq.observe(it.alias).map(mergeWithLastEvent).subscribe(subscriber);
 
-          subscriptions.push( subscription );
+        subscriptions.push(subscription);
       }
     });
 
@@ -130,16 +133,8 @@ export class MediaQueryAdapter {
    *    (since a different activate may be in use)
    *
    */
-  private _isDifferentChange(previous:MediaQueryChange, current:MediaQueryChange):boolean {
-    let prevAlias = (previous ? previous.mqAlias : "");
+  private _isDifferentChange(previous: MediaQueryChange, current: MediaQueryChange): boolean {
+    let prevAlias = (previous ? previous.mqAlias : '');
     return current.matches || (!current.matches && current.mqAlias !== prevAlias);
   }
 }
-
-
-
-
-
-
-
-

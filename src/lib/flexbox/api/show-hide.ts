@@ -1,62 +1,56 @@
-import {
-  Directive, Renderer, ElementRef, Input,
-  SimpleChanges, OnChanges, OnInit,
-} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges, OnInit, Renderer, SimpleChanges,} from '@angular/core';
 
-import { BaseStyleDirective } from "./abstract";
+import {delay, isDefined} from '../../utils/global';
+import {MediaQueryActivation} from '../media-query/media-query-activation';
+import {MediaQueryAdapter} from '../media-query/media-query-adapter';
+import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
 
-import { MediaQueryAdapter } from "../media-query/media-query-adapter";
-import { MediaQueryActivation } from "../media-query/media-query-activation";
-import { MediaQueryChanges, OnMediaQueryChanges } from "../media-query/media-query-changes";
+import {BaseStyleDirective} from './abstract';
 
 
-import { isDefined, delay } from '../../utils/global';
-
-
-const FALSY = [ "false", "0", false,  0];
+const FALSY = ['false', '0', false, 0];
 
 /**
  * 'show' Layout API directive
  *
  */
-@Directive({
-  selector: '[fx-show]'
-})
-export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
-
+@Directive({selector: '[fx-show]'})
+export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges,
+                                                                 OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
    */
-  private _display = "flex";
+  private _display = 'flex';
 
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation : MediaQueryActivation;
+  private _mqActivation: MediaQueryActivation;
 
   /**
    * Default layout property with default visible === true
    */
-  @Input('fx-show')        show = true;
+  @Input('fx-show') show = true;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fx-show.xs')     showXs;
-  @Input('fx-show.gt-xs')  showGtXs;
-  @Input('fx-show.sm')     showSm;
-  @Input('fx-show.gt-sm')  showGtSm;
-  @Input('fx-show.md')     showMd;
-  @Input('fx-show.gt-md')  showGtMd;
-  @Input('fx-show.lg')     showLg;
-  @Input('fx-show.gt-lg')  showGtLg;
-  @Input('fx-show.xl')     showXl;
+  @Input('fx-show.xs') showXs;
+  @Input('fx-show.gt-xs') showGtXs;
+  @Input('fx-show.sm') showSm;
+  @Input('fx-show.gt-sm') showGtSm;
+  @Input('fx-show.md') showMd;
+  @Input('fx-show.gt-md') showGtMd;
+  @Input('fx-show.lg') showLg;
+  @Input('fx-show.gt-lg') showGtLg;
+  @Input('fx-show.xl') showXl;
 
   /**
    *
    */
-  constructor(private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
+  constructor(
+      private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -69,13 +63,12 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * Default to use the non-responsive Input value ('fx-show')
    * Then conditionally override with the mq-activated Input's current value
    */
-  ngOnChanges( changes:SimpleChanges ) {
+  ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
     let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-    if ( isDefined(changes['show'])  || activationChange ) {
-      this._updateWithValue( );
+    if (isDefined(changes['show']) || activationChange) {
+      this._updateWithValue();
     }
-
   }
 
   /**
@@ -83,7 +76,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, "show", "true");
+    this._mqActivation = this._mqa.attach(this, 'show', 'true');
     this._updateWithValue();
   }
 
@@ -91,8 +84,8 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   onMediaQueryChanges(changes: MediaQueryChanges) {
-    delay(()=>{
-      this._updateWithValue( changes.current.value );
+    delay(() => {
+      this._updateWithValue(changes.current.value);
     });
   }
 
@@ -103,15 +96,15 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    * Validate the visibility value and then update the host's inline display style
    */
-  _updateWithValue(value?:string|number|boolean) {
+  _updateWithValue(value?: string|number|boolean) {
     value = value || this.show || true;
-    if (  isDefined(this._mqActivation) ) {
+    if (isDefined(this._mqActivation)) {
       value = this._mqActivation.activatedInput;
     }
     value = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._updateStyle(this._buildCSS( value ));
+    this._updateStyle(this._buildCSS(value));
   }
 
 
@@ -119,63 +112,59 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(isFalsy) {
-    return {
-      'display' : !isFalsy ? this._display : 'none'
-    };
+    return {'display': !isFalsy ? this._display : 'none'};
   }
 
   /**
    * Validate the value to be not FALSY
    */
   _validateValue(value) {
-    return isDefined(FALSY.find(x => x === value ));
+    return isDefined(FALSY.find(x => x === value));
   }
-
 }
-
 
 
 /**
  * 'show' Layout API directive
  *
  */
-@Directive({
-  selector: '[fx-hide]'
-})
-export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges, OnMediaQueryChanges {
+@Directive({selector: '[fx-hide]'})
+export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges,
+                                                                 OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
    */
-  private _display = "flex";
+  private _display = 'flex';
 
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation : MediaQueryActivation;
+  private _mqActivation: MediaQueryActivation;
 
   /**
    * Default layout property with default visible === true
    */
-  @Input('fx-hide')        hide = true;
+  @Input('fx-hide') hide = true;
 
   // *******************************************************
   // Optional input variations to support mediaQuery triggers
   // *******************************************************
 
-  @Input('fx-hide.xs')     hideXs;
-  @Input('fx-hide.gt-xs')  hideGtXs;
-  @Input('fx-hide.sm')     hideSm;
-  @Input('fx-hide.gt-sm')  hideGtSm;
-  @Input('fx-hide.md')     hideMd;
-  @Input('fx-hide.gt-md')  hideGtMd;
-  @Input('fx-hide.lg')     hideLg;
-  @Input('fx-hide.gt-lg')  hideGtLg;
-  @Input('fx-hide.xl')     hideXl;
+  @Input('fx-hide.xs') hideXs;
+  @Input('fx-hide.gt-xs') hideGtXs;
+  @Input('fx-hide.sm') hideSm;
+  @Input('fx-hide.gt-sm') hideGtSm;
+  @Input('fx-hide.md') hideMd;
+  @Input('fx-hide.gt-md') hideGtMd;
+  @Input('fx-hide.lg') hideLg;
+  @Input('fx-hide.gt-lg') hideGtLg;
+  @Input('fx-hide.xl') hideXl;
 
   /**
    *
    */
-  constructor(private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
+  constructor(
+      private _mqa: MediaQueryAdapter, protected elRef: ElementRef, protected renderer: Renderer) {
     super(elRef, renderer);
   }
 
@@ -188,14 +177,13 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * Default to use the non-responsive Input value ('fx-hide')
    * Then conditionally override with the mq-activated Input's current value
    */
-  ngOnChanges( changes?:SimpleChanges ) {
+  ngOnChanges(changes?: SimpleChanges) {
     let activated = this._mqActivation;
     let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
 
-    if ( isDefined(changes['hide'])  || activationChange ) {
-      this._updateWithValue( );
+    if (isDefined(changes['hide']) || activationChange) {
+      this._updateWithValue();
     }
-
   }
 
   /**
@@ -203,16 +191,16 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, "hide", "true");
-    this._updateWithValue( );
+    this._mqActivation = this._mqa.attach(this, 'hide', 'true');
+    this._updateWithValue();
   }
 
   /**
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   onMediaQueryChanges(changes: MediaQueryChanges) {
-    delay(()=>{
-      this._updateWithValue( changes.current.value );
+    delay(() => {
+      this._updateWithValue(changes.current.value);
     });
   }
 
@@ -223,19 +211,19 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
   /**
    * Validate the visibility value and then update the host's inline display style
    */
-  _updateWithValue(value?:string|number|boolean) {
-    let key = "";
+  _updateWithValue(value?: string|number|boolean) {
+    let key = '';
 
     value = value || this.hide || true;
 
-    if (  isDefined(this._mqActivation) ) {
+    if (isDefined(this._mqActivation)) {
       value = this._mqActivation.activatedInput;
       key = this._mqActivation.activatedInputKey;
     }
     value = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._updateStyle(this._buildCSS( value ));
+    this._updateStyle(this._buildCSS(value));
   }
 
 
@@ -243,9 +231,7 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(value) {
-    return {
-      'display' : value ? 'none' : this._display
-    };
+    return {'display': value ? 'none' : this._display};
   }
 
   /**
@@ -253,7 +239,6 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    */
   _validateValue(value) {
     // console.log(`HideDirective::_validateValue( ${value} )`);
-    return !isDefined(FALSY.find(x => x === value ));
+    return !isDefined(FALSY.find(x => x === value));
   }
 }
-

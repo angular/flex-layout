@@ -1,45 +1,33 @@
-import {NgModule, ModuleWithProviders} from '@angular/core';
-
-import { ShowDirective, HideDirective } from "./api/show-hide";
-import { LayoutDirective, LayoutWrapDirective, LayoutAlignDirective } from "./api/layout";
-import { FlexDirective, FlexOrderDirective, FlexOffsetDirective, FlexFillDirective, FlexAlignDirective } from "./api/flex";
-
-import { MediaQueryAdapter }  from "./media-query/media-query-adapter";
-import { MediaQueriesModule } from '../media-query/media-query-module';
-
 // RxJS Operators used by the classes...
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
+import {ModuleWithProviders, NgModule} from '@angular/core';
+
+import {MediaQueriesModule} from '../media-query/media-query-module';
+
+import {FlexAlignDirective, FlexDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective} from './api/flex';
+import {LayoutAlignDirective, LayoutDirective, LayoutWrapDirective} from './api/layout';
+import {HideDirective, ShowDirective} from './api/show-hide';
+import {MediaQueryAdapter} from './media-query/media-query-adapter';
+
 const ALL_DIRECTIVES = [
-  LayoutDirective,
-  LayoutWrapDirective,
-  LayoutAlignDirective,
-  FlexDirective,
-  FlexOrderDirective,
-  FlexOffsetDirective,
-  FlexFillDirective,
-  FlexAlignDirective,
-  ShowDirective,
-  HideDirective
+  LayoutDirective, LayoutWrapDirective, LayoutAlignDirective, FlexDirective, FlexOrderDirective,
+  FlexOffsetDirective, FlexFillDirective, FlexAlignDirective, ShowDirective, HideDirective
 ];
 
 /**
  *
  */
 @NgModule({
-  declarations  : ALL_DIRECTIVES,
-  imports       : [ MediaQueriesModule ],
-  exports       : [ MediaQueriesModule, ...ALL_DIRECTIVES ],
-  providers     : [ ]
+  declarations: ALL_DIRECTIVES,
+  imports: [MediaQueriesModule],
+  exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
+  providers: []
 })
 export class LayoutsModule {
   static forRoot(): ModuleWithProviders {
-      return {
-        ngModule  : LayoutsModule,
-        providers : [ MediaQueryAdapter ]
-      };
-    }
+    return {ngModule: LayoutsModule, providers: [MediaQueryAdapter]};
+  }
 }
-

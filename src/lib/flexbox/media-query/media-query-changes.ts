@@ -1,4 +1,4 @@
-import { MediaQueryChange } from "../../media-query/media-queries";
+import {MediaQueryChange} from '../../media-query/media-queries';
 
 // ****************************************************************
 // Exported Types and Interfaces
@@ -9,7 +9,7 @@ import { MediaQueryChange } from "../../media-query/media-queries";
  *
  */
 export class MediaQueryChanges {
-  constructor(public previous : MediaQueryChange, public current : MediaQueryChange) { }
+  constructor(public previous: MediaQueryChange, public current: MediaQueryChange) {}
 }
 
 
@@ -21,8 +21,8 @@ export class MediaQueryChanges {
  * ``onMediaQueryChanges( )`` is called right after the a MediaQueryChange has occurred.
  */
 export declare abstract class OnMediaQueryChanges {
-    abstract onMediaQueryChanges(changes: MediaQueryChanges): void;
+  abstract onMediaQueryChanges(changes: MediaQueryChanges): void;
 }
 
 
-export type MediaQuerySubscriber = (e:MediaQueryChanges) => { };
+export type MediaQuerySubscriber = (e: MediaQueryChanges) => {};

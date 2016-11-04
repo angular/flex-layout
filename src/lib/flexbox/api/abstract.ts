@@ -1,12 +1,12 @@
-import {Renderer, ElementRef} from "@angular/core";
-import { applyCssPrefixes } from '../../utils/auto-prefixer';
+import {ElementRef, Renderer} from '@angular/core';
+
+import {applyCssPrefixes} from '../../utils/auto-prefixer';
 
 /**
  * Abstract base class for the Layout API styling directives
  */
 export abstract class BaseStyleDirective {
-
-  constructor(private _elRef: ElementRef, private _renderer: Renderer) {  }
+  constructor(private _elRef: ElementRef, private _renderer: Renderer) {}
 
   // *********************************************
   // Protected methods
@@ -15,11 +15,11 @@ export abstract class BaseStyleDirective {
   /**
    * Inject inline the flexbox styles specific to this renderer/domEl pair
    */
-  protected _updateStyle(source:string|Object, value?:any) {
-    let  styles = { }, domEl = this._elRef.nativeElement;
+  protected _updateStyle(source: string|Object, value?: any) {
+    let styles = {}, domEl = this._elRef.nativeElement;
     if (typeof source === 'string') {
-        styles[source] = value;
-        source = styles;
+      styles[source] = value;
+      source = styles;
     }
 
     styles = applyCssPrefixes(source);
@@ -29,5 +29,4 @@ export abstract class BaseStyleDirective {
       this._renderer.setElementStyle(domEl, key, styles[key]);
     }
   }
-
 }

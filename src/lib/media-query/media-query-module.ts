@@ -1,12 +1,9 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import { BreakPoints } from "./break-points";
-import { MediaQueries } from "./media-queries";
+import {BreakPoints} from './break-points';
+import {MediaQueries} from './media-queries';
 
-const ALL_COMPONENTS = [
-  BreakPoints,
-  MediaQueries
-];
+const ALL_COMPONENTS = [BreakPoints, MediaQueries];
 
 /**
  * *****************************************************************
@@ -15,18 +12,13 @@ const ALL_COMPONENTS = [
  */
 
 
-@NgModule({
-  providers : [
-    BreakPoints,
-    MediaQueries
-  ]
-})
+@NgModule({providers: [BreakPoints, MediaQueries]})
 export class MediaQueriesModule {
   static forRoot() {
     return {
-      ngModule : MediaQueriesModule,
-      providers : [
-        BreakPoints,     // Default Breakpoints for application
+      ngModule: MediaQueriesModule,
+      providers: [
+        BreakPoints,  // Default Breakpoints for application
         MediaQueries
       ]
     };
