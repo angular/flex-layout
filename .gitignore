@@ -1,6 +1,58 @@
-.idea
-jspm_packages/
-node_modules/
-typings/
-dist/
-demos/
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# Webpack Analyzer
+report.html
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Users Environment Variables
+.lock-wscript
+
+# OS generated files #
+.DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Node Files #
+/node_modules
+/bower_components
+npm-debug.log
+
+# Coverage #
+/coverage/
+
+# Typing #
+/src/typings/tsd/
+/typings/
+/tsd_typings/
+
+# Dist #
+/dist
+/demos
+/public/__build__/
+/src/*/__build__/
+/__build__/**
+/public/dist/
+/src/*/dist/
+/dist/**
+/.awcache
+.webpack.json
+
+# Doc #
+/doc/
+
+# IDE #
+.idea/
+*.swp

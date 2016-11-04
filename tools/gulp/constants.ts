@@ -4,7 +4,7 @@ export const PROJECT_ROOT = join(__dirname, '../..');
 export const SOURCE_ROOT = join(PROJECT_ROOT, 'src');
 
 export const DIST_ROOT = join(PROJECT_ROOT, 'dist');
-export const DIST_COMPONENTS_ROOT = join(DIST_ROOT, '@angular/layouts');
+export const DIST_COMPONENTS_ROOT = join(DIST_ROOT, '@angular/flex-layout');
 
 export const SASS_AUTOPREFIXER_OPTIONS = {
   browsers: [

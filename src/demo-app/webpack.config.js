@@ -5,6 +5,8 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+//const nodeExternals = require('webpack-node-externals');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var path = require('path');
 var ROOT = path.resolve(__dirname, '..');
@@ -17,29 +19,29 @@ function root(args) {
 
 module.exports = {
 
-    /**
-     * The entry point for the bundle
-     * Our Angular.js app
-     *
-     * See: http://webpack.github.io/docs/configuration.html#entry
-     */
-    entry: {
+  /**
+   * The entry point for the bundle
+   * Our Angular.js app
+   *
+   * See: http://webpack.github.io/docs/configuration.html#entry
+   */
+  entry: {
 
-      'polyfills': './src/demo-app/browser/polyfills.ts',
-      'vendor':    './src/demo-app/browser/vendor.ts',
-      'main':      './src/demo-app/browser/main.ts'
+    'polyfills': './src/demo-app/browser/polyfills.ts',
+    'vendor': './src/demo-app/browser/vendor.ts',
+    'main': './src/demo-app/browser/main.ts'
 
-    },
+  },
 
   output: {
-      path: __dirname + "/dist",
-      filename: "[name].js"
-    },
+    path: __dirname + "/dist",
+    filename: "[name].js"
+  },
 
   resolve: {
-    extensions: ['', '.webpack.js', '.ts', '.js'],
-    alias : {
-      "@angular/layouts" : "src/lib/"
+    extensions: ['.webpack.js', '.ts', '.js'],
+    alias: {
+      "@angular/layouts": "src/lib/"
     }
   },
 
@@ -73,11 +75,10 @@ module.exports = {
           'awesome-typescript-loader',
           'angular2-template-loader'
         ],
-        exclude: [/\.(spec|e2e)\.ts$/,  /node_modules/, /demos/, /deprecated/],
-        noParse : [ /angular/, /\@angular/ ]
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/]
       },
-      { test: /\.html$/, loader: 'raw-loader' },
-      { test: /\.css$/, loader: "raw" },
+      {test: /\.html$/, loader: 'raw-loader'},
+      {test: /\.css$/, loader: "raw"},
 
       /**
        *  File loader for supporting images, for example, in CSS files.
@@ -87,66 +88,69 @@ module.exports = {
         loader: 'file'
       },
 
-      { test: /\.svg$/, loader: "url-loader?mimetype=avatar/svg+xml" }
+      {test: /\.svg$/, loader: "url-loader?mimetype=avatar/svg+xml"}
     ]
   },
 
+  // externals : [ nodeExternals() ],
+
   plugins: [
+
     new LiveReloadPlugin({
-          appendScriptTag: true
+      appendScriptTag: true
     }),
 
     new CopyWebpackPlugin([
-      { from: 'assets', to: __dirname + "/dist" }
+      {from: 'src/demo-app/assets', to: __dirname + "/dist"}
     ]),
 
-     /**
-      * Plugin: ForkCheckerPlugin
-      * Description: Do type checking in a separate process, so webpack don't need to wait.
-      *
-      * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
-      */
-     new ForkCheckerPlugin(),
+    /**
+     * Plugin: ForkCheckerPlugin
+     * Description: Do type checking in a separate process, so webpack don't need to wait.
+     *
+     * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
+     */
+    new ForkCheckerPlugin(),
 
-     /**
-       * Plugin: CommonsChunkPlugin
-       * Description: Shares common code between the pages.
-       * It identifies common modules and put them into a commons chunk.
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-       * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
-       */
-      new webpack.optimize.CommonsChunkPlugin({
-        name: ['polyfills', 'vendor', 'main'].reverse()
-      }),
+    /**
+     * Plugin: CommonsChunkPlugin
+     * Description: Shares common code between the pages.
+     * It identifies common modules and put them into a commons chunk.
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
+     * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
+     */
+    new webpack.optimize.CommonsChunkPlugin({
+      name: ['polyfills', 'vendor', 'main'].reverse()
+    }),
 
-      /**
-       * Plugin: ContextReplacementPlugin
-       * Description: Provides context to Angular's use of System.import
-       *
-       * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
-       * See: https://github.com/angular/angular/issues/11580
-       */
-      new ContextReplacementPlugin(
-        // The (\\|\/) piece accounts for path separators in *nix and Windows
-        /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-        root('./src') // location of your src
-      ),
+    /**
+     * Plugin: ContextReplacementPlugin
+     * Description: Provides context to Angular's use of System.import
+     *
+     * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
+     * See: https://github.com/angular/angular/issues/11580
+     */
+    new ContextReplacementPlugin(
+      // The (\\|\/) piece accounts for path separators in *nix and Windows
+      /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
+      root('./src') // location of your src
+    ),
 
-     /**
-       * Plugin: HtmlWebpackPlugin
-       * Description: Simplifies creation of HTML files to serve your webpack bundles.
-       * This is especially useful for webpack bundles that include a hash in the filename
-       * which changes every compilation.
-       *
-       * See: https://github.com/ampedandwired/html-webpack-plugin
-       */
-     new HtmlWebpackPlugin({
-        template: './src/demo-app/index.html',
-        chunksSortMode: 'dependency'
-      })
+    /**
+     * Plugin: HtmlWebpackPlugin
+     * Description: Simplifies creation of HTML files to serve your webpack bundles.
+     * This is especially useful for webpack bundles that include a hash in the filename
+     * which changes every compilation.
+     *
+     * See: https://github.com/ampedandwired/html-webpack-plugin
+     */
+    new HtmlWebpackPlugin({
+      template: './src/demo-app/index.html',
+      chunksSortMode: 'dependency'
+    })
 
-    ]
+  ]
 };
 
 

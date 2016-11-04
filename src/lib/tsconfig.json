@@ -2,7 +2,6 @@
   "compilerOptions": {
     "declaration": true,
     "noEmitOnError": true,
-    "inlineSources": true,
     "stripInternal": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
@@ -11,17 +10,15 @@
     "experimentalDecorators": true,
 
     "lib": ["es6", "es2015", "dom"],
-    "mapRoot": "",
     "module": "es2015",
     "moduleResolution": "node",
     "outDir": "../../dist/",
     "rootDir": ".",
-    "sourceMap": false,
     "target": "es5",
     "baseUrl": "",
     "paths": {
-      "@angular/layouts": [
-          "../../dist/@angular/layouts"
+      "@angular/flex-layout": [
+          "../../dist/@angular/flex-layout"
       ]
     },
     "typeRoots": [

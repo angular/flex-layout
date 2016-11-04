@@ -34,7 +34,7 @@ export class MediaQueryAdapter {
 
   /**
    * Create a custom MQ Activation instance for each directive instance; the activation object
-   * tracks the current mq-activated input and manages the calls to the directive's ngOnMediaQueryChanges
+   * tracks the current mq-activated input and manages the calls to the directive's `onMediaQueryChanges( )`
    */
   attach(directive : Directive,  property :string, defaultVal:string|number ) : MediaQueryActivation {
     let activation : MediaQueryActivation = new MediaQueryActivation(this._mq, directive, property, defaultVal );
@@ -80,8 +80,21 @@ export class MediaQueryAdapter {
     }
   }
 
+
   /**
-   * For each API property, register a callback to ngOnMediaQueryChanges(e:MediaQueryEvent)
+   * Build mediaQuery key-hashmap; only for the directive properties that are actually defined
+   */
+  private _buildRegistryMap(directive : Directive, key:string) {
+    return this._breakpoints.registry
+      .map(it => {
+        return {
+          alias : it.alias,           // e.g.  gt-sm, md, gt-lg
+          key   : key + it.suffix     // e.g.  layoutGtSm, layoutMd, layoutGtLg
+        }
+      }).filter( it => isDefined(directive[ it.key ]) );
+  }
+  /**
+   * For each API property, register a callback to `onMediaQueryChanges( )`(e:MediaQueryEvent)
    * Cache 1..n subscriptions for internal auto-unsubscribes during the directive ngOnDestory() notification
    */
   private _configureChangeObservers(directive : Directive, keys : any, subscriber : MediaQuerySubscriber ) : SubscriptionList {
@@ -110,19 +123,6 @@ export class MediaQueryAdapter {
   }
 
   /**
-   * Build mediaQuery key-hashmap; only for the directive properties that are actually defined
-   */
-  private _buildRegistryMap(directive : Directive, key:string) {
-    return this._breakpoints.registry
-      .map(it => {
-        return {
-          alias : it.alias,           // e.g.  gt-sm, md, gt-lg
-          key   : key + it.suffix     // e.g.  layoutGtSm, layoutMd, layoutGtLg
-        }
-      }).filter( it => isDefined(directive[ it.key ]) );
-  }
-
-  /**
    * Is the current activation event different from the last activation event ?
    *
    * !! change events may arrive out-of-order (activate before deactivate)
@@ -135,6 +135,8 @@ export class MediaQueryAdapter {
     return current.matches || (!current.matches && current.mqAlias !== prevAlias);
   }
 }
+
+
 
 
 

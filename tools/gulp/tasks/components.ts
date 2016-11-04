@@ -18,7 +18,7 @@ const uglify = require('rollup-plugin-uglify');
 // 2) `tsconfig.json`: we are outputting CommonJS modules. This is used
 // for unit tests (karma).
 
-/** Path to the root of the Angular Material component library. */
+/** Path to the root of the @Angular/flex-layout library. */
 /** Path to the tsconfig used for ESM output. */
 const componentsDir = path.join(SOURCE_ROOT, 'lib');
 const tsconfigPath = path.relative(PROJECT_ROOT, path.join(componentsDir, 'tsconfig.json'));
@@ -73,18 +73,18 @@ task(':build:components:rollup', [':build:components:ts'], () => {
       format: 'umd',
       globals,
       sourceMap: true,
-      dest: path.join(DIST_COMPONENTS_ROOT, 'layouts.umd.js')
+      dest: path.join(DIST_COMPONENTS_ROOT, 'flex-layout.umd.js')
     });
 
     // Add source map URL to the code.
-    result.code += '\n\n//# sourceMappingURL=./layouts.umd.js.map\n';
+    result.code += '\n\n//# sourceMappingURL=./flex-layout.umd.js.map\n';
     // Format mapping to show properly in the browser. Rollup by default will put the path
     // as relative to the file, and since that path is in src/lib and the file is in
-    // dist/@angular/material, we need to kill a few `../`.
+    // dist/@angular/layouts, we need to kill a few `../`.
     result.map.sources = result.map.sources.map((s: string) => s.replace(/^(\.\.\/)+/, ''));
 
-    writeFileSync(path.join(DIST_COMPONENTS_ROOT, 'layouts.umd.js'), result.code, 'utf8');
-    writeFileSync(path.join(DIST_COMPONENTS_ROOT, 'layouts.umd.js.map'), result.map, 'utf8');
+    writeFileSync(path.join(DIST_COMPONENTS_ROOT, 'flex-layout.umd.js'), result.code, 'utf8');
+    writeFileSync(path.join(DIST_COMPONENTS_ROOT, 'flex-layout.umd.js.map'), result.map, 'utf8');
   });
 });
 

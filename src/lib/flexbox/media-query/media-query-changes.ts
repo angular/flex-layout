@@ -18,7 +18,7 @@ export class MediaQueryChanges {
  * @howToUse
  *
  * @description
- * `ngOnMediaQueryChanges` is called right after the a MediaQueryChange has occurred.
+ * ``onMediaQueryChanges( )`` is called right after the a MediaQueryChange has occurred.
  */
 export declare abstract class OnMediaQueryChanges {
     abstract onMediaQueryChanges(changes: MediaQueryChanges): void;
