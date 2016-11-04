@@ -1,16 +1,16 @@
 FROM node:latest
 
 # Create app directory
-RUN mkdir -p /usr/docker/apps/layout
-WORKDIR /usr/docker/apps/layout
+RUN mkdir -p /usr/docker/apps/angular/flex-layout
+WORKDIR /usr/docker/apps/angular/flex-layout
 
 # Copy node package to working directory
-COPY package.json /usr/docker/apps/layout
+COPY package.json /usr/docker/apps/angular/flex-layout
 
 # Install Node dependencies
-RUN npm install --loglevel warn
+RUN yarn install
 
-COPY . /usr/docker/apps/layout
+COPY . /usr/docker/apps/angular/flex-layout
 
 # Build the demo app with webPack
 RUN ./node_modules/.bin/npm run start
