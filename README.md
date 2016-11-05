@@ -6,20 +6,19 @@ flexbox-2016 css stylings.
 
 The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
 
-Angular Flex Layout is a pure-Typescript Layout engine; unlike the pure CSS-only implementations published in other Flexbox libraries   and the JS+CSS implementation of Angular Material v1.x Layouts. 
-
-*  This implementation of Flex Layouts is independent of Angular Material (v1 or v2).
-*  This implementation is currently only available for Angular applications.
 
 The Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used with hierarchical DOM structures. 
-Since the Layout applies/injects **Flexbox CSS**, DOM layout will fluidly update is positioning and sizes as the 
-viewport size changes.
+Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly update their positioning and sizes as the  viewport size changes.
 
 
 Integrating **mediaQuery** features into the Layout engine enables the API to be **Responsive**: DOM elements can adjust 
 layout-directions, visibility, and sizing constraints based on specific viewport sizes such as desktop or mobile devices. 
 
+Angular Flex Layout is a pure-Typescript Layout engine; unlike the pure CSS-only implementations published in other Flexbox libraries   and the JS+CSS implementation of Angular Material v1.x Layouts. 
+
+*  This implementation of Flex Layouts is independent of Angular Material (v1 or v2).
+*  This implementation is currently only available for Angular applications.
 ----
 
 ### Background
