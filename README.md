@@ -11,7 +11,7 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 
 The Angular Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used with hierarchical DOM structures. 
-Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly update their positioning and sizes as the  viewport size changes.
+Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly update their positioning and sizes as the  viewport size changes. 
 
 ```html
 <div class="flex-container" fx-layout="row" fx-layout-align="center center">
@@ -20,6 +20,7 @@ Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly upda
   <div class="flex-item"></div>
 </div> 
 ```
+> The above Layout usages does not require any external stylesheets, any custom CSS programming. The Angular directives do all the work of *magically* setting the flexbox css.
 
 Integrating **mediaQuery** features into the Layout engine enables the API to be **Responsive**: DOM elements can adjust 
 layout-directions, visibility, and sizing constraints based on specific viewport sizes such as desktop or mobile devices. 
