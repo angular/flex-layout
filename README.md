@@ -9,10 +9,17 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 ![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
 
 
-The Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
+The Angular Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used with hierarchical DOM structures. 
 Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly update their positioning and sizes as the  viewport size changes.
 
+```html
+<div class="flex-container" fx-layout="row" fx-layout-align="center center">
+  <div class="flex-item"></div>
+  <div class="flex-item"></div>
+  <div class="flex-item"></div>
+</div> 
+```
 
 Integrating **mediaQuery** features into the Layout engine enables the API to be **Responsive**: DOM elements can adjust 
 layout-directions, visibility, and sizing constraints based on specific viewport sizes such as desktop or mobile devices. 
