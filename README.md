@@ -20,7 +20,7 @@ Since the Layout applies/injects **Flexbox CSS**, DOM elements will fluidly upda
   <div class="flex-item"></div>
 </div> 
 ```
-> The above Layout usages does not require any external stylesheets, any custom CSS programming. The Angular directives do all the work of *magically* setting the flexbox css.
+> The above Flex Layout usages do not require any external stylesheets nor any custom CSS programming. The Angular directives do all the work of *magically* setting the flexbox css.
 
 Integrating **mediaQuery** features into the Layout engine enables the API to be **Responsive**: DOM elements can adjust 
 layout-directions, visibility, and sizing constraints based on specific viewport sizes such as desktop or mobile devices. 
