@@ -6,6 +6,8 @@ flexbox-2016 css stylings.
 
 The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
 
+![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
+
 
 The Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used with hierarchical DOM structures. 
