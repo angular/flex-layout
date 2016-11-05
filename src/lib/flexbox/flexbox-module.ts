@@ -26,8 +26,8 @@ const ALL_DIRECTIVES = [
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
   providers: []
 })
-export class LayoutsModule {
+export class FlexLayoutModule {
   static forRoot(): ModuleWithProviders {
-    return {ngModule: LayoutsModule, providers: [MediaQueryAdapter]};
+    return {ngModule: FlexLayoutModule, providers: [MediaQueryAdapter]};
   }
 }

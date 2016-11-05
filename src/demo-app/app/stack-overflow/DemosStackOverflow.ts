@@ -12,7 +12,7 @@ import {NgModule}                 from '@angular/core';
 import {CommonModule}             from "@angular/common";
 import {MaterialModule}           from "@angular/material";
 
-import {LayoutsModule}            from "../../../lib/flexbox/flexbox-module";
+import {FlexLayoutModule}            from "../../../lib/flexbox/flexbox-module";
 
 import { DemoComplexColumnOrder } from "./columnOrder.demo";
 
@@ -24,7 +24,7 @@ import { DemoComplexColumnOrder } from "./columnOrder.demo";
   imports : [
     CommonModule,
     MaterialModule,
-    LayoutsModule
+    FlexLayoutModule
   ]
 })
 export class DemosStackOverflowModule{  }

@@ -17,7 +17,7 @@ import {CommonModule}        from "@angular/common";
 import {FormsModule}         from "@angular/forms";
 
 import {MaterialModule}      from "@angular/material";
-import {LayoutsModule}       from "../../../lib/flexbox/flexbox-module";
+import {FlexLayoutModule}       from "../../../lib/flexbox/flexbox-module";
 
 import {DemoResponsiveRows}  from "./responsiveRowColumns.demo";
 import {DemoResponsiveDirection }  from "./responsiveDirections.demo";
@@ -40,7 +40,7 @@ import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
     CommonModule,
     FormsModule,
     MaterialModule,
-    LayoutsModule
+    FlexLayoutModule
   ]
 
 })

@@ -13,7 +13,7 @@ import {NgModule}            from '@angular/core';
 import {CommonModule}        from "@angular/common";
 
 import {MaterialModule}      from "@angular/material";
-import {LayoutsModule}       from "../../../lib/flexbox/flexbox-module";
+import {FlexLayoutModule}       from "../../../lib/flexbox/flexbox-module";
 
 import { DemoIssue5345 }     from "./issue.5345.demo";
 import { DemoIssue9897 }     from "./issue.9897.demo";
@@ -27,7 +27,7 @@ import { DemoIssue9897 }     from "./issue.9897.demo";
   imports : [
     CommonModule,
     MaterialModule,
-    LayoutsModule
+    FlexLayoutModule
   ]
 })
 export class DemosGithubIssuesModule{ }

@@ -4,7 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserModule }  from '@angular/platform-browser';
 import { MaterialModule } from "@angular/material";
 
-import { LayoutsModule }  from "../../lib/flexbox/"; //"@angular/layouts";
+import { FlexLayoutModule }  from "../../lib/flexbox/"; //"@angular/flex-layout";
 
 import { DemoApp }                  from './demo-app/demo-app';
 import { DEMO_APP_ROUTES }          from "./demo-app-routes";
@@ -21,7 +21,7 @@ import { DemosResponsiveLayoutsModule } from './docs-layout-responsive/DemosResp
     BrowserModule,
     RouterModule.forRoot(DEMO_APP_ROUTES),
     MaterialModule.forRoot(),
-    LayoutsModule.forRoot(),
+    FlexLayoutModule.forRoot(),
 
     /* Internal Demo App Modules */
     DemosStackOverflowModule,
