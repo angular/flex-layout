@@ -69,7 +69,7 @@ task(':build:components:rollup', [':build:components:ts'], () => {
     ]
   }).then((bundle: { generate: any }) => {
     const result = bundle.generate({
-      moduleName: 'ng.layouts',
+      moduleName: 'flex-layouts',
       format: 'umd',
       globals,
       sourceMap: true,

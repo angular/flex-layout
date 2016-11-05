@@ -11,9 +11,8 @@ export class DemosGithubIssues { }
 
 import {NgModule}            from '@angular/core';
 import {CommonModule}        from "@angular/common";
-
 import {MaterialModule}      from "@angular/material";
-import {FlexLayoutModule}       from "../../../lib/flexbox/flexbox-module";
+import {FlexLayoutModule}    from "@angular/flex-layout";     // `gulp build:components` to deploy to node_modules manually
 
 import { DemoIssue5345 }     from "./issue.5345.demo";
 import { DemoIssue9897 }     from "./issue.9897.demo";

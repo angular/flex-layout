@@ -2,8 +2,7 @@
   "name": "@angular/flex-layout",
   "version": "1.0.0-beta.1",
   "description": "Angular 2 Flexbox Layout",
-  "main": "./layouts.umd.js",
-  "module": "./index.js",
+  "main": "./index.js",
   "typings": "./index.d.ts",
   "repository": {
     "type": "git",

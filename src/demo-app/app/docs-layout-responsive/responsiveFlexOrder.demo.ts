@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MediaQueries, MediaQueryChange} from "../../../lib/media-query/media-queries";
-import {BreakPoint} from "../../../lib/media-query/break-points";
+import {MediaQueries, MediaQueryChange} from "@angular/flex-layout/media-query/media-queries";
+import {BreakPoint} from "@angular/flex-layout/media-query/break-points";
 
 @Component({
   selector: 'demo-responsive-flex-order',

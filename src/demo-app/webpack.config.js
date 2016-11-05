@@ -6,7 +6,7 @@ const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 //const nodeExternals = require('webpack-node-externals');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var path = require('path');
 var ROOT = path.resolve(__dirname, '..');
@@ -39,10 +39,10 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.webpack.js', '.ts', '.js'],
-    alias: {
-      "@angular/flex-layout": "src/lib/"
-    }
+    extensions: ['.webpack.js', '.ts', '.js']
+    // alias: {
+    //   "@angular/flex-layout": "src/lib/"
+    // }
   },
 
   /**
@@ -75,7 +75,8 @@ module.exports = {
           'awesome-typescript-loader',
           'angular2-template-loader'
         ],
-        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/]
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/],
+        noParse : [ /angular/, /\@angular/ ]
       },
       {test: /\.html$/, loader: 'raw-loader'},
       {test: /\.css$/, loader: "raw"},
@@ -95,6 +96,7 @@ module.exports = {
   // externals : [ nodeExternals() ],
 
   plugins: [
+
 
     new LiveReloadPlugin({
       appendScriptTag: true

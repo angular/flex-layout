@@ -68,6 +68,7 @@ non-responsive and responsive demos:
 ```
 npm install -g yarn
 yarn install
+gulp build:components
 npm run start 
 ```
 
@@ -93,7 +94,7 @@ npm install @angular/flex-layout -save
 Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
 
 ```console
-gulp build:components
+gulp build:release
 ```
 
 To use the bundle and the required, external AngularJS framework:
@@ -115,12 +116,12 @@ In their application module, developers import the global Layout API directives 
 ```ts
 // demo-app-module.ts
 
-import { FlexLayout } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   imports: [
     BrowserModule, CommonModule, FormsModule, HttpModule,  // import ng2 core modules
-    FlexLayout.forRoot(),                                  // import dependency on Flex-Layout
+    FlexLayoutModule.forRoot(),                            // import dependency on Flex-Layout
   ], 
 )}
 export class DemoAppModule { }

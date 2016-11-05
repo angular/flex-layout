@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-
-import { MediaQueries } from '../../../lib/media-query/';
+import { MediaQueries } from "@angular/flex-layout/media-query/media-queries";
 
 @Component({
   selector: 'demo-responsive-row-column',

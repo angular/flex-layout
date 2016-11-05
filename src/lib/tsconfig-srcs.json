@@ -13,7 +13,7 @@
     "mapRoot": "",
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "../../dist/@angular/flex-layout",
+    "outDir": "../../node_modules/@angular/flex-layout",
     "rootDir": ".",
     "sourceMap": true,
     "target": "es5",
@@ -28,8 +28,8 @@
     "system-config-spec"
   ],
   "angularCompilerOptions": {
-    "genDir": "../../dist/@angular/flex-layout",
-    "skipTemplateCodegen": true,
+    "genDir": "../../node_modules/@angular/flex-layout",
+    "skipTemplateCodegen": false,
     "debug": true
   }
 }

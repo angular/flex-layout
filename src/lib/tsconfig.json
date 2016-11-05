@@ -16,11 +16,11 @@
     "rootDir": ".",
     "target": "es5",
     "baseUrl": "",
-    "paths": {
-      "@angular/flex-layout": [
-          "../../dist/@angular/flex-layout"
-      ]
-    },
+//    "paths": {
+//      "@angular/flex-layout": [
+//          "../../dist/@angular/flex-layout"
+//      ]
+//    },
     "typeRoots": [
       "../../node_modules/@types"
     ],
