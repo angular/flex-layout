@@ -23,15 +23,21 @@ const uglify = require('rollup-plugin-uglify');
 const componentsDir = path.join(SOURCE_ROOT, 'lib');
 const tsconfigPath = path.relative(PROJECT_ROOT, path.join(componentsDir, 'tsconfig.json'));
 
-/** Builds component typescript only (ESM output). */
-task(':build:components:ts', tsBuildTask(componentsDir, 'tsconfig-srcs.json'));
-
 /** Copies assets (html, markdown) to build output. */
 task(':build:components:assets', copyTask([
   path.join(componentsDir, '**/*.!(ts|spec.ts)'),
   path.join(PROJECT_ROOT, 'README.md'),
 ], DIST_COMPONENTS_ROOT));
 
+
+/**
+ * Builds component typescript only (ESM output).
+ */
+task(':build:components:ts', tsBuildTask(componentsDir, 'tsconfig-srcs.json'));
+
+/**
+ * Rollup components to 'output' defined in 'tsconfig-srcs.json'
+ */
 task(':build:components:rollup', [':build:components:ts'], () => {
   const includePathOptions = {
       paths: ['./flexbox', './media-query', './utils'],
@@ -59,7 +65,7 @@ task(':build:components:rollup', [':build:components:ts'], () => {
     'rxjs/add/operator/catch': 'Rx.Observable.prototype'
   };
 
-  // Rollup the @angular/layouts UMD bundle from all ES5 + imports JavaScript files built.
+  // Rollup the @angular/flex-layout UMD bundle from all ES5 + imports JavaScript files built.
   return rollup({
     entry: path.join(DIST_COMPONENTS_ROOT, 'index.js'),
     context: 'this',

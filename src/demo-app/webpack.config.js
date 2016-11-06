@@ -40,9 +40,6 @@ module.exports = {
 
   resolve: {
     extensions: ['.webpack.js', '.ts', '.js']
-    // alias: {
-    //   "@angular/flex-layout": "src/lib/"
-    // }
   },
 
   /**
