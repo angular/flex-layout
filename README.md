@@ -323,10 +323,9 @@ Compared to the Layout API in Angular Material v1.x, this codebase easier to mai
 
 ----
 
-### User stories 
+## Use Cases
 
-These user-stories will be detailed in a separate design doc (pending). The current implementation, however, provides 
-features/solutions for all user stories. 
+Below are the use cases address by this Layout library. These will be detailed in a separate design doc (pending). The current implementation, however, provides features/solutions for all listed user cases. 
 
 ##### Non-responsive Use Cases:
 
