@@ -94,29 +94,6 @@ npm install @angular/flex-layout -save
 
 > Note: This ^ feature is pending public release of the Github repository!
 
-
----
-
-#### Build Instructions
-
-
-Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
-
-```console
-gulp build:release
-```
-
-To use the bundle and the required, external AngularJS framework:
-
-```html
-<script src="/dist/@angular/flex-layout/flex-layout.umd.js"></script>
-
-
-```
-
-<br/>
-
-
 ----
 
 #### Application Usages
@@ -151,6 +128,33 @@ complex, dynamic layouts:
   </div>
 </div>
 ``` 
+
+---
+
+#### Build Instructions
+
+
+Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
+
+```console
+gulp build:components
+```
+
+
+To use the bundle and the required, external AngularJS framework:
+
+```html
+<script src="/dist/@angular/flex-layout/flex-layout.umd.js"></script>
+
+```
+
+Or you can use the `ngc` to build an AOT version:
+
+```console
+gulp build:release
+```
+
+<br/>
 
 ----
 
