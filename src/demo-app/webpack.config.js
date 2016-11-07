@@ -67,17 +67,14 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loaders: [
-          '@angularclass/hmr-loader',
-          'awesome-typescript-loader',
-          'angular2-template-loader'
-        ],
+        loaders: [ 'awesome-typescript-loader', 'angular2-template-loader' ],
         exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/],
         noParse : [ /angular/, /\@angular/ ]
       },
-      {test: /\.html$/, loader: 'raw-loader'},
-      {test: /\.css$/, loader: "raw"},
-
+      {
+        test: /\.(html|css)$/,
+        loader: 'raw-loader'
+      },
       /**
        *  File loader for supporting images, for example, in CSS files.
        */

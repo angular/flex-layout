@@ -33,7 +33,7 @@
   ],
   "angularCompilerOptions": {
     "genDir": "../../dist",
-    "skipTemplateCodegen": true,
+    "skipTemplateCodegen": false,
     "debug": true
   }
 }

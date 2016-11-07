@@ -1,21 +1,30 @@
 FROM node:latest
 
 # Create app directory
-RUN mkdir -p /usr/docker/apps/angular/flex-layout
-WORKDIR /usr/docker/apps/angular/flex-layout
+RUN  mkdir -p /ng2/flex-layout /home/nodejs && \
+     groupadd -r nodejs && \
+     useradd -r -g nodejs -d /home/nodejs -s /sbin/nologin nodejs && \
+     chown -R nodejs:nodejs /home/nodejs
+
+WORKDIR /ng2/flex-layout
 
 # Copy node package to working directory
-COPY package.json /usr/docker/apps/angular/flex-layout
+COPY package.json /ng2/flex-layout
 
 # Install Node dependencies
-RUN yarn install
+RUN npm install -g yarn
+RUN npm install -g live-server
+RUN yarn
 
-COPY . /usr/docker/apps/angular/flex-layout
+COPY . /ng2/flex-layout
+RUN chown -R nodejs:nodejs /ng2/flex-layout
+USER nodejs
 
 # Build the demo app with webPack
-RUN ./node_modules/.bin/npm run start
+CMD gulp build:components
+CMD npm run deploy
 
 # Expose live-server port
 EXPOSE 8080
 
-#CMD ./node_modules/.bin/live-server dist/
+CMD live-server

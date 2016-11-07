@@ -66,6 +66,10 @@ task(':build:components:rollup', [':build:components:ts'], () => {
   };
 
   // Rollup the @angular/flex-layout UMD bundle from all ES5 + imports JavaScript files built.
+  //
+  // Note: `gulp build:components` deploys to `/node_modules/@angular/flex-layout`
+  //        see tsconfig-srcs.json#L17
+
   return rollup({
     entry: path.join(DIST_COMPONENTS_ROOT, 'index.js'),
     context: 'this',

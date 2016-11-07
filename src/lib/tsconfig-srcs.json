@@ -14,8 +14,6 @@
     "module": "es2015",
     "moduleResolution": "node",
 
-    // Note: `gulp build:components` deploys to `/node_modules/@angular/flex-layout`
-
     "outDir": "../../node_modules/@angular/flex-layout",
     "rootDir": ".",
     "sourceMap": true,

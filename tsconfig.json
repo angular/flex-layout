@@ -26,7 +26,7 @@
     "demos"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,
+    "forkChecker": true,       // @see https://github.com/TheLarkInn/angular2-template-loader#how-does-it-work
     "useWebpackText": true
   },
   "compileOnSave": false,
