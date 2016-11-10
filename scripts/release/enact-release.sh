@@ -2,15 +2,15 @@
 
 # Run this script after running `stage-release.sh` to publish the packages staged to deploy/
 # Optionally uses the first argument as the tag for the release (such as "next").
-# This script should be run from the root of the layouts repo.
+# This script should be run from the root of the angular/flex-layout repo.
 
 
 # `npm whoami` errors and dies if you're not logged in,
 # so we redirect the stderr output to /dev/null since we don't care.
 NPM_USER=$(npm whoami 2> /dev/null)
 
-if [ "${NPM_USER}" != "angular2-layouts" ]; then
-  echo "You must be logged in as 'angular2-layouts' to publish. Use 'npm login'."
+if [ "${NPM_USER}" != "flex-layout" ]; then
+  echo "You must be logged in as 'flex-layout' to publish. Use 'npm login'."
   exit
 fi
 
