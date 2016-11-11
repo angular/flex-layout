@@ -20,6 +20,7 @@
     "build": "gulp build:components; ",
     "deploy": "gulp demo-app:components; webpack -p --config ./src/demo-app/webpack.config.js --output-path ./dist --progress --colors ",
     "release": "gulp build:release",
+    "demo-app": "concurrently \"npm run dev\" \"npm run open\"",
     "dev": "webpack-dev-server --config ./src/demo-app/webpack.config.js --content-base ./  --inline -d --hot --watch --port 8080",
     "docker-build": "docker build -t ng2-flex-layout-demo .",
     "docker": "npm run docker-build && docker run -it --rm -p 3000:3000 -p 3001:3001 ng2-flex-layout-demo",

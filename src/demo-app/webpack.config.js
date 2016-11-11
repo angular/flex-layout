@@ -10,6 +10,8 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 var path = require('path');
 var ROOT = path.resolve(__dirname, '..');
 
+console.log(`Root = ${ROOT}`);
+
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);
   return path.join.apply(path, [ROOT].concat(args));
@@ -96,7 +98,10 @@ module.exports = {
     }),
 
     new CopyWebpackPlugin([
-      {from: 'src/demo-app/assets', to: __dirname + "/dist"}
+      {
+        from: 'src/demo-app/assets',
+        to: ROOT + "/../dist/assets/"
+      }
     ]),
 
     /**
