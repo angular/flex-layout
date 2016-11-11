@@ -27,7 +27,6 @@ gulp.task(':test:deps', sequenceTask(
   [
     ':build:test:vendor',
     ':build:components:assets',
-    ':build:components:scss',
     ':build:components:spec',
   ]
 ));
@@ -50,7 +49,7 @@ gulp.task(':test:deps:inline', sequenceTask(':test:deps', ':inline-resources'));
  */
 gulp.task('test', [':test:watch'], (done: () => void) => {
   new karma.Server({
-    configFile: path.join(PROJECT_ROOT, 'test/karma.conf.js')
+    configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js')
   }, done).start();
 });
 
@@ -61,7 +60,10 @@ gulp.task('test', [':test:watch'], (done: () => void) => {
  */
 gulp.task('test:single-run', [':test:deps:inline'], (done: () => void) => {
   new karma.Server({
-    configFile: path.join(PROJECT_ROOT, 'test/karma.conf.js'),
+    configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
     singleRun: true
-  }, done).start();
+  }, (errCode) =>{
+    console.log(`karma.Server => ${errCode}`);
+    done()
+  }).start();
 });

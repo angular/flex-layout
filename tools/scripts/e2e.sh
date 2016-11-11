@@ -13,9 +13,9 @@ rm -f $BROWSER_PROVIDER_READY_FILE
 
 # Force cleanup (shouldn't be necessary)
 killall angular-cli
-./scripts/sauce/sauce_connect_teardown.sh
+./tools/scripts/sauce/sauce_connect_teardown.sh
 # Run the script
-./scripts/ci/build-and-test.sh
+./tools/scripts/ci/build-and-test.sh
 # Actual cleanup
-./scripts/sauce/sauce_connect_teardown.sh
+./tools/scripts/sauce/sauce_connect_teardown.sh
 killall angular-cli

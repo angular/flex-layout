@@ -18,7 +18,8 @@
   "scripts": {
     "analyze": "webpack -p --config ./src/demo-app/webpack.config.js --profile --json > ./dist/stats.json; webpack-bundle-analyzer ./dist/stats.json ./dist -m static;",
     "build": "gulp build:components; ",
-    "deploy": "webpack -p --config ./src/demo-app/webpack.config.js --output-path ./dist --progress --colors ",
+    "deploy": "gulp demo-app:components; webpack -p --config ./src/demo-app/webpack.config.js --output-path ./dist --progress --colors ",
+    "release": "gulp build:release",
     "dev": "webpack-dev-server --config ./src/demo-app/webpack.config.js --content-base ./  --inline -d --hot --watch --port 8080",
     "docker-build": "docker build -t ng2-flex-layout-demo .",
     "docker": "npm run docker-build && docker run -it --rm -p 3000:3000 -p 3001:3001 ng2-flex-layout-demo",
@@ -105,6 +106,7 @@
     "karma-browserstack-launcher": "^1.0.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.1.1",
+    "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-mocha-reporter": "^2.0.0",
     "karma-remap-coverage": "^0.1.1",

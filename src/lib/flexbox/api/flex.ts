@@ -2,6 +2,8 @@ import {Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Re
 import {Subscription} from 'rxjs/Subscription';
 
 import {isDefined} from '../../utils/global';
+import { extendObject } from '../../utils/object-extend';
+
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
@@ -160,25 +162,25 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
     };
     switch (basis || '') {
       case '':
-        css = Object.assign(clearStyles, {'flex': '1'});
+        css = extendObject(clearStyles, {'flex': '1'});
         break;
       case GROW:
-        css = Object.assign(clearStyles, {'flex': '1 1 100%'});
+        css = extendObject(clearStyles, {'flex': '1 1 100%'});
         break;
       case INITIAL:
-        css = Object.assign(clearStyles, {'flex': '0 1 auto'});
+        css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;  // default
       case AUTO:
-        css = Object.assign(clearStyles, {'flex': '1 1 auto'});
+        css = extendObject(clearStyles, {'flex': '1 1 auto'});
         break;
       case NONE:
-        css = Object.assign(clearStyles, {'flex': '0 0 auto'});
+        css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
       case NO_GROW:
-        css = Object.assign(clearStyles, {'flex': '0 1 auto'});
+        css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;
       case NO_SHRINK:
-        css = Object.assign(clearStyles, {'flex': '1 0 auto'});
+        css = extendObject(clearStyles, {'flex': '1 0 auto'});
         break;
 
       default:
@@ -194,7 +196,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
         // Set max-width = basis if using layout-wrap
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
-        css = Object.assign(clearStyles, {
+        css = extendObject(clearStyles, {
           'flex': `${grow} ${shrink} ${(isPx || this._wrap) ? basis : '100%'
                                                                       }`,  // fix issue #5345
         });
@@ -208,7 +210,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
     css[max] = (basis == '0%') ? 0 : basis;
 
 
-    return Object.assign(css, {'box-sizing': 'border-box'});
+    return extendObject(css, {'box-sizing': 'border-box'});
   }
 }
 

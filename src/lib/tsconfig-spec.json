@@ -1,36 +1,37 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "noEmitOnError": true,
-    "stripInternal": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "suppressImplicitAnyIndexErrors": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "inlineSources": true,
+    "stripInternal": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
 
     "lib": ["es6", "es2015", "dom"],
     "mapRoot": "",
-    "module": "es2015",
+    "module": "commonjs",
     "moduleResolution": "node",
-
-    "outDir": "../../node_modules/@angular/flex-layout",
+    "outDir": "../../dist/@angular/flex-layout",
     "rootDir": ".",
     "sourceMap": true,
     "target": "es5",
+    "baseUrl": "",
+    "paths": {
+    },
     "typeRoots": [
       "../../node_modules/@types"
     ],
     "types": [
+      "jasmine"
     ]
   },
   "exclude": [
-    "**/*.spec.*",
-    "system-config-spec"
+    "tsconfig*.json"
   ],
   "angularCompilerOptions": {
-    "genDir": "../../node_modules/@angular/flex-layout",
-    "skipTemplateCodegen": false,
+    "genDir": "../../dist/@angular/flex-layout",
+    "skipTemplateCodegen": true,
     "debug": true
   }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source ./scripts/ci/sources/tunnel.sh
+source ./tools/scripts/ci/sources/tunnel.sh
 
 is_e2e() {
   [[ "$MODE" = e2e ]]

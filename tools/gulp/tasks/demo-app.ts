@@ -27,12 +27,9 @@ const tsconfigPath = path.relative(PROJECT_ROOT, path.join(componentsDir, 'tscon
 // PUBLIC tasks
 
 /** Builds components to ESM output and UMD bundle. */
-task('build:components', [':build:components:rollup']);
+task('demo-app:components', [':demo-app:components:rollup']);
 
 // INTERNAL tasks
-
-/** Builds components typescript for tests (CJS output). */
-task(':build:components:spec', tsBuildTask(componentsDir, 'tsconfig-spec.json'));
 
 /** Copies assets (html, markdown) to build output. */
 task(':build:components:assets', copyTask([
@@ -43,26 +40,12 @@ task(':build:components:assets', copyTask([
 /**
  * Builds component typescript only (ESM output).
  */
-task(':build:components:ts', tsBuildTask(componentsDir, 'tsconfig.json'));
+task(':demo-app:components:ts', tsBuildTask(componentsDir, 'tsconfig-demo-app.json'));
 
 /**
  * Rollup components to 'output' defined in 'tsconfig.json'
  */
-task(':build:components:rollup', [':build:components:ts'], doRollupWith(DIST_COMPONENTS_ROOT));
-
-/** Builds components with resources (html, css) inlined into the built JS (ESM output). */
-task(':build:components:inline', sequenceTask(
-  [':build:components:ts', ':build:components:assets'],
-  ':inline-resources',
-));
-
-/** Inlines resources (html, css) into the JS output (for either ESM or CJS output). */
-task(':inline-resources', () => inlineResources(DIST_COMPONENTS_ROOT));
-
-/** Generates metadata.json files for all of the components. */
-task(':build:components:ngc', ['build:components'], execNodeTask(
-  '@angular/compiler-cli', 'ngc', ['-p', tsconfigPath]
-));
+task(':demo-app:components:rollup', [':demo-app:components:ts'], doRollupWith(DIST_NODE_MODULES));
 
 function doRollupWith(rootPath) {
   return () => {

@@ -1,4 +1,5 @@
 /*global jasmine, __karma__, window*/
+
 Error.stackTraceLimit = Infinity;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 3000;
 
@@ -15,18 +16,20 @@ function isSpecFile(path) {
   return path.slice(-8) == '.spec.js';
 }
 
-function isMaterialFile(path) {
+function isLibFile(path) {
   return isJsFile(path) && path.indexOf('vendor') == -1;
 }
 
 var allSpecFiles = Object.keys(window.__karma__.files)
   .filter(isSpecFile)
-  .filter(isMaterialFile);
+  .filter(isLibFile);
 
 // Load our SystemJS configuration.
 System.config({
   baseURL: distPath
 });
+
+// console.log(`karma-test-shim.js :: distPath = ${distPath}`);
 
 System.import(distPath + '@angular/flex-layout/system-config-spec.js').then(function() {
   // Load and configure the TestComponentBuilder.
@@ -48,6 +51,7 @@ System.import(distPath + '@angular/flex-layout/system-config-spec.js').then(func
   // This will run the tests directly.
   return Promise.all(
     allSpecFiles.map(function (moduleName) {
+      // console.log( moduleName );
       return System.import(moduleName).then(function(module) {
         return module;
       });

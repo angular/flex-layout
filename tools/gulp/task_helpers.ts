@@ -43,6 +43,8 @@ export function tsBuildTask(tsConfigPath: string, tsConfigName = 'tsconfig.json'
     tsConfigDir = path.dirname(tsConfigDir);
   }
 
+  console.log(`tsBuildTask = ${tsConfigPath}`);
+
   return () => {
     const tsConfig: any = JSON.parse(fs.readFileSync(tsConfigPath, 'utf-8'));
     const dest: string = path.join(tsConfigDir, tsConfig['compilerOptions']['outDir']);

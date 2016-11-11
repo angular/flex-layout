@@ -5,7 +5,6 @@ const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-//const nodeExternals = require('webpack-node-externals');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var path = require('path');
