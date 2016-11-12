@@ -31,6 +31,12 @@ task('build:components', [':build:components:rollup']);
 
 // INTERNAL tasks
 
+/** [Watch task] Rebuilds for tests (CJS output) whenever ts, scss, or html sources change. */
+task(':watch:components:spec', () => {
+  watch(path.join(componentsDir, '**/*.ts'), [':build:components:spec']);
+});
+
+
 /** Builds components typescript for tests (CJS output). */
 task(':build:components:spec', tsBuildTask(componentsDir, 'tsconfig-spec.json'));
 

@@ -28,6 +28,7 @@
     "reinstall": "npm cache clean && npm install",
     "start": "concurrently \"npm run dev\" \"npm run open\"",
     "tslint": "gulp lint",
+    "test": "gulp test",
     "stylelint": "gulp lint",
     "webdriver-manager": "webdriver-manager"
   },

@@ -4,49 +4,90 @@
  * Eliminates the need for external auto-prefixer
  */
 export function applyCssPrefixes(target) {
-  for (var key in target) {
+  for (let key in target) {
+
     let value = target[key];
 
     switch (key) {
       case 'display':
         target['display'] = value;
+        // also need 'display : -webkit-box' and 'display : -ms-flexbox;'
         break;
+
       case 'flex':
         target['-ms-flex'] = value;
-        target['-webkit-flex'] = value;
+        target['-webkit-box-flex'] = value.split(" ")[0];
         break;
 
       case 'flex-direction':
+        value = value || "row";
+        target['flex-direction'] = value;
+
         target['-ms-flex-direction'] = value;
-        target['-webkit-flex-direction'] = value;
+        target['-webkit-box-orient'] = toBoxOrient(value);
+        target['-webkit-box-direction'] = toBoxDirection(value);
         break;
 
       case 'flex-wrap':
         target['-ms-flex-wrap'] = value;
-        target['-webkit-flex-wrap'] = value;
         break;
 
       case 'order':
-        target['-webkit-order'] = value;
+        if ( isNaN(value) ) value = "0";
+        target['order'] = value;
+
         target['-ms-flex-order'] = value;
+        target['-webkit-box-ordinal-group'] = toBoxOrdinal(value);
         break;
 
       case 'justify-content':
-        target['-ms-flex-pack'] = value;
-        target['-webkit-justify-content'] = value;
+        target['-ms-flex-pack'] = toBoxValue(value);
+        target['-webkit-box-pack'] = toBoxValue(value);
         break;
 
       case 'align-items':
-        target['-ms-flex-align'] = value;
-        target['-webkit-align-items'] = value;
-        target['-webkit-box-align'] = toBoxAlign(value);
+        target['-ms-flex-align'] =  toBoxValue(value);
+        target['-webkit-box-align'] = toBoxValue(value);
+        break;
+
+      case 'align-self':
+        target['-ms-flex-item-align'] =  toBoxValue(value);
+        break;
+
+      case 'align-content':
+        target['-ms-flex-line-pack'] =  toBoxValue(value);
         break;
     }
   }
-
   return target;
 }
 
-function toBoxAlign(value) {
-  return (value == 'flex-start)') ? 'start' : (value == 'flex-end)') ? 'end' : value;
+/**
+ * Convert flex values flex-start, flex-end to start, end.
+ */
+export function toBoxValue(value:string = "") {
+  return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
+}
+
+/**
+ * Convert flex Direction to Box orientation
+ */
+export function toBoxOrient(flexDirection:string = "row") {
+  return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';
+}
+
+/**
+ * Convert flex Direction to Box direction type
+ */
+export function toBoxDirection(flexDirection:string = "row") {
+
+  return flexDirection.indexOf('reverse')  !== -1 ? 'reverse' : 'normal';
+}
+
+/**
+ * Convert flex order to Box ordinal group
+ */
+export function  toBoxOrdinal(order:string = "0") {
+  let value = order ? parseInt(order) + 1 : 1;
+  return isNaN(value) ? "0" : value.toString();
 }
