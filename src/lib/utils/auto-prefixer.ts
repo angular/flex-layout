@@ -22,7 +22,6 @@ export function applyCssPrefixes(target) {
       case 'flex-direction':
         value = value || "row";
         target['flex-direction'] = value;
-
         target['-ms-flex-direction'] = value;
         target['-webkit-box-orient'] = toBoxOrient(value);
         target['-webkit-box-direction'] = toBoxDirection(value);
@@ -35,7 +34,6 @@ export function applyCssPrefixes(target) {
       case 'order':
         if ( isNaN(value) ) value = "0";
         target['order'] = value;
-
         target['-ms-flex-order'] = value;
         target['-webkit-box-ordinal-group'] = toBoxOrdinal(value);
         break;
