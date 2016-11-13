@@ -96,7 +96,7 @@ npm install @angular/flex-layout -save
 ```
 
 
-> Note: This ^ feature is pending public release of the Github repository!
+> Note: With `gulp build:components` the files are depolyed to `node_modules/@angular/flex-layout`. The formal deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
 
 ----
 
