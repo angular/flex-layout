@@ -218,7 +218,6 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
 
     if (isDefined(this._mqActivation)) {
       value = this._mqActivation.activatedInput;
-      key = this._mqActivation.activatedInputKey;
     }
     value = this._validateValue(value);
 

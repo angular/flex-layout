@@ -1,15 +1,24 @@
-import {Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer, SimpleChanges, SkipSelf} from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer,
+  SimpleChanges,
+  SkipSelf,
+} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-
 import {isDefined} from '../../utils/global';
-import { extendObject } from '../../utils/object-extend';
-
+import {extendObject} from '../../utils/object-extend';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-
 import {BaseStyleDirective} from './abstract';
-import {LayoutDirective, LayoutWrapDirective} from './layout';
+import {LayoutDirective} from './layout';
+import {LayoutWrapDirective} from './layout-wrap';
 
 /**
  * FlexBox styling directive for 'fx-flex'
@@ -59,16 +68,16 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
    * </div>
    */
   constructor(
-      private _mqa: MediaQueryAdapter, @Optional() @SkipSelf() private _container: LayoutDirective,
-      @Optional() @SkipSelf() private _wrap: LayoutWrapDirective, elRef: ElementRef,
+      private _mqa: MediaQueryAdapter,
+      @Optional() @SkipSelf() private _container: LayoutDirective,
+      @Optional() @SkipSelf() private _wrap: LayoutWrapDirective,
+      elRef: ElementRef,
       renderer: Renderer) {
     super(elRef, renderer);
 
     if (_container) {
-      this._layoutWatcher =
-          _container
-              .onLayoutChange  // Subscribe to layout immediate parent direction changes
-              .subscribe(this._onLayoutChange.bind(this));
+      // Subscribe to layout immediate parent direction changes
+      this._layoutWatcher = _container.onLayoutChange.subscribe(() => this._onLayoutChange());
     }
   }
 
@@ -214,306 +223,9 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   }
 }
 
-/**
- * 'flex-order' flexbox styling directive
- * Configures the positional ordering of the element in a sorted layout container
- * @see https://css-tricks.com/almanac/properties/o/order/
- */
-@Directive({selector: '[fx-flex-order]'})
-export class FlexOrderDirective extends BaseStyleDirective implements OnInit, OnChanges,
-                                                                      OnMediaQueryChanges {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: MediaQueryActivation;
-
-  @Input('fx-flex-order') order;
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-flex-order.xs') orderXs;
-  @Input('fx-flex-order.gt-xs') orderGtXs;
-  @Input('fx-flex-order.sm') orderSm;
-  @Input('fx-flex-order.gt-sm') orderGtSm;
-  @Input('fx-flex-order.md') orderMd;
-  @Input('fx-flex-order.gt-md') orderGtMd;
-  @Input('fx-flex-order.lg') orderLg;
-  @Input('fx-flex-order.gt-lg') orderGtLg;
-  @Input('fx-flex-order.xl') orderXl;
-
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
-  }
-
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
-  /**
-   * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
-   */
-  ngOnChanges(changes?: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-
-    if (isDefined(changes['order']) || activationChange) {
-      this._updateWithValue();
-    }
-  }
-
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'order', '1');
-    this._updateWithValue();
-  }
-
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
-  }
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-  _updateWithValue(value?: string) {
-    value = value || this.order || '1';
-    if (isDefined(this._mqActivation)) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    this._updateStyle(this._buildCSS(value));
-  }
 
 
-  _buildCSS(value) {
-    value = parseInt(value, 10);
-    return {order: isNaN(value) ? 0 : value};
-  }
-}
 
-/**
- * 'flex-offset' flexbox styling directive
- * Configures the 'margin-left' of the element in a layout container
- */
-@Directive({selector: '[fx-flex-offset]'})
-export class FlexOffsetDirective extends BaseStyleDirective implements OnInit, OnChanges,
-                                                                       OnMediaQueryChanges {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: MediaQueryActivation;
-
-  @Input('fx-flex-offset') offset: string|number;
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-flex-offset.xs') offsetXs: string|number;
-  @Input('fx-flex-offset.gt-xs') offsetGtXs: string|number;
-  @Input('fx-flex-offset.sm') offsetSm: string|number;
-  @Input('fx-flex-offset.gt-sm') offsetGtSm: string|number;
-  @Input('fx-flex-offset.md') offsetMd: string|number;
-  @Input('fx-flex-offset.gt-md') offsetGtMd: string|number;
-  @Input('fx-flex-offset.lg') offsetLg: string|number;
-  @Input('fx-flex-offset.gt-lg') offsetGtLg: string|number;
-  @Input('fx-flex-offset.xl') offsetXl: string|number;
-
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
-  }
-
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
-  /**
-   * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
-   */
-  ngOnChanges(changes?: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-    if (isDefined(changes['offset']) || activationChange) {
-      this._updateWithValue();
-    }
-  }
-
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'offset', 0);
-  }
-
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
-  }
-
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-
-  _updateWithValue(value?: string|number) {
-    value = value || this.offset || 0;
-    if (isDefined(this._mqActivation)) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    this._updateStyle(this._buildCSS(value));
-  }
-
-  _buildCSS(offset) {
-    let isPercent = String(offset).indexOf('%') > -1;
-    let isPx = String(offset).indexOf('px') > -1;
-    if (!isPx && !isPercent && !isNaN(offset))
-      offset = offset + '%';
-
-    return {'margin-left': `${offset}`};
-  }
-}
-
-/**
- * 'flex-align' flexbox styling directive
- * Allows element-specific overrides for cross-axis alignments in a layout container
- * @see https://css-tricks.com/almanac/properties/a/align-self/
- */
-@Directive({selector: '[fx-flex-align]'})
-export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges,
-                                                                      OnMediaQueryChanges {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: MediaQueryActivation;
-
-  @Input('fx-flex-align') align: string = 'stretch';  // default
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-flex-align.xs') alignXs;
-  @Input('fx-flex-align.gt-xs') alignGtXs;
-  @Input('fx-flex-align.sm') alignSm;
-  @Input('fx-flex-align.gt-sm') alignGtSm;
-  @Input('fx-flex-align.md') alignMd;
-  @Input('fx-flex-align.gt-md') alignGtMd;
-  @Input('fx-flex-align.lg') alignLg;
-  @Input('fx-flex-align.gt-lg') alignGtLg;
-  @Input('fx-flex-align.xl') alignXl;
-
-
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
-  }
-
-
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
-  /**
-   * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
-   */
-  ngOnChanges(changes?: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-    if (isDefined(changes['align']) || activationChange) {
-      this._updateWithValue();
-    }
-  }
-
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'align', 'stretch');
-    this._updateWithValue();
-  }
-
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
-  }
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-  _updateWithValue(value?: string|number) {
-    value = value || this.align || 'stretch';
-    if (isDefined(this._mqActivation)) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    this._updateStyle(this._buildCSS(value));
-  }
-
-  _buildCSS(align) {
-    let css = {};
-
-    // Cross-axis
-    switch (align) {
-      case 'start':
-        css['align-self'] = 'flex-start';
-        break;
-      case 'baseline':
-        css['align-self'] = 'baseline';
-        break;
-      case 'center':
-        css['align-self'] = 'center';
-        break;
-      case 'end':
-        css['align-self'] = 'flex-end';
-        break;
-      default:
-        css['align-self'] = 'stretch';
-        break;  // default
-    }
-
-    return css;
-  }
-}
-
-/**
- * 'fx-flex-fill' flexbox styling directive
- *  Maximizes width and height of element in a layout container
- *
- *  NOTE: [fx-flexFill] is NOT responsive fx-flex
- */
-@Directive({selector: '[fx-flex-fill]'})
-export class FlexFillDirective extends BaseStyleDirective {
-  constructor(public elRef: ElementRef, public renderer: Renderer) {
-    super(elRef, renderer);
-    this._updateStyle(this._buildCSS());
-  }
-
-  _buildCSS() {
-    return {
-      'margin': 0,
-      'width': '100%',
-      'height': '100%',
-      'min-width': '100%',
-      'min-height': '100%'
-    };
-  }
-}
 
 
 // ************************************************************
