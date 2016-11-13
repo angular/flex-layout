@@ -2,7 +2,6 @@ import {Directive, OnDestroy} from '@angular/core';
 
 import {BreakPoint} from '../../media-query/break-points';
 import {MediaQueries} from '../../media-query/media-queries';
-import {isDefined} from '../../utils/global';
 
 import {MediaQueryChanges, OnMediaQueryChanges} from './media-query-changes';
 
@@ -17,11 +16,11 @@ export class MediaQueryActivation implements OnMediaQueryChanges, OnDestroy {
   private _activatedInputKey: string;
 
   get activatedInputKey(): string {
-    let items: Array<BreakPoint> = this._mq.activeOverlaps;
+    let items: BreakPoint[] = this._mq.activeOverlaps;
     items.forEach(bp => {
-      if (!isDefined(this._activatedInputKey)) {
+      if (this._activatedInputKey == null) {
         let key = this._baseKey + bp.suffix;
-        if (isDefined(this._directive[key])) {
+        if (this._directive[key] != null) {
           this._activatedInputKey = key;
         }
       }

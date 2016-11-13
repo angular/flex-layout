@@ -1,32 +1,32 @@
 import {ElementRef, Renderer} from '@angular/core';
-
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 
+
 /**
- * Abstract base class for the Layout API styling directives
+ * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
+ * map of property name and value (e.g. {display: 'none', flex-order: 5}).
  */
-export abstract class BaseStyleDirective {
-  constructor(private _elRef: ElementRef, private _renderer: Renderer) {}
+export type StyleDefinition = string|{[property: string]: string|number};
 
-  // *********************************************
-  // Protected methods
-  // *********************************************
+/** Abstract base class for the Layout API styling directives. */
+export abstract class BaseFlexLayoutDirective {
+  constructor(private _elementRef: ElementRef, private _renderer: Renderer) {}
 
-  /**
-   * Inject inline the flexbox styles specific to this renderer/domEl pair
-   */
-  protected _updateStyle(source: string|Object, value?: any) {
-    let styles = {}, domEl = this._elRef.nativeElement;
-    if (typeof source === 'string') {
-      styles[source] = value;
-      source = styles;
+  /** Applies styles given via string pair or object map to the directive element. */
+  protected _applyStyleToElement(style: StyleDefinition, value?: string|number) {
+    let styles = {};
+    let element = this._elementRef.nativeElement;
+
+    if (typeof style === 'string') {
+      styles[style] = value;
+      style = styles;
     }
 
-    styles = applyCssPrefixes(source);
+    styles = applyCssPrefixes(style);
 
     // Iterate all properties in hashMap and set styles
     for (let key in styles) {
-      this._renderer.setElementStyle(domEl, key, styles[key]);
+      this._renderer.setElementStyle(element, key, styles[key]);
     }
   }
 }

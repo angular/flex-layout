@@ -1,11 +1,10 @@
 import {Directive, ElementRef, Input, OnChanges, OnInit, Renderer, SimpleChanges,} from '@angular/core';
 
-import {delay, isDefined} from '../../utils/global';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
 
-import {BaseStyleDirective} from './abstract';
+import {BaseFlexLayoutDirective} from './abstract';
 
 
 const FALSY = ['false', '0', false, 0];
@@ -15,7 +14,7 @@ const FALSY = ['false', '0', false, 0];
  *
  */
 @Directive({selector: '[fx-show]'})
-export class ShowDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class ShowDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
                                                                  OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
@@ -65,8 +64,8 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    */
   ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-    if (isDefined(changes['show']) || activationChange) {
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
+    if (changes['show'] != null || activationChange) {
       this._updateWithValue();
     }
   }
@@ -84,42 +83,34 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   onMediaQueryChanges(changes: MediaQueryChanges) {
-    delay(() => {
-      this._updateWithValue(changes.current.value);
-    });
+    setTimeout(() => this._updateWithValue(changes.current.value), 1);
   }
 
   // *********************************************
   // Protected methods
   // *********************************************
 
-  /**
-   * Validate the visibility value and then update the host's inline display style
-   */
+  /** Validate the visibility value and then update the host's inline display style */
   _updateWithValue(value?: string|number|boolean) {
     value = value || this.show || true;
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
     value = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._updateStyle(this._buildCSS(value));
+    this._applyStyleToElement(this._buildCSS(value));
   }
 
 
-  /**
-   * Build the CSS that should be assigned to the element instance
-   */
+  /** Build the CSS that should be assigned to the element instance */
   _buildCSS(isFalsy) {
     return {'display': !isFalsy ? this._display : 'none'};
   }
 
-  /**
-   * Validate the value to be not FALSY
-   */
+  /** Validate the value to be not FALSY */
   _validateValue(value) {
-    return isDefined(FALSY.find(x => x === value));
+    return FALSY.find(x => x === value) != null;
   }
 }
 
@@ -129,7 +120,7 @@ export class ShowDirective extends BaseStyleDirective implements OnInit, OnChang
  *
  */
 @Directive({selector: '[fx-hide]'})
-export class HideDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class HideDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
                                                                  OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
@@ -177,11 +168,11 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    * Default to use the non-responsive Input value ('fx-hide')
    * Then conditionally override with the mq-activated Input's current value
    */
-  ngOnChanges(changes?: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
 
-    if (isDefined(changes['hide']) || activationChange) {
+    if (changes['hide'] != null || activationChange) {
       this._updateWithValue();
     }
   }
@@ -195,13 +186,9 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
     this._updateWithValue();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
+  /** Special mql callback used by MediaQueryActivation when a mql event occurs */
   onMediaQueryChanges(changes: MediaQueryChanges) {
-    delay(() => {
-      this._updateWithValue(changes.current.value);
-    });
+    setTimeout(() => this._updateWithValue(changes.current.value), 1);
   }
 
   // *********************************************
@@ -216,13 +203,13 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
 
     value = value || this.hide || true;
 
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
     value = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._updateStyle(this._buildCSS(value));
+    this._applyStyleToElement(this._buildCSS(value));
   }
 
 
@@ -238,6 +225,6 @@ export class HideDirective extends BaseStyleDirective implements OnInit, OnChang
    */
   _validateValue(value) {
     // console.log(`HideDirective::_validateValue( ${value} )`);
-    return !isDefined(FALSY.find(x => x === value));
+    return FALSY.find(x => x === value) == null;
   }
 }

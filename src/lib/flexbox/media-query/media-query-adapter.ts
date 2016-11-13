@@ -3,12 +3,11 @@ import {Subscription} from 'rxjs/Subscription';
 
 import {BreakPoints} from '../../media-query/break-points';
 import {MediaQueries, MediaQueryChange} from '../../media-query/media-queries';
-import {isDefined} from '../../utils/global';
 
 import {MediaQueryActivation} from './media-query-activation';
 import {MediaQueryChanges, MediaQuerySubscriber} from './media-query-changes';
 
-export declare type SubscriptionList = Array<Subscription>;
+export declare type SubscriptionList = Subscription[];
 
 const ON_DESTROY = 'ngOnDestroy';
 const ON_MEDIA_CHANGES = 'onMediaQueryChanges';
@@ -92,7 +91,7 @@ export class MediaQueryAdapter {
             key: key + it.suffix  // e.g.  layoutGtSm, layoutMd, layoutGtLg
           }
         })
-        .filter(it => isDefined(directive[it.key]));
+        .filter(it => directive[it.key] != null);
   }
   /**
    * For each API property, register a callback to `onMediaQueryChanges( )`(e:MediaQueryEvent)
@@ -105,7 +104,7 @@ export class MediaQueryAdapter {
 
     keys.forEach(it => {
       // Only subscribe if the directive API is defined (in use)
-      if (isDefined(directive[it.key])) {
+      if (directive[it.key] != null) {
         let lastEvent: MediaQueryChange,
             mergeWithLastEvent = (current: MediaQueryChange):
                 MediaQueryChanges => {

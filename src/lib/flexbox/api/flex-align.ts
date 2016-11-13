@@ -7,11 +7,10 @@ import {
   Renderer,
   SimpleChanges,
 } from '@angular/core';
-import {isDefined} from '../../utils/global';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseStyleDirective} from './abstract';
+import {BaseFlexLayoutDirective} from './abstract';
 
 
 /**
@@ -20,7 +19,7 @@ import {BaseStyleDirective} from './abstract';
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
 @Directive({selector: '[fx-flex-align]'})
-export class FlexAlignDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class FlexAlignDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
                                                                       OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
@@ -56,10 +55,10 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
   /**
    * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
    */
-  ngOnChanges(changes?: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
-    if (isDefined(changes['align']) || activationChange) {
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
+    if (changes['align'] != null || activationChange) {
       this._updateWithValue();
     }
   }
@@ -86,11 +85,11 @@ export class FlexAlignDirective extends BaseStyleDirective implements OnInit, On
 
   _updateWithValue(value?: string|number) {
     value = value || this.align || 'stretch';
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
 
-    this._updateStyle(this._buildCSS(value));
+    this._applyStyleToElement(this._buildCSS(value));
   }
 
   _buildCSS(align) {

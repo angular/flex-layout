@@ -9,11 +9,10 @@ import {
 } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {isDefined} from '../../utils/global';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseStyleDirective} from './abstract';
+import {BaseFlexLayoutDirective} from './abstract';
 
 
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -27,7 +26,7 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  *
  */
 @Directive({selector: '[fx-layout], [fx-layout.md]'})
-export class LayoutDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class LayoutDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
                                                                    OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
@@ -83,9 +82,9 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
    */
   ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
 
-    if (isDefined(changes['layout']) || activationChange) {
+    if (changes['layout'] != null || activationChange) {
       this._updateWithDirection();
     }
   }
@@ -120,13 +119,13 @@ export class LayoutDirective extends BaseStyleDirective implements OnInit, OnCha
    */
   _updateWithDirection(direction?: string) {
     direction = direction || this.layout || 'row';
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       direction = this._mqActivation.activatedInput;
     }
     direction = this._validateValue(direction);
 
     // Update styles and announce to subscribers the *new* direction
-    this._updateStyle(this._buildCSS(direction));
+    this._applyStyleToElement(this._buildCSS(direction));
     this._layout.next(direction);
   }
 

@@ -7,8 +7,6 @@ import {Injectable, NgZone} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
-import {isDefined} from '../utils/global';
-
 import {BreakPoint, BreakPoints} from './break-points';
 import {MediaQueryList, MediaQueryListFactory} from './media-query-factory';
 
@@ -53,12 +51,12 @@ export class MediaQueries {
   /**
    * Read-only accessor to the list of breakpoints configured in the BreakPoints provider
    */
-  get breakpoints(): Array<BreakPoint> {
+  get breakpoints(): BreakPoint[] {
     return [...this._breakpoints.registry];
   }
 
-  get activeOverlaps(): Array<BreakPoint> {
-    let items: Array<BreakPoint> = this._breakpoints.overlappings.reverse();
+  get activeOverlaps(): BreakPoint[] {
+    let items: BreakPoint[] = this._breakpoints.overlappings.reverse();
     return items.filter((bp: BreakPoint) => {
       return this._mqls[bp.mediaQuery].matches;
     })
@@ -98,14 +96,14 @@ export class MediaQueries {
    */
   observe(alias?: string): Observable<MediaQueryChange> {
     return this._announcer.filter(e => {
-      return !isDefined(alias) ? (e.matches === true) : (e.mqAlias === alias);
+      return alias ? (e.matches === true) : (e.mqAlias === alias);
     });
   }
 
   /**
    * Based on the BreakPoints provider, register internal listeners for the specified ranges
    */
-  private prepareWatchers(ranges: Array<BreakPoint>) {
+  private prepareWatchers(ranges: BreakPoint[]) {
     ranges.forEach((it: BreakPoint) => {
       let mql = this._mqls[it.mediaQuery];
       if (!mql) {

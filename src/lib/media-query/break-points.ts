@@ -14,7 +14,7 @@ export interface BreakPoint {
  */
 @Injectable()
 export class BreakPoints {
-  public registry: Array<BreakPoint>;
+  public registry: BreakPoint[];
 
   /**
    *
@@ -90,21 +90,21 @@ export class BreakPoints {
    * Get all the breakpoints whose ranges could overlapping `normal` ranges;
    * e.g. gt-sm overlaps md, lg, and xl
    */
-  get overlappings(): Array<BreakPoint> {
+  get overlappings(): BreakPoint[] {
     return this.registry.filter(it => it.overlapping == true);
   }
 
   /**
    * Get list of all registered (non-empty) breakpoint aliases
    */
-  get aliases(): Array<string> {
+  get aliases(): string[] {
     return this.registry.map(it => it.alias);
   }
 
   /**
    *
    */
-  get suffixes(): Array<string> {
+  get suffixes(): string[] {
     return this.registry.map(it => it.suffix);
   }
 }
