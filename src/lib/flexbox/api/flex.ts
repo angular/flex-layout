@@ -144,21 +144,20 @@ export class FlexDirective extends BaseFlexLayoutDirective
         'column' :
         'row';
 
-    /*
-     * flex-basis allows you to specify the initial/starting main-axis size of the element,
-     * before anything else is computed. It can either be a percentage or an absolute value.
-     * It is, however, not the breaking point for flex-grow/shrink properties
-     *
-     * flex-grow can be seen as this:
-     *   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
-     *   1: (Default value). Stretch; will be the same size to all other flex items on
-     *       the same row since they have a default value of 1.
-     *   ≥2 (integer n): Stretch. Will be n times the size of other elements
-     *      with 'flex-grow: 1' on the same row.
-     *
-     */
+    // flex-basis allows you to specify the initial/starting main-axis size of the element,
+    // before anything else is computed. It can either be a percentage or an absolute value.
+    // It is, however, not the breaking point for flex-grow/shrink properties
+    //
+    // flex-grow can be seen as this:
+    //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+    //   1: (Default value). Stretch; will be the same size to all other flex items on
+    //       the same row since they have a default value of 1.
+    //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+    //      with 'flex-grow: 1' on the same row.
+
+    // Use `null` to clear existing styles.
     let clearStyles = {
-      'max-width': null,  // ! use `null` to remove styles
+      'max-width': null,
       'max-height': null,
       'min-width': null,
       'min-height': null

@@ -1,9 +1,15 @@
-import {Directive, ElementRef, Input, OnChanges, OnInit, Renderer, SimpleChanges,} from '@angular/core';
-
+import {
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  Renderer,
+  SimpleChanges,
+} from '@angular/core';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-
 import {BaseFlexLayoutDirective} from './abstract';
 
 
