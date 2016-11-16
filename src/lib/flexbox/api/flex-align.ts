@@ -10,7 +10,7 @@ import {
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 /**
@@ -19,7 +19,7 @@ import {BaseFlexLayoutDirective} from './abstract';
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
 @Directive({selector: '[fx-flex-align]'})
-export class FlexAlignDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                       OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker

@@ -10,7 +10,7 @@ import {
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 const FALSY = ['false', '0', false, 0];
@@ -20,7 +20,7 @@ const FALSY = ['false', '0', false, 0];
  *
  */
 @Directive({selector: '[fx-show]'})
-export class ShowDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                  OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style
@@ -126,7 +126,7 @@ export class ShowDirective extends BaseFlexLayoutDirective implements OnInit, On
  *
  */
 @Directive({selector: '[fx-hide]'})
-export class HideDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                  OnMediaQueryChanges {
   /**
    * Original dom Elements CSS display style

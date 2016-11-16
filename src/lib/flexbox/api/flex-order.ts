@@ -10,7 +10,7 @@ import {
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 /**
  * 'flex-order' flexbox styling directive
@@ -18,7 +18,7 @@ import {BaseFlexLayoutDirective} from './abstract';
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 @Directive({selector: '[fx-flex-order]'})
-export class FlexOrderDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                       OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker

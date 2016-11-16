@@ -9,7 +9,7 @@ import {applyCssPrefixes} from '../../utils/auto-prefixer';
 export type StyleDefinition = string|{[property: string]: string|number};
 
 /** Abstract base class for the Layout API styling directives. */
-export abstract class BaseFlexLayoutDirective {
+export abstract class BaseFxDirective {
   constructor(private _elementRef: ElementRef, private _renderer: Renderer) {}
 
   /** Applies styles given via string pair or object map to the directive element. */

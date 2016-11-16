@@ -12,7 +12,7 @@ import {Observable} from 'rxjs/Observable';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -26,7 +26,7 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  *
  */
 @Directive({selector: '[fx-layout], [fx-layout.md]'})
-export class LayoutDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                    OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker

@@ -11,7 +11,7 @@ import {
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 /**
@@ -21,7 +21,7 @@ import {BaseFlexLayoutDirective} from './abstract';
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({selector: '[fx-layout-wrap]'})
-export class LayoutWrapDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                        OnMediaQueryChanges,
                                                                        OnDestroy {
   /**

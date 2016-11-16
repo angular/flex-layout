@@ -13,7 +13,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 import {LAYOUT_VALUES, LayoutDirective} from './layout';
 
 
@@ -27,7 +27,7 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({selector: '[fx-layout-align]'})
-export class LayoutAlignDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                         OnMediaQueryChanges,
                                                                         OnDestroy {
   /**

@@ -15,7 +15,7 @@ import {extendObject} from '../../utils/object-extend';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
 
@@ -33,7 +33,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 @Directive({
   selector: '[fx-flex]',
 })
-export class FlexDirective extends BaseFlexLayoutDirective
+export class FlexDirective extends BaseFxDirective
     implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
 
   /** MediaQuery Activation Tracker */

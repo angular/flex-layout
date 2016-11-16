@@ -10,7 +10,7 @@ import {
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFlexLayoutDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 /**
@@ -18,7 +18,7 @@ import {BaseFlexLayoutDirective} from './abstract';
  * Configures the 'margin-left' of the element in a layout container
  */
 @Directive({selector: '[fx-flex-offset]'})
-export class FlexOffsetDirective extends BaseFlexLayoutDirective implements OnInit, OnChanges,
+export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                        OnMediaQueryChanges {
   /**
    * MediaQuery Activation Tracker
