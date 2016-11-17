@@ -10,11 +10,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {isDefined} from '../../utils/global';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseStyleDirective} from './abstract';
+import {BaseFxDirective} from './base';
 import {LAYOUT_VALUES, LayoutDirective} from './layout';
 
 
@@ -28,7 +27,7 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({selector: '[fx-layout-align]'})
-export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                         OnMediaQueryChanges,
                                                                         OnDestroy {
   /**
@@ -69,11 +68,11 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
   // Lifecycle Methods
   // *********************************************
 
-  ngOnChanges(changes?: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
 
-    if (isDefined(changes['align']) || activationChange) {
+    if (changes['align'] != null || activationChange) {
       this._updateWithValue();
     }
   }
@@ -108,11 +107,11 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
    */
   _updateWithValue(value?: string) {
     value = value || this.align || 'start stretch';
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
 
-    this._updateStyle(this._buildCSS(value));
+    this._applyStyleToElement(this._buildCSS(value));
   }
 
   /**
@@ -124,7 +123,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
       this._layout = 'row';
 
     let value = this.align || 'start stretch';
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
     this._allowStretching(value, this._layout);
@@ -179,7 +178,7 @@ export class LayoutAlignDirective extends BaseStyleDirective implements OnInit, 
 
     if (cross_axis == 'stretch') {
       // Use `null` values to remove style
-      this._updateStyle({
+      this._applyStyleToElement({
         'box-sizing': 'border-box',
         'max-width': (layout === 'column') ? '100%' : null,
         'max-height': (layout === 'row') ? '100%' : null

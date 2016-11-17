@@ -11,43 +11,48 @@ import {
   SkipSelf,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {isDefined} from '../../utils/global';
 import {extendObject} from '../../utils/object-extend';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseStyleDirective} from './abstract';
+import {BaseFxDirective} from './base';
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
 
+
+/** Built-in aliases for different flex-basis values. */
+export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
+
+
 /**
- * FlexBox styling directive for 'fx-flex'
- * Configures the width/height sizing of the element within a layout container
+ * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
+ * Correspondds to the css `flex` shorthand property.
+ *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({
   selector: '[fx-flex]',
-
 })
-export class FlexDirective extends BaseStyleDirective implements OnInit, OnChanges,
-                                                                 OnMediaQueryChanges, OnDestroy {
-  /**
-   * MediaQuery Activation Tracker
-   */
+export class FlexDirective extends BaseFxDirective
+    implements OnInit, OnChanges, OnMediaQueryChanges, OnDestroy {
+
+  /** MediaQuery Activation Tracker */
   private _mqActivation: MediaQueryActivation;
 
+  /** The flex-direction of this element's flex container. Defaults to 'row'. */
+  private _layout = 'row';
 
-  private _layout = 'row';  // default flex-direction
+  /**
+   * Subscription to the parent flex container's layout changes.
+   * Stored so we can unsubscribe when this directive is destroyed.
+   */
   private _layoutWatcher: Subscription;
 
   @Input('fx-flex') flex: string = '';
   @Input('fx-shrink') shrink: number = 1;
   @Input('fx-grow') grow: number = 1;
 
-  // *******************************************************
   // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
   @Input('fx-flex.xs') flexXs;
   @Input('fx-flex.gt-xs') flexGtXs;
   @Input('fx-flex.sm') flexSm;
@@ -58,41 +63,32 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
   @Input('fx-flex.gt-lg') flexGtLg;
   @Input('fx-flex.xl') flexXl;
 
-  /**
-   * Note: the optional `layout="column|row"` directive must be PARENT container.
-   *
-   * <div layout="row">
-   *    <div flex="25%" layout="column">
-   *      ...
-   *    </div>
-   * </div>
-   */
+
+  // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
+  // parent flex container for this flex item.
   constructor(
-      private _mqa: MediaQueryAdapter,
-      @Optional() @SkipSelf() private _container: LayoutDirective,
-      @Optional() @SkipSelf() private _wrap: LayoutWrapDirective,
       elRef: ElementRef,
-      renderer: Renderer) {
+      renderer: Renderer,
+      private _mediaQueryAdapter: MediaQueryAdapter,
+      @Optional() @SkipSelf() private _container: LayoutDirective,
+      @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
     super(elRef, renderer);
 
+    // If this flex item is inside of a flex container marked with
     if (_container) {
       // Subscribe to layout immediate parent direction changes
       this._layoutWatcher = _container.onLayoutChange.subscribe(() => this._onLayoutChange());
     }
   }
 
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
   /**
    * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
    */
-  ngOnChanges(changes?: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
 
-    if (isDefined(changes['flex']) || activationChange) {
+    if (changes['flex'] != null || activationChange) {
       this._onLayoutChange(this._layout);
     }
   }
@@ -102,7 +98,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'flex', '');
+    this._mqActivation = this._mediaQueryAdapter.attach(this, 'flex', '');
     this._onLayoutChange();
   }
 
@@ -110,7 +106,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
    *  Special mql callback used by MediaQueryActivation when a mql event occurs
    */
   onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
+    this._updateStyle(changes.current.value);
   }
 
   ngOnDestroy() {
@@ -119,52 +115,49 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
     }
   }
 
-  // *********************************************
-  // Protected methods
-  // ***************************************s******
 
   /**
-   * Cache the parent container 'flex-direction' and update the 'fx-flex' styles
+   * Caches the parent container's 'flex-direction' and updates the element's style.
+   * Used as a handler for layout change events from the parent flex container.
    */
   _onLayoutChange(direction?: string) {
     this._layout = direction || this._layout;
-
-    let value = this.flex || '';
-    if (isDefined(this._mqActivation)) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    this._updateWithValue(value);
+    this._updateStyle();
   }
 
-  _updateWithValue(value: string) {
-    this._updateStyle(this._validateValue(this.grow, this.shrink, value));
+  _updateStyle(value?: string) {
+    let flexBasis = value || this.flex || '';
+    if (this._mqActivation) {
+      flexBasis = this._mqActivation.activatedInput;
+    }
+
+    this._applyStyleToElement(this._validateValue(this.grow, this.shrink, flexBasis));
   }
 
   /**
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  _validateValue(grow, shrink, basis) {
-    let css, direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
+  _validateValue(grow: number, shrink: number, basis: string|number|FlexBasisAlias) {
+    let css;
+    let direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
         'column' :
         'row';
 
-    /*
-     * flex-basis allows you to specify the initial/starting main-axis size of the element,
-     * before anything else is computed. It can either be a percentage or an absolute value.
-     * It is, however, not the breaking point for flex-grow/shrink properties
-     *
-     * flex-grow can be seen as this:
-     *   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
-     *   1: (Default value). Stretch; will be the same size to all other flex items on
-     *       the same row since they have a default value of 1.
-     *   ≥2 (integer n): Stretch. Will be n times the size of other elements
-     *      with 'flex-grow: 1' on the same row.
-     *
-     */
+    // flex-basis allows you to specify the initial/starting main-axis size of the element,
+    // before anything else is computed. It can either be a percentage or an absolute value.
+    // It is, however, not the breaking point for flex-grow/shrink properties
+    //
+    // flex-grow can be seen as this:
+    //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+    //   1: (Default value). Stretch; will be the same size to all other flex items on
+    //       the same row since they have a default value of 1.
+    //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+    //      with 'flex-grow: 1' on the same row.
+
+    // Use `null` to clear existing styles.
     let clearStyles = {
-      'max-width': null,  // ! use `null` to remove styles
+      'max-width': null,
       'max-height': null,
       'min-width': null,
       'min-height': null
@@ -173,22 +166,22 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
       case '':
         css = extendObject(clearStyles, {'flex': '1'});
         break;
-      case GROW:
+      case 'grow':
         css = extendObject(clearStyles, {'flex': '1 1 100%'});
         break;
-      case INITIAL:
+      case 'initial':
         css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;  // default
-      case AUTO:
+      case 'auto':
         css = extendObject(clearStyles, {'flex': '1 1 auto'});
         break;
-      case NONE:
+      case 'none':
         css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
-      case NO_GROW:
+      case 'nogrow':
         css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;
-      case NO_SHRINK:
+      case 'noshrink':
         css = extendObject(clearStyles, {'flex': '1 0 auto'});
         break;
 
@@ -197,7 +190,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
         let isPx = String(basis).indexOf('px') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
-        if (!isPx && !isPercent && !isNaN(basis))
+        if (!isPx && !isPercent && !isNaN(basis as any))
           basis = basis + '%';
         if (basis === '0px')
           basis = '0%';
@@ -206,8 +199,7 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
         css = extendObject(clearStyles, {
-          'flex': `${grow} ${shrink} ${(isPx || this._wrap) ? basis : '100%'
-                                                                      }`,  // fix issue #5345
+          'flex': `${grow} ${shrink} ${(isPx || this._wrap) ? basis : '100%'}`,  // fix issue #5345
         });
         break;
     }
@@ -218,23 +210,6 @@ export class FlexDirective extends BaseStyleDirective implements OnInit, OnChang
     css[min] = (basis == '0%') ? 0 : null;
     css[max] = (basis == '0%') ? 0 : basis;
 
-
     return extendObject(css, {'box-sizing': 'border-box'});
   }
 }
-
-
-
-
-
-
-// ************************************************************
-// Private static variables
-// ************************************************************
-
-const GROW = 'grow';
-const INITIAL = 'initial';
-const AUTO = 'auto';
-const NONE = 'none';
-const NO_GROW = 'nogrow';
-const NO_SHRINK = 'noshrink';

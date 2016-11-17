@@ -8,11 +8,10 @@ import {
   Renderer,
   SimpleChanges,
 } from '@angular/core';
-import {isDefined} from '../../utils/global';
 import {MediaQueryActivation} from '../media-query/media-query-activation';
 import {MediaQueryAdapter} from '../media-query/media-query-adapter';
 import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseStyleDirective} from './abstract';
+import {BaseFxDirective} from './base';
 
 
 /**
@@ -22,7 +21,7 @@ import {BaseStyleDirective} from './abstract';
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({selector: '[fx-layout-wrap]'})
-export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, OnChanges,
+export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges,
                                                                        OnMediaQueryChanges,
                                                                        OnDestroy {
   /**
@@ -56,9 +55,9 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
 
   ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
-    let activationChange = activated && isDefined(changes[activated.activatedInputKey]);
+    let activationChange = activated && changes[activated.activatedInputKey] != null;
 
-    if (isDefined(changes['wrap']) || activationChange) {
+    if (changes['wrap'] != null || activationChange) {
       this._updateWithValue();
     }
   }
@@ -87,12 +86,12 @@ export class LayoutWrapDirective extends BaseStyleDirective implements OnInit, O
 
   _updateWithValue(value?: string) {
     value = value || this.wrap || 'wrap';
-    if (isDefined(this._mqActivation)) {
+    if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
     value = this._validateValue(value);
 
-    this._updateStyle(this._buildCSS(value));
+    this._applyStyleToElement(this._buildCSS(value));
   }
 
 

@@ -1,5 +1,3 @@
-import {isDefined} from '../utils/global';
-
 // ****************************************************************
 // Exported Types and Interfaces
 // ****************************************************************
@@ -41,7 +39,7 @@ export class MediaQueryListFactory {
    * Publish a mockMQL if needed
    */
   static instanceOf(query: string): MediaQueryList {
-    let canListen = isDefined(window.matchMedia('all').addListener);
+    let canListen = !!window.matchMedia('all').addListener;
 
     prepare(query);
 
