@@ -2,7 +2,7 @@ import {task, watch} from 'gulp';
 import * as path from 'path';
 
 import {SOURCE_ROOT, DIST_COMPONENTS_ROOT, DIST_NODE_MODULES, PROJECT_ROOT} from '../constants';
-import {sassBuildTask, tsBuildTask, execNodeTask, copyTask, sequenceTask} from '../task_helpers';
+import {tsBuildTask, execNodeTask, copyTask, sequenceTask} from '../task_helpers';
 import {writeFileSync} from 'fs';
 
 // No typings for these.

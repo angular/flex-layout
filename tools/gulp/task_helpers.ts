@@ -4,14 +4,13 @@ import * as gulp from 'gulp';
 import * as gulpTs from 'gulp-typescript';
 import * as path from 'path';
 
-import {NPM_VENDOR_FILES, PROJECT_ROOT, DIST_ROOT, SASS_AUTOPREFIXER_OPTIONS} from './constants';
+import {NPM_VENDOR_FILES, PROJECT_ROOT, DIST_ROOT} from './constants';
 
 
 /** Those imports lack typings. */
 const gulpClean = require('gulp-clean');
 const gulpMerge = require('merge2');
 const gulpRunSequence = require('run-sequence');
-const gulpSass = require('gulp-sass');
 const gulpServer = require('gulp-server-livereload');
 const gulpSourcemaps = require('gulp-sourcemaps');
 const gulpAutoprefixer = require('gulp-autoprefixer');
@@ -64,22 +63,6 @@ export function tsBuildTask(tsConfigPath: string, tsConfigName = 'tsconfig.json'
     ]);
   };
 }
-
-
-/** Create a SASS Build Task. */
-export function sassBuildTask(dest: string, root: string, includePaths: string[]) {
-  const sassOptions = { includePaths };
-
-  return () => {
-    return gulp.src(_globify(root, '**/*.scss'))
-      .pipe(gulpSourcemaps.init())
-      .pipe(gulpSass(sassOptions).on('error', gulpSass.logError))
-      .pipe(gulpAutoprefixer(SASS_AUTOPREFIXER_OPTIONS))
-      .pipe(gulpSourcemaps.write('.'))
-      .pipe(gulp.dest(dest));
-  };
-}
-
 
 /** Options that can be passed to execTask or execNodeTask. */
 export interface ExecTaskOptions {
