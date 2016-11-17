@@ -13,7 +13,7 @@ import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query
 import {BaseFxDirective} from './base';
 
 
-const FALSY = ['false', '0', false, 0];
+const FALSY = ['false', false, 0];
 
 /**
  * 'show' Layout API directive
@@ -114,9 +114,9 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
     return {'display': !isFalsy ? this._display : 'none'};
   }
 
-  /** Validate the value to be not FALSY */
+  /** Validate the value to be Truthy */
   _validateValue(value) {
-    return FALSY.find(x => x === value) != null;
+    return FALSY.indexOf(value) == -1 ;
   }
 }
 
@@ -223,6 +223,8 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Build the CSS that should be assigned to the element instance
    */
   _buildCSS(value) {
+    console.log(`fx-hide="${this.hide}": display: ${value ? 'none' : this._display}`);
+
     return {'display': value ? 'none' : this._display};
   }
 
@@ -230,7 +232,6 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the value to be FALSY
    */
   _validateValue(value) {
-    // console.log(`HideDirective::_validateValue( ${value} )`);
-    return FALSY.find(x => x === value) == null;
+    return FALSY.indexOf(value) > -1;
   }
 }

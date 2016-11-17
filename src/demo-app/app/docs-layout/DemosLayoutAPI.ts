@@ -4,10 +4,10 @@ import { Component } from '@angular/core';
     selector: 'demos-docs-layout',
     template: `
       <demo-layout-alignment      class="small-demo">  </demo-layout-alignment>          
-      <demo-flex-row-fill         class="small-demo">  </demo-flex-row-fill>
-      <demo-flex-row-fill-wrap    class="small-demo">  </demo-flex-row-fill-wrap>
-      <demo-flex-attribute-values class="small-demo">  </demo-flex-attribute-values>
-      <demo-flex-offset-values    class="small-demo">  </demo-flex-offset-values>
+      <!--<demo-flex-row-fill         class="small-demo">  </demo-flex-row-fill>-->
+      <!--<demo-flex-row-fill-wrap    class="small-demo">  </demo-flex-row-fill-wrap>-->
+      <!--<demo-flex-attribute-values class="small-demo">  </demo-flex-attribute-values>-->
+      <!--<demo-flex-offset-values    class="small-demo">  </demo-flex-offset-values>-->
     `
 })
 export class DemosLayoutAPI { }
