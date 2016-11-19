@@ -77,7 +77,7 @@ export class FlexDirective extends BaseFxDirective
     // If this flex item is inside of a flex container marked with
     if (_container) {
       // Subscribe to layout immediate parent direction changes
-      this._layoutWatcher = _container.onLayoutChange.subscribe(() => this._onLayoutChange());
+      this._layoutWatcher = _container.onLayoutChange.subscribe((direction) => this._onLayoutChange(direction));
     }
   }
 
