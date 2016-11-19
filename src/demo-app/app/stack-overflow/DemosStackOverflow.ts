@@ -11,7 +11,7 @@ export class DemosStackOverflow { }
 import {NgModule}                 from '@angular/core';
 import {CommonModule}             from "@angular/common";
 import {MaterialModule}           from "@angular/material";
-import {FlexLayoutModule}         from "@angular/flex-layout";     // `gulp build:components` to deploy to node_modules manually
+import {FlexLayoutModule}         from "../../../lib";        // `gulp build:components` to deploy to node_modules manually
 
 import { DemoComplexColumnOrder } from "./columnOrder.demo";
 

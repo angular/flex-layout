@@ -4,7 +4,7 @@ import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { BrowserModule }  from '@angular/platform-browser';
 import { MaterialModule } from "@angular/material";
 
-import {FlexLayoutModule}    from "@angular/flex-layout";     // `gulp build:components` to deploy to node_modules manually
+import {FlexLayoutModule}    from "../../lib";     // `gulp build:components` to deploy to node_modules manually
 
 import { DemoApp }                  from './demo-app/demo-app';
 import { DEMO_APP_ROUTES }          from "./demo-app-routes";

@@ -40,7 +40,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.webpack.js', '.ts', '.js']
+    extensions: ['.ts', '.js']
   },
 
   /**
