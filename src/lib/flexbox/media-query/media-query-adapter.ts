@@ -35,9 +35,8 @@ export class MediaQueryAdapter {
    * tracks the current mq-activated input and manages the calls to the directive's
    * `onMediaQueryChanges( )`
    */
-  attach(directive: Directive, property: string, defaultVal: string|number): MediaQueryActivation {
-    let activation: MediaQueryActivation =
-        new MediaQueryActivation(this._mq, directive, property, defaultVal);
+  attach(directive: Directive, property: string, defaultVal: string|number|boolean): MediaQueryActivation {
+    let activation: MediaQueryActivation = new MediaQueryActivation(this._mq, directive, property, defaultVal);
     let list: SubscriptionList = this._linkOnMediaChanges(directive, property);
 
     this._listenOnDestroy(directive, list);
@@ -53,7 +52,7 @@ export class MediaQueryAdapter {
 
     if (handler) {
       let keys = this._buildRegistryMap(directive, property);
-      list = this._configureChangeObservers(directive, keys, handler);
+      list = this._configureChangeObservers(directive,  property, keys, handler);
     }
     return list;
   }
@@ -88,6 +87,7 @@ export class MediaQueryAdapter {
         .map(it => {
           return {
             alias: it.alias,      // e.g.  gt-sm, md, gt-lg
+            baseKey : key,        // e.g.  layout, hide, self-align, flex-wrap
             key: key + it.suffix  // e.g.  layoutGtSm, layoutMd, layoutGtLg
           }
         })
@@ -99,7 +99,7 @@ export class MediaQueryAdapter {
    * notification
    */
   private _configureChangeObservers(
-      directive: Directive, keys: any, subscriber: MediaQuerySubscriber): SubscriptionList {
+      directive: Directive, property:string,  keys: any, callback: MediaQuerySubscriber): SubscriptionList {
     let subscriptions = [];
 
     keys.forEach(it => {
@@ -109,13 +109,24 @@ export class MediaQueryAdapter {
             mergeWithLastEvent = (current: MediaQueryChange):
                 MediaQueryChanges => {
                   let previous = lastEvent;
-                  if (this._isDifferentChange(previous, current))
+                  if (this._isDifferentChange(previous, current)){
                     lastEvent = current;
+                  } else {
+                    previous = null;
+                  }
 
                   return new MediaQueryChanges(previous, current);
                 },
             // Create subscription for mq changes for each alias (e.g. gt-sm, md, etc)
-            subscription = this._mq.observe(it.alias).map(mergeWithLastEvent).subscribe(subscriber);
+            subscription = this._mq.observe(it.alias)
+              .map(mergeWithLastEvent)
+              .map((it:MediaQueryChanges) => {
+                // Inject directive default property key name: to let onMediaQueryChange() calls
+                // know which property is being triggered...
+                it.current.property = property;
+                return it;
+              })
+              .subscribe(callback);
 
         subscriptions.push(subscription);
       }
@@ -134,6 +145,8 @@ export class MediaQueryAdapter {
    */
   private _isDifferentChange(previous: MediaQueryChange, current: MediaQueryChange): boolean {
     let prevAlias = (previous ? previous.mqAlias : '');
-    return current.matches || (!current.matches && current.mqAlias !== prevAlias);
+    let sameProperty = current.property === (previous ? previous.property : undefined);
+
+    return current.matches || (!current.matches && (current.mqAlias !== prevAlias) && sameProperty);
   }
 }

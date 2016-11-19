@@ -22,7 +22,8 @@ export class MediaQueryChange {
       public matches: boolean,     // Is the mq currently activated
       public mqAlias: string,      // e.g.   gt-sm, md, gt-lg
       public suffix: string = '',  // e.g.   GtSM, Md, GtLg
-      public value: string = ''    // @Input value associated for the current mq
+      public value: string = '',    // @Input value associated for the current mq
+      public property: string = undefined     // base property associated with the change
       ) {}
 }
 
