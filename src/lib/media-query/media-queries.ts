@@ -22,6 +22,7 @@ export class MediaQueryChange {
       public matches: boolean,     // Is the mq currently activated
       public mqAlias: string,      // e.g.   gt-sm, md, gt-lg
       public suffix: string = '',  // e.g.   GtSM, Md, GtLg
+      public mediaQuery:string = "all",    // e.g.   screen and (min-width: 600px) and (max-width: 959px)
       public value: string = '',    // @Input value associated for the current mq
       public property: string = undefined     // base property associated with the change
       ) {}
@@ -97,7 +98,7 @@ export class MediaQueries {
    */
   observe(alias?: string): Observable<MediaQueryChange> {
     return this._announcer.filter(e => {
-      return alias ? (e.matches === true) : (e.mqAlias === alias);
+      return !alias ? (e.matches === true) : (e.mqAlias === alias);
     });
   }
 
@@ -130,8 +131,8 @@ export class MediaQueries {
   private onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
     // Execute within ng2 zone from change detection, etc.
     this._zone.run(() => {
-      console.log(`mq[ ${breakpoint.alias} ]: active = ${mql.matches} `);
-      this._source.next(new MediaQueryChange(mql.matches, breakpoint.alias, breakpoint.suffix));
+      console.log(`mq[ ${breakpoint.alias} ]: active = ${mql.matches}, mediaQuery = ${breakpoint.mediaQuery} `);
+      this._source.next(new MediaQueryChange(mql.matches, breakpoint.alias, breakpoint.suffix, breakpoint.mediaQuery));
     })
   }
 }

@@ -23,6 +23,7 @@ import {DemoResponsiveDirection }  from "./responsiveDirections.demo";
 import {DemoResponsiveShowHide} from "./responsiveShowHide.demo";
 import {DemoResponsiveFlexDirectives} from "./responsiveFlexDirective.demo";
 import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
+import {MediaQueryObservableProvider} from "../../../lib/media-query/media-query-module";
 
 @NgModule({
   declarations : [
@@ -39,8 +40,9 @@ import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
     CommonModule,
     FormsModule,
     MaterialModule,
-    FlexLayoutModule
-  ]
+    FlexLayoutModule.forRoot()
+  ],
+  providers : [ MediaQueryObservableProvider ]
 
 })
 export class DemosResponsiveLayoutsModule { }

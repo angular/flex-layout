@@ -1,25 +1,30 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 
 import {BreakPoints} from './break-points';
 import {MediaQueries} from './media-queries';
-
-const ALL_COMPONENTS = [BreakPoints, MediaQueries];
 
 /**
  * *****************************************************************
  * Define module for the MediaQuery API
  * *****************************************************************
  */
-
+export const MediaQueryObservableProvider = {
+        provide: 'mediaQuery$',
+        deps: [ MediaQueries ],
+        useFactory:(mq:MediaQueries) =>{
+          debugger;
+          // Return observable to MediaQuery events
+          return mq.observe();
+        }
+      };
 
 @NgModule({providers: [BreakPoints, MediaQueries]})
 export class MediaQueriesModule {
-  static forRoot() {
+  static forRoot(): ModuleWithProviders {
     return {
       ngModule: MediaQueriesModule,
       providers: [
-        BreakPoints,  // Default Breakpoints for application
-        MediaQueries
+        MediaQueryObservableProvider
       ]
     };
   }

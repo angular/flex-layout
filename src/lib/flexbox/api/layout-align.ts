@@ -60,7 +60,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     super(elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
-      this._layoutWatcher = container.onLayoutChange.subscribe(this._onLayoutChange.bind(this));
+      this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
     }
   }
 
@@ -95,7 +95,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
 
 
   ngOnDestroy() {
-    this._layoutWatcher.unsubscribe();
+    if ( this._layoutWatcher ) {
+      this._layoutWatcher.unsubscribe();
+    }
   }
 
   // *********************************************

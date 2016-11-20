@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {MediaQueries, MediaQueryChange} from "../../../lib/media-query/media-queries";
-import {BreakPoint} from "../../../lib/media-query/break-points";
+import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
+import {MediaQueryChange} from "../../../lib/media-query/media-queries";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'demo-responsive-flex-order',
@@ -37,22 +37,24 @@ import {BreakPoint} from "../../../lib/media-query/break-points";
     </md-card>
   `
 })
-export class DemoResponsiveFlexOrder implements OnInit {
+export class DemoResponsiveFlexOrder implements OnInit, OnDestroy {
   public activeMediaQuery = "";
+  private _watcher : Subscription;
 
-  constructor(private _$mdMedia : MediaQueries) {  }
+  constructor(@Inject('mediaQuery$') private _mediaQuery$) { }
 
   ngOnInit() {
-    this.watchMQChanges();
+    this._watcher = this.watchMQChanges();
+  }
+
+  ngOnDestroy() {
+    this._watcher.unsubscribe();
   }
 
 
   watchMQChanges() {
-    this._$mdMedia.observe().subscribe((e:MediaQueryChange) => {
-      let current : BreakPoint = this._$mdMedia.active;
-      let value = current ? `'${current.alias}' = ${current.mediaQuery} )` : "";
-
-      // console.log(`watchMQChanges( ${value}`);
+    return this._mediaQuery$.subscribe((e:MediaQueryChange) => {
+      let value = e ? `'${e.mqAlias}' = (${e.mediaQuery})` : "";
       this.activeMediaQuery = value;
     });
   }

@@ -37,13 +37,13 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Create Observable for nested/child 'flex' directives. This allows
    * child flex directives to subscribe/listen for flexbox direction changes.
    */
-  private _layout: BehaviorSubject<string> = new BehaviorSubject<string>(this.layout);
+  private _announcer: BehaviorSubject<string> = new BehaviorSubject<string>(this.layout);
 
   /**
    * Publish observer to enabled nested, dependent directives to listen
    * to parent "layout" direction changes
    */
-  public onLayoutChange: Observable<string> = this._layout.asObservable();
+  public layout$: Observable<string> = this._announcer.asObservable();
 
   /**
    * Default layout property with default direction value
@@ -126,7 +126,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
 
     // Update styles and announce to subscribers the *new* direction
     this._applyStyleToElement(this._buildCSS(direction));
-    this._layout.next(direction);
+    this._announcer.next(direction);
   }
 
 

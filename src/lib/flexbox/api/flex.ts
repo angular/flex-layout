@@ -77,12 +77,12 @@ export class FlexDirective extends BaseFxDirective
     // If this flex item is inside of a flex container marked with
     if (_container) {
       // Subscribe to layout immediate parent direction changes
-      this._layoutWatcher = _container.onLayoutChange.subscribe((direction) => this._onLayoutChange(direction));
+      this._layoutWatcher = _container.layout$.subscribe((direction) => this._onLayoutChange(direction));
     }
   }
 
   /**
-   * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
+   * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { MediaQueries } from "../../../lib/media-query/media-queries";
+import {Component, Inject, OnDestroy} from '@angular/core';
+import {MediaQueryChange} from "../../../lib/media-query/media-queries";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'demo-responsive-row-column',
@@ -47,7 +48,10 @@ import { MediaQueries } from "../../../lib/media-query/media-queries";
     </md-card>
   `
 })
-export class DemoResponsiveRows {
+export class DemoResponsiveRows implements OnDestroy {
+  private _activeMQC : MediaQueryChange;
+  private _watcher : Subscription;
+
   firstCol = "row";
   firstColXs = 'column';
   firstColMd = 'column';
@@ -58,15 +62,21 @@ export class DemoResponsiveRows {
 
   isVisible = true;
 
-  constructor( public $mdMedia : MediaQueries ) {
+  constructor(@Inject('mediaQuery$') private _mediaQuery$) {
+    this._watcher = this._mediaQuery$.subscribe((e:MediaQueryChange) => {
+      this._activeMQC = e;
+    });
+  }
+
+  ngOnDestroy() {
+    this._watcher.unsubscribe();
   }
 
   toggleLayoutFor(col) {
     switch( col ) {
       case 1:
-        let bp = this.$mdMedia.active;
-        
-        col = `firstCol${bp ? bp.suffix : ""}`;
+
+        col = `firstCol${this._activeMQC ? this._activeMQC.suffix : ""}`;
         this[col] = (this[col] === "column") ? "row" : "column";
         break;
 

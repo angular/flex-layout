@@ -50,7 +50,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   // *********************************************
 
   /**
-   * For @Input changes on the current mq activation property, delegate to the onLayoutChange()
+   * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
     let activated = this._mqActivation;
