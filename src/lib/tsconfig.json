@@ -25,6 +25,7 @@
     ]
   },
   "exclude": [
+    "**/testing/",
     "**/*.spec.*",
     "system-config-spec.*",
     "tsconfig.*",

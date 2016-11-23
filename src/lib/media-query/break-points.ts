@@ -75,15 +75,14 @@ export class BreakPoints {
   }
 
   /**
-   *
+   * Search breakpoints by alias (e.g. gt-xs)
    */
-  findBreakpointBy(alias: string): BreakPoint {
-    for (let bp of this.registry) {
-      if (bp.alias == alias) {
-        return bp;
-      }
-    }
-    return null;
+  findByAlias(alias: string): BreakPoint {
+    return this.registry.find( bp => bp.alias == alias);
+  }
+
+  findByQuery(query:string) : BreakPoint {
+    return this.registry.find( bp => bp.mediaQuery == query);
   }
 
   /**

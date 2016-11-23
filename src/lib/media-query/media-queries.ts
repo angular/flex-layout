@@ -82,7 +82,7 @@ export class MediaQueries {
    * For the specified mediaQuery alias, is the mediaQuery range active?
    */
   isActive(alias: string): boolean {
-    let bp = this._breakpoints.findBreakpointBy(alias);
+    let bp = this._breakpoints.findByAlias(alias);
     if (bp) {
       let mql = this._mqls[bp.mediaQuery];
       if (mql.matches)

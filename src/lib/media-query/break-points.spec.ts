@@ -7,16 +7,16 @@ describe('break-points', () => {
   it('registry has all aliases defined', () =>{
     expect(breakPoints.registry.length).toBeGreaterThan(0);
 
-    expect(breakPoints.findBreakpointBy('')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('xs')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('gt-xs')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('sm')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('gt-sm')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('md')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('gt-md')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('lg')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('gt-lg')).toBeDefined();
-    expect(breakPoints.findBreakpointBy('xl')).toBeDefined();
+    expect(breakPoints.findByAlias('')).toBeDefined();
+    expect(breakPoints.findByAlias('xs')).toBeDefined();
+    expect(breakPoints.findByAlias('gt-xs')).toBeDefined();
+    expect(breakPoints.findByAlias('sm')).toBeDefined();
+    expect(breakPoints.findByAlias('gt-sm')).toBeDefined();
+    expect(breakPoints.findByAlias('md')).toBeDefined();
+    expect(breakPoints.findByAlias('gt-md')).toBeDefined();
+    expect(breakPoints.findByAlias('lg')).toBeDefined();
+    expect(breakPoints.findByAlias('gt-lg')).toBeDefined();
+    expect(breakPoints.findByAlias('xl')).toBeDefined();
 
     expect(breakPoints.overlappings.length).toBe(5);
   });

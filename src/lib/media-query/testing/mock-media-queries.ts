@@ -1,16 +1,18 @@
 import {BreakPoints, BreakPoint} from "media-query/break-points";
 
 export class MockMediaQueries {
-  private _activeMQL  : MockMediaQueryList;
-  private _matchMedia : Function;
+  private _breakpoints : BreakPoints;
   private _registry : Map<string, MockMediaQueryList>;
+  private _activeMQL  : MockMediaQueryList;
+  private _matchMediaFn : (mediaQuery: string) => MediaQueryList;
 
   /**
    *
    */
-  constructor(private _breakpoints:BreakPoints) {
-    this._matchMedia = window.matchMedia;
+  constructor(breakpoints:BreakPoints = null) {
+    this._breakpoints = breakpoints;
     this._registry = new Map();
+    this._matchMediaFn = window.matchMedia;
 
     window.matchMedia = this.matchMedia.bind(this);
   }
@@ -18,23 +20,39 @@ export class MockMediaQueries {
   /**
    *
    */
-  activate(query:string) {
-    if ( this._registry.has(query) ){
-      let mql : MockMediaQueryList = this._registry.get(query);
-      if ( mql ) {
-        if ( this._activeMQL ) this._activeMQL.deactivate();
-        this._activeMQL = mql.activate();
-      }
+  init(breakpoints:BreakPoints) {
+    this._breakpoints = breakpoints;
+    breakpoints.registry.forEach( (bp:BreakPoint) => {
+      this.matchMedia(bp.mediaQuery);
+    });
+    return this;
+  }
+
+  /**
+   * Can only activate ranges registered with the BreakPoints list
+   */
+  activate(query:string):MockMediaQueryList {
+    if ( !this._registry.has(query) ) {
+      throw new Error(`Unknown mediaQuery: ${query}`);
     }
+
+    let mql : MockMediaQueryList = this._registry.get(query);
+    if ( mql ) {
+      if ( this._activeMQL ) this._activeMQL.deactivate();
+      this._activeMQL = mql.activate();
+    }
+
+    return this._activeMQL;
   }
 
   /**
    *
    */
   destroy() {
-    window.matchMedia = this._matchMedia;
+    window.matchMedia = this._matchMediaFn; // Restore original window API
+
     this._registry.forEach((mql:MockMediaQueryList, mediaQuery:string) => {
-      mql.deactivate();
+      mql.destroy();
     });
     this._registry.clear();
   }
@@ -42,20 +60,26 @@ export class MockMediaQueries {
   /**
    * Intercept window.matchMedia() in order to simulate mediaQuery change notifications
    */
-  matchMedia(mediaQuery: string) {
-    let breakpoint : BreakPoint = this._breakpoints.findBreakpointBy(mediaQuery);
-    let mql = new MockMediaQueryList(breakpoint);
-
-    this._registry.set(mediaQuery, mql);
+  matchMedia(mediaQuery: string):MockMediaQueryList {
+    let mql = this._registry.get(mediaQuery);
+    if ( !mql ) {
+      let breakpoint : BreakPoint = this._breakpoints.findByQuery(mediaQuery);
+      if ( breakpoint ) {
+        mql = new MockMediaQueryList(breakpoint);
+        this._registry.set(mediaQuery, mql);
+      }
+    }
     return mql;
   }
+
 
 }
 
 
-class MockMediaQueryList implements MediaQueryList {
+export class MockMediaQueryList implements MediaQueryList {
   private _isActive : boolean = false;
   private _listeners : Array<MediaQueryListListener> = [ ];
+  public  breakpoint : BreakPoint;
 
   get matches() : boolean { return this._isActive; }
   get media() : string { return this.breakpoint.mediaQuery; }
@@ -63,10 +87,32 @@ class MockMediaQueryList implements MediaQueryList {
   /**
    *
    */
-  constructor(public breakpoint:BreakPoint) { }
+  constructor(breakpoint:BreakPoint|string) {
+    let source : BreakPoint;
+    if (typeof breakpoint == 'string') {
+      source = {
+        mediaQuery : <string> breakpoint,
+        overlapping : false,
+        suffix : '',
+        alias : ''
+      };
+    }
+
+    this.breakpoint = source || <BreakPoint> breakpoint;
+  }
 
   /**
    *
+   */
+  destroy() {
+    this.deactivate();
+
+    this.breakpoint = null;
+    this._listeners = [ ];
+  }
+
+  /**
+   * Notify all listeners that 'matches === TRUE'
    */
   activate():MockMediaQueryList {
     this._isActive = true;
@@ -78,7 +124,7 @@ class MockMediaQueryList implements MediaQueryList {
   }
 
   /**
-   *
+   * Notify all listeners that 'matches === false'
    */
   deactivate():MockMediaQueryList {
     if ( this._isActive ) {
