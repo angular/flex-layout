@@ -1,6 +1,13 @@
 import {BreakPoints, BreakPoint} from "media-query/break-points";
 
-export class MockMediaQueries {
+/**
+ * MockMediaQueryActivator intercepts the window API: `window.matchMedia()` and supports programmatic mediaQuery
+ * activation/deactivation to simulate viewport size changes.
+ *
+ * Instantiate this class in tests before testing any directives or media-queries dependent code.
+ * Use the references to Breakpoints and the MockMediaQueryActivator instance to manually activate a mediaQuery.
+ */
+export class MockMediaQueryActivator {
   private _breakpoints : BreakPoints;
   private _registry : Map<string, MockMediaQueryList>;
   private _activeMQL  : MockMediaQueryList;
@@ -12,13 +19,20 @@ export class MockMediaQueries {
   constructor(breakpoints:BreakPoints = null) {
     this._breakpoints = breakpoints;
     this._registry = new Map();
-    this._matchMediaFn = window.matchMedia;
 
+    this.interceptAPI();
+  }
+
+  /**
+   * Intercept the matchMedia() API call
+   */
+  private interceptAPI() {
+    this._matchMediaFn = window.matchMedia;
     window.matchMedia = this.matchMedia.bind(this);
   }
 
   /**
-   *
+   * Support post construction initialization of custom BreakPoints
    */
   init(breakpoints:BreakPoints) {
     this._breakpoints = breakpoints;
@@ -64,10 +78,8 @@ export class MockMediaQueries {
     let mql = this._registry.get(mediaQuery);
     if ( !mql ) {
       let breakpoint : BreakPoint = this._breakpoints.findByQuery(mediaQuery);
-      if ( breakpoint ) {
-        mql = new MockMediaQueryList(breakpoint);
-        this._registry.set(mediaQuery, mql);
-      }
+      mql = new MockMediaQueryList(breakpoint || mediaQuery);
+      this._registry.set(mediaQuery, mql);
     }
     return mql;
   }

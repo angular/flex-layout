@@ -1,13 +1,13 @@
 import {BreakPoint, BreakPoints} from '../break-points';
-import {MockMediaQueries, MockMediaQueryList} from "./mock-media-queries";
+import {MockMediaQueryActivator, MockMediaQueryList} from "./mock-media-query-activator";
 
-describe('mock-media-queries', () => {
+describe('mock-media-query-activator', () => {
   let breakPoints : BreakPoints;
-  let mediaQueries : MockMediaQueries;
+  let mediaQueries : MockMediaQueryActivator;
 
   beforeEach(()=> {
     breakPoints = new BreakPoints();
-    mediaQueries = new MockMediaQueries().init(breakPoints);
+    mediaQueries = new MockMediaQueryActivator().init(breakPoints);
   });
   afterEach(() => { mediaQueries.destroy(); });
 
@@ -19,9 +19,9 @@ describe('mock-media-queries', () => {
       });
     });
 
-    it('cannot match with an unknown mediaQuery', () =>{
+    it('can match with an unknown mediaQuery', () =>{
       let mediaQuery = 'screen and (min-width: 500px)';
-      expect( mediaQueries.matchMedia(mediaQuery)).toBeFalsy();
+      expect( mediaQueries.matchMedia(mediaQuery)).toBeTruthy();
     });
 
   });
