@@ -42,7 +42,7 @@ export class MediaQueries {
   /**
    * Constructor
    */
-  constructor(breakpoints: BreakPoints, private _zone: NgZone = null) {
+  constructor(breakpoints: BreakPoints, private _zone?: NgZone) {
     this._breakpoints = breakpoints;
     this._source = new BehaviorSubject<MediaQueryChange>(new MediaQueryChange(true, ''));
     this._announcer = this._source.asObservable();
@@ -130,7 +130,7 @@ export class MediaQueries {
    * On each mlq event, emit a special MediaQueryChange to all subscribers
    */
   private onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
-    let runFn = this._zone ? this._zone.run : (callback) => { callback(); };
+    let runFn = this._zone ? this._zone.run.bind(this._zone) : (callback) => { callback(); };
 
     // Execute within ng2 zone from change detection, etc.
     runFn(() => {
