@@ -3,6 +3,11 @@ declare var System: any;
 
 // Apply the CLI SystemJS configuration.
 System.config({
+  transpiler:"typescript",
+  typescriptOptions : {
+    inlineSourceMap : true,
+    inlineSources : true
+  },
   map: {
     'rxjs': 'vendor/rxjs',
     'main': 'main.js',

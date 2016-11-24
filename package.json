@@ -94,7 +94,6 @@
     "gulp-clang-format": "^1.0.23",
     "gulp-clean": "^0.3.2",
     "gulp-cli": "^1.2.2",
-    "gulp-sass": "^2.3.2",
     "gulp-server-livereload": "^1.8.2",
     "gulp-shell": "^0.5.2",
     "gulp-sourcemaps": "^1.6.0",

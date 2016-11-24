@@ -130,10 +130,10 @@ export class MediaQueries {
    * On each mlq event, emit a special MediaQueryChange to all subscribers
    */
   private onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
-    let fn = this._zone ? this._zone.run : (callback) => { callback();};
+    let runFn = this._zone ? this._zone.run : (callback) => { callback(); };
 
     // Execute within ng2 zone from change detection, etc.
-    fn(() => {
+    runFn(() => {
       // console.log(`mq[ ${breakpoint.alias} ]: active = ${mql.matches}, mediaQuery = ${breakpoint.mediaQuery} `);
       let change = new MediaQueryChange(mql.matches, breakpoint.alias, breakpoint.suffix, breakpoint.mediaQuery);
       this._source.next( change );
