@@ -13,7 +13,6 @@ describe('media-queries', () => {
   let mqService : MediaQueries;
 
   beforeEach(()=> {
-    debugger;
     breakPoints = new BreakPoints();
     mqActivator = new MockMediaQueryActivator().init(breakPoints);
 
@@ -21,8 +20,7 @@ describe('media-queries', () => {
   });
   afterEach(() => { mqActivator.destroy(); });
 
-
-  it('can observe ALL media query changes', () =>{
+  it('can observe a media query change for each breakpoint', () =>{
     let current : MediaQueryChange;
     mqService.observe().subscribe((change:MediaQueryChange) =>{
       current = change;
@@ -73,6 +71,58 @@ describe('media-queries', () => {
     expect( current ).toBeTruthy();
     expect( current.mqAlias ).toEqual( 'lg');
     expect( mqService.active.alias ).toEqual('lg');
+  });
+
+  it('can observe only activate changes for all mediaQueries', () =>{
+    let activates = 0, deactivates = 0;
+    let bpGtSM = breakPoints.findByAlias('gt-sm'),
+        bpLg = breakPoints.findByAlias('lg');
+
+    mqService.observe().subscribe((change:MediaQueryChange) =>{
+      if ( change.matches ) ++activates;
+      else                  ++deactivates;
+    });
+
+    expect( activates ).toEqual(1);   // from alias == '' == 'all'
+
+    mqActivator.activate(bpGtSM.mediaQuery);
+    expect( activates ).toEqual(2);
+    expect( deactivates ).toEqual(0);
+
+    mqActivator.activate(bpLg.mediaQuery);
+    expect( activates ).toEqual(3);
+    expect( deactivates ).toEqual(0);
+
+    mqActivator.activate(bpGtSM.mediaQuery);
+    expect( activates ).toEqual(4);
+    expect( deactivates ).toEqual(0);
+
+  });
+
+  it('can observe both activate & deactivate changes for specific mediaQueries', () =>{
+    let activates = 0, deactivates = 0;
+    let bpGtSM = breakPoints.findByAlias('gt-sm'),
+        bpLg = breakPoints.findByAlias('lg');
+
+    mqService.observe('gt-sm').subscribe((change:MediaQueryChange) =>{
+      if ( change.matches ) ++activates;
+      else                  ++deactivates;
+    });
+
+    expect( activates ).toEqual(0);   // from alias == '' == 'all'
+
+    mqActivator.activate(bpGtSM.mediaQuery);
+    expect( activates ).toEqual(1);
+    expect( deactivates ).toEqual(0);
+
+    mqActivator.activate(bpLg.mediaQuery);
+    expect( activates ).toEqual(1);
+    expect( deactivates ).toEqual(1);
+
+    mqActivator.activate(bpGtSM.mediaQuery);
+    expect( activates ).toEqual(2);
+    expect( deactivates ).toEqual(1);
+
   });
 
 
