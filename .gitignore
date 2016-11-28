@@ -55,5 +55,6 @@ npm-debug.log
 
 # IDE #
 .idea/
+.vscode/
 *.swp
 !/src/lib/flexbox/media-query/media-query-activation.ts
