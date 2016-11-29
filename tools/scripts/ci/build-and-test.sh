@@ -13,14 +13,6 @@ source tools/scripts/ci/sources/tunnel.sh
 start_tunnel
 wait_for_tunnel
 
-#if is_lint; then
-#  $(npm bin)/gulp ci:lint
-#elif is_e2e; then
-#  $(npm bin)/gulp ci:e2e
-#elif is_extract_metadata; then
-#  $(npm bin)/gulp ci:extract-metadata
-#else
-  $(npm bin)/gulp ci:test
-#fi
+$(npm bin)/gulp ci:test
 
 teardown_tunnel
