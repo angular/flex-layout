@@ -1,4 +1,4 @@
-import { BreakPoint, BreakPoints } from './break-points';
+import { BreakPoints } from './break-points';
 
 describe('break-points', () => {
   let breakPoints : BreakPoints;

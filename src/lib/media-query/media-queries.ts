@@ -22,23 +22,27 @@ export class MediaQueryChange {
       public matches: boolean,     // Is the mq currently activated
       public mqAlias: string,      // e.g.   gt-sm, md, gt-lg
       public suffix: string = '',  // e.g.   GtSM, Md, GtLg
-      public mediaQuery:string = "all",    // e.g.   screen and (min-width: 600px) and (max-width: 959px)
+      public mediaQuery: string = "all",    // e.g.   screen and (min-width: 600px) and (max-width: 959px)
       public value: string = '',    // @Input value associated for the current mq
       public property: string = undefined     // base property associated with the change
-      ) {}
+  ) {}
 }
 
 // ****************************************************************
 // ****************************************************************
 
-
+/**
+ * MediaQueries configures listeners to mediaQuery changes and publishes an Observable facade to convert
+ * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
+ * ng Zone to trigger change detections and component updates.
+ */
 @Injectable()
 export class MediaQueries {
   private _mqls: any = {};
   private _breakpoints: BreakPoints;
   private _source: BehaviorSubject<MediaQueryChange>;
   private _announcer: Observable<MediaQueryChange>;
-  private _runFn : (fn: () => any) => any;
+  private _runFn: (fn: () => any) => any;
 
   /**
    * Constructor
@@ -48,13 +52,8 @@ export class MediaQueries {
     this._source = new BehaviorSubject<MediaQueryChange>(new MediaQueryChange(true, ''));
     this._announcer = this._source.asObservable();
 
-    // Execute within ng2 zone from change detection, etc.
-    this._runFn = (callback) => {
-      if ( zone ) { zone.run(callback); }
-      else { callback(); }
-    };
-
-    this.prepareWatchers(breakpoints.registry);
+    this._configureZone(zone);
+    this._prepareWatchers(breakpoints);
   }
 
   /**
@@ -101,7 +100,7 @@ export class MediaQueries {
   /**
    * External observers can watch for all (or a specific) mql changes.
    * Typically used by the MediaQueryAdaptor; optionally available to components
-   * use the MediaQueries as $mdMedia service
+   * who wish to use the MediaQueries as $mdMedia service
    */
   observe(alias?: string): Observable<MediaQueryChange> {
     return this._announcer.filter(e => {
@@ -110,11 +109,27 @@ export class MediaQueries {
   }
 
   /**
+   * Prepare `run` function used to notify subscribers [about mediaQuery changes] and trigger
+   * change detection.
+   */
+  private _configureZone(zone?: NgZone) {
+    // Execute within ng2 zone from change detection, etc.
+    this._runFn = (callback) => {
+      if (zone) {
+        zone.run(callback);
+      }
+      else {
+        callback();
+      }
+    };
+  }
+
+  /**
    * Based on the BreakPoints provider, register internal listeners for the specified ranges
    */
-  private prepareWatchers(ranges: BreakPoint[]) {
+  private _prepareWatchers(ranges: BreakPoints) {
 
-    ranges.forEach((it: BreakPoint) => {
+    ranges.registry.forEach((it: BreakPoint) => {
       let mql = this._mqls[it.mediaQuery];
       if (!mql) {
         mql = MediaQueryListFactory.instanceOf((it.mediaQuery));
@@ -122,12 +137,12 @@ export class MediaQueries {
         // Each listener uses a shared eventHandler: which emits specific data to observers
         // Cache this permanent listener
 
-        mql.addListener(this.onMQLEvent.bind(this, it));
+        mql.addListener(this._onMQLEvent.bind(this, it));
         this._mqls[it.mediaQuery] = mql;
 
         if (mql.matches) {
           // Announce activate range for initial subscribers
-          this.onMQLEvent(it, mql);
+          this._onMQLEvent(it, mql);
         }
       }
     });
@@ -136,12 +151,12 @@ export class MediaQueries {
   /**
    * On each mlq event, emit a special MediaQueryChange to all subscribers
    */
-  private onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
+  private _onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
 
     this._runFn(() => {
       // console.log(`mq[ ${breakpoint.alias} ]: active = ${mql.matches}, mediaQuery = ${breakpoint.mediaQuery} `);
       let change = new MediaQueryChange(mql.matches, breakpoint.alias, breakpoint.suffix, breakpoint.mediaQuery);
-      this._source.next( change );
+      this._source.next(change);
     })
   }
 }

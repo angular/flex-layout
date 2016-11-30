@@ -101,7 +101,9 @@ export class BreakPoints {
   }
 
   /**
-   *
+   * Aliases are mapped to properties using suffixes
+   * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
+   * for property layoutGtSM.
    */
   get suffixes(): string[] {
     return this.registry.map(it => it.suffix);

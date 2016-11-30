@@ -39,11 +39,11 @@ export class MediaQueryListFactory {
    * Publish a mockMQL if needed
    */
   static instanceOf(query: string): MediaQueryList {
-    let canListen = !!window.matchMedia('all').addListener;
+    let canListen = !!(<any>window).matchMedia('all').addListener;
 
     prepare(query);
 
-    return canListen ? window.matchMedia(query) : <MediaQueryList>{
+    return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
       matches: query === 'all' || query === '',
       media: query,
       addListener: () => {},

@@ -65,7 +65,7 @@ export class MediaQueryActivation implements OnMediaQueryChanges, OnDestroy {
       changes = new MediaQueryChanges(null, changes.current);
       changes.current.value = this._calculateActivatedValue(changes.current);
 
-      this._logMediaQueryChanges(changes);
+      // this._logMediaQueryChanges(changes);
       this._onMediaQueryChanges(changes);
     }
   }

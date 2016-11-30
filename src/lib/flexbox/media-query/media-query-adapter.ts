@@ -1,3 +1,5 @@
+import 'rxjs/add/operator/map';
+
 import {Directive, Injectable, NgZone} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
