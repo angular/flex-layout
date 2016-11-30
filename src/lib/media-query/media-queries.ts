@@ -42,17 +42,15 @@ export class MediaQueries {
   private _breakpoints: BreakPoints;
   private _source: BehaviorSubject<MediaQueryChange>;
   private _announcer: Observable<MediaQueryChange>;
-  private _runFn: (fn: () => any) => any;
 
   /**
    * Constructor
    */
-  constructor(breakpoints: BreakPoints, zone?: NgZone) {
+  constructor(breakpoints: BreakPoints, private _zone: NgZone) {
     this._breakpoints = breakpoints;
     this._source = new BehaviorSubject<MediaQueryChange>(new MediaQueryChange(true, ''));
     this._announcer = this._source.asObservable();
 
-    this._configureZone(zone);
     this._prepareWatchers(breakpoints);
   }
 
@@ -109,22 +107,6 @@ export class MediaQueries {
   }
 
   /**
-   * Prepare `run` function used to notify subscribers [about mediaQuery changes] and trigger
-   * change detection.
-   */
-  private _configureZone(zone?: NgZone) {
-    // Execute within ng2 zone from change detection, etc.
-    this._runFn = (callback) => {
-      if (zone) {
-        zone.run(callback);
-      }
-      else {
-        callback();
-      }
-    };
-  }
-
-  /**
    * Based on the BreakPoints provider, register internal listeners for the specified ranges
    */
   private _prepareWatchers(ranges: BreakPoints) {
@@ -153,7 +135,7 @@ export class MediaQueries {
    */
   private _onMQLEvent(breakpoint: BreakPoint, mql: MediaQueryList) {
 
-    this._runFn(() => {
+    this._zone.run(() => {
       // console.log(`mq[ ${breakpoint.alias} ]: active = ${mql.matches}, mediaQuery = ${breakpoint.mediaQuery} `);
       let change = new MediaQueryChange(mql.matches, breakpoint.alias, breakpoint.suffix, breakpoint.mediaQuery);
       this._source.next(change);
