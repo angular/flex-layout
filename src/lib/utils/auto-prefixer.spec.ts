@@ -1,5 +1,5 @@
-import { applyCssPrefixes } from './auto-prefixer';
-import {extendObject} from './object-extend';
+import { applyCssPrefixes } from '@angular/flex-layout/utils/auto-prefixer';
+import {extendObject} from '@angular/flex-layout/utils/object-extend';
 
 describe('auto-prefixer for ', () => {
 

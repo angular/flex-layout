@@ -29,8 +29,6 @@ System.config({
   baseURL: distPath
 });
 
-// console.log(`karma-test-shim.js :: distPath = ${distPath}`);
-
 System.import(distPath + '@angular/flex-layout/system-config-spec.js').then(function() {
   // Load and configure the TestComponentBuilder.
   return Promise.all([

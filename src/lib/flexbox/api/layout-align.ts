@@ -10,10 +10,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
+
 import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
+
 import {LAYOUT_VALUES, LayoutDirective} from './layout';
 
 
@@ -27,13 +29,11 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({selector: '[fx-layout-align]'})
-export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                        OnMediaQueryChanges,
-                                                                        OnDestroy {
+export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
 
   private _layout = 'row';  // default flex-direction
   private _layoutWatcher: Subscription;
@@ -55,9 +55,11 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   @Input('fx-layout-align.xl') alignXl;
 
   constructor(
-      @Optional() public container: LayoutDirective, private _mqa: MediaQueryAdapter,
-      elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
+      monitor : MediaMonitor,
+      elRef: ElementRef, renderer: Renderer,
+      @Optional() container: LayoutDirective)
+  {
+    super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -69,10 +71,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   // *********************************************
 
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-
-    if (changes['align'] != null || activationChange) {
+    if (changes['align'] != null || this._mqActivation) {
       this._updateWithValue();
     }
   }
@@ -82,19 +81,15 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'align', 'start stretch');
+    let keyOptions = new KeyOptions('align', 'start stretch');
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithValue(changes.value);
+    });
     this._updateWithValue();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
-  }
-
-
   ngOnDestroy() {
+    this._mqActivation.destroy();
     if ( this._layoutWatcher ) {
       this._layoutWatcher.unsubscribe();
     }

@@ -1,7 +1,7 @@
 import {task, watch} from 'gulp';
 import * as path from 'path';
 
-import {SOURCE_ROOT, DIST_COMPONENTS_ROOT, DIST_NODE_MODULES, PROJECT_ROOT} from '../constants';
+import {SOURCE_ROOT, TEST_ROOT, DIST_COMPONENTS_ROOT, DIST_NODE_MODULES, PROJECT_ROOT} from '../constants';
 import {tsBuildTask, execNodeTask, copyTask, sequenceTask} from '../task_helpers';
 import {writeFileSync} from 'fs';
 
@@ -21,6 +21,7 @@ const uglify = require('rollup-plugin-uglify');
 /** Path to the root of the @Angular/flex-layout library. */
 /** Path to the tsconfig used for ESM output. */
 const componentsDir = path.join(SOURCE_ROOT, 'lib');
+const componentsSpecDir = path.join(SOURCE_ROOT, 'lib');
 const tsconfigPath = path.relative(PROJECT_ROOT, path.join(componentsDir, 'tsconfig.json'));
 
 
@@ -36,9 +37,8 @@ task(':watch:components:spec', () => {
   watch(path.join(componentsDir, '**/*.ts'), [':build:components:spec']);
 });
 
-
-/** Builds components typescript for tests (CJS output). */
-task(':build:components:spec', tsBuildTask(componentsDir, 'tsconfig-spec.json'));
+/** Builds components typescript for tests (with CommonJS output). */
+task(':build:components:spec', tsBuildTask(componentsSpecDir, 'tsconfig-spec.json'));
 
 /** Copies assets (html, markdown) to build output. */
 task(':build:components:assets', copyTask([

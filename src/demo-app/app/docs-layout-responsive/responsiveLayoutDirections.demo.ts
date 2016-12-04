@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'demo-responsive-direction',
+  selector: 'demo-responsive-layout-direction',
   styleUrls : [
     '../demo-app/material2.css'
   ],
   template: `
     <md-card class="card-demo" >
       <md-card-title>Responsive Layout Directions</md-card-title>
-      <md-card-subtitle>Layout direction changes to 'column' for 'xs' viewport sizes:</md-card-subtitle>
+      <md-card-subtitle>Layout direction changes to 'column' for 'xs' or 'sm' viewport sizes:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
           <div fx-layout="row" fx-layout.xs="column" fx-layout.sm="column" fx-flex class="coloredContainerX box" >
@@ -20,4 +20,4 @@ import { Component } from '@angular/core';
     </md-card>
   `
 })
-export class DemoResponsiveDirection {  }
+export class DemoResponsiveLayoutDirection {  }

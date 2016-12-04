@@ -1,6 +1,9 @@
 import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
-import {MediaQueryChange} from "../../../lib/media-query/media-queries";
 import {Subscription} from "rxjs";
+import 'rxjs/add/operator/filter';
+
+import {MediaChange} from "../../../lib/media-query/media-change";
+import {Media$} from "../../../lib/media-query/providers/match-media-provider";
 
 @Component({
   selector: 'demo-responsive-flex-order',
@@ -41,7 +44,7 @@ export class DemoResponsiveFlexOrder implements OnInit, OnDestroy {
   public activeMediaQuery = "";
   private _watcher : Subscription;
 
-  constructor(@Inject('mediaQuery$') private _mediaQuery$) { }
+  constructor(@Inject(Media$)  private _media$) { }
 
   ngOnInit() {
     this._watcher = this.watchMQChanges();
@@ -53,8 +56,8 @@ export class DemoResponsiveFlexOrder implements OnInit, OnDestroy {
 
 
   watchMQChanges() {
-    return this._mediaQuery$.subscribe((e:MediaQueryChange) => {
-      let value = e ? `'${e.mqAlias}' = (${e.mediaQuery})` : "";
+    return this._media$.subscribe((change:MediaChange) => {
+      let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
       this.activeMediaQuery = value;
     });
   }

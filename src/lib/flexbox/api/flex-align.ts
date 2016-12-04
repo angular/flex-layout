@@ -2,16 +2,17 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Renderer,
   SimpleChanges,
 } from '@angular/core';
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
-import {BaseFxDirective} from './base';
 
+import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 /**
  * 'flex-align' flexbox styling directive
@@ -19,12 +20,11 @@ import {BaseFxDirective} from './base';
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
 @Directive({selector: '[fx-flex-align]'})
-export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                      OnMediaQueryChanges {
+export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
 
   @Input('fx-flex-align') align: string = 'stretch';  // default
 
@@ -43,8 +43,8 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fx-flex-align.xl') alignXl;
 
 
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
+  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+    super(monitor, elRef, renderer);
   }
 
 
@@ -56,9 +56,7 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
    * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-    if (changes['align'] != null || activationChange) {
+    if (changes['align'] != null || this._mqActivation) {
       this._updateWithValue();
     }
   }
@@ -68,15 +66,15 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'align', 'stretch');
+    let keyOptions = new KeyOptions('align', 'stretch');
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithValue(changes.value);
+    });
     this._updateWithValue();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
+  ngOnDestroy() {
+    this._mqActivation.destroy();
   }
 
   // *********************************************

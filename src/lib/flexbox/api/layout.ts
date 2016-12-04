@@ -2,17 +2,19 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Renderer,
   SimpleChanges,
 } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
+
 import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
@@ -25,13 +27,12 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-@Directive({selector: '[fx-layout], [fx-layout.md]'})
-export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                   OnMediaQueryChanges {
+@Directive({selector: '[fx-layout]'})
+export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
 
   /**
    * Create Observable for nested/child 'flex' directives. This allows
@@ -67,8 +68,8 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    *
    */
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
+  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+    super(monitor, elRef, renderer);
   }
 
   // *********************************************
@@ -81,10 +82,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-
-    if (changes['layout'] != null || activationChange) {
+    if (changes['layout'] != null || this._mqActivation) {
       this._updateWithDirection();
     }
   }
@@ -94,15 +92,15 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'layout', 'row');
+    let keyOptions = new KeyOptions('layout', 'row');
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithDirection(changes.value);
+    });
     this._updateWithDirection();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithDirection(changes.current.value);
+  ngOnDestroy() {
+    this._mqActivation.destroy();
   }
 
   // *********************************************

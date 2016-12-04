@@ -2,15 +2,17 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Renderer,
   SimpleChanges,
 } from '@angular/core';
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
+
 import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 /**
  * 'flex-order' flexbox styling directive
@@ -18,12 +20,11 @@ import {BaseFxDirective} from './base';
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 @Directive({selector: '[fx-flex-order]'})
-export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                      OnMediaQueryChanges {
+export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
 
   @Input('fx-flex-order') order;
 
@@ -41,8 +42,8 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fx-flex-order.gt-lg') orderGtLg;
   @Input('fx-flex-order.xl') orderXl;
 
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
+  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+    super(monitor, elRef, renderer);
   }
 
   // *********************************************
@@ -53,10 +54,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
    * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-
-    if (changes['order'] != null || activationChange) {
+    if (changes['order'] != null || this._mqActivation) {
       this._updateWithValue();
     }
   }
@@ -66,15 +64,15 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'order', '1');
+    let keyOptions = new KeyOptions('order', '1');
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithValue(changes.value);
+    });
     this._updateWithValue();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
+  ngOnDestroy() {
+    this._mqActivation.destroy();
   }
 
   // *********************************************

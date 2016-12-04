@@ -1,4 +1,6 @@
 import {Directive, ElementRef, Renderer} from '@angular/core';
+
+import {MediaMonitor} from '../../media-query/media-monitor';
 import {BaseFxDirective} from './base';
 
 const FLEX_FILL_CSS = {
@@ -17,8 +19,8 @@ const FLEX_FILL_CSS = {
  */
 @Directive({selector: '[fx-flex-fill]'})
 export class FlexFillDirective extends BaseFxDirective {
-  constructor(public elRef: ElementRef, public renderer: Renderer) {
-    super(elRef, renderer);
+  constructor(monitor : MediaMonitor, public elRef: ElementRef, public renderer: Renderer) {
+    super(monitor, elRef, renderer);
     this._applyStyleToElement(FLEX_FILL_CSS);
   }
 }

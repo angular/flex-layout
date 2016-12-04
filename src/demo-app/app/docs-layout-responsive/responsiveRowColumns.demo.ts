@@ -1,6 +1,9 @@
 import {Component, Inject, OnDestroy} from '@angular/core';
-import {MediaQueryChange} from "../../../lib/media-query/media-queries";
 import {Subscription} from "rxjs";
+import 'rxjs/add/operator/filter';
+
+import {MediaChange} from "../../../lib/media-query/media-change";
+import {Media$} from "../../../lib/media-query/providers/match-media-provider";
 
 @Component({
   selector: 'demo-responsive-row-column',
@@ -49,7 +52,7 @@ import {Subscription} from "rxjs";
   `
 })
 export class DemoResponsiveRows implements OnDestroy {
-  private _activeMQC : MediaQueryChange;
+  private _activeMQC : MediaChange;
   private _watcher : Subscription;
 
   firstCol = "row";
@@ -62,10 +65,11 @@ export class DemoResponsiveRows implements OnDestroy {
 
   isVisible = true;
 
-  constructor(@Inject('mediaQuery$') private _mediaQuery$) {
-    this._watcher = this._mediaQuery$.subscribe((e:MediaQueryChange) => {
-      this._activeMQC = e;
-    });
+  constructor(@Inject(Media$) private _media$) {
+    this._watcher = this._media$
+        .subscribe((e:MediaChange) => {
+          this._activeMQC = e;
+        });
   }
 
   ngOnDestroy() {

@@ -2,8 +2,9 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Renderer,
   SimpleChanges,
   Self,
@@ -12,11 +13,16 @@ import {
   forwardRef
 } from '@angular/core';
 
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
+import {Subscription} from 'rxjs/Subscription';
+
 import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
+
 import {HideDirective} from "./hide";
+import {LayoutDirective} from './layout';
+
 
 
 const FALSY = ['false', false, 0];
@@ -26,8 +32,7 @@ const FALSY = ['false', false, 0];
  *
  */
 @Directive({selector: '[fx-show]'})
-export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                 OnMediaQueryChanges {
+export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * Original dom Elements CSS display style
    */
@@ -36,7 +41,13 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
+
+  /**
+    * Subscription to the parent flex container's layout changes.
+    * Stored so we can unsubscribe when this directive is destroyed.
+    */
+  private _layoutWatcher : Subscription;
 
   /**
    * Default layout property with default visible === true
@@ -61,10 +72,20 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    *
    */
   constructor(
-      private _mqa: MediaQueryAdapter,
+      monitor : MediaMonitor,
+      @Optional() @Self() private _layout: LayoutDirective,
       @Inject(forwardRef(() => HideDirective)) @Optional() @Self() private _hideDirective,
-      protected elRef: ElementRef, protected renderer: Renderer) {
-    super(elRef, renderer);
+      protected elRef: ElementRef,
+      protected renderer: Renderer)
+  {
+    super(monitor, elRef, renderer);
+    if (_layout) {
+      /**
+       * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+       * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+       */
+      this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
+    }
   }
 
   /**
@@ -85,9 +106,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-    if (changes['show'] != null || activationChange) {
+    if (changes['show'] != null || this._mqActivation) {
       this._updateWithValue();
     }
   }
@@ -97,16 +116,19 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'show', true);
+    let keyOptions = new KeyOptions('show', true);
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithValue(changes.value);
+    });
     this._updateWithValue();
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    setTimeout(() => this._updateWithValue(changes.current.value), 1);
-  }
+  ngOnDestroy() {
+     this._mqActivation.destroy();
+     if (this._layoutWatcher) {
+       this._layoutWatcher.unsubscribe();
+     }
+   }
 
   // *********************************************
   // Protected methods

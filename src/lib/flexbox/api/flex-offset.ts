@@ -2,15 +2,18 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnChanges,
   OnInit,
+  OnChanges,
+  OnDestroy,
   Renderer,
   SimpleChanges,
 } from '@angular/core';
-import {MediaQueryActivation} from '../media-query/media-query-activation';
-import {MediaQueryAdapter} from '../media-query/media-query-adapter';
-import {MediaQueryChanges, OnMediaQueryChanges} from '../media-query/media-query-changes';
+
+
 import {BaseFxDirective} from './base';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 
 /**
@@ -18,12 +21,11 @@ import {BaseFxDirective} from './base';
  * Configures the 'margin-left' of the element in a layout container
  */
 @Directive({selector: '[fx-flex-offset]'})
-export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges,
-                                                                       OnMediaQueryChanges {
+export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * MediaQuery Activation Tracker
    */
-  private _mqActivation: MediaQueryActivation;
+  private _mqActivation: ResponsiveActivation;
 
   @Input('fx-flex-offset') offset: string|number;
 
@@ -41,8 +43,8 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fx-flex-offset.gt-lg') offsetGtLg: string|number;
   @Input('fx-flex-offset.xl') offsetXl: string|number;
 
-  constructor(private _mqa: MediaQueryAdapter, elRef: ElementRef, renderer: Renderer) {
-    super(elRef, renderer);
+  constructor(monitor : MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
+    super(monitor, elRef, renderer);
   }
 
   // *********************************************
@@ -53,9 +55,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
-    let activated = this._mqActivation;
-    let activationChange = activated && changes[activated.activatedInputKey] != null;
-    if (changes['offset'] != null || activationChange) {
+    if (changes['offset'] != null || this._mqActivation) {
       this._updateWithValue();
     }
   }
@@ -65,16 +65,15 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._mqActivation = this._mqa.attach(this, 'offset', 0);
+    let keyOptions = new KeyOptions('offset', 0 );
+    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+      this._updateWithValue(changes.value);
+    });
   }
 
-  /**
-   *  Special mql callback used by MediaQueryActivation when a mql event occurs
-   */
-  onMediaQueryChanges(changes: MediaQueryChanges) {
-    this._updateWithValue(changes.current.value);
+  ngOnDestroy() {
+    this._mqActivation.destroy();
   }
-
 
   // *********************************************
   // Protected methods
