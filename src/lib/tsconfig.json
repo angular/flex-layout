@@ -35,5 +35,9 @@
     "genDir": "../../dist",
     "skipTemplateCodegen": false,
     "debug": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+      "useBabel" : true,
+      "useCache" : true
   }
 }

@@ -69,8 +69,8 @@ module.exports = {
       {
         test: /\.ts$/,
         loaders: [ 'awesome-typescript-loader', 'angular2-template-loader' ],
-        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/],
-        noParse : [ /angular/, /\@angular/ ]
+        exclude: [/\.(spec|e2e)\.ts$/, /node_modules/, /demos/, /deprecated/]
+        // noParse : [ /angular/, /\@angular/ ]
       },
       {
         test: /\.(html|css)$/,
@@ -88,10 +88,7 @@ module.exports = {
     ]
   },
 
-  // externals : [ nodeExternals() ],
-
   plugins: [
-
 
     new LiveReloadPlugin({
       appendScriptTag: true
@@ -103,14 +100,6 @@ module.exports = {
         to: ROOT + "/../dist/assets/"
       }
     ]),
-
-    /**
-     * Plugin: ForkCheckerPlugin
-     * Description: Do type checking in a separate process, so webpack don't need to wait.
-     *
-     * See: https://github.com/s-panferov/awesome-typescript-loader#forkchecker-boolean-defaultfalse
-     */
-    new ForkCheckerPlugin(),
 
     /**
      * Plugin: CommonsChunkPlugin
