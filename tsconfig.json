@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noLib": false,
     "lib": ["es2015"],
     "sourceMap": true,
     "pretty": true,
@@ -16,15 +15,17 @@
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
     "noEmitHelpers": true,
+    "skipDefaultLibCheck":true,
+    "noEmit": true,
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
+      "./node_modules/@types"
     ],
     "types": [
-      "node"
     ]
   },
   "exclude": [
+    "**/testing/",
+    "**/*.spec.*",
     "../node_modules",
     "../demos",
     "../deprecated",

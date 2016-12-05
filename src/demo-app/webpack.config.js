@@ -35,7 +35,7 @@ module.exports = {
   },
 
   output: {
-    path: __dirname + "/dist",
+    path:  path.join(__dirname,"/dist"),
     filename: "[name].js"
   },
 
