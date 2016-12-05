@@ -38,6 +38,7 @@
   },
   "awesomeTypescriptLoaderOptions": {
       "useBabel" : true,
-      "useCache" : true
+      "useCache" : true,
+      "ignoreDiagnostics" : [ 2304 ]
   }
 }

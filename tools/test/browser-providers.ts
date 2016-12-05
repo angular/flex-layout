@@ -11,9 +11,11 @@ export interface BrowserLauncherInfo {
   platform?: string;
   device?: string;
   browser?: string;
+  browserName?:string;
   browser_version?: string;
   os?: string;
   os_version?: string;
+  resolution?:string;
 };
 
 export type AliasMap = { [name: string]: string[] };

@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "noLib": false,
+    "lib": ["es2015"],
     "sourceMap": true,
     "pretty": true,
     "removeComments": true,
@@ -13,22 +15,31 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noEmitHelpers": true
+    "noEmitHelpers": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules"
+    ],
+    "types": [
+      "node"
+    ]
   },
   "exclude": [
     "../node_modules",
     "../demos",
     "../deprecated",
     "../dist",
+    "**/*.spec.*",
     "node_modules",
     "dist",
     "deprecated",
     "demos"
   ],
-  "awesomeTypescriptLoaderOptions": {
-    "forkChecker": true,       // @see https://github.com/TheLarkInn/angular2-template-loader#how-does-it-work
-    "useWebpackText": true
-  },
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel" : true,
+    "useCache" : true,
+    "ignoreDiagnostics" : [ 2304 ]
+  }
 }

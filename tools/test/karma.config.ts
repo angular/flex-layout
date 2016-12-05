@@ -4,7 +4,7 @@ import path = require('path');
 import {
   customLaunchers,
   platformMap,
-} from './browser-providers.ts';
+} from './browser-providers';
 
 const basePath = path.join(__dirname, '../..');
 
