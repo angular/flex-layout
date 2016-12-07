@@ -50,12 +50,6 @@
     "systemjs": "0.19.39",
     "zone.js": "^0.6.25"
   },
-  "peerDependencies": {
-    "@angular/common": "^2.2.4",
-    "@angular/compiler": "^2.2.4",
-    "@angular/core": "^2.2.4",
-    "@angular/platform-browser": "^2.2.4"
-  },
   "devDependencies": {
     "@angular/compiler-cli": "^2.2.4",
     "@angular/forms": "^2.2.4",

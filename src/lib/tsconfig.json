@@ -5,7 +5,6 @@
     "noEmitOnError": true,
     "noEmitHelpers": true,
     "skipDefaultLibCheck":true,
-    "noEmit": true,
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,

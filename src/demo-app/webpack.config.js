@@ -17,7 +17,15 @@ function root(args) {
   return path.join.apply(path, [ROOT].concat(args));
 }
 
-
+/**
+ * Resources:
+ *
+ *  https://medium.com/@rajaraodv/webpack-the-confusing-parts-58712f8fcad9#.kj72dik3s
+ *  https://medium.com/@rajaraodv/webpack-hot-module-replacement-hmr-e756a726a07#.h0ngxcvlk
+ *  https://github.com/s-panferov/awesome-typescript-loader
+ *
+ *
+ */
 module.exports = {
 
   /**
