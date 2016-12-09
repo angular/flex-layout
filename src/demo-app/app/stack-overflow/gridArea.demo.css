@@ -1,6 +1,4 @@
 .containerX {
-  width: 490px;
-  height: 210px;
   padding: 5px;
   border: solid 1px #b6b6b6;
   box-sizing: content-box !important;
@@ -9,20 +7,9 @@
 .flexitem {
   text-align: center;
   line-height: 100px;
-  width: 150px;
-  height: 100px;
   margin: 2px;
   box-shadow: none !important;
   padding: 0 !important;
-}
-
-.two {
-  width: 200px;
-}
-
-.three {
-  width: 120px;
-  height: 100%;
 }
 
 .markup {
