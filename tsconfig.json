@@ -14,9 +14,7 @@
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noEmitHelpers": true,
     "skipDefaultLibCheck":true,
-    "noEmit": true,
     "typeRoots": [
       "./node_modules/@types"
     ],
