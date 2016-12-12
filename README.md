@@ -88,7 +88,7 @@ npm run start
 
 ----
 
-### Fast Start
+### Fast Start  (NOT YET AVAILABLE)
 
 Developers can easily install this `@angular/flex-layout` library using **npm** (pending feature):
 
