@@ -1,6 +1,5 @@
 import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
-import {extendObject} from '../../utils/object-extend';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';

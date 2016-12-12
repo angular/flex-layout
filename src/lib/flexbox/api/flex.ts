@@ -11,12 +11,10 @@ import {
   SkipSelf,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {extendObject} from '../../utils/object-extend';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
@@ -166,25 +164,25 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     };
     switch (basis || '') {
       case '':
-        css = extendObject(clearStyles, {'flex': '1'});
+        css = {...clearStyles, ...{'flex': '1'}};
         break;
       case 'grow':
-        css = extendObject(clearStyles, {'flex': '1 1 100%'});
+        css = {...clearStyles, ...{'flex': '1 1 100%'}};
         break;
       case 'initial':
-        css = extendObject(clearStyles, {'flex': '0 1 auto'});
+        css = {...clearStyles, ...{'flex': '0 1 auto'}};
         break;  // default
       case 'auto':
-        css = extendObject(clearStyles, {'flex': '1 1 auto'});
+        css = {...clearStyles, ...{'flex': '1 1 auto'}};
         break;
       case 'none':
-        css = extendObject(clearStyles, {'flex': '0 0 auto'});
+        css = {...clearStyles, ...{'flex': '0 0 auto'}};
         break;
       case 'nogrow':
-        css = extendObject(clearStyles, {'flex': '0 1 auto'});
+        css = {...clearStyles, ...{'flex': '0 1 auto'}};
         break;
       case 'noshrink':
-        css = extendObject(clearStyles, {'flex': '1 0 auto'});
+        css = {...clearStyles, ...{'flex': '1 0 auto'}};
         break;
 
       default:
@@ -202,9 +200,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         // Set max-width = basis if using layout-wrap
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
-        css = extendObject(clearStyles, {
+        css = {...clearStyles, ...{
           'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,  // fix issue #5345
-        });
+        }};
         break;
     }
 
@@ -214,6 +212,6 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     css[min] = (basis == '0%') ? 0 : null;
     css[max] = (basis == '0%') ? 0 : basis;
 
-    return extendObject(css, {'box-sizing': 'border-box'});
+    return {...css, ...{'box-sizing': 'border-box'}};
   }
 }
