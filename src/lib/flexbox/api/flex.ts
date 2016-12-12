@@ -20,6 +20,7 @@ import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activat
 
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -32,14 +33,8 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-@Directive({
-  selector: '[fx-flex]',
-})
-export class FlexDirective extends BaseFxDirective
-    implements OnInit, OnChanges, OnDestroy {
-
-  /** MediaQuery Activation Tracker */
-  private _mqActivation: ResponsiveActivation;
+@Directive({ selector: addResponsiveAliases('fx-flex') })
+export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
   private _layout = 'row';
@@ -50,20 +45,19 @@ export class FlexDirective extends BaseFxDirective
    */
   private _layoutWatcher: Subscription;
 
-  @Input('fx-flex') flex: string = '';
-  @Input('fx-shrink') shrink: number = 1;
-  @Input('fx-grow') grow: number = 1;
-
-  // Optional input variations to support mediaQuery triggers
-  @Input('fx-flex.xs') flexXs;
-  @Input('fx-flex.gt-xs') flexGtXs;
-  @Input('fx-flex.sm') flexSm;
-  @Input('fx-flex.gt-sm') flexGtSm;
-  @Input('fx-flex.md') flexMd;
-  @Input('fx-flex.gt-md') flexGtMd;
-  @Input('fx-flex.lg') flexLg;
-  @Input('fx-flex.gt-lg') flexGtLg;
-  @Input('fx-flex.xl') flexXl;
+  @Input('fx-flex')       set flex(val)     { this._cacheInput("flex", val); }
+  @Input('fx-shrink')     set shrink(val)   { this._cacheInput("shrink", val); }
+  @Input('fx-grow')       set grow(val)     { this._cacheInput("grow", val); }
+  
+  @Input('fx-flex.xs')    set flexXs(val)   { this._cacheInput('flexXs', val); }
+  @Input('fx-flex.gt-xs') set flexGtXs(val) { this._cacheInput('flexGtXs', val); };
+  @Input('fx-flex.sm')    set flexSm(val)   { this._cacheInput('flexSm', val); };
+  @Input('fx-flex.gt-sm') set flexGtSm(val) { this._cacheInput('flexGtSm', val); };
+  @Input('fx-flex.md')    set flexMd(val)   { this._cacheInput('flexMd', val); };
+  @Input('fx-flex.gt-md') set flexGtMd(val) { this._cacheInput('flexGtMd', val); };
+  @Input('fx-flex.lg')    set flexLg(val)   { this._cacheInput('flexLg', val); };
+  @Input('fx-flex.gt-lg') set flexGtLg(val) { this._cacheInput('flexGtLg', val); };
+  @Input('fx-flex.xl')    set flexXl(val)   { this._cacheInput('flexXl', val); };
 
 
   // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
@@ -76,6 +70,11 @@ export class FlexDirective extends BaseFxDirective
       @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
 
     super(monitor, elRef, renderer);
+    
+    this._cacheInput("flex", "");
+    this._cacheInput("shrink", 1);
+    this._cacheInput("grow", 1);
+    
     if (_container) {
       // If this flex item is inside of a flex container marked with
       // Subscribe to layout immediate parent direction changes
@@ -97,15 +96,14 @@ export class FlexDirective extends BaseFxDirective
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('flex', '');
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) =>{
       this._updateStyle(changes.value);
     });
     this._onLayoutChange();
   }
 
   ngOnDestroy() {
-    this._mqActivation.destroy();
+    super.ngOnDestroy();
     if (this._layoutWatcher) {
       this._layoutWatcher.unsubscribe();
     }
@@ -122,12 +120,20 @@ export class FlexDirective extends BaseFxDirective
   }
 
   _updateStyle(value?: string) {
-    let flexBasis = value || this.flex || '';
+    let flexBasis = value || this._queryInput("flex") || '';
     if (this._mqActivation) {
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._validateValue(this.grow, this.shrink, flexBasis));
+    this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(flexBasis) ));
+  }
+
+  /**
+   * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
+   */
+  _parseFlexParts(basis:string) {
+    let matches = basis.split(" ");
+    return (matches.length !== 3) ? [ this._queryInput("grow"),  this._queryInput("shrink"), basis ] : matches;
   }
 
   /**
@@ -183,10 +189,12 @@ export class FlexDirective extends BaseFxDirective
 
       default:
         let isPercent = String(basis).indexOf('%') > -1;
-        let isPx = String(basis).indexOf('px') > -1;
+        let isValue = String(basis).indexOf('px') > -1 ||
+                   String(basis).indexOf('vw') > -1 ||
+                   String(basis).indexOf('vh') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
-        if (!isPx && !isPercent && !isNaN(basis as any))
+        if (!isValue && !isPercent && !isNaN(basis as any))
           basis = basis + '%';
         if (basis === '0px')
           basis = '0%';
@@ -195,7 +203,7 @@ export class FlexDirective extends BaseFxDirective
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
         css = extendObject(clearStyles, {
-          'flex': `${grow} ${shrink} ${(isPx || this._wrap) ? basis : '100%'}`,  // fix issue #5345
+          'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,  // fix issue #5345
         });
         break;
     }

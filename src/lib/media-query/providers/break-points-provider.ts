@@ -1,6 +1,8 @@
 import {OpaqueToken} from '@angular/core';
 import {BreakPoint} from '../breakpoints/break-point';
 
+export const RESPONSIVE_ALIASES = ['xs','gt-xs','sm','gt-sm','md','gt-md','lg','gt-lg','xl'];
+
 export const RAW_DEFAULTS: BreakPoint[ ] = [
   {
     alias: 'xs',

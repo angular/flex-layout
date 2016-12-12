@@ -22,6 +22,7 @@ import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activat
 
 import {HideDirective} from "./hide";
 import {LayoutDirective} from './layout';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 
@@ -31,7 +32,7 @@ const FALSY = ['false', false, 0];
  * 'show' Layout API directive
  *
  */
-@Directive({selector: '[fx-show]'})
+@Directive({selector: addResponsiveAliases('fx-show')})
 export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * Original dom Elements CSS display style
@@ -39,35 +40,21 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   private _display = 'flex';
 
   /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: ResponsiveActivation;
-
-  /**
     * Subscription to the parent flex container's layout changes.
     * Stored so we can unsubscribe when this directive is destroyed.
     */
   private _layoutWatcher : Subscription;
 
-  /**
-   * Default layout property with default visible === true
-   */
-  @Input('fx-show') show = true;
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-show.xs') showXs;
-  @Input('fx-show.gt-xs') showGtXs;
-  @Input('fx-show.sm') showSm;
-  @Input('fx-show.gt-sm') showGtSm;
-  @Input('fx-show.md') showMd;
-  @Input('fx-show.gt-md') showGtMd;
-  @Input('fx-show.lg') showLg;
-  @Input('fx-show.gt-lg') showGtLg;
-  @Input('fx-show.xl') showXl;
-
+  @Input('fx-show')       set show(val)     { this._cacheInput("show", val); }
+  @Input('fx-show.xs')    set showXs(val)   { this._cacheInput('showXs', val); }
+  @Input('fx-show.gt-xs') set showGtXs(val) { this._cacheInput('showGtXs', val); };
+  @Input('fx-show.sm')    set showSm(val)   { this._cacheInput('showSm', val); };
+  @Input('fx-show.gt-sm') set showGtSm(val) { this._cacheInput('showGtSm', val); };
+  @Input('fx-show.md')    set showMd(val)   { this._cacheInput('showMd', val); };
+  @Input('fx-show.gt-md') set showGtMd(val) { this._cacheInput('showGtMd', val); };
+  @Input('fx-show.lg')    set showLg(val)   { this._cacheInput('showLg', val); };
+  @Input('fx-show.gt-lg') set showGtLg(val) { this._cacheInput('showGtLg', val); };
+  @Input('fx-show.xl')    set showXl(val)   { this._cacheInput('showXl', val); };
   /**
    *
    */
@@ -79,6 +66,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
       protected renderer: Renderer)
   {
     super(monitor, elRef, renderer);
+
     if (_layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -116,15 +104,14 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('show', true);
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('show', true, (changes: MediaChange) =>{
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
   }
 
   ngOnDestroy() {
-     this._mqActivation.destroy();
+     super.ngOnDestroy();
      if (this._layoutWatcher) {
        this._layoutWatcher.unsubscribe();
      }
@@ -136,7 +123,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
   /** Validate the visibility value and then update the host's inline display style */
   _updateWithValue(value?: string|number|boolean) {
-    value = value || this.show || true;
+    value = value || this._queryInput("show") || true;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

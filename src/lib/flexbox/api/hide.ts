@@ -20,12 +20,13 @@ import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activat
 
 import {ShowDirective} from "./show";
 import {LayoutDirective} from './layout';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'show' Layout API directive
  *
  */
-@Directive({selector: '[fx-hide]' })
+@Directive({selector: addResponsiveAliases('fx-hide') })
 export class HideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * Original dom Elements CSS display style
@@ -33,34 +34,21 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   private _display = 'flex';
 
   /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: ResponsiveActivation;
-
-  /**
     * Subscription to the parent flex container's layout changes.
     * Stored so we can unsubscribe when this directive is destroyed.
     */
   private _layoutWatcher : Subscription;
 
-  /**
-   * Default layout property with default visible === true
-   */
-  @Input('fx-hide') hide = true;
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-hide.xs') hideXs;
-  @Input('fx-hide.gt-xs') hideGtXs;
-  @Input('fx-hide.sm') hideSm;
-  @Input('fx-hide.gt-sm') hideGtSm;
-  @Input('fx-hide.md') hideMd;
-  @Input('fx-hide.gt-md') hideGtMd;
-  @Input('fx-hide.lg') hideLg;
-  @Input('fx-hide.gt-lg') hideGtLg;
-  @Input('fx-hide.xl') hideXl;
+  @Input('fx-hide')       set hide(val)     { this._cacheInput("hide", val); }
+  @Input('fx-hide.xs')    set hideXs(val)   { this._cacheInput('hideXs', val); }
+  @Input('fx-hide.gt-xs') set hideGtXs(val) { this._cacheInput('hideGtXs', val); };
+  @Input('fx-hide.sm')    set hideSm(val)   { this._cacheInput('hideSm', val); };
+  @Input('fx-hide.gt-sm') set hideGtSm(val) { this._cacheInput('hideGtSm', val); };
+  @Input('fx-hide.md')    set hideMd(val)   { this._cacheInput('hideMd', val); };
+  @Input('fx-hide.gt-md') set hideGtMd(val) { this._cacheInput('hideGtMd', val); };
+  @Input('fx-hide.lg')    set hideLg(val)   { this._cacheInput('hideLg', val); };
+  @Input('fx-hide.gt-lg') set hideGtLg(val) { this._cacheInput('hideGtLg', val); };
+  @Input('fx-hide.xl')    set hideXl(val)   { this._cacheInput('hideXl', val); };
 
   /**
    *
@@ -109,8 +97,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('hide', true);
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('hide', true, (changes: MediaChange) =>{
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
@@ -118,7 +105,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
 
 
   ngOnDestroy() {
-    this._mqActivation.destroy();
+    super.ngOnDestroy();
     if (this._layoutWatcher) {
       this._layoutWatcher.unsubscribe();
     }
@@ -132,7 +119,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the visibility value and then update the host's inline display style
    */
   _updateWithValue(value?: string|number|boolean) {
-    value = value || this.hide || true;
+    value = value || this._queryInput("hide") || true;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

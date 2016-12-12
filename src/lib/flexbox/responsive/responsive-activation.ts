@@ -14,7 +14,10 @@ export interface BreakPointX extends BreakPoint{
   baseKey : string;
 }
 export class KeyOptions {
-  constructor(public baseKey : string, public defaultValue : string|number|boolean) { }
+  constructor(
+    public baseKey : string,
+    public defaultValue : string|number|boolean,
+    public inputKeys:Map<string,  any>) { }
 }
 
 /**
@@ -68,7 +71,7 @@ export class ResponsiveActivation {
    * Get the currently activated @Input value or the fallback default @Input value
    */
   get activatedInput(): any {
-    return this._directive[this.activatedInputKey] || this._options.defaultValue;
+    return this._lookupKeyValue(this.activatedInputKey) || this._options.defaultValue;
   }
 
   /**
@@ -141,7 +144,7 @@ export class ResponsiveActivation {
    * to participate in activation processes.
    */
   private _keyInUse(key ):boolean {
-    return this._directive[key] !== undefined;
+    return this._lookupKeyValue(key) !== undefined;
   }
 
   /**
@@ -184,4 +187,10 @@ export class ResponsiveActivation {
     return inputKey;
   }
 
+  /**
+   * Get the value (if any) for the directive instances @Input property (aka key)
+   */
+  private _lookupKeyValue(key) {
+    return this._options.inputKeys.get(key);
+  }
 }

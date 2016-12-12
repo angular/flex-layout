@@ -14,9 +14,9 @@ import {Subscription} from 'rxjs/Subscription';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 import {LAYOUT_VALUES, LayoutDirective} from './layout';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /**
@@ -28,31 +28,23 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-items/
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
-@Directive({selector: '[fx-layout-align]'})
+@Directive({selector: addResponsiveAliases('fx-layout-align')})
 export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: ResponsiveActivation;
 
   private _layout = 'row';  // default flex-direction
   private _layoutWatcher: Subscription;
 
-  @Input('fx-layout-align') align: string = 'start stretch';
+  @Input('fx-layout-align')       set align(val)     { this._cacheInput('align', val); }
+  @Input('fx-layout-align.xs')    set alignXs(val)   { this._cacheInput('alignXs', val); }
+  @Input('fx-layout-align.gt-xs') set alignGtXs(val) { this._cacheInput('alignGtXs', val); };
+  @Input('fx-layout-align.sm')    set alignSm(val)   { this._cacheInput('alignSm', val); };
+  @Input('fx-layout-align.gt-sm') set alignGtSm(val) { this._cacheInput('alignGtSm', val); };
+  @Input('fx-layout-align.md')    set alignMd(val)   { this._cacheInput('alignMd', val); };
+  @Input('fx-layout-align.gt-md') set alignGtMd(val) { this._cacheInput('alignGtMd', val); };
+  @Input('fx-layout-align.lg')    set alignLg(val)   { this._cacheInput('alignLg', val); };
+  @Input('fx-layout-align.gt-lg') set alignGtLg(val) { this._cacheInput('alignGtLg', val); };
+  @Input('fx-layout-align.xl')    set alignXl(val)   { this._cacheInput('alignXl', val); };
 
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-layout-align.xs') alignXs;
-  @Input('fx-layout-align.gt-xs') alignGtXs;
-  @Input('fx-layout-align.sm') alignSm;
-  @Input('fx-layout-align.gt-sm') alignGtSm;
-  @Input('fx-layout-align.md') alignMd;
-  @Input('fx-layout-align.gt-md') alignGtMd;
-  @Input('fx-layout-align.lg') alignLg;
-  @Input('fx-layout-align.gt-lg') alignGtLg;
-  @Input('fx-layout-align.xl') alignXl;
 
   constructor(
       monitor : MediaMonitor,
@@ -81,15 +73,14 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('align', 'start stretch');
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('align', 'start stretch', (changes: MediaChange) =>{
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
   }
 
   ngOnDestroy() {
-    this._mqActivation.destroy();
+    super.ngOnDestroy();
     if ( this._layoutWatcher ) {
       this._layoutWatcher.unsubscribe();
     }
@@ -103,7 +94,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    *
    */
   _updateWithValue(value?: string) {
-    value = value || this.align || 'start stretch';
+    value = value || this._queryInput("align") || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
@@ -119,7 +110,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     if (!LAYOUT_VALUES.find(x => x === this._layout))
       this._layout = 'row';
 
-    let value = this.align || 'start stretch';
+    let value = this._queryInput("align") || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

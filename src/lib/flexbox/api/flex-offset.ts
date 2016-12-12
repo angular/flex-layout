@@ -13,35 +13,26 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
-@Directive({selector: '[fx-flex-offset]'})
+@Directive({selector: addResponsiveAliases('fx-flex-offset')})
 export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: ResponsiveActivation;
 
-  @Input('fx-flex-offset') offset: string|number;
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-flex-offset.xs') offsetXs: string|number;
-  @Input('fx-flex-offset.gt-xs') offsetGtXs: string|number;
-  @Input('fx-flex-offset.sm') offsetSm: string|number;
-  @Input('fx-flex-offset.gt-sm') offsetGtSm: string|number;
-  @Input('fx-flex-offset.md') offsetMd: string|number;
-  @Input('fx-flex-offset.gt-md') offsetGtMd: string|number;
-  @Input('fx-flex-offset.lg') offsetLg: string|number;
-  @Input('fx-flex-offset.gt-lg') offsetGtLg: string|number;
-  @Input('fx-flex-offset.xl') offsetXl: string|number;
+  @Input('fx-flex-offset')       set offset(val)     { this._cacheInput('offset', val); }
+  @Input('fx-flex-offset.xs')    set offsetXs(val)   { this._cacheInput('offsetXs', val); }
+  @Input('fx-flex-offset.gt-xs') set offsetGtXs(val) { this._cacheInput('offsetGtXs', val); };
+  @Input('fx-flex-offset.sm')    set offsetSm(val)   { this._cacheInput('offsetSm', val); };
+  @Input('fx-flex-offset.gt-sm') set offsetGtSm(val) { this._cacheInput('offsetGtSm', val); };
+  @Input('fx-flex-offset.md')    set offsetMd(val)   { this._cacheInput('offsetMd', val); };
+  @Input('fx-flex-offset.gt-md') set offsetGtMd(val) { this._cacheInput('offsetGtMd', val); };
+  @Input('fx-flex-offset.lg')    set offsetLg(val)   { this._cacheInput('offsetLg', val); };
+  @Input('fx-flex-offset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
+  @Input('fx-flex-offset.xl')    set offsetXl(val)   { this._cacheInput('offsetXl', val); };
 
   constructor(monitor : MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
@@ -65,14 +56,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('offset', 0 );
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('offset', 0 , (changes: MediaChange) =>{
       this._updateWithValue(changes.value);
     });
-  }
-
-  ngOnDestroy() {
-    this._mqActivation.destroy();
   }
 
   // *********************************************
@@ -81,7 +67,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
 
 
   _updateWithValue(value?: string|number) {
-    value = value || this.offset || 0;
+    value = value || this._queryInput("offset") || 0;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

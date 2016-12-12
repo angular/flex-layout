@@ -12,7 +12,7 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
+import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'layout-wrap' flexbox styling directive
@@ -20,28 +20,19 @@ import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activat
  * Optional values: reverse, wrap-reverse, none, nowrap, wrap (default)]
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
-@Directive({selector: '[fx-layout-wrap]'})
+@Directive({selector: addResponsiveAliases('fx-layout-wrap')})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  /**
-   * MediaQuery Activation Tracker
-   */
-  private _mqActivation: ResponsiveActivation;
 
-  @Input('fx-layout-wrap') wrap: string = 'wrap';
-
-  // *******************************************************
-  // Optional input variations to support mediaQuery triggers
-  // *******************************************************
-
-  @Input('fx-layout-wrap.xs') wrapXs;
-  @Input('fx-layout-wrap.gt-xs') wrapGtXs;
-  @Input('fx-layout-wrap.sm') wrapSm;
-  @Input('fx-layout-wrap.gt-sm') wrapGtSm;
-  @Input('fx-layout-wrap.md') wrapMd;
-  @Input('fx-layout-wrap.gt-md') wrapGtMd;
-  @Input('fx-layout-wrap.lg') wrapLg;
-  @Input('fx-layout-wrap.gt-lg') wrapGtLg;
-  @Input('fx-layout-wrap.xl') wrapXl;
+  @Input('fx-layout-wrap')       set wrap(val)     { this._cacheInput("wrap", val); }
+  @Input('fx-layout-wrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
+  @Input('fx-layout-wrap.gt-xs') set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); };
+  @Input('fx-layout-wrap.sm')    set wrapSm(val)   { this._cacheInput('wrapSm', val); };
+  @Input('fx-layout-wrap.gt-sm') set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); };
+  @Input('fx-layout-wrap.md')    set wrapMd(val)   { this._cacheInput('wrapMd', val); };
+  @Input('fx-layout-wrap.gt-md') set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); };
+  @Input('fx-layout-wrap.lg')    set wrapLg(val)   { this._cacheInput('wrapLg', val); };
+  @Input('fx-layout-wrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
+  @Input('fx-layout-wrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
 
   constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer)
@@ -62,23 +53,19 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let keyOptions = new KeyOptions('wrap', 'wrap');
-    this._mqActivation = new ResponsiveActivation(this, keyOptions, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('wrap', 'wrap', (changes: MediaChange) =>{
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
   }
 
-  ngOnDestroy() {
-    this._mqActivation.destroy();
-  }
 
   // *********************************************
   // Protected methods
   // *********************************************
 
   _updateWithValue(value?: string) {
-    value = value || this.wrap || 'wrap';
+    value = value || this._queryInput("wrap") || 'wrap';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

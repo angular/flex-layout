@@ -1,6 +1,9 @@
-import {ElementRef, Renderer} from '@angular/core';
+import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
+
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {MediaQuerySubscriber} from '../../media-query/media-change';
 
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
@@ -9,16 +12,62 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 export type StyleDefinition = string|{[property: string]: string|number};
 
 /** Abstract base class for the Layout API styling directives. */
-export abstract class BaseFxDirective {
-  constructor(private _mediaMonitor : MediaMonitor, private _elementRef: ElementRef, private _renderer: Renderer) {}
+export abstract class BaseFxDirective implements OnDestroy {
+  /**
+   * MediaQuery Activation Tracker
+   */
+  protected _mqActivation: ResponsiveActivation;
+
+  /**
+   *  Dictionary of input keys with associated values
+   */
+  protected _inputMap: Map<string, any>;
+
+  /**
+   *
+   */
+  constructor(private _mediaMonitor: MediaMonitor, private _elementRef: ElementRef, private _renderer: Renderer) {
+    this._inputMap = new Map<string, any>();
+  }
+
+  // *********************************************
+  // Accessor Methods
+  // *********************************************
 
   /**
    * Accessor used by the ResponsiveActivation to subscribe to mediaQuery change notifications
    */
-  get mediaMonitor() : MediaMonitor {
+  get mediaMonitor(): MediaMonitor {
     return this._mediaMonitor;
   }
-  /** Applies styles given via string pair or object map to the directive element. */
+
+  /**
+   * Access the current value (if any) of the @Input property.
+   */
+  protected _queryInput(key) {
+    return this._inputMap.get(key);
+  }
+
+
+  // *********************************************
+  // Lifecycle Methods
+  // *********************************************
+
+  /**
+   *
+   */
+  ngOnDestroy() {
+    this._mqActivation.destroy();
+    this._mediaMonitor = null;
+  }
+
+  // *********************************************
+  // Protected Methods
+  // *********************************************
+
+  /**
+   * Applies styles given via string pair or object map to the directive element.
+   */
   protected _applyStyleToElement(style: StyleDefinition, value?: string|number) {
     let styles = {};
     let element = this._elementRef.nativeElement;
@@ -34,5 +83,30 @@ export abstract class BaseFxDirective {
     for (let key in styles) {
       this._renderer.setElementStyle(element, key, styles[key]);
     }
+  }
+
+  /**
+   *  Save the property value; which may be a complex object.
+   *  Complex objects support property chains
+   */
+  protected _cacheInput(key, source) {
+    if (typeof source === 'object') {
+      for (let prop in source) {
+        this._inputMap.set(prop, source[prop]);
+      }
+    } else {
+      this._inputMap.set(key, source);
+    }
+  }
+
+  /**
+   *  Build a ResponsiveActivation object used to manage subscriptions to mediaChange notifications
+   *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
+   *  (or closest match).
+   */
+  protected _listenForMediaQueryChanges(key: string, defaultVal: any,
+                                        onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
+    let keyOptions = new KeyOptions(key, defaultVal, this._inputMap);
+    return this._mqActivation = new ResponsiveActivation(this, keyOptions, onMediaQueryChange);
   }
 }
