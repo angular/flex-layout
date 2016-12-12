@@ -29,7 +29,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
- * Correspondds to the css `flex` shorthand property.
+ * Corresponds to the css `flex` shorthand property.
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */

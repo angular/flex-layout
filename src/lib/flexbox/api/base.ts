@@ -1,5 +1,6 @@
 import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
+import {extendObject} from '../../utils/object-extend';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
@@ -21,14 +22,12 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    *  Dictionary of input keys with associated values
    */
-  protected _inputMap: Map<string, any>;
+  protected _inputMap = { };
 
   /**
    *
    */
-  constructor(private _mediaMonitor: MediaMonitor, private _elementRef: ElementRef, private _renderer: Renderer) {
-    this._inputMap = new Map<string, any>();
-  }
+  constructor(private _mediaMonitor: MediaMonitor, private _elementRef: ElementRef, private _renderer: Renderer) { }
 
   // *********************************************
   // Accessor Methods
@@ -45,7 +44,7 @@ export abstract class BaseFxDirective implements OnDestroy {
    * Access the current value (if any) of the @Input property.
    */
   protected _queryInput(key) {
-    return this._inputMap.get(key);
+    return this._inputMap[key];
   }
 
 
@@ -89,13 +88,13 @@ export abstract class BaseFxDirective implements OnDestroy {
    *  Save the property value; which may be a complex object.
    *  Complex objects support property chains
    */
-  protected _cacheInput(key, source) {
+  protected _cacheInput(key?:string, source?:any) {
     if (typeof source === 'object') {
       for (let prop in source) {
-        this._inputMap.set(prop, source[prop]);
+        this._inputMap[prop] = source[prop];
       }
     } else {
-      this._inputMap.set(key, source);
+      this._inputMap[key] = source;
     }
   }
 
@@ -104,9 +103,11 @@ export abstract class BaseFxDirective implements OnDestroy {
    *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
    *  (or closest match).
    */
-  protected _listenForMediaQueryChanges(key: string, defaultVal: any,
+  protected _listenForMediaQueryChanges(key: string, defaultValue: any,
                                         onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
-    let keyOptions = new KeyOptions(key, defaultVal, this._inputMap);
+    //this._inputMap[key] = defaultValue;
+
+    let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
     return this._mqActivation = new ResponsiveActivation(this, keyOptions, onMediaQueryChange);
   }
 }

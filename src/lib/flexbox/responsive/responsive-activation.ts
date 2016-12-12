@@ -17,7 +17,7 @@ export class KeyOptions {
   constructor(
     public baseKey : string,
     public defaultValue : string|number|boolean,
-    public inputKeys:Map<string,  any>) { }
+    public inputKeys:{[key:string]:any}) { }
 }
 
 /**
@@ -191,6 +191,6 @@ export class ResponsiveActivation {
    * Get the value (if any) for the directive instances @Input property (aka key)
    */
   private _lookupKeyValue(key) {
-    return this._options.inputKeys.get(key);
+    return this._options.inputKeys[key];
   }
 }
