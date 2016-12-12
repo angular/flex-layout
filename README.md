@@ -1,3 +1,8 @@
+# 👷 not yet released on NPM
+See this [comment](https://github.com/angular/flex-layout/issues/30#issuecomment-265864269) for directions about building flex-layout manually.
+
+---
+
 # Flex Layout
 
 Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + mediaQuery. This module provides Angular 
