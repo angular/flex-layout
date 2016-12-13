@@ -10,6 +10,7 @@ import 'rxjs/add/operator/map';
 import {MediaChange} from './media-change';
 
 /**
+ * @internal
  * EventHandler callback with the mediaQuery [range] activates or deactivates
  */
 export interface MediaQueryListListener {
@@ -18,6 +19,7 @@ export interface MediaQueryListListener {
 }
 
 /**
+ * @internal
  * EventDispatcher for a specific mediaQuery [range]
  */
 export interface MediaQueryList {

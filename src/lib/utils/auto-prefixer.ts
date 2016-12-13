@@ -1,4 +1,4 @@
-/** Applies CSS prefixes to appropriate style keys. */
+/** @internal Applies CSS prefixes to appropriate style keys.*/
 export function applyCssPrefixes(target) {
   for (let key in target) {
 
@@ -56,23 +56,23 @@ export function applyCssPrefixes(target) {
   return target;
 }
 
-/** Convert flex values flex-start, flex-end to start, end. */
+/** @internal Convert flex values flex-start, flex-end to start, end. */
 export function toBoxValue(value:string = "") {
   return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
 
-/** Convert flex Direction to Box orientation */
+/** @internal Convert flex Direction to Box orientation */
 export function toBoxOrient(flexDirection = 'row') {
   return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';
 }
 
-/** Convert flex Direction to Box direction type */
+/** @internal Convert flex Direction to Box direction type */
 export function toBoxDirection(flexDirection = 'row') {
 
   return flexDirection.indexOf('reverse')  !== -1 ? 'reverse' : 'normal';
 }
 
-/** Convert flex order to Box ordinal group */
+/** @internal Convert flex order to Box ordinal group */
 export function  toBoxOrdinal(order = '0') {
   let value = order ? parseInt(order) + 1 : 1;
   return isNaN(value) ? "0" : value.toString();

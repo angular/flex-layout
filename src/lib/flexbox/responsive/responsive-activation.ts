@@ -7,11 +7,16 @@ import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change'
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
+/** @internal  */
 export declare type SubscriptionList = Subscription[ ];
+
+/** @internal  */
 export interface BreakPointX extends BreakPoint{
   key : string;
   baseKey : string;
 }
+
+/** @internal  */
 export class KeyOptions {
   constructor(
     public baseKey : string,
@@ -20,6 +25,8 @@ export class KeyOptions {
 }
 
 /**
+ * @internal
+ *
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery changes)
  * and the fx API directives. The MQA proxies mediaQuery change events and notifies the directive
  * via the specified callback.

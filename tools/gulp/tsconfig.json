@@ -17,7 +17,7 @@
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
     "inlineSources": true,
-    "stripInternal": true,
+    "stripInternal": false,
 
     "baseUrl": "",
     "typeRoots": [
