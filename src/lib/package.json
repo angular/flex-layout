@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-alpha.12",
   "description": "Angular 2 Flexbox Layout",
   "main": "./index.js",
   "typings": "./index.d.ts",

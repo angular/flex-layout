@@ -1,12 +1,11 @@
 {
   "version": "2.0.0",
   "compilerOptions": {
-    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es2015"],
+    "lib": ["es6", "es2015", "dom"],
     "sourceMap": true,
     "pretty": true,
     "removeComments": true,
@@ -15,10 +14,12 @@
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
     "skipDefaultLibCheck":true,
+    "target": "es5",
     "typeRoots": [
       "./node_modules/@types"
     ],
     "types": [
+      "hammerjs", "rx/rx.all"
     ]
   },
   "exclude": [
@@ -38,7 +39,6 @@
   "buildOnSave": false,
   "awesomeTypescriptLoaderOptions": {
     "useBabel" : true,
-    "useCache" : true,
-    "ignoreDiagnostics" : [ 2304 ]
+    "useCache" : true
   }
 }

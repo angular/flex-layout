@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "",
     "declaration": true,
     "inlineSources": true,
     "skipDefaultLibCheck":true,
@@ -22,12 +23,13 @@
       "../../node_modules/@types"
     ],
     "types": [
+      "hammerjs", "rx/rx.all"
     ]
   },
   "exclude": [
     "**/testing/",
     "**/*.spec.*",
-    "system-config-spec.*",
+    "system-config-spec.ts",
     "tsconfig.*",
     "tsconfig-demo-app."
   ],
@@ -35,10 +37,5 @@
     "genDir": "../../dist",
     "skipTemplateCodegen": false,
     "debug": true
-  },
-  "awesomeTypescriptLoaderOptions": {
-      "useBabel" : true,
-      "useCache" : true,
-      "ignoreDiagnostics" : [ 2304 ]
   }
 }
