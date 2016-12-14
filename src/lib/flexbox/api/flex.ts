@@ -129,13 +129,13 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     this._updateStyle();
   }
 
-  _updateStyle(value?: string) {
+  _updateStyle(value?: string|number) {
     let flexBasis = value || this._queryInput("flex") || '';
     if (this._mqActivation) {
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(flexBasis) ));
+    this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis)) ));
   }
 
   /**

@@ -12,7 +12,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-content>
         <div class="containerX"> 
           <div [fx-layout]="direction" (click)="toggleDirection()" class="colored box" >
-            <div fx-flex="20">  fx-flex="20"  </div>
+            <div [fx-flex]="someValue">  fx-flex="20"  </div>
             <div fx-flex="60">  fx-flex="60"  </div>
             <div fx-flex >      fx-flex       </div>
           </div>
@@ -26,6 +26,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 })
 export class DemoFlexRowFill {
   direction = "row";
+  someValue = 20;
 
   toggleDirection() {
     let next = (DIRECTIONS.indexOf(this.direction) +1 ) % DIRECTIONS.length;
