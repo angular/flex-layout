@@ -14,7 +14,6 @@ import {Observable} from 'rxjs/Observable';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 
@@ -25,7 +24,18 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-@Directive({selector: addResponsiveAliases('fx-layout')})
+@Directive({selector: `
+  [fx-layout],
+  [fx-layout.xs]
+  [fx-layout.gt-xs],
+  [fx-layout.sm],
+  [fx-layout.gt-sm]
+  [fx-layout.md],
+  [fx-layout.gt-md]
+  [fx-layout.lg],
+  [fx-layout.gt-lg],
+  [fx-layout.xl]
+`})
 export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /**

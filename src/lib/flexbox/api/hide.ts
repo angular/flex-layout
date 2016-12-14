@@ -16,17 +16,26 @@ import {Subscription} from 'rxjs/Subscription';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 import {ShowDirective} from "./show";
 import {LayoutDirective} from './layout';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'show' Layout API directive
  *
  */
-@Directive({selector: addResponsiveAliases('fx-hide') })
+@Directive({selector: `
+  [fx-hide],
+  [fx-hide.xs]
+  [fx-hide.gt-xs],
+  [fx-hide.sm],
+  [fx-hide.gt-sm]
+  [fx-hide.md],
+  [fx-hide.gt-md]
+  [fx-hide.lg],
+  [fx-hide.gt-lg],
+  [fx-hide.xl]
+`})
 export class HideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * Original dom Elements CSS display style

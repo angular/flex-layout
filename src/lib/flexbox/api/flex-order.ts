@@ -12,14 +12,24 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'flex-order' flexbox styling directive
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
-@Directive({selector: addResponsiveAliases('fx-flex-order')})
+@Directive({selector: `
+  [fx-flex-order],
+  [fx-flex-order.xs]
+  [fx-flex-order.gt-xs],
+  [fx-flex-order.sm],
+  [fx-flex-order.gt-sm]
+  [fx-flex-order.md],
+  [fx-flex-order.gt-md]
+  [fx-flex-order.lg],
+  [fx-flex-order.gt-lg],
+  [fx-flex-order.xl]
+`})
 export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input('fx-flex-order')       set order(val)     { this._cacheInput('order', val); }

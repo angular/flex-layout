@@ -12,7 +12,6 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'layout-wrap' flexbox styling directive
@@ -20,7 +19,18 @@ import {addResponsiveAliases} from '../../utils/add-alias';
  * Optional values: reverse, wrap-reverse, none, nowrap, wrap (default)]
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
-@Directive({selector: addResponsiveAliases('fx-layout-wrap')})
+@Directive({selector: `
+  [fx-layout-wrap],
+  [fx-layout-wrap.xs]
+  [fx-layout-wrap.gt-xs],
+  [fx-layout-wrap.sm],
+  [fx-layout-wrap.gt-sm]
+  [fx-layout-wrap.md],
+  [fx-layout-wrap.gt-md]
+  [fx-layout-wrap.lg],
+  [fx-layout-wrap.gt-lg],
+  [fx-layout-wrap.xl]
+`})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input('fx-layout-wrap')       set wrap(val)     { this._cacheInput("wrap", val); }

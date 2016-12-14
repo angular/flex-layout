@@ -13,14 +13,24 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /**
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
-@Directive({selector: addResponsiveAliases('fx-flex-offset')})
+@Directive({selector: `
+  [fx-flex-offset],
+  [fx-flex-offset.xs]
+  [fx-flex-offset.gt-xs],
+  [fx-flex-offset.sm],
+  [fx-flex-offset.gt-sm]
+  [fx-flex-offset.md],
+  [fx-flex-offset.gt-md]
+  [fx-flex-offset.lg],
+  [fx-flex-offset.gt-lg],
+  [fx-flex-offset.xl]
+`})
 export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input('fx-flex-offset')       set offset(val)     { this._cacheInput('offset', val); }

@@ -18,11 +18,9 @@ import {Subscription} from 'rxjs/Subscription';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 
 import {HideDirective} from "./hide";
 import {LayoutDirective} from './layout';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 
@@ -32,7 +30,18 @@ const FALSY = ['false', false, 0];
  * 'show' Layout API directive
  *
  */
-@Directive({selector: addResponsiveAliases('fx-show')})
+@Directive({selector: `
+  [fx-show],
+  [fx-show.xs]
+  [fx-show.gt-xs],
+  [fx-show.sm],
+  [fx-show.gt-sm]
+  [fx-show.md],
+  [fx-show.gt-md]
+  [fx-show.lg],
+  [fx-show.gt-lg],
+  [fx-show.xl]
+`})
 export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
    * Original dom Elements CSS display style

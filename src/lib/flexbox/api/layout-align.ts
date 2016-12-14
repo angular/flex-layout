@@ -16,7 +16,6 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LAYOUT_VALUES, LayoutDirective} from './layout';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /**
@@ -28,7 +27,18 @@ import {addResponsiveAliases} from '../../utils/add-alias';
  *  @see https://css-tricks.com/almanac/properties/a/align-items/
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
-@Directive({selector: addResponsiveAliases('fx-layout-align')})
+@Directive({selector: `
+  [fx-layout-align],
+  [fx-layout-align.xs]
+  [fx-layout-align.gt-xs],
+  [fx-layout-align.sm],
+  [fx-layout-align.gt-sm]
+  [fx-layout-align.md],
+  [fx-layout-align.gt-md]
+  [fx-layout-align.lg],
+  [fx-layout-align.gt-lg],
+  [fx-layout-align.xl]
+`})
 export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   private _layout = 'row';  // default flex-direction

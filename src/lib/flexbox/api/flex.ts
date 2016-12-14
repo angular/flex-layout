@@ -11,6 +11,7 @@ import {
   SkipSelf,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
+import {extendObject} from '../../utils/object-extend';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
@@ -18,7 +19,6 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -31,7 +31,19 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-@Directive({ selector: addResponsiveAliases('fx-flex') })
+@Directive({ selector: `
+  [fx-flex],
+  [fx-flex.xs]
+  [fx-flex.gt-xs],
+  [fx-flex.sm],
+  [fx-flex.gt-sm]
+  [fx-flex.md],
+  [fx-flex.gt-md]
+  [fx-flex.lg],
+  [fx-flex.gt-lg],
+  [fx-flex.xl]
+`
+ })
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
@@ -164,25 +176,25 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     };
     switch (basis || '') {
       case '':
-        css = {...clearStyles, ...{'flex': '1'}};
+        css = extendObject(clearStyles, {'flex': '1'});
         break;
       case 'grow':
-        css = {...clearStyles, ...{'flex': '1 1 100%'}};
+        css = extendObject(clearStyles, {'flex': '1 1 100%'});
         break;
       case 'initial':
-        css = {...clearStyles, ...{'flex': '0 1 auto'}};
+        css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;  // default
       case 'auto':
-        css = {...clearStyles, ...{'flex': '1 1 auto'}};
+        css = extendObject(clearStyles, {'flex': '1 1 auto'});
         break;
       case 'none':
-        css = {...clearStyles, ...{'flex': '0 0 auto'}};
+        css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
       case 'nogrow':
-        css = {...clearStyles, ...{'flex': '0 1 auto'}};
+        css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;
       case 'noshrink':
-        css = {...clearStyles, ...{'flex': '1 0 auto'}};
+        css = extendObject(clearStyles, {'flex': '1 0 auto'});
         break;
 
       default:
@@ -200,9 +212,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         // Set max-width = basis if using layout-wrap
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
-        css = {...clearStyles, ...{
+        css = extendObject(clearStyles, {
           'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,  // fix issue #5345
-        }};
+        });
         break;
     }
 
@@ -212,6 +224,6 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     css[min] = (basis == '0%') ? 0 : null;
     css[max] = (basis == '0%') ? 0 : basis;
 
-    return {...css, ...{'box-sizing': 'border-box'}};
+    return extendObject(css, {'box-sizing': 'border-box'});
   }
 }

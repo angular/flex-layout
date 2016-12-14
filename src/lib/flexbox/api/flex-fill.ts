@@ -2,7 +2,6 @@ import {Directive, ElementRef, Renderer} from '@angular/core';
 
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {BaseFxDirective} from './base';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 const FLEX_FILL_CSS = {
   'margin': 0,
@@ -18,7 +17,18 @@ const FLEX_FILL_CSS = {
  *
  *  NOTE: fx-fill is NOT responsive API!!
  */
-@Directive({selector: "[fx-fill], " + addResponsiveAliases('fx-flex-fill')})
+@Directive({selector: `
+  [fx-fill],
+  [fx-fill.xs]
+  [fx-fill.gt-xs],
+  [fx-fill.sm],
+  [fx-fill.gt-sm]
+  [fx-fill.md],
+  [fx-fill.gt-md]
+  [fx-fill.lg],
+  [fx-fill.gt-lg],
+  [fx-fill.xl]
+`})
 export class FlexFillDirective extends BaseFxDirective {
   constructor(monitor : MediaMonitor, public elRef: ElementRef, public renderer: Renderer) {
     super(monitor, elRef, renderer);

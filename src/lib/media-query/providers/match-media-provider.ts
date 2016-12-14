@@ -9,6 +9,7 @@ import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MediaChange} from '../media-change';
 import {MatchMedia} from '../match-media';
 import {mergeAlias} from '../../utils/add-alias';
+import {BreakPoint} from '../breakpoints/break-point';
 
 /**
  *  Opaque Token unique to the flex-layout library.
@@ -18,9 +19,9 @@ import {mergeAlias} from '../../utils/add-alias';
 export const Media$: OpaqueToken = new OpaqueToken('fx-observable-media-query');
 
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
-    let onlyActivations = (change : MediaChange) => (change.matches === true);
-    let findBreakpoint = (mediaQuery:string) => breakpoints.findByQuery(mediaQuery);
-    let injectAlias = (change : MediaChange) => mergeAlias(change, findBreakpoint(change.mediaQuery));
+    let onlyActivations = function(change : MediaChange) { return change.matches === true };
+    let findBreakpoint = function(mediaQuery:string):BreakPoint { return breakpoints.findByQuery(mediaQuery); };
+    let injectAlias = function(change : MediaChange) { return mergeAlias(change, findBreakpoint(change.mediaQuery)); };
 
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     //       these must be injected into the MediaChange

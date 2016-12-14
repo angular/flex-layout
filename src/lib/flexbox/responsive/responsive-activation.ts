@@ -2,6 +2,7 @@ import {Directive} from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
+import {extendObject} from '../../utils/object-extend';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
@@ -125,10 +126,10 @@ export class ResponsiveActivation {
   private _buildRegistryMap() {
     return this.mediaMonitor.breakpoints
         .map(bp => {
-          return <BreakPointX> { ...bp, ...{
+          return <BreakPointX> extendObject({}, bp, {
             baseKey : this._options.baseKey,              // e.g.  layout, hide, self-align, flex-wrap
             key     : this._options.baseKey + bp.suffix   // e.g.  layoutGtSm, layoutMd, layoutGtLg
-          }};
+          });
         })
         .filter( bp => this._keyInUse(bp.key) );
   }
@@ -182,12 +183,13 @@ export class ResponsiveActivation {
     let isMissingKey = (key) => !this._keyInUse(key);
 
     if ( isMissingKey( inputKey ) ) {
-      items.some(bp => {
+      items.some( bp => {
         let key = this._options.baseKey + bp.suffix;
         if ( !isMissingKey(key) ) {
           inputKey = key;
           return true;  // exit .some()
         }
+        return false;
       });
     }
     return inputKey;

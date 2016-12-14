@@ -12,14 +12,25 @@ import {
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {addResponsiveAliases} from '../../utils/add-alias';
 
 /**
  * 'flex-align' flexbox styling directive
  * Allows element-specific overrides for cross-axis alignments in a layout container
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
-@Directive({selector: addResponsiveAliases('fx-flex-align')})
+@Directive({selector:`
+  [fx-flex-align],
+  [fx-flex-align.xs]
+  [fx-flex-align.gt-xs],
+  [fx-flex-align.sm],
+  [fx-flex-align.gt-sm]
+  [fx-flex-align.md],
+  [fx-flex-align.gt-md]
+  [fx-flex-align.lg],
+  [fx-flex-align.gt-lg],
+  [fx-flex-align.xl]
+`
+})
 export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   @Input('fx-flex-align')       set align(val)     { this._cacheInput('align', val); }

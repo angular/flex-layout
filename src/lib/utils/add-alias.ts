@@ -5,20 +5,7 @@ import {extendObject} from './object-extend';
 
 import {RESPONSIVE_ALIASES} from '../media-query/providers/break-points-provider';
 
-/**
- * @internal
- *
- * For the selector, build:
- * 1) default, non-responsive attribute selector
- * 2) list of attribute selectors which contain the responsive aliases as selector
- *    with property chains
- * e.g.   ' [fx-layout], [fx-layout.xs], [fx-layout.gt-xs], [fx-layout.sm], ... '
- */
-export function addResponsiveAliases(attr:string, aliases?:string[]):string {
-   return (aliases || RESPONSIVE_ALIASES).reduce((all, suffix) => {
-    return `${all},[${attr}.${suffix}]`;
-   }, `[${attr}]`);
-}
+
 
 /**
  * @internal
