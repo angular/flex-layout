@@ -77,10 +77,8 @@ function doRollupWith(rootPath) {
     };
   const globals: {[name: string]: string} = {
     // Angular dependencies
-    '@angular/core': 'ng.core',
-    '@angular/common': 'ng.common',
-      '@angular/platform-browser': 'ng.platformBrowser',
-      '@angular/platform-browser-dynamic': 'ng.platformBrowserDynamic',
+      '@angular/core': 'ng.core',
+      '@angular/common': 'ng.common',
 
       // Rxjs dependencies
       'rxjs/Subject': 'Rx',
@@ -108,11 +106,11 @@ function doRollupWith(rootPath) {
       context: 'this',
       external: Object.keys(globals),
       plugins: [
-        uglify()
+        // uglify()
       ]
     }).then((bundle: { generate: any }) => {
       const result = bundle.generate({
-        moduleName: 'flex-layouts',
+        moduleName: 'flexLayouts',
         format: 'umd',
         globals,
         sourceMap: true,
