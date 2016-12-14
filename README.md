@@ -82,29 +82,29 @@ non-responsive and responsive demos:
 ```
 npm install -g yarn
 yarn install
-gulp build:lib
 npm run start 
 ```
 
-<br/>
-
 ----
+
+<br/>
 
 ### Fast Start 
 
-Developers can easily install this `@angular/flex-layout` library using a **local build** and directory copy:
+Installing flex-layout with NPM is **not yet** available. Developers can easily install this `@angular/flex-layout` library using a **local build** and directory copy:
 
 ```console
 gulp build:release
 ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layout
 ```
 
+#### NPM
 
-> The NPM deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
-
-----
+The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
 
 <br/>
+
+----
 
 #### Application Usages
 In their application module, developers import the global Layout API directives (as shown below): 
@@ -164,7 +164,7 @@ Or you can use the `ngc` to build an AOT version:
 gulp build:release
 ```
 
-Using the release version (with the associated metadata) is especially important **IF** you are using Angular CLI with `ng serve`.
+When using Angular CLI with `ng serve`, developers should build and use the *flex-layout* release version (with its associated metadata).
 
 <br/>
 
