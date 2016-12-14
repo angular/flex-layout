@@ -89,91 +89,28 @@ npm run start
 
 <br/>
 
-### Fast Start 
-
-Installing flex-layout with NPM is **not yet** available. Developers can easily install this `@angular/flex-layout` library using a **local build** and directory copy:
-
-```console
-gulp build:release
-ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layout
-```
-
-#### NPM
-
-The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
+#### Fast Start 
 
 
-#### SystemJS + UMD
+1) UMD + `<script>`
 
-After `gulp build:release`, the `./dist/@angular/flex-layout/flex-layout.umd.js` may be used to easily add **Flex Layout** API features to your application that are using SystemJS.
-
-Here is a Plunkr [Flex-Layout Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview):
-
-<a href="https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview" target="_blank">
-![screen shot 2016-12-14 at 1 37 51 pm](https://cloud.githubusercontent.com/assets/210413/21197851/9bb2de6c-c202-11e6-9165-53c08663d788.png)
-</a>
-
-
-
-<br/>
-
-----
-
-#### Application Usages
-In their application module, developers import the global Layout API directives (as shown below): 
-
-```ts
-// demo-app-module.ts
-
-import { FlexLayoutModule } from '@angular/flex-layout';
-
-@NgModule({
-  imports: [
-    BrowserModule, CommonModule, FormsModule, HttpModule,  // import ng2 core modules
-    FlexLayoutModule.forRoot(),                            // import dependency on Flex-Layout
-  ], 
-)}
-export class DemoAppModule { }
-```
-
-In their component templates, developers easily use the Layout API to build
-complex, dynamic layouts:
-
-```html
-<div fx-layout="row">
-  <div [fx-layout]="firstCol" [fx-flex]="firstColWidth" >
-    <div fx-flex="27%"> First item in row  </div>
-    <div fx-flex      > Second item in row </div>
-  </div>
-  <div [fx-layout]="secondCol" flex >
-    <div fx-flex       > First item in column  </div>
-    <div fx-flex="33px"> Second item in column </div>
-  </div>
-</div>
-``` 
-
----
-
-#### Build + Integration Instructions
-
-##### 1) UMD + `<script>`
-
-Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
+Use Gulp and Rollup to build `flex-layout.umd.js` UMD:
 
 ```console
 gulp build:lib
+cp ./dist/@angular/flex-layout/flex-layout.umd.js  <yourProjectPath>/scripts/flex-layout.umd.js
 ```
 
-To use the bundle and the required, external AngularJS framework:
+Use the bundle with an external script tag in the index.html of your Angular 2 application shell:
 
 ```html
-<script src="/dist/@angular/flex-layout/flex-layout.umd.js"></script>
+<script src="/scripts/flex-layout.umd.js"></script>
 
 ```
 
-#### 2) Angular CLI + `@angular/flex-layout`
+1) Angular CLI + `@angular/flex-layout`
 
-If you are using the Angular CLI to bundle and serve your application (using `ng serve`), you can use the `ngc` to build an *flex-layout* with generated metadata files.
+If you are using the Angular CLI to bundle and serve your application (using `ng serve`), you can use the `ngc` to build an *flex-layout* with the generated, required metadata files.
 
 ```terminal
 gulp build:release
@@ -184,11 +121,26 @@ Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
 
 ![screen shot 2016-12-14 at 5 31 27 pm](https://cloud.githubusercontent.com/assets/210413/21205830/f58ca35c-c223-11e6-95e7-4ed90b044fb5.jpg)
 
+2) SystemJS + UMD
 
-#### 3) SystemJS + UMD
+If your approach is similar to the tutorials shown on **angular.io** first build the release with `gulp build:release`. The `./dist/@angular/flex-layout/flex-layout.umd.js` may be then used to easily add **Flex Layout** API features to your application (which uses SystemJS to load modules and transcompile).
 
-Or you can use the **SystemJS + UMD** as described [above](https://github.com/angular/flex-layout/#systemjs--umd).
+Here is a Plunkr [Flex-Layout Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview):
 
+<a href="https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview" target="_blank">
+![screen shot 2016-12-14 at 1 37 51 pm](https://cloud.githubusercontent.com/assets/210413/21197851/9bb2de6c-c202-11e6-9165-53c08663d788.png)
+</a>
+
+3) NPM
+
+Installing flex-layout with NPM is **not yet** available. Developers can easily install this `@angular/flex-layout` library using a **local build** and directory copy:
+
+```console
+gulp build:release
+ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layout
+```
+
+The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
 
 <br/>
 
