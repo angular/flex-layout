@@ -86,11 +86,13 @@ gulp build:lib
 npm run start 
 ```
 
+<br/>
+
 ----
 
-### Fast Start  (NOT YET AVAILABLE)
+### Fast Start 
 
-Developers can easily install this `@angular/flex-layout` library using a local build and directory copy:
+Developers can easily install this `@angular/flex-layout` library using a **local build** and directory copy:
 
 ```console
 gulp build:release
@@ -98,9 +100,11 @@ ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layo
 ```
 
 
-> The standardized deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
+> The NPM deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
 
 ----
+
+<br/>
 
 #### Application Usages
 In their application module, developers import the global Layout API directives (as shown below): 
