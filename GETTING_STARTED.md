@@ -19,6 +19,7 @@ The new command creates a project with a build system for your Angular app.
 ```bash
 npm install --save @angular/flex-layout
 ```
+> npm installs will only be available on/after the v1.0.0-beta.1 release.
 
 ## Import the Angular Flex-Layout NgModule
   
@@ -47,6 +48,8 @@ System.config({
   }
 });
 ```
+
+> npm installs will only be available on/after the v1.0.0-beta.1 release.
 
 
 ## Sample Angular 2 Flex-Layout projects
