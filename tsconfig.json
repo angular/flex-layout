@@ -1,20 +1,22 @@
 {
-  "version": "2.0.0",
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "es2015", "dom"],
-    "sourceMap": true,
     "pretty": true,
     "removeComments": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "noImplicitReturns": false,
     "suppressImplicitAnyIndexErrors": true,
+
     "skipDefaultLibCheck":true,
+    "sourceMap": true,
+
     "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es6", "es2015", "dom"],
+
     "typeRoots": [
       "./node_modules/@types"
     ],
@@ -23,12 +25,6 @@
     ]
   },
   "exclude": [
-    "**/testing/",
-    "**/*.spec.*",
-    "../node_modules",
-    "../demos",
-    "../deprecated",
-    "../dist",
     "**/*.spec.*",
     "node_modules",
     "dist",
@@ -36,9 +32,5 @@
     "demos"
   ],
   "compileOnSave": false,
-  "buildOnSave": false,
-  "awesomeTypescriptLoaderOptions": {
-    "useBabel" : true,
-    "useCache" : true
-  }
+  "buildOnSave": false
 }
