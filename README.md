@@ -156,13 +156,13 @@ complex, dynamic layouts:
 
 #### Build Instructions
 
+##### UMD + `<script>`
 
 Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
 
 ```console
 gulp build:lib
 ```
-
 
 To use the bundle and the required, external AngularJS framework:
 
@@ -171,13 +171,21 @@ To use the bundle and the required, external AngularJS framework:
 
 ```
 
-Or you can use the `ngc` to build an AOT version:
+#### SystemJS + UMD
 
-```console
+Or you can use the **SystemJS + UMD** as described [above](https://github.com/angular/flex-layout/#systemjs--umd).
+
+#### Angular CLI + `@angular/flex-layout`
+
+If you are using the Angular CLI to bundle and serve your application (using `ng serve`), you can use the `ngc` to build an *flex-layout* with generated metadata files.
+
+```terminal
 gulp build:release
+cp -rF ./dist/@angular/flex-layout <ngCLiProjectPath>/node_modules/@angular/
 ```
+Then modify your `app.module.ts` to use the `FlexLayoutModule`:
 
-When using Angular CLI with `ng serve`, developers should build and use the *flex-layout* release version (with its associated metadata).
+![screen shot 2016-12-14 at 5 31 27 pm](https://cloud.githubusercontent.com/assets/210413/21205682/2e650cba-c223-11e6-8958-1aefa77d6457.png)
 
 <br/>
 
