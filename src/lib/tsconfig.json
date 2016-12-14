@@ -32,9 +32,7 @@
     "tsconfig-demo-app."
   ],
   "angularCompilerOptions": {
-    "genDir": "../../dist",
-    "skipTemplateCodegen": false,
-    "skipMetadataEmit": false,
+    "genDir": "../../dist/aot/@angular/flex-layout",
     "debug": true
   }
 }
