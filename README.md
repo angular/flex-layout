@@ -102,6 +102,19 @@ ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layo
 
 The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
 
+
+#### SystemJS + UMD
+
+After `gulp build:release`, the `./dist/@angular/flex-layout/flex-layout.umd.js` may be used to easily add **Flex Layout** API features to your application that are using SystemJS.
+
+Here is a Plunkr [Flex-Layout Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview):
+
+<a href="https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview" target="_blank">
+![screen shot 2016-12-14 at 1 37 51 pm](https://cloud.githubusercontent.com/assets/210413/21197851/9bb2de6c-c202-11e6-9165-53c08663d788.png)
+</a>
+
+
+
 <br/>
 
 ----
