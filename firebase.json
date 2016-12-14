@@ -24,7 +24,9 @@
       "**/node_modules/**",
       "tmp",
       "deploy",
-      "typings"
+      "typings",
+      "tools",
+      "src"
     ]
   }
 }
