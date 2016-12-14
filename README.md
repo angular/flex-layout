@@ -82,7 +82,7 @@ non-responsive and responsive demos:
 ```
 npm install -g yarn
 yarn install
-gulp build:components
+gulp build:lib
 npm run start 
 ```
 
@@ -97,7 +97,7 @@ npm install @angular/flex-layout -save
 ```
 
 
-> Note: With `gulp build:components` the files are depolyed to `node_modules/@angular/flex-layout`. The formal deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
+> Note: With `gulp build:lib` the files are deployed to `node_modules/@angular/flex-layout`. The formal deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
 
 ----
 
@@ -142,7 +142,7 @@ complex, dynamic layouts:
 Use Gulp and Rollup to build a UMD `flex-layout.umd.js`:
 
 ```console
-gulp build:components
+gulp build:lib
 ```
 
 

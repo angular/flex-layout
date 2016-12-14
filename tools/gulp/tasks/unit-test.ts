@@ -26,8 +26,8 @@ gulp.task(':test:deps', sequenceTask(
   'clean',
   [
     ':build:test:vendor',
-    ':build:components:assets',
-    ':build:components:spec',
+    ':build:lib:assets',
+    ':build:lib:spec',
   ]
 ));
 

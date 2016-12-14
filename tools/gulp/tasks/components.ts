@@ -20,45 +20,45 @@ const uglify = require('rollup-plugin-uglify');
 
 /** Path to the root of the @Angular/flex-layout library. */
 /** Path to the tsconfig used for ESM output. */
-const componentsDir = path.join(SOURCE_ROOT, 'lib');
-const componentsSpecDir = path.join(SOURCE_ROOT, 'lib');
-const tsconfigPath = path.relative(PROJECT_ROOT, path.join(componentsDir, 'tsconfig.json'));
+const libDir = path.join(SOURCE_ROOT, 'lib');
+const libSpecDir = path.join(SOURCE_ROOT, 'lib');
+const tsconfigPath = "./" + path.relative(PROJECT_ROOT, path.join(libDir, 'tsconfig.json'));
 
 
 // PUBLIC tasks
 
 /** Builds components to ESM output and UMD bundle. */
-task('build:components', [':build:components:rollup']);
+task('build:lib', [':build:lib:rollup']);
 
 // INTERNAL tasks
 
 /** [Watch task] Rebuilds for tests (CJS output) whenever ts, scss, or html sources change. */
-task(':watch:components:spec', () => {
-  watch(path.join(componentsDir, '**/*.ts'), [':build:components:spec']);
+task(':watch:lib:spec', () => {
+  watch(path.join(libDir, '**/*.ts'), [':build:lib:spec']);
 });
 
 /** Builds components typescript for tests (with CommonJS output). */
-task(':build:components:spec', tsBuildTask(componentsSpecDir, 'tsconfig-spec.json'));
+task(':build:lib:spec', tsBuildTask(libSpecDir, 'tsconfig-spec.json'));
 
 /** Copies assets (html, markdown) to build output. */
-task(':build:components:assets', copyTask([
-  path.join(componentsDir, '**/*.!(ts|spec.ts)'),
+task(':build:lib:assets', copyTask([
+  path.join(libDir, 'package.json'),
   path.join(PROJECT_ROOT, 'README.md'),
 ], DIST_COMPONENTS_ROOT));
 
 /**
  * Builds component typescript only (ESM output).
  */
-task(':build:components:ts', tsBuildTask(componentsDir, 'tsconfig.json'));
+task(':build:lib:ts', tsBuildTask(libDir, 'tsconfig.json'));
 
 /**
  * Rollup components to 'output' defined in 'tsconfig.json'
  */
-task(':build:components:rollup', [':build:components:ts'], doRollupWith(DIST_COMPONENTS_ROOT));
+task(':build:lib:rollup', [':build:lib:inline'], doRollupWith(DIST_COMPONENTS_ROOT));
 
 /** Builds components with resources (html, css) inlined into the built JS (ESM output). */
-task(':build:components:inline', sequenceTask(
-  [':build:components:ts', ':build:components:assets'],
+task(':build:lib:inline', sequenceTask(
+  [':build:lib:ts', ':build:lib:assets'],
   ':inline-resources',
 ));
 
@@ -66,7 +66,7 @@ task(':build:components:inline', sequenceTask(
 task(':inline-resources', () => inlineResources(DIST_COMPONENTS_ROOT));
 
 /** Generates metadata.json files for all of the components. */
-task(':build:components:ngc', ['build:components'], execNodeTask(
+task(':build:lib:ngc', ['build:lib'], execNodeTask(
   '@angular/compiler-cli', 'ngc', ['-p', tsconfigPath]
 ));
 
@@ -75,10 +75,10 @@ function doRollupWith(rootPath) {
     const includePathOptions = {
         paths: ['./flexbox', './media-query', './utils'],
     };
-    const globals: {[name: string]: string} = {
-      // Angular dependencies
-      '@angular/core': 'ng.core',
-      '@angular/common': 'ng.common',
+  const globals: {[name: string]: string} = {
+    // Angular dependencies
+    '@angular/core': 'ng.core',
+    '@angular/common': 'ng.common',
       '@angular/platform-browser': 'ng.platformBrowser',
       '@angular/platform-browser-dynamic': 'ng.platformBrowserDynamic',
 
@@ -100,7 +100,7 @@ function doRollupWith(rootPath) {
 
     // Rollup the @angular/flex-layout UMD bundle from all ES5 + imports JavaScript files built.
     //
-    // Note: `gulp build:components` deploys to `/node_modules/@angular/flex-layout`
+    // Note: `gulp build:lib` deploys to `/node_modules/@angular/flex-layout`
     //        see tsconfig-srcs.json#L17
 
     return rollup({

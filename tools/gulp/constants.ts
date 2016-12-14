@@ -5,7 +5,7 @@ export const SOURCE_ROOT = join(PROJECT_ROOT, 'src');
 export const TEST_ROOT = join(PROJECT_ROOT, 'test');
 
 // since the demo-app uses `import {FlexLayoutModule}    from "@angular/flex-layout";`
-// we need `gulp build:components` to deploy to `/node_modules/@angular/flex-layout`
+// we need `gulp build:lib` to deploy to `/node_modules/@angular/flex-layout`
 
 export const DIST_ROOT = join(PROJECT_ROOT, 'dist');
 export const DIST_COMPONENTS_ROOT = join(DIST_ROOT, '@angular/flex-layout');

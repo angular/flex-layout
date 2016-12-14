@@ -1,5 +1,5 @@
 import {spawn} from 'child_process';
-import {existsSync, readdirSync, statSync} from 'fs';
+import {existsSync, statSync} from 'fs';
 import {task} from 'gulp';
 import gulpRunSequence = require('run-sequence');
 import path = require('path');
@@ -18,7 +18,7 @@ task('build:release', function(done: () => void) {
   // Synchronously run those tasks.
   gulpRunSequence(
     'clean',
-    ':build:components:ngc',
+    ':build:lib:ngc',
     ':build:release:clean-spec',
     done
   );
