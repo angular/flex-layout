@@ -1,41 +1,40 @@
 {
   "compilerOptions": {
-    "baseUrl": "",
     "declaration": true,
     "inlineSources": true,
     "skipDefaultLibCheck":true,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "stripInternal": true,
+    "stripInternal": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["es6", "es2015", "dom"],
-    "mapRoot": "",
-    "module": "es2015",
-    "moduleResolution": "node",
     "noImplicitAny": false,
-    "outDir": "../../dist/@angular/flex-layout",
+
+    "mapRoot": "",
     "rootDir": ".",
     "sourceMap": true,
     "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": ["es6", "es2015", "dom"],
+    "outDir": "../../dist/@angular/flex-layout",
     "typeRoots": [
       "../../node_modules/@types"
     ],
     "types": [
-      "hammerjs", "rx/rx.all"
+      "rx/rx.all"
     ]
   },
   "exclude": [
-    "**/testing/",
     "**/*.spec.*",
     "system-config-spec.ts",
-    "tsconfig.*",
     "tsconfig-demo-app."
   ],
   "angularCompilerOptions": {
     "genDir": "../../dist",
     "skipTemplateCodegen": false,
+    "skipMetadataEmit": false,
     "debug": true
   }
 }
