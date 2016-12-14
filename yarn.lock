@@ -252,6 +252,10 @@ accepts@~1.0.7:
     mime-types "~1.0.0"
     negotiator "0.4.7"
 
+ace-builds@^1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/ace-builds/-/ace-builds-1.2.5.tgz#41c5360cdee6c43e73735d3e3558121f9fea37a9"
+
 acorn@4.X, acorn@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.3.tgz#1a3e850b428e73ba6b09d1cc527f5aaad4d03ef1"
