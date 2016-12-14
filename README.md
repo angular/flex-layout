@@ -90,7 +90,7 @@ npm run start
 <br/>
 
 #### Fast Start 
-
+<br/>
 
 1) UMD + `<script>`
 
@@ -110,7 +110,7 @@ Use the bundle with an external script tag in the index.html of your Angular 2 a
 
 1) Angular CLI + `@angular/flex-layout`
 
-If you are using the Angular CLI to bundle and serve your application (using `ng serve`), you can use the `ngc` to build an *flex-layout* with the generated, required metadata files.
+If you are using the Angular CLI to bundle and serve your application (using `ng serve`), you can use the `ngc` to build the *flex-layout* files; each with  generated metadata files. Copy that directory to your project's `node_modules/@angular/flex-layout` directory:
 
 ```terminal
 gulp build:release
@@ -123,7 +123,7 @@ Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
 
 2) SystemJS + UMD
 
-If your approach is similar to the tutorials shown on **angular.io** first build the release with `gulp build:release`. The `./dist/@angular/flex-layout/flex-layout.umd.js` may be then used to easily add **Flex Layout** API features to your application (which uses SystemJS to load modules and transcompile).
+If your approach follows those shown on the tutorials at **angular.io**, first build the release with `gulp build:release`. The `./dist/@angular/flex-layout/flex-layout.umd.js` may be then used to easily add **Flex Layout** API features to your application (which uses SystemJS to load modules and transcompile).
 
 Here is a Plunkr [Flex-Layout Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview):
 
@@ -140,7 +140,7 @@ gulp build:release
 ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layout
 ```
 
-The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
+> The expected deployment process to **npm** (and the standardized use of `npm i @angular/flex-layout`) is **NOT** yet available. NPM installs will be available after the the flex-layout v1.0.0-beta.1 release (week of December 20, 2016).
 
 <br/>
 
