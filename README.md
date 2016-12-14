@@ -90,14 +90,15 @@ npm run start
 
 ### Fast Start  (NOT YET AVAILABLE)
 
-Developers can easily install this `@angular/flex-layout` library using **npm** (pending feature):
+Developers can easily install this `@angular/flex-layout` library using a local build and directory copy:
 
 ```console
-npm install @angular/flex-layout -save
+gulp build:release
+ditto ./dist/@angular/flex-layout <your project>/node_modules/@angular/flex-layout
 ```
 
 
-> Note: With `gulp build:lib` the files are deployed to `node_modules/@angular/flex-layout`. The formal deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
+> The standardized deploy process to **npm** (and use of `npm i @angular/flex-layout`) is not yet available and is pending public release of the Github repository!
 
 ----
 
@@ -158,6 +159,8 @@ Or you can use the `ngc` to build an AOT version:
 ```console
 gulp build:release
 ```
+
+Using the release version (with the associated metadata) is especially important **IF** you are using Angular CLI with `ng serve`.
 
 <br/>
 
