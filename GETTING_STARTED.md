@@ -1,3 +1,9 @@
+
+## Important:
+
+**npm** installs will only be available **on/after the v1.0.0-beta.1 release**. Developers should read the [Fast Start](https://github.com/angular/flex-layout#fast-start) for alternatinve installs.
+
+
 Get started with Angular Material 2 using the Angular CLI.
 
 ## Install the CLI
@@ -19,7 +25,6 @@ The new command creates a project with a build system for your Angular app.
 ```bash
 npm install --save @angular/flex-layout
 ```
-> npm installs will only be available on/after the v1.0.0-beta.1 release.
 
 ## Import the Angular Flex-Layout NgModule
   
