@@ -1,5 +1,7 @@
 # Developer Guide 
 
+----
+
 ## Getting your environment set up
 
 1. Make sure you have `node` installed with a version at _least_ 5.5.0.
@@ -11,12 +13,14 @@
    and `<your-username>` for your fork. Also see the [team git shortcuts](https://github.com/angular/flex-layout/wiki/Team-git----bash-shortcuts).
 5. From the root of the project, run `yarn install`.
 
+----
 
 ## Building the library
 
-To build the library in dev mode, run `gulp build:lib`.
-To build the library in release mode, run `gulp build:release`
+*  To build the library in dev mode, run `gulp build:lib`.
+*  To build the library in release mode, run `gulp build:release`
 
+----
 
 ## Integration within your project.
 
