@@ -1,7 +1,7 @@
 
 ## Important:
 
-**npm** installs will only be available **on/after the v1.0.0-beta.1 release**. Developers should read the [Fast Start](https://github.com/angular/flex-layout#fast-start) for alternatinve installs.
+**npm** installs will only be available **on/after the v1.0.0-beta.1 release**. Developers should read the [Fast Start](https://github.com/angular/flex-layout#fast-start) for alternative installs.
 
 <br/>
 
