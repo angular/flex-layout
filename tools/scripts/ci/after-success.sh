@@ -6,6 +6,9 @@
 # Go to the project root directory
 cd $(dirname $0)/../../..
 
+# Use @DevVersion npm plugin Travis-After-Modes to
+# confirm all Travis jobs completed successfully see .travis.yml
+
 npmBin=$(npm bin)
 ciResult=$($npmBin/travis-after-modes)
 

@@ -136,6 +136,7 @@
     "style-loader": "^0.13.1",
     "stylelint": "^7.5.0",
     "symlink-or-copy": "^1.0.1",
+    "travis-after-modes": "0.0.5",
     "ts-helpers": "1.1.2",
     "ts-node": "^0.7.3",
     "tslint": "^4.0.0-dev.0",
