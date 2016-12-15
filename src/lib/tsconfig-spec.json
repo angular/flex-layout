@@ -23,8 +23,7 @@
       "../../node_modules/@types"
     ],
     "types": [
-      "jasmine",
-      "rx/rx.all"
+      "jasmine"
     ]
   },
   "exclude": [

@@ -1,4 +1,4 @@
-import {extendObject} from '@angular/flex-layout/utils/object-extend';
+import {extendObject} from './object-extend';
 
 
 describe('extendObject', () => {

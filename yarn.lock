@@ -6569,6 +6569,12 @@ synesthesia@^1.0.1:
   dependencies:
     css-color-names "0.0.3"
 
+systemjs@^0.19.41:
+  version "0.19.41"
+  resolved "https://registry.yarnpkg.com/systemjs/-/systemjs-0.19.41.tgz#835d2c0f10bf403b551fedc875f84bb44a02c4eb"
+  dependencies:
+    when "^3.7.5"
+
 table@^3.7.8:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/table/-/table-3.8.3.tgz#2bbc542f0fda9861a755d3947fefd8b3f513855f"
@@ -7326,6 +7332,10 @@ websocket-driver@>=0.5.1:
 websocket-extensions@>=0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.1.tgz#76899499c184b6ef754377c2dbb0cd6cb55d29e7"
+
+when@^3.7.5:
+  version "3.7.7"
+  resolved "https://registry.yarnpkg.com/when/-/when-3.7.7.tgz#aba03fc3bb736d6c88b091d013d8a8e590d84718"
 
 whet.extend@~0.9.9:
   version "0.9.9"
