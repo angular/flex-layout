@@ -2,6 +2,7 @@
 
 1. Make sure you have `node` installed with a version at _least_ 5.5.0.
 2. Run `npm install -g gulp` to install gulp.
+3. Run `npm install -g yarn` to install yarn.
 3. Fork the `angular/flex-layout` repo. 
 4. Clone your fork. 
    Recommendation: name your git remotes `upstream` for `angular/flex-layout`
@@ -9,8 +10,10 @@
 5. From the root of the project, run `yarn install`.
 
 
-To build the components in dev mode, run `gulp build:components`.
-To build the components in release mode, run `gulp build:release`
+To build the library in dev mode, run `gulp build:lib`.
+To build the library in release mode, run `gulp build:release`
+> see the [Fast Start](https://github.com/angular/flex-layout#fast-start) for integration instructions.
+
  
 ### Running tests
 
