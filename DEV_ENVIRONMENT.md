@@ -1,6 +1,6 @@
 # Developer Guide 
 
-----
+<br/>
 
 ## Getting your environment set up
 
@@ -13,14 +13,14 @@
    and `<your-username>` for your fork. Also see the [team git shortcuts](https://github.com/angular/flex-layout/wiki/Team-git----bash-shortcuts).
 5. From the root of the project, run `yarn install`.
 
-----
+<br/>
 
 ## Building the library
 
 *  To build the library in dev mode, run `gulp build:lib`.
 *  To build the library in release mode, run `gulp build:release`
 
-----
+<br/>
 
 ## Integration within your project.
 
@@ -28,12 +28,14 @@ Developers should read the [Fast Start](https://github.com/angular/flex-layout#f
 
 > **npm** installs will only be available **on/after the v1.0.0-beta.1 release**. 
 
- 
+<br/>
+
 ### Running tests
 
 To run unit tests, run `gulp test`.
 To run lint, run `gulp lint`.
 
+<br/>
 
 ### Running benchmarks
 Not yet implemented.
