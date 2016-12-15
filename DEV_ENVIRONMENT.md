@@ -1,4 +1,6 @@
-# Developer guide: getting your environment set up
+# Developer Guide 
+
+## Getting your environment set up
 
 1. Make sure you have `node` installed with a version at _least_ 5.5.0.
 2. Run `npm install -g gulp` to install gulp.
@@ -10,9 +12,17 @@
 5. From the root of the project, run `yarn install`.
 
 
+## Building the library
+
 To build the library in dev mode, run `gulp build:lib`.
 To build the library in release mode, run `gulp build:release`
-> see the [Fast Start](https://github.com/angular/flex-layout#fast-start) for integration instructions.
+
+
+## Integration within your project.
+
+Developers should read the [Fast Start](https://github.com/angular/flex-layout#fast-start) for alternate integration instructions.
+
+> **npm** installs will only be available **on/after the v1.0.0-beta.1 release**. 
 
  
 ### Running tests
