@@ -7,15 +7,18 @@
 
 -----
 
-<br/>
 
 Get started with Angular Material 2 using the Angular CLI.
+
+<br/>
 
 ## Install the CLI
  
  ```bash
  npm install -g angular-cli
  ```
+ 
+ <br/>
  
 ## Create a new project
  
@@ -25,11 +28,15 @@ Get started with Angular Material 2 using the Angular CLI.
 
 The new command creates a project with a build system for your Angular app.
 
+<br/>
+
 ## Install Angular Flex-Layout components 
 
 ```bash
 npm install --save @angular/flex-layout
 ```
+
+<br/>
 
 ## Import the Angular Flex-Layout NgModule
   
@@ -44,6 +51,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 export class PizzaPartyAppModule { }
 ```
 
+<br/>
 
 ## Configuring SystemJS
 If your project is using SystemJS for module loading, you will need to add `@angular/flex-layout` 
