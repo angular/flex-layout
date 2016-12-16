@@ -103,7 +103,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    *
    */
-  _updateWithValue(value?: string) {
+  private _updateWithValue(value?: string) {
     value = value || this._queryInput("align") || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -115,7 +115,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
-  _onLayoutChange(direction) {
+  private _onLayoutChange(direction) {
     this._layout = (direction || '').toLowerCase().replace('-reverse', '');
     if (!LAYOUT_VALUES.find(x => x === this._layout))
       this._layout = 'row';
@@ -127,7 +127,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     this._allowStretching(value, this._layout);
   }
 
-  _buildCSS(align) {
+  private _buildCSS(align) {
     let css = {}, [main_axis, cross_axis] = align.split(' ');
 
     css['justify-content'] = 'flex-start';  // default
@@ -171,7 +171,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    * Update container element to 'stretch' as needed...
    */
-  _allowStretching(align, layout) {
+  private _allowStretching(align, layout) {
     let [, cross_axis] = align.split(' ');
 
     if (cross_axis == 'stretch') {

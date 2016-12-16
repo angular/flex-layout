@@ -74,7 +74,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   // Protected methods
   // *********************************************
 
-  _updateWithValue(value?: string) {
+  private _updateWithValue(value?: string) {
     value = value || this._queryInput("wrap") || 'wrap';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -88,14 +88,14 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  _buildCSS(value) {
+  private _buildCSS(value) {
     return { 'flex-wrap': value };
   }
 
   /**
    * Convert layout-wrap="<value>" to expected flex-wrap style
    */
-  _validateValue(value) {
+  private _validateValue(value) {
     switch (value.toLowerCase()) {
       case 'reverse':
       case 'wrap-reverse':

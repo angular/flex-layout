@@ -75,7 +75,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   // Protected methods
   // *********************************************
 
-  _updateWithValue(value?: string) {
+  private _updateWithValue(value?: string) {
     value = value || this._queryInput("order") || '1';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -85,7 +85,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   }
 
 
-  _buildCSS(value) {
+  private _buildCSS(value) {
     value = parseInt(value, 10);
     return {order: isNaN(value) ? 0 : value};
   }

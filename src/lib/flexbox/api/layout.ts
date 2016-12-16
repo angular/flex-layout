@@ -104,7 +104,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    * Validate the direction value and then update the host's inline flexbox styles
    */
-  _updateWithDirection(direction?: string) {
+  private _updateWithDirection(direction?: string) {
     direction = direction || this._queryInput("layout") || 'row';
     if (this._mqActivation) {
       direction = this._mqActivation.activatedInput;
@@ -129,7 +129,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    *         laid out and drawn inside that element's specified width and height.
    *
    */
-  _buildCSS(value) {
+  private _buildCSS(value) {
     return {'display': 'flex', 'box-sizing': 'border-box', 'flex-direction': value};
   }
 
@@ -137,7 +137,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  _validateValue(value) {
+  private _validateValue(value) {
     value = value ? value.toLowerCase() : '';
     return LAYOUT_VALUES.find(x => x === value) ? value : LAYOUT_VALUES[0];  // "row"
   }

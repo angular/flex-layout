@@ -127,7 +127,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * Validate the visibility value and then update the host's inline display style
    */
-  _updateWithValue(value?: string|number|boolean) {
+  private _updateWithValue(value?: string|number|boolean) {
     value = value || this._queryInput("hide") || true;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -143,14 +143,14 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  _buildCSS(value) {
+  private _buildCSS(value) {
     return {'display': value ? 'none' :  this._display };
   }
 
   /**
    * Validate the value to NOT be FALSY
    */
-  _validateTruthy(value) {
+  private _validateTruthy(value) {
     return FALSY.indexOf(value) === -1;
   }
 }

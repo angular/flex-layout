@@ -131,7 +131,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   // *********************************************
 
   /** Validate the visibility value and then update the host's inline display style */
-  _updateWithValue(value?: string|number|boolean) {
+  private _updateWithValue(value?: string|number|boolean) {
     value = value || this._queryInput("show") || true;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -145,7 +145,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
 
   /** Build the CSS that should be assigned to the element instance */
-  _buildCSS(show) {
+  private _buildCSS(show) {
     return {'display': show ? this._display : 'none'};
   }
 
