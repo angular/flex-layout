@@ -65,7 +65,7 @@ script:
   - ./tools/scripts/ci/build-and-test.sh
 
 after_success:
-  - ./scripts/ci/after-success.sh
+  - ./tools/scripts/ci/after-success.sh
 
 cache:
   directories:
