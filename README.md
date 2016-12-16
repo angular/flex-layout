@@ -75,6 +75,7 @@ Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with a
 *  is currently only available for Angular (v2.x or higher) Applications.
 *  is independent of Angular Material (v1 or v2).
 *  requires no external stylesheets.
+*  requires Angular v2.x or higher.
 
 <br/>
 
