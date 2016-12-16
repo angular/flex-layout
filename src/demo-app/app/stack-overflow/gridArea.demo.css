@@ -12,6 +12,10 @@
   padding: 0 !important;
 }
 
+.short {
+  line-height: 40px;
+}
+
 .markup {
   font-size: 0.7em;
   margin-top: -80px;
