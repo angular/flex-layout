@@ -47,7 +47,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   // *********************************************
 
   ngOnDestroy() {
-    this._mqActivation.destroy();
+    if ( this._mqActivation ) {
+      this._mqActivation.destroy();
+    }
     this._mediaMonitor = null;
   }
 
