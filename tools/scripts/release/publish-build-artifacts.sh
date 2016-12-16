@@ -6,7 +6,7 @@
 set -e -o pipefail
 
 # Go to the project root directory
-cd $(dirname $0)/../..
+cd $(dirname $0)/../../..
 
 buildDir="dist/@angular/flex-layout"
 buildVersion=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
