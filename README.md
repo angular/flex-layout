@@ -93,6 +93,9 @@ With Responsive configurations, DOM elements can be adjusted [for layout-directi
 > Of course, these configuration can be specified in the CSS. Flex-Layout, however, makes it super easy
 and intuitive to specify these configurations in the HTML layer as HTML element attributes.
  
+<br/>
+
+----
 
 ### Featured Demo
 
