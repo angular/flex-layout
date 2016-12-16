@@ -48,6 +48,7 @@ export class ResponsiveActivation {
   constructor(
       private _directive: Directive,
       private _options : KeyOptions,
+      private _mediaMonitor: MediaMonitor,
       private _onMediaChanges : MediaQuerySubscriber )
   {
     this._subscribers = this._configureChangeObservers();
@@ -59,7 +60,7 @@ export class ResponsiveActivation {
    * used HERE to subscribe to mediaQuery change notifications.
    */
   get mediaMonitor() : MediaMonitor {
-    return this._directive["mediaMonitor"];
+    return this._mediaMonitor;
   }
 
   /**

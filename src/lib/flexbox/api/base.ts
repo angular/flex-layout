@@ -35,13 +35,6 @@ export abstract class BaseFxDirective implements OnDestroy {
   // *********************************************
 
   /**
-   * Accessor used by the ResponsiveActivation to subscribe to mediaQuery change notifications
-   */
-  get mediaMonitor(): MediaMonitor {
-    return this._mediaMonitor;
-  }
-
-  /**
    * Access the current value (if any) of the @Input property.
    */
   protected _queryInput(key) {
@@ -104,6 +97,6 @@ export abstract class BaseFxDirective implements OnDestroy {
   protected _listenForMediaQueryChanges(key: string, defaultValue: any,
                                         onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
     let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-    return this._mqActivation = new ResponsiveActivation(this, keyOptions, onMediaQueryChange);
+    return this._mqActivation = new ResponsiveActivation(this, keyOptions, this._mediaMonitor, onMediaQueryChange);
   }
 }
