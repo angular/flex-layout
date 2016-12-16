@@ -16,7 +16,7 @@ import {BreakPoint} from '../breakpoints/break-point';
  *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
  *  provider (see below).
  */
-export const Media$: OpaqueToken = new OpaqueToken('fx-observable-media-query');
+export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fx-observable-media-query');
 
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
     let onlyActivations = function(change : MediaChange) { return change.matches === true };
@@ -33,7 +33,7 @@ export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpo
  *  Developers should build custom providers to override this default MediaQuery Observable
  */
 export const MatchMediaObservableProvider = {
-  provide: Media$,
+  provide: MatchMediaObservable,
   deps: [MatchMedia, BreakPointRegistry],
   useFactory: instanceOfMatchMediaObservable
 };
