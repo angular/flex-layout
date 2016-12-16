@@ -9,7 +9,7 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 
 ### Quick Links
 
-*  [Flex-Layout Wiki](https://github.com/angular/flex-layout/wiki)
+*  [Wiki Docs](https://github.com/angular/flex-layout/wiki)
 
 Developers
 
