@@ -4,14 +4,51 @@ Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + medi
 
 The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
 
-![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
 
 <br/>
+
+----
+
+### Useful Resources
+
+*  [Flex-Layout Wiki](https://github.com/angular/flex-layout/wiki)
+*  [Getting Started](https://github.com/angular/flex-layout/wiki/Developer-Guide)
+*  [Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Start-with-Local-Builds)
+*  [Using Flex-Layout with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
+*  [Live Demos](https://tburleson-layouts-demos.firebaseapp.com/)
+*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
+
+----
+
+<br/>
+
+
+### Why choose Flex-Layout
+
+While other Flexbox CSS libraries are implementations of:
+
+* pure CSS-only implementations, or 
+* the JS+CSS Stylesheets implementation of Angular Material v1.x Layouts.
+
+Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with an implementation that: 
+
+*  uses HTML attributes (aka Layout API) to specify the layout configurations
+*  is currently only available for Angular (v2.x or higher) Applications.
+*  is independent of Angular Material (v1 or v2).
+*  requires no external stylesheets.
+*  requires Angular v2.x or higher.
+
+<br/>
+
+----
 
 ### How it works!
 
 The Angular Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used within hierarchical DOM structures.
+
+![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
+
 
 The Layout API is used *simply* as attributes on your HTML elements. That is it! 
 
@@ -61,38 +98,6 @@ and intuitive to specify these configurations in the HTML layer as HTML element 
 <br/>
 
 ----
-
-### Why choose Flex-Layout
-
-While other Flexbox CSS libraries are implementations of:
-
-* pure CSS-only implementations, or 
-* the JS+CSS Stylesheets implementation of Angular Material v1.x Layouts.
-
-Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with an implementation that: 
-
-*  uses HTML attributes (aka Layout API) to specify the layout configurations
-*  is currently only available for Angular (v2.x or higher) Applications.
-*  is independent of Angular Material (v1 or v2).
-*  requires no external stylesheets.
-*  requires Angular v2.x or higher.
-
-<br/>
-
-----
-
-### Useful Resources
-
-*  [Flex-Layout Wiki](https://github.com/angular/flex-layout/wiki)
-*  [Getting Started](https://github.com/angular/flex-layout/wiki/Developer-Guide)
-*  [Fast Start with Local Builds](https://github.com/angular/flex-layout/wiki/Fast-Start-with-Local-Builds)
-*  [Using Flex-Layout with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
-*  [Live Demos](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
-
-----
-
-<br/>
 
 ### Advantages 
 
