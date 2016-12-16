@@ -12,11 +12,17 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 ### Useful Resources
 
 *  [Flex-Layout Wiki](https://github.com/angular/flex-layout/wiki)
+
+Developers
+
 *  [Getting Started](https://github.com/angular/flex-layout/wiki/Developer-Guide)
 *  [Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Start-with-Local-Builds)
 *  [Using Flex-Layout with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
-*  [Live Demos](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
+
+Demos 
+
+*  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
+*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
 
 ----
 
