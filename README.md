@@ -22,6 +22,10 @@ Demos
 *  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
 *  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
 
+Templates
+
+*  [Plunkr Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview)
+
 ----
 
 
