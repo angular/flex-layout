@@ -73,9 +73,7 @@ Flex-Layout also added mediaQuery support into the Layout engine. Integrating **
 Responsive layouts have multiple layout configurations. Responsive layouts add extra configurations that override the default configurations. These overrides will be applied dynamically
 when the viewport size changes to match a specific *responsive override*.
 
-Consider the sample show above; where the Layout API is used to define default, non-responsive flows and sizing.
-
-Now consider the HTML sample (below) which specifies both default configurations and *mobile* responsive overrides:
+In our previous sample (above), the Flex Layout API is used to define default, non-responsive flows and sizing. Now let's consider an HTML sample which specifies **both** default configurations and *mobile* responsive overrides:
 
 
 ```html
@@ -90,12 +88,28 @@ Now consider the HTML sample (below) which specifies both default configurations
 </div> 
 ```
    
-With Responsive configurations, DOM elements can be adjusted [for layout-directions, visibility, and sizing constraints] based on 
-specific viewport sizes (desktop or mobile devices) and orientations (portrait or landscape). 
+With Responsive configurations, DOM elements can be adjusted [for layout-directions, visibility, and sizing constraints] based on specific viewport sizes (desktop or mobile devices) and orientations (portrait or landscape). 
 
-> Of course, these configuration can be specified in CSS. Flex-Layout, however, makes it super easy
+> Of course, these configuration can be specified in the CSS. Flex-Layout, however, makes it super easy
 and intuitive to specify these configurations in the HTML layer as HTML element attributes.
  
+
+### Featured Demo
+
+One of the hardest features to implement is a grid layout with specific column spans. Our online demo shows how easy this is!
+
+Live Demo:
+
+<a href="https://tburleson-layouts-demos.firebaseapp.com/#/stackoverflow" target="_blank">
+![screen shot 2016-12-16 at 1 00 51 pm](https://cloud.githubusercontent.com/assets/210413/21274826/bc8553f2-c38f-11e6-8188-bc7fd36026c2.png)
+</a>
+
+Source Code:
+
+<a href="https://github.com/angular/flex-layout/blob/master/src/demo-app/app/stack-overflow/columnSpan.demo.ts#L23" target="_blank">
+![screen shot 2016-12-16 at 1 05 45 pm](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)
+</a>
+
  
 <br/>
 
