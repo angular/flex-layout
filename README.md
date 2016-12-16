@@ -66,9 +66,9 @@ All the magic of applying the Flexbox CSS is handled under-the-hood. The Layout 
 </div> 
 ```
 
-> The above Flex Layout usages do not require any external stylesheets nor any custom CSS programming. The Angular directives do all the work of *magically* setting the flexbox css.
+> The above Flex Layout usages do not require any external stylesheets nor any custom CSS programming. 
 
-Flex-Layout also added mediaQuery support into the Layout engined. Integrating **mediaQuery** features enables the API to be **Responsive**. 
+Flex-Layout also added mediaQuery support into the Layout engine. Integrating **mediaQuery** features enables the API and your Application's UX to be **Responsive** to changes in viewport size and orientations. 
 
 Responsive layouts have multiple layout configurations. Responsive layouts add extra configurations that override the default configurations. These overrides will be applied dynamically
 when the viewport size changes to match a specific *responsive override*.
