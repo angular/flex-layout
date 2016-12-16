@@ -14,7 +14,7 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 Developers
 
 *  [Getting Started](https://github.com/angular/flex-layout/wiki/Developer-Guide)
-*  [Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Start-with-Local-Builds)
+*  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Start-with-Local-Builds)
 *  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
 
 Demos 
