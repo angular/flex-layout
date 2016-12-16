@@ -124,12 +124,12 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Caches the parent container's 'flex-direction' and updates the element's style.
    * Used as a handler for layout change events from the parent flex container.
    */
-  _onLayoutChange(direction?: string) {
+  private _onLayoutChange(direction?: string) {
     this._layout = direction || this._layout;
     this._updateStyle();
   }
 
-  _updateStyle(value?: string|number) {
+  private _updateStyle(value?: string|number) {
     let flexBasis = value || this._queryInput("flex") || '';
     if (this._mqActivation) {
       flexBasis = this._mqActivation.activatedInput;
@@ -141,16 +141,41 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
    */
-  _parseFlexParts(basis:string) {
-    let matches = basis.split(" ");
-    return (matches.length !== 3) ? [ this._queryInput("grow"),  this._queryInput("shrink"), basis ] : matches;
+  private _parseFlexParts(basis:string) {
+    basis = basis.replace(";","");
+
+    let hasCalc = basis && basis.indexOf("calc") > -1;
+    let matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
+    return (matches.length === 3) ? matches : [ this._queryInput("grow"),  this._queryInput("shrink"), basis ];
+  }
+
+  /**
+   * Extract more complicated short-hand versions.
+   * e.g.
+   * fx-flex="3 3 calc(15em + 20px)"
+   */
+  private _getPartsWithCalc(value:string) {
+    debugger;
+
+    let parts = [this._queryInput("grow"),  this._queryInput("shrink"), value];
+    let j = value.indexOf('calc');
+
+    if ( j > 0 ) {
+      parts[2] = value.substring(j);
+      let matches = value.substr(0, j).trim().split(" ");
+      if ( matches.length == 2 ) {
+        parts[0] = matches[0];
+        parts[1] = matches[1];
+      }
+    }
+    return parts;
   }
 
   /**
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  _validateValue(grow: number, shrink: number, basis: string|number|FlexBasisAlias) {
+  private _validateValue(grow: number, shrink: number, basis: string|number|FlexBasisAlias) {
     let css;
     let direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
         'column' :
@@ -200,8 +225,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       default:
         let isPercent = String(basis).indexOf('%') > -1;
         let isValue = String(basis).indexOf('px') > -1 ||
-                   String(basis).indexOf('vw') > -1 ||
-                   String(basis).indexOf('vh') > -1;
+                      String(basis).indexOf('calc') > -1 ||
+                      String(basis).indexOf('em') > -1 ||
+                      String(basis).indexOf('vw') > -1 ||
+                      String(basis).indexOf('vh') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
         if (!isValue && !isPercent && !isNaN(basis as any))
@@ -220,9 +247,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     let max = (direction === 'row') ? 'max-width' : 'max-height';
     let min = (direction === 'row') ? 'min-width' : 'min-height';
+    let usingCalc = String(basis).indexOf('calc') > -1;
 
     css[min] = (basis == '0%') ? 0 : null;
-    css[max] = (basis == '0%') ? 0 : basis;
+    css[max] = (basis == '0%') ? 0 : usingCalc ? null : basis;
 
     return extendObject(css, {'box-sizing': 'border-box'});
   }
