@@ -24,3 +24,11 @@
 .forceAbove {
   margin-top: -275px;
 }
+
+.large {
+  height:200px;
+}
+
+.large div.one, .large div.two {
+  color:white;
+}

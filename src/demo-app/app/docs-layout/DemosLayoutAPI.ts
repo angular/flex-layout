@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
       <demo-flex-row-fill-wrap    class="small-demo">  </demo-flex-row-fill-wrap>
       <demo-flex-attribute-values class="small-demo">  </demo-flex-attribute-values>
       <demo-flex-offset-values    class="small-demo">  </demo-flex-offset-values>
+      <demo-layout-fill           class="small-demo">  </demo-layout-fill>
     `
 })
 export class DemosLayoutAPI { }
@@ -24,6 +25,7 @@ import {DemoFlexRowFill}     from "./flexRowFill.demo";
 import {DemoFlexRowFillWrap} from "./flexRowFillWrap.demo";
 import {DemoFlexAttributeValues} from "./flexOtherValues.demo";
 import {DemoFlexOffsetValues}    from "./flexOffetValues.demo";
+import {DemoLayoutFill}      from "./layoutFill.demo";
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import {DemoFlexOffsetValues}    from "./flexOffetValues.demo";
     DemoFlexRowFillWrap,
     DemoLayoutAlignment,
     DemoFlexAttributeValues,
-    DemoFlexOffsetValues
+    DemoFlexOffsetValues,
+    DemoLayoutFill
   ],
   imports : [
     CommonModule,
