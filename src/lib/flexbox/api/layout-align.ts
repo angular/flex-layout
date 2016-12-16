@@ -7,9 +7,10 @@ import {
   OnInit,
   Optional,
   Renderer,
-  SimpleChanges,
+  SimpleChanges, Self,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
+import {extendObject} from '../../utils/object-extend';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
@@ -59,7 +60,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   constructor(
       monitor : MediaMonitor,
       elRef: ElementRef, renderer: Renderer,
-      @Optional() container: LayoutDirective)
+      @Optional() @Self() container: LayoutDirective)
   {
     super(monitor, elRef, renderer);
 
@@ -165,8 +166,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
         break;
     }
 
-    return css;
+    return extendObject(css, { display : 'flex', 'flex-direction' : this._layout || "row" });
   }
+
 
   /**
    * Update container element to 'stretch' as needed...

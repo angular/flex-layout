@@ -6,12 +6,15 @@ import {
   OnDestroy,
   OnInit,
   Renderer,
-  SimpleChanges,
+  SimpleChanges, Self, Optional,
 } from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {extendObject} from '../../utils/object-extend';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {LayoutDirective, LAYOUT_VALUES} from './layout';
 
 /**
  * 'layout-wrap' flexbox styling directive
@@ -32,6 +35,8 @@ import {MediaMonitor} from '../../media-query/media-monitor';
   [fx-layout-wrap.xl]
 `})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+  private _layout = 'row';  // default flex-direction
+  private _layoutWatcher: Subscription;
 
   @Input('fx-layout-wrap')       set wrap(val)     { this._cacheInput("wrap", val); }
   @Input('fx-layout-wrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
@@ -44,8 +49,17 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fx-layout-wrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
   @Input('fx-layout-wrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
 
-  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(
+    monitor : MediaMonitor,
+    elRef: ElementRef,
+    renderer: Renderer,
+    @Optional() @Self() container: LayoutDirective) {
+
     super(monitor, elRef, renderer)
+
+    if (container) {  // Subscribe to layout direction changes
+      this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
+    }
   }
 
   // *********************************************
@@ -74,6 +88,18 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   // Protected methods
   // *********************************************
 
+  /**
+   * Cache the parent container 'flex-direction' and update the 'flex' styles
+   */
+  private _onLayoutChange(direction) {
+    this._layout = (direction || '').toLowerCase().replace('-reverse', '');
+    if (!LAYOUT_VALUES.find(x => x === this._layout)) {
+      this._layout = 'row';
+    }
+
+    this._updateWithValue();
+  }
+
   private _updateWithValue(value?: string) {
     value = value || this._queryInput("wrap") || 'wrap';
     if (this._mqActivation) {
@@ -89,7 +115,10 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
    * Build the CSS that should be assigned to the element instance
    */
   private _buildCSS(value) {
-    return { 'flex-wrap': value };
+    return extendObject({ 'flex-wrap': value }, {
+      'display' : 'flex',
+      'flex-direction' : this._layout || 'row'
+    });
   }
 
   /**
