@@ -47,7 +47,7 @@ Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with a
 Browser Support
 
 <a href="http://caniuse.com/#feat=flexbox" target="_blank">
-![caniuseflex](https://cloud.githubusercontent.com/assets/210413/21288104/22992b68-c440-11e6-8108-b7ab769178eb.png)
+![caniuseflexbox](https://cloud.githubusercontent.com/assets/210413/21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png)
 </a>
 
 <br/>
