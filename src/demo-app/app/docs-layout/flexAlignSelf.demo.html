@@ -1,0 +1,22 @@
+<md-card class="card-demo" >
+      <md-card-title>Flex with Align-Self</md-card-title>
+      <md-card-subtitle>Click on 'target' to explore how 'flex-align' can change the alignment for a single element only.</md-card-subtitle>
+      <md-card-content>
+        <div class="containerX">
+          <div class="box" style="height:200px;">
+            <div [fx-layout]="row" fx-layout-align="center center" fx-layout-gap="5px" style="height:100%;padding: 5px;">
+              <div fx-flex class="black one">    1 </div>
+              <div fx-flex class="black two_h target" [fx-flex-align]="alignTo" (click)="toggleAlignment()">  target </div>
+              <div fx-flex class="black three">  3 </div>
+              <div fx-flex class="black four_h"> 4 </div>
+              <div fx-flex class="black fives">  5 </div>
+            </div>
+          </div>
+        </div>
+      </md-card-content>
+      <md-card-footer style="width:95%;">
+        <div class="hint" >
+          &lt;div fx-flex-align="{{ alignTo }}"&gt;
+        </div>
+      </md-card-footer>
+    </md-card>

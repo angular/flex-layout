@@ -94,18 +94,12 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
       case 'start':
         css['align-self'] = 'flex-start';
         break;
-      case 'baseline':
-        css['align-self'] = 'baseline';
-        break;
-      case 'center':
-        css['align-self'] = 'center';
-        break;
       case 'end':
         css['align-self'] = 'flex-end';
         break;
       default:
-        css['align-self'] = 'stretch';
-        break;  // default
+        css['align-self'] = align;
+        break;
     }
 
     return css;
