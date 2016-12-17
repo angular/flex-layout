@@ -14,11 +14,16 @@ import {FlexOffsetDirective} from './api/flex-offset';
 import {FlexOrderDirective} from './api/flex-order';
 import {LayoutAlignDirective} from './api/layout-align';
 import {LayoutWrapDirective} from './api/layout-wrap';
-
+import {LayoutPaddingDirective} from './api/layout-padding';
+import {LayoutMarginDirective} from './api/layout-margin';
+import {LayoutGapDirective} from './api/layout-gap';
 
 const ALL_DIRECTIVES = [
   LayoutDirective,
   LayoutWrapDirective,
+  LayoutPaddingDirective,
+  LayoutMarginDirective,
+  LayoutGapDirective,
   LayoutAlignDirective,
   FlexDirective,
   FlexOrderDirective,

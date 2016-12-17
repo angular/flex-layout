@@ -28,7 +28,7 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    *
    */
-  constructor(private _mediaMonitor: MediaMonitor, private _elementRef: ElementRef, private _renderer: Renderer) { }
+  constructor(private _mediaMonitor: MediaMonitor, protected _elementRef: ElementRef, private _renderer: Renderer) { }
 
   // *********************************************
   // Accessor Methods
@@ -60,9 +60,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    * Applies styles given via string pair or object map to the directive element.
    */
-  protected _applyStyleToElement(style: StyleDefinition, value?: string|number) {
+  protected _applyStyleToElement(style: StyleDefinition, value?: string|number, nativeElement?:any) {
     let styles = {};
-    let element = this._elementRef.nativeElement;
+    let element = nativeElement || this._elementRef.nativeElement;
 
     if (typeof style === 'string') {
       styles[style] = value;
@@ -75,6 +75,21 @@ export abstract class BaseFxDirective implements OnDestroy {
     for (let key in styles) {
       this._renderer.setElementStyle(element, key, styles[key]);
     }
+  }
+
+  /**
+   * Applies styles given via string pair or object map to the directive element.
+   */
+  protected _applyStyleToElements(style: StyleDefinition, elements:HTMLElement[ ]) {
+    let styles = applyCssPrefixes(style);
+
+    elements.forEach( el => {
+      // Iterate all properties in hashMap and set styles
+      for (let key in styles) {
+        this._renderer.setElementStyle(el, key, styles[key]);
+      }
+    })
+
   }
 
   /**
@@ -101,4 +116,18 @@ export abstract class BaseFxDirective implements OnDestroy {
     let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
     return this._mqActivation = new ResponsiveActivation(this, keyOptions, this._mediaMonitor, onMediaQueryChange);
   }
+
+  /**
+   * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
+   */
+  protected get childrenNodes() {
+    var obj = this._elementRef.nativeElement.childNodes;
+    var array = [];
+    // iterate backwards ensuring that length is an UInt32
+    for (var i = obj.length >>> 0; i--;) {
+      array[i] = obj[i];
+    }
+    return array;
+  }
+
 }
