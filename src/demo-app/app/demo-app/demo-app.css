@@ -26,6 +26,10 @@ div {
   height:200px;
 }
 
+.taller {
+  height:300px;
+}
+
 md-card {
   background-color: white;
 }
@@ -139,6 +143,38 @@ div.colored.box.nopad > div {
 .blocks {
   min-width: 75px;
   min-height: 50px;
+  border-radius: 3px;
+}
+
+.black {
+  border-radius: 5px;
+  min-width: 75px;
+  min-height: 50px;
+  color: white;
+  background-color: #292929;
+  padding: 8px;
+  box-shadow: 0px 2px 5px 0 rgba(52, 47, 51, 0.63);
+  text-align: center;
+}
+
+.target {
+  background-color: #05ffb0;
+  color: #310736;
+  cursor: pointer;
+}
+
+.two_h {
+  min-height : 100px;
+}
+.two_w {
+  min-width: 125px;
+}
+
+.four_h {
+  min-height: 75px;
+}
+.four_w {
+  min-width: 100px;
 }
 
 md-toolbar.bigger {

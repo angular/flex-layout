@@ -3,11 +3,13 @@
       <md-card-subtitle></md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div class="colorNested box" >
+          <div class="colorNested box" [class.taller]="direction != 'row'">
             <div [fx-layout]="direction" [fx-layout-align]="layoutAlign()" style="height: 100%;">
-              <div class="blocks">one</div>
-              <div class="blocks">two</div>
-              <div class="blocks">three</div>
+              <div class="blocks one">1</div>
+              <div class="blocks" [class.two_h]="direction == 'row'" [class.two_w]="direction != 'row'">2</div>
+              <div class="blocks three">3</div>
+              <div class="blocks" [class.four_h]="direction == 'row'" [class.four_w]="direction != 'row'">4</div>
+              <div class="blocks fives">5</div>
             </div>
           </div>
         </div>

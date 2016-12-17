@@ -11,7 +11,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
     <md-card-title> <a href="http://stackoverflow.com/questions/37039029/flex-css-rowspan-2-and-colspan-2" target="_blank">StackOverflow</a></md-card-title>
     <md-card-subtitle>Grid Area with Column and Row Span... [Click to change direction!]</md-card-subtitle>
     <md-card-content>
-      <div class="containerX" (click)="toggleDirection()" [fx-layout]="'row'+direction" >
+      <div class="containerX" [fx-layout]="'row'+direction" (click)="toggleDirection()"  style="cursor: pointer;">
         <div fx-flex [fx-layout]="'column'">
           <div class="one   flexitem " fx-flex> A  </div>
           <div class="two   flexitem " fx-flex> B  </div>

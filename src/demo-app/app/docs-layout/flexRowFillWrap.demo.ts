@@ -7,11 +7,11 @@ import {Component, ViewEncapsulation} from '@angular/core';
   ],
   template: `
     <md-card class="card-demo" (click)="toggleDirection()">
-      <md-card-title>Fill Row with 'Flex' with Wrap</md-card-title>
+      <md-card-title>'Flex' with Layout-Wrap</md-card-title>
       <md-card-subtitle>Using "layout-wrap" to wrap positioned items within a layout container</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fx-layout]="direction" fx-layout-wrap class="colored wrapped box" (click)="toggleDirection()">
+          <div [fx-layout]="direction" fx-layout-wrap class="colored wrapped box" (click)="toggleDirection()" style="cursor: pointer;">
             
               <div fx-flex="30"> fx-flex="30" </div>
               <div fx-flex="45"> fx-flex="45" </div>

@@ -27,11 +27,11 @@ import {MatchMediaObservable} from "../../../lib/media-query/providers/match-med
                     fx-flex.gt-sm="25"
                     fx-show="true"
                     fx-show.md="false" 
-                    (click)="toggleLayoutFor(1)" >
+                    (click)="toggleLayoutFor(1)" style="cursor: pointer;">
                 <div fx-flex>Col #1: First item in row</div>
                 <div fx-flex>Col #1: Second item in row</div>
               </div>
-              <div [fx-layout]="secondCol" fx-flex (click)="toggleLayoutFor(2)">
+              <div [fx-layout]="secondCol" fx-flex (click)="toggleLayoutFor(2)" style="cursor: pointer;">
                 <div fx-flex>Col #2: First item in column</div>
                 <div fx-flex>Col #2: Second item in column</div>
               </div>

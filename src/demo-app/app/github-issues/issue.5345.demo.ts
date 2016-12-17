@@ -7,7 +7,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
     '../demo-app/material2.css'
   ],
   template: `
-    <md-card class="card-demo" (click)="toggleDirection()">
+    <md-card class="card-demo" (click)="toggleDirection()" style="cursor: pointer;">
       <md-card-title><a href="https://github.com/angular/material/issues/5345" target="_blank">Issue #5345</a></md-card-title>
       <md-card-subtitle>Visualize the affects of 'flex' and 'flex-offset' with %, px, or raw values.</md-card-subtitle>
       <md-card-content>

@@ -7,7 +7,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
     '../demo-app/material2.css'
   ],
   template: `
-    <md-card class="card-demo" (click)="toggleDirection()">
+    <md-card class="card-demo" (click)="toggleDirection()" style="cursor: pointer;">
       <md-card-title><a href="https://github.com/angular/material/issues/9897" target="_blank">Issue #9897</a></md-card-title>
       <md-card-subtitle>Safari bug with layout-wrap and flex % values</md-card-subtitle>
       <md-card-content>

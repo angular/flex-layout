@@ -8,7 +8,7 @@ import {Component} from '@angular/core';
   template: `
     <md-card class="card-demo">
       <md-card-title>Flex Attribute Values </md-card-title>
-      <md-card-subtitle>Explore impact of non-numerical values for the 'flex' API:</md-card-subtitle>
+      <md-card-subtitle>Explore impact of non-numerical values for the 'fx-flex' API:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
           <div fx-layout="row" fx-layout-wrap class="colored box nopad" >
