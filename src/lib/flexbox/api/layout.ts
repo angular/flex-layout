@@ -142,14 +142,3 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
     return LAYOUT_VALUES.find(x => x === value) ? value : LAYOUT_VALUES[0];  // "row"
   }
 }
-
-
-
-
-
-
-// ************************************************************
-// Private static variables
-// ************************************************************
-
-const [ROW, COLUMN, ROW_REVERSE, COLUMN_REVERSE] = LAYOUT_VALUES;

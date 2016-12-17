@@ -6,7 +6,6 @@ import {
   Renderer,
   SimpleChanges, AfterContentInit,
 } from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';

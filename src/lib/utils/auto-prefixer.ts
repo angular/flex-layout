@@ -28,7 +28,9 @@ export function applyCssPrefixes(target) {
         break;
 
       case 'order':
-        if ( isNaN(value) ) value = "0";
+        if ( isNaN(value) ) {
+          value = "0";
+        }
         target['order'] = value;
         target['-ms-flex-order'] = value;
         target['-webkit-box-ordinal-group'] = toBoxOrdinal(value);

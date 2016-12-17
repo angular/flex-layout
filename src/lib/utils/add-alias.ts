@@ -3,10 +3,6 @@ import {MediaChange} from '../media-query/media-change';
 import {BreakPoint} from '../media-query/breakpoints/break-point';
 import {extendObject} from './object-extend';
 
-import {RESPONSIVE_ALIASES} from '../media-query/providers/break-points-provider';
-
-
-
 /**
  * @internal
  *

@@ -19,7 +19,7 @@ import {BreakPoint} from '../breakpoints/break-point';
 export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fx-observable-media-query');
 
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
-    let onlyActivations = function(change : MediaChange) { return change.matches === true };
+    let onlyActivations = function(change : MediaChange) { return change.matches === true; };
     let findBreakpoint = function(mediaQuery:string):BreakPoint { return breakpoints.findByQuery(mediaQuery); };
     let injectAlias = function(change : MediaChange) { return mergeAlias(change, findBreakpoint(change.mediaQuery)); };
 
