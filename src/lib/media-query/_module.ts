@@ -1,14 +1,13 @@
 import {OpaqueToken, NgModule, ModuleWithProviders} from '@angular/core';
 import {Observable} from "rxjs/Observable";
 
-import {BreakPoint} from './breakpoints/break-point';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 import {BreakPointsProvider} from "./providers/break-points-provider";
 
 
 import {MatchMedia} from './match-media';
 import {MediaMonitor} from './media-monitor';
-import {MatchMediaObservableProvider} from './providers/match-media-provider';
+import {MatchMediaObservableProvider} from './providers/match-media-observable-provider';
 
 /**
  * *****************************************************************

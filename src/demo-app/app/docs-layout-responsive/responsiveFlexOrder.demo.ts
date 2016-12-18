@@ -3,7 +3,7 @@ import {Subscription} from "rxjs";
 import 'rxjs/add/operator/filter';
 
 import {MediaChange} from "../../../lib/media-query/media-change";
-import {MatchMediaObservable} from "../../../lib/media-query/providers/match-media-provider";
+import {MatchMediaObservable} from "../../../lib/media-query/match-media";
 
 @Component({
   selector: 'demo-responsive-flex-order',

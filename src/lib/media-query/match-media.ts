@@ -1,3 +1,4 @@
+import {OpaqueToken} from '@angular/core';
 import {Injectable, NgZone} from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -29,6 +30,15 @@ export interface MediaQueryList {
   removeListener(listener: MediaQueryListListener): void;
 }
 
+/**
+ *  Opaque Token unique to the flex-layout library.
+ *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
+ *  provider.
+ *
+ *  @see ./providers/match-media-observable-provider.ts
+ */
+export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fx-observable-media-query');
+
 
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
@@ -37,11 +47,11 @@ export interface MediaQueryList {
  */
 @Injectable()
 export class MatchMedia {
-  private _registry: Map<string, MediaQueryList>;
-  private _source: BehaviorSubject<MediaChange>;
-  private _observable$: Observable<MediaChange>;
+  protected _registry: Map<string, MediaQueryList>;
+  protected _source: BehaviorSubject<MediaChange>;
+  protected _observable$: Observable<MediaChange>;
 
-  constructor(private _zone: NgZone) {
+  constructor(protected _zone: NgZone) {
     this._registry = new Map<string, MediaQueryList>( );
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
@@ -105,7 +115,7 @@ export class MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  private _buildMQL(query: string): MediaQueryList {
+  protected  _buildMQL(query: string): MediaQueryList {
     prepareQueryCSS(query);
 
     let canListen = !!(<any>window).matchMedia('all').addListener;

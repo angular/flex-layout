@@ -7,17 +7,16 @@ import 'rxjs/add/operator/filter';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 
 import {MediaChange} from '../media-change';
-import {MatchMedia} from '../match-media';
+import {MatchMedia, MatchMediaObservable} from '../match-media';
 import {mergeAlias} from '../../utils/add-alias';
 import {BreakPoint} from '../breakpoints/break-point';
 
-/**
- *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
- *  provider (see below).
- */
-export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fx-observable-media-query');
 
+/**
+ * This factory uses the BreakPoint Registry only to inject alias information into the raw MediaChange
+ * notification. For custom mediaQuery notifications, alias information will not be injected and those
+ * fields will be ''.
+ */
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
     let onlyActivations = function(change : MediaChange) { return change.matches === true; };
     let findBreakpoint = function(mediaQuery:string):BreakPoint { return breakpoints.findByQuery(mediaQuery); };
