@@ -1,5 +1,9 @@
+import { TestBed, inject, async } from '@angular/core/testing';
+
 import {BreakPointRegistry } from './break-point-registry';
+import {BREAKPOINTS} from '../providers/break-points-provider';
 import {RAW_DEFAULTS} from "../providers/break-points-provider";
+import {BreakPoint} from './break-point';
 
 describe('break-points', () => {
   let breakPoints : BreakPointRegistry;
@@ -20,5 +24,25 @@ describe('break-points', () => {
 
     expect(breakPoints.overlappings.length).toBe(4);
   });
+
+  describe('overridden with custom provider', () =>{
+     const CUSTOM_BPS : BreakPoint[] = [
+       { alias: 'ab',  suffix: 'Ab', mediaQuery: '(max-width: 297px)', overlapping: false },
+       { alias: 'cd',  suffix: 'Cd', mediaQuery: '(min-width: 298px) and (max-width:414px', overlapping: false }
+     ];
+
+     beforeEach(()=> {
+         // Configure testbed to prepare services
+         TestBed.configureTestingModule({
+           providers: [ { provide: BREAKPOINTS, useValue: CUSTOM_BPS } ]
+         });
+       });
+
+       it('has the custom breakpoints', async(inject( [BREAKPOINTS], (breakPoints) => {
+         expect( breakPoints.length ).toEqual(CUSTOM_BPS.length);
+         expect( breakPoints[0].alias ).toEqual('ab');
+         expect( breakPoints[breakPoints.length - 1].suffix ).toEqual('Cd');
+       })));
+   })
 
 });
