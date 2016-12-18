@@ -63,8 +63,7 @@ export class MediaMonitor {
    */
   observe(alias?: string): Observable<MediaChange> {
     let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-    let hasAlias = (change : MediaChange) => (change.mqAlias !== "");
-
+    let hasAlias = (change : MediaChange) => (bp ? change.mqAlias !== "" : true);
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     return this._matchMedia
       .observe( bp ? bp.mediaQuery : alias )
