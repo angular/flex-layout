@@ -9,7 +9,7 @@ import {BreakPointsProvider} from '../../media-query/providers/break-points-prov
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
-fdescribe('layout directive', () => {
+describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
 
   beforeEach(async(() => {
@@ -90,6 +90,13 @@ fdescribe('layout directive', () => {
     it('should add responsive styles when configured', () =>{
       let fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
       let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'display'         : 'flex',
+        'flex-direction'  : 'row',
+        'box-sizing'      : 'border-box'
+      });
 
       matchMedia.activate('md');
       fixture.detectChanges();
