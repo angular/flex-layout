@@ -149,6 +149,9 @@ describe('media-monitor', () => {
 
       matchMedia.activate( queryXs );
       expect( deactivationCount ).toEqual(1);
+
+      matchMedia.activate( queryGtMd );
+      expect( deactivationCount ).toEqual(2);
     } finally {
       subscription.unsubscribe();
     }

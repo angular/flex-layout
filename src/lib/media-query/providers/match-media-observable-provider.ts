@@ -16,6 +16,8 @@ import {BreakPoint} from '../breakpoints/break-point';
  * This factory uses the BreakPoint Registry only to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and those
  * fields will be ''.
+ *
+ * !! Only activation mediaChange notifications are publised by the MatchMediaObservable
  */
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
     let onlyActivations = function(change : MediaChange) { return change.matches === true; };

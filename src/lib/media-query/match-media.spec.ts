@@ -20,7 +20,11 @@ describe('match-media', () => {
   beforeEach(()=> {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      providers: [ {provide: MatchMedia, useClass:MockMatchMedia }]
+      providers: [
+        BreakPointRegistry,           // Registry of known/used BreakPoint(s)
+        BreakPointsProvider,          // Supports developer overrides of list of known breakpoints
+        {provide: MatchMedia, useClass:MockMatchMedia }
+        ]
     });
   });
 
@@ -108,7 +112,7 @@ describe('match-media', () => {
 describe('match-media-observable', () => {
   let breakPoints : BreakPointRegistry;
   let matchMedia : MockMatchMedia;
-  let media$ : Observable<MediaChange>;
+  let mediaQuery$ : Observable<MediaChange>;
 
   beforeEach(()=> {
     // Configure testbed to prepare services
@@ -128,7 +132,7 @@ describe('match-media-observable', () => {
     (_media$_, _matchMedia_, _breakPoints_) => {
       matchMedia = _matchMedia_;      // inject only to manually activate mediaQuery ranges
       breakPoints = _breakPoints_;
-      media$ = _media$_;
+      mediaQuery$ = _media$_;
 
       // Quick register all breakpoint mediaQueries
       breakPoints.items.forEach( (bp:BreakPoint) =>{
@@ -141,7 +145,7 @@ describe('match-media-observable', () => {
     let current : MediaChange;
     let bp = breakPoints.findByAlias('md');
     matchMedia.activate(bp.mediaQuery);
-    let subscription = media$.subscribe((change:MediaChange) =>{
+    let subscription = mediaQuery$.subscribe((change:MediaChange) =>{
       current = change;
     });
 
@@ -152,7 +156,7 @@ describe('match-media-observable', () => {
 
   it('can observe the initial, default activation for mediaQuery == "all". ', () => {
     let current : MediaChange;
-    let subscription = media$.subscribe((change:MediaChange) =>{
+    let subscription = mediaQuery$.subscribe((change:MediaChange) =>{
       current = change;
     });
     expect( current.mediaQuery ).toEqual("all");
@@ -163,7 +167,7 @@ describe('match-media-observable', () => {
   it('can observe custom mediaQuery ranges', () => {
     let current : MediaChange;
     let customQuery = "screen and (min-width: 610px) and (max-width: 620px";
-    let subscription = media$.subscribe((change:MediaChange) =>{
+    let subscription = mediaQuery$.subscribe((change:MediaChange) =>{
       current = change;
     });
 
@@ -177,7 +181,7 @@ describe('match-media-observable', () => {
   it('can observe registered breakpoint activations', () => {
     let current : MediaChange;
     let bp = breakPoints.findByAlias('md');
-    let subscription = media$.subscribe((change:MediaChange) =>{
+    let subscription = mediaQuery$.subscribe((change:MediaChange) =>{
       current = change;
     });
 
@@ -188,18 +192,25 @@ describe('match-media-observable', () => {
     subscription.unsubscribe();
   });
 
+  /**
+   * Only the MatchMediaObservable ignores de-activations;
+   * MediaMonitor and MatchMedia report both activations and de-activations!
+   */
   it('ignores mediaQuery de-activations', () => {
     let current : MediaChange;
-    let activationCount = 0, deactivationCount = 0;
-
-    matchMedia.activate(breakPoints.findByAlias('md').mediaQuery);
-    let subscription = media$.subscribe((change:MediaChange) =>{
+    let activationCount = 0;
+    let deactivationCount = 0;
+    let subscription = mediaQuery$.subscribe((change:MediaChange) =>{
       if ( change.matches ) ++activationCount;
       else ++deactivationCount;
     });
 
     matchMedia.activate(breakPoints.findByAlias('md').mediaQuery);
-    expect( activationCount ).toEqual(2);
+    matchMedia.activate(breakPoints.findByAlias('gt-md').mediaQuery);
+
+    // "all" mediaQuery is already active; total count should be (3)
+
+    expect( activationCount ).toEqual(3);
     expect( deactivationCount ).toEqual(0);
 
     subscription.unsubscribe();
