@@ -10,9 +10,17 @@ import {mergeAlias} from '../utils/add-alias';
 
 
 /**
- * MediaMonitor uses the MatchMedia service to observe mediaQuery changes; which are published as
- * MediaChange notifications. These notifications will be performed within the
+ * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
+ * deactivations). These changes are are published as MediaChange notifications.
+ *
+ * Note: all notifications will be performed within the
  * ng Zone to trigger change detections and component updates.
+ *
+ * It is the MediaMonitor that:
+ *  - auto registers all known breakpoints
+ *  - injects alias information into each raw MediaChange event
+ *  - provides accessor to the currently active BreakPoint
+ *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  */
 @Injectable()
 export class MediaMonitor {
@@ -59,7 +67,7 @@ export class MediaMonitor {
   /**
    * External observers can watch for all (or a specific) mql changes.
    * If specific breakpoint is observed, only return *activated* events
-   * otherwise return all events for both activated + deactivated changes.
+   * otherwise return all events for BOTH activated + deactivated changes.
    */
   observe(alias?: string): Observable<MediaChange> {
     let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);

@@ -44,6 +44,8 @@ export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fx-observable-
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
  * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
  * ng Zone to trigger change detections and component updates.
+ *
+ * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
 @Injectable()
 export class MatchMedia {

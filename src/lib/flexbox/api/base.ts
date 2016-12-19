@@ -118,7 +118,9 @@ export abstract class BaseFxDirective implements OnDestroy {
                   onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
     let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
     return this._mqActivation = new ResponsiveActivation(
-        this, keyOptions, this._mediaMonitor, onMediaQueryChange
+      keyOptions,
+      this._mediaMonitor,
+      (change) => onMediaQueryChange.call(this,  change)
     );
   }
 

@@ -46,7 +46,6 @@ export class ResponsiveActivation {
    * Constructor
    */
   constructor(
-      private _directive: Directive,
       private _options : KeyOptions,
       private _mediaMonitor: MediaMonitor,
       private _onMediaChanges : MediaQuerySubscriber )
@@ -143,7 +142,7 @@ export class ResponsiveActivation {
     if ( change.property == this._options.baseKey ) {
       change.value = this._calculateActivatedValue(change);
 
-      this._onMediaChanges.call(this._directive, change);
+      this._onMediaChanges(change);
     }
   }
 
