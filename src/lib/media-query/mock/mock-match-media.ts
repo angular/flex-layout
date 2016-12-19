@@ -29,6 +29,8 @@ export class MockMatchMedia extends MatchMedia {
    * Feature to support manual, simulated activation of a mediaQuery.
    */
   activate(mediaQuery:string, useOverlaps:boolean = false):boolean {
+    mediaQuery = this._validateQuery(mediaQuery);
+
     if ( !this.isActive(mediaQuery) ) {
       this._deactivateAll();
 
@@ -39,6 +41,16 @@ export class MockMatchMedia extends MatchMedia {
     return this.hasActivated;
   }
 
+  /**
+   * Converts an optional mediaQuery alias to a specific, valid mediaQuery
+   */
+  _validateQuery( queryOrAlias ) {
+    let bp = this._breakpoints.findByAlias( queryOrAlias );
+    if ( bp ) {
+      queryOrAlias = bp.mediaQuery;
+    }
+    return queryOrAlias;
+  }
 
   /**
    * Manually activate any overlapping mediaQueries to simulate

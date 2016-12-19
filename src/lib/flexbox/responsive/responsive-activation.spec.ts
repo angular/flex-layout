@@ -76,6 +76,12 @@ describe('responsive-activation', () => {
         expect( responder.activatedInputKey ).toEqual("layout");
         expect( responder.activatedInput ).toEqual("row");
 
+        matchMedia.activate(findQuery('gt-md'));
+
+        expect( value ).toBeUndefined();
+        expect( responder.activatedInputKey ).toEqual("layout");
+        expect( responder.activatedInput ).toEqual("row");
+
       } finally {
         responder.destroy();
       }
@@ -114,7 +120,7 @@ describe('responsive-activation', () => {
         let onMediaChange = (changes:MediaChange) => value = changes.value;
         let responder = buildResponder( "layout", "row", onMediaChange, {
             'layout'   : 'row',
-            'layoutXs' : 'column',          // define trigger to 'xs' mediaQuery
+            'layoutXs' : 'column',          // define input value link to 'xs' mediaQuery
           }
         );
 
