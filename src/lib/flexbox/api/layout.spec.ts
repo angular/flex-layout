@@ -9,12 +9,12 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {FlexLayoutModule} from '../_module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectTemplate, expectNativeEl} from '../../utils/testing/helpers';
+import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../utils/testing/helpers';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
-  let expectTemplate = makeExpectTemplate(()=> TestLayoutComponent);
+  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -36,40 +36,42 @@ describe('layout directive', () => {
   describe('with static features', () => {
 
     it('should add correct styles for default `fx-layout` usage', () => {
-      expectTemplate(`<div fx-layout></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       });
     });
     it('should add correct styles for `fx-layout="row"` usage', () => {
-      expectTemplate(`<div fx-layout="row"></div>`).toHaveCssStyle({
+      expectDOMFrom(`
+        <div fx-layout="row"></div>
+      `).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       });
     });
     it('should add correct styles for `fx-layout="column"` usage', () => {
-      expectTemplate(`<div fx-layout="column"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout="column"></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
     it('should add correct styles for binding `[fx-layout]="direction"` usage', () => {
-      expectTemplate(`<div [fx-layout]="direction"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div [fx-layout]="direction"></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
     it('should use default flex-direction for invalid value `fx-layout="invalid"` usage', () => {
-      expectTemplate(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
         'flex-direction': 'row'
       });
     });
     it('should use default flex-direction for invalid binding value `[fx-layout]="direction"` usage', () => {
-      expectTemplate(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
+      expectDOMFrom(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
           .toHaveCssStyle({
             'flex-direction': 'row',
           });

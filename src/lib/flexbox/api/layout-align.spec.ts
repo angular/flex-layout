@@ -10,12 +10,12 @@ import {FlexLayoutModule} from '../_module';
 
 import {extendObject} from '../../utils/object-extend';
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectTemplate, expectNativeEl} from '../../utils/testing/helpers';
+import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../utils/testing/helpers';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
-  let expectTemplate = makeExpectTemplate(()=> TestLayoutComponent);
+  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -37,21 +37,21 @@ describe('layout-align directive', () => {
   describe('with static features', () => {
 
     it('should add work without a peer `fx-layout` directive', () => {
-      expectTemplate(`<div fx-layout-align></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout-align></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       });
     });
     it('should add correct styles for default `fx-layout-align` usage', () => {
-      expectTemplate(`<div fx-layout-align></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout-align></div>`).toHaveCssStyle({
         'justify-content' : 'flex-start',
         'align-items' : 'stretch',
         'align-content' : 'stretch'
       });
     });
     it('should add preserve fx-layout', () => {
-      expectTemplate(`<div fx-layout="column" fx-layout-align></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fx-layout="column" fx-layout-align></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box',
@@ -63,32 +63,32 @@ describe('layout-align directive', () => {
 
     describe('for "main-axis" testing', ()=>{
       it('should add correct styles for `fx-layout-align="start"` usage', () => {
-        expectTemplate(`<div fx-layout-align="start"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'flex-start' }, CROSSAXIS_DEFAULTS)
         );
       });
       it('should add correct styles for `fx-layout-align="center"` usage', () => {
-        expectTemplate(`<div fx-layout-align="center"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="center"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'center' }, CROSSAXIS_DEFAULTS)
         );
       });
       it('should add correct styles for `fx-layout-align="space-around"` usage', () => {
-        expectTemplate(`<div fx-layout-align="space-around"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="space-around"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'space-around' }, CROSSAXIS_DEFAULTS)
         );
       });
       it('should add correct styles for `fx-layout-align="space-between"` usage', () => {
-        expectTemplate(`<div fx-layout-align="space-between"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="space-between"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'space-between' }, CROSSAXIS_DEFAULTS)
         );
       });
       it('should add correct styles for `fx-layout-align="end"` usage', () => {
-        expectTemplate(`<div fx-layout-align="end"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="end"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'flex-end' }, CROSSAXIS_DEFAULTS)
         );
       });
       it('should add ignore invalid main-axis values', () => {
-        expectTemplate(`<div fx-layout-align="invalid"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="invalid"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'flex-start' }, CROSSAXIS_DEFAULTS)
         );
       });
@@ -96,7 +96,7 @@ describe('layout-align directive', () => {
 
     describe('for "cross-axis" testing', ()=>{
       it('should add correct styles for `fx-layout-align="start start"` usage', () => {
-        expectTemplate(`<div fx-layout-align="start start"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start start"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
               'align-items' : 'flex-start',
               'align-content' : 'flex-start'
@@ -104,7 +104,7 @@ describe('layout-align directive', () => {
         );
       });
       it('should add correct styles for `fx-layout-align="start baseline"` usage', () => {
-        expectTemplate(`<div fx-layout-align="start baseline"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start baseline"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
               'align-items' : 'baseline',
               'align-content' : 'stretch'
@@ -112,7 +112,7 @@ describe('layout-align directive', () => {
         );
       });
       it('should add correct styles for `fx-layout-align="start center"` usage', () => {
-        expectTemplate(`<div fx-layout-align="start center"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start center"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
               'align-items' : 'center',
               'align-content' : 'center'
@@ -120,7 +120,7 @@ describe('layout-align directive', () => {
         );
       });
       it('should add correct styles for `fx-layout-align="start end"` usage', () => {
-        expectTemplate(`<div fx-layout-align="start end"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start end"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
               'align-items' : 'flex-end',
               'align-content' : 'flex-end'
@@ -128,7 +128,7 @@ describe('layout-align directive', () => {
         );
       });
       it('should add ignore invalid cross-axis values',  () => {
-        expectTemplate(`<div fx-layout-align="start invalid"></div>`).toHaveCssStyle(
+        expectDOMFrom(`<div fx-layout-align="start invalid"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
               'align-items' : 'stretch',
               'align-content' : 'stretch'
@@ -136,13 +136,13 @@ describe('layout-align directive', () => {
         );
       });
       it('should add special styles for cross-axis `stretch`', () => {
-        expectTemplate(`<div fx-layout-align="start stretch"></div>`)
+        expectDOMFrom(`<div fx-layout-align="start stretch"></div>`)
           .toHaveCssStyle({
             'max-height' : '100%'
           });
       });
       it('should add special styles for cross-axis `stretch` when layout is `column`', () => {
-        expectTemplate(`<div fx-layout="column" fx-layout-align="end stretch"></div>`)
+        expectDOMFrom(`<div fx-layout="column" fx-layout-align="end stretch"></div>`)
           .toHaveCssStyle({
             'max-width' : '100%'
           });
@@ -237,55 +237,92 @@ describe('layout-align directive', () => {
       });
     });
 
-    xit('should fallback to default styles when the active mediaQuery change is not configured', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+    it('should fallback to default styles when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`
+         <div fx-layout
+              [fx-layout.md]="direction" 
+              fx-layout-align="center stretch" 
+              fx-layout-align.md="end stretch">
+         </div>
+       `);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content': 'center',
+        'max-height': '100%'
+      });
+
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-
-      fixture.detectChanges();
-      expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'row'
-      });
-
       matchMedia.activate('md');
+
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'column'
+        'justify-content': 'flex-end',
+        'max-width': '100%'
       });
 
-      matchMedia.activate('lg');
+      matchMedia.activate('xs');
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'row'
+        'justify-content': 'center',
+        'max-height': '100%'
       });
-
     });
-    xit('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.gt-sm="column" fx-layout.md="row"></div>`);
+
+    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`
+          <div  fx-layout 
+                fx-layout.md="column"
+                fx-layout-align="start" 
+                fx-layout-align.gt-xs="end"
+                fx-layout-align.md="center">
+          </div>
+      `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'row'
-      });
-
-      matchMedia.activate('gt-sm');
-      fixture.detectChanges();
-      expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'column'
+        'flex-direction': 'row',
+        'justify-content': 'flex-start'
       });
 
       matchMedia.activate('md');
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'row'
+        'flex-direction': 'column',
+        'justify-content': 'center'
       });
 
-      // Should fallback to value for 'gt-sm'
+      matchMedia.activate('xs');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row',
+        'justify-content': 'flex-start'
+      });
+
+      // Should fallback to value for 'gt-xs' or default
       matchMedia.activate('lg', true);
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex-direction': 'column'
+        'flex-direction': 'row',
+        'justify-content': 'flex-end'
       });
+
+      matchMedia.activate('xs');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row',
+        'justify-content': 'flex-start'
+      });
+
+      // Should fallback to value for 'gt-xs' or default
+      matchMedia.activate('gt-lg', true);
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row',
+        'justify-content': 'flex-end'
+      });
+
     });
 
   });
