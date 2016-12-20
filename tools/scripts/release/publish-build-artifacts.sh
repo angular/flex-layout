@@ -17,7 +17,7 @@ commitAuthorEmail=$(git --no-pager show -s --format='%ae' HEAD)
 commitMessage=$(git log --oneline -n 1)
 
 repoName="flex-layout-builds"
-repoUrl="http://github.com/ThomasBurleson/$repoName.git"
+repoUrl="https://github.com/angular/$repoName.git"
 repoDir="tmp/$repoName"
 
 # Create a release of the current repository.
