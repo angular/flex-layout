@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["index.ts"],"names":[],"mappings":"AAAA,cAAc,iBAAiB,CAAC;AAChC,cAAc,iBAAiB,CAAC;AAChC,cAAc,aAAa,CAAC","sourcesContent":["export * from './auto-prefixer';\nexport * from './object-extend';\nexport * from './add-alias';\n\ninterface DecoratorInvocation {\n  type: Function;\n  args?: any[];\n}\n"]}

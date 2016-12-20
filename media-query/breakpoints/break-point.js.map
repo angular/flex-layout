@@ -1,0 +1,1 @@
+{"version":3,"file":"break-point.js","sourceRoot":"","sources":["break-point.ts"],"names":[],"mappings":"","sourcesContent":["export interface BreakPoint {\n  mediaQuery: string;\n  overlapping: boolean;\n  suffix: string;\n  alias: string;\n}\n\ninterface DecoratorInvocation {\n  type: Function;\n  args?: any[];\n}\n"]}
