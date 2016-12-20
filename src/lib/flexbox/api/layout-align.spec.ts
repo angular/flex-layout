@@ -173,6 +173,123 @@ describe('layout-align directive', () => {
 
   });
 
+  describe('with responsive features', () => {
+
+    it('should ignore responsive changes when not configured', () => {
+      fixture = createTestComponent(`<div fx-layout-align="center center"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      matchMedia.activate('md');
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content' : 'center',
+        'align-items' : 'center',
+        'align-content' : 'center'
+      });
+    });
+
+    it('should add responsive styles when configured', () => {
+      fixture = createTestComponent(`
+        <div fx-layout-align="center center" fx-layout-align.md="end"></div>
+      `);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content' : 'center',
+        'align-items' : 'center',
+        'align-content' : 'center'
+      });
+
+      matchMedia.activate('md');
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content' : 'flex-end',
+        'align-items' : 'stretch',
+        'align-content' : 'stretch'
+      });
+    });
+
+    it('should update responsive styles when the layout direction changes', () => {
+      fixture = createTestComponent(`
+        <div fx-layout
+             [fx-layout.md]="direction" 
+             fx-layout-align="center stretch" 
+             fx-layout-align.md="end stretch">
+        </div>
+      `);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content' : 'center',
+        'max-height' : '100%'
+      });
+
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+      matchMedia.activate('md');
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'justify-content' : 'flex-end',
+        'max-width' : '100%'
+      });
+    });
+
+    xit('should fallback to default styles when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      matchMedia.activate('lg');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+    });
+    xit('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.gt-sm="column" fx-layout.md="row"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('gt-sm');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      // Should fallback to value for 'gt-sm'
+      matchMedia.activate('lg', true);
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+    });
+
+  });
+
 });
 
 

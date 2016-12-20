@@ -111,7 +111,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     }
 
     this._applyStyleToElement(this._buildCSS(value));
-    this._allowStretching(value, this._layout || "row");
+    this._allowStretching(value, !this._layout ? "row" : this._layout);
   }
 
   /**
@@ -165,6 +165,8 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
       case 'end':
         css['align-items'] = css['align-content'] = 'flex-end';
         break;
+      default : // 'stretch'
+        break;
     }
 
     return extendObject(css, {
@@ -177,6 +179,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
 
   /**
    * Update container element to 'stretch' as needed...
+   * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
    */
   private _allowStretching(align, layout) {
     let [, cross_axis] = align.split(' ');
