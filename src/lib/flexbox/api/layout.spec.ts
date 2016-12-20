@@ -1,7 +1,9 @@
 import {customMatchers} from './matchers/custom-matchers';
+import {makeCreateTestComponent, makeExpectTemplate, expectNativeEl} from './matchers/helpers';
+
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
+import {ComponentFixture, TestBed, async } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -11,6 +13,8 @@ import {FlexLayoutModule} from '../_module';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
+  let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
+  let expectTemplate = makeExpectTemplate(()=> TestLayoutComponent);
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -224,34 +228,3 @@ export class TestLayoutComponent implements OnInit {
   ngOnInit() {
   }
 }
-
-// *****************************************************************
-// Helper functions
-// *****************************************************************
-
-function expectTemplate(template: string, key?: string, value?: any): any {
-  let fixture = createTestComponent(template);
-
-  if (key) {
-    let instance = fixture.componentInstance;
-    instance[key] = value;
-  }
-  fixture.detectChanges();
-
-  return expectNativeEl(fixture);
-}
-
-function createTestComponent(template: string): ComponentFixture<TestLayoutComponent> {
-  return TestBed
-      .overrideComponent(TestLayoutComponent, {set: {template: template}})
-      .createComponent(TestLayoutComponent);
-}
-
-function expectNativeEl(fixture: ComponentFixture<any>): any {
-  return expect(fixture.debugElement.children[0].nativeElement);
-}
-
-
-// *****************************************************************
-// *****************************************************************
-
