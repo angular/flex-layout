@@ -14,15 +14,19 @@ import {FlexOffsetDirective} from './api/flex-offset';
 import {FlexOrderDirective} from './api/flex-order';
 import {LayoutAlignDirective} from './api/layout-align';
 import {LayoutWrapDirective} from './api/layout-wrap';
-import {LayoutPaddingDirective} from './api/layout-padding';
-import {LayoutMarginDirective} from './api/layout-margin';
 import {LayoutGapDirective} from './api/layout-gap';
+
+/**
+ * Since the equivalent results are easily achieved with a css class attached to each
+ * layout child, these have been deprecated and removed from the API.
+ *
+ *  import {LayoutPaddingDirective} from './api/layout-padding';
+ *  import {LayoutMarginDirective} from './api/layout-margin';
+ */
 
 const ALL_DIRECTIVES = [
   LayoutDirective,
   LayoutWrapDirective,
-  LayoutPaddingDirective,
-  LayoutMarginDirective,
   LayoutGapDirective,
   LayoutAlignDirective,
   FlexDirective,
