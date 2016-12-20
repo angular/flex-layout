@@ -66,10 +66,13 @@ export var MockMatchMedia = (function (_super) {
         if (useOverlaps) {
             var bp = this._breakpoints.findByQuery(mediaQuery);
             switch (bp ? bp.alias : 'unknown') {
-                case "xl": this._activateByAlias('gt-lg');
-                case "lg": this._activateByAlias('gt-md');
-                case "md": this._activateByAlias('gt-sm');
-                case "sm":
+                case 'xl': this._activateByAlias('gt-lg'); // note the fall-thrus
+                case 'gt-lg':
+                case 'lg': this._activateByAlias('gt-md');
+                case 'gt-md':
+                case 'md': this._activateByAlias('gt-sm');
+                case 'gt-sm':
+                case 'sm':
                     this._activateByAlias('gt-xs');
                     break;
                 default: break;
