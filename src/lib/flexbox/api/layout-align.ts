@@ -131,9 +131,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   private _buildCSS(align) {
     let css = {}, [main_axis, cross_axis] = align.split(' ');
 
-    css['justify-content'] = 'flex-start';  // default
-    css['align-items'] = 'stretch';         // default
-    css['align-content'] = 'stretch';       // default
+    css['justify-content'] = 'flex-start';  // default main axis
+    css['align-items'] = 'stretch';         // default cross axis
+    css['align-content'] = 'stretch';       // default cross axis
 
     // Main axis
     switch (main_axis) {
@@ -166,7 +166,11 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
         break;
     }
 
-    return extendObject(css, { display : 'flex', 'flex-direction' : this._layout || "row" });
+    return extendObject(css, {
+      'display' : 'flex',
+      'flex-direction' : this._layout || "row",
+      'box-sizing' : 'border-box'
+    });
   }
 
 
