@@ -149,6 +149,34 @@ describe('layout directive', () => {
         'flex-direction': 'row'
       });
     });
+
+    it('should update styles with bindings and the active mediaQuery changes', () => {
+      fixture = createTestComponent(`
+          <div fx-layout="row"
+               [fx-layout.md]="direction">
+          </div>
+       `);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      fixture.componentInstance.direction = "row";
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+
+    });
     it('should fallback to default styles when the active mediaQuery change is not configured', () => {
       fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
