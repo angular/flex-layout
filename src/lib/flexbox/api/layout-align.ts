@@ -111,6 +111,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     }
 
     this._applyStyleToElement(this._buildCSS(value));
+    this._allowStretching(value, this._layout || "row");
   }
 
   /**
@@ -125,7 +126,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-    this._allowStretching(value, this._layout);
+    this._allowStretching(value, this._layout || "row");
   }
 
   private _buildCSS(align) {
