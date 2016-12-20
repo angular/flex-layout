@@ -28,6 +28,8 @@
   },
   "exclude": [
     "**/*.spec.*",
+    "utils/testing/custom-matchers.ts",
+    "utils/testing/helpers.ts",
     "system-config-spec.ts",
     "tsconfig-demo-app."
   ],

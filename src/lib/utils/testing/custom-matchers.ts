@@ -2,6 +2,11 @@ import {__platform_browser_private__} from '@angular/platform-browser';
 
 let getDOM = __platform_browser_private__.getDOM;
 
+/**
+ * NOTE: These custom JASMINE Matchers are used only
+ *       in the Karma/Jasmine testing for the Layout Directives
+ *       in `src/lib/flex/api`
+ */
 let customMatchers : jasmine.CustomMatcherFactories = {
 
     toHaveCssClass: function() {

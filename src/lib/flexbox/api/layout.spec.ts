@@ -1,6 +1,3 @@
-import {customMatchers} from './matchers/custom-matchers';
-import {makeCreateTestComponent, makeExpectTemplate, expectNativeEl} from './matchers/helpers';
-
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async } from '@angular/core/testing';
@@ -10,6 +7,9 @@ import {MatchMedia} from '../../media-query/match-media';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
+
+import {customMatchers} from '../../utils/testing/custom-matchers';
+import {makeCreateTestComponent, makeExpectTemplate, expectNativeEl} from '../../utils/testing/helpers';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -65,17 +65,13 @@ describe('layout directive', () => {
     });
     it('should use default flex-direction for invalid value `fx-layout="invalid"` usage', () => {
       expectTemplate(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
-        'display': 'flex',
-        'flex-direction': 'row',
-        'box-sizing': 'border-box'
+        'flex-direction': 'row'
       });
     });
     it('should use default flex-direction for invalid binding value `[fx-layout]="direction"` usage', () => {
       expectTemplate(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
           .toHaveCssStyle({
-            'display': 'flex',
             'flex-direction': 'row',
-            'box-sizing': 'border-box'
           });
     });
     it('should use update style with dynamic value changes `[fx-layout]="direction"` usage', () => {
@@ -84,9 +80,7 @@ describe('layout directive', () => {
       fixture.componentInstance.direction = "invalid";
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'display': 'flex',
         'flex-direction': 'row',
-        'box-sizing': 'border-box'
       });
 
       fixture.componentInstance.direction = "column";
