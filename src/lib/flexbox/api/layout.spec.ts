@@ -1,5 +1,5 @@
 import {customMatchers} from './matchers/custom-matchers';
-import {Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 
@@ -25,90 +25,185 @@ describe('layout directive', () => {
       ]
     })
   }));
-  afterEach(() => { fixture = null; });
+  afterEach(() => {
+    fixture = null;
+  });
 
-  it('should add correct styles for default `fx-layout` usage', () => {
-    expectTemplate(`<div fx-layout></div>`).toHaveCssStyle({
-      'display'         : 'flex',
-      'flex-direction'  : 'row',
-      'box-sizing'      : 'border-box'
-    });
-  });
-  it('should add correct styles for `fx-layout="row"` usage', () => {
-    expectTemplate(`<div fx-layout="row"></div>`).toHaveCssStyle({
-      'display'         : 'flex',
-      'flex-direction'  : 'row',
-      'box-sizing'      : 'border-box'
-    });
-  });
-  it('should add correct styles for `fx-layout="column"` usage', () => {
-    expectTemplate(`<div fx-layout="column"></div>`).toHaveCssStyle({
-      'display'         : 'flex',
-      'flex-direction'  : 'column',
-      'box-sizing'      : 'border-box'
-    });
-  });
-  it('should add correct styles for binding `[fx-layout]="direction"` usage', () => {
-    expectTemplate(`<div [fx-layout]="direction"></div>`).toHaveCssStyle({
-      'display'         : 'flex',
-      'flex-direction'  : 'column',
-      'box-sizing'      : 'border-box'
-    });
-  });
-  it('should use default flex-direction for invalid value `fx-layout="invalid"` usage', () => {
-    expectTemplate(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
-      'display'         : 'flex',
-      'flex-direction'  : 'row',
-      'box-sizing'      : 'border-box'
-    });
-  });
-  it('should use default flex-direction for invalid binding value `[fx-layout]="direction"` usage', () => {
-    expectTemplate(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
-      .toHaveCssStyle({
-        'display'         : 'flex',
-        'flex-direction'  : 'row',
-        'box-sizing'      : 'border-box'
+  describe('with static features', () => {
+
+    it('should add correct styles for default `fx-layout` usage', () => {
+      expectTemplate(`<div fx-layout></div>`).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
       });
+    });
+    it('should add correct styles for `fx-layout="row"` usage', () => {
+      expectTemplate(`<div fx-layout="row"></div>`).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
+      });
+    });
+    it('should add correct styles for `fx-layout="column"` usage', () => {
+      expectTemplate(`<div fx-layout="column"></div>`).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'column',
+        'box-sizing': 'border-box'
+      });
+    });
+    it('should add correct styles for binding `[fx-layout]="direction"` usage', () => {
+      expectTemplate(`<div [fx-layout]="direction"></div>`).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'column',
+        'box-sizing': 'border-box'
+      });
+    });
+    it('should use default flex-direction for invalid value `fx-layout="invalid"` usage', () => {
+      expectTemplate(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
+      });
+    });
+    it('should use default flex-direction for invalid binding value `[fx-layout]="direction"` usage', () => {
+      expectTemplate(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
+          .toHaveCssStyle({
+            'display': 'flex',
+            'flex-direction': 'row',
+            'box-sizing': 'border-box'
+          });
+    });
+    it('should use update style with dynamic value changes `[fx-layout]="direction"` usage', () => {
+      fixture = createTestComponent(`<div [fx-layout]="direction"></div>`);
+
+      fixture.componentInstance.direction = "invalid";
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
+      });
+
+      fixture.componentInstance.direction = "column";
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+    });
+
   });
 
   describe('with responsive features', () => {
 
-    it('should ignore responsive changes when not configured', () =>{
-      let fixture = createTestComponent(`<div fx-layout></div>`);
-      let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+    it('should ignore responsive changes when not configured', () => {
+      fixture = createTestComponent(`<div fx-layout="column"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       matchMedia.activate('md');
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveCssStyle({
-        'display'         : 'flex',
-        'flex-direction'  : 'row',
-        'box-sizing'      : 'border-box'
+        'display': 'flex',
+        'flex-direction': 'column',
+        'box-sizing': 'border-box'
       });
     });
-
-    it('should add responsive styles when configured', () =>{
-      let fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
-      let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+    it('should add responsive styles when configured', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
-        'display'         : 'flex',
-        'flex-direction'  : 'row',
-        'box-sizing'      : 'border-box'
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
       });
 
       matchMedia.activate('md');
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveCssStyle({
-        'display'         : 'flex',
-        'flex-direction'  : 'column',
-        'box-sizing'      : 'border-box'
+        'display': 'flex',
+        'flex-direction': 'column',
+        'box-sizing': 'border-box'
+      });
+    });
+    it('should update responsive styles when the active mediaQuery changes', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      matchMedia.activate('all');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+    });
+    it('should fallback to default styles when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      matchMedia.activate('lg');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+    });
+    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
+      fixture = createTestComponent(`<div fx-layout fx-layout.gt-sm="column" fx-layout.md="row"></div>`);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      matchMedia.activate('gt-sm');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+
+      matchMedia.activate('md');
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      // Should fallback to value for 'gt-sm'
+      matchMedia.activate('lg', true);
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
       });
     });
 
   });
+
 });
 
 
@@ -122,35 +217,39 @@ describe('layout directive', () => {
 })
 export class TestLayoutComponent implements OnInit {
   direction = "column";
-  constructor() {  }
-  ngOnInit() { }
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
 }
 
 // *****************************************************************
 // Helper functions
 // *****************************************************************
 
-  function expectTemplate(template:string, key?:string, value?:any) : any {
-    let fixture = createTestComponent(template);
+function expectTemplate(template: string, key?: string, value?: any): any {
+  let fixture = createTestComponent(template);
 
-    if ( key ) {
-      let instance = fixture.componentInstance;
-      instance[key] = value;
-    }
-    fixture.detectChanges();
-
-    return expectNativeEl(fixture);
+  if (key) {
+    let instance = fixture.componentInstance;
+    instance[key] = value;
   }
+  fixture.detectChanges();
 
-  function createTestComponent(template: string): ComponentFixture<TestLayoutComponent> {
-    return TestBed
+  return expectNativeEl(fixture);
+}
+
+function createTestComponent(template: string): ComponentFixture<TestLayoutComponent> {
+  return TestBed
       .overrideComponent(TestLayoutComponent, {set: {template: template}})
       .createComponent(TestLayoutComponent);
-  }
+}
 
-  function expectNativeEl(fixture: ComponentFixture<any>): any {
-    return expect(fixture.debugElement.children[0].nativeElement);
-  }
+function expectNativeEl(fixture: ComponentFixture<any>): any {
+  return expect(fixture.debugElement.children[0].nativeElement);
+}
 
 
 // *****************************************************************
