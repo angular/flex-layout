@@ -95,10 +95,10 @@ export var MediaMonitor = (function () {
         { type: Injectable },
     ];
     /** @nocollapse */
-    MediaMonitor.ctorParameters = [
+    MediaMonitor.ctorParameters = function () { return [
         { type: BreakPointRegistry, },
         { type: MatchMedia, },
-    ];
+    ]; };
     return MediaMonitor;
 }());
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/media-monitor.js.map

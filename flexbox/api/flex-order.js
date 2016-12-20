@@ -114,11 +114,11 @@ export var FlexOrderDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-flex-order],\n  [fx-flex-order.xs]\n  [fx-flex-order.gt-xs],\n  [fx-flex-order.sm],\n  [fx-flex-order.gt-sm]\n  [fx-flex-order.md],\n  [fx-flex-order.gt-md]\n  [fx-flex-order.lg],\n  [fx-flex-order.gt-lg],\n  [fx-flex-order.xl]\n" },] },
     ];
     /** @nocollapse */
-    FlexOrderDirective.ctorParameters = [
+    FlexOrderDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     FlexOrderDirective.propDecorators = {
         'order': [{ type: Input, args: ['fx-flex-order',] },],
         'orderXs': [{ type: Input, args: ['fx-flex-order.xs',] },],

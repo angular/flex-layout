@@ -161,13 +161,13 @@ export var ShowDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-show],\n  [fx-show.xs]\n  [fx-show.gt-xs],\n  [fx-show.sm],\n  [fx-show.gt-sm]\n  [fx-show.md],\n  [fx-show.gt-md]\n  [fx-show.lg],\n  [fx-show.gt-lg],\n  [fx-show.xl]\n" },] },
     ];
     /** @nocollapse */
-    ShowDirective.ctorParameters = [
+    ShowDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
         { type: undefined, decorators: [{ type: Inject, args: [forwardRef(function () { return HideDirective; }),] }, { type: Optional }, { type: Self },] },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     ShowDirective.propDecorators = {
         'show': [{ type: Input, args: ['fx-show',] },],
         'showXs': [{ type: Input, args: ['fx-show.xs',] },],

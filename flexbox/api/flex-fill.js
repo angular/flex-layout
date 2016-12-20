@@ -31,11 +31,11 @@ export var FlexFillDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-fill],\n  [fx-fill.xs]\n  [fx-fill.gt-xs],\n  [fx-fill.sm],\n  [fx-fill.gt-sm]\n  [fx-fill.md],\n  [fx-fill.gt-md]\n  [fx-fill.lg],\n  [fx-fill.gt-lg],\n  [fx-fill.xl]\n" },] },
     ];
     /** @nocollapse */
-    FlexFillDirective.ctorParameters = [
+    FlexFillDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     return FlexFillDirective;
 }(BaseFxDirective));
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-fill.js.map

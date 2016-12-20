@@ -199,12 +199,12 @@ export var LayoutAlignDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-layout-align],\n  [fx-layout-align.xs]\n  [fx-layout-align.gt-xs],\n  [fx-layout-align.sm],\n  [fx-layout-align.gt-sm]\n  [fx-layout-align.md],\n  [fx-layout-align.gt-md]\n  [fx-layout-align.lg],\n  [fx-layout-align.gt-lg],\n  [fx-layout-align.xl]\n" },] },
     ];
     /** @nocollapse */
-    LayoutAlignDirective.ctorParameters = [
+    LayoutAlignDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    ];
+    ]; };
     LayoutAlignDirective.propDecorators = {
         'align': [{ type: Input, args: ['fx-layout-align',] },],
         'alignXs': [{ type: Input, args: ['fx-layout-align.xs',] },],

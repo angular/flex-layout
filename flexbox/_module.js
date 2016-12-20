@@ -52,7 +52,7 @@ export var FlexLayoutModule = (function () {
                 },] },
     ];
     /** @nocollapse */
-    FlexLayoutModule.ctorParameters = [];
+    FlexLayoutModule.ctorParameters = function () { return []; };
     return FlexLayoutModule;
 }());
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/_module.js.map

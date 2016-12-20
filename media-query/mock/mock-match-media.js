@@ -135,10 +135,10 @@ export var MockMatchMedia = (function (_super) {
         { type: Injectable },
     ];
     /** @nocollapse */
-    MockMatchMedia.ctorParameters = [
+    MockMatchMedia.ctorParameters = function () { return [
         { type: NgZone, },
         { type: BreakPointRegistry, },
-    ];
+    ]; };
     return MockMatchMedia;
 }(MatchMedia));
 /**

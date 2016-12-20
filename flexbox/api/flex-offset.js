@@ -115,11 +115,11 @@ export var FlexOffsetDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-flex-offset],\n  [fx-flex-offset.xs]\n  [fx-flex-offset.gt-xs],\n  [fx-flex-offset.sm],\n  [fx-flex-offset.gt-sm]\n  [fx-flex-offset.md],\n  [fx-flex-offset.gt-md]\n  [fx-flex-offset.lg],\n  [fx-flex-offset.gt-lg],\n  [fx-flex-offset.xl]\n" },] },
     ];
     /** @nocollapse */
-    FlexOffsetDirective.ctorParameters = [
+    FlexOffsetDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     FlexOffsetDirective.propDecorators = {
         'offset': [{ type: Input, args: ['fx-flex-offset',] },],
         'offsetXs': [{ type: Input, args: ['fx-flex-offset.xs',] },],

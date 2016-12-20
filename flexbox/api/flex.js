@@ -250,13 +250,13 @@ export var FlexDirective = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    FlexDirective.ctorParameters = [
+    FlexDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
         { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    ];
+    ]; };
     FlexDirective.propDecorators = {
         'flex': [{ type: Input, args: ['fx-flex',] },],
         'shrink': [{ type: Input, args: ['fx-shrink',] },],

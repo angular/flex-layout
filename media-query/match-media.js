@@ -92,9 +92,9 @@ export var MatchMedia = (function () {
         { type: Injectable },
     ];
     /** @nocollapse */
-    MatchMedia.ctorParameters = [
+    MatchMedia.ctorParameters = function () { return [
         { type: NgZone, },
-    ];
+    ]; };
     return MatchMedia;
 }());
 /**

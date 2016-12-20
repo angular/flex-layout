@@ -67,9 +67,9 @@ export var BreakPointRegistry = (function () {
         { type: Injectable },
     ];
     /** @nocollapse */
-    BreakPointRegistry.ctorParameters = [
+    BreakPointRegistry.ctorParameters = function () { return [
         { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
-    ];
+    ]; };
     return BreakPointRegistry;
 }());
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-point-registry.js.map

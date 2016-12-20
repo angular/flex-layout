@@ -116,11 +116,11 @@ export var LayoutGapDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-layout-gap],\n  [fx-layout-gap.xs]\n  [fx-layout-gap.gt-xs],\n  [fx-layout-gap.sm],\n  [fx-layout-gap.gt-sm]\n  [fx-layout-gap.md],\n  [fx-layout-gap.gt-md]\n  [fx-layout-gap.lg],\n  [fx-layout-gap.gt-lg],\n  [fx-layout-gap.xl]\n" },] },
     ];
     /** @nocollapse */
-    LayoutGapDirective.ctorParameters = [
+    LayoutGapDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     LayoutGapDirective.propDecorators = {
         'gap': [{ type: Input, args: ['fx-layout-gap',] },],
         'gapXs': [{ type: Input, args: ['fx-layout-gap.xs',] },],

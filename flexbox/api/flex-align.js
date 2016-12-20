@@ -148,11 +148,11 @@ export var FlexAlignDirective = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    FlexAlignDirective.ctorParameters = [
+    FlexAlignDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     FlexAlignDirective.propDecorators = {
         'align': [{ type: Input, args: ['fx-flex-align',] },],
         'alignXs': [{ type: Input, args: ['fx-flex-align.xs',] },],

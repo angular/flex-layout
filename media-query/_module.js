@@ -29,7 +29,7 @@ export var MediaQueriesModule = (function () {
                 },] },
     ];
     /** @nocollapse */
-    MediaQueriesModule.ctorParameters = [];
+    MediaQueriesModule.ctorParameters = function () { return []; };
     return MediaQueriesModule;
 }());
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/_module.js.map

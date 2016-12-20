@@ -156,12 +156,12 @@ export var LayoutWrapDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-layout-wrap],\n  [fx-layout-wrap.xs]\n  [fx-layout-wrap.gt-xs],\n  [fx-layout-wrap.sm],\n  [fx-layout-wrap.gt-sm]\n  [fx-layout-wrap.md],\n  [fx-layout-wrap.gt-md]\n  [fx-layout-wrap.lg],\n  [fx-layout-wrap.gt-lg],\n  [fx-layout-wrap.xl]\n" },] },
     ];
     /** @nocollapse */
-    LayoutWrapDirective.ctorParameters = [
+    LayoutWrapDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    ];
+    ]; };
     LayoutWrapDirective.propDecorators = {
         'wrap': [{ type: Input, args: ['fx-layout-wrap',] },],
         'wrapXs': [{ type: Input, args: ['fx-layout-wrap.xs',] },],

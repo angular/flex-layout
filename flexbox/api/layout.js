@@ -150,11 +150,11 @@ export var LayoutDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-layout],\n  [fx-layout.xs]\n  [fx-layout.gt-xs],\n  [fx-layout.sm],\n  [fx-layout.gt-sm]\n  [fx-layout.md],\n  [fx-layout.gt-md]\n  [fx-layout.lg],\n  [fx-layout.gt-lg],\n  [fx-layout.xl]\n" },] },
     ];
     /** @nocollapse */
-    LayoutDirective.ctorParameters = [
+    LayoutDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     LayoutDirective.propDecorators = {
         'layout': [{ type: Input, args: ['fx-layout',] },],
         'layoutXs': [{ type: Input, args: ['fx-layout.xs',] },],

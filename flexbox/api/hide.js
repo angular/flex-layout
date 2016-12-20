@@ -166,13 +166,13 @@ export var HideDirective = (function (_super) {
         { type: Directive, args: [{ selector: "\n  [fx-hide],\n  [fx-hide.xs]\n  [fx-hide.gt-xs],\n  [fx-hide.sm],\n  [fx-hide.gt-sm]\n  [fx-hide.md],\n  [fx-hide.gt-md]\n  [fx-hide.lg],\n  [fx-hide.gt-lg],\n  [fx-hide.xl]\n" },] },
     ];
     /** @nocollapse */
-    HideDirective.ctorParameters = [
+    HideDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
         { type: ShowDirective, decorators: [{ type: Optional }, { type: Self },] },
         { type: ElementRef, },
         { type: Renderer, },
-    ];
+    ]; };
     HideDirective.propDecorators = {
         'hide': [{ type: Input, args: ['fx-hide',] },],
         'hideXs': [{ type: Input, args: ['fx-hide.xs',] },],
