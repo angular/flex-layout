@@ -1453,7 +1453,7 @@ var FlexDirective = (function (_super) {
      * Used as a handler for layout change events from the parent flex container.
      */
     FlexDirective.prototype._onLayoutChange = function (direction) {
-        this._layout = direction || this._layout;
+        this._layout = direction || this._layout || "row";
         this._updateStyle();
     };
     FlexDirective.prototype._updateStyle = function (value) {
