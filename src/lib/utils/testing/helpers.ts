@@ -1,5 +1,7 @@
-import {Type} from '@angular/core';
+import {Type, DebugElement} from '@angular/core';
 import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {By} from '@angular/platform-browser';
+import any = jasmine.any;
 
 export type ComponentClazzFn = () => Type<any>;
 
@@ -48,6 +50,37 @@ export function makeCreateTestComponent(getClass:ComponentClazzFn) {
   };
 }
 
+/**
+ *
+ */
 export function expectNativeEl(fixture: ComponentFixture<any>): any {
   return expect(fixture.debugElement.children[0].nativeElement);
 }
+
+/**
+ * With the specified Component Type and template,
+ * create a component and perform a CSS query to find the nativeElement
+ * associated with that query selector.
+ */
+export function makeExpectDOMForQuery(getClass:ComponentClazzFn){
+  let createTestComponent;
+
+  // Return actual `expectTemplate()` function
+  return function expectDomForQuery(template:string, selector:string) : any {
+    if ( !createTestComponent ) {
+      createTestComponent = makeCreateTestComponent(getClass);
+    }
+
+    let fixture = createTestComponent(template);
+        fixture.detectChanges();
+
+    return expect( queryFor(fixture,selector).nativeElement );
+  };
+}
+
+
+export function  queryFor(fixture:ComponentFixture<any>, selector:string):any {
+  return fixture.debugElement.query(By.css(selector))
+}
+
+

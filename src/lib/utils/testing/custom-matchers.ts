@@ -1,7 +1,48 @@
 import {__platform_browser_private__} from '@angular/platform-browser';
 
-let getDOM = __platform_browser_private__.getDOM;
+declare var global: any;
 
+const getDOM = __platform_browser_private__.getDOM;
+const _global = <any>(typeof window === 'undefined' ? global : window);
+
+export const expect: (actual: any) => NgMatchers = <any> _global.expect;
+
+/**
+ * Jasmine matchers that check Angular specific conditions.
+ */
+export interface NgMatchers extends jasmine.Matchers {
+  /**
+   * Expect the element to have exactly the given text.
+   *
+   * ## Example
+   *
+   * {@example testing/ts/matchers.ts region='toHaveText'}
+   */
+  toHaveText(expected: string): boolean;
+
+  /**
+   * Expect the element to have the given CSS class.
+   *
+   * ## Example
+   *
+   * {@example testing/ts/matchers.ts region='toHaveCssClass'}
+   */
+  toHaveCssClass(expected: string): boolean;
+
+  /**
+   * Expect the element to have the given CSS styles.
+   *
+   * ## Example
+   *
+   * {@example testing/ts/matchers.ts region='toHaveCssStyle'}
+   */
+  toHaveCssStyle(expected: {[k: string]: string}|string): boolean;
+
+  /**
+   * Invert the matchers.
+   */
+  not: NgMatchers;
+}
 /**
  * NOTE: These custom JASMINE Matchers are used only
  *       in the Karma/Jasmine testing for the Layout Directives
