@@ -23,7 +23,7 @@ import {MatchMediaObservable} from "../../../lib/media-query/match-media";
         </div>
       </md-card-content>
       <md-card-footer style="width:95%">
-        <div class="hint" >Active mediaQuery: <span style="paddifl-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
       </md-card-footer>      
     </md-card>
   `
