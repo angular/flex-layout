@@ -4,6 +4,12 @@ Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + medi
 
 The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
 
+---
+
+The sources for this package are in the [Flex-Layout](https://github.com/angular/flex-layout) repo. Please file issues and pull requests against that repo.
+
+License: MIT
+
 
 ----
 

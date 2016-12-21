@@ -3,6 +3,7 @@ import {join} from 'path';
 export const PROJECT_ROOT = join(__dirname, '../..');
 export const SOURCE_ROOT = join(PROJECT_ROOT, 'src');
 export const TEST_ROOT = join(PROJECT_ROOT, 'test');
+export const NPM_ASSETS = join(PROJECT_ROOT, 'tools/scripts/release/npm_assets');
 
 // since the demo-app uses `import {FlexLayoutModule}    from "@angular/flex-layout";`
 // we need `gulp build:lib` to deploy to `/node_modules/@angular/flex-layout`

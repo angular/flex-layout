@@ -1,7 +1,12 @@
 import {task, watch} from 'gulp';
 import * as path from 'path';
 
-import {SOURCE_ROOT, TEST_ROOT, DIST_COMPONENTS_ROOT, DIST_NODE_MODULES, PROJECT_ROOT} from '../constants';
+import {
+  PROJECT_ROOT,
+  SOURCE_ROOT, TEST_ROOT,
+  DIST_COMPONENTS_ROOT,
+  DIST_NODE_MODULES,
+  NPM_ASSETS } from '../constants';
 import {tsBuildTask, execNodeTask, copyTask, sequenceTask} from '../task_helpers';
 import {writeFileSync} from 'fs';
 
@@ -43,8 +48,9 @@ task(':build:lib:spec', tsBuildTask(libSpecDir, 'tsconfig-spec.json'));
 
 /** Copies assets (html, markdown) to build output. */
 task(':build:lib:assets', copyTask([
-  path.join(libDir, 'package.json'),
-  path.join(PROJECT_ROOT, 'README.md'),
+  path.join(NPM_ASSETS, 'package.json'),
+  path.join(NPM_ASSETS, 'README.md'),
+  path.join(PROJECT_ROOT, 'LICENSE')
 ], DIST_COMPONENTS_ROOT));
 
 /**
