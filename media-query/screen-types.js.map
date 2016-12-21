@@ -1,0 +1,1 @@
+{"version":3,"file":"screen-types.js","sourceRoot":"","sources":["screen-types.ts"],"names":[],"mappings":"AAAA;;GAEG","sourcesContent":["/**\n * Created by thomasburleson on 12/20/16.\n */\n\ninterface DecoratorInvocation {\n  type: Function;\n  args?: any[];\n}\n"]}
