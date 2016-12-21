@@ -7,49 +7,85 @@ let getDOM = __platform_browser_private__.getDOM;
  *       in the Karma/Jasmine testing for the Layout Directives
  *       in `src/lib/flex/api`
  */
-let customMatchers : jasmine.CustomMatcherFactories = {
+let customMatchers: jasmine.CustomMatcherFactories = {
 
-    toHaveCssClass: function() {
-      return {compare: buildError(false), negativeCompare: buildError(true)};
+  toEqual: function (util) {
+    return {
+      compare: function (actual: any, expected: any) {
+        return {pass: util.equals(actual, expected, [compareMap])};
+      }
+    };
 
-      function buildError(isNot: boolean) {
-        return function(actual: any, className: string) {
-          return {
-            pass: getDOM().hasClass(actual, className) == !isNot,
-            get message() {
-              return `Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}to contain the CSS class "${className}"`;
-            }
-          };
+    function compareMap(actual: any, expected: any) {
+      if (actual instanceof Map) {
+        let pass = actual.size === expected.size;
+        if (pass) {
+          actual.forEach((v: any, k: any) => {
+            pass = pass && util.equals(v, expected.get(k));
+          });
+        }
+        return pass;
+      } else {
+        return undefined;
+      }
+    }
+  },
+
+  toHaveText: function () {
+    return {
+      compare: function (actual: any, expectedText: string) {
+        const actualText = elementText(actual);
+        return {
+          pass: actualText == expectedText,
+          get message() {
+            return 'Expected ' + actualText + ' to be equal to ' + expectedText;
+          }
         };
       }
-    },
+    };
+  },
 
-    toHaveCssStyle: function() {
-      return {
-        compare: function(actual: any, styles: {[k: string]: string}|string) {
-          let allPassed: boolean;
-          if (typeof styles === 'string') {
-            allPassed = getDOM().hasStyle(actual, styles);
-          } else {
-            allPassed = Object.keys(styles).length !== 0;
-            Object.keys(styles).forEach(prop => {
-              allPassed = allPassed && getDOM().hasStyle(actual, prop, styles[prop]);
-            });
+  toHaveCssClass: function () {
+    return {compare: buildError(false), negativeCompare: buildError(true)};
+
+    function buildError(isNot: boolean) {
+      return function (actual: any, className: string) {
+        return {
+          pass: getDOM().hasClass(actual, className) == !isNot,
+          get message() {
+            return `Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}to contain the CSS class "${className}"`;
           }
-
-          return {
-            pass: allPassed,
-            get message() {
-              const expectedValueStr = typeof styles === 'string' ? styles : JSON.stringify(styles);
-              return `Expected ${actual.outerHTML} ${!allPassed ? ' ' : 'not '}to contain the
-                      CSS ${typeof styles === 'string' ? 'property' : 'styles'} "${expectedValueStr}"`;
-            }
-          };
-        }
+        };
       };
     }
+  },
 
-  };
+  toHaveCssStyle: function () {
+    return {
+      compare: function (actual: any, styles: {[k: string]: string}|string) {
+        let allPassed: boolean;
+        if (typeof styles === 'string') {
+          allPassed = getDOM().hasStyle(actual, styles);
+        } else {
+          allPassed = Object.keys(styles).length !== 0;
+          Object.keys(styles).forEach(prop => {
+            allPassed = allPassed && getDOM().hasStyle(actual, prop, styles[prop]);
+          });
+        }
+
+        return {
+          pass: allPassed,
+          get message() {
+            const expectedValueStr = typeof styles === 'string' ? styles : JSON.stringify(styles);
+            return `Expected ${actual.outerHTML} ${!allPassed ? ' ' : 'not '}to contain the
+                      CSS ${typeof styles === 'string' ? 'property' : 'styles'} "${expectedValueStr}"`;
+          }
+        };
+      }
+    };
+  }
+
+};
 
 function elementText(n: any): string {
   const hasNodes = (n: any) => {
@@ -81,4 +117,4 @@ function elementText(n: any): string {
 }
 
 
-export { customMatchers };
+export {customMatchers};
