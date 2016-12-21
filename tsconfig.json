@@ -29,7 +29,8 @@
     "node_modules",
     "dist",
     "deprecated",
-    "demos"
+    "demos",
+    "src/lib/utils/testing"
   ],
   "compileOnSave": false,
   "buildOnSave": false
