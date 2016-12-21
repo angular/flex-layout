@@ -4,19 +4,19 @@
       <md-card-content>
         <div class="containerX">
           <div class="box" style="height:200px;">
-            <div [fx-layout]="row" fx-layout-align="center center" fx-layout-gap="5px" style="height:100%;padding: 5px;">
-              <div fx-flex class="black one">    1 </div>
-              <div fx-flex class="black two_h target" [fx-flex-align]="alignTo" (click)="toggleAlignment()">  target </div>
-              <div fx-flex class="black three">  3 </div>
-              <div fx-flex class="black four_h"> 4 </div>
-              <div fx-flex class="black fives">  5 </div>
+            <div [fxLayout]="row" fxLayoutAlign="center center" fxLayoutGap="5px" style="height:100%;padding: 5px;">
+              <div fxFlex class="black one">    1 </div>
+              <div fxFlex class="black two_h target" [fxFlexAlign]="alignTo" (click)="toggleAlignment()">  target </div>
+              <div fxFlex class="black three">  3 </div>
+              <div fxFlex class="black four_h"> 4 </div>
+              <div fxFlex class="black fives">  5 </div>
             </div>
           </div>
         </div>
       </md-card-content>
       <md-card-footer style="width:95%;">
         <div class="hint" >
-          &lt;div fx-flex-align="{{ alignTo }}"&gt;
+          &lt;div fxFlexAlign="{{ alignTo }}"&gt;
         </div>
       </md-card-footer>
     </md-card>

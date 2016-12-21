@@ -20,57 +20,57 @@ import {MediaMonitor} from '../../media-query/media-monitor';
  */
 @Directive({
   selector: `
-  [fx-flex-align],
-  [fx-flex-align.xs]
-  [fx-flex-align.gt-xs],
-  [fx-flex-align.sm],
-  [fx-flex-align.gt-sm]
-  [fx-flex-align.md],
-  [fx-flex-align.gt-md]
-  [fx-flex-align.lg],
-  [fx-flex-align.gt-lg],
-  [fx-flex-align.xl]
+  [fxFlexAlign],
+  [fxFlexAlign.xs]
+  [fxFlexAlign.gt-xs],
+  [fxFlexAlign.sm],
+  [fxFlexAlign.gt-sm]
+  [fxFlexAlign.md],
+  [fxFlexAlign.gt-md]
+  [fxFlexAlign.lg],
+  [fxFlexAlign.gt-lg],
+  [fxFlexAlign.xl]
 `
 })
 export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
-  @Input('fx-flex-align')       set align(val) {
+  @Input('fxFlexAlign')       set align(val) {
     this._cacheInput('align', val);
   }
 
-  @Input('fx-flex-align.xs')    set alignXs(val) {
+  @Input('fxFlexAlign.xs')    set alignXs(val) {
     this._cacheInput('alignXs', val);
   }
 
-  @Input('fx-flex-align.gt-xs') set alignGtXs(val) {
+  @Input('fxFlexAlign.gt-xs') set alignGtXs(val) {
     this._cacheInput('alignGtXs', val);
   };
 
-  @Input('fx-flex-align.sm')    set alignSm(val) {
+  @Input('fxFlexAlign.sm')    set alignSm(val) {
     this._cacheInput('alignSm', val);
   };
 
-  @Input('fx-flex-align.gt-sm') set alignGtSm(val) {
+  @Input('fxFlexAlign.gt-sm') set alignGtSm(val) {
     this._cacheInput('alignGtSm', val);
   };
 
-  @Input('fx-flex-align.md')    set alignMd(val) {
+  @Input('fxFlexAlign.md')    set alignMd(val) {
     this._cacheInput('alignMd', val);
   };
 
-  @Input('fx-flex-align.gt-md') set alignGtMd(val) {
+  @Input('fxFlexAlign.gt-md') set alignGtMd(val) {
     this._cacheInput('alignGtMd', val);
   };
 
-  @Input('fx-flex-align.lg')    set alignLg(val) {
+  @Input('fxFlexAlign.lg')    set alignLg(val) {
     this._cacheInput('alignLg', val);
   };
 
-  @Input('fx-flex-align.gt-lg') set alignGtLg(val) {
+  @Input('fxFlexAlign.gt-lg') set alignGtLg(val) {
     this._cacheInput('alignGtLg', val);
   };
 
-  @Input('fx-flex-align.xl')    set alignXl(val) {
+  @Input('fxFlexAlign.xl')    set alignXl(val) {
     this._cacheInput('alignXl', val);
   };
 

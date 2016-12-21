@@ -19,29 +19,29 @@ import {MediaMonitor} from '../../media-query/media-monitor';
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
 @Directive({selector: `
-  [fx-flex-order],
-  [fx-flex-order.xs]
-  [fx-flex-order.gt-xs],
-  [fx-flex-order.sm],
-  [fx-flex-order.gt-sm]
-  [fx-flex-order.md],
-  [fx-flex-order.gt-md]
-  [fx-flex-order.lg],
-  [fx-flex-order.gt-lg],
-  [fx-flex-order.xl]
+  [fxFlexOrder],
+  [fxFlexOrder.xs]
+  [fxFlexOrder.gt-xs],
+  [fxFlexOrder.sm],
+  [fxFlexOrder.gt-sm]
+  [fxFlexOrder.md],
+  [fxFlexOrder.gt-md]
+  [fxFlexOrder.lg],
+  [fxFlexOrder.gt-lg],
+  [fxFlexOrder.xl]
 `})
 export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
-  @Input('fx-flex-order')       set order(val)     { this._cacheInput('order', val); }
-  @Input('fx-flex-order.xs')    set orderXs(val)   { this._cacheInput('orderXs', val); }
-  @Input('fx-flex-order.gt-xs') set orderGtXs(val) { this._cacheInput('orderGtXs', val); };
-  @Input('fx-flex-order.sm')    set orderSm(val)   { this._cacheInput('orderSm', val); };
-  @Input('fx-flex-order.gt-sm') set orderGtSm(val) { this._cacheInput('orderGtSm', val); };
-  @Input('fx-flex-order.md')    set orderMd(val)   { this._cacheInput('orderMd', val); };
-  @Input('fx-flex-order.gt-md') set orderGtMd(val) { this._cacheInput('orderGtMd', val); };
-  @Input('fx-flex-order.lg')    set orderLg(val)   { this._cacheInput('orderLg', val); };
-  @Input('fx-flex-order.gt-lg') set orderGtLg(val) { this._cacheInput('orderGtLg', val); };
-  @Input('fx-flex-order.xl')    set orderXl(val)   { this._cacheInput('orderXl', val); };
+  @Input('fxFlexOrder')       set order(val)     { this._cacheInput('order', val); }
+  @Input('fxFlexOrder.xs')    set orderXs(val)   { this._cacheInput('orderXs', val); }
+  @Input('fxFlexOrder.gt-xs') set orderGtXs(val) { this._cacheInput('orderGtXs', val); };
+  @Input('fxFlexOrder.sm')    set orderSm(val)   { this._cacheInput('orderSm', val); };
+  @Input('fxFlexOrder.gt-sm') set orderGtSm(val) { this._cacheInput('orderGtSm', val); };
+  @Input('fxFlexOrder.md')    set orderMd(val)   { this._cacheInput('orderMd', val); };
+  @Input('fxFlexOrder.gt-md') set orderGtMd(val) { this._cacheInput('orderGtMd', val); };
+  @Input('fxFlexOrder.lg')    set orderLg(val)   { this._cacheInput('orderLg', val); };
+  @Input('fxFlexOrder.gt-lg') set orderGtLg(val) { this._cacheInput('orderGtLg', val); };
+  @Input('fxFlexOrder.xl')    set orderXl(val)   { this._cacheInput('orderXl', val); };
 
   constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);

@@ -31,16 +31,16 @@ const FALSY = ['false', false, 0];
  *
  */
 @Directive({selector: `
-  [fx-show],
-  [fx-show.xs]
-  [fx-show.gt-xs],
-  [fx-show.sm],
-  [fx-show.gt-sm]
-  [fx-show.md],
-  [fx-show.gt-md]
-  [fx-show.lg],
-  [fx-show.gt-lg],
-  [fx-show.xl]
+  [fxShow],
+  [fxShow.xs]
+  [fxShow.gt-xs],
+  [fxShow.sm],
+  [fxShow.gt-sm]
+  [fxShow.md],
+  [fxShow.gt-md]
+  [fxShow.lg],
+  [fxShow.gt-lg],
+  [fxShow.xl]
 `})
 export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
@@ -54,16 +54,16 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
     */
   private _layoutWatcher : Subscription;
 
-  @Input('fx-show')       set show(val)     { this._cacheInput("show", val); }
-  @Input('fx-show.xs')    set showXs(val)   { this._cacheInput('showXs', val); }
-  @Input('fx-show.gt-xs') set showGtXs(val) { this._cacheInput('showGtXs', val); };
-  @Input('fx-show.sm')    set showSm(val)   { this._cacheInput('showSm', val); };
-  @Input('fx-show.gt-sm') set showGtSm(val) { this._cacheInput('showGtSm', val); };
-  @Input('fx-show.md')    set showMd(val)   { this._cacheInput('showMd', val); };
-  @Input('fx-show.gt-md') set showGtMd(val) { this._cacheInput('showGtMd', val); };
-  @Input('fx-show.lg')    set showLg(val)   { this._cacheInput('showLg', val); };
-  @Input('fx-show.gt-lg') set showGtLg(val) { this._cacheInput('showGtLg', val); };
-  @Input('fx-show.xl')    set showXl(val)   { this._cacheInput('showXl', val); };
+  @Input('fxShow')       set show(val)     { this._cacheInput("show", val); }
+  @Input('fxShow.xs')    set showXs(val)   { this._cacheInput('showXs', val); }
+  @Input('fxShow.gt-xs') set showGtXs(val) { this._cacheInput('showGtXs', val); };
+  @Input('fxShow.sm')    set showSm(val)   { this._cacheInput('showSm', val); };
+  @Input('fxShow.gt-sm') set showGtSm(val) { this._cacheInput('showGtSm', val); };
+  @Input('fxShow.md')    set showMd(val)   { this._cacheInput('showMd', val); };
+  @Input('fxShow.gt-md') set showGtMd(val) { this._cacheInput('showGtMd', val); };
+  @Input('fxShow.lg')    set showLg(val)   { this._cacheInput('showLg', val); };
+  @Input('fxShow.gt-lg') set showGtLg(val) { this._cacheInput('showGtLg', val); };
+  @Input('fxShow.xl')    set showXl(val)   { this._cacheInput('showXl', val); };
   /**
    *
    */
@@ -86,7 +86,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   }
 
   /**
-    * Does the current element also use the fx-show API ?
+    * Does the current element also use the fxShow API ?
     */
    protected get usesHideAPI() {
      return !!this._hideDirective;
@@ -99,7 +99,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('fx-show')
+   * Default to use the non-responsive Input value ('fxShow')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {

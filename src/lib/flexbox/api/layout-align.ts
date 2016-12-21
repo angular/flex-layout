@@ -29,32 +29,32 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({selector: `
-  [fx-layout-align],
-  [fx-layout-align.xs]
-  [fx-layout-align.gt-xs],
-  [fx-layout-align.sm],
-  [fx-layout-align.gt-sm]
-  [fx-layout-align.md],
-  [fx-layout-align.gt-md]
-  [fx-layout-align.lg],
-  [fx-layout-align.gt-lg],
-  [fx-layout-align.xl]
+  [fxLayoutAlign],
+  [fxLayoutAlign.xs]
+  [fxLayoutAlign.gt-xs],
+  [fxLayoutAlign.sm],
+  [fxLayoutAlign.gt-sm]
+  [fxLayoutAlign.md],
+  [fxLayoutAlign.gt-md]
+  [fxLayoutAlign.lg],
+  [fxLayoutAlign.gt-lg],
+  [fxLayoutAlign.xl]
 `})
 export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   private _layout = 'row';  // default flex-direction
   private _layoutWatcher: Subscription;
 
-  @Input('fx-layout-align')       set align(val)     { this._cacheInput('align', val); }
-  @Input('fx-layout-align.xs')    set alignXs(val)   { this._cacheInput('alignXs', val); }
-  @Input('fx-layout-align.gt-xs') set alignGtXs(val) { this._cacheInput('alignGtXs', val); };
-  @Input('fx-layout-align.sm')    set alignSm(val)   { this._cacheInput('alignSm', val); };
-  @Input('fx-layout-align.gt-sm') set alignGtSm(val) { this._cacheInput('alignGtSm', val); };
-  @Input('fx-layout-align.md')    set alignMd(val)   { this._cacheInput('alignMd', val); };
-  @Input('fx-layout-align.gt-md') set alignGtMd(val) { this._cacheInput('alignGtMd', val); };
-  @Input('fx-layout-align.lg')    set alignLg(val)   { this._cacheInput('alignLg', val); };
-  @Input('fx-layout-align.gt-lg') set alignGtLg(val) { this._cacheInput('alignGtLg', val); };
-  @Input('fx-layout-align.xl')    set alignXl(val)   { this._cacheInput('alignXl', val); };
+  @Input('fxLayoutAlign')       set align(val)     { this._cacheInput('align', val); }
+  @Input('fxLayoutAlign.xs')    set alignXs(val)   { this._cacheInput('alignXs', val); }
+  @Input('fxLayoutAlign.gt-xs') set alignGtXs(val) { this._cacheInput('alignGtXs', val); };
+  @Input('fxLayoutAlign.sm')    set alignSm(val)   { this._cacheInput('alignSm', val); };
+  @Input('fxLayoutAlign.gt-sm') set alignGtSm(val) { this._cacheInput('alignGtSm', val); };
+  @Input('fxLayoutAlign.md')    set alignMd(val)   { this._cacheInput('alignMd', val); };
+  @Input('fxLayoutAlign.gt-md') set alignGtMd(val) { this._cacheInput('alignGtMd', val); };
+  @Input('fxLayoutAlign.lg')    set alignLg(val)   { this._cacheInput('alignLg', val); };
+  @Input('fxLayoutAlign.gt-lg') set alignGtLg(val) { this._cacheInput('alignGtLg', val); };
+  @Input('fxLayoutAlign.xl')    set alignXl(val)   { this._cacheInput('alignXl', val); };
 
 
   constructor(

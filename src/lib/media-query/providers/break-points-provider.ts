@@ -64,7 +64,7 @@ export const RAW_DEFAULTS: BreakPoint[ ] = [
  *  Opaque Token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-export const BREAKPOINTS: OpaqueToken = new OpaqueToken('fx-breakpoints-raw-data');
+export const BREAKPOINTS: OpaqueToken = new OpaqueToken('fxRawBreakpoints');
 
 /**
  *  Provider to return observable to ALL known BreakPoint(s)

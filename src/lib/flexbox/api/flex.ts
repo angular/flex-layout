@@ -32,16 +32,16 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({ selector: `
-  [fx-flex],
-  [fx-flex.xs]
-  [fx-flex.gt-xs],
-  [fx-flex.sm],
-  [fx-flex.gt-sm]
-  [fx-flex.md],
-  [fx-flex.gt-md]
-  [fx-flex.lg],
-  [fx-flex.gt-lg],
-  [fx-flex.xl]
+  [fxFlex],
+  [fxFlex.xs]
+  [fxFlex.gt-xs],
+  [fxFlex.sm],
+  [fxFlex.gt-sm]
+  [fxFlex.md],
+  [fxFlex.gt-md]
+  [fxFlex.lg],
+  [fxFlex.gt-lg],
+  [fxFlex.xl]
 `
  })
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
@@ -55,19 +55,19 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   private _layoutWatcher: Subscription;
 
-  @Input('fx-flex')       set flex(val)     { this._cacheInput("flex", val); }
-  @Input('fx-shrink')     set shrink(val)   { this._cacheInput("shrink", val); }
-  @Input('fx-grow')       set grow(val)     { this._cacheInput("grow", val); }
+  @Input('fxFlex')       set flex(val)     { this._cacheInput("flex", val); }
+  @Input('fxShrink')     set shrink(val)   { this._cacheInput("shrink", val); }
+  @Input('fxGrow')       set grow(val)     { this._cacheInput("grow", val); }
   
-  @Input('fx-flex.xs')    set flexXs(val)   { this._cacheInput('flexXs', val); }
-  @Input('fx-flex.gt-xs') set flexGtXs(val) { this._cacheInput('flexGtXs', val); };
-  @Input('fx-flex.sm')    set flexSm(val)   { this._cacheInput('flexSm', val); };
-  @Input('fx-flex.gt-sm') set flexGtSm(val) { this._cacheInput('flexGtSm', val); };
-  @Input('fx-flex.md')    set flexMd(val)   { this._cacheInput('flexMd', val); };
-  @Input('fx-flex.gt-md') set flexGtMd(val) { this._cacheInput('flexGtMd', val); };
-  @Input('fx-flex.lg')    set flexLg(val)   { this._cacheInput('flexLg', val); };
-  @Input('fx-flex.gt-lg') set flexGtLg(val) { this._cacheInput('flexGtLg', val); };
-  @Input('fx-flex.xl')    set flexXl(val)   { this._cacheInput('flexXl', val); };
+  @Input('fxFlex.xs')    set flexXs(val)   { this._cacheInput('flexXs', val); }
+  @Input('fxFlex.gt-xs') set flexGtXs(val) { this._cacheInput('flexGtXs', val); };
+  @Input('fxFlex.sm')    set flexSm(val)   { this._cacheInput('flexSm', val); };
+  @Input('fxFlex.gt-sm') set flexGtSm(val) { this._cacheInput('flexGtSm', val); };
+  @Input('fxFlex.md')    set flexMd(val)   { this._cacheInput('flexMd', val); };
+  @Input('fxFlex.gt-md') set flexGtMd(val) { this._cacheInput('flexGtMd', val); };
+  @Input('fxFlex.lg')    set flexLg(val)   { this._cacheInput('flexLg', val); };
+  @Input('fxFlex.gt-lg') set flexGtLg(val) { this._cacheInput('flexGtLg', val); };
+  @Input('fxFlex.xl')    set flexXl(val)   { this._cacheInput('flexXl', val); };
 
 
   // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
@@ -89,7 +89,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       // If this flex item is inside of a flex container marked with
       // Subscribe to layout immediate parent direction changes
       this._layoutWatcher = _container.layout$.subscribe((direction) => {
-        // `direction` === null if parent container does not have a `fx-layout`
+        // `direction` === null if parent container does not have a `fxLayout`
         this._onLayoutChange(direction);
       });
     }
@@ -142,7 +142,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   }
 
   /**
-   * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
+   * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
    */
   private _parseFlexParts(basis:string) {
     basis = basis.replace(";","");
@@ -155,7 +155,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * Extract more complicated short-hand versions.
    * e.g.
-   * fx-flex="3 3 calc(15em + 20px)"
+   * fxFlex="3 3 calc(15em + 20px)"
    */
   private _getPartsWithCalc(value:string) {
     debugger;

@@ -36,14 +36,14 @@ describe('flex directive', () => {
 
   describe('with static features', () => {
 
-    it('should add correct styles for default `fx-flex` usage', () => {
-      expectDOMFrom(`<div fx-flex></div>`).toHaveCssStyle({
+    it('should add correct styles for default `fxFlex` usage', () => {
+      expectDOMFrom(`<div fxFlex></div>`).toHaveCssStyle({
         'flex' : '1 1 0%',  // === flex : "1"
         'box-sizing': 'border-box',
       });
     });
-    it('should add correct styles for `fx-flex="0%"` usage', () => {
-      expectDOMFrom(`<div fx-flex="2%"></div>`).toHaveCssStyle({
+    it('should add correct styles for `fxFlex="0%"` usage', () => {
+      expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
         'max-width' : '2%',
         'flex'      : '1 1 100%',
         'box-sizing': 'border-box',
@@ -51,41 +51,41 @@ describe('flex directive', () => {
     });
 
     it('should work with percentage values', () => {
-      expectDOMFrom(`<div fx-flex="37%"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
         'flex' : '1 1 100%',
         'max-width' : '37%',
         'box-sizing': 'border-box',
       });
     });
     it('should work with pixel values', () => {
-      expectDOMFrom(`<div fx-flex="37px"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex="37px"></div>`).toHaveCssStyle({
         'flex' : '1 1 37px',
         'box-sizing': 'border-box',
       });
     });
     it('should work with calc values', () => {
-      expectDOMFrom(`<div fx-flex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
         'box-sizing': 'border-box',
         'flex' : '1 1 calc(30vw - 10px)'
       });
     });
     it('should work with named values', () => {
-      expectDOMFrom(`<div fx-flex="nogrow"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex="nogrow"></div>`).toHaveCssStyle({
         'flex' : '0 1 auto'
       });
     });
 
     it('should work with full-spec values', () => {
-      expectDOMFrom(`<div fx-flex="1 2 0.9em"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex="1 2 0.9em"></div>`).toHaveCssStyle({
         'flex' : '1 2 0.9em'
       });
     });
 
     describe('', () => {
 
-      it('should ignore fx-layout settings on same element', () => {
+      it('should ignore fxLayout settings on same element', () => {
         expectDOMFrom(`
-          <div fx-layout="column" fx-flex="37%">
+          <div fxLayout="column" fxFlex="37%">
           </div>
         `)
         .not.toHaveCssStyle({
@@ -93,25 +93,27 @@ describe('flex directive', () => {
         });
       });
 
-      it('should set max-height for `fx-flex="<%val>"` with parent using fx-layout="column" ', () => {
+      it('should set max-height for `fxFlex="<%val>"` with parent using fxLayout="column" ', () => {
         let template = `
-              <div fx-layout="column">
-                <div fx-flex="37%"></div>
-              </div>
-            `;
-        expectDomForQuery( template,"[fx-flex]" ).toHaveCssStyle({
-          'max-height' : '37%',
-        });
+          <div fxLayout="column">
+            <div fxFlex="37%"></div>
+          </div>
+        `;
+
+        expectDomForQuery( template,"[fxFlex]" )
+          .toHaveCssStyle({
+            'max-height' : '37%',
+          });
       });
 
-      it('should set max-width for `fx-flex="<%val>"`', () => {
-        expectDOMFrom(`<div fx-flex="37%"></div>`).toHaveCssStyle({
+      it('should set max-width for `fxFlex="<%val>"`', () => {
+        expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
           'max-width' : '37%',
         });
       });
 
-      it('should set max-width for `fx-flex="2%"` usage', () => {
-        expectDOMFrom(`<div fx-flex="2%"></div>`).toHaveCssStyle({
+      it('should set max-width for `fxFlex="2%"` usage', () => {
+        expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
           'max-width' : '2%',
         });
       });

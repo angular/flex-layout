@@ -23,31 +23,31 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({selector: `
-  [fx-layout-wrap],
-  [fx-layout-wrap.xs]
-  [fx-layout-wrap.gt-xs],
-  [fx-layout-wrap.sm],
-  [fx-layout-wrap.gt-sm]
-  [fx-layout-wrap.md],
-  [fx-layout-wrap.gt-md]
-  [fx-layout-wrap.lg],
-  [fx-layout-wrap.gt-lg],
-  [fx-layout-wrap.xl]
+  [fxLayoutWrap],
+  [fxLayoutWrap.xs]
+  [fxLayoutWrap.gt-xs],
+  [fxLayoutWrap.sm],
+  [fxLayoutWrap.gt-sm]
+  [fxLayoutWrap.md],
+  [fxLayoutWrap.gt-md]
+  [fxLayoutWrap.lg],
+  [fxLayoutWrap.gt-lg],
+  [fxLayoutWrap.xl]
 `})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   private _layout = 'row';  // default flex-direction
   private _layoutWatcher: Subscription;
 
-  @Input('fx-layout-wrap')       set wrap(val)     { this._cacheInput("wrap", val); }
-  @Input('fx-layout-wrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
-  @Input('fx-layout-wrap.gt-xs') set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); };
-  @Input('fx-layout-wrap.sm')    set wrapSm(val)   { this._cacheInput('wrapSm', val); };
-  @Input('fx-layout-wrap.gt-sm') set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); };
-  @Input('fx-layout-wrap.md')    set wrapMd(val)   { this._cacheInput('wrapMd', val); };
-  @Input('fx-layout-wrap.gt-md') set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); };
-  @Input('fx-layout-wrap.lg')    set wrapLg(val)   { this._cacheInput('wrapLg', val); };
-  @Input('fx-layout-wrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
-  @Input('fx-layout-wrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
+  @Input('fxLayoutWrap')       set wrap(val)     { this._cacheInput("wrap", val); }
+  @Input('fxLayoutWrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
+  @Input('fxLayoutWrap.gt-xs') set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); };
+  @Input('fxLayoutWrap.sm')    set wrapSm(val)   { this._cacheInput('wrapSm', val); };
+  @Input('fxLayoutWrap.gt-sm') set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); };
+  @Input('fxLayoutWrap.md')    set wrapMd(val)   { this._cacheInput('wrapMd', val); };
+  @Input('fxLayoutWrap.gt-md') set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); };
+  @Input('fxLayoutWrap.lg')    set wrapLg(val)   { this._cacheInput('wrapLg', val); };
+  @Input('fxLayoutWrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
+  @Input('fxLayoutWrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
 
   constructor(
     monitor : MediaMonitor,

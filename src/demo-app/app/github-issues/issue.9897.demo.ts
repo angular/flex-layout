@@ -12,21 +12,21 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Safari bug with layout-wrap and flex % values</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fx-layout]="row" [fx-layout-wrap]="wrapDirection" class="colored wrapped box" >
+          <div [fxLayout]="row" [fxLayoutWrap]="wrapDirection" class="colored wrapped box" >
             
-              <div fx-flex="30"> fx-flex="30" </div>
-              <div fx-flex="45"> fx-flex="45" </div>
-              <div fx-flex="19"> fx-flex="19" </div>
-              <div fx-flex="33"> fx-flex="33" </div>
-              <div fx-flex="67"> fx-flex="67" </div>
-              <div fx-flex="50"> fx-flex="50" </div>
-              <div fx-flex>      fx-flex      </div>
+              <div fxFlex="30"> fxFlex="30" </div>
+              <div fxFlex="45"> fxFlex="45" </div>
+              <div fxFlex="19"> fxFlex="19" </div>
+              <div fxFlex="33"> fxFlex="33" </div>
+              <div fxFlex="67"> fxFlex="67" </div>
+              <div fxFlex="50"> fxFlex="50" </div>
+              <div fxFlex>      fxFlex      </div>
               
             </div>            
         </div>        
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt;div fx-layout="row" fx-layout-wrap="{{ wrapDirection }}" &gt;</div>
+        <div class="hint">&lt;div fxLayout="row" fxLayoutWrap="{{ wrapDirection }}" &gt;</div>
       </md-card-footer>
     </md-card>
   `

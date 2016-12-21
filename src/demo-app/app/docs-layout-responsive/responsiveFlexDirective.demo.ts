@@ -16,9 +16,9 @@ import {MatchMediaObservable} from "../../../lib/media-query/match-media";
       <md-card-subtitle>Use the show hide APIs to responsively show or hide elements:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div fx-layout="row"  class="coloredContainerX box" >
-            <div fx-flex.gt-sm="67" fx-flex="33"> flex 33% on mobile, <br>and 66% on gt-sm devices.  </div>
-            <div fx-flex.gt-sm="33" fx-flex="67"> flex 67%  on mobile, <br>and 33% on gt-sm devices. </div>
+          <div fxLayout="row"  class="coloredContainerX box" >
+            <div fxFlex.gt-sm="67" fxFlex="33"> flex 33% on mobile, <br>and 66% on gt-sm devices.  </div>
+            <div fxFlex.gt-sm="33" fxFlex="67"> flex 67%  on mobile, <br>and 33% on gt-sm devices. </div>
           </div>
         </div>
       </md-card-content>

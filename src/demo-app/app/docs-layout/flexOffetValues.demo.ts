@@ -11,14 +11,14 @@ import {Component} from '@angular/core';
       <md-card-subtitle>Explore impact of values for the 'flex-offset' API:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div fx-layout="row" class="colored box nopad" >
-              <div fx-flex="66" fx-flex-offset="15">  [flex="66"] [flex-offset="15"]  </div>
-              <div fx-flex>                           [flex]                          </div>
+          <div fxLayout="row" class="colored box nopad" >
+              <div fxFlex="66" fxFlexOffset="15">  [flex="66"] [flex-offset="15"]  </div>
+              <div fxFlex>                           [flex]                          </div>
           </div>          
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt;div fx-layout="row" &gt;</div>
+        <div class="hint">&lt;div fxLayout="row" &gt;</div>
       </md-card-footer>
     </md-card>
   `

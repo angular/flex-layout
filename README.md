@@ -78,10 +78,10 @@ The Layout API is used *simply* as attributes on your HTML elements. That is it!
 All the magic of applying the Flexbox CSS is handled under-the-hood. The Layout applies (injects) **Flexbox CSS** styles to each DOM element... and your layout and elements will fluidly update their positioning and sizes as the  viewport size changes. 
 
 ```html
-<div class="flex-container" fx-layout="row" fx-layout-align="center center">
-  <div class="flex-item" fx-flex="20%">  </div>
-  <div class="flex-item" fx-flex>        </div>
-  <div class="flex-item" fx-flex="25px"> </div>
+<div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
+  <div class="flex-item" fxFlex="20%">  </div>
+  <div class="flex-item" fxFlex>        </div>
+  <div class="flex-item" fxFlex="25px"> </div>
 </div> 
 ```
 
@@ -97,13 +97,13 @@ In our previous sample (above), the Flex Layout API is used to define default, n
 
 ```html
 <div class="flex-container" 
-     fx-layout="row" 
-     fx-layout.xs="column"
-     fx-layout-align="center center"
-     fx-layout-align.xs="start">
-  <div class="flex-item" fx-flex="20%" fx-flex.xs="40%">  </div>
-  <div class="flex-item" fx-flex>        </div>
-  <div class="flex-item" fx-flex="25px"> </div>
+     fxLayout="row" 
+     fxLayout.xs="column"
+     fxLayoutAlign="center center"
+     fxLayoutAlign.xs="start">
+  <div class="flex-item" fxFlex="20%" fxFlex.xs="40%">  </div>
+  <div class="flex-item" fxFlex>        </div>
+  <div class="flex-item" fxFlex="25px"> </div>
 </div> 
 ```
    

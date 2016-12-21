@@ -25,16 +25,16 @@ import {LayoutDirective} from './layout';
  *
  */
 @Directive({selector: `
-  [fx-hide],
-  [fx-hide.xs]
-  [fx-hide.gt-xs],
-  [fx-hide.sm],
-  [fx-hide.gt-sm]
-  [fx-hide.md],
-  [fx-hide.gt-md]
-  [fx-hide.lg],
-  [fx-hide.gt-lg],
-  [fx-hide.xl]
+  [fxHide],
+  [fxHide.xs]
+  [fxHide.gt-xs],
+  [fxHide.sm],
+  [fxHide.gt-sm]
+  [fxHide.md],
+  [fxHide.gt-md]
+  [fxHide.lg],
+  [fxHide.gt-lg],
+  [fxHide.xl]
 `})
 export class HideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   /**
@@ -48,16 +48,16 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
     */
   private _layoutWatcher : Subscription;
 
-  @Input('fx-hide')       set hide(val)     { this._cacheInput("hide", val); }
-  @Input('fx-hide.xs')    set hideXs(val)   { this._cacheInput('hideXs', val); }
-  @Input('fx-hide.gt-xs') set hideGtXs(val) { this._cacheInput('hideGtXs', val); };
-  @Input('fx-hide.sm')    set hideSm(val)   { this._cacheInput('hideSm', val); };
-  @Input('fx-hide.gt-sm') set hideGtSm(val) { this._cacheInput('hideGtSm', val); };
-  @Input('fx-hide.md')    set hideMd(val)   { this._cacheInput('hideMd', val); };
-  @Input('fx-hide.gt-md') set hideGtMd(val) { this._cacheInput('hideGtMd', val); };
-  @Input('fx-hide.lg')    set hideLg(val)   { this._cacheInput('hideLg', val); };
-  @Input('fx-hide.gt-lg') set hideGtLg(val) { this._cacheInput('hideGtLg', val); };
-  @Input('fx-hide.xl')    set hideXl(val)   { this._cacheInput('hideXl', val); };
+  @Input('fxHide')       set hide(val)     { this._cacheInput("hide", val); }
+  @Input('fxHide.xs')    set hideXs(val)   { this._cacheInput('hideXs', val); }
+  @Input('fxHide.gt-xs') set hideGtXs(val) { this._cacheInput('hideGtXs', val); };
+  @Input('fxHide.sm')    set hideSm(val)   { this._cacheInput('hideSm', val); };
+  @Input('fxHide.gt-sm') set hideGtSm(val) { this._cacheInput('hideGtSm', val); };
+  @Input('fxHide.md')    set hideMd(val)   { this._cacheInput('hideMd', val); };
+  @Input('fxHide.gt-md') set hideGtMd(val) { this._cacheInput('hideGtMd', val); };
+  @Input('fxHide.lg')    set hideLg(val)   { this._cacheInput('hideLg', val); };
+  @Input('fxHide.gt-lg') set hideGtLg(val) { this._cacheInput('hideGtLg', val); };
+  @Input('fxHide.xl')    set hideXl(val)   { this._cacheInput('hideXl', val); };
 
   /**
    *
@@ -80,7 +80,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   }
 
   /**
-   * Does the current element also use the fx-show API ?
+   * Does the current element also use the fxShow API ?
    */
   protected get usesShowAPI() {
     return !!this._showDirective;
@@ -92,7 +92,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('fx-hide')
+   * Default to use the non-responsive Input value ('fxHide')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {

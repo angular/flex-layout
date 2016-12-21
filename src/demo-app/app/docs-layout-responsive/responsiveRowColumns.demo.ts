@@ -17,35 +17,35 @@ import {MatchMediaObservable} from "../../../lib/media-query/match-media";
       <md-card-content>
         <div class="containerX">
             
-            <div class="colorNested box" fx-layout="row" *ngIf="isVisible">
-              <div  [fx-layout]="firstCol" 
-                    [fx-layout.xs]="firstColXs" 
-                    [fx-layout.md]="firstColMd" 
-                    [fx-layout.lg]="firstColLg"  
-                    [fx-layout.gt-lg]="firstColGtLg" 
-                    fx-flex="50%" 
-                    fx-flex.gt-sm="25"
-                    fx-show="true"
-                    fx-show.md="false" 
+            <div class="colorNested box" fxLayout="row" *ngIf="isVisible">
+              <div  [fxLayout]="firstCol" 
+                    [fxLayout.xs]="firstColXs" 
+                    [fxLayout.md]="firstColMd" 
+                    [fxLayout.lg]="firstColLg"  
+                    [fxLayout.gt-lg]="firstColGtLg" 
+                    fxFlex="50%" 
+                    fxFlex.gt-sm="25"
+                    fxShow="true"
+                    fxShow.md="false" 
                     (click)="toggleLayoutFor(1)" style="cursor: pointer;">
-                <div fx-flex>Col #1: First item in row</div>
-                <div fx-flex>Col #1: Second item in row</div>
+                <div fxFlex>Col #1: First item in row</div>
+                <div fxFlex>Col #1: Second item in row</div>
               </div>
-              <div [fx-layout]="secondCol" fx-flex (click)="toggleLayoutFor(2)" style="cursor: pointer;">
-                <div fx-flex>Col #2: First item in column</div>
-                <div fx-flex>Col #2: Second item in column</div>
+              <div [fxLayout]="secondCol" fxFlex (click)="toggleLayoutFor(2)" style="cursor: pointer;">
+                <div fxFlex>Col #2: First item in column</div>
+                <div fxFlex>Col #2: Second item in column</div>
               </div>
             </div>
         </div>
       </md-card-content>
-      <!--<md-card-actions fx-layout="row" fx-layout-align="center">-->
+      <!--<md-card-actions fxLayout="row" fxLayoutAlign="center">-->
         <!--<button md-raised-button (click)="isVisible = !isVisible">{{ isVisible ? 'Remove' : 'Show' }}</button>-->
       <!--</md-card-actions>-->
       <md-card-footer style="width:95%">
-         <div fx-layout="row" class="hint" fx-layout-align="space-around" > 
-            <div>&lt;div fx-layout="{{ firstCol }}" fx-flex="50%" fx-flex.gt-sm="25%" fx-show.md="false" &gt;</div>
-            <div fx-flex></div>
-            <div>&lt;div  fx-layout="{{ secondCol }}" fx-flex &gt;</div>
+         <div fxLayout="row" class="hint" fxLayoutAlign="space-around" > 
+            <div>&lt;div fxLayout="{{ firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxShow.md="false" &gt;</div>
+            <div fxFlex></div>
+            <div>&lt;div  fxLayout="{{ secondCol }}" fxFlex &gt;</div>
          </div>
       </md-card-footer>
     </md-card>

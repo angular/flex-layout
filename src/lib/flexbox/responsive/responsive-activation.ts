@@ -67,7 +67,7 @@ export class ResponsiveActivation {
    * The key must be defined (in use) or fallback to the 'closest' overlapping property key
    * that is defined; otherwise the default property key will be used.
    * e.g.
-   *      if `<div fx-hide fx-hide.gt-sm="false">` is used but the current activated mediaQuery alias
+   *      if `<div fxHide fxHide.gt-sm="false">` is used but the current activated mediaQuery alias
    *      key is `.md` then `.gt-sm` should be used instead
    */
   get activatedInputKey(): string {

@@ -12,22 +12,22 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Visualize the affects of 'flex' and 'flex-offset' with %, px, or raw values.</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fx-layout]="direction" class="md-whiteframe-2dp">
-            <div fx-flex fx-flex-offset="20" class="one">&lt;div <b>fx-flex-offset="20"</b> fx-flex &gt;</div>
-            <div fx-flex="150px" class="two">&lt;div fx-flex="150px"&gt;</div>
+          <div [fxLayout]="direction" class="md-whiteframe-2dp">
+            <div fxFlex fxFlexOffset="20" class="one">&lt;div <b>fxFlexOffset="20"</b> fxFlex &gt;</div>
+            <div fxFlex="150px" class="two">&lt;div fxFlex="150px"&gt;</div>
           </div>
-          <div [fx-layout]="direction" class="md-whiteframe-3dp">
-            <div fx-flex fx-flex-offset="50%" class="three">&lt;div <b>fx-flex-offset="50%"</b> fx-flex &gt;</div>
-            <div fx-flex class="four">&lt;div fx-flex&gt;</div>
+          <div [fxLayout]="direction" class="md-whiteframe-3dp">
+            <div fxFlex fxFlexOffset="50%" class="three">&lt;div <b>fxFlexOffset="50%"</b> fxFlex &gt;</div>
+            <div fxFlex class="four">&lt;div fxFlex&gt;</div>
           </div>
-          <div [fx-layout]="direction" class="md-whiteframe-3dp">
-            <div fx-flex="25%" fx-flex-offset="25" class="five">&lt;div <b>fx-flex-offset="25"</b> fx-flex="25%" &gt;</div>
-            <div fx-flex="50" fx-flex-offset="20" class="six">&lt;div <b>fx-flex-offset="20"</b> fx-flex="50" &gt;</div>
+          <div [fxLayout]="direction" class="md-whiteframe-3dp">
+            <div fxFlex="25%" fxFlexOffset="25" class="five">&lt;div <b>fxFlexOffset="25"</b> fxFlex="25%" &gt;</div>
+            <div fxFlex="50" fxFlexOffset="20" class="six">&lt;div <b>fxFlexOffset="20"</b> fxFlex="50" &gt;</div>
           </div>
         </div>
       </md-card-content>
       <md-card-footer>
-        <div class="hint">&lt;div fx-layout="{{ direction }}" &gt;</div>
+        <div class="hint">&lt;div fxLayout="{{ direction }}" &gt;</div>
       </md-card-footer>
     </md-card>
   `

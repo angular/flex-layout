@@ -10,12 +10,12 @@ import {Component} from '@angular/core';
   template: `
   <md-card class="card-demo" >
     <md-card-title> <a href="" target="_blank">Layout Fill</a></md-card-title>
-    <md-card-subtitle>Using 'fx-fill' to fill available width and height of parent container.</md-card-subtitle>
+    <md-card-subtitle>Using 'fxFill' to fill available width and height of parent container.</md-card-subtitle>
     <md-card-content class="large">
-      <div fx-layout="column" fx-fill>
-          <div fx-layout fx-flex >
-              <div class="one" fx-flex="20" fx-layout-align="center center"> A </div>
-              <div class="two" fx-flex="80" fx-layout-align="center center"> B </div>
+      <div fxLayout="column" fxFill>
+          <div fxLayout fxFlex >
+              <div class="one" fxFlex="20" fxLayoutAlign="center center"> A </div>
+              <div class="two" fxFlex="80" fxLayoutAlign="center center"> B </div>
           </div>
       </div>      
     </md-card-content>

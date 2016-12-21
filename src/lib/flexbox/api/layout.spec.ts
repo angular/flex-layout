@@ -35,49 +35,49 @@ describe('layout directive', () => {
 
   describe('with static features', () => {
 
-    it('should add correct styles for default `fx-layout` usage', () => {
-      expectDOMFrom(`<div fx-layout></div>`).toHaveCssStyle({
+    it('should add correct styles for default `fxLayout` usage', () => {
+      expectDOMFrom(`<div fxLayout></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       });
     });
-    it('should add correct styles for `fx-layout="row"` usage', () => {
+    it('should add correct styles for `fxLayout="row"` usage', () => {
       expectDOMFrom(`
-        <div fx-layout="row"></div>
+        <div fxLayout="row"></div>
       `).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       });
     });
-    it('should add correct styles for `fx-layout="column"` usage', () => {
-      expectDOMFrom(`<div fx-layout="column"></div>`).toHaveCssStyle({
+    it('should add correct styles for `fxLayout="column"` usage', () => {
+      expectDOMFrom(`<div fxLayout="column"></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
-    it('should add correct styles for binding `[fx-layout]="direction"` usage', () => {
-      expectDOMFrom(`<div [fx-layout]="direction"></div>`).toHaveCssStyle({
+    it('should add correct styles for binding `[fxLayout]="direction"` usage', () => {
+      expectDOMFrom(`<div [fxLayout]="direction"></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
-    it('should use default flex-direction for invalid value `fx-layout="invalid"` usage', () => {
-      expectDOMFrom(`<div fx-layout="invalid"></div>`).toHaveCssStyle({
+    it('should use default flex-direction for invalid value `fxLayout="invalid"` usage', () => {
+      expectDOMFrom(`<div fxLayout="invalid"></div>`).toHaveCssStyle({
         'flex-direction': 'row'
       });
     });
-    it('should use default flex-direction for invalid binding value `[fx-layout]="direction"` usage', () => {
-      expectDOMFrom(`<div [fx-layout]="direction"></div>`, "direction", "invalid")
+    it('should use default flex-direction for invalid binding value `[fxLayout]="direction"` usage', () => {
+      expectDOMFrom(`<div [fxLayout]="direction"></div>`, "direction", "invalid")
           .toHaveCssStyle({
             'flex-direction': 'row',
           });
     });
-    it('should use update style with dynamic value changes `[fx-layout]="direction"` usage', () => {
-      fixture = createTestComponent(`<div [fx-layout]="direction"></div>`);
+    it('should use update style with dynamic value changes `[fxLayout]="direction"` usage', () => {
+      fixture = createTestComponent(`<div [fxLayout]="direction"></div>`);
 
       fixture.componentInstance.direction = "invalid";
       fixture.detectChanges();
@@ -98,7 +98,7 @@ describe('layout directive', () => {
   describe('with responsive features', () => {
 
     it('should ignore responsive changes when not configured', () => {
-      fixture = createTestComponent(`<div fx-layout="column"></div>`);
+      fixture = createTestComponent(`<div fxLayout="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       matchMedia.activate('md');
@@ -111,7 +111,7 @@ describe('layout directive', () => {
       });
     });
     it('should add responsive styles when configured', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();
@@ -131,7 +131,7 @@ describe('layout directive', () => {
       });
     });
     it('should update responsive styles when the active mediaQuery changes', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();
@@ -154,8 +154,8 @@ describe('layout directive', () => {
 
     it('should update styles with bindings and the active mediaQuery changes', () => {
       fixture = createTestComponent(`
-          <div fx-layout="row"
-               [fx-layout.md]="direction">
+          <div fxLayout="row"
+               [fxLayout.md]="direction">
           </div>
        `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
@@ -180,7 +180,7 @@ describe('layout directive', () => {
 
     });
     it('should fallback to default styles when the active mediaQuery change is not configured', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.md="column"></div>`);
+      fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();
@@ -202,7 +202,7 @@ describe('layout directive', () => {
 
     });
     it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
-      fixture = createTestComponent(`<div fx-layout fx-layout.gt-sm="column" fx-layout.md="row"></div>`);
+      fixture = createTestComponent(`<div fxLayout fxLayout.gt-sm="column" fxLayout.md="row"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       fixture.detectChanges();

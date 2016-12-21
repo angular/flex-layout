@@ -25,16 +25,16 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  *
  */
 @Directive({selector: `
-  [fx-layout],
-  [fx-layout.xs]
-  [fx-layout.gt-xs],
-  [fx-layout.sm],
-  [fx-layout.gt-sm]
-  [fx-layout.md],
-  [fx-layout.gt-md]
-  [fx-layout.lg],
-  [fx-layout.gt-lg],
-  [fx-layout.xl]
+  [fxLayout],
+  [fxLayout.xs]
+  [fxLayout.gt-xs],
+  [fxLayout.sm],
+  [fxLayout.gt-sm]
+  [fxLayout.md],
+  [fxLayout.gt-md]
+  [fxLayout.lg],
+  [fxLayout.gt-lg],
+  [fxLayout.xl]
 `})
 export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
@@ -51,16 +51,16 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   public layout$: Observable<string>;
 
 
-  @Input('fx-layout') set layout(val) { this._cacheInput("layout", val); }
-  @Input('fx-layout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); }
-  @Input('fx-layout.gt-xs') set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); };
-  @Input('fx-layout.sm')    set layoutSm(val)   { this._cacheInput('layoutSm', val); };
-  @Input('fx-layout.gt-sm') set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); };
-  @Input('fx-layout.md')    set layoutMd(val)   { this._cacheInput('layoutMd', val); };
-  @Input('fx-layout.gt-md') set layoutGtMd(val) { this._cacheInput('layoutGtMd', val); };
-  @Input('fx-layout.lg')    set layoutLg(val)   { this._cacheInput('layoutLg', val); };
-  @Input('fx-layout.gt-lg') set layoutGtLg(val) { this._cacheInput('layoutGtLg', val); };
-  @Input('fx-layout.xl')    set layoutXl(val)   { this._cacheInput('layoutXl', val); };
+  @Input('fxLayout') set layout(val) { this._cacheInput("layout", val); }
+  @Input('fxLayout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); }
+  @Input('fxLayout.gt-xs') set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); };
+  @Input('fxLayout.sm')    set layoutSm(val)   { this._cacheInput('layoutSm', val); };
+  @Input('fxLayout.gt-sm') set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); };
+  @Input('fxLayout.md')    set layoutMd(val)   { this._cacheInput('layoutMd', val); };
+  @Input('fxLayout.gt-md') set layoutGtMd(val) { this._cacheInput('layoutGtMd', val); };
+  @Input('fxLayout.lg')    set layoutLg(val)   { this._cacheInput('layoutLg', val); };
+  @Input('fxLayout.gt-lg') set layoutGtLg(val) { this._cacheInput('layoutGtLg', val); };
+  @Input('fxLayout.xl')    set layoutXl(val)   { this._cacheInput('layoutXl', val); };
 
   /**
    *
@@ -77,7 +77,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
 
   /**
    * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('fx-layout')
+   * Default to use the non-responsive Input value ('fxLayout')
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {
