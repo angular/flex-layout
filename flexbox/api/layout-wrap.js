@@ -153,7 +153,7 @@ export var LayoutWrapDirective = (function (_super) {
         return value;
     };
     LayoutWrapDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-layout-wrap],\n  [fx-layout-wrap.xs]\n  [fx-layout-wrap.gt-xs],\n  [fx-layout-wrap.sm],\n  [fx-layout-wrap.gt-sm]\n  [fx-layout-wrap.md],\n  [fx-layout-wrap.gt-md]\n  [fx-layout-wrap.lg],\n  [fx-layout-wrap.gt-lg],\n  [fx-layout-wrap.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxLayoutWrap],\n  [fxLayoutWrap.xs]\n  [fxLayoutWrap.gt-xs],\n  [fxLayoutWrap.sm],\n  [fxLayoutWrap.gt-sm]\n  [fxLayoutWrap.md],\n  [fxLayoutWrap.gt-md]\n  [fxLayoutWrap.lg],\n  [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.xl]\n" },] },
     ];
     /** @nocollapse */
     LayoutWrapDirective.ctorParameters = function () { return [
@@ -163,16 +163,16 @@ export var LayoutWrapDirective = (function (_super) {
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     ]; };
     LayoutWrapDirective.propDecorators = {
-        'wrap': [{ type: Input, args: ['fx-layout-wrap',] },],
-        'wrapXs': [{ type: Input, args: ['fx-layout-wrap.xs',] },],
-        'wrapGtXs': [{ type: Input, args: ['fx-layout-wrap.gt-xs',] },],
-        'wrapSm': [{ type: Input, args: ['fx-layout-wrap.sm',] },],
-        'wrapGtSm': [{ type: Input, args: ['fx-layout-wrap.gt-sm',] },],
-        'wrapMd': [{ type: Input, args: ['fx-layout-wrap.md',] },],
-        'wrapGtMd': [{ type: Input, args: ['fx-layout-wrap.gt-md',] },],
-        'wrapLg': [{ type: Input, args: ['fx-layout-wrap.lg',] },],
-        'wrapGtLg': [{ type: Input, args: ['fx-layout-wrap.gt-lg',] },],
-        'wrapXl': [{ type: Input, args: ['fx-layout-wrap.xl',] },],
+        'wrap': [{ type: Input, args: ['fxLayoutWrap',] },],
+        'wrapXs': [{ type: Input, args: ['fxLayoutWrap.xs',] },],
+        'wrapGtXs': [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
+        'wrapSm': [{ type: Input, args: ['fxLayoutWrap.sm',] },],
+        'wrapGtSm': [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
+        'wrapMd': [{ type: Input, args: ['fxLayoutWrap.md',] },],
+        'wrapGtMd': [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
+        'wrapLg': [{ type: Input, args: ['fxLayoutWrap.lg',] },],
+        'wrapGtLg': [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
+        'wrapXl': [{ type: Input, args: ['fxLayoutWrap.xl',] },],
     };
     return LayoutWrapDirective;
 }(BaseFxDirective));

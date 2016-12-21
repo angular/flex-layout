@@ -111,7 +111,7 @@ export var FlexOrderDirective = (function (_super) {
         return { order: isNaN(value) ? 0 : value };
     };
     FlexOrderDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-flex-order],\n  [fx-flex-order.xs]\n  [fx-flex-order.gt-xs],\n  [fx-flex-order.sm],\n  [fx-flex-order.gt-sm]\n  [fx-flex-order.md],\n  [fx-flex-order.gt-md]\n  [fx-flex-order.lg],\n  [fx-flex-order.gt-lg],\n  [fx-flex-order.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs]\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm]\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md]\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" },] },
     ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [
@@ -120,16 +120,16 @@ export var FlexOrderDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     FlexOrderDirective.propDecorators = {
-        'order': [{ type: Input, args: ['fx-flex-order',] },],
-        'orderXs': [{ type: Input, args: ['fx-flex-order.xs',] },],
-        'orderGtXs': [{ type: Input, args: ['fx-flex-order.gt-xs',] },],
-        'orderSm': [{ type: Input, args: ['fx-flex-order.sm',] },],
-        'orderGtSm': [{ type: Input, args: ['fx-flex-order.gt-sm',] },],
-        'orderMd': [{ type: Input, args: ['fx-flex-order.md',] },],
-        'orderGtMd': [{ type: Input, args: ['fx-flex-order.gt-md',] },],
-        'orderLg': [{ type: Input, args: ['fx-flex-order.lg',] },],
-        'orderGtLg': [{ type: Input, args: ['fx-flex-order.gt-lg',] },],
-        'orderXl': [{ type: Input, args: ['fx-flex-order.xl',] },],
+        'order': [{ type: Input, args: ['fxFlexOrder',] },],
+        'orderXs': [{ type: Input, args: ['fxFlexOrder.xs',] },],
+        'orderGtXs': [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
+        'orderSm': [{ type: Input, args: ['fxFlexOrder.sm',] },],
+        'orderGtSm': [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
+        'orderMd': [{ type: Input, args: ['fxFlexOrder.md',] },],
+        'orderGtMd': [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
+        'orderLg': [{ type: Input, args: ['fxFlexOrder.lg',] },],
+        'orderGtLg': [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
+        'orderXl': [{ type: Input, args: ['fxFlexOrder.xl',] },],
     };
     return FlexOrderDirective;
 }(BaseFxDirective));

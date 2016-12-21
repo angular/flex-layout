@@ -33,7 +33,7 @@ export var FlexDirective = (function (_super) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
             this._layoutWatcher = _container.layout$.subscribe(function (direction) {
-                // `direction` === null if parent container does not have a `fx-layout`
+                // `direction` === null if parent container does not have a `fxLayout`
                 _this._onLayoutChange(direction);
             });
         }
@@ -147,7 +147,7 @@ export var FlexDirective = (function (_super) {
         this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis))));
     };
     /**
-     * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
+     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
      */
     FlexDirective.prototype._parseFlexParts = function (basis) {
         basis = basis.replace(";", "");
@@ -158,7 +158,7 @@ export var FlexDirective = (function (_super) {
     /**
      * Extract more complicated short-hand versions.
      * e.g.
-     * fx-flex="3 3 calc(15em + 20px)"
+     * fxFlex="3 3 calc(15em + 20px)"
      */
     FlexDirective.prototype._getPartsWithCalc = function (value) {
         debugger;
@@ -249,7 +249,7 @@ export var FlexDirective = (function (_super) {
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-flex],\n  [fx-flex.xs]\n  [fx-flex.gt-xs],\n  [fx-flex.sm],\n  [fx-flex.gt-sm]\n  [fx-flex.md],\n  [fx-flex.gt-md]\n  [fx-flex.lg],\n  [fx-flex.gt-lg],\n  [fx-flex.xl]\n"
+        { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
                 },] },
     ];
     /** @nocollapse */
@@ -261,18 +261,18 @@ export var FlexDirective = (function (_super) {
         { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
     ]; };
     FlexDirective.propDecorators = {
-        'flex': [{ type: Input, args: ['fx-flex',] },],
-        'shrink': [{ type: Input, args: ['fx-shrink',] },],
-        'grow': [{ type: Input, args: ['fx-grow',] },],
-        'flexXs': [{ type: Input, args: ['fx-flex.xs',] },],
-        'flexGtXs': [{ type: Input, args: ['fx-flex.gt-xs',] },],
-        'flexSm': [{ type: Input, args: ['fx-flex.sm',] },],
-        'flexGtSm': [{ type: Input, args: ['fx-flex.gt-sm',] },],
-        'flexMd': [{ type: Input, args: ['fx-flex.md',] },],
-        'flexGtMd': [{ type: Input, args: ['fx-flex.gt-md',] },],
-        'flexLg': [{ type: Input, args: ['fx-flex.lg',] },],
-        'flexGtLg': [{ type: Input, args: ['fx-flex.gt-lg',] },],
-        'flexXl': [{ type: Input, args: ['fx-flex.xl',] },],
+        'flex': [{ type: Input, args: ['fxFlex',] },],
+        'shrink': [{ type: Input, args: ['fxShrink',] },],
+        'grow': [{ type: Input, args: ['fxGrow',] },],
+        'flexXs': [{ type: Input, args: ['fxFlex.xs',] },],
+        'flexGtXs': [{ type: Input, args: ['fxFlex.gt-xs',] },],
+        'flexSm': [{ type: Input, args: ['fxFlex.sm',] },],
+        'flexGtSm': [{ type: Input, args: ['fxFlex.gt-sm',] },],
+        'flexMd': [{ type: Input, args: ['fxFlex.md',] },],
+        'flexGtMd': [{ type: Input, args: ['fxFlex.gt-md',] },],
+        'flexLg': [{ type: Input, args: ['fxFlex.lg',] },],
+        'flexGtLg': [{ type: Input, args: ['fxFlex.gt-lg',] },],
+        'flexXl': [{ type: Input, args: ['fxFlex.xl',] },],
     };
     return FlexDirective;
 }(BaseFxDirective));

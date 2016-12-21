@@ -88,7 +88,7 @@ export var LayoutDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-layout')
+     * Default to use the non-responsive Input value ('fxLayout')
      * Then conditionally override with the mq-activated Input's current value
      */
     LayoutDirective.prototype.ngOnChanges = function (changes) {
@@ -147,7 +147,7 @@ export var LayoutDirective = (function (_super) {
         return LAYOUT_VALUES.find(function (x) { return x === value; }) ? value : LAYOUT_VALUES[0]; // "row"
     };
     LayoutDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-layout],\n  [fx-layout.xs]\n  [fx-layout.gt-xs],\n  [fx-layout.sm],\n  [fx-layout.gt-sm]\n  [fx-layout.md],\n  [fx-layout.gt-md]\n  [fx-layout.lg],\n  [fx-layout.gt-lg],\n  [fx-layout.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs]\n  [fxLayout.gt-xs],\n  [fxLayout.sm],\n  [fxLayout.gt-sm]\n  [fxLayout.md],\n  [fxLayout.gt-md]\n  [fxLayout.lg],\n  [fxLayout.gt-lg],\n  [fxLayout.xl]\n" },] },
     ];
     /** @nocollapse */
     LayoutDirective.ctorParameters = function () { return [
@@ -156,16 +156,16 @@ export var LayoutDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     LayoutDirective.propDecorators = {
-        'layout': [{ type: Input, args: ['fx-layout',] },],
-        'layoutXs': [{ type: Input, args: ['fx-layout.xs',] },],
-        'layoutGtXs': [{ type: Input, args: ['fx-layout.gt-xs',] },],
-        'layoutSm': [{ type: Input, args: ['fx-layout.sm',] },],
-        'layoutGtSm': [{ type: Input, args: ['fx-layout.gt-sm',] },],
-        'layoutMd': [{ type: Input, args: ['fx-layout.md',] },],
-        'layoutGtMd': [{ type: Input, args: ['fx-layout.gt-md',] },],
-        'layoutLg': [{ type: Input, args: ['fx-layout.lg',] },],
-        'layoutGtLg': [{ type: Input, args: ['fx-layout.gt-lg',] },],
-        'layoutXl': [{ type: Input, args: ['fx-layout.xl',] },],
+        'layout': [{ type: Input, args: ['fxLayout',] },],
+        'layoutXs': [{ type: Input, args: ['fxLayout.xs',] },],
+        'layoutGtXs': [{ type: Input, args: ['fxLayout.gt-xs',] },],
+        'layoutSm': [{ type: Input, args: ['fxLayout.sm',] },],
+        'layoutGtSm': [{ type: Input, args: ['fxLayout.gt-sm',] },],
+        'layoutMd': [{ type: Input, args: ['fxLayout.md',] },],
+        'layoutGtMd': [{ type: Input, args: ['fxLayout.gt-md',] },],
+        'layoutLg': [{ type: Input, args: ['fxLayout.lg',] },],
+        'layoutGtLg': [{ type: Input, args: ['fxLayout.gt-lg',] },],
+        'layoutXl': [{ type: Input, args: ['fxLayout.xl',] },],
     };
     return LayoutDirective;
 }(BaseFxDirective));

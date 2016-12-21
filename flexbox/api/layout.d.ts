@@ -37,7 +37,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-layout')
+     * Default to use the non-responsive Input value ('fxLayout')
      * Then conditionally override with the mq-activated Input's current value
      */
     ngOnChanges(changes: SimpleChanges): void;

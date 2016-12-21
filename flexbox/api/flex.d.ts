@@ -51,13 +51,13 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     private _onLayoutChange(direction?);
     private _updateStyle(value?);
     /**
-     * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
+     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
      */
     private _parseFlexParts(basis);
     /**
      * Extract more complicated short-hand versions.
      * e.g.
-     * fx-flex="3 3 calc(15em + 20px)"
+     * fxFlex="3 3 calc(15em + 20px)"
      */
     private _getPartsWithCalc(value);
     /**

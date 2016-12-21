@@ -35,12 +35,12 @@ export declare class ShowDirective extends BaseFxDirective implements OnInit, On
      */
     constructor(monitor: MediaMonitor, _layout: LayoutDirective, _hideDirective: any, elRef: ElementRef, renderer: Renderer);
     /**
-      * Does the current element also use the fx-show API ?
+      * Does the current element also use the fxShow API ?
       */
     protected readonly usesHideAPI: boolean;
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-show')
+     * Default to use the non-responsive Input value ('fxShow')
      * Then conditionally override with the mq-activated Input's current value
      */
     ngOnChanges(changes: SimpleChanges): void;

@@ -97,7 +97,7 @@ export var ShowDirective = (function (_super) {
     ;
     Object.defineProperty(ShowDirective.prototype, "usesHideAPI", {
         /**
-          * Does the current element also use the fx-show API ?
+          * Does the current element also use the fxShow API ?
           */
         get: function () {
             return !!this._hideDirective;
@@ -110,7 +110,7 @@ export var ShowDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-show')
+     * Default to use the non-responsive Input value ('fxShow')
      * Then conditionally override with the mq-activated Input's current value
      */
     ShowDirective.prototype.ngOnChanges = function (changes) {
@@ -158,7 +158,7 @@ export var ShowDirective = (function (_super) {
         return (FALSY.indexOf(show) == -1);
     };
     ShowDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-show],\n  [fx-show.xs]\n  [fx-show.gt-xs],\n  [fx-show.sm],\n  [fx-show.gt-sm]\n  [fx-show.md],\n  [fx-show.gt-md]\n  [fx-show.lg],\n  [fx-show.gt-lg],\n  [fx-show.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxShow],\n  [fxShow.xs]\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm]\n  [fxShow.md],\n  [fxShow.gt-md]\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n" },] },
     ];
     /** @nocollapse */
     ShowDirective.ctorParameters = function () { return [
@@ -169,16 +169,16 @@ export var ShowDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     ShowDirective.propDecorators = {
-        'show': [{ type: Input, args: ['fx-show',] },],
-        'showXs': [{ type: Input, args: ['fx-show.xs',] },],
-        'showGtXs': [{ type: Input, args: ['fx-show.gt-xs',] },],
-        'showSm': [{ type: Input, args: ['fx-show.sm',] },],
-        'showGtSm': [{ type: Input, args: ['fx-show.gt-sm',] },],
-        'showMd': [{ type: Input, args: ['fx-show.md',] },],
-        'showGtMd': [{ type: Input, args: ['fx-show.gt-md',] },],
-        'showLg': [{ type: Input, args: ['fx-show.lg',] },],
-        'showGtLg': [{ type: Input, args: ['fx-show.gt-lg',] },],
-        'showXl': [{ type: Input, args: ['fx-show.xl',] },],
+        'show': [{ type: Input, args: ['fxShow',] },],
+        'showXs': [{ type: Input, args: ['fxShow.xs',] },],
+        'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
+        'showSm': [{ type: Input, args: ['fxShow.sm',] },],
+        'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
+        'showMd': [{ type: Input, args: ['fxShow.md',] },],
+        'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
+        'showLg': [{ type: Input, args: ['fxShow.lg',] },],
+        'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
+        'showXl': [{ type: Input, args: ['fxShow.xl',] },],
     };
     return ShowDirective;
 }(BaseFxDirective));

@@ -96,7 +96,7 @@ export var HideDirective = (function (_super) {
     ;
     Object.defineProperty(HideDirective.prototype, "usesShowAPI", {
         /**
-         * Does the current element also use the fx-show API ?
+         * Does the current element also use the fxShow API ?
          */
         get: function () {
             return !!this._showDirective;
@@ -109,7 +109,7 @@ export var HideDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-hide')
+     * Default to use the non-responsive Input value ('fxHide')
      * Then conditionally override with the mq-activated Input's current value
      */
     HideDirective.prototype.ngOnChanges = function (changes) {
@@ -163,7 +163,7 @@ export var HideDirective = (function (_super) {
         return FALSY.indexOf(value) === -1;
     };
     HideDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-hide],\n  [fx-hide.xs]\n  [fx-hide.gt-xs],\n  [fx-hide.sm],\n  [fx-hide.gt-sm]\n  [fx-hide.md],\n  [fx-hide.gt-md]\n  [fx-hide.lg],\n  [fx-hide.gt-lg],\n  [fx-hide.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxHide],\n  [fxHide.xs]\n  [fxHide.gt-xs],\n  [fxHide.sm],\n  [fxHide.gt-sm]\n  [fxHide.md],\n  [fxHide.gt-md]\n  [fxHide.lg],\n  [fxHide.gt-lg],\n  [fxHide.xl]\n" },] },
     ];
     /** @nocollapse */
     HideDirective.ctorParameters = function () { return [
@@ -174,16 +174,16 @@ export var HideDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     HideDirective.propDecorators = {
-        'hide': [{ type: Input, args: ['fx-hide',] },],
-        'hideXs': [{ type: Input, args: ['fx-hide.xs',] },],
-        'hideGtXs': [{ type: Input, args: ['fx-hide.gt-xs',] },],
-        'hideSm': [{ type: Input, args: ['fx-hide.sm',] },],
-        'hideGtSm': [{ type: Input, args: ['fx-hide.gt-sm',] },],
-        'hideMd': [{ type: Input, args: ['fx-hide.md',] },],
-        'hideGtMd': [{ type: Input, args: ['fx-hide.gt-md',] },],
-        'hideLg': [{ type: Input, args: ['fx-hide.lg',] },],
-        'hideGtLg': [{ type: Input, args: ['fx-hide.gt-lg',] },],
-        'hideXl': [{ type: Input, args: ['fx-hide.xl',] },],
+        'hide': [{ type: Input, args: ['fxHide',] },],
+        'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
+        'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
+        'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
+        'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
+        'hideMd': [{ type: Input, args: ['fxHide.md',] },],
+        'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
+        'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
+        'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
+        'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
     };
     return HideDirective;
 }(BaseFxDirective));

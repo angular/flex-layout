@@ -36,12 +36,12 @@ export declare class HideDirective extends BaseFxDirective implements OnInit, On
      */
     constructor(monitor: MediaMonitor, _layout: LayoutDirective, _showDirective: ShowDirective, elRef: ElementRef, renderer: Renderer);
     /**
-     * Does the current element also use the fx-show API ?
+     * Does the current element also use the fxShow API ?
      */
     protected readonly usesShowAPI: boolean;
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-hide')
+     * Default to use the non-responsive Input value ('fxHide')
      * Then conditionally override with the mq-activated Input's current value
      */
     ngOnChanges(changes: SimpleChanges): void;

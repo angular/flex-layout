@@ -156,7 +156,7 @@ var ResponsiveActivation = (function () {
          * The key must be defined (in use) or fallback to the 'closest' overlapping property key
          * that is defined; otherwise the default property key will be used.
          * e.g.
-         *      if `<div fx-hide fx-hide.gt-sm="false">` is used but the current activated mediaQuery alias
+         *      if `<div fxHide fxHide.gt-sm="false">` is used but the current activated mediaQuery alias
          *      key is `.md` then `.gt-sm` should be used instead
          */
         get: function () {
@@ -453,7 +453,7 @@ var RAW_DEFAULTS = [
  *  Opaque Token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-var BREAKPOINTS = new _angular_core.OpaqueToken('fx-breakpoints-raw-data');
+var BREAKPOINTS = new _angular_core.OpaqueToken('fxRawBreakpoints');
 /**
  *  Provider to return observable to ALL known BreakPoint(s)
  *  Developers should build custom providers to override this default BreakPointRegistry dataset provider
@@ -585,7 +585,7 @@ var __metadata$3 = (this && this.__metadata) || function (k, v) {
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
-var MatchMediaObservable = new _angular_core.OpaqueToken('fx-observable-media-query');
+var MatchMediaObservable = new _angular_core.OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
  * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
@@ -974,7 +974,7 @@ var LayoutDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-layout')
+     * Default to use the non-responsive Input value ('fxLayout')
      * Then conditionally override with the mq-activated Input's current value
      */
     LayoutDirective.prototype.ngOnChanges = function (changes) {
@@ -1033,57 +1033,57 @@ var LayoutDirective = (function (_super) {
         return LAYOUT_VALUES.find(function (x) { return x === value; }) ? value : LAYOUT_VALUES[0]; // "row"
     };
     __decorate$6([
-        _angular_core.Input('fx-layout'), 
+        _angular_core.Input('fxLayout'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layout", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.xs'), 
+        _angular_core.Input('fxLayout.xs'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutXs", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.gt-xs'), 
+        _angular_core.Input('fxLayout.gt-xs'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutGtXs", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.sm'), 
+        _angular_core.Input('fxLayout.sm'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutSm", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.gt-sm'), 
+        _angular_core.Input('fxLayout.gt-sm'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutGtSm", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.md'), 
+        _angular_core.Input('fxLayout.md'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutMd", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.gt-md'), 
+        _angular_core.Input('fxLayout.gt-md'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutGtMd", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.lg'), 
+        _angular_core.Input('fxLayout.lg'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutLg", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.gt-lg'), 
+        _angular_core.Input('fxLayout.gt-lg'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutGtLg", null);
     __decorate$6([
-        _angular_core.Input('fx-layout.xl'), 
+        _angular_core.Input('fxLayout.xl'), 
         __metadata$6('design:type', Object), 
         __metadata$6('design:paramtypes', [Object])
     ], LayoutDirective.prototype, "layoutXl", null);
     LayoutDirective = __decorate$6([
-        _angular_core.Directive({ selector: "\n  [fx-layout],\n  [fx-layout.xs]\n  [fx-layout.gt-xs],\n  [fx-layout.sm],\n  [fx-layout.gt-sm]\n  [fx-layout.md],\n  [fx-layout.gt-md]\n  [fx-layout.lg],\n  [fx-layout.gt-lg],\n  [fx-layout.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxLayout],\n  [fxLayout.xs]\n  [fxLayout.gt-xs],\n  [fxLayout.sm],\n  [fxLayout.gt-sm]\n  [fxLayout.md],\n  [fxLayout.gt-md]\n  [fxLayout.lg],\n  [fxLayout.gt-lg],\n  [fxLayout.xl]\n" }), 
         __metadata$6('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], LayoutDirective);
     return LayoutDirective;
@@ -1251,57 +1251,57 @@ var LayoutWrapDirective = (function (_super) {
         return value;
     };
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap'), 
+        _angular_core.Input('fxLayoutWrap'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrap", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.xs'), 
+        _angular_core.Input('fxLayoutWrap.xs'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapXs", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.gt-xs'), 
+        _angular_core.Input('fxLayoutWrap.gt-xs'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapGtXs", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.sm'), 
+        _angular_core.Input('fxLayoutWrap.sm'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapSm", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.gt-sm'), 
+        _angular_core.Input('fxLayoutWrap.gt-sm'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapGtSm", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.md'), 
+        _angular_core.Input('fxLayoutWrap.md'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapMd", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.gt-md'), 
+        _angular_core.Input('fxLayoutWrap.gt-md'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapGtMd", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.lg'), 
+        _angular_core.Input('fxLayoutWrap.lg'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapLg", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.gt-lg'), 
+        _angular_core.Input('fxLayoutWrap.gt-lg'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapGtLg", null);
     __decorate$7([
-        _angular_core.Input('fx-layout-wrap.xl'), 
+        _angular_core.Input('fxLayoutWrap.xl'), 
         __metadata$7('design:type', Object), 
         __metadata$7('design:paramtypes', [Object])
     ], LayoutWrapDirective.prototype, "wrapXl", null);
     LayoutWrapDirective = __decorate$7([
-        _angular_core.Directive({ selector: "\n  [fx-layout-wrap],\n  [fx-layout-wrap.xs]\n  [fx-layout-wrap.gt-xs],\n  [fx-layout-wrap.sm],\n  [fx-layout-wrap.gt-sm]\n  [fx-layout-wrap.md],\n  [fx-layout-wrap.gt-md]\n  [fx-layout-wrap.lg],\n  [fx-layout-wrap.gt-lg],\n  [fx-layout-wrap.xl]\n" }),
+        _angular_core.Directive({ selector: "\n  [fxLayoutWrap],\n  [fxLayoutWrap.xs]\n  [fxLayoutWrap.gt-xs],\n  [fxLayoutWrap.sm],\n  [fxLayoutWrap.gt-sm]\n  [fxLayoutWrap.md],\n  [fxLayoutWrap.gt-md]\n  [fxLayoutWrap.lg],\n  [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.xl]\n" }),
         __param$2(3, _angular_core.Optional()),
         __param$2(3, _angular_core.Self()), 
         __metadata$7('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer, LayoutDirective])
@@ -1350,7 +1350,7 @@ var FlexDirective = (function (_super) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
             this._layoutWatcher = _container.layout$.subscribe(function (direction) {
-                // `direction` === null if parent container does not have a `fx-layout`
+                // `direction` === null if parent container does not have a `fxLayout`
                 _this._onLayoutChange(direction);
             });
         }
@@ -1464,7 +1464,7 @@ var FlexDirective = (function (_super) {
         this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis))));
     };
     /**
-     * If the used the short-form `fx-flex="1 0 37%"`, then parse the parts
+     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
      */
     FlexDirective.prototype._parseFlexParts = function (basis) {
         basis = basis.replace(";", "");
@@ -1475,7 +1475,7 @@ var FlexDirective = (function (_super) {
     /**
      * Extract more complicated short-hand versions.
      * e.g.
-     * fx-flex="3 3 calc(15em + 20px)"
+     * fxFlex="3 3 calc(15em + 20px)"
      */
     FlexDirective.prototype._getPartsWithCalc = function (value) {
         debugger;
@@ -1566,67 +1566,67 @@ var FlexDirective = (function (_super) {
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     __decorate$5([
-        _angular_core.Input('fx-flex'), 
+        _angular_core.Input('fxFlex'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flex", null);
     __decorate$5([
-        _angular_core.Input('fx-shrink'), 
+        _angular_core.Input('fxShrink'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "shrink", null);
     __decorate$5([
-        _angular_core.Input('fx-grow'), 
+        _angular_core.Input('fxGrow'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "grow", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.xs'), 
+        _angular_core.Input('fxFlex.xs'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexXs", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.gt-xs'), 
+        _angular_core.Input('fxFlex.gt-xs'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexGtXs", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.sm'), 
+        _angular_core.Input('fxFlex.sm'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexSm", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.gt-sm'), 
+        _angular_core.Input('fxFlex.gt-sm'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexGtSm", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.md'), 
+        _angular_core.Input('fxFlex.md'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexMd", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.gt-md'), 
+        _angular_core.Input('fxFlex.gt-md'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexGtMd", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.lg'), 
+        _angular_core.Input('fxFlex.lg'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexLg", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.gt-lg'), 
+        _angular_core.Input('fxFlex.gt-lg'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexGtLg", null);
     __decorate$5([
-        _angular_core.Input('fx-flex.xl'), 
+        _angular_core.Input('fxFlex.xl'), 
         __metadata$5('design:type', Object), 
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexXl", null);
     FlexDirective = __decorate$5([
-        _angular_core.Directive({ selector: "\n  [fx-flex],\n  [fx-flex.xs]\n  [fx-flex.gt-xs],\n  [fx-flex.sm],\n  [fx-flex.gt-sm]\n  [fx-flex.md],\n  [fx-flex.gt-md]\n  [fx-flex.lg],\n  [fx-flex.gt-lg],\n  [fx-flex.xl]\n"
+        _angular_core.Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
         }),
         __param$1(3, _angular_core.Optional()),
         __param$1(3, _angular_core.SkipSelf()),
@@ -1743,7 +1743,7 @@ var ShowDirective = (function (_super) {
     ;
     Object.defineProperty(ShowDirective.prototype, "usesHideAPI", {
         /**
-          * Does the current element also use the fx-show API ?
+          * Does the current element also use the fxShow API ?
           */
         get: function () {
             return !!this._hideDirective;
@@ -1756,7 +1756,7 @@ var ShowDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-show')
+     * Default to use the non-responsive Input value ('fxShow')
      * Then conditionally override with the mq-activated Input's current value
      */
     ShowDirective.prototype.ngOnChanges = function (changes) {
@@ -1804,57 +1804,57 @@ var ShowDirective = (function (_super) {
         return (FALSY$1.indexOf(show) == -1);
     };
     __decorate$9([
-        _angular_core.Input('fx-show'), 
+        _angular_core.Input('fxShow'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "show", null);
     __decorate$9([
-        _angular_core.Input('fx-show.xs'), 
+        _angular_core.Input('fxShow.xs'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showXs", null);
     __decorate$9([
-        _angular_core.Input('fx-show.gt-xs'), 
+        _angular_core.Input('fxShow.gt-xs'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showGtXs", null);
     __decorate$9([
-        _angular_core.Input('fx-show.sm'), 
+        _angular_core.Input('fxShow.sm'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showSm", null);
     __decorate$9([
-        _angular_core.Input('fx-show.gt-sm'), 
+        _angular_core.Input('fxShow.gt-sm'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showGtSm", null);
     __decorate$9([
-        _angular_core.Input('fx-show.md'), 
+        _angular_core.Input('fxShow.md'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showMd", null);
     __decorate$9([
-        _angular_core.Input('fx-show.gt-md'), 
+        _angular_core.Input('fxShow.gt-md'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showGtMd", null);
     __decorate$9([
-        _angular_core.Input('fx-show.lg'), 
+        _angular_core.Input('fxShow.lg'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showLg", null);
     __decorate$9([
-        _angular_core.Input('fx-show.gt-lg'), 
+        _angular_core.Input('fxShow.gt-lg'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showGtLg", null);
     __decorate$9([
-        _angular_core.Input('fx-show.xl'), 
+        _angular_core.Input('fxShow.xl'), 
         __metadata$9('design:type', Object), 
         __metadata$9('design:paramtypes', [Object])
     ], ShowDirective.prototype, "showXl", null);
     ShowDirective = __decorate$9([
-        _angular_core.Directive({ selector: "\n  [fx-show],\n  [fx-show.xs]\n  [fx-show.gt-xs],\n  [fx-show.sm],\n  [fx-show.gt-sm]\n  [fx-show.md],\n  [fx-show.gt-md]\n  [fx-show.lg],\n  [fx-show.gt-lg],\n  [fx-show.xl]\n" }),
+        _angular_core.Directive({ selector: "\n  [fxShow],\n  [fxShow.xs]\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm]\n  [fxShow.md],\n  [fxShow.gt-md]\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n" }),
         __param$4(1, _angular_core.Optional()),
         __param$4(1, _angular_core.Self()),
         __param$4(2, _angular_core.Inject(_angular_core.forwardRef(function () { return HideDirective; }))),
@@ -1970,7 +1970,7 @@ var HideDirective = (function (_super) {
     ;
     Object.defineProperty(HideDirective.prototype, "usesShowAPI", {
         /**
-         * Does the current element also use the fx-show API ?
+         * Does the current element also use the fxShow API ?
          */
         get: function () {
             return !!this._showDirective;
@@ -1983,7 +1983,7 @@ var HideDirective = (function (_super) {
     // *********************************************
     /**
      * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fx-hide')
+     * Default to use the non-responsive Input value ('fxHide')
      * Then conditionally override with the mq-activated Input's current value
      */
     HideDirective.prototype.ngOnChanges = function (changes) {
@@ -2037,57 +2037,57 @@ var HideDirective = (function (_super) {
         return FALSY.indexOf(value) === -1;
     };
     __decorate$8([
-        _angular_core.Input('fx-hide'), 
+        _angular_core.Input('fxHide'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hide", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.xs'), 
+        _angular_core.Input('fxHide.xs'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideXs", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.gt-xs'), 
+        _angular_core.Input('fxHide.gt-xs'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideGtXs", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.sm'), 
+        _angular_core.Input('fxHide.sm'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideSm", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.gt-sm'), 
+        _angular_core.Input('fxHide.gt-sm'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideGtSm", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.md'), 
+        _angular_core.Input('fxHide.md'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideMd", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.gt-md'), 
+        _angular_core.Input('fxHide.gt-md'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideGtMd", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.lg'), 
+        _angular_core.Input('fxHide.lg'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideLg", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.gt-lg'), 
+        _angular_core.Input('fxHide.gt-lg'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideGtLg", null);
     __decorate$8([
-        _angular_core.Input('fx-hide.xl'), 
+        _angular_core.Input('fxHide.xl'), 
         __metadata$8('design:type', Object), 
         __metadata$8('design:paramtypes', [Object])
     ], HideDirective.prototype, "hideXl", null);
     HideDirective = __decorate$8([
-        _angular_core.Directive({ selector: "\n  [fx-hide],\n  [fx-hide.xs]\n  [fx-hide.gt-xs],\n  [fx-hide.sm],\n  [fx-hide.gt-sm]\n  [fx-hide.md],\n  [fx-hide.gt-md]\n  [fx-hide.lg],\n  [fx-hide.gt-lg],\n  [fx-hide.xl]\n" }),
+        _angular_core.Directive({ selector: "\n  [fxHide],\n  [fxHide.xs]\n  [fxHide.gt-xs],\n  [fxHide.sm],\n  [fxHide.gt-sm]\n  [fxHide.md],\n  [fxHide.gt-md]\n  [fxHide.lg],\n  [fxHide.gt-lg],\n  [fxHide.xl]\n" }),
         __param$3(1, _angular_core.Optional()),
         __param$3(1, _angular_core.Self()),
         __param$3(2, _angular_core.Optional()),
@@ -2249,58 +2249,58 @@ var FlexAlignDirective = (function (_super) {
         return css;
     };
     __decorate$10([
-        _angular_core.Input('fx-flex-align'), 
+        _angular_core.Input('fxFlexAlign'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "align", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.xs'), 
+        _angular_core.Input('fxFlexAlign.xs'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignXs", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.gt-xs'), 
+        _angular_core.Input('fxFlexAlign.gt-xs'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignGtXs", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.sm'), 
+        _angular_core.Input('fxFlexAlign.sm'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignSm", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.gt-sm'), 
+        _angular_core.Input('fxFlexAlign.gt-sm'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignGtSm", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.md'), 
+        _angular_core.Input('fxFlexAlign.md'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignMd", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.gt-md'), 
+        _angular_core.Input('fxFlexAlign.gt-md'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignGtMd", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.lg'), 
+        _angular_core.Input('fxFlexAlign.lg'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignLg", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.gt-lg'), 
+        _angular_core.Input('fxFlexAlign.gt-lg'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignGtLg", null);
     __decorate$10([
-        _angular_core.Input('fx-flex-align.xl'), 
+        _angular_core.Input('fxFlexAlign.xl'), 
         __metadata$10('design:type', Object), 
         __metadata$10('design:paramtypes', [Object])
     ], FlexAlignDirective.prototype, "alignXl", null);
     FlexAlignDirective = __decorate$10([
         _angular_core.Directive({
-            selector: "\n  [fx-flex-align],\n  [fx-flex-align.xs]\n  [fx-flex-align.gt-xs],\n  [fx-flex-align.sm],\n  [fx-flex-align.gt-sm]\n  [fx-flex-align.md],\n  [fx-flex-align.gt-md]\n  [fx-flex-align.lg],\n  [fx-flex-align.gt-lg],\n  [fx-flex-align.xl]\n"
+            selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs]\n  [fxFlexAlign.gt-xs],\n  [fxFlexAlign.sm],\n  [fxFlexAlign.gt-sm]\n  [fxFlexAlign.md],\n  [fxFlexAlign.gt-md]\n  [fxFlexAlign.lg],\n  [fxFlexAlign.gt-lg],\n  [fxFlexAlign.xl]\n"
         }), 
         __metadata$10('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], FlexAlignDirective);
@@ -2329,10 +2329,10 @@ var FLEX_FILL_CSS = {
     'min-height': '100%'
 };
 /**
- * 'fx-fill' flexbox styling directive
+ * 'fxFill' flexbox styling directive
  *  Maximizes width and height of element in a layout container
  *
- *  NOTE: fx-fill is NOT responsive API!!
+ *  NOTE: fxFill is NOT responsive API!!
  */
 var FlexFillDirective = (function (_super) {
     __extends$6(FlexFillDirective, _super);
@@ -2343,7 +2343,7 @@ var FlexFillDirective = (function (_super) {
         this._applyStyleToElement(FLEX_FILL_CSS);
     }
     FlexFillDirective = __decorate$11([
-        _angular_core.Directive({ selector: "\n  [fx-fill],\n  [fx-fill.xs]\n  [fx-fill.gt-xs],\n  [fx-fill.sm],\n  [fx-fill.gt-sm]\n  [fx-fill.md],\n  [fx-fill.gt-md]\n  [fx-fill.lg],\n  [fx-fill.gt-lg],\n  [fx-fill.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxFill],\n  [fxFill.xs]\n  [fxFill.gt-xs],\n  [fxFill.sm],\n  [fxFill.gt-sm]\n  [fxFill.md],\n  [fxFill.gt-md]\n  [fxFill.lg],\n  [fxFill.gt-lg],\n  [fxFill.xl]\n" }), 
         __metadata$11('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], FlexFillDirective);
     return FlexFillDirective;
@@ -2469,57 +2469,57 @@ var FlexOffsetDirective = (function (_super) {
         return { 'margin-left': "" + offset };
     };
     __decorate$12([
-        _angular_core.Input('fx-flex-offset'), 
+        _angular_core.Input('fxFlexOffset'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offset", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.xs'), 
+        _angular_core.Input('fxFlexOffset.xs'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetXs", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.gt-xs'), 
+        _angular_core.Input('fxFlexOffset.gt-xs'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetGtXs", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.sm'), 
+        _angular_core.Input('fxFlexOffset.sm'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetSm", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.gt-sm'), 
+        _angular_core.Input('fxFlexOffset.gt-sm'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetGtSm", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.md'), 
+        _angular_core.Input('fxFlexOffset.md'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetMd", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.gt-md'), 
+        _angular_core.Input('fxFlexOffset.gt-md'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetGtMd", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.lg'), 
+        _angular_core.Input('fxFlexOffset.lg'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetLg", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.gt-lg'), 
+        _angular_core.Input('fxFlexOffset.gt-lg'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetGtLg", null);
     __decorate$12([
-        _angular_core.Input('fx-flex-offset.xl'), 
+        _angular_core.Input('fxFlexOffset.xl'), 
         __metadata$12('design:type', Object), 
         __metadata$12('design:paramtypes', [Object])
     ], FlexOffsetDirective.prototype, "offsetXl", null);
     FlexOffsetDirective = __decorate$12([
-        _angular_core.Directive({ selector: "\n  [fx-flex-offset],\n  [fx-flex-offset.xs]\n  [fx-flex-offset.gt-xs],\n  [fx-flex-offset.sm],\n  [fx-flex-offset.gt-sm]\n  [fx-flex-offset.md],\n  [fx-flex-offset.gt-md]\n  [fx-flex-offset.lg],\n  [fx-flex-offset.gt-lg],\n  [fx-flex-offset.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs]\n  [fxFlexOffset.gt-xs],\n  [fxFlexOffset.sm],\n  [fxFlexOffset.gt-sm]\n  [fxFlexOffset.md],\n  [fxFlexOffset.gt-md]\n  [fxFlexOffset.lg],\n  [fxFlexOffset.gt-lg],\n  [fxFlexOffset.xl]\n" }), 
         __metadata$12('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], FlexOffsetDirective);
     return FlexOffsetDirective;
@@ -2644,57 +2644,57 @@ var FlexOrderDirective = (function (_super) {
         return { order: isNaN(value) ? 0 : value };
     };
     __decorate$13([
-        _angular_core.Input('fx-flex-order'), 
+        _angular_core.Input('fxFlexOrder'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "order", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.xs'), 
+        _angular_core.Input('fxFlexOrder.xs'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderXs", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.gt-xs'), 
+        _angular_core.Input('fxFlexOrder.gt-xs'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderGtXs", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.sm'), 
+        _angular_core.Input('fxFlexOrder.sm'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderSm", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.gt-sm'), 
+        _angular_core.Input('fxFlexOrder.gt-sm'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderGtSm", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.md'), 
+        _angular_core.Input('fxFlexOrder.md'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderMd", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.gt-md'), 
+        _angular_core.Input('fxFlexOrder.gt-md'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderGtMd", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.lg'), 
+        _angular_core.Input('fxFlexOrder.lg'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderLg", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.gt-lg'), 
+        _angular_core.Input('fxFlexOrder.gt-lg'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderGtLg", null);
     __decorate$13([
-        _angular_core.Input('fx-flex-order.xl'), 
+        _angular_core.Input('fxFlexOrder.xl'), 
         __metadata$13('design:type', Object), 
         __metadata$13('design:paramtypes', [Object])
     ], FlexOrderDirective.prototype, "orderXl", null);
     FlexOrderDirective = __decorate$13([
-        _angular_core.Directive({ selector: "\n  [fx-flex-order],\n  [fx-flex-order.xs]\n  [fx-flex-order.gt-xs],\n  [fx-flex-order.sm],\n  [fx-flex-order.gt-sm]\n  [fx-flex-order.md],\n  [fx-flex-order.gt-md]\n  [fx-flex-order.lg],\n  [fx-flex-order.gt-lg],\n  [fx-flex-order.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs]\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm]\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md]\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" }), 
         __metadata$13('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], FlexOrderDirective);
     return FlexOrderDirective;
@@ -2905,57 +2905,57 @@ var LayoutAlignDirective = (function (_super) {
         }
     };
     __decorate$14([
-        _angular_core.Input('fx-layout-align'), 
+        _angular_core.Input('fxLayoutAlign'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "align", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.xs'), 
+        _angular_core.Input('fxLayoutAlign.xs'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignXs", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.gt-xs'), 
+        _angular_core.Input('fxLayoutAlign.gt-xs'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignGtXs", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.sm'), 
+        _angular_core.Input('fxLayoutAlign.sm'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignSm", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.gt-sm'), 
+        _angular_core.Input('fxLayoutAlign.gt-sm'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignGtSm", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.md'), 
+        _angular_core.Input('fxLayoutAlign.md'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignMd", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.gt-md'), 
+        _angular_core.Input('fxLayoutAlign.gt-md'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignGtMd", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.lg'), 
+        _angular_core.Input('fxLayoutAlign.lg'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignLg", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.gt-lg'), 
+        _angular_core.Input('fxLayoutAlign.gt-lg'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignGtLg", null);
     __decorate$14([
-        _angular_core.Input('fx-layout-align.xl'), 
+        _angular_core.Input('fxLayoutAlign.xl'), 
         __metadata$14('design:type', Object), 
         __metadata$14('design:paramtypes', [Object])
     ], LayoutAlignDirective.prototype, "alignXl", null);
     LayoutAlignDirective = __decorate$14([
-        _angular_core.Directive({ selector: "\n  [fx-layout-align],\n  [fx-layout-align.xs]\n  [fx-layout-align.gt-xs],\n  [fx-layout-align.sm],\n  [fx-layout-align.gt-sm]\n  [fx-layout-align.md],\n  [fx-layout-align.gt-md]\n  [fx-layout-align.lg],\n  [fx-layout-align.gt-lg],\n  [fx-layout-align.xl]\n" }),
+        _angular_core.Directive({ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs]\n  [fxLayoutAlign.gt-xs],\n  [fxLayoutAlign.sm],\n  [fxLayoutAlign.gt-sm]\n  [fxLayoutAlign.md],\n  [fxLayoutAlign.gt-md]\n  [fxLayoutAlign.lg],\n  [fxLayoutAlign.gt-lg],\n  [fxLayoutAlign.xl]\n" }),
         __param$5(3, _angular_core.Optional()),
         __param$5(3, _angular_core.Self()), 
         __metadata$14('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer, LayoutDirective])
@@ -3084,57 +3084,57 @@ var LayoutGapDirective = (function (_super) {
         return { 'margin-left': value };
     };
     __decorate$15([
-        _angular_core.Input('fx-layout-gap'), 
+        _angular_core.Input('fxLayoutGap'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gap", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.xs'), 
+        _angular_core.Input('fxLayoutGap.xs'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapXs", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.gt-xs'), 
+        _angular_core.Input('fxLayoutGap.gt-xs'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapGtXs", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.sm'), 
+        _angular_core.Input('fxLayoutGap.sm'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapSm", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.gt-sm'), 
+        _angular_core.Input('fxLayoutGap.gt-sm'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapGtSm", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.md'), 
+        _angular_core.Input('fxLayoutGap.md'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapMd", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.gt-md'), 
+        _angular_core.Input('fxLayoutGap.gt-md'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapGtMd", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.lg'), 
+        _angular_core.Input('fxLayoutGap.lg'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapLg", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.gt-lg'), 
+        _angular_core.Input('fxLayoutGap.gt-lg'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapGtLg", null);
     __decorate$15([
-        _angular_core.Input('fx-layout-gap.xl'), 
+        _angular_core.Input('fxLayoutGap.xl'), 
         __metadata$15('design:type', Object), 
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapXl", null);
     LayoutGapDirective = __decorate$15([
-        _angular_core.Directive({ selector: "\n  [fx-layout-gap],\n  [fx-layout-gap.xs]\n  [fx-layout-gap.gt-xs],\n  [fx-layout-gap.sm],\n  [fx-layout-gap.gt-sm]\n  [fx-layout-gap.md],\n  [fx-layout-gap.gt-md]\n  [fx-layout-gap.lg],\n  [fx-layout-gap.gt-lg],\n  [fx-layout-gap.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" }), 
         __metadata$15('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], LayoutGapDirective);
     return LayoutGapDirective;

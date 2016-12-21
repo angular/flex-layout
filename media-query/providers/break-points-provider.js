@@ -60,7 +60,7 @@ export var RAW_DEFAULTS = [
  *  Opaque Token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-export var BREAKPOINTS = new OpaqueToken('fx-breakpoints-raw-data');
+export var BREAKPOINTS = new OpaqueToken('fxRawBreakpoints');
 /**
  *  Provider to return observable to ALL known BreakPoint(s)
  *  Developers should build custom providers to override this default BreakPointRegistry dataset provider

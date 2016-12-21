@@ -113,7 +113,7 @@ export var LayoutGapDirective = (function (_super) {
         return { 'margin-left': value };
     };
     LayoutGapDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-layout-gap],\n  [fx-layout-gap.xs]\n  [fx-layout-gap.gt-xs],\n  [fx-layout-gap.sm],\n  [fx-layout-gap.gt-sm]\n  [fx-layout-gap.md],\n  [fx-layout-gap.gt-md]\n  [fx-layout-gap.lg],\n  [fx-layout-gap.gt-lg],\n  [fx-layout-gap.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" },] },
     ];
     /** @nocollapse */
     LayoutGapDirective.ctorParameters = function () { return [
@@ -122,16 +122,16 @@ export var LayoutGapDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     LayoutGapDirective.propDecorators = {
-        'gap': [{ type: Input, args: ['fx-layout-gap',] },],
-        'gapXs': [{ type: Input, args: ['fx-layout-gap.xs',] },],
-        'gapGtXs': [{ type: Input, args: ['fx-layout-gap.gt-xs',] },],
-        'gapSm': [{ type: Input, args: ['fx-layout-gap.sm',] },],
-        'gapGtSm': [{ type: Input, args: ['fx-layout-gap.gt-sm',] },],
-        'gapMd': [{ type: Input, args: ['fx-layout-gap.md',] },],
-        'gapGtMd': [{ type: Input, args: ['fx-layout-gap.gt-md',] },],
-        'gapLg': [{ type: Input, args: ['fx-layout-gap.lg',] },],
-        'gapGtLg': [{ type: Input, args: ['fx-layout-gap.gt-lg',] },],
-        'gapXl': [{ type: Input, args: ['fx-layout-gap.xl',] },],
+        'gap': [{ type: Input, args: ['fxLayoutGap',] },],
+        'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
+        'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+        'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
+        'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+        'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
+        'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+        'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
+        'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+        'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
     };
     return LayoutGapDirective;
 }(BaseFxDirective));

@@ -196,7 +196,7 @@ export var LayoutAlignDirective = (function (_super) {
         }
     };
     LayoutAlignDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-layout-align],\n  [fx-layout-align.xs]\n  [fx-layout-align.gt-xs],\n  [fx-layout-align.sm],\n  [fx-layout-align.gt-sm]\n  [fx-layout-align.md],\n  [fx-layout-align.gt-md]\n  [fx-layout-align.lg],\n  [fx-layout-align.gt-lg],\n  [fx-layout-align.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs]\n  [fxLayoutAlign.gt-xs],\n  [fxLayoutAlign.sm],\n  [fxLayoutAlign.gt-sm]\n  [fxLayoutAlign.md],\n  [fxLayoutAlign.gt-md]\n  [fxLayoutAlign.lg],\n  [fxLayoutAlign.gt-lg],\n  [fxLayoutAlign.xl]\n" },] },
     ];
     /** @nocollapse */
     LayoutAlignDirective.ctorParameters = function () { return [
@@ -206,16 +206,16 @@ export var LayoutAlignDirective = (function (_super) {
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     ]; };
     LayoutAlignDirective.propDecorators = {
-        'align': [{ type: Input, args: ['fx-layout-align',] },],
-        'alignXs': [{ type: Input, args: ['fx-layout-align.xs',] },],
-        'alignGtXs': [{ type: Input, args: ['fx-layout-align.gt-xs',] },],
-        'alignSm': [{ type: Input, args: ['fx-layout-align.sm',] },],
-        'alignGtSm': [{ type: Input, args: ['fx-layout-align.gt-sm',] },],
-        'alignMd': [{ type: Input, args: ['fx-layout-align.md',] },],
-        'alignGtMd': [{ type: Input, args: ['fx-layout-align.gt-md',] },],
-        'alignLg': [{ type: Input, args: ['fx-layout-align.lg',] },],
-        'alignGtLg': [{ type: Input, args: ['fx-layout-align.gt-lg',] },],
-        'alignXl': [{ type: Input, args: ['fx-layout-align.xl',] },],
+        'align': [{ type: Input, args: ['fxLayoutAlign',] },],
+        'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
+        'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
+        'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
+        'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
+        'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
+        'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
+        'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
+        'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
+        'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
     };
     return LayoutAlignDirective;
 }(BaseFxDirective));

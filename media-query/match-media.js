@@ -11,7 +11,7 @@ import { MediaChange } from './media-change';
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
-export var MatchMediaObservable = new OpaqueToken('fx-observable-media-query');
+export var MatchMediaObservable = new OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
  * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the

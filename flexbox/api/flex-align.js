@@ -144,7 +144,7 @@ export var FlexAlignDirective = (function (_super) {
     };
     FlexAlignDirective.decorators = [
         { type: Directive, args: [{
-                    selector: "\n  [fx-flex-align],\n  [fx-flex-align.xs]\n  [fx-flex-align.gt-xs],\n  [fx-flex-align.sm],\n  [fx-flex-align.gt-sm]\n  [fx-flex-align.md],\n  [fx-flex-align.gt-md]\n  [fx-flex-align.lg],\n  [fx-flex-align.gt-lg],\n  [fx-flex-align.xl]\n"
+                    selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs]\n  [fxFlexAlign.gt-xs],\n  [fxFlexAlign.sm],\n  [fxFlexAlign.gt-sm]\n  [fxFlexAlign.md],\n  [fxFlexAlign.gt-md]\n  [fxFlexAlign.lg],\n  [fxFlexAlign.gt-lg],\n  [fxFlexAlign.xl]\n"
                 },] },
     ];
     /** @nocollapse */
@@ -154,16 +154,16 @@ export var FlexAlignDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     FlexAlignDirective.propDecorators = {
-        'align': [{ type: Input, args: ['fx-flex-align',] },],
-        'alignXs': [{ type: Input, args: ['fx-flex-align.xs',] },],
-        'alignGtXs': [{ type: Input, args: ['fx-flex-align.gt-xs',] },],
-        'alignSm': [{ type: Input, args: ['fx-flex-align.sm',] },],
-        'alignGtSm': [{ type: Input, args: ['fx-flex-align.gt-sm',] },],
-        'alignMd': [{ type: Input, args: ['fx-flex-align.md',] },],
-        'alignGtMd': [{ type: Input, args: ['fx-flex-align.gt-md',] },],
-        'alignLg': [{ type: Input, args: ['fx-flex-align.lg',] },],
-        'alignGtLg': [{ type: Input, args: ['fx-flex-align.gt-lg',] },],
-        'alignXl': [{ type: Input, args: ['fx-flex-align.xl',] },],
+        'align': [{ type: Input, args: ['fxFlexAlign',] },],
+        'alignXs': [{ type: Input, args: ['fxFlexAlign.xs',] },],
+        'alignGtXs': [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
+        'alignSm': [{ type: Input, args: ['fxFlexAlign.sm',] },],
+        'alignGtSm': [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
+        'alignMd': [{ type: Input, args: ['fxFlexAlign.md',] },],
+        'alignGtMd': [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
+        'alignLg': [{ type: Input, args: ['fxFlexAlign.lg',] },],
+        'alignGtLg': [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
+        'alignXl': [{ type: Input, args: ['fxFlexAlign.xl',] },],
     };
     return FlexAlignDirective;
 }(BaseFxDirective));

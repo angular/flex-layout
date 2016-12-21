@@ -112,7 +112,7 @@ export var FlexOffsetDirective = (function (_super) {
         return { 'margin-left': "" + offset };
     };
     FlexOffsetDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fx-flex-offset],\n  [fx-flex-offset.xs]\n  [fx-flex-offset.gt-xs],\n  [fx-flex-offset.sm],\n  [fx-flex-offset.gt-sm]\n  [fx-flex-offset.md],\n  [fx-flex-offset.gt-md]\n  [fx-flex-offset.lg],\n  [fx-flex-offset.gt-lg],\n  [fx-flex-offset.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs]\n  [fxFlexOffset.gt-xs],\n  [fxFlexOffset.sm],\n  [fxFlexOffset.gt-sm]\n  [fxFlexOffset.md],\n  [fxFlexOffset.gt-md]\n  [fxFlexOffset.lg],\n  [fxFlexOffset.gt-lg],\n  [fxFlexOffset.xl]\n" },] },
     ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [
@@ -121,16 +121,16 @@ export var FlexOffsetDirective = (function (_super) {
         { type: Renderer, },
     ]; };
     FlexOffsetDirective.propDecorators = {
-        'offset': [{ type: Input, args: ['fx-flex-offset',] },],
-        'offsetXs': [{ type: Input, args: ['fx-flex-offset.xs',] },],
-        'offsetGtXs': [{ type: Input, args: ['fx-flex-offset.gt-xs',] },],
-        'offsetSm': [{ type: Input, args: ['fx-flex-offset.sm',] },],
-        'offsetGtSm': [{ type: Input, args: ['fx-flex-offset.gt-sm',] },],
-        'offsetMd': [{ type: Input, args: ['fx-flex-offset.md',] },],
-        'offsetGtMd': [{ type: Input, args: ['fx-flex-offset.gt-md',] },],
-        'offsetLg': [{ type: Input, args: ['fx-flex-offset.lg',] },],
-        'offsetGtLg': [{ type: Input, args: ['fx-flex-offset.gt-lg',] },],
-        'offsetXl': [{ type: Input, args: ['fx-flex-offset.xl',] },],
+        'offset': [{ type: Input, args: ['fxFlexOffset',] },],
+        'offsetXs': [{ type: Input, args: ['fxFlexOffset.xs',] },],
+        'offsetGtXs': [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
+        'offsetSm': [{ type: Input, args: ['fxFlexOffset.sm',] },],
+        'offsetGtSm': [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
+        'offsetMd': [{ type: Input, args: ['fxFlexOffset.md',] },],
+        'offsetGtMd': [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
+        'offsetLg': [{ type: Input, args: ['fxFlexOffset.lg',] },],
+        'offsetGtLg': [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
+        'offsetXl': [{ type: Input, args: ['fxFlexOffset.xl',] },],
     };
     return FlexOffsetDirective;
 }(BaseFxDirective));
