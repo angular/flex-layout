@@ -32,7 +32,10 @@ export var FlexDirective = (function (_super) {
         if (_container) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
-            this._layoutWatcher = _container.layout$.subscribe(function (direction) { return _this._onLayoutChange(direction); });
+            this._layoutWatcher = _container.layout$.subscribe(function (direction) {
+                // `direction` === null if parent container does not have a `fx-layout`
+                _this._onLayoutChange(direction);
+            });
         }
     }
     Object.defineProperty(FlexDirective.prototype, "flex", {
@@ -108,7 +111,7 @@ export var FlexDirective = (function (_super) {
      */
     FlexDirective.prototype.ngOnChanges = function (changes) {
         if (changes['flex'] != null || this._mqActivation) {
-            this._onLayoutChange(this._layout);
+            this._onLayoutChange();
         }
     };
     /**
