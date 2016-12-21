@@ -128,7 +128,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Used as a handler for layout change events from the parent flex container.
    */
   private _onLayoutChange(direction?: string) {
-    this._layout = direction || this._layout;
+    this._layout = direction || this._layout || "row";
     this._updateStyle();
   }
 

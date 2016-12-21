@@ -84,15 +84,16 @@ describe('flex directive', () => {
     describe('', () => {
 
       it('should ignore fx-layout settings on same element', () => {
-        let fixture = createTestComponent(`
-              <div fx-layout="column" fx-flex="37%">
-              </div>
-            `);
-        fixture.detectChanges();
-        expect( fixture.componentInstance["_layout"] ).toBe("row");
+        expectDOMFrom(`
+          <div fx-layout="column" fx-flex="37%">
+          </div>
+        `)
+        .not.toHaveCssStyle({
+          'max-height' : '37%',
+        });
       });
 
-      fit('should set max-height for `fx-flex="<%val>"` with parent using fx-layout="column" ', () => {
+      it('should set max-height for `fx-flex="<%val>"` with parent using fx-layout="column" ', () => {
         let template = `
               <div fx-layout="column">
                 <div fx-flex="37%"></div>
