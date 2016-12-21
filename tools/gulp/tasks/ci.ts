@@ -3,7 +3,7 @@ import {task} from 'gulp';
 
 task('ci:lint', ['ci:forbidden-identifiers', 'lint']);
 
-task('ci:extract-metadata', [':build:lib:ngc']);
+task('ci:extract-metadata', [':build:components:ngc']);
 task('ci:forbidden-identifiers', function() {
   require('../../../scripts/ci/forbidden-identifiers.js');
 });

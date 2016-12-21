@@ -26,7 +26,7 @@ gulp.task(':test:deps', sequenceTask(
   'clean',
   [
     ':build:test:vendor',
-    ':build:lib:spec'
+    ':build:components:spec'
   ]
 ));
 
@@ -34,7 +34,7 @@ gulp.task(':test:deps', sequenceTask(
  * [Watch task] Build unit test dependencies, and rebuild whenever sources are changed.
  * This should only be used when running tests locally.
  */
-gulp.task(':test:watch', sequenceTask(':test:deps', ':watch:lib:spec'));
+gulp.task(':test:watch', sequenceTask(':test:deps', ':watch:components:spec'));
 
 /** Build unit test dependencies and then inlines resources (html, css) into the JS output. */
 gulp.task(':test:deps:inline', sequenceTask(':test:deps', ':inline-resources'));

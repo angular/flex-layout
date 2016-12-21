@@ -152,7 +152,7 @@ export function buildAppTask(appName: string) {
   return (done: () => void) => {
     gulpRunSequence(
       'clean',
-      ['build:lib', ...buildTasks],
+      ['build:components', ...buildTasks],
       done
     );
   };

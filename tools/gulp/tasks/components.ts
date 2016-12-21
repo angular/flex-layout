@@ -1,4 +1,4 @@
-import {task, watch} from 'gulp';
+import {task, watch, src, dest} from 'gulp';
 import * as path from 'path';
 
 import {
@@ -12,8 +12,7 @@ import {writeFileSync} from 'fs';
 
 // No typings for these.
 const inlineResources = require('../../scripts/release/inline-resources');
-const rollup = require('rollup').rollup;
-const uglify = require('rollup-plugin-uglify');
+const gulpRollup = require('gulp-better-rollup');
 
 // NOTE: there are two build "modes" in this file, based on which tsconfig is used.
 //
@@ -32,22 +31,19 @@ const tsconfigPath = "./" + path.relative(PROJECT_ROOT, path.join(libDir, 'tscon
 
 // PUBLIC tasks
 
-/** Builds components to ESM output and UMD bundle. */
-task('build:lib', [':build:lib:rollup']);
-
 // INTERNAL tasks
 
 /** [Watch task] Rebuilds for tests (CJS output) whenever ts, scss, or html sources change. */
-task(':watch:lib:spec', () => {
-  watch(path.join(libDir, '**/*.ts'), [':build:lib:spec']);
+task(':watch:components:spec', () => {
+  watch(path.join(libDir, '**/*.ts'), [':build:components:spec']);
 });
 
 /** Builds components typescript for tests (with CommonJS output). */
-task(':build:lib:spec', tsBuildTask(libSpecDir, 'tsconfig-spec.json'));
+task(':build:components:spec', tsBuildTask(libSpecDir, 'tsconfig-spec.json'));
 
 
 /** Copies assets (html, markdown) to build output. */
-task(':build:lib:assets', copyTask([
+task(':build:components:assets', copyTask([
   path.join(NPM_ASSETS, 'package.json'),
   path.join(NPM_ASSETS, 'README.md'),
   path.join(PROJECT_ROOT, 'LICENSE')
@@ -56,36 +52,35 @@ task(':build:lib:assets', copyTask([
 /**
  * Builds component typescript only (ESM output).
  */
-task(':build:lib:ts', tsBuildTask(libDir, 'tsconfig.json'));
-
-/**
- * Rollup components to 'output' defined in 'tsconfig.json'
- */
-task(':build:lib:rollup', [':build:lib:inline'], doRollupWith(DIST_COMPONENTS_ROOT));
+task(':build:components:ts', tsBuildTask(libDir, 'tsconfig.json'));
 
 /** Builds components with resources (html, css) inlined into the built JS (ESM output). */
-task(':build:lib:inline', sequenceTask(
-  [':build:lib:ts', ':build:lib:assets'],
+task(':build:components:inline', sequenceTask(
+  [':build:components:ts', ':build:components:assets'],
   ':inline-resources',
 ));
 
 /** Inlines resources (html, css) into the JS output (for either ESM or CJS output). */
 task(':inline-resources', () => inlineResources(DIST_COMPONENTS_ROOT));
 
+
 /** Generates metadata.json files for all of the components. */
-task(':build:lib:ngc', ['build:lib'], execNodeTask(
+task(':build:components:ngc', ['build:components'], execNodeTask(
   '@angular/compiler-cli', 'ngc', ['-p', tsconfigPath]
 ));
 
-function doRollupWith(rootPath) {
-  return () => {
-    const includePathOptions = {
-        paths: ['./flexbox', './media-query', './utils'],
-    };
-  const globals: {[name: string]: string} = {
-    // Angular dependencies
+/** Builds components to ESM output and UMD bundle. */
+task('build:components', sequenceTask(':build:components:inline', ':build:components:rollup'));
+
+
+/** Builds the UMD bundle for all of Angular Material. */
+task(':build:components:rollup', () => {
+    const globals: {[name: string]: string} = {
+      // Angular dependencies
       '@angular/core': 'ng.core',
       '@angular/common': 'ng.common',
+      '@angular/platform-browser': 'ng.platformBrowser',
+      '@angular/platform-browser-dynamic': 'ng.platformBrowserDynamic',
 
       // Rxjs dependencies
       'rxjs/Subject': 'Rx',
@@ -103,36 +98,21 @@ function doRollupWith(rootPath) {
       'rxjs/add/operator/catch': 'Rx.Observable.prototype'
     };
 
-    // Rollup the @angular/flex-layout UMD bundle from all ES5 + imports JavaScript files built.
-    //
-    // Note: `gulp build:lib` deploys to `/node_modules/@angular/flex-layout`
-    //        see tsconfig-srcs.json#L17
-
-    return rollup({
-      entry: path.join(rootPath, 'index.js'),
+    const rollupOptions = {
       context: 'this',
-      external: Object.keys(globals),
-      plugins: [
-        // uglify()
-      ]
-    }).then((bundle: { generate: any }) => {
-      const result = bundle.generate({
-        moduleName: 'flexLayouts',
-        format: 'umd',
-        globals,
-        sourceMap: true,
-        dest: path.join(rootPath, 'flex-layout.umd.js')
-      });
+      external: Object.keys(globals)
+    };
 
-      // Add source map URL to the code.
-      result.code += '\n\n//# sourceMappingURL=./flex-layout.umd.js.map\n';
-      // Format mapping to show properly in the browser. Rollup by default will put the path
-      // as relative to the file, and since that path is in src/lib and the file is in
-      // dist/@angular/layouts, we need to kill a few `../`.
-      result.map.sources = result.map.sources.map((s: string) => s.replace(/^(\.\.\/)+/, ''));
+    const rollupGenerateOptions = {
+      // Keep the moduleId empty because we don't want to force developers to a specific moduleId.
+      moduleId: '',
+      moduleName: 'ng.flexLayout',
+      format: 'umd',
+      globals,
+      dest: 'flex-layout.umd.js'
+    };
 
-      writeFileSync(path.join(rootPath, 'flex-layout.umd.js'), result.code, 'utf8');
-      writeFileSync(path.join(rootPath, 'flex-layout.umd.js.map'), result.map, 'utf8');
-    });
-  };
-}
+    return src(path.join(DIST_COMPONENTS_ROOT, 'index.js'))
+      .pipe(gulpRollup(rollupOptions, rollupGenerateOptions))
+      .pipe(dest(path.join(DIST_COMPONENTS_ROOT, 'bundles')));
+  });
