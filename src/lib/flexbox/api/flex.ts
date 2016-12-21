@@ -88,7 +88,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     if (_container) {
       // If this flex item is inside of a flex container marked with
       // Subscribe to layout immediate parent direction changes
-      this._layoutWatcher = _container.layout$.subscribe((direction) => this._onLayoutChange(direction));
+      this._layoutWatcher = _container.layout$.subscribe((direction) => {
+        // `direction` === null if parent container does not have a `fx-layout`
+        this._onLayoutChange(direction);
+      });
     }
   }
 
@@ -97,7 +100,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['flex'] != null || this._mqActivation) {
-      this._onLayoutChange(this._layout);
+      this._onLayoutChange();
     }
   }
 
