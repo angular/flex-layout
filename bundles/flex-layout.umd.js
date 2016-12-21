@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject')) :
     typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject'], factory) :
-    (factory((global.flexLayouts = global.flexLayouts || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
+    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
 }(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
 
 /** @internal Applies CSS prefixes to appropriate style keys.*/
@@ -831,7 +831,7 @@ function instanceOfMatchMediaObservable(mediaWatcher, breakpoints) {
     //       these must be injected into the MediaChange
     return mediaWatcher.observe().filter(onlyActivations).map(injectAlias);
 }
-;
+
 /**
  *  Provider to return observable to ALL MediaQuery events
  *  Developers should build custom providers to override this default MediaQuery Observable
@@ -926,49 +926,49 @@ var LayoutDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutSm", {
         set: function (val) { this._cacheInput('layoutSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
         set: function (val) { this._cacheInput('layoutGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutMd", {
         set: function (val) { this._cacheInput('layoutMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
         set: function (val) { this._cacheInput('layoutGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
         set: function (val) { this._cacheInput('layoutLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtLg", {
         set: function (val) { this._cacheInput('layoutGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
         set: function (val) { this._cacheInput('layoutXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -1136,49 +1136,49 @@ var LayoutWrapDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapSm", {
         set: function (val) { this._cacheInput('wrapSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtSm", {
         set: function (val) { this._cacheInput('wrapGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapMd", {
         set: function (val) { this._cacheInput('wrapMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtMd", {
         set: function (val) { this._cacheInput('wrapGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLg", {
         set: function (val) { this._cacheInput('wrapLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtLg", {
         set: function (val) { this._cacheInput('wrapGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapXl", {
         set: function (val) { this._cacheInput('wrapXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -1380,49 +1380,49 @@ var FlexDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
         set: function (val) { this._cacheInput('flexSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
         set: function (val) { this._cacheInput('flexGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
         set: function (val) { this._cacheInput('flexMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
         set: function (val) { this._cacheInput('flexGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
         set: function (val) { this._cacheInput('flexLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
         set: function (val) { this._cacheInput('flexGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
         set: function (val) { this._cacheInput('flexXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -1698,49 +1698,49 @@ var ShowDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showSm", {
         set: function (val) { this._cacheInput('showSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showGtSm", {
         set: function (val) { this._cacheInput('showGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showMd", {
         set: function (val) { this._cacheInput('showMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showGtMd", {
         set: function (val) { this._cacheInput('showGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showLg", {
         set: function (val) { this._cacheInput('showLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showGtLg", {
         set: function (val) { this._cacheInput('showGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "showXl", {
         set: function (val) { this._cacheInput('showXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(ShowDirective.prototype, "usesHideAPI", {
         /**
           * Does the current element also use the fxShow API ?
@@ -1925,49 +1925,49 @@ var HideDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideSm", {
         set: function (val) { this._cacheInput('hideSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideGtSm", {
         set: function (val) { this._cacheInput('hideGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideMd", {
         set: function (val) { this._cacheInput('hideMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideGtMd", {
         set: function (val) { this._cacheInput('hideGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideLg", {
         set: function (val) { this._cacheInput('hideLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideGtLg", {
         set: function (val) { this._cacheInput('hideGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "hideXl", {
         set: function (val) { this._cacheInput('hideXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(HideDirective.prototype, "usesShowAPI", {
         /**
          * Does the current element also use the fxShow API ?
@@ -2143,7 +2143,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignSm", {
         set: function (val) {
             this._cacheInput('alignSm', val);
@@ -2151,7 +2151,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
         set: function (val) {
             this._cacheInput('alignGtSm', val);
@@ -2159,7 +2159,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignMd", {
         set: function (val) {
             this._cacheInput('alignMd', val);
@@ -2167,7 +2167,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
         set: function (val) {
             this._cacheInput('alignGtMd', val);
@@ -2175,7 +2175,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignLg", {
         set: function (val) {
             this._cacheInput('alignLg', val);
@@ -2183,7 +2183,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
         set: function (val) {
             this._cacheInput('alignGtLg', val);
@@ -2191,7 +2191,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexAlignDirective.prototype, "alignXl", {
         set: function (val) {
             this._cacheInput('alignXl', val);
@@ -2199,7 +2199,7 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2387,49 +2387,49 @@ var FlexOffsetDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetSm", {
         set: function (val) { this._cacheInput('offsetSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
         set: function (val) { this._cacheInput('offsetGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
         set: function (val) { this._cacheInput('offsetMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
         set: function (val) { this._cacheInput('offsetGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
         set: function (val) { this._cacheInput('offsetLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
         set: function (val) { this._cacheInput('offsetGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
         set: function (val) { this._cacheInput('offsetXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2564,49 +2564,49 @@ var FlexOrderDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderSm", {
         set: function (val) { this._cacheInput('orderSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
         set: function (val) { this._cacheInput('orderGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
         set: function (val) { this._cacheInput('orderMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
         set: function (val) { this._cacheInput('orderGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
         set: function (val) { this._cacheInput('orderLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
         set: function (val) { this._cacheInput('orderGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
         set: function (val) { this._cacheInput('orderXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2750,49 +2750,49 @@ var LayoutAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
         set: function (val) { this._cacheInput('alignSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
         set: function (val) { this._cacheInput('alignGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
         set: function (val) { this._cacheInput('alignMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
         set: function (val) { this._cacheInput('alignGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
         set: function (val) { this._cacheInput('alignLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
         set: function (val) { this._cacheInput('alignGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
         set: function (val) { this._cacheInput('alignXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -3001,49 +3001,49 @@ var LayoutGapDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
         set: function (val) { this._cacheInput('gapSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
         set: function (val) { this._cacheInput('gapGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
         set: function (val) { this._cacheInput('gapMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
         set: function (val) { this._cacheInput('gapGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
         set: function (val) { this._cacheInput('gapLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
         set: function (val) { this._cacheInput('gapGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
         set: function (val) { this._cacheInput('gapXl', val); },
         enumerable: true,
         configurable: true
     });
-    ;
+    
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -3215,5 +3215,3 @@ exports.mergeAlias = mergeAlias;
 Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-
-//# sourceMappingURL=./flex-layout.umd.js.map
