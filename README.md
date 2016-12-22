@@ -13,7 +13,7 @@ License: MIT
 
 ---
 
-### v2.0.0-beta.0 Important Changes
+### Important Changes with v2.0.0-beta.0 
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
 
