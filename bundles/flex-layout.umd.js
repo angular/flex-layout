@@ -183,6 +183,7 @@ var ResponsiveActivation = (function () {
         this._subscribers.forEach(function (link) {
             link.unsubscribe();
         });
+        this._subscribers = [];
     };
     /**
      * For each *defined* API property, register a callback to `_onMonitorEvents( )`
