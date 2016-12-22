@@ -107,4 +107,5 @@ export declare class ResponsiveActivation {
      * Get the value (if any) for the directive instances @Input property (aka key)
      */
     private _lookupKeyValue(key);
+    private _hasKeyValue(key);
 }
