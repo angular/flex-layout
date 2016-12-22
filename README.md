@@ -1,4 +1,4 @@
-# Flex Layout
+# Flex Layout  
 
 Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + mediaQuery. This module provides Angular (v2.x and higher) developers with component layout features using a custom Layout API, mediaQuery observables,and injected DOM flexbox-2016 css stylings.  
 
@@ -13,7 +13,7 @@ License: MIT
 
 ---
 
-### Beta.0 Important Changes
+### v2.0.0-beta.0 Important Changes
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
 
