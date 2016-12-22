@@ -12,8 +12,6 @@ License: MIT
 
 ---
 
-<br/>
-
 ### BREAKING CHANGE
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
@@ -36,8 +34,6 @@ Directive selectors are now camelCase (instead of dash-case); as specified in th
   <div class="flex-item" fxFlex="25px"> </div>
 </div> 
 ```
-
-<br/>
 
 ### Quick Links
 
