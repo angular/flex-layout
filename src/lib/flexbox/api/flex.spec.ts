@@ -16,6 +16,10 @@ describe('flex directive', () => {
   let createTestComponent = makeCreateTestComponent(()=> TestFlexComponent);
   let expectDOMFrom = makeExpectDOMFrom(()=> TestFlexComponent);
   let expectDomForQuery = makeExpectDOMForQuery(()=> TestFlexComponent);
+  let activateMediaQuery = (alias, allowOverlaps?:boolean) => {
+        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+        matchMedia.activate(alias,allowOverlaps);
+      };
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);

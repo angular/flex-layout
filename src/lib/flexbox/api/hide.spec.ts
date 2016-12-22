@@ -14,7 +14,10 @@ import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestHideComponent);
-  let expectDOMFrom = makeExpectDOMFrom(()=> TestHideComponent);
+  let activateMediaQuery = (alias) => {
+        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+        matchMedia.activate(alias);
+      };
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -80,17 +83,16 @@ describe('show directive', () => {
   describe('with responsive features', () => {
 
         it('should show on `xs` viewports only', () => {
-          let fixture = createTestComponent(`
-                          <div fxHide="" fxHide.xs="false" >
-                            ...content
-                          </div>  
-                        `);
-          let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+          fixture = createTestComponent(`
+            <div fxHide="" fxHide.xs="false" >
+              ...content
+            </div>  
+          `);
 
           expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
-          matchMedia.activate('xs');
+          activateMediaQuery('xs');
           expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
-          matchMedia.activate('md');
+          activateMediaQuery('md');
           expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
         });
 
