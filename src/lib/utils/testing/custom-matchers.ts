@@ -48,7 +48,7 @@ export interface NgMatchers extends jasmine.Matchers {
  *       in the Karma/Jasmine testing for the Layout Directives
  *       in `src/lib/flex/api`
  */
-let customMatchers: jasmine.CustomMatcherFactories = {
+export const customMatchers: jasmine.CustomMatcherFactories = {
 
   toEqual: function (util) {
     return {
@@ -157,5 +157,3 @@ function elementText(n: any): string {
   return getDOM().getText(n);
 }
 
-
-export {customMatchers};

@@ -89,6 +89,7 @@ export class ResponsiveActivation {
     this._subscribers.forEach((link: Subscription) => {
       link.unsubscribe();
     });
+    this._subscribers = [ ];
   }
 
   /**

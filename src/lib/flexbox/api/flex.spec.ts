@@ -35,7 +35,10 @@ describe('flex directive', () => {
     })
   }));
   afterEach(() => {
-    fixture = null;
+    if ( fixture ) {
+      fixture.debugElement.injector.get(MatchMedia).clearAll();
+      fixture = null;
+    }
   });
 
   describe('with static features', () => {
