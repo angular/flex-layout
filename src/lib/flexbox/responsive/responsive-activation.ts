@@ -78,7 +78,8 @@ export class ResponsiveActivation {
    * Get the currently activated @Input value or the fallback default @Input value
    */
   get activatedInput(): any {
-    return this._lookupKeyValue(this.activatedInputKey) || this._options.defaultValue;
+    let key = this.activatedInputKey;
+    return this._hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
   }
 
   /**
@@ -200,5 +201,10 @@ export class ResponsiveActivation {
    */
   private _lookupKeyValue(key) {
     return this._options.inputKeys[key];
+  }
+
+  private _hasKeyValue(key) {
+    let value = this._options.inputKeys[key];
+    return typeof value !== 'undefined';
   }
 }

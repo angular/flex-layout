@@ -13,9 +13,9 @@ import {makeCreateTestComponent, makeExpectDOMFrom, makeExpectDOMForQuery} from 
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
-  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
-  let expectDomForQuery = makeExpectDOMForQuery(()=> TestLayoutComponent);
+  let createTestComponent = makeCreateTestComponent(()=> TestFlexComponent);
+  let expectDOMFrom = makeExpectDOMFrom(()=> TestFlexComponent);
+  let expectDomForQuery = makeExpectDOMForQuery(()=> TestFlexComponent);
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -23,7 +23,7 @@ describe('flex directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, FlexLayoutModule.forRoot()],
-      declarations: [TestLayoutComponent],
+      declarations: [TestFlexComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
@@ -134,7 +134,7 @@ describe('flex directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutComponent implements OnInit {
+export class TestFlexComponent implements OnInit {
   public direction = "column";
   constructor() {  }
   ngOnInit() { }
