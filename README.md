@@ -10,6 +10,10 @@ The sources for this package are in the [Flex-Layout](https://github.com/angular
 
 License: MIT
 
+---
+
+<br/>
+
 ### BREAKING CHANGE
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
@@ -33,7 +37,7 @@ Directive selectors are now camelCase (instead of dash-case); as specified in th
 </div> 
 ```
 
-----
+<br/>
 
 ### Quick Links
 
