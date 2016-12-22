@@ -70,13 +70,13 @@ describe('responsive-activation', () => {
         // activations should not affect anything and the change handler
         // should NOT have been called.
 
-        matchMedia.activate(findQuery('xs'));
+        matchMedia.activate('xs');
 
         expect( value ).toBeUndefined();
         expect( responder.activatedInputKey ).toEqual("layout");
         expect( responder.activatedInput ).toEqual("row");
 
-        matchMedia.activate(findQuery('gt-md'));
+        matchMedia.activate('gt-md');
 
         expect( value ).toBeUndefined();
         expect( responder.activatedInputKey ).toEqual("layout");
@@ -101,13 +101,13 @@ describe('responsive-activation', () => {
         try {
           expect( value ).toBeUndefined();
 
-          matchMedia.activate(findQuery('xs'));
+          matchMedia.activate('xs');
           expect( value ).toEqual("column");
 
-          matchMedia.activate(findQuery('md'));
+          matchMedia.activate('md');
           expect( value ).toEqual("column-reverse");
 
-          matchMedia.activate(findQuery('gt-lg'));
+          matchMedia.activate('gt-lg');
           expect( value ).toEqual("row-reverse");
 
         } finally {
@@ -127,13 +127,13 @@ describe('responsive-activation', () => {
         try {
           expect( value ).toBeUndefined();
 
-          matchMedia.activate(findQuery('xs'));
+          matchMedia.activate('xs');
           expect( value ).toEqual("column");
 
           // No input 'layoutMd' has been defined, so the fallback
           // to 'layout' input value should be used...
 
-          matchMedia.activate(findQuery('md'));
+          matchMedia.activate('md');
           expect( value ).toEqual("row");
 
         } finally {
@@ -154,13 +154,13 @@ describe('responsive-activation', () => {
         try {
           expect( value ).toBeUndefined();
 
-          matchMedia.activate(findQuery('xs'));
+          matchMedia.activate('xs');
           expect( value ).toEqual("column");
 
           // No input 'layoutMd' has been defined, so the fallback
           // to 'layoutGtSm' input value should be used...
 
-          matchMedia.activate(findQuery('md'), enableOverlaps = true);
+          matchMedia.activate('md', enableOverlaps = true);
           expect( value ).toEqual("row-reverse");
 
         } finally {
