@@ -6,7 +6,8 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 
 ---
 
-The sources for this package are in the [Flex-Layout](https://github.com/angular/flex-layout) repo. Please file issues and pull requests against that repo.
+The sources for this package are in the [Flex-Layout](https://github.com/angular/flex-layout) repository. <br/>
+Please file issues and pull requests against that repo.
 
 License: MIT
 
