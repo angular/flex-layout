@@ -54,6 +54,7 @@ export function makeCreateTestComponent(getClass:ComponentClazzFn) {
  *
  */
 export function expectNativeEl(fixture: ComponentFixture<any>): any {
+  fixture.detectChanges();
   return expect(fixture.debugElement.children[0].nativeElement);
 }
 

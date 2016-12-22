@@ -14,8 +14,8 @@ import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
-  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
+  let createTestComponent = makeCreateTestComponent(()=> TestLayoutAlignComponent);
+  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutAlignComponent);
 
   beforeEach(async(() => {
     jasmine.addMatchers(customMatchers);
@@ -23,7 +23,7 @@ describe('layout-align directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, FlexLayoutModule.forRoot()],
-      declarations: [TestLayoutComponent],
+      declarations: [TestLayoutAlignComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
@@ -154,7 +154,6 @@ describe('layout-align directive', () => {
         fixture = createTestComponent(`<div [fxLayoutAlign]="alignBy"></div>`);
 
         fixture.componentInstance.alignBy = "center end";
-        fixture.detectChanges();
         expectNativeEl(fixture).toHaveCssStyle({
           'justify-content' : 'center',
           'align-items' : 'flex-end',
@@ -162,11 +161,9 @@ describe('layout-align directive', () => {
         });
 
         fixture.componentInstance.alignBy  = "invalid invalid";
-        fixture.detectChanges();
         expectNativeEl(fixture).toHaveCssStyle(DEFAULT_ALIGNS);
 
         fixture.componentInstance.alignBy  = "";
-        fixture.detectChanges();
         expectNativeEl(fixture).toHaveCssStyle(DEFAULT_ALIGNS);
       });
     });
@@ -181,7 +178,6 @@ describe('layout-align directive', () => {
 
       matchMedia.activate('md');
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content' : 'center',
         'align-items' : 'center',
@@ -195,7 +191,6 @@ describe('layout-align directive', () => {
       `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content' : 'center',
         'align-items' : 'center',
@@ -204,7 +199,6 @@ describe('layout-align directive', () => {
 
       matchMedia.activate('md');
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content' : 'flex-end',
         'align-items' : 'stretch',
@@ -221,7 +215,6 @@ describe('layout-align directive', () => {
         </div>
       `);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content' : 'center',
         'max-height' : '100%'
@@ -230,7 +223,6 @@ describe('layout-align directive', () => {
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
       matchMedia.activate('md');
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content' : 'flex-end',
         'max-width' : '100%'
@@ -246,7 +238,6 @@ describe('layout-align directive', () => {
          </div>
        `);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content': 'center',
         'max-height': '100%'
@@ -255,14 +246,12 @@ describe('layout-align directive', () => {
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
       matchMedia.activate('md');
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content': 'flex-end',
         'max-width': '100%'
       });
 
       matchMedia.activate('xs');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content': 'center',
         'max-height': '100%'
@@ -280,21 +269,18 @@ describe('layout-align directive', () => {
       `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column',
         'justify-content': 'center'
       });
 
       matchMedia.activate('xs');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
@@ -302,14 +288,12 @@ describe('layout-align directive', () => {
 
       // Should fallback to value for 'gt-xs' or default
       matchMedia.activate('lg', true);
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-end'
       });
 
       matchMedia.activate('xs');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
@@ -317,7 +301,6 @@ describe('layout-align directive', () => {
 
       // Should fallback to value for 'gt-xs' or default
       matchMedia.activate('gt-lg', true);
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-end'
@@ -338,7 +321,7 @@ describe('layout-align directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutComponent implements OnInit {
+export class TestLayoutAlignComponent implements OnInit {
   direction = "column";
   mainAxis = "start";
   crossAxis = "end";

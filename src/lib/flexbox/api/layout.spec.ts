@@ -80,13 +80,11 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div [fxLayout]="direction"></div>`);
 
       fixture.componentInstance.direction = "invalid";
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
       });
 
       fixture.componentInstance.direction = "column";
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
@@ -102,8 +100,6 @@ describe('layout directive', () => {
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       matchMedia.activate('md');
-      fixture.detectChanges();
-
       expectNativeEl(fixture).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
@@ -114,7 +110,6 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
@@ -122,7 +117,6 @@ describe('layout directive', () => {
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveCssStyle({
         'display': 'flex',
@@ -134,19 +128,16 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
 
       matchMedia.activate('all');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
@@ -160,19 +151,16 @@ describe('layout directive', () => {
        `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
 
       fixture.componentInstance.direction = "row";
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
@@ -183,19 +171,16 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
 
       matchMedia.activate('lg');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
@@ -205,26 +190,22 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div fxLayout fxLayout.gt-sm="column" fxLayout.md="row"></div>`);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
 
       matchMedia.activate('gt-sm');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
 
       matchMedia.activate('md');
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
       });
 
       // Should fallback to value for 'gt-sm'
       matchMedia.activate('lg', true);
-      fixture.detectChanges();
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
