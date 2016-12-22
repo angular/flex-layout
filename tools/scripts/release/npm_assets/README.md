@@ -6,10 +6,35 @@ The Layout engine intelligently automates the process of applying appropriate Fl
 
 ---
 
-The sources for this package are in the [Angular/Flex-Layout](https://github.com/angular/flex-layout) repo. 
+The sources for this package are in the [Flex-Layout](https://github.com/angular/flex-layout) repository. <br/>
 Please file issues and pull requests against that repo.
 
-----
+License: MIT
+
+---
+
+### BREAKING CHANGE
+
+Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
+
+*  @Component selectors always use dash-case
+*  @Directive selectors always use camelCase
+> Except when the directive is pretending to be a component (i.e, if it had a template it would be '<ng-content></ng-content>').
+*  @Directive properties are prefixed with namespace info
+> @Component properties are not
+
+
+```html
+<div class="flex-container" 
+     fxLayout="row" 
+     fxLayout.xs="column"
+     fxLayoutAlign="center center"
+     fxLayoutAlign.xs="start">
+  <div class="flex-item" fxFlex="20%" fxFlex.xs="40%">  </div>
+  <div class="flex-item" fxFlex>        </div>
+  <div class="flex-item" fxFlex="25px"> </div>
+</div> 
+```
 
 ### Quick Links
 
