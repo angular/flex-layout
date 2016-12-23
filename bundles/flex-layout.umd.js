@@ -2630,7 +2630,7 @@ var FlexOrderDirective = (function (_super) {
      */
     FlexOrderDirective.prototype.ngOnInit = function () {
         var _this = this;
-        this._listenForMediaQueryChanges('order', '1', function (changes) {
+        this._listenForMediaQueryChanges('order', '0', function (changes) {
             _this._updateWithValue(changes.value);
         });
         this._updateWithValue();
@@ -2639,7 +2639,7 @@ var FlexOrderDirective = (function (_super) {
     // Protected methods
     // *********************************************
     FlexOrderDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("order") || '1';
+        value = value || this._queryInput("order") || '0';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
