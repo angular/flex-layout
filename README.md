@@ -1,12 +1,12 @@
 # Flex Layout  
 
-Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + mediaQuery. This module provides Angular (v2.x and higher) developers with component layout features using a custom Layout API, mediaQuery observables,and injected DOM flexbox-2016 css stylings.  
+Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery. This module provides Angular (v2.x and higher) developers with component layout features using a custom Flex Layout API, mediaQuery observables, and injected DOM flexbox-2016 css stylings.  
 
-The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
+The Flex Layout engine intelligently automates the process of applying appropriate Flexbox CSS to browser view hierarchies. This automation also addresses many of the complexities and workarounds encountered with the traditional, manual, CSS-only application of box CSS. 
 
 ---
 
-The sources for this package are in the [Flex-Layout](https://github.com/angular/flex-layout) repository. <br/>
+The sources for this package are in the [Flex Layout](https://github.com/angular/flex-layout) repository. <br/>
 Please file issues and pull requests against that repo.
 
 License: MIT
@@ -59,7 +59,7 @@ Templates
 ----
 
 
-### Why choose Flex-Layout
+### Why choose Angular Flex Layout
 
 While other Flexbox CSS libraries are implementations of:
 
@@ -88,13 +88,13 @@ Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with a
 
 ### How it works!
 
-The Angular Flexbox Layout features enable developers to organize UI page elements in row and column structures with 
+The Angular Flex Layout features enable developers to organize UI page elements in row and column structures with 
 alignments, resizing, and padding. These layouts can be nested and easily used within hierarchical DOM structures.
 
 ![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
 
 
-The Layout API is used *simply* as attributes on your HTML elements. That is it! 
+The Flex Layout API is used *simply* as attributes on your HTML elements. That is it! 
 
 > Technically the API is a set of Angular directives with intuitively-named selectors... 🤓
 
@@ -110,7 +110,7 @@ All the magic of applying the Flexbox CSS is handled under-the-hood. The Layout 
 
 > The above Flex Layout usages do not require any external stylesheets nor any custom CSS programming. 
 
-Flex-Layout also added mediaQuery support into the Layout engine. Integrating **mediaQuery** features enables the API and your Application's UX to be **Responsive** to changes in viewport size and orientations. 
+Flex Layout also added mediaQuery support into the Layout engine. Integrating **mediaQuery** features enables the API and your Application's UX to be **Responsive** to changes in viewport size and orientations. 
 
 Responsive layouts have multiple layout configurations. Responsive layouts add extra configurations that override the default configurations. These overrides will be applied dynamically
 when the viewport size changes to match a specific *responsive override*.
@@ -132,7 +132,7 @@ In our previous sample (above), the Flex Layout API is used to define default, n
    
 With Responsive configurations, DOM elements can be adjusted [for layout-directions, visibility, and sizing constraints] based on specific viewport sizes (desktop or mobile devices) and orientations (portrait or landscape). 
 
-> Of course, these configuration can be specified in the CSS. Flex-Layout, however, makes it super easy
+> Of course, these configuration can be specified in the CSS. Flex Layout, however, makes it super easy
 and intuitive to specify these configurations in the HTML layer as HTML element attributes.
  
 <br/>
