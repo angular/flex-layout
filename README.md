@@ -55,6 +55,7 @@ Directive selectors are now camelCase (instead of dash-case); as specified in th
 ### Quick Links
 
 *  [Wiki Docs](https://github.com/angular/flex-layout/wiki)
+*  [Discussion Forum](https://groups.google.com/forum/#!forum/angular-flex-layout)
 
 Developers
 
