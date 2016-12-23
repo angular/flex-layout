@@ -13,7 +13,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
           <button md-raised-button color="primary" [routerLink]="['stackoverflow']">  StackOverflow </button>
         </div>
         <div fxFlex="15px"></div>
-        <div fxLayout="column">
+        <div fxLayout="column" style="font-size: 0.85em; padding-top: 15px;">
            These Layout demos are curated from the Angular Material v1.x documentation, GitHub Issues, StackOverflow, 
            and CodePen.      
           <span class="title" style="font-size: 0.7em; font-weight:normal;">

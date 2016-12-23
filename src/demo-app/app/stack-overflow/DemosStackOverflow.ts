@@ -3,6 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'demos-stackoverflow',
   template: `
+    <demo-moz-holy-grail class="small-demo"></demo-moz-holy-grail>
     <demo-complex-column-ordering></demo-complex-column-ordering>
     <demo-grid-area-row-span></demo-grid-area-row-span>
     <demo-grid-column-span></demo-grid-column-span>
@@ -18,13 +19,15 @@ import {FlexLayoutModule}         from "../../../lib";        // `gulp build:com
 import { DemoComplexColumnOrder } from "./columnOrder.demo";
 import {DemoGridAreaRowSpan} from './gridArea.demo';
 import {DemoGridColumnSpan} from './columnSpan.demo';
+import {DemoMozHolyGrail} from "./mozHolyGrail.demo";
 
 @NgModule({
   declarations : [
     DemosStackOverflow,     // used by the Router with the root app component
     DemoComplexColumnOrder,
     DemoGridColumnSpan,
-    DemoGridAreaRowSpan
+    DemoGridAreaRowSpan,
+    DemoMozHolyGrail
   ],
   imports : [
     CommonModule,
