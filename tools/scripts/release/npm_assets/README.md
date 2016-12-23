@@ -15,7 +15,18 @@ Please file issues and pull requests against that repo.
 
 License: MIT
 
+
 ---
+
+### Installation
+
+The latest release of Angular Flex-Layout can be installed from npm
+
+`npm install @angular/flex-layout`
+
+Playing with the latest changes from [master](https://github.com/angular/flex-layout/tree/master) is also possible
+
+`npm install https://github.com/angular/flex-layout-builds.git`
 
 ### IMPORTANT API CHANGE
 
