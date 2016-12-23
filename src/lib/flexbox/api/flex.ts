@@ -204,7 +204,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     };
     switch (basis || '') {
       case '':
-        css = extendObject(clearStyles, {'flex': '1'});
+        css = extendObject(clearStyles, {'flex': '1 1 0.000000001px'});
         break;
       case 'grow':
         css = extendObject(clearStyles, {'flex': '1 1 100%'});
@@ -220,6 +220,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         break;
       case 'nogrow':
         css = extendObject(clearStyles, {'flex': '0 1 auto'});
+        break;
+      case 'none':
+        css = extendObject(clearStyles, {'flex': 'none'});
         break;
       case 'noshrink':
         css = extendObject(clearStyles, {'flex': '1 0 auto'});
