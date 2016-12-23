@@ -13,7 +13,7 @@ License: MIT
 
 ---
 
-### BREAKING CHANGE
+### IMPORTANT API CHANGE
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
 

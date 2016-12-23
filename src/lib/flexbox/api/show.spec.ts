@@ -14,9 +14,9 @@ import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestShowComponent);
-  let activateMediaQuery = (alias) => {
+  let activateMediaQuery = (alias, enableOverlaps=false) => {
         let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-        matchMedia.activate(alias);
+        matchMedia.activate(alias, enableOverlaps);
       };
 
   beforeEach(async(() => {
@@ -87,12 +87,7 @@ describe('show directive', () => {
   describe('with responsive features', () => {
 
       it('should hide on `xs` viewports only', () => {
-        fixture = createTestComponent(`
-          <div fxShow fxShow.xs="false" >
-            ...content
-          </div>  
-        `);
-
+        fixture = createTestComponent(`<div fxShow fxShow.xs="false" >...content</div>`);
         expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
 
         activateMediaQuery('xs');
@@ -100,6 +95,14 @@ describe('show directive', () => {
 
         activateMediaQuery('md');
         expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      });
+
+      it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
+        fixture = createTestComponent(`<div fxShow fxShow.gt-xs="false" >...content</div>`);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+
+        activateMediaQuery('md', true);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
       });
 
     });
