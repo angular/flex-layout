@@ -41,11 +41,20 @@ export function applyCssPrefixes(target) {
                 target['-ms-flex-item-align'] = toBoxValue(value);
                 break;
             case 'align-content':
-                target['-ms-flex-line-pack'] = toBoxValue(value);
+                target['-ms-align-content'] = toAlignContentValue(value);
+                target['-ms-flex-line-pack'] = toAlignContentValue(value);
                 break;
         }
     }
     return target;
+}
+export function toAlignContentValue(value) {
+    switch (value) {
+        case "space-between": return "justify";
+        case "space-around": return "distribute";
+        default:
+            return toBoxValue(value);
+    }
 }
 /** @internal Convert flex values flex-start, flex-end to start, end. */
 export function toBoxValue(value) {

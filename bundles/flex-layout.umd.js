@@ -47,11 +47,20 @@ function applyCssPrefixes(target) {
                 target['-ms-flex-item-align'] = toBoxValue(value);
                 break;
             case 'align-content':
-                target['-ms-flex-line-pack'] = toBoxValue(value);
+                target['-ms-align-content'] = toAlignContentValue(value);
+                target['-ms-flex-line-pack'] = toAlignContentValue(value);
                 break;
         }
     }
     return target;
+}
+function toAlignContentValue(value) {
+    switch (value) {
+        case "space-between": return "justify";
+        case "space-around": return "distribute";
+        default:
+            return toBoxValue(value);
+    }
 }
 /** @internal Convert flex values flex-start, flex-end to start, end. */
 function toBoxValue(value) {
@@ -1525,7 +1534,7 @@ var FlexDirective = (function (_super) {
         };
         switch (basis || '') {
             case '':
-                css = extendObject(clearStyles, { 'flex': '1' });
+                css = extendObject(clearStyles, { 'flex': '1 1 0.000000001px' });
                 break;
             case 'grow':
                 css = extendObject(clearStyles, { 'flex': '1 1 100%' });
@@ -1541,6 +1550,9 @@ var FlexDirective = (function (_super) {
                 break;
             case 'nogrow':
                 css = extendObject(clearStyles, { 'flex': '0 1 auto' });
+                break;
+            case 'none':
+                css = extendObject(clearStyles, { 'flex': 'none' });
                 break;
             case 'noshrink':
                 css = extendObject(clearStyles, { 'flex': '1 0 auto' });
@@ -3211,6 +3223,7 @@ exports.MediaChange = MediaChange;
 exports.MediaMonitor = MediaMonitor;
 exports.MediaQueriesModule = MediaQueriesModule;
 exports.applyCssPrefixes = applyCssPrefixes;
+exports.toAlignContentValue = toAlignContentValue;
 exports.toBoxValue = toBoxValue;
 exports.toBoxOrient = toBoxOrient;
 exports.toBoxDirection = toBoxDirection;
