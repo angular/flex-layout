@@ -35,6 +35,42 @@ describe('match-media-observable-provider', () => {
      });
    });
 
+  it('can can observe built-in mediaQueries', async(inject(
+    [MatchMediaObservable, MatchMedia],
+    (media$, matchMedia) => {
+      let current : MediaChange;
+
+      expect( media$ ).toBeDefined();
+
+      let subscription = media$.subscribe((change:MediaChange)=>{
+        current = change;
+      });
+
+      // Confirm initial match is for 'all'
+      expect(current).toBeDefined();
+      expect(current.matches).toBeTruthy();
+      expect(current.mediaQuery).toEqual("all");
+
+      try {
+        matchMedia.autoRegisterQueries = false;
+
+        // Activate mediaQuery associated with 'md' alias
+        matchMedia.activate('md');
+        expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+
+        matchMedia.activate('gt-lg');
+        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+        matchMedia.activate('unknown');
+        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+      } finally {
+        matchMedia.autoRegisterQueries = true;
+        subscription.unsubscribe();
+      }
+  })));
+
+
    it('can inject a MatchMediaObservable instance', async(inject(
      [MatchMediaObservable, MatchMedia],
      (media$, matchMedia) => {

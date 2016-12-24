@@ -17,17 +17,21 @@ import {BreakPoint} from '../breakpoints/break-point';
  * notification. For custom mediaQuery notifications, alias information will not be injected and those
  * fields will be ''.
  *
- * !! Only activation mediaChange notifications are publised by the MatchMediaObservable
+ * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
  */
 export function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry) {
     let onlyActivations = function(change : MediaChange) { return change.matches === true; };
     let findBreakpoint = function(mediaQuery:string):BreakPoint { return breakpoints.findByQuery(mediaQuery); };
     let injectAlias = function(change : MediaChange) { return mergeAlias(change, findBreakpoint(change.mediaQuery)); };
 
+    // Register all the mediaQueries registered in the BreakPointRegistry
+    // This is needed so subscribers can be auto-notified of all standard, registered mediaQuery activations
+    breakpoints.items.forEach( (bp:BreakPoint) => mediaWatcher.observe(bp.mediaQuery) );
+
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     //       these must be injected into the MediaChange
     return mediaWatcher.observe( ).filter( onlyActivations ).map( injectAlias );
-};
+}
 
 /**
  *  Provider to return observable to ALL MediaQuery events

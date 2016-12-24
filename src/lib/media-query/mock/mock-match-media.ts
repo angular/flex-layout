@@ -10,6 +10,11 @@ import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 @Injectable()
 export class MockMatchMedia extends MatchMedia {
 
+  /**
+   * Special flag used to test BreakPoint registrations with MatchMedia
+   */
+  public autoRegisterQueries : boolean = true;
+
   constructor(_zone:NgZone, private _breakpoints:BreakPointRegistry ){
     super(_zone);
     this._actives = [ ];
@@ -119,7 +124,7 @@ export class MockMatchMedia extends MatchMedia {
    * Insure the mediaQuery is registered with MatchMedia
    */
   private _registerMediaQuery(mediaQuery) {
-    if ( !this._registry.has(mediaQuery) ) {
+    if ( !this._registry.has(mediaQuery) && this.autoRegisterQueries ) {
       this.registerQuery(mediaQuery);
     }
   }
