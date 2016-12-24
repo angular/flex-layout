@@ -9,7 +9,7 @@ import { MatchMedia } from '../match-media';
  * notification. For custom mediaQuery notifications, alias information will not be injected and those
  * fields will be ''.
  *
- * !! Only activation mediaChange notifications are publised by the MatchMediaObservable
+ * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
  */
 export declare function instanceOfMatchMediaObservable(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry): Observable<any>;
 /**

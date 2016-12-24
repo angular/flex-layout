@@ -16,6 +16,10 @@ export var MockMatchMedia = (function (_super) {
     function MockMatchMedia(_zone, _breakpoints) {
         _super.call(this, _zone);
         this._breakpoints = _breakpoints;
+        /**
+         * Special flag used to test BreakPoint registrations with MatchMedia
+         */
+        this.autoRegisterQueries = true;
         this._actives = [];
         this._actives = [];
     }
@@ -116,7 +120,7 @@ export var MockMatchMedia = (function (_super) {
      * Insure the mediaQuery is registered with MatchMedia
      */
     MockMatchMedia.prototype._registerMediaQuery = function (mediaQuery) {
-        if (!this._registry.has(mediaQuery)) {
+        if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
             this.registerQuery(mediaQuery);
         }
     };

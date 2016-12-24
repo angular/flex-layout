@@ -8,6 +8,10 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
  */
 export declare class MockMatchMedia extends MatchMedia {
     private _breakpoints;
+    /**
+     * Special flag used to test BreakPoint registrations with MatchMedia
+     */
+    autoRegisterQueries: boolean;
     constructor(_zone: NgZone, _breakpoints: BreakPointRegistry);
     /**
      * Easy method to clear all listeners for all mediaQueries
