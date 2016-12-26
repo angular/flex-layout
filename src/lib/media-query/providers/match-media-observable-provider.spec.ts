@@ -71,14 +71,14 @@ describe('match-media-observable-provider', () => {
   })));
 
 
-   it('can inject a MatchMediaObservable instance', async(inject(
+   fit('can inject a MatchMediaObservable instance', async(inject(
      [MatchMediaObservable, MatchMedia],
-     (media$, matchMedia) => {
+     (media, matchMedia) => {
        let current : MediaChange;
 
-       expect( media$ ).toBeDefined();
+       expect( media ).toBeDefined();
 
-       let subscription = media$.subscribe((change:MediaChange)=>{
+       let subscription = media.subscribe((change:MediaChange)=>{
          current = change;
        });
 
@@ -90,6 +90,10 @@ describe('match-media-observable-provider', () => {
        // Activate mediaQuery associated with 'md' alias
        matchMedia.activate('md');
        expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+       expect( media.isActive('md') ).toBeTruthy();
+
+       matchMedia.activate('lg');
+       expect( media.isActive('lg') ).toBeTruthy();
 
        subscription.unsubscribe();
    })));
