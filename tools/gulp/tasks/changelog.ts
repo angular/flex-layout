@@ -4,7 +4,8 @@ import path = require('path');
 import minimist = require('minimist');
 import gulpUtils = require('gulp-util');
 
-let changelog = require('gulp-conventional-changelog');
+const changelog = require('gulp-conventional-changelog');
+const semver = require('semver');
 
 const args = minimist(process.argv.slice(2));
 const chalk = gulpUtils.colors;
@@ -19,31 +20,33 @@ const VERSION = args['version'] || require(path.join(ROOT,'package.json')).versi
  */
 task('changelog', function() {
 
-  var changelogPath = path.join(ROOT, 'CHANGELOG.md');
-  var previousTag = getLatestTag();
-  var currentTag = 'v' + VERSION;
-  var contextOptions = {
+  const changelogPath = path.join(ROOT, 'CHANGELOG.md');
+  const previousTag = getLatestTag();
+  const currentTag = 'v' + VERSION;
+  const fromSHA = SHA || previousTag.sha;
+  const contextOptions = {
     version: VERSION,
     previousTag: previousTag.name,
     currentTag: currentTag
   };
+
   /* Validate different fork points for the changelog generation */
   if (previousTag.name === currentTag && !SHA) {
     log(chalk.yellow('Warning: You are generating a changelog by comparing the same versions.'));
   } else if (SHA) {
     log('Generating changelog from commit ' + getShortSha(SHA) + '...');
   } else {
-    var shortSha = getShortSha(previousTag.sha);
+    let shortSha = getShortSha(previousTag.sha);
     log('Generating changelog from tag ' + previousTag.name + ' (' + shortSha + ')');
   }
 
-  return src(changelogPath, {
-    buffer:false
-  }).pipe(changelog({
-    preset: 'angular'
-  }, contextOptions, {
-    from: SHA || previousTag.sha
-  })).pipe(dest(ROOT));
+  return src(changelogPath)
+    .pipe(changelog({ preset: 'angular' }, contextOptions, {
+      from: fromSHA
+    }, {}, {
+      generateOn: _shouldGenerate
+    }))
+    .pipe(dest(ROOT));
 
 });
 
@@ -67,4 +70,18 @@ function getLatestTag() {
  */
 function getShortSha(sha) {
   return sha.substring(0, 7);
+}
+
+/**
+ * Function which determines whether the conventional-changelog should create
+ * a new section in the CHANGELOG or not.
+ *
+ * - If a SHA is specified, the first checked SHA will be used to generate a new section.
+ * - By default it just checks if the commit is tagged and if the version is valid.
+ *
+ * @param {Object=} commit Parsed commit from the conventional-changelog-parser.
+ */
+let _isGenerated = 0;
+function _shouldGenerate(commit) {
+  return SHA ? _isGenerated++ === 0 : semver.valid(commit.version);
 }
