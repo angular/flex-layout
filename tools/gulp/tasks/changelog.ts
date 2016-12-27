@@ -1,26 +1,32 @@
-var fs = require('fs');
-var changelog = require('conventional-changelog');
-var addStream = require('add-stream');
-var spawnSync = require('child_process').spawnSync;
-var chalk = require('gulp-util').colors;
-var log = require('gulp-util').log;
-var path = require('path');
-var args = require('minimist')(process.argv.slice(2));
+import {src, task, dest} from 'gulp';
+import {spawnSync} from 'child_process';
+import path = require('path');
+import minimist = require('minimist');
+import gulpUtils = require('gulp-util');
 
-var SHA = args.sha;
-var ROOT = path.normalize(__dirname + '/../../..');
+let changelog = require('gulp-conventional-changelog');
 
-console.log(`Root = ${ROOT}`);
+const args = minimist(process.argv.slice(2));
+const chalk = gulpUtils.colors;
+const log = gulpUtils.log;
 
-var VERSION = args.version || require(path.join(ROOT,'package.json')).version;
+const SHA = args['sha'] || args['SHA'];
+const ROOT = path.normalize(__dirname + '/../../..');
+const VERSION = args['version'] || require(path.join(ROOT,'package.json')).version;
 
-exports.task = function () {
+/**
+ * Expected `gulp changelog --sha=ad58e11`
+ */
+task('changelog', function() {
 
   var changelogPath = path.join(ROOT, 'CHANGELOG.md');
-  var inputStream = fs.createReadStream(changelogPath);
   var previousTag = getLatestTag();
   var currentTag = 'v' + VERSION;
-
+  var contextOptions = {
+    version: VERSION,
+    previousTag: previousTag.name,
+    currentTag: currentTag
+  };
   /* Validate different fork points for the changelog generation */
   if (previousTag.name === currentTag && !SHA) {
     log(chalk.yellow('Warning: You are generating a changelog by comparing the same versions.'));
@@ -31,24 +37,15 @@ exports.task = function () {
     log('Generating changelog from tag ' + previousTag.name + ' (' + shortSha + ')');
   }
 
-  var contextOptions = {
-    version: VERSION,
-    previousTag: previousTag.name,
-    currentTag: currentTag
-  };
-
-  /* Create our changelog and append the current changelog stream. */
-  var changelogStream = changelog({ preset: 'angular' }, contextOptions, {
+  return src(changelogPath, {
+    buffer:false
+  }).pipe(changelog({
+    preset: 'angular'
+  }, contextOptions, {
     from: SHA || previousTag.sha
-  }).pipe(addStream(inputStream));
+  }).pipe(dest(ROOT)));
 
-
-  /* Wait for the changelog to be ready and overwrite it. */
-  inputStream.on('end', function() {
-    changelogStream.pipe(fs.createWriteStream(changelogPath));
-  });
-
-};
+});
 
 /**
  * Resolves the latest tag over all branches from the repository metadata.
