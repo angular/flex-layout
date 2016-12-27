@@ -1,6 +1,10 @@
 (function () {
   'use strict';
 
+  const SOURCE_REPO  = 'flex-layout';
+  const SOURCE_REPO_TITLE = 'Angular Flex-Layout';
+  const BUILD_REPO   = 'flex-layout-builds';
+
   var colors         = require('colors');
   var strip          = require('cli-color/strip');
   var fs             = require('fs');
@@ -12,9 +16,9 @@
   var pushCmds       = [ 'rm abort push' ];
   var cleanupCmds    = [];
   var defaultOptions = { encoding: 'utf-8' };
-  var origin         = 'git@github.com:angular/material.git';
+  var origin         = 'git@github.com:angular/flex-layout.git';
   var lineWidth      = 80;
-  var lastMajorVer   = JSON.parse(exec('curl https://material.angularjs.org/docs.json')).latest;
+  var lastMajorVer   = "2.0.0.-beta.1";   //JSON.parse(exec(`curl ${URL_VERSIONS}`)).latest;
   var newVersion;
   var dryRun;
 
@@ -40,10 +44,8 @@
     createChangelog();
     commitChanges();
     tagRelease();
-    cloneRepo('bower-material');
-    updateBowerVersion();
-    cloneRepo('code.material.angularjs.org');
-    updateSite();
+    cloneRepo(BUILD_REPO);
+    generateLatestBuild();
     updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
     if (!dryRun) writeScript('push', pushCmds.concat(cleanupCmds));
@@ -83,11 +85,24 @@
   /** writes the new version to package.json */
   function updateVersion () {
     start(`Updating ${"package.json".cyan} version from ${oldVersion.cyan} to ${newVersion.cyan}...`);
+
+    // Update the repo-root package.json
     pkg.version = newVersion;
     fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
+
+    // update the package.json deploy to npm
+    let npmPackagePath = './tools/scripts/release/npm_assets/package.json';
+    pkg = require(npmPackagePath);
+    pkg.version = newVersion;
+    fs.writeFileSync(npmPackagePath, JSON.stringify(pkg, null, 2));
+
     done();
+
     abortCmds.push('git checkout package.json');
+    abortCmds.push(`gig checkout ${npmPackagePath}`);
+
     pushCmds.push('git add package.json');
+    pushCmds.push(`git add ${npmPackagePath}`);
   }
 
   /** generates the changelog from the commits since the last release */
@@ -208,29 +223,16 @@
     exec('chmod +x ' + name);
   }
 
-  /** updates the version for bower-material in package.json and bower.json */
-  function updateBowerVersion () {
-    start('Updating bower version...');
-    var options = { cwd: './bower-material' },
-        bower   = require(options.cwd + '/bower.json'),
-        pkg     = require(options.cwd + '/package.json');
-    //-- update versions in config files
-    bower.version = pkg.version = newVersion;
-    fs.writeFileSync(options.cwd + '/package.json', JSON.stringify(pkg, null, 2));
-    fs.writeFileSync(options.cwd + '/bower.json', JSON.stringify(bower, null, 2));
-    done();
-    start('Building bower files...');
-    //-- build files for bower
+  /** updates the version for flex-layout-builds in package.json  */
+  function generateLatestBuild () {
+    start('Building deployed files...');
     exec([
       'rm -rf dist',
-      'gulp build',
-      'gulp build-all-modules --mode=default',
-      'gulp build-all-modules --mode=closure',
-      'rm -rf dist/demos'
+      'gulp build:release'
      ]);
     done();
-    start('Copy files into bower repo...');
-    //-- copy files over to bower repo
+
+    start(`Copy files into ${BUILD_REPO} repo...`);
     exec([
            'cp -Rf ../dist/* ./',
            'git add -A',
@@ -238,9 +240,10 @@
            'rm -rf ../dist'
          ], options);
     done();
+
     //-- add steps to push script
     pushCmds.push(
-      comment('push to bower (master and tag) and publish to npm'),
+      comment('push to builds (master and tag) and publish to npm'),
       'cd ' + options.cwd,
       'cp ../CHANGELOG.md .',
       'git add CHANGELOG.md',
@@ -254,97 +257,6 @@
     );
   }
 
-  /** builds the website for the new version */
-  function updateSite () {
-    start('Adding new version of the docs site...');
-    var options = { cwd: './code.material.angularjs.org' };
-    writeDocsJson();
-
-    //-- build files for bower
-    exec([
-        'rm -rf dist',
-        'gulp docs'
-    ]);
-    replaceFilePaths();
-
-    //-- copy files over to site repo
-    exec([
-        `cp -Rf ../dist/docs ${newVersion}`,
-        'rm -rf latest && cp -Rf ../dist/docs latest',
-        'git add -A',
-        `git commit -m "release: version ${newVersion}"`,
-        'rm -rf ../dist'
-    ], options);
-    replaceBaseHref(newVersion);
-    replaceBaseHref('latest');
-
-    //-- update firebase.json file
-    writeFirebaseJson();
-    exec([ 'git commit --amend --no-edit -a' ], options);
-    done();
-
-    //-- add steps to push script
-    pushCmds.push(
-        comment('push the site'),
-        'cd ' + options.cwd,
-        'git pull --rebase --strategy=ours',
-        'git push',
-        'cd ..'
-    );
-
-    function writeFirebaseJson () {
-      fs.writeFileSync(options.cwd + '/firebase.json', getFirebaseJson());
-      function getFirebaseJson () {
-        var json      = require(options.cwd + '/firebase.json');
-        json.rewrites = json.rewrites || [];
-        switch (json.rewrites.length) {
-          case 0:
-            json.rewrites.push(getRewrite('HEAD'));
-          case 1:
-            json.rewrites.push(getRewrite('latest'));
-          default:
-            json.rewrites.push(getRewrite(newVersion));
-        }
-        return JSON.stringify(json, null, 2);
-        function getRewrite (str) {
-          return {
-            source:      '/' + str + '/**/!(*.@(js|html|css|json|svg|png|jpg|jpeg))',
-            destination: '/' + str + '/index.html'
-          };
-        }
-      }
-    }
-
-    function writeDocsJson () {
-      var config      = require(options.cwd + '/docs.json');
-      config.versions.unshift(newVersion);
-
-      //-- only set to default if not a release candidate
-      config.latest = newVersion;
-      fs.writeFileSync(options.cwd + '/docs.json', JSON.stringify(config, null, 2));
-    }
-  }
-
-  /** replaces localhost file paths with public URLs */
-  function replaceFilePaths () {
-    //-- handle docs.js
-    var path = __dirname + '/dist/docs/docs.js';
-    var file = fs.readFileSync(path);
-    var contents = file.toString()
-        .replace(/http:\/\/localhost:8080\/angular-material/g, 'https://cdn.gitcdn.link/cdn/angular/bower-material/v' + newVersion + '/angular-material')
-        .replace(/http:\/\/localhost:8080\/docs.css/g, 'https://material.angularjs.org/' + newVersion + '/docs.css');
-    fs.writeFileSync(path, contents);
-
-  }
-
-  /** replaces base href in index.html for new version as well as latest */
-  function replaceBaseHref (folder) {
-    //-- handle index.html
-    var path = __dirname + '/code.material.angularjs.org/' + folder + '/index.html';
-    var file = fs.readFileSync(path);
-    var contents = file.toString().replace(/base href="\//g, 'base href="/' + folder + '/');
-    fs.writeFileSync(path, contents);
-  }
 
   /** copies the changelog back over to master branch */
   function updateMaster () {
@@ -384,7 +296,7 @@
   function header () {
     clear();
     line();
-    log(center('Angular Material Release'));
+    log(center(`${SOURCE_REPO_TITLE} Release v${newVersion}`));
     line();
   }
 

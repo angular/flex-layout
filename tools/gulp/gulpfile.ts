@@ -1,3 +1,4 @@
+import './tasks/changelog';
 import './tasks/ci';
 import './tasks/clean';
 import './tasks/components';
