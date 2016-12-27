@@ -43,7 +43,7 @@ task('changelog', function() {
     preset: 'angular'
   }, contextOptions, {
     from: SHA || previousTag.sha
-  }).pipe(dest(ROOT)));
+  })).pipe(dest(ROOT));
 
 });
 
