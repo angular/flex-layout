@@ -70,8 +70,7 @@ describe('match-media-observable-provider', () => {
       }
   })));
 
-
-   fit('can inject a MatchMediaObservable instance', async(inject(
+   it('can inject a MatchMediaObservable instance', async(inject(
      [MatchMediaObservable, MatchMedia],
      (media, matchMedia) => {
        let current : MediaChange;

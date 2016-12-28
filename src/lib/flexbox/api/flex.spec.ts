@@ -38,10 +38,9 @@ describe('flex directive', () => {
 
   describe('with static features', () => {
 
-    // @Todo resolve issues with IE and `flex: 1 1 0px`
-    xit('should add correct styles for default `fxFlex` usage', () => {
+    it('should add correct styles for default `fxFlex` usage', () => {
       expectDOMFrom(`<div fxFlex></div>`).toHaveCssStyle({
-        'flex' : '1 1 0%',  // === flex : "1"
+        'flex' : '1 1 1e-09px',  // === flex : "1"
         'box-sizing': 'border-box',
       });
     });
