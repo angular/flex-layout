@@ -1,19 +1,7 @@
 import {src, task, dest} from 'gulp';
 import {spawnSync} from 'child_process';
 import path = require('path');
-<<<<<<< HEAD
-import minimist = require('minimist');
-import gulpUtils = require('gulp-util');
 
-const changelog = require('gulp-conventional-changelog');
-const semver = require('semver');
-
-const args = minimist(process.argv.slice(2));
-const chalk = gulpUtils.colors;
-const log = gulpUtils.log;
-
-const SHA = args['sha'] || args['SHA'];
-=======
 import parseArgs = require('minimist');
 import gulpUtils = require('gulp-util');
 const chalk = gulpUtils.colors;
@@ -24,7 +12,6 @@ const semver = require('semver');
 const args = parseArgs(process.argv.slice(2),{'string':["sha","SHA"]});
 
 const SHA : string = args['sha'] || args['SHA'];
->>>>>>> 63f4864... chore(release): add release and changelog scripts
 const ROOT = path.normalize(__dirname + '/../../..');
 const VERSION = args['version'] || require(path.join(ROOT,'package.json')).version;
 
@@ -81,11 +68,7 @@ function getLatestTag() {
  * Transforms a normal SHA-1 into a 7-digit SHA.
  * @returns {string} shortened SHA
  */
-<<<<<<< HEAD
-function getShortSha(sha) {
-=======
 function getShortSha(sha:string) {
->>>>>>> 63f4864... chore(release): add release and changelog scripts
   return sha.substring(0, 7);
 }
 
