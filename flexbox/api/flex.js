@@ -179,7 +179,7 @@ export var FlexDirective = (function (_super) {
      * Use default fallback of "row"
      */
     FlexDirective.prototype._validateValue = function (grow, shrink, basis) {
-        var css;
+        var css, isValue;
         var direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
             'column' :
             'row';
@@ -214,6 +214,7 @@ export var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': '1 1 auto' });
                 break;
             case 'none':
+                shrink = 0;
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             case 'nogrow':
@@ -223,11 +224,12 @@ export var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': 'none' });
                 break;
             case 'noshrink':
+                shrink = 0;
                 css = extendObject(clearStyles, { 'flex': '1 0 auto' });
                 break;
             default:
                 var isPercent = String(basis).indexOf('%') > -1;
-                var isValue = String(basis).indexOf('px') > -1 ||
+                isValue = String(basis).indexOf('px') > -1 ||
                     String(basis).indexOf('calc') > -1 ||
                     String(basis).indexOf('em') > -1 ||
                     String(basis).indexOf('vw') > -1 ||
@@ -247,7 +249,8 @@ export var FlexDirective = (function (_super) {
         var max = (direction === 'row') ? 'max-width' : 'max-height';
         var min = (direction === 'row') ? 'min-width' : 'min-height';
         var usingCalc = String(basis).indexOf('calc') > -1;
-        css[min] = (basis == '0%') ? 0 : null;
+        var isPx = String(basis).indexOf('px') > -1 || usingCalc;
+        css[min] = (basis == '0%') ? 0 : isPx ? basis : null;
         css[max] = (basis == '0%') ? 0 : usingCalc ? null : basis;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
