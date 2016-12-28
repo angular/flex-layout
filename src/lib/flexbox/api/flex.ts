@@ -178,8 +178,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  private _validateValue(grow: number, shrink: number, basis: string|number|FlexBasisAlias) {
-    let css;
+  private _validateValue(grow: number|string, shrink: number|string, basis: string|number|FlexBasisAlias) {
+    let css, isValue;
     let direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
         'column' :
         'row';
@@ -216,6 +216,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         css = extendObject(clearStyles, {'flex': '1 1 auto'});
         break;
       case 'none':
+        shrink = 0;
         css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
       case 'nogrow':
@@ -225,16 +226,18 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         css = extendObject(clearStyles, {'flex': 'none'});
         break;
       case 'noshrink':
+        shrink = 0;
         css = extendObject(clearStyles, {'flex': '1 0 auto'});
         break;
 
       default:
         let isPercent = String(basis).indexOf('%') > -1;
-        let isValue = String(basis).indexOf('px') > -1 ||
-                      String(basis).indexOf('calc') > -1 ||
-                      String(basis).indexOf('em') > -1 ||
-                      String(basis).indexOf('vw') > -1 ||
-                      String(basis).indexOf('vh') > -1;
+
+        isValue = String(basis).indexOf('px') > -1 ||
+                  String(basis).indexOf('calc') > -1 ||
+                  String(basis).indexOf('em') > -1 ||
+                  String(basis).indexOf('vw') > -1 ||
+                  String(basis).indexOf('vh') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
         if (!isValue && !isPercent && !isNaN(basis as any))
@@ -253,9 +256,11 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     let max = (direction === 'row') ? 'max-width' : 'max-height';
     let min = (direction === 'row') ? 'min-width' : 'min-height';
-    let usingCalc = String(basis).indexOf('calc') > -1;
 
-    css[min] = (basis == '0%') ? 0 : null;
+    let usingCalc = String(basis).indexOf('calc') > -1;
+    let isPx = String(basis).indexOf('px') > -1 || usingCalc;
+
+    css[min] = (basis == '0%') ? 0 : isPx ?  basis : null;
     css[max] = (basis == '0%') ? 0 : usingCalc ? null : basis;
 
     return extendObject(css, {'box-sizing': 'border-box'});

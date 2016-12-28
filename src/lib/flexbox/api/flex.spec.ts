@@ -83,6 +83,21 @@ describe('flex directive', () => {
         'flex' : '1 2 0.9em'
       });
     });
+    it('should set a min-width when the shrink == 0', () => {
+      expectDOMFrom(`<div fxFlex="1 0 37px"></div>`).toHaveCssStyle({
+        'flex' : '1 0 37px',
+        'max-width' : '37px',
+        'min-width' : '37px',
+        'box-sizing': 'border-box',
+      });
+    });
+    it('should set a min-width when basis is a Px value', () => {
+      expectDOMFrom(`<div fxFlex="312px"></div>`).toHaveCssStyle({
+        'flex' : '1 1 312px',
+        'max-width' : '312px',
+        'min-width' : '312px'
+      });
+    });
 
     describe('', () => {
 
@@ -92,6 +107,7 @@ describe('flex directive', () => {
           </div>
         `)
         .not.toHaveCssStyle({
+          'flex-direction': 'row',
           'max-height' : '37%',
         });
       });
