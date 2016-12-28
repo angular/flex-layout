@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, async } from '@angular/core/testing';
+import {ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -17,7 +17,7 @@ describe('layout-align directive', () => {
   let createTestComponent = makeCreateTestComponent(()=> TestLayoutAlignComponent);
   let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutAlignComponent);
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
     // Configure testbed to prepare services
@@ -29,7 +29,7 @@ describe('layout-align directive', () => {
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     })
-  }));
+  });
   afterEach(() => {
     if ( fixture ) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();

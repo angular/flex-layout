@@ -4,7 +4,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -46,14 +46,14 @@ describe('responsive-activation', () => {
   });
 
   // Single async inject to save references; which are used in all tests below
-  beforeEach( async(inject(
+  beforeEach(inject(
     [ BreakPointRegistry, MatchMedia, MediaMonitor ],
     (_breakPoints_, _matchMedia_, _mediaMonitor_) => {
       breakPoints = _breakPoints_;    // Only used to look up mediaQuery by aliases
       matchMedia = _matchMedia_;      // Only used to manual/simulate activate a mediaQuery
       monitor = _mediaMonitor_;
     }
-  )));
+  ));
 
   it('does not report mediaQuery changes for static usages', () => {
       let value;

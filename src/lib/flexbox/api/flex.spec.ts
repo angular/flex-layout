@@ -1,6 +1,6 @@
 import {Component, OnInit, DebugElement} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, async } from '@angular/core/testing';
+import {ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -8,20 +8,15 @@ import {BreakPointsProvider} from '../../media-query/providers/break-points-prov
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, makeExpectDOMFrom, makeExpectDOMForQuery} from '../../utils/testing/helpers';
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(()=> TestFlexComponent);
   let expectDOMFrom = makeExpectDOMFrom(()=> TestFlexComponent);
   let expectDomForQuery = makeExpectDOMForQuery(()=> TestFlexComponent);
-  let activateMediaQuery = (alias, allowOverlaps?:boolean) => {
-        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-        matchMedia.activate(alias,allowOverlaps);
-      };
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
     // Configure testbed to prepare services
@@ -33,7 +28,7 @@ describe('flex directive', () => {
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     })
-  }));
+  });
   afterEach(() => {
     if ( fixture ) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();
