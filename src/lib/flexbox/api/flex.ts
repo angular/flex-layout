@@ -158,8 +158,6 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * fxFlex="3 3 calc(15em + 20px)"
    */
   private _getPartsWithCalc(value:string) {
-    debugger;
-
     let parts = [this._queryInput("grow"),  this._queryInput("shrink"), value];
     let j = value.indexOf('calc');
 
