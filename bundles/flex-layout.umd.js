@@ -1545,7 +1545,6 @@ var FlexDirective = (function (_super) {
      * fxFlex="3 3 calc(15em + 20px)"
      */
     FlexDirective.prototype._getPartsWithCalc = function (value) {
-        debugger;
         var parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
         var j = value.indexOf('calc');
         if (j > 0) {
