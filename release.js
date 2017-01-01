@@ -8,53 +8,49 @@
   var colors         = require('colors');
   var strip          = require('cli-color/strip');
   var fs             = require('fs');
-  var prompt         = require('prompt-sync');
+  var prompt         = require('prompt-sync')();
   var child_process  = require('child_process');
   var pkg            = require('./package.json');
+  var releases       = require('./tools/releases.json');
   var oldVersion     = pkg.version;
-  var abortCmds      = [ 'git reset --hard', 'git checkout staging', 'rm abort push' ];
-  var pushCmds       = [ 'rm abort push' ];
+  var abortCmds      = [ 'git reset --hard', 'git checkout staging', 'rm ./abort ./push' ];
+  var pushCmds       = [ 'rm ./abort ./push' ];
   var cleanupCmds    = [];
   var defaultOptions = { encoding: 'utf-8' };
   var origin         = 'git@github.com:angular/flex-layout.git';
   var lineWidth      = 80;
-  var lastMajorVer   = "2.0.0.-beta.1";   //JSON.parse(exec(`curl ${URL_VERSIONS}`)).latest;
-  var newVersion;
-  var dryRun;
-
-  header();
-  write(`Is this a dry-run? ${"[yes/no]".cyan} `);
-  dryRun = prompt() !== 'no';
+  var newVersion,  lastMajorVer = releases.latest;
+  var dryRun = prompt(`Is this a dry-run? ${"[yes/no]".cyan} `) !== 'no';
 
   if (dryRun) {
-    write(`What would you like the old version to be? (default: ${oldVersion.cyan}) `);
-    oldVersion = prompt() || oldVersion;
+    let msg = `What would you like the old version to be? (default: ${oldVersion.cyan}) `;
+    oldVersion = prompt(msg) || oldVersion;
+    newVersion = getNewVersion();
     build();
   } else if (validate()) {
     build();
   }
 
   function build () {
-    newVersion = getNewVersion();
-
     line();
 
     checkoutVersionBranch();
     updateVersion();
     createChangelog();
+    writeReleasesJson();
     commitChanges();
     tagRelease();
-    cloneRepo(BUILD_REPO);
+    cloneRepo();
     generateLatestBuild();
     updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
-    if (!dryRun) writeScript('push', pushCmds.concat(cleanupCmds));
+    writeScript('push', (dryRun ? abortCmds :pushCmds).concat(cleanupCmds));
 
     line();
-    log('Your repo is ready to be pushed.');
+    log(`Your repo is ${"ready".cyan} to be pushed.`);
     log(`Please look over ${"CHANGELOG.md".cyan} and make any changes.`);
+    log(`If you would like to cancel this release, please run "${"./abort".red}"`);
     log(`When you are ready, please run "${"./push".cyan}" to finish the process.`);
-    log('If you would like to cancel this release, please run "./abort"');
   }
 
   //-- utility methods
@@ -99,7 +95,7 @@
     done();
 
     abortCmds.push('git checkout package.json');
-    abortCmds.push(`gig checkout ${npmPackagePath}`);
+    abortCmds.push(`git checkout ${npmPackagePath}`);
 
     pushCmds.push('git add package.json');
     pushCmds.push(`git add ${npmPackagePath}`);
@@ -119,6 +115,19 @@
     pushCmds.push('git add CHANGELOG.md');
   }
 
+  function writeReleasesJson () {
+    start('Adding new version of Releases...');
+    const RELEASE_PATH = './tools/releases.json';
+    var config = require( RELEASE_PATH );
+
+        config.versions.unshift(newVersion);
+        config.latest = newVersion;
+
+    fs.writeFileSync(RELEASE_PATH, JSON.stringify(config, null, 2));
+
+    done();
+  }
+
   /** utility method for clearing the terminal */
   function clear () {
     write("\u001b[2J\u001b[0;0H");
@@ -126,15 +135,15 @@
 
   /** prompts the user for the new version */
   function getNewVersion () {
-    header();
     var options = getVersionOptions(oldVersion), key, type, version;
+
+    header();
     log(`The current version is ${oldVersion.cyan}.`);
     log('');
     log('What should the next version be?');
     for (key in options) { log((+key + 1) + ') ' + options[ key ].cyan); }
     log('');
-    write('Please select a new version: ');
-    type = prompt();
+    type = prompt('Please select a new version: ');
 
     if (options[ type - 1 ]) version = options[ type - 1 ];
     else if (type.match(/^\d+\.\d+\.\d+(-rc\.?\d+)?$/)) version = type;
@@ -142,51 +151,65 @@
 
     log('');
     log('The new version will be ' + version.cyan + '.');
-    write(`Is this correct? ${"[yes/no]".cyan} `);
-    return prompt() === 'yes' ? version : getNewVersion();
+    return prompt(`Is this correct? ${"[yes/no]".cyan} `) === 'yes' ? version : getNewVersion();
 
     function getVersionOptions (version) {
-      return version.match(/-rc\.?\d+$/)
-          ? [ increment(version, 'rc'), increment(version, 'minor') ]
-          : [ increment(version, 'patch'), addRC(increment(version, 'minor')) ];
+      return version.match(/-alpha\.?\d+$/) ? [ increment(version, 'alpha'), addBeta(increment(version, 'minor')) ] :
+             version.match(/-beta\.?\d+$/) ? [ increment(version, 'beta'), increment(version, 'rc') ] :
+             version.match(/-rc\.?\d+$/) ? [ increment(version, 'rc'), increment(version, 'patch') ] :
+             [ increment(version, 'patch'), increment(version, 'minor') ];
 
       function increment (versionString, type) {
         var version = parseVersion(versionString);
-        if (version.rc) {
-          switch (type) {
-            case 'minor': version.rc = 0; break;
-            case 'rc': version.rc++; break;
-          }
-        } else {
-          version[ type ]++;
-          //-- reset any version numbers lower than the one changed
-          switch (type) {
-            case 'minor': version.patch = 0;
-            case 'patch': version.rc = 0;
-          }
+        switch (type) {
+          case 'alpha':
+          case 'beta' :
+          case 'rc'   :
+          case 'patch':
+          case 'minor':
+            ++version[type];
+            break;
         }
-        return getVersionString(version);
+        resetVersionParts(type);
+
+        return buildVersionString(version);
 
         function parseVersion (version) {
-          var parts = version.split(/\-rc\.|\./g);
+          var hasBeta = version.indexOf("-beta") > -1;
+          var parts = version.split(/\-beta\.|\-rc\.|\./g);
           return {
             string: version,
             major:  parts[ 0 ],
             minor:  parts[ 1 ],
             patch:  parts[ 2 ],
-            rc:     parts[ 3 ] || 0
+            rc   :  hasBeta ? 0 : (parts[ 3 ] || 0),
+            beta :  hasBeta ? (parts[ 3 ] || 0) : 0,
           };
         }
 
-        function getVersionString (version) {
-          var str = version.major + '.' + version.minor + '.' + version.patch;
-          if (version.rc) str += '-rc.' + version.rc;
+        function buildVersionString (version) {
+          var  str = version.major + '.' + version.minor + '.' + version.patch;
+              str += version.rc    ? `-rc.${version.rc}`       :
+                     version.beta  ? `-beta.${version.beta}`   :
+                     version.alpha ? `-alpha.${version.alpha}` : "";
           return str;
+        }
+
+        function resetVersionParts() {
+          switch (type) {
+            case 'minor' : version.patch = 0;
+            case 'patch' : version.rc    = 0;
+            case 'rc'    : version.beta  = 0;
+            case 'beta'  : version.alpha = 0;
+          }
         }
       }
 
       function addRC (str) {
         return str + '-rc.1';
+      }
+      function addBeta (str) {
+        return str + '-beta.1';
       }
     }
   }
@@ -209,12 +232,13 @@
   }
 
   /** utility method for cloning github repos */
-  function cloneRepo (repo) {
-    start(`Cloning ${repo.cyan} from Github...`);
-    exec(`rm -rf ${repo}`);
-    exec(`git clone git@github.com:angular/${repo}.git --depth=1`);
+  function cloneRepo () {
+    let path = "./"+BUILD_REPO;
+    start(`Cloning ${path.cyan} from Github...`);
+    exec(`rm -Rf ${path}`);
+    exec(`git clone git@github.com:angular/${BUILD_REPO}.git --depth=1`);
     done();
-    cleanupCmds.push(`rm -rf ${repo}`);
+    cleanupCmds.push(`rm -Rf ${path}`);
   }
 
   /** writes an array of commands to a bash script */
@@ -232,19 +256,20 @@
      ]);
     done();
 
-    start(`Copy files into ${BUILD_REPO} repo...`);
+    let path = "./"+BUILD_REPO;
+    start(`Copy files into ${path.cyan} repo...`);
     exec([
            'cp -Rf ../dist/* ./',
            'git add -A',
            `git commit -m "release: version ${newVersion}"`,
-           'rm -rf ../dist'
-         ], options);
+           'rm -rf ../dist/*'
+         ]);
     done();
 
     //-- add steps to push script
     pushCmds.push(
       comment('push to builds (master and tag) and publish to npm'),
-      'cd ' + options.cwd,
+      `cd ./${BUILD_REPO}`,
       'cp ../CHANGELOG.md .',
       'git add CHANGELOG.md',
       'git commit --amend --no-edit',
@@ -268,6 +293,7 @@
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(buildCommand)}"`,
         'git add CHANGELOG.md',
         'git add package.json',
+        'git add tools/scripts/release/npm_assets/package.json',
         `git commit -m "update version number in package.json to ${newVersion}"`,
         `git push ${origin} master`
     );
@@ -296,7 +322,7 @@
   function header () {
     clear();
     line();
-    log(center(`${SOURCE_REPO_TITLE} Release v${newVersion}`));
+    log(center(`${SOURCE_REPO_TITLE} : NPM Release`));
     line();
   }
 

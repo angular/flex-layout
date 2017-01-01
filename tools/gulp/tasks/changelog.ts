@@ -83,5 +83,6 @@ function getShortSha(sha:string) {
  */
 let _isGenerated = 0;
 function _shouldGenerate(commit) {
-  return SHA ? _isGenerated++ === 0 : semver.valid(commit.version);
+  let addSection = false;   // _isGenerated++ === 0;
+  return SHA ?  addSection : semver.valid(commit.version);
 }
