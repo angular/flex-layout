@@ -19,8 +19,9 @@
   var defaultOptions = { encoding: 'utf-8' };
   var origin         = 'git@github.com:angular/flex-layout.git';
   var lineWidth      = 80;
-  var newVersion,  lastMajorVer = releases.latest;
-  var dryRun = prompt(`Is this a dry-run? ${"[yes/no]".cyan} `) !== 'no';
+  var lastMajorVer = releases.latest, newVersion;
+  var isYes = matches.bind(this, "yes");
+  var dryRun = isYes(prompt(`Is this a dry-run? ${"[yes/no]".cyan} `));
 
   if (dryRun) {
     let msg = `What would you like the old version to be? (default: ${oldVersion.cyan}) `;
@@ -35,14 +36,14 @@
     line();
 
     checkoutVersionBranch();
-    updateVersion();
+    updateVersion(newVersion);
     createChangelog();
     writeReleasesJson();
     commitChanges();
     tagRelease();
     cloneRepo();
     generateLatestBuild();
-    updateMaster();
+    updateMaster(newVersion);
     writeScript('abort', abortCmds.concat(cleanupCmds));
     writeScript('push', (dryRun ? abortCmds :pushCmds).concat(cleanupCmds));
 
@@ -70,6 +71,20 @@
     }
   }
 
+  /**
+   * Confirm case-insensitive prompt() response partially matches
+   * one of the options.
+   */
+  function matches(options, value) {
+    value = value.toLowerCase();
+    if ( typeof options === 'string' ) options = [options];
+    options = [' '].concat(options);
+
+    return options.reduce((prev, curr)=>{
+      return !prev ? curr.indexOf(value) > -1 : true;
+    },false);
+  }
+
   /** creates the version branch and adds abort steps */
   function checkoutVersionBranch () {
     exec(`git branch -q -D release/${newVersion}`);
@@ -79,7 +94,7 @@
   }
 
   /** writes the new version to package.json */
-  function updateVersion () {
+  function updateVersion(newVersion) {
     start(`Updating ${"package.json".cyan} version from ${oldVersion.cyan} to ${newVersion.cyan}...`);
 
     // Update the repo-root package.json
@@ -151,7 +166,7 @@
 
     log('');
     log('The new version will be ' + version.cyan + '.');
-    return prompt(`Is this correct? ${"[yes/no]".cyan} `) === 'yes' ? version : getNewVersion();
+    return isYes(prompt(`Is this correct? ${"[yes/no]".cyan} `)) ? version : getNewVersion();
 
     function getVersionOptions (version) {
       return version.match(/-alpha\.?\d+$/) ? [ increment(version, 'alpha'), addBeta(increment(version, 'minor')) ] :
@@ -284,7 +299,7 @@
 
 
   /** copies the changelog back over to master branch */
-  function updateMaster () {
+  function updateMaster (newVersion) {
     pushCmds.push(
         comment('update package.json in master'),
         'git checkout master',
@@ -299,12 +314,10 @@
     );
 
     function buildCommand () {
-      require('fs').writeFileSync('package.json', JSON.stringify(getUpdatedJson(), null, 2));
-      function getUpdatedJson () {
-        var json = require('./package.json');
-        json.version = newVersion;
-        return json;
-      }
+      var json = require('./package.json');
+          json.version = newVersion;
+
+      fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
     }
 
     function stringifyFunction (method) {
