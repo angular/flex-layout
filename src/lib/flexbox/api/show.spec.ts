@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
-import {MatchMedia} from '../../media-query/match-media';
+import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
@@ -66,6 +66,9 @@ describe('show directive', () => {
         </div>  
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+
+      fixture.componentInstance.isVisible = true;
+      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
     });
 
     it('should update styles with binding changes', () => {
@@ -105,6 +108,21 @@ describe('show directive', () => {
         expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
       });
 
+      it('should support use of the `media` observable in templates ', () => {
+        fixture = createTestComponent(`
+            <div [fxShow]="media.isActive('xs')" >
+              ...content
+            </div>
+        `);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+
+        activateMediaQuery('xs', true);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+
+        activateMediaQuery('gt-md', true);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      });
+
     });
 });
 
@@ -120,10 +138,12 @@ describe('show directive', () => {
 export class TestShowComponent implements OnInit {
   isVisible = 0;
   menuOpen: boolean = true;
+
+  constructor(@Inject(MatchMediaObservable) private media) { }
+
   toggleMenu() {
       this.menuOpen = !this.menuOpen;
   }
-  constructor() {  }
   ngOnInit() { }
 }
 

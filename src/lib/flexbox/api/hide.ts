@@ -17,7 +17,6 @@ import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
-import {ShowDirective} from "./show";
 import {LayoutDirective} from './layout';
 
 /**
@@ -65,7 +64,6 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   constructor(
       monitor : MediaMonitor,
       @Optional() @Self() private _layout: LayoutDirective,
-      @Optional() @Self() private _showDirective : ShowDirective,
       protected elRef: ElementRef,
       protected renderer: Renderer) {
     super(monitor, elRef, renderer);
@@ -79,12 +77,6 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
     }
   }
 
-  /**
-   * Does the current element also use the fxShow API ?
-   */
-  protected get usesShowAPI() {
-    return !!this._showDirective;
-  }
 
   // *********************************************
   // Lifecycle Methods
@@ -134,9 +126,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
     }
 
     let shouldHide = this._validateTruthy(value);
-    if ( shouldHide || !this.usesShowAPI ) {
-      this._applyStyleToElement(this._buildCSS(shouldHide));
-    }
+    this._applyStyleToElement(this._buildCSS(shouldHide));
   }
 
 

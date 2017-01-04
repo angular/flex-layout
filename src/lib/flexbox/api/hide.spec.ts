@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed } from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
-import {MatchMedia} from '../../media-query/match-media';
+import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
@@ -100,6 +100,36 @@ describe('show directive', () => {
         });
 
       });
+
+      it('should support use of the `media` observable in templates ', () => {
+        fixture = createTestComponent(`
+            <div [fxHide]="media.isActive('xs')" >
+              ...content
+            </div>
+        `);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+
+        activateMediaQuery('xs');
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+
+        activateMediaQuery('lg');
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      });
+
+      it('should support use of the `media` observable in adaptive templates ', () => {
+        fixture = createTestComponent(`
+            <div fxHide="false" [fxHide.md]="media.isActive('xs')" >
+              ...content
+            </div>
+        `);
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+
+        activateMediaQuery('xs');
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+
+        activateMediaQuery('md');
+        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      });
 });
 
 
@@ -114,10 +144,12 @@ describe('show directive', () => {
 export class TestHideComponent implements OnInit {
   isVisible = 0;
   menuHidden: boolean = true;
+
+  constructor(@Inject(MatchMediaObservable) private media) { }
+
   toggleMenu() {
       this.menuHidden = !this.menuHidden;
   }
-  constructor() {  }
   ngOnInit() { }
 }
 

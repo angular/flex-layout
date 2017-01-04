@@ -8,9 +8,7 @@ import {
   Renderer,
   SimpleChanges,
   Self,
-  Optional,
-  Inject,
-  forwardRef
+  Optional
 } from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
@@ -19,7 +17,6 @@ import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
-import {HideDirective} from "./hide";
 import {LayoutDirective} from './layout';
 
 
@@ -70,7 +67,6 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   constructor(
       monitor : MediaMonitor,
       @Optional() @Self() private _layout: LayoutDirective,
-      @Inject(forwardRef(() => HideDirective)) @Optional() @Self() private _hideDirective,
       protected elRef: ElementRef,
       protected renderer: Renderer)
   {
@@ -84,14 +80,6 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
       this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
     }
   }
-
-  /**
-    * Does the current element also use the fxShow API ?
-    */
-   protected get usesHideAPI() {
-     return !!this._hideDirective;
-   }
-
 
   // *********************************************
   // Lifecycle Methods
@@ -138,9 +126,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
     }
 
     let shouldShow = this._validateTruthy(value);
-    if ( shouldShow || !this.usesHideAPI ) {
-      this._applyStyleToElement(this._buildCSS(shouldShow));
-    }
+    this._applyStyleToElement(this._buildCSS(shouldShow));
   }
 
 
