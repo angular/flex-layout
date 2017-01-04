@@ -3,10 +3,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-import { Directive, ElementRef, Input, Renderer, Self, Optional, Inject, forwardRef } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { HideDirective } from "./hide";
 import { LayoutDirective } from './layout';
 var FALSY = ['false', false, 0];
 /**
@@ -18,11 +17,10 @@ export var ShowDirective = (function (_super) {
     /**
      *
      */
-    function ShowDirective(monitor, _layout, _hideDirective, elRef, renderer) {
+    function ShowDirective(monitor, _layout, elRef, renderer) {
         var _this = this;
         _super.call(this, monitor, elRef, renderer);
         this._layout = _layout;
-        this._hideDirective = _hideDirective;
         this.elRef = elRef;
         this.renderer = renderer;
         /**
@@ -95,16 +93,6 @@ export var ShowDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(ShowDirective.prototype, "usesHideAPI", {
-        /**
-          * Does the current element also use the fxShow API ?
-          */
-        get: function () {
-            return !!this._hideDirective;
-        },
-        enumerable: true,
-        configurable: true
-    });
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -145,9 +133,7 @@ export var ShowDirective = (function (_super) {
             value = this._mqActivation.activatedInput;
         }
         var shouldShow = this._validateTruthy(value);
-        if (shouldShow || !this.usesHideAPI) {
-            this._applyStyleToElement(this._buildCSS(shouldShow));
-        }
+        this._applyStyleToElement(this._buildCSS(shouldShow));
     };
     /** Build the CSS that should be assigned to the element instance */
     ShowDirective.prototype._buildCSS = function (show) {
@@ -164,7 +150,6 @@ export var ShowDirective = (function (_super) {
     ShowDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-        { type: undefined, decorators: [{ type: Inject, args: [forwardRef(function () { return HideDirective; }),] }, { type: Optional }, { type: Self },] },
         { type: ElementRef, },
         { type: Renderer, },
     ]; };

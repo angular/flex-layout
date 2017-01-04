@@ -6,7 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { ShowDirective } from "./show";
 import { LayoutDirective } from './layout';
 /**
  * 'show' Layout API directive
@@ -17,11 +16,10 @@ export var HideDirective = (function (_super) {
     /**
      *
      */
-    function HideDirective(monitor, _layout, _showDirective, elRef, renderer) {
+    function HideDirective(monitor, _layout, elRef, renderer) {
         var _this = this;
         _super.call(this, monitor, elRef, renderer);
         this._layout = _layout;
-        this._showDirective = _showDirective;
         this.elRef = elRef;
         this.renderer = renderer;
         /**
@@ -94,16 +92,6 @@ export var HideDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(HideDirective.prototype, "usesShowAPI", {
-        /**
-         * Does the current element also use the fxShow API ?
-         */
-        get: function () {
-            return !!this._showDirective;
-        },
-        enumerable: true,
-        configurable: true
-    });
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -146,9 +134,7 @@ export var HideDirective = (function (_super) {
             value = this._mqActivation.activatedInput;
         }
         var shouldHide = this._validateTruthy(value);
-        if (shouldHide || !this.usesShowAPI) {
-            this._applyStyleToElement(this._buildCSS(shouldHide));
-        }
+        this._applyStyleToElement(this._buildCSS(shouldHide));
     };
     /**
      * Build the CSS that should be assigned to the element instance
@@ -169,7 +155,6 @@ export var HideDirective = (function (_super) {
     HideDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-        { type: ShowDirective, decorators: [{ type: Optional }, { type: Self },] },
         { type: ElementRef, },
         { type: Renderer, },
     ]; };

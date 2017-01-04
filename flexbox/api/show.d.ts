@@ -8,7 +8,6 @@ import { LayoutDirective } from './layout';
  */
 export declare class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     private _layout;
-    private _hideDirective;
     protected elRef: ElementRef;
     protected renderer: Renderer;
     /**
@@ -33,11 +32,7 @@ export declare class ShowDirective extends BaseFxDirective implements OnInit, On
     /**
      *
      */
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, _hideDirective: any, elRef: ElementRef, renderer: Renderer);
-    /**
-      * Does the current element also use the fxShow API ?
-      */
-    protected readonly usesHideAPI: boolean;
+    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer);
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxShow')

@@ -1709,234 +1709,6 @@ var FlexDirective = (function (_super) {
     return FlexDirective;
 }(BaseFxDirective));
 
-var __extends$4 = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var __decorate$9 = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata$9 = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param$4 = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-var FALSY$1 = ['false', false, 0];
-/**
- * 'show' Layout API directive
- *
- */
-var ShowDirective = (function (_super) {
-    __extends$4(ShowDirective, _super);
-    /**
-     *
-     */
-    function ShowDirective(monitor, _layout, _hideDirective, elRef, renderer) {
-        var _this = this;
-        _super.call(this, monitor, elRef, renderer);
-        this._layout = _layout;
-        this._hideDirective = _hideDirective;
-        this.elRef = elRef;
-        this.renderer = renderer;
-        /**
-         * Original dom Elements CSS display style
-         */
-        this._display = 'flex';
-        if (_layout) {
-            /**
-             * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-             * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-             */
-            this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
-        }
-    }
-    Object.defineProperty(ShowDirective.prototype, "show", {
-        set: function (val) { this._cacheInput("show", val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowDirective.prototype, "showXs", {
-        set: function (val) { this._cacheInput('showXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowDirective.prototype, "showGtXs", {
-        set: function (val) { this._cacheInput('showGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showSm", {
-        set: function (val) { this._cacheInput('showSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showGtSm", {
-        set: function (val) { this._cacheInput('showGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showMd", {
-        set: function (val) { this._cacheInput('showMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showGtMd", {
-        set: function (val) { this._cacheInput('showGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showLg", {
-        set: function (val) { this._cacheInput('showLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showGtLg", {
-        set: function (val) { this._cacheInput('showGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "showXl", {
-        set: function (val) { this._cacheInput('showXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    
-    Object.defineProperty(ShowDirective.prototype, "usesHideAPI", {
-        /**
-          * Does the current element also use the fxShow API ?
-          */
-        get: function () {
-            return !!this._hideDirective;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    // *********************************************
-    // Lifecycle Methods
-    // *********************************************
-    /**
-     * On changes to any @Input properties...
-     * Default to use the non-responsive Input value ('fxShow')
-     * Then conditionally override with the mq-activated Input's current value
-     */
-    ShowDirective.prototype.ngOnChanges = function (changes) {
-        if (changes['show'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    ShowDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        this._listenForMediaQueryChanges('show', true, function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    };
-    ShowDirective.prototype.ngOnDestroy = function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
-    // *********************************************
-    // Protected methods
-    // *********************************************
-    /** Validate the visibility value and then update the host's inline display style */
-    ShowDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("show") || true;
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        var shouldShow = this._validateTruthy(value);
-        if (shouldShow || !this.usesHideAPI) {
-            this._applyStyleToElement(this._buildCSS(shouldShow));
-        }
-    };
-    /** Build the CSS that should be assigned to the element instance */
-    ShowDirective.prototype._buildCSS = function (show) {
-        return { 'display': show ? this._display : 'none' };
-    };
-    /**  Validate the to be not FALSY */
-    ShowDirective.prototype._validateTruthy = function (show) {
-        return (FALSY$1.indexOf(show) == -1);
-    };
-    __decorate$9([
-        _angular_core.Input('fxShow'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "show", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.xs'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showXs", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.gt-xs'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showGtXs", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.sm'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showSm", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.gt-sm'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showGtSm", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.md'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showMd", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.gt-md'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showGtMd", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.lg'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showLg", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.gt-lg'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showGtLg", null);
-    __decorate$9([
-        _angular_core.Input('fxShow.xl'), 
-        __metadata$9('design:type', Object), 
-        __metadata$9('design:paramtypes', [Object])
-    ], ShowDirective.prototype, "showXl", null);
-    ShowDirective = __decorate$9([
-        _angular_core.Directive({ selector: "\n  [fxShow],\n  [fxShow.xs]\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm]\n  [fxShow.md],\n  [fxShow.gt-md]\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n" }),
-        __param$4(1, _angular_core.Optional()),
-        __param$4(1, _angular_core.Self()),
-        __param$4(2, _angular_core.Inject(_angular_core.forwardRef(function () { return HideDirective; }))),
-        __param$4(2, _angular_core.Optional()),
-        __param$4(2, _angular_core.Self()), 
-        __metadata$9('design:paramtypes', [MediaMonitor, LayoutDirective, Object, _angular_core.ElementRef, _angular_core.Renderer])
-    ], ShowDirective);
-    return ShowDirective;
-}(BaseFxDirective));
-
 var __extends$3 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -1963,11 +1735,10 @@ var HideDirective = (function (_super) {
     /**
      *
      */
-    function HideDirective(monitor, _layout, _showDirective, elRef, renderer) {
+    function HideDirective(monitor, _layout, elRef, renderer) {
         var _this = this;
         _super.call(this, monitor, elRef, renderer);
         this._layout = _layout;
-        this._showDirective = _showDirective;
         this.elRef = elRef;
         this.renderer = renderer;
         /**
@@ -2040,16 +1811,6 @@ var HideDirective = (function (_super) {
         configurable: true
     });
     
-    Object.defineProperty(HideDirective.prototype, "usesShowAPI", {
-        /**
-         * Does the current element also use the fxShow API ?
-         */
-        get: function () {
-            return !!this._showDirective;
-        },
-        enumerable: true,
-        configurable: true
-    });
     // *********************************************
     // Lifecycle Methods
     // *********************************************
@@ -2092,9 +1853,7 @@ var HideDirective = (function (_super) {
             value = this._mqActivation.activatedInput;
         }
         var shouldHide = this._validateTruthy(value);
-        if (shouldHide || !this.usesShowAPI) {
-            this._applyStyleToElement(this._buildCSS(shouldHide));
-        }
+        this._applyStyleToElement(this._buildCSS(shouldHide));
     };
     /**
      * Build the CSS that should be assigned to the element instance
@@ -2161,14 +1920,224 @@ var HideDirective = (function (_super) {
     HideDirective = __decorate$8([
         _angular_core.Directive({ selector: "\n  [fxHide],\n  [fxHide.xs]\n  [fxHide.gt-xs],\n  [fxHide.sm],\n  [fxHide.gt-sm]\n  [fxHide.md],\n  [fxHide.gt-md]\n  [fxHide.lg],\n  [fxHide.gt-lg],\n  [fxHide.xl]\n" }),
         __param$3(1, _angular_core.Optional()),
-        __param$3(1, _angular_core.Self()),
-        __param$3(2, _angular_core.Optional()),
-        __param$3(2, _angular_core.Self()), 
-        __metadata$8('design:paramtypes', [MediaMonitor, LayoutDirective, ShowDirective, _angular_core.ElementRef, _angular_core.Renderer])
+        __param$3(1, _angular_core.Self()), 
+        __metadata$8('design:paramtypes', [MediaMonitor, LayoutDirective, _angular_core.ElementRef, _angular_core.Renderer])
     ], HideDirective);
     return HideDirective;
 }(BaseFxDirective));
 var FALSY = ['false', false, 0];
+
+var __extends$4 = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var __decorate$9 = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata$9 = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param$4 = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var FALSY$1 = ['false', false, 0];
+/**
+ * 'show' Layout API directive
+ *
+ */
+var ShowDirective = (function (_super) {
+    __extends$4(ShowDirective, _super);
+    /**
+     *
+     */
+    function ShowDirective(monitor, _layout, elRef, renderer) {
+        var _this = this;
+        _super.call(this, monitor, elRef, renderer);
+        this._layout = _layout;
+        this.elRef = elRef;
+        this.renderer = renderer;
+        /**
+         * Original dom Elements CSS display style
+         */
+        this._display = 'flex';
+        if (_layout) {
+            /**
+             * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+             * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+             */
+            this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
+        }
+    }
+    Object.defineProperty(ShowDirective.prototype, "show", {
+        set: function (val) { this._cacheInput("show", val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowDirective.prototype, "showXs", {
+        set: function (val) { this._cacheInput('showXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowDirective.prototype, "showGtXs", {
+        set: function (val) { this._cacheInput('showGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showSm", {
+        set: function (val) { this._cacheInput('showSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showGtSm", {
+        set: function (val) { this._cacheInput('showGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showMd", {
+        set: function (val) { this._cacheInput('showMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showGtMd", {
+        set: function (val) { this._cacheInput('showGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showLg", {
+        set: function (val) { this._cacheInput('showLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showGtLg", {
+        set: function (val) { this._cacheInput('showGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ShowDirective.prototype, "showXl", {
+        set: function (val) { this._cacheInput('showXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    // *********************************************
+    // Lifecycle Methods
+    // *********************************************
+    /**
+     * On changes to any @Input properties...
+     * Default to use the non-responsive Input value ('fxShow')
+     * Then conditionally override with the mq-activated Input's current value
+     */
+    ShowDirective.prototype.ngOnChanges = function (changes) {
+        if (changes['show'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    };
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    ShowDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this._listenForMediaQueryChanges('show', true, function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    ShowDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
+    // *********************************************
+    // Protected methods
+    // *********************************************
+    /** Validate the visibility value and then update the host's inline display style */
+    ShowDirective.prototype._updateWithValue = function (value) {
+        value = value || this._queryInput("show") || true;
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        var shouldShow = this._validateTruthy(value);
+        this._applyStyleToElement(this._buildCSS(shouldShow));
+    };
+    /** Build the CSS that should be assigned to the element instance */
+    ShowDirective.prototype._buildCSS = function (show) {
+        return { 'display': show ? this._display : 'none' };
+    };
+    /**  Validate the to be not FALSY */
+    ShowDirective.prototype._validateTruthy = function (show) {
+        return (FALSY$1.indexOf(show) == -1);
+    };
+    __decorate$9([
+        _angular_core.Input('fxShow'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "show", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.xs'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showXs", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.gt-xs'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showGtXs", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.sm'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showSm", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.gt-sm'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showGtSm", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.md'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showMd", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.gt-md'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showGtMd", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.lg'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showLg", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.gt-lg'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showGtLg", null);
+    __decorate$9([
+        _angular_core.Input('fxShow.xl'), 
+        __metadata$9('design:type', Object), 
+        __metadata$9('design:paramtypes', [Object])
+    ], ShowDirective.prototype, "showXl", null);
+    ShowDirective = __decorate$9([
+        _angular_core.Directive({ selector: "\n  [fxShow],\n  [fxShow.xs]\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm]\n  [fxShow.md],\n  [fxShow.gt-md]\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n" }),
+        __param$4(1, _angular_core.Optional()),
+        __param$4(1, _angular_core.Self()), 
+        __metadata$9('design:paramtypes', [MediaMonitor, LayoutDirective, _angular_core.ElementRef, _angular_core.Renderer])
+    ], ShowDirective);
+    return ShowDirective;
+}(BaseFxDirective));
 
 var __extends$5 = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];

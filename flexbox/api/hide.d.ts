@@ -1,7 +1,6 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { ShowDirective } from "./show";
 import { LayoutDirective } from './layout';
 /**
  * 'show' Layout API directive
@@ -9,7 +8,6 @@ import { LayoutDirective } from './layout';
  */
 export declare class HideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     private _layout;
-    private _showDirective;
     protected elRef: ElementRef;
     protected renderer: Renderer;
     /**
@@ -34,11 +32,7 @@ export declare class HideDirective extends BaseFxDirective implements OnInit, On
     /**
      *
      */
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, _showDirective: ShowDirective, elRef: ElementRef, renderer: Renderer);
-    /**
-     * Does the current element also use the fxShow API ?
-     */
-    protected readonly usesShowAPI: boolean;
+    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer);
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxHide')
