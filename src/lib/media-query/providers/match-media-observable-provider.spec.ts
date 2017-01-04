@@ -35,7 +35,22 @@ describe('match-media-observable-provider', () => {
      });
    });
 
-  it('can can observe built-in mediaQueries', async(inject(
+  it('can supports the `.isActive()` API', async(inject(
+   [MatchMediaObservable, MatchMedia],
+   (media, matchMedia) => {
+     expect( media ).toBeDefined();
+
+       // Activate mediaQuery associated with 'md' alias
+       matchMedia.activate('md');
+       expect( media.isActive('md') ).toBeTruthy();
+
+       matchMedia.activate('lg');
+       expect( media.isActive('lg') ).toBeTruthy();
+       expect( media.isActive('md') ).toBeFalsy();
+
+   })));
+
+  it('can can subscribe to built-in mediaQueries', async(inject(
     [MatchMediaObservable, MatchMedia],
     (media$, matchMedia) => {
       let current : MediaChange;
@@ -70,31 +85,27 @@ describe('match-media-observable-provider', () => {
       }
   })));
 
-   it('can inject a MatchMediaObservable instance', async(inject(
+   it('can `.unsubscribe()` properly', async(inject(
      [MatchMediaObservable, MatchMedia],
      (media, matchMedia) => {
        let current : MediaChange;
-
-       expect( media ).toBeDefined();
-
        let subscription = media.subscribe((change:MediaChange)=>{
          current = change;
        });
 
-       // Confirm initial match is for 'all'
-       expect(current).toBeDefined();
-       expect(current.matches).toBeTruthy();
-       expect(current.mediaQuery).toEqual("all");
-
        // Activate mediaQuery associated with 'md' alias
        matchMedia.activate('md');
        expect(current.mediaQuery).toEqual(findMediaQuery('md'));
-       expect( media.isActive('md') ).toBeTruthy();
+
+       // Un-subscribe
+       subscription.unsubscribe();
 
        matchMedia.activate('lg');
-       expect( media.isActive('lg') ).toBeTruthy();
+       expect( current.mqAlias ).toBe('md');
 
-       subscription.unsubscribe();
+       matchMedia.activate('xs');
+       expect( current.mqAlias ).toBe('md');
    })));
+
 });
 
