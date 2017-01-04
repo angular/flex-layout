@@ -2909,7 +2909,7 @@ var LayoutAlignDirective = (function (_super) {
      */
     LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
-        this._layout = (direction || '').toLowerCase().replace('-reverse', '');
+        this._layout = (direction || '').toLowerCase();
         if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; }))
             this._layout = 'row';
         var value = this._queryInput("align") || 'start stretch';
