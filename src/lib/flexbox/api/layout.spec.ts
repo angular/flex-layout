@@ -9,12 +9,13 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {FlexLayoutModule} from '../_module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../utils/testing/helpers';
+import {makeCreateTestComponent, makeExpectDOMFrom, makeExpectDOMForQuery, expectNativeEl} from '../../utils/testing/helpers';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
   let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
+  let expectDomForQuery = makeExpectDOMForQuery(()=> TestLayoutComponent);
   let activateMediaQuery = (alias, allowOverlaps?:boolean) => {
         let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
         matchMedia.activate(alias,allowOverlaps);
@@ -96,6 +97,27 @@ describe('layout directive', () => {
         'flex-direction': 'column'
       });
 
+    });
+
+    it('should set row-reverse direction for nested fxLayout containers', () => {
+      let template = `
+        <div [fxLayout]="direction" (click)="toggleDirection()" class="colored box" >
+          <div fxFlex="20">  fxFlex="20"  </div>
+          <div fxFlex="60">  outer fxFlex="60"  
+            <div fxLayout="row-reverse" fxLayoutAlign="center center" class="colored box" >
+              <div fxFlex="20">  inner fxFlex="20"  </div>
+              <div fxFlex="60">  inner fxFlex="60"  </div>
+              <div fxFlex >      inner fxFlex       </div>
+            </div>        
+          </div>
+          <div fxFlex >      fxFlex       </div>
+        </div>
+      `;
+
+      expectDomForQuery( template,"[fxLayout='row-reverse']" )
+        .toHaveCssStyle({
+          'flex-direction' : 'row-reverse',
+        });
     });
 
   });

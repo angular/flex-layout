@@ -118,7 +118,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
   private _onLayoutChange(direction) {
-    this._layout = (direction || '').toLowerCase().replace('-reverse', '');
+    this._layout = (direction || '').toLowerCase();
     if (!LAYOUT_VALUES.find(x => x === this._layout))
       this._layout = 'row';
 
