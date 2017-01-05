@@ -19,15 +19,7 @@ const FLEX_FILL_CSS = {
  */
 @Directive({selector: `
   [fxFill],
-  [fxFill.xs]
-  [fxFill.gt-xs],
-  [fxFill.sm],
-  [fxFill.gt-sm]
-  [fxFill.md],
-  [fxFill.gt-md]
-  [fxFill.lg],
-  [fxFill.gt-lg],
-  [fxFill.xl]
+  [fxFlexFill]
 `})
 export class FlexFillDirective extends BaseFxDirective {
   constructor(monitor: MediaMonitor, public elRef: ElementRef, public renderer: Renderer) {
