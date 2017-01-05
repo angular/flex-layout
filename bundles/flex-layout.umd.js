@@ -4,6 +4,13 @@
     (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
 }(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
 
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 /** Applies CSS prefixes to appropriate style keys.*/
 function applyCssPrefixes(target) {
     for (var key in target) {
@@ -86,6 +93,13 @@ function toBoxOrdinal(order) {
     return isNaN(value) ? "0" : value.toString();
 }
 
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 /**
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
@@ -831,6 +845,13 @@ var MediaMonitor = (function () {
     return MediaMonitor;
 }());
 
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 /**
  * Factory returns a simple service instance that exposes a feature to subscribe to mediaQuery
  * changes and a validator to test if a mediaQuery (or alias) is currently active.
@@ -3263,6 +3284,38 @@ var FlexLayoutModule = (function () {
     ], FlexLayoutModule);
     return FlexLayoutModule;
 }());
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 
 exports.BaseFxDirective = BaseFxDirective;
 exports.KeyOptions = KeyOptions;

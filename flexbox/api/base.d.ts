@@ -1,3 +1,10 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { ElementRef, Renderer, OnDestroy } from '@angular/core';
 import { ResponsiveActivation } from '../responsive/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
