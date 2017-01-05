@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -18,13 +18,13 @@ import {
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(()=> TestLayoutComponent);
-  let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
-  let expectDomForQuery = makeExpectDOMForQuery(()=> TestLayoutComponent);
-  let activateMediaQuery = (alias, allowOverlaps?:boolean) => {
-        let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-        matchMedia.activate(alias,allowOverlaps);
-      };
+  let createTestComponent = makeCreateTestComponent(() => TestLayoutComponent);
+  let expectDOMFrom = makeExpectDOMFrom(() => TestLayoutComponent);
+  let expectDomForQuery = makeExpectDOMForQuery(() => TestLayoutComponent);
+  let activateMediaQuery = (alias, allowOverlaps?: boolean) => {
+    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+    matchMedia.activate(alias, allowOverlaps);
+  };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -40,7 +40,7 @@ describe('layout directive', () => {
     });
   });
   afterEach(() => {
-    if ( fixture ) {
+    if (fixture) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();
       fixture = null;
     }
@@ -119,10 +119,10 @@ describe('layout directive', () => {
         </div>
       `;
 
-      expectDomForQuery( template,"[fxLayout='row-reverse']" )
-        .toHaveCssStyle({
-          'flex-direction' : 'row-reverse',
-        });
+      expectDomForQuery(template, "[fxLayout='row-reverse']")
+          .toHaveCssStyle({
+            'flex-direction': 'row-reverse',
+          });
     });
 
   });
@@ -177,13 +177,13 @@ describe('layout directive', () => {
                [fxLayout.md]="direction">
           </div>
        `);
-      expectNativeEl(fixture).toHaveCssStyle({ 'flex-direction': 'row' });
+      expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'row'});
 
       activateMediaQuery('md');
-      expectNativeEl(fixture).toHaveCssStyle({  'flex-direction': 'column' });
+      expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'column'});
 
       fixture.componentInstance.direction = "row";
-      expectNativeEl(fixture).toHaveCssStyle({  'flex-direction': 'row' });
+      expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'row'});
 
 
     });

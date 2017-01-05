@@ -116,15 +116,14 @@ export abstract class BaseFxDirective implements OnDestroy {
    *  and intelligent lookup of the directive's property value that corresponds to that mediaQuery
    *  (or closest match).
    */
-  protected _listenForMediaQueryChanges(
-                  key: string,
-                  defaultValue: any,
-                  onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
+  protected _listenForMediaQueryChanges(key: string,
+                                        defaultValue: any,
+                                        onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
     let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
     return this._mqActivation = new ResponsiveActivation(
-      keyOptions,
-      this._mediaMonitor,
-      (change) => onMediaQueryChange.call(this,  change)
+        keyOptions,
+        this._mediaMonitor,
+        (change) => onMediaQueryChange.call(this, change)
     );
   }
 
@@ -136,7 +135,7 @@ export abstract class BaseFxDirective implements OnDestroy {
     var array = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for (var i = obj.length; i--;) {
+    for ( var i = obj.length; i--; ) {
       array[i] = obj[i];
     }
     return array;

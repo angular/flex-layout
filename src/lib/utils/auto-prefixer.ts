@@ -28,7 +28,7 @@ export function applyCssPrefixes(target) {
         break;
 
       case 'order':
-        if ( isNaN(value) ) {
+        if (isNaN(value)) {
           value = "0";
         }
         target['order'] = value;
@@ -42,27 +42,29 @@ export function applyCssPrefixes(target) {
         break;
 
       case 'align-items':
-        target['-ms-flex-align'] =  toBoxValue(value);
+        target['-ms-flex-align'] = toBoxValue(value);
         target['-webkit-box-align'] = toBoxValue(value);
         break;
 
       case 'align-self':
-        target['-ms-flex-item-align'] =  toBoxValue(value);
+        target['-ms-flex-item-align'] = toBoxValue(value);
         break;
 
       case 'align-content':
         target['-ms-align-content'] = toAlignContentValue(value);
-        target['-ms-flex-line-pack'] =  toAlignContentValue(value);
+        target['-ms-flex-line-pack'] = toAlignContentValue(value);
         break;
     }
   }
   return target;
 }
 
-export function  toAlignContentValue(value:string) {
-  switch(value) {
-    case "space-between" : return "justify";
-    case "space-around"  : return "distribute";
+export function toAlignContentValue(value: string) {
+  switch (value) {
+    case "space-between" :
+      return "justify";
+    case "space-around"  :
+      return "distribute";
     default :
       return toBoxValue(value);
   }
@@ -81,11 +83,11 @@ export function toBoxOrient(flexDirection = 'row') {
 /** @internal Convert flex Direction to Box direction type */
 export function toBoxDirection(flexDirection = 'row') {
 
-  return flexDirection.indexOf('reverse')  !== -1 ? 'reverse' : 'normal';
+  return flexDirection.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
 }
 
 /** @internal Convert flex order to Box ordinal group */
-export function  toBoxOrdinal(order = '0') {
+export function toBoxOrdinal(order = '0') {
   let value = order ? parseInt(order) + 1 : 1;
   return isNaN(value) ? "0" : value.toString();
 }

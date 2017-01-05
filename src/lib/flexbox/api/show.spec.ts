@@ -1,6 +1,6 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
@@ -13,11 +13,11 @@ import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpe
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(()=> TestShowComponent);
-  let activateMediaQuery = (alias, enableOverlaps=false) => {
-        let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-        matchMedia.activate(alias, enableOverlaps);
-      };
+  let createTestComponent = makeCreateTestComponent(() => TestShowComponent);
+  let activateMediaQuery = (alias, enableOverlaps = false) => {
+    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+    matchMedia.activate(alias, enableOverlaps);
+  };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -33,7 +33,7 @@ describe('show directive', () => {
     });
   });
   afterEach(() => {
-    if ( fixture ) {
+    if (fixture) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();
       fixture = null;
     }
@@ -47,7 +47,7 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     });
 
     it('should initial with component not visible when set to `false`', () => {
@@ -56,7 +56,7 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
     it('should initial with component not visible when set to `0`', () => {
@@ -65,10 +65,10 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       fixture.componentInstance.isVisible = true;
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     });
 
     it('should update styles with binding changes', () => {
@@ -78,52 +78,52 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     });
 
   });
 
   describe('with responsive features', () => {
 
-      it('should hide on `xs` viewports only', () => {
-        fixture = createTestComponent(`<div fxShow fxShow.xs="false" >...content</div>`);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+    it('should hide on `xs` viewports only', () => {
+      fixture = createTestComponent(`<div fxShow fxShow.xs="false" >...content</div>`);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
 
-        activateMediaQuery('xs');
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-        activateMediaQuery('md');
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
-      });
+      activateMediaQuery('md');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+    });
 
-      it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
-        fixture = createTestComponent(`<div fxShow fxShow.gt-xs="false" >...content</div>`);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+    it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
+      fixture = createTestComponent(`<div fxShow fxShow.gt-xs="false" >...content</div>`);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
 
-        activateMediaQuery('md', true);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
-      });
+      activateMediaQuery('md', true);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+    });
 
-      it('should support use of the `media` observable in templates ', () => {
-        fixture = createTestComponent(`
+    it('should support use of the `media` observable in templates ', () => {
+      fixture = createTestComponent(`
             <div [fxShow]="media.isActive('xs')" >
               ...content
             </div>
         `);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-        activateMediaQuery('xs', true);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
+      activateMediaQuery('xs', true);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
 
-        activateMediaQuery('gt-md', true);
-        expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
-      });
-
+      activateMediaQuery('gt-md', true);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
+
+  });
 });
 
 
@@ -139,12 +139,15 @@ export class TestShowComponent implements OnInit {
   isVisible = 0;
   menuOpen: boolean = true;
 
-  constructor(@Inject(MatchMediaObservable) private media) { }
+  constructor(@Inject(MatchMediaObservable) private media) {
+  }
 
   toggleMenu() {
-      this.menuOpen = !this.menuOpen;
+    this.menuOpen = !this.menuOpen;
   }
-  ngOnInit() { }
+
+  ngOnInit() {
+  }
 }
 
 

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -16,8 +16,8 @@ import {
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
-  let expectDOMFrom = makeExpectDOMFrom(()=> TestFlexComponent);
-  let expectDomForQuery = makeExpectDOMForQuery(()=> TestFlexComponent);
+  let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
+  let expectDomForQuery = makeExpectDOMForQuery(() => TestFlexComponent);
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -33,7 +33,7 @@ describe('flex directive', () => {
     });
   });
   afterEach(() => {
-    if ( fixture ) {
+    if (fixture) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();
       fixture = null;
     }
@@ -43,61 +43,61 @@ describe('flex directive', () => {
 
     it('should add correct styles for default `fxFlex` usage', () => {
       expectDOMFrom(`<div fxFlex></div>`).toHaveCssStyle({
-        'flex' : '1 1 1e-09px',  // === flex : "1"
+        'flex': '1 1 1e-09px',  // === flex : "1"
         'box-sizing': 'border-box',
       });
     });
     it('should add correct styles for `fxFlex="0%"` usage', () => {
       expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
-        'max-width' : '2%',
-        'flex'      : '1 1 100%',
+        'max-width': '2%',
+        'flex': '1 1 100%',
         'box-sizing': 'border-box',
       });
     });
 
     it('should work with percentage values', () => {
       expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
-        'flex' : '1 1 100%',
-        'max-width' : '37%',
+        'flex': '1 1 100%',
+        'max-width': '37%',
         'box-sizing': 'border-box',
       });
     });
     it('should work with pixel values', () => {
       expectDOMFrom(`<div fxFlex="37px"></div>`).toHaveCssStyle({
-        'flex' : '1 1 37px',
+        'flex': '1 1 37px',
         'box-sizing': 'border-box',
       });
     });
     it('should work with calc values', () => {
       expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
         'box-sizing': 'border-box',
-        'flex' : '1 1 calc(30vw - 10px)'
+        'flex': '1 1 calc(30vw - 10px)'
       });
     });
     it('should work with named values', () => {
       expectDOMFrom(`<div fxFlex="nogrow"></div>`).toHaveCssStyle({
-        'flex' : '0 1 auto'
+        'flex': '0 1 auto'
       });
     });
 
     it('should work with full-spec values', () => {
       expectDOMFrom(`<div fxFlex="1 2 0.9em"></div>`).toHaveCssStyle({
-        'flex' : '1 2 0.9em'
+        'flex': '1 2 0.9em'
       });
     });
     it('should set a min-width when the shrink == 0', () => {
       expectDOMFrom(`<div fxFlex="1 0 37px"></div>`).toHaveCssStyle({
-        'flex' : '1 0 37px',
-        'max-width' : '37px',
-        'min-width' : '37px',
+        'flex': '1 0 37px',
+        'max-width': '37px',
+        'min-width': '37px',
         'box-sizing': 'border-box',
       });
     });
     it('should set a min-width when basis is a Px value', () => {
       expectDOMFrom(`<div fxFlex="312px"></div>`).toHaveCssStyle({
-        'flex' : '1 1 312px',
-        'max-width' : '312px',
-        'min-width' : '312px'
+        'flex': '1 1 312px',
+        'max-width': '312px',
+        'min-width': '312px'
       });
     });
 
@@ -108,9 +108,9 @@ describe('flex directive', () => {
           <div fxLayout="column" fxFlex="37%">
           </div>
         `)
-        .not.toHaveCssStyle({
+            .not.toHaveCssStyle({
           'flex-direction': 'row',
-          'max-height' : '37%',
+          'max-height': '37%',
         });
       });
 
@@ -121,21 +121,21 @@ describe('flex directive', () => {
           </div>
         `;
 
-        expectDomForQuery( template,"[fxFlex]" )
-          .toHaveCssStyle({
-            'max-height' : '37%',
-          });
+        expectDomForQuery(template, "[fxFlex]")
+            .toHaveCssStyle({
+              'max-height': '37%',
+            });
       });
 
       it('should set max-width for `fxFlex="<%val>"`', () => {
         expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
-          'max-width' : '37%',
+          'max-width': '37%',
         });
       });
 
       it('should set max-width for `fxFlex="2%"` usage', () => {
         expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
-          'max-width' : '2%',
+          'max-width': '2%',
         });
       });
 
@@ -156,8 +156,12 @@ describe('flex directive', () => {
 })
 export class TestFlexComponent implements OnInit {
   public direction = "column";
-  constructor() {  }
-  ngOnInit() { }
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
 }
 
 

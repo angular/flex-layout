@@ -31,7 +31,8 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-@Directive({ selector: `
+@Directive({
+  selector: `
   [fxFlex],
   [fxFlex.xs]
   [fxFlex.gt-xs],
@@ -43,7 +44,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
   [fxFlex.gt-lg],
   [fxFlex.xl]
 `
- })
+})
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
@@ -55,29 +56,62 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   private _layoutWatcher: Subscription;
 
-  @Input('fxFlex')       set flex(val)     { this._cacheInput("flex", val); }
-  @Input('fxShrink')     set shrink(val)   { this._cacheInput("shrink", val); }
-  @Input('fxGrow')       set grow(val)     { this._cacheInput("grow", val); }
+  @Input('fxFlex')       set flex(val) {
+    this._cacheInput("flex", val);
+  }
 
-  @Input('fxFlex.xs')    set flexXs(val)   { this._cacheInput('flexXs', val); }
-  @Input('fxFlex.gt-xs') set flexGtXs(val) { this._cacheInput('flexGtXs', val); };
-  @Input('fxFlex.sm')    set flexSm(val)   { this._cacheInput('flexSm', val); };
-  @Input('fxFlex.gt-sm') set flexGtSm(val) { this._cacheInput('flexGtSm', val); };
-  @Input('fxFlex.md')    set flexMd(val)   { this._cacheInput('flexMd', val); };
-  @Input('fxFlex.gt-md') set flexGtMd(val) { this._cacheInput('flexGtMd', val); };
-  @Input('fxFlex.lg')    set flexLg(val)   { this._cacheInput('flexLg', val); };
-  @Input('fxFlex.gt-lg') set flexGtLg(val) { this._cacheInput('flexGtLg', val); };
-  @Input('fxFlex.xl')    set flexXl(val)   { this._cacheInput('flexXl', val); };
+  @Input('fxShrink')     set shrink(val) {
+    this._cacheInput("shrink", val);
+  }
+
+  @Input('fxGrow')       set grow(val) {
+    this._cacheInput("grow", val);
+  }
+
+  @Input('fxFlex.xs')    set flexXs(val) {
+    this._cacheInput('flexXs', val);
+  }
+
+  @Input('fxFlex.gt-xs') set flexGtXs(val) {
+    this._cacheInput('flexGtXs', val);
+  };
+
+  @Input('fxFlex.sm')    set flexSm(val) {
+    this._cacheInput('flexSm', val);
+  };
+
+  @Input('fxFlex.gt-sm') set flexGtSm(val) {
+    this._cacheInput('flexGtSm', val);
+  };
+
+  @Input('fxFlex.md')    set flexMd(val) {
+    this._cacheInput('flexMd', val);
+  };
+
+  @Input('fxFlex.gt-md') set flexGtMd(val) {
+    this._cacheInput('flexGtMd', val);
+  };
+
+  @Input('fxFlex.lg')    set flexLg(val) {
+    this._cacheInput('flexLg', val);
+  };
+
+  @Input('fxFlex.gt-lg') set flexGtLg(val) {
+    this._cacheInput('flexGtLg', val);
+  };
+
+  @Input('fxFlex.xl')    set flexXl(val) {
+    this._cacheInput('flexXl', val);
+  };
 
 
   // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
   // parent flex container for this flex item.
-  constructor(
-      monitor: MediaMonitor,
-      elRef: ElementRef,
-      renderer: Renderer,
-      @Optional() @SkipSelf() private _container: LayoutDirective,
-      @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer,
+              @Optional() @SkipSelf() private _container: LayoutDirective,
+              @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
 
     super(monitor, elRef, renderer);
 
@@ -139,19 +173,19 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     }
 
     this._applyStyleToElement(this._validateValue.apply(this,
-      this._parseFlexParts(String(flexBasis)) ));
+        this._parseFlexParts(String(flexBasis))));
   }
 
   /**
    * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
    */
-  private _parseFlexParts(basis:string) {
-    basis = basis.replace(";","");
+  private _parseFlexParts(basis: string) {
+    basis = basis.replace(";", "");
 
     let hasCalc = basis && basis.indexOf("calc") > -1;
     let matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-    return (matches.length === 3) ? matches : [ this._queryInput("grow"),
-                                                this._queryInput("shrink"), basis ];
+    return (matches.length === 3) ? matches : [this._queryInput("grow"),
+          this._queryInput("shrink"), basis];
   }
 
   /**
@@ -159,14 +193,14 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * e.g.
    * fxFlex="3 3 calc(15em + 20px)"
    */
-  private _getPartsWithCalc(value:string) {
-    let parts = [this._queryInput("grow"),  this._queryInput("shrink"), value];
+  private _getPartsWithCalc(value: string) {
+    let parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
     let j = value.indexOf('calc');
 
-    if ( j > 0 ) {
+    if (j > 0) {
       parts[2] = value.substring(j);
       let matches = value.substr(0, j).trim().split(" ");
-      if ( matches.length == 2 ) {
+      if (matches.length == 2) {
         parts[0] = matches[0];
         parts[1] = matches[1];
       }
@@ -236,10 +270,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         let isPercent = String(basis).indexOf('%') > -1;
 
         isValue = String(basis).indexOf('px') > -1 ||
-                  String(basis).indexOf('calc') > -1 ||
-                  String(basis).indexOf('em') > -1 ||
-                  String(basis).indexOf('vw') > -1 ||
-                  String(basis).indexOf('vh') > -1;
+            String(basis).indexOf('calc') > -1 ||
+            String(basis).indexOf('em') > -1 ||
+            String(basis).indexOf('vw') > -1 ||
+            String(basis).indexOf('vh') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
         if (!isValue && !isPercent && !isNaN(basis as any)) {
@@ -266,7 +300,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     let usingCalc = String(basis).indexOf('calc') > -1;
     let isPx = String(basis).indexOf('px') > -1 || usingCalc;
 
-    css[min] = (basis == '0%') ? 0 : isPx ?  basis : null;
+    css[min] = (basis == '0%') ? 0 : isPx ? basis : null;
     css[max] = (basis == '0%') ? 0 : usingCalc ? null : basis;
 
     return extendObject(css, {'box-sizing': 'border-box'});

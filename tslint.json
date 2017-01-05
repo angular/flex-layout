@@ -53,7 +53,7 @@
       "allow-trailing-underscore"
     ],
     "whitespace": [
-      false,
+      true,
       "check-branch",
       "check-decl",
       "check-operator",
