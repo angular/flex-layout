@@ -2,7 +2,6 @@
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 
 import {TestBed, inject, async} from '@angular/core/testing';
 
@@ -54,6 +53,7 @@ describe('break-point-provider', () => {
         providers: [{provide: BREAKPOINTS, useValue: CUSTOM_BPS}]
       });
     });
+    // tslint:disable-next-line:no-shadowed-variable
     beforeEach(async(inject([BREAKPOINTS], (breakPoints) => {
       bpList = breakPoints;
     })));
@@ -63,7 +63,7 @@ describe('break-point-provider', () => {
       expect(bpList[0].alias).toEqual('ab');
       expect(bpList[bpList.length - 1].suffix).toEqual('Cd');
     });
-  })
+  });
 
 
 });

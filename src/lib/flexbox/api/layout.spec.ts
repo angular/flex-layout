@@ -9,7 +9,12 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {FlexLayoutModule} from '../_module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectDOMFrom, makeExpectDOMForQuery, expectNativeEl} from '../../utils/testing/helpers';
+import {
+  makeCreateTestComponent,
+  makeExpectDOMFrom,
+  makeExpectDOMForQuery,
+  expectNativeEl
+} from '../../utils/testing/helpers';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -17,7 +22,7 @@ describe('layout directive', () => {
   let expectDOMFrom = makeExpectDOMFrom(()=> TestLayoutComponent);
   let expectDomForQuery = makeExpectDOMForQuery(()=> TestLayoutComponent);
   let activateMediaQuery = (alias, allowOverlaps?:boolean) => {
-        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+        let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
         matchMedia.activate(alias,allowOverlaps);
       };
 
@@ -32,7 +37,7 @@ describe('layout directive', () => {
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
-    })
+    });
   });
   afterEach(() => {
     if ( fixture ) {
@@ -78,7 +83,7 @@ describe('layout directive', () => {
         'flex-direction': 'row'
       });
     });
-    it('should use default flex-direction for invalid binding value `[fxLayout]="direction"` usage', () => {
+    it('should use default flex-direction for invalid binding value `[fxLayout]="direction"` usage', () => { // tslint:disable-line:max-line-length
       expectDOMFrom(`<div [fxLayout]="direction"></div>`, "direction", "invalid")
           .toHaveCssStyle({
             'flex-direction': 'row',
@@ -103,12 +108,12 @@ describe('layout directive', () => {
       let template = `
         <div [fxLayout]="direction" (click)="toggleDirection()" class="colored box" >
           <div fxFlex="20">  fxFlex="20"  </div>
-          <div fxFlex="60">  outer fxFlex="60"  
+          <div fxFlex="60">  outer fxFlex="60"
             <div fxLayout="row-reverse" fxLayoutAlign="center center" class="colored box" >
               <div fxFlex="20">  inner fxFlex="20"  </div>
               <div fxFlex="60">  inner fxFlex="60"  </div>
               <div fxFlex >      inner fxFlex       </div>
-            </div>        
+            </div>
           </div>
           <div fxFlex >      fxFlex       </div>
         </div>
@@ -182,7 +187,7 @@ describe('layout directive', () => {
 
 
     });
-    it('should fallback to default styles when the active mediaQuery change is not configured', () => {
+    it('should fallback to default styles when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
@@ -199,7 +204,7 @@ describe('layout directive', () => {
       });
 
     });
-    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
+    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       fixture = createTestComponent(`<div fxLayout fxLayout.gt-sm="column" fxLayout.md="row"></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({

@@ -39,7 +39,7 @@ export class MediaMonitor {
     let items: BreakPoint[] = this._breakpoints.overlappings.reverse();
     return items.filter((bp: BreakPoint) => {
       return this._matchMedia.isActive(bp.mediaQuery);
-    })
+    });
   }
 
   get active(): BreakPoint {
@@ -86,6 +86,6 @@ export class MediaMonitor {
   private _registerBreakpoints() {
     this._breakpoints.items.forEach(bp => {
       this._matchMedia.registerQuery(bp.mediaQuery);
-    })
+    });
   }
 }

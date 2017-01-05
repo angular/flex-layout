@@ -37,6 +37,7 @@ export interface MediaQueryList {
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
+// tslint:disable-next-line:variable-name
 export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fxObservableMatchMedia');
 
 

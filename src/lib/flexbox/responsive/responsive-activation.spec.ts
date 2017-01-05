@@ -2,7 +2,6 @@
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 
 import {TestBed, inject} from '@angular/core/testing';
 
@@ -25,7 +24,7 @@ describe('responsive-activation', () => {
    */
   function buildResponder(baseKey: string, defaultVal: any,
                           onMediaChanges: MediaQuerySubscriber, inputs?: {[key: string]: any}) {
-    if (!inputs) inputs = {};
+    if (!inputs) { inputs = {}; }
     inputs[baseKey] = defaultVal;
 
     let options = new KeyOptions(baseKey, defaultVal, inputs);

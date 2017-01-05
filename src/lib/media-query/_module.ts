@@ -1,5 +1,4 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
-import {Observable} from "rxjs/Observable";
 
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 import {BreakPointsProvider} from "./providers/break-points-provider";

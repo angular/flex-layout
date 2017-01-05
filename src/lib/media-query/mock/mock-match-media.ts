@@ -33,7 +33,7 @@ export class MockMatchMedia extends MatchMedia {
   /**
    * Feature to support manual, simulated activation of a mediaQuery.
    */
-  activate(mediaQuery: string, useOverlaps: boolean = false): boolean {
+  activate(mediaQuery: string, useOverlaps = false): boolean {
     mediaQuery = this._validateQuery(mediaQuery);
 
     if (!this.isActive(mediaQuery)) {
@@ -144,7 +144,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   protected get hasActivated() {
-    return (this._actives.length > 0)
+    return (this._actives.length > 0);
   }
 
   private _actives: MockMediaQueryList[] = [];
@@ -210,7 +210,7 @@ export class MockMediaQueryList implements MediaQueryList {
     if (this._listeners.indexOf(listener) === -1) {
       this._listeners.push(listener);
     }
-    if (this._isActive) listener(this);
+    if (this._isActive) { listener(this); }
   }
 
   removeListener(listener: MediaQueryListListener) {

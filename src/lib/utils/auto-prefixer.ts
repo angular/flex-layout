@@ -69,7 +69,7 @@ export function  toAlignContentValue(value:string) {
 }
 
 /** @internal Convert flex values flex-start, flex-end to start, end. */
-export function toBoxValue(value:string = "") {
+export function toBoxValue(value = "") {
   return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
 

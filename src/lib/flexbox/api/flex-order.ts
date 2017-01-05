@@ -43,7 +43,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fxFlexOrder.gt-lg') set orderGtLg(val) { this._cacheInput('orderGtLg', val); };
   @Input('fxFlexOrder.xl')    set orderXl(val)   { this._cacheInput('orderXl', val); };
 
-  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
   }
 
@@ -65,7 +65,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('order', '0', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('order', '0', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
