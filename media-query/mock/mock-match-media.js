@@ -215,9 +215,8 @@ export var MockMediaQueryList = (function () {
         if (this._listeners.indexOf(listener) === -1) {
             this._listeners.push(listener);
         }
-        if (this._isActive) {
+        if (this._isActive)
             listener(this);
-        }
     };
     MockMediaQueryList.prototype.removeListener = function (listener) {
     };

@@ -129,9 +129,8 @@ export var LayoutAlignDirective = (function (_super) {
     LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
         this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; }))
             this._layout = 'row';
-        }
         var value = this._queryInput("align") || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
@@ -139,7 +138,7 @@ export var LayoutAlignDirective = (function (_super) {
         this._allowStretching(value, this._layout || "row");
     };
     LayoutAlignDirective.prototype._buildCSS = function (align) {
-        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
+        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1];
         css['justify-content'] = 'flex-start'; // default main axis
         css['align-items'] = 'stretch'; // default cross axis
         css['align-content'] = 'stretch'; // default cross axis
@@ -186,7 +185,7 @@ export var LayoutAlignDirective = (function (_super) {
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
      */
     LayoutAlignDirective.prototype._allowStretching = function (align, layout) {
-        var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
+        var _a = align.split(' '), cross_axis = _a[1];
         if (cross_axis == 'stretch') {
             // Use `null` values to remove style
             this._applyStyleToElement({

@@ -11,7 +11,6 @@ import { MediaChange } from './media-change';
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
-// tslint:disable-next-line:variable-name
 export var MatchMediaObservable = new OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to

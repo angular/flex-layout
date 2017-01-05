@@ -474,8 +474,7 @@ var RAW_DEFAULTS = [
 var BREAKPOINTS = new _angular_core.OpaqueToken('fxRawBreakpoints');
 /**
  *  Provider to return observable to ALL known BreakPoint(s)
- *  Developers should build custom providers to override
- *  this default BreakPointRegistry dataset provider
+ *  Developers should build custom providers to override this default BreakPointRegistry dataset provider
  *  NOTE: !! custom breakpoints lists MUST contain the following aliases & suffixes:
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
@@ -604,7 +603,6 @@ var __metadata$3 = (this && this.__metadata) || function (k, v) {
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
-// tslint:disable-next-line:variable-name
 var MatchMediaObservable = new _angular_core.OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1546,8 +1544,7 @@ var FlexDirective = (function (_super) {
         basis = basis.replace(";", "");
         var hasCalc = basis && basis.indexOf("calc") > -1;
         var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"),
-            this._queryInput("shrink"), basis];
+        return (matches.length === 3) ? matches : [this._queryInput("grow"), this._queryInput("shrink"), basis];
     };
     /**
      * Extract more complicated short-hand versions.
@@ -1628,14 +1625,11 @@ var FlexDirective = (function (_super) {
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(basis)) {
+                if (!isValue && !isPercent && !isNaN(basis))
                     basis = basis + '%';
-                }
-                if (basis === '0px') {
+                if (basis === '0px')
                     basis = '0%';
-                }
                 // Set max-width = basis if using layout-wrap
-                // tslint:disable-next-line:max-line-length
                 // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
@@ -2518,9 +2512,8 @@ var FlexOffsetDirective = (function (_super) {
     FlexOffsetDirective.prototype._buildCSS = function (offset) {
         var isPercent = String(offset).indexOf('%') > -1;
         var isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset)) {
+        if (!isPx && !isPercent && !isNaN(offset))
             offset = offset + '%';
-        }
         return { 'margin-left': "" + offset };
     };
     __decorate$12([
@@ -2893,9 +2886,8 @@ var LayoutAlignDirective = (function (_super) {
     LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
         this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; }))
             this._layout = 'row';
-        }
         var value = this._queryInput("align") || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
@@ -2903,7 +2895,7 @@ var LayoutAlignDirective = (function (_super) {
         this._allowStretching(value, this._layout || "row");
     };
     LayoutAlignDirective.prototype._buildCSS = function (align) {
-        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
+        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1];
         css['justify-content'] = 'flex-start'; // default main axis
         css['align-items'] = 'stretch'; // default cross axis
         css['align-content'] = 'stretch'; // default cross axis
@@ -2950,7 +2942,7 @@ var LayoutAlignDirective = (function (_super) {
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
      */
     LayoutAlignDirective.prototype._allowStretching = function (align, layout) {
-        var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
+        var _a = align.split(' '), cross_axis = _a[1];
         if (cross_axis == 'stretch') {
             // Use `null` values to remove style
             this._applyStyleToElement({
