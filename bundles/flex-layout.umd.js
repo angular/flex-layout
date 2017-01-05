@@ -2424,7 +2424,7 @@ var FlexFillDirective = (function (_super) {
         this._applyStyleToElement(FLEX_FILL_CSS);
     }
     FlexFillDirective = __decorate$11([
-        _angular_core.Directive({ selector: "\n  [fxFill],\n  [fxFill.xs]\n  [fxFill.gt-xs],\n  [fxFill.sm],\n  [fxFill.gt-sm]\n  [fxFill.md],\n  [fxFill.gt-md]\n  [fxFill.lg],\n  [fxFill.gt-lg],\n  [fxFill.xl]\n" }), 
+        _angular_core.Directive({ selector: "\n  [fxFill],\n  [fxFlexFill]\n" }), 
         __metadata$11('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
     ], FlexFillDirective);
     return FlexFillDirective;
