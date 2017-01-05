@@ -6,16 +6,16 @@ import 'rxjs/add/operator/map';
 import { MediaChange } from './media-change';
 /**
  *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
- *  provider.
+ *  Note: Developers must use this token when building their own custom
+ *  `MatchMediaObservableProvider` provider.
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
 export var MatchMediaObservable = new OpaqueToken('fxObservableMatchMedia');
 /**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
- * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
@@ -51,16 +51,16 @@ export var MatchMedia = (function () {
         });
     };
     /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique mediaQuery
-     * Each listener emits specific MediaChange data to observers
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
      */
     MatchMedia.prototype.registerQuery = function (mediaQuery) {
         var _this = this;
         if (mediaQuery) {
             var mql = this._registry.get(mediaQuery);
-            var onMQLEvent = function (mql) {
+            var onMQLEvent = function (e) {
                 _this._zone.run(function () {
-                    var change = new MediaChange(mql.matches, mediaQuery);
+                    var change = new MediaChange(e.matches, mediaQuery);
                     _this._source.next(change);
                 });
             };
@@ -84,8 +84,10 @@ export var MatchMedia = (function () {
         return canListen ? window.matchMedia(query) : {
             matches: query === 'all' || query === '',
             media: query,
-            addListener: function () { },
-            removeListener: function () { }
+            addListener: function () {
+            },
+            removeListener: function () {
+            }
         };
     };
     MatchMedia.decorators = [

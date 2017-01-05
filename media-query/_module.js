@@ -24,7 +24,7 @@ export var MediaQueriesModule = (function () {
                         MediaMonitor,
                         BreakPointRegistry,
                         BreakPointsProvider,
-                        MatchMediaObservableProvider // Allows easy subscription to the injectable `media$` matchMedia observable
+                        MatchMediaObservableProvider // easy subscription injectable `media$` matchMedia observable
                     ]
                 },] },
     ];

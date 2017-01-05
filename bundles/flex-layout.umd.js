@@ -126,13 +126,14 @@ var KeyOptions = (function () {
 /**
  * @internal
  *
- * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery changes)
- * and the fx API directives. The MQA proxies mediaQuery change events and notifies the directive
- * via the specified callback.
+ * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
+ * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
+ * directive via the specified callback.
  *
  * - The MQA also determines which directive property should be used to determine the
  *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
- * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the MediaQueryServices.
+ * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
+ *   MediaQueryServices.
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  */
@@ -259,7 +260,7 @@ var ResponsiveActivation = (function () {
      *     (since a different activate may be in use)
      */
     ResponsiveActivation.prototype._calculateActivatedValue = function (current) {
-        var currentKey = this._options.baseKey + current.suffix; // e.g. suffix == 'GtSm', _baseKey == 'hide'
+        var currentKey = this._options.baseKey + current.suffix; // e.g. suffix == 'GtSm',
         var newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
         newKey = current.matches ? currentKey : ((newKey == currentKey) ? null : newKey);
         this._activatedInputKey = this._validateInputKey(newKey);
@@ -407,7 +408,9 @@ var BaseFxDirective = (function () {
     return BaseFxDirective;
 }());
 
-var RESPONSIVE_ALIASES = ['xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'];
+var RESPONSIVE_ALIASES = [
+    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+];
 var RAW_DEFAULTS = [
     {
         alias: 'xs',
@@ -568,7 +571,7 @@ var BreakPointRegistry = (function () {
  */
 var MediaChange = (function () {
     function MediaChange(matches, // Is the mq currently activated
-        mediaQuery, // e.g.   screen and (min-width: 600px) and (max-width: 959px)
+        mediaQuery, // e.g.   (min-width: 600px) and (max-width: 959px)
         mqAlias, // e.g.   gt-sm, md, gt-lg
         suffix // e.g.   GtSM, Md, GtLg
         ) {
@@ -595,16 +598,16 @@ var __metadata$3 = (this && this.__metadata) || function (k, v) {
 };
 /**
  *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
- *  provider.
+ *  Note: Developers must use this token when building their own custom
+ *  `MatchMediaObservableProvider` provider.
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
 var MatchMediaObservable = new _angular_core.OpaqueToken('fxObservableMatchMedia');
 /**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
- * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
@@ -640,16 +643,16 @@ var MatchMedia = (function () {
         });
     };
     /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique mediaQuery
-     * Each listener emits specific MediaChange data to observers
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
      */
     MatchMedia.prototype.registerQuery = function (mediaQuery) {
         var _this = this;
         if (mediaQuery) {
             var mql = this._registry.get(mediaQuery);
-            var onMQLEvent = function (mql) {
+            var onMQLEvent = function (e) {
                 _this._zone.run(function () {
-                    var change = new MediaChange(mql.matches, mediaQuery);
+                    var change = new MediaChange(e.matches, mediaQuery);
                     _this._source.next(change);
                 });
             };
@@ -673,8 +676,10 @@ var MatchMedia = (function () {
         return canListen ? window.matchMedia(query) : {
             matches: query === 'all' || query === '',
             media: query,
-            addListener: function () { },
-            removeListener: function () { }
+            addListener: function () {
+            },
+            removeListener: function () {
+            }
         };
     };
     MatchMedia = __decorate$3([
@@ -838,8 +843,8 @@ var MediaMonitor = (function () {
  * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
  *
  * This factory uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and those
- * fields will be ''.
+ * notification. For custom mediaQuery notifications, alias information will not be injected and
+ * those fields will be ''.
  *
  * @return Object with two (2) methods: subscribe(observer) and isActive(alias|query)
  */
@@ -888,11 +893,13 @@ function MatchMediaObservableFactory(mediaWatcher, breakpoints) {
         return mediaWatcher.isActive(toMediaQuery(alias));
     };
     // Register all the mediaQueries registered in the BreakPointRegistry
-    // This is needed so subscribers can be auto-notified of all standard, registered mediaQuery activations
+    // This is needed so subscribers can be auto-notified of all standard, registered
+    // mediaQuery activations
     breakpoints.items.forEach(function (bp) { return mediaWatcher.observe(bp.mediaQuery); });
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     //       these must be injected into the MediaChange
-    var observable$ = mediaWatcher.observe().filter(onlyActivations).map(injectAlias);
+    var observable$ = mediaWatcher.observe()
+        .filter(onlyActivations).map(injectAlias);
     // Publish service
     return {
         "subscribe": subscribe,
@@ -938,7 +945,7 @@ var MediaQueriesModule = (function () {
                 MediaMonitor,
                 BreakPointRegistry,
                 BreakPointsProvider,
-                MatchMediaObservableProvider // Allows easy subscription to the injectable `media$` matchMedia observable
+                MatchMediaObservableProvider // easy subscription injectable `media$` matchMedia observable
             ]
         }), 
         __metadata$4('design:paramtypes', [])

@@ -24,16 +24,16 @@ export interface MediaQueryList {
 }
 /**
  *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
- *  provider.
+ *  Note: Developers must use this token when building their own custom
+ *  `MatchMediaObservableProvider` provider.
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
 export declare const MatchMediaObservable: OpaqueToken;
 /**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
- * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
@@ -57,8 +57,8 @@ export declare class MatchMedia {
      */
     observe(mediaQuery?: string): Observable<MediaChange>;
     /**
-     * Based on the BreakPointRegistry provider, register internal listeners for each unique mediaQuery
-     * Each listener emits specific MediaChange data to observers
+     * Based on the BreakPointRegistry provider, register internal listeners for each unique
+     * mediaQuery. Each listener emits specific MediaChange data to observers
      */
     registerQuery(mediaQuery: string): void;
     /**

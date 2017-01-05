@@ -10,8 +10,8 @@ import { mergeAlias } from '../../utils/add-alias';
  * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
  *
  * This factory uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and those
- * fields will be ''.
+ * notification. For custom mediaQuery notifications, alias information will not be injected and
+ * those fields will be ''.
  *
  * @return Object with two (2) methods: subscribe(observer) and isActive(alias|query)
  */
@@ -60,11 +60,13 @@ export function MatchMediaObservableFactory(mediaWatcher, breakpoints) {
         return mediaWatcher.isActive(toMediaQuery(alias));
     };
     // Register all the mediaQueries registered in the BreakPointRegistry
-    // This is needed so subscribers can be auto-notified of all standard, registered mediaQuery activations
+    // This is needed so subscribers can be auto-notified of all standard, registered
+    // mediaQuery activations
     breakpoints.items.forEach(function (bp) { return mediaWatcher.observe(bp.mediaQuery); });
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     //       these must be injected into the MediaChange
-    var observable$ = mediaWatcher.observe().filter(onlyActivations).map(injectAlias);
+    var observable$ = mediaWatcher.observe()
+        .filter(onlyActivations).map(injectAlias);
     // Publish service
     return {
         "subscribe": subscribe,

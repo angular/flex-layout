@@ -24,13 +24,14 @@ export declare class KeyOptions {
 /**
  * @internal
  *
- * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery changes)
- * and the fx API directives. The MQA proxies mediaQuery change events and notifies the directive
- * via the specified callback.
+ * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
+ * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
+ * directive via the specified callback.
  *
  * - The MQA also determines which directive property should be used to determine the
  *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
- * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the MediaQueryServices.
+ * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
+ *   MediaQueryServices.
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  */

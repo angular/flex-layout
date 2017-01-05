@@ -1,5 +1,7 @@
 import { OpaqueToken } from '@angular/core';
-export var RESPONSIVE_ALIASES = ['xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'];
+export var RESPONSIVE_ALIASES = [
+    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+];
 export var RAW_DEFAULTS = [
     {
         alias: 'xs',

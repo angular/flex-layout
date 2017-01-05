@@ -12,8 +12,8 @@ import { MatchMedia } from '../match-media';
  * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
  *
  * This factory uses the BreakPoint Registry to inject alias information into the raw MediaChange
- * notification. For custom mediaQuery notifications, alias information will not be injected and those
- * fields will be ''.
+ * notification. For custom mediaQuery notifications, alias information will not be injected and
+ * those fields will be ''.
  *
  * @return Object with two (2) methods: subscribe(observer) and isActive(alias|query)
  */
