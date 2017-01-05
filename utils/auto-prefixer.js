@@ -50,8 +50,10 @@ export function applyCssPrefixes(target) {
 }
 export function toAlignContentValue(value) {
     switch (value) {
-        case "space-between": return "justify";
-        case "space-around": return "distribute";
+        case "space-between":
+            return "justify";
+        case "space-around":
+            return "distribute";
         default:
             return toBoxValue(value);
     }

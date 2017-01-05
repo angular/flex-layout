@@ -39,69 +39,93 @@ export var FlexDirective = (function (_super) {
         }
     }
     Object.defineProperty(FlexDirective.prototype, "flex", {
-        set: function (val) { this._cacheInput("flex", val); },
+        set: function (val) {
+            this._cacheInput("flex", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "shrink", {
-        set: function (val) { this._cacheInput("shrink", val); },
+        set: function (val) {
+            this._cacheInput("shrink", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "grow", {
-        set: function (val) { this._cacheInput("grow", val); },
+        set: function (val) {
+            this._cacheInput("grow", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "flexXs", {
-        set: function (val) { this._cacheInput('flexXs', val); },
+        set: function (val) {
+            this._cacheInput('flexXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
-        set: function (val) { this._cacheInput('flexGtXs', val); },
+        set: function (val) {
+            this._cacheInput('flexGtXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
-        set: function (val) { this._cacheInput('flexSm', val); },
+        set: function (val) {
+            this._cacheInput('flexSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
-        set: function (val) { this._cacheInput('flexGtSm', val); },
+        set: function (val) {
+            this._cacheInput('flexGtSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
-        set: function (val) { this._cacheInput('flexMd', val); },
+        set: function (val) {
+            this._cacheInput('flexMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
-        set: function (val) { this._cacheInput('flexGtMd', val); },
+        set: function (val) {
+            this._cacheInput('flexGtMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
-        set: function (val) { this._cacheInput('flexLg', val); },
+        set: function (val) {
+            this._cacheInput('flexLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
-        set: function (val) { this._cacheInput('flexGtLg', val); },
+        set: function (val) {
+            this._cacheInput('flexGtLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
-        set: function (val) { this._cacheInput('flexXl', val); },
+        set: function (val) {
+            this._cacheInput('flexXl', val);
+        },
         enumerable: true,
         configurable: true
     });
@@ -153,7 +177,8 @@ export var FlexDirective = (function (_super) {
         basis = basis.replace(";", "");
         var hasCalc = basis && basis.indexOf("calc") > -1;
         var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"), this._queryInput("shrink"), basis];
+        return (matches.length === 3) ? matches : [this._queryInput("grow"),
+            this._queryInput("shrink"), basis];
     };
     /**
      * Extract more complicated short-hand versions.
@@ -234,11 +259,14 @@ export var FlexDirective = (function (_super) {
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(basis))
+                if (!isValue && !isPercent && !isNaN(basis)) {
                     basis = basis + '%';
-                if (basis === '0px')
+                }
+                if (basis === '0px') {
                     basis = '0%';
+                }
                 // Set max-width = basis if using layout-wrap
+                // tslint:disable-next-line:max-line-length
                 // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
@@ -254,7 +282,8 @@ export var FlexDirective = (function (_super) {
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+        { type: Directive, args: [{
+                    selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
                 },] },
     ];
     /** @nocollapse */

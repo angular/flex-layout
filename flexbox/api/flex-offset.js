@@ -107,8 +107,9 @@ export var FlexOffsetDirective = (function (_super) {
     FlexOffsetDirective.prototype._buildCSS = function (offset) {
         var isPercent = String(offset).indexOf('%') > -1;
         var isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset))
+        if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
+        }
         return { 'margin-left': "" + offset };
     };
     FlexOffsetDirective.decorators = [

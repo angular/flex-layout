@@ -56,8 +56,10 @@ function applyCssPrefixes(target) {
 }
 function toAlignContentValue(value) {
     switch (value) {
-        case "space-between": return "justify";
-        case "space-around": return "distribute";
+        case "space-between":
+            return "justify";
+        case "space-around":
+            return "distribute";
         default:
             return toBoxValue(value);
     }
@@ -474,7 +476,8 @@ var RAW_DEFAULTS = [
 var BREAKPOINTS = new _angular_core.OpaqueToken('fxRawBreakpoints');
 /**
  *  Provider to return observable to ALL known BreakPoint(s)
- *  Developers should build custom providers to override this default BreakPointRegistry dataset provider
+ *  Developers should build custom providers to override
+ *  this default BreakPointRegistry dataset provider
  *  NOTE: !! custom breakpoints lists MUST contain the following aliases & suffixes:
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
@@ -603,6 +606,7 @@ var __metadata$3 = (this && this.__metadata) || function (k, v) {
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
+// tslint:disable-next-line:variable-name
 var MatchMediaObservable = new _angular_core.OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -1430,69 +1434,93 @@ var FlexDirective = (function (_super) {
         }
     }
     Object.defineProperty(FlexDirective.prototype, "flex", {
-        set: function (val) { this._cacheInput("flex", val); },
+        set: function (val) {
+            this._cacheInput("flex", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "shrink", {
-        set: function (val) { this._cacheInput("shrink", val); },
+        set: function (val) {
+            this._cacheInput("shrink", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "grow", {
-        set: function (val) { this._cacheInput("grow", val); },
+        set: function (val) {
+            this._cacheInput("grow", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "flexXs", {
-        set: function (val) { this._cacheInput('flexXs', val); },
+        set: function (val) {
+            this._cacheInput('flexXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
-        set: function (val) { this._cacheInput('flexGtXs', val); },
+        set: function (val) {
+            this._cacheInput('flexGtXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
-        set: function (val) { this._cacheInput('flexSm', val); },
+        set: function (val) {
+            this._cacheInput('flexSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
-        set: function (val) { this._cacheInput('flexGtSm', val); },
+        set: function (val) {
+            this._cacheInput('flexGtSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
-        set: function (val) { this._cacheInput('flexMd', val); },
+        set: function (val) {
+            this._cacheInput('flexMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
-        set: function (val) { this._cacheInput('flexGtMd', val); },
+        set: function (val) {
+            this._cacheInput('flexGtMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
-        set: function (val) { this._cacheInput('flexLg', val); },
+        set: function (val) {
+            this._cacheInput('flexLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
-        set: function (val) { this._cacheInput('flexGtLg', val); },
+        set: function (val) {
+            this._cacheInput('flexGtLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
-        set: function (val) { this._cacheInput('flexXl', val); },
+        set: function (val) {
+            this._cacheInput('flexXl', val);
+        },
         enumerable: true,
         configurable: true
     });
@@ -1544,7 +1572,8 @@ var FlexDirective = (function (_super) {
         basis = basis.replace(";", "");
         var hasCalc = basis && basis.indexOf("calc") > -1;
         var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"), this._queryInput("shrink"), basis];
+        return (matches.length === 3) ? matches : [this._queryInput("grow"),
+            this._queryInput("shrink"), basis];
     };
     /**
      * Extract more complicated short-hand versions.
@@ -1625,11 +1654,14 @@ var FlexDirective = (function (_super) {
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(basis))
+                if (!isValue && !isPercent && !isNaN(basis)) {
                     basis = basis + '%';
-                if (basis === '0px')
+                }
+                if (basis === '0px') {
                     basis = '0%';
+                }
                 // Set max-width = basis if using layout-wrap
+                // tslint:disable-next-line:max-line-length
                 // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
@@ -1705,7 +1737,8 @@ var FlexDirective = (function (_super) {
         __metadata$5('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexXl", null);
     FlexDirective = __decorate$5([
-        _angular_core.Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+        _angular_core.Directive({
+            selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
         }),
         __param$1(3, _angular_core.Optional()),
         __param$1(3, _angular_core.SkipSelf()),
@@ -2512,8 +2545,9 @@ var FlexOffsetDirective = (function (_super) {
     FlexOffsetDirective.prototype._buildCSS = function (offset) {
         var isPercent = String(offset).indexOf('%') > -1;
         var isPx = String(offset).indexOf('px') > -1;
-        if (!isPx && !isPercent && !isNaN(offset))
+        if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
+        }
         return { 'margin-left': "" + offset };
     };
     __decorate$12([
@@ -2886,8 +2920,9 @@ var LayoutAlignDirective = (function (_super) {
     LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
         this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; }))
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
             this._layout = 'row';
+        }
         var value = this._queryInput("align") || 'start stretch';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
@@ -2895,7 +2930,7 @@ var LayoutAlignDirective = (function (_super) {
         this._allowStretching(value, this._layout || "row");
     };
     LayoutAlignDirective.prototype._buildCSS = function (align) {
-        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1];
+        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
         css['justify-content'] = 'flex-start'; // default main axis
         css['align-items'] = 'stretch'; // default cross axis
         css['align-content'] = 'stretch'; // default cross axis
@@ -2942,7 +2977,7 @@ var LayoutAlignDirective = (function (_super) {
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
      */
     LayoutAlignDirective.prototype._allowStretching = function (align, layout) {
-        var _a = align.split(' '), cross_axis = _a[1];
+        var _a = align.split(' '), cross_axis = _a[1]; // tslint:disable-line:variable-name
         if (cross_axis == 'stretch') {
             // Use `null` values to remove style
             this._applyStyleToElement({
