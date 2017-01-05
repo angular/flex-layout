@@ -127,6 +127,7 @@
     "null-loader": "^0.1.1",
     "opn-cli": "^3.1.0",
     "parse5": "^2.2.2",
+    "prompt-sync": "^4.1.4",
     "raw-loader": "^0.5.1",
     "reflect-metadata": "^0.1.8",
     "resolve-bin": "^0.4.0",
