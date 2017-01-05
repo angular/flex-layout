@@ -1,7 +1,5 @@
 import { BreakPoint } from './break-point';
 /**
- * @internal
- *
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overriden from custom, application-specific ranges
  *

@@ -1,8 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { BREAKPOINTS } from "../providers/break-points-provider";
 /**
- * @internal
- *
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overriden from custom, application-specific ranges
  *

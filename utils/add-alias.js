@@ -1,7 +1,5 @@
 import { extendObject } from './object-extend';
 /**
- * @internal
- *
  * For the specified MediaChange, make sure it contains the breakpoint alias
  * and suffix (if available).
  */

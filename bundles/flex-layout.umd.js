@@ -4,7 +4,7 @@
     (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
 }(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
 
-/** @internal Applies CSS prefixes to appropriate style keys.*/
+/** Applies CSS prefixes to appropriate style keys.*/
 function applyCssPrefixes(target) {
     for (var key in target) {
         var value = target[key];
@@ -64,22 +64,22 @@ function toAlignContentValue(value) {
             return toBoxValue(value);
     }
 }
-/** @internal Convert flex values flex-start, flex-end to start, end. */
+/** Convert flex values flex-start, flex-end to start, end. */
 function toBoxValue(value) {
     if (value === void 0) { value = ""; }
     return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
-/** @internal Convert flex Direction to Box orientation */
+/** Convert flex Direction to Box orientation */
 function toBoxOrient(flexDirection) {
     if (flexDirection === void 0) { flexDirection = 'row'; }
     return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';
 }
-/** @internal Convert flex Direction to Box direction type */
+/** Convert flex Direction to Box direction type */
 function toBoxDirection(flexDirection) {
     if (flexDirection === void 0) { flexDirection = 'row'; }
     return flexDirection.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
 }
-/** @internal Convert flex order to Box ordinal group */
+/** Convert flex order to Box ordinal group */
 function toBoxOrdinal(order) {
     if (order === void 0) { order = '0'; }
     var value = order ? parseInt(order) + 1 : 1;
@@ -87,8 +87,6 @@ function toBoxOrdinal(order) {
 }
 
 /**
- * @internal
- *
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
  *
@@ -116,7 +114,6 @@ function extendObject(dest) {
     return dest;
 }
 
-/** @internal  */
 var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
@@ -126,8 +123,6 @@ var KeyOptions = (function () {
     return KeyOptions;
 }());
 /**
- * @internal
- *
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
  * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
  * directive via the specified callback.
@@ -499,8 +494,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 /**
- * @internal
- *
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overriden from custom, application-specific ranges
  *
@@ -724,8 +717,6 @@ function prepareQueryCSS(query) {
 }
 
 /**
- * @internal
- *
  * For the specified MediaChange, make sure it contains the breakpoint alias
  * and suffix (if available).
  */
@@ -3282,6 +3273,8 @@ exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
 exports.RAW_DEFAULTS = RAW_DEFAULTS;
 exports.BREAKPOINTS = BREAKPOINTS;
 exports.BreakPointsProvider = BreakPointsProvider;
+exports.MatchMediaObservableFactory = MatchMediaObservableFactory;
+exports.MatchMediaObservableProvider = MatchMediaObservableProvider;
 exports.MatchMediaObservable = MatchMediaObservable;
 exports.MatchMedia = MatchMedia;
 exports.MediaChange = MediaChange;

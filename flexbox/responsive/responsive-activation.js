@@ -1,6 +1,5 @@
 import 'rxjs/add/operator/map';
 import { extendObject } from '../../utils/object-extend';
-/** @internal  */
 export var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
@@ -10,8 +9,6 @@ export var KeyOptions = (function () {
     return KeyOptions;
 }());
 /**
- * @internal
- *
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
  * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
  * directive via the specified callback.

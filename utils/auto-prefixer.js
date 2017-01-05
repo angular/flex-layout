@@ -1,4 +1,4 @@
-/** @internal Applies CSS prefixes to appropriate style keys.*/
+/** Applies CSS prefixes to appropriate style keys.*/
 export function applyCssPrefixes(target) {
     for (var key in target) {
         var value = target[key];
@@ -58,22 +58,22 @@ export function toAlignContentValue(value) {
             return toBoxValue(value);
     }
 }
-/** @internal Convert flex values flex-start, flex-end to start, end. */
+/** Convert flex values flex-start, flex-end to start, end. */
 export function toBoxValue(value) {
     if (value === void 0) { value = ""; }
     return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
-/** @internal Convert flex Direction to Box orientation */
+/** Convert flex Direction to Box orientation */
 export function toBoxOrient(flexDirection) {
     if (flexDirection === void 0) { flexDirection = 'row'; }
     return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';
 }
-/** @internal Convert flex Direction to Box direction type */
+/** Convert flex Direction to Box direction type */
 export function toBoxDirection(flexDirection) {
     if (flexDirection === void 0) { flexDirection = 'row'; }
     return flexDirection.indexOf('reverse') !== -1 ? 'reverse' : 'normal';
 }
-/** @internal Convert flex order to Box ordinal group */
+/** Convert flex order to Box ordinal group */
 export function toBoxOrdinal(order) {
     if (order === void 0) { order = '0'; }
     var value = order ? parseInt(order) + 1 : 1;

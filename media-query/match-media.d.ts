@@ -6,14 +6,12 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { MediaChange } from './media-change';
 /**
- * @internal
  * EventHandler callback with the mediaQuery [range] activates or deactivates
  */
 export interface MediaQueryListListener {
     (mql: MediaQueryList): void;
 }
 /**
- * @internal
  * EventDispatcher for a specific mediaQuery [range]
  */
 export interface MediaQueryList {
