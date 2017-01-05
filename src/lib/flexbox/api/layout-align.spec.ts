@@ -10,7 +10,11 @@ import {FlexLayoutModule} from '../_module';
 
 import {extendObject} from '../../utils/object-extend';
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectDOMFrom, expectNativeEl} from '../../utils/testing/helpers';
+import {
+  makeCreateTestComponent,
+  makeExpectDOMFrom,
+  expectNativeEl
+} from '../../utils/testing/helpers';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
@@ -28,7 +32,7 @@ describe('layout-align directive', () => {
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
-    })
+    });
   });
   afterEach(() => {
     if ( fixture ) {
@@ -64,7 +68,7 @@ describe('layout-align directive', () => {
       });
     });
 
-    describe('for "main-axis" testing', ()=>{
+    describe('for "main-axis" testing', ()=> {
       it('should add correct styles for `fxLayoutAlign="start"` usage', () => {
         expectDOMFrom(`<div fxLayoutAlign="start"></div>`).toHaveCssStyle(
             extendObject({ 'justify-content' : 'flex-start' }, CROSSAXIS_DEFAULTS)
@@ -97,7 +101,7 @@ describe('layout-align directive', () => {
       });
     });
 
-    describe('for "cross-axis" testing', ()=>{
+    describe('for "cross-axis" testing', ()=> {
       it('should add correct styles for `fxLayoutAlign="start start"` usage', () => {
         expectDOMFrom(`<div fxLayoutAlign="start start"></div>`).toHaveCssStyle(
             extendObject(MAINAXIS_DEFAULTS, {
@@ -152,7 +156,7 @@ describe('layout-align directive', () => {
       });
     });
 
-    describe('for dynamic inputs', ()=>{
+    describe('for dynamic inputs', ()=> {
       it('should add correct styles and ignore invalid axes values',  () => {
         fixture = createTestComponent(`<div [fxLayoutAlign]="alignBy"></div>`);
 
@@ -212,8 +216,8 @@ describe('layout-align directive', () => {
     it('should update responsive styles when the layout direction changes', () => {
       fixture = createTestComponent(`
         <div fxLayout
-             [fxLayout.md]="direction" 
-             fxLayoutAlign="center stretch" 
+             [fxLayout.md]="direction"
+             fxLayoutAlign="center stretch"
              fxLayoutAlign.md="end stretch">
         </div>
       `);
@@ -232,11 +236,11 @@ describe('layout-align directive', () => {
       });
     });
 
-    it('should fallback to default styles when the active mediaQuery change is not configured', () => {
+    it('should fallback to default styles when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       fixture = createTestComponent(`
          <div fxLayout
-              [fxLayout.md]="direction" 
-              fxLayoutAlign="center stretch" 
+              [fxLayout.md]="direction"
+              fxLayoutAlign="center stretch"
               fxLayoutAlign.md="end stretch">
          </div>
        `);
@@ -261,11 +265,11 @@ describe('layout-align directive', () => {
       });
     });
 
-    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => {
+    it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       fixture = createTestComponent(`
-          <div  fxLayout 
+          <div  fxLayout
                 fxLayout.md="column"
-                fxLayoutAlign="start" 
+                fxLayoutAlign="start"
                 fxLayoutAlign.gt-xs="end"
                 fxLayoutAlign.md="center">
           </div>
@@ -348,7 +352,7 @@ export class TestLayoutAlignComponent implements OnInit {
 // Template Component
 // *****************************************************************
 
-  const DEFAULT_ALIGNS ={
+  const DEFAULT_ALIGNS = {
           'justify-content' : 'flex-start',
           'align-items' : 'stretch',
           'align-content' : 'stretch'

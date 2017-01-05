@@ -30,7 +30,7 @@ const FLEX_FILL_CSS = {
   [fxFill.xl]
 `})
 export class FlexFillDirective extends BaseFxDirective {
-  constructor(monitor : MediaMonitor, public elRef: ElementRef, public renderer: Renderer) {
+  constructor(monitor: MediaMonitor, public elRef: ElementRef, public renderer: Renderer) {
     super(monitor, elRef, renderer);
     this._applyStyleToElement(FLEX_FILL_CSS);
   }

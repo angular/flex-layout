@@ -65,7 +65,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    *
    */
-  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
     this._announcer = new BehaviorSubject<string>("row");
     this.layout$ = this._announcer.asObservable();
@@ -91,7 +91,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('layout', 'row', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('layout', 'row', (changes: MediaChange) => {
       this._updateWithDirection(changes.value);
     });
     this._updateWithDirection();

@@ -39,7 +39,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   @Input('fxLayoutGap.gt-lg') set gapGtLg(val) { this._cacheInput('gapGtLg', val); };
   @Input('fxLayoutGap.xl')    set gapXl(val)   { this._cacheInput('gapXl', val); };
 
-  constructor(monitor : MediaMonitor, elRef: ElementRef, renderer: Renderer ){
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer ) {
     super(monitor, elRef, renderer);
   }
 
@@ -58,7 +58,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    * mql change events to onMediaQueryChange handlers
    */
   ngAfterContentInit() {
-    this._listenForMediaQueryChanges('gap', '0', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('gap', '0', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();

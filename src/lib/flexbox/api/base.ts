@@ -28,7 +28,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    *
    */
-  constructor(private _mediaMonitor: MediaMonitor, protected _elementRef: ElementRef, private _renderer: Renderer) {
+  constructor(private _mediaMonitor: MediaMonitor,
+              protected _elementRef: ElementRef,
+              private _renderer: Renderer) {
   }
 
   // *********************************************
@@ -61,7 +63,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    * Applies styles given via string pair or object map to the directive element.
    */
-  protected _applyStyleToElement(style: StyleDefinition, value?: string|number, nativeElement?: any) {
+  protected _applyStyleToElement(style: StyleDefinition,
+                                 value?: string|number,
+                                 nativeElement?: any) {
     let styles = {};
     let element = nativeElement || this._elementRef.nativeElement;
 
@@ -89,7 +93,7 @@ export abstract class BaseFxDirective implements OnDestroy {
       for (let key in styles) {
         this._renderer.setElementStyle(el, key, styles[key]);
       }
-    })
+    });
 
   }
 

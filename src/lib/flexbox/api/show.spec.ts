@@ -15,7 +15,7 @@ describe('show directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestShowComponent);
   let activateMediaQuery = (alias, enableOverlaps=false) => {
-        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+        let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
         matchMedia.activate(alias, enableOverlaps);
       };
 
@@ -30,7 +30,7 @@ describe('show directive', () => {
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
-    })
+    });
   });
   afterEach(() => {
     if ( fixture ) {
@@ -45,7 +45,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div fxShow >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
     });
@@ -54,7 +54,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div fxShow="false" >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
     });
@@ -63,7 +63,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div [fxShow]="isVisible" >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
 
@@ -76,7 +76,7 @@ describe('show directive', () => {
         <div [fxShow]="menuOpen"
              fxShow.xs="true" >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
       fixture.componentInstance.toggleMenu();

@@ -1,4 +1,4 @@
-import {OpaqueToken} from '@angular/core';
+import {OpaqueToken} from '@angular/core'; // tslint:disable-line:no-unused-variable
 
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from "rxjs/Observable";
@@ -95,7 +95,7 @@ export function MatchMediaObservableFactory(
  *  Provider to return observable to ALL MediaQuery events
  *  Developers should build custom providers to override this default MediaQuery Observable
  */
-export const MatchMediaObservableProvider = {
+export const MatchMediaObservableProvider = { // tslint:disable-line:variable-name
   provide: MatchMediaObservable,
   deps: [MatchMedia, BreakPointRegistry],
   useFactory: MatchMediaObservableFactory

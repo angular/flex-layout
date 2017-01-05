@@ -2,7 +2,6 @@
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 
 import {TestBed, inject, async} from '@angular/core/testing';
 

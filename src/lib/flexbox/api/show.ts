@@ -49,7 +49,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
     * Subscription to the parent flex container's layout changes.
     * Stored so we can unsubscribe when this directive is destroyed.
     */
-  private _layoutWatcher : Subscription;
+  private _layoutWatcher: Subscription;
 
   @Input('fxShow')       set show(val)     { this._cacheInput("show", val); }
   @Input('fxShow.xs')    set showXs(val)   { this._cacheInput('showXs', val); }
@@ -65,11 +65,11 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    *
    */
   constructor(
-      monitor : MediaMonitor,
+      monitor: MediaMonitor,
       @Optional() @Self() private _layout: LayoutDirective,
       protected elRef: ElementRef,
-      protected renderer: Renderer)
-  {
+      protected renderer: Renderer) {
+
     super(monitor, elRef, renderer);
 
     if (_layout) {
@@ -101,7 +101,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('show', true, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('show', true, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
@@ -137,6 +137,6 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
   /**  Validate the to be not FALSY */
   _validateTruthy(show) {
-    return (FALSY.indexOf(show) == -1)
+    return (FALSY.indexOf(show) == -1);
   }
 }

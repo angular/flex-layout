@@ -152,8 +152,9 @@ describe('mock-match-media', () => {
         bpLg = breakPoints.findByAlias('lg');
 
     let subscription = matchMedia.observe(bpGtSM.mediaQuery).subscribe((change: MediaChange) => {
-      if (change.matches) { ++activates; }
-      else                { ++deactivates; }
+      if (change.matches) {
+        ++activates;
+      } else { ++deactivates; }
     });
 
     expect(activates).toEqual(0);   // from alias == '' == 'all'

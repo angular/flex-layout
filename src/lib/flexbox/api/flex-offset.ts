@@ -44,7 +44,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
   @Input('fxFlexOffset.xl')    set offsetXl(val)   { this._cacheInput('offsetXl', val); };
 
-  constructor(monitor : MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
   }
 
@@ -66,7 +66,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('offset', 0 , (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('offset', 0 , (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
   }
@@ -88,8 +88,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   private _buildCSS(offset) {
     let isPercent = String(offset).indexOf('%') > -1;
     let isPx = String(offset).indexOf('px') > -1;
-    if (!isPx && !isPercent && !isNaN(offset))
+    if (!isPx && !isPercent && !isNaN(offset)) {
       offset = offset + '%';
+    }
 
     return {'margin-left': `${offset}`};
   }

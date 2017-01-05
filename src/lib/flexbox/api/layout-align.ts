@@ -58,10 +58,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
 
 
   constructor(
-      monitor : MediaMonitor,
+      monitor: MediaMonitor,
       elRef: ElementRef, renderer: Renderer,
-      @Optional() @Self() container: LayoutDirective)
-  {
+      @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
@@ -84,7 +83,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('align', 'start stretch', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('align', 'start stretch', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
@@ -119,8 +118,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    */
   private _onLayoutChange(direction) {
     this._layout = (direction || '').toLowerCase();
-    if (!LAYOUT_VALUES.find(x => x === this._layout))
+    if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
+    }
 
     let value = this._queryInput("align") || 'start stretch';
     if (this._mqActivation) {
@@ -130,7 +130,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   }
 
   private _buildCSS(align) {
-    let css = {}, [main_axis, cross_axis] = align.split(' ');
+    let css = {}, [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     css['justify-content'] = 'flex-start';  // default main axis
     css['align-items'] = 'stretch';         // default cross axis
@@ -182,7 +182,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
    */
   private _allowStretching(align, layout) {
-    let [, cross_axis] = align.split(' ');
+    let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     if (cross_axis == 'stretch') {
       // Use `null` values to remove style

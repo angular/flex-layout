@@ -58,7 +58,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   @Input('fxFlex')       set flex(val)     { this._cacheInput("flex", val); }
   @Input('fxShrink')     set shrink(val)   { this._cacheInput("shrink", val); }
   @Input('fxGrow')       set grow(val)     { this._cacheInput("grow", val); }
-  
+
   @Input('fxFlex.xs')    set flexXs(val)   { this._cacheInput('flexXs', val); }
   @Input('fxFlex.gt-xs') set flexGtXs(val) { this._cacheInput('flexGtXs', val); };
   @Input('fxFlex.sm')    set flexSm(val)   { this._cacheInput('flexSm', val); };
@@ -73,18 +73,18 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
   // parent flex container for this flex item.
   constructor(
-      monitor : MediaMonitor,
+      monitor: MediaMonitor,
       elRef: ElementRef,
       renderer: Renderer,
       @Optional() @SkipSelf() private _container: LayoutDirective,
       @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
 
     super(monitor, elRef, renderer);
-    
+
     this._cacheInput("flex", "");
     this._cacheInput("shrink", 1);
     this._cacheInput("grow", 1);
-    
+
     if (_container) {
       // If this flex item is inside of a flex container marked with
       // Subscribe to layout immediate parent direction changes
@@ -109,7 +109,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) => {
       this._updateStyle(changes.value);
     });
     this._onLayoutChange();
@@ -138,7 +138,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis)) ));
+    this._applyStyleToElement(this._validateValue.apply(this,
+      this._parseFlexParts(String(flexBasis)) ));
   }
 
   /**
@@ -149,7 +150,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     let hasCalc = basis && basis.indexOf("calc") > -1;
     let matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-    return (matches.length === 3) ? matches : [ this._queryInput("grow"),  this._queryInput("shrink"), basis ];
+    return (matches.length === 3) ? matches : [ this._queryInput("grow"),
+                                                this._queryInput("shrink"), basis ];
   }
 
   /**
@@ -176,7 +178,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  private _validateValue(grow: number|string, shrink: number|string, basis: string|number|FlexBasisAlias) {
+  private _validateValue(grow: number|string,
+                         shrink: number|string,
+                         basis: string|number|FlexBasisAlias) {
     let css, isValue;
     let direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
         'column' :
@@ -238,16 +242,20 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
                   String(basis).indexOf('vh') > -1;
 
         // Defaults to percentage sizing unless `px` is explicitly set
-        if (!isValue && !isPercent && !isNaN(basis as any))
+        if (!isValue && !isPercent && !isNaN(basis as any)) {
           basis = basis + '%';
-        if (basis === '0px')
+        }
+
+        if (basis === '0px') {
           basis = '0%';
+        }
 
         // Set max-width = basis if using layout-wrap
+        // tslint:disable-next-line:max-line-length
         // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
 
-        css = extendObject(clearStyles, {
-          'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,  // fix issue #5345
+        css = extendObject(clearStyles, { // fix issue #5345
+          'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,
         });
         break;
     }

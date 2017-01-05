@@ -45,7 +45,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
     * Subscription to the parent flex container's layout changes.
     * Stored so we can unsubscribe when this directive is destroyed.
     */
-  private _layoutWatcher : Subscription;
+  private _layoutWatcher: Subscription;
 
   @Input('fxHide')       set hide(val)     { this._cacheInput("hide", val); }
   @Input('fxHide.xs')    set hideXs(val)   { this._cacheInput('hideXs', val); }
@@ -62,7 +62,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    *
    */
   constructor(
-      monitor : MediaMonitor,
+      monitor: MediaMonitor,
       @Optional() @Self() private _layout: LayoutDirective,
       protected elRef: ElementRef,
       protected renderer: Renderer) {
@@ -98,7 +98,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('hide', true, (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('hide', true, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();

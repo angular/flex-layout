@@ -50,12 +50,12 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fxLayoutWrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
 
   constructor(
-    monitor : MediaMonitor,
+    monitor: MediaMonitor,
     elRef: ElementRef,
     renderer: Renderer,
     @Optional() @Self() container: LayoutDirective) {
 
-    super(monitor, elRef, renderer)
+    super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -77,7 +77,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('wrap', 'wrap', (changes: MediaChange) =>{
+    this._listenForMediaQueryChanges('wrap', 'wrap', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();

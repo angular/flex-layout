@@ -1,4 +1,4 @@
-import {Component, OnInit, DebugElement} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -9,7 +9,10 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {FlexLayoutModule} from '../_module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, makeExpectDOMFrom, makeExpectDOMForQuery} from '../../utils/testing/helpers';
+import {
+  makeExpectDOMFrom,
+  makeExpectDOMForQuery
+} from '../../utils/testing/helpers';
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
@@ -27,7 +30,7 @@ describe('flex directive', () => {
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
-    })
+    });
   });
   afterEach(() => {
     if ( fixture ) {

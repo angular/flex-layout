@@ -15,7 +15,7 @@ describe('show directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(()=> TestHideComponent);
   let activateMediaQuery = (alias) => {
-        let matchMedia : MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+        let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
         matchMedia.activate(alias);
       };
 
@@ -30,7 +30,7 @@ describe('show directive', () => {
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
-    })
+    });
   });
   afterEach(() => {
     if ( fixture ) {
@@ -45,7 +45,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div fxHide>
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
     });
@@ -54,7 +54,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div fxHide="false" >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
     });
@@ -63,7 +63,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div [fxHide]="isVisible" >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'flex' });
     });
@@ -72,7 +72,7 @@ describe('show directive', () => {
       fixture = createTestComponent(`
         <div [fxHide]="menuHidden"  >
           ...content
-        </div>  
+        </div>
       `);
       expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
       fixture.componentInstance.toggleMenu();
@@ -89,7 +89,7 @@ describe('show directive', () => {
           fixture = createTestComponent(`
             <div fxHide="" fxHide.xs="false" >
               ...content
-            </div>  
+            </div>
           `);
 
           expectNativeEl(fixture).toHaveCssStyle({ 'display': 'none' });
