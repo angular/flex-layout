@@ -32,8 +32,8 @@ export interface MediaQueryList {
 
 /**
  *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom `MatchMediaObservableProvider`
- *  provider.
+ *  Note: Developers must use this token when building their own custom
+ *  `MatchMediaObservableProvider` provider.
  *
  *  @see ./providers/match-media-observable-provider.ts
  */
@@ -41,9 +41,9 @@ export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fxObservableMa
 
 
 /**
- * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to convert
- * mediaQuery change callbacks to subscriber notifications. These notifications will be performed within the
- * ng Zone to trigger change detections and component updates.
+ * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
+ * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
+ * performed within the ng Zone to trigger change detections and component updates.
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
@@ -54,7 +54,7 @@ export class MatchMedia {
   protected _observable$: Observable<MediaChange>;
 
   constructor(protected _zone: NgZone) {
-    this._registry = new Map<string, MediaQueryList>( );
+    this._registry = new Map<string, MediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
   }
@@ -63,9 +63,9 @@ export class MatchMedia {
    * For the specified mediaQuery?
    */
   isActive(mediaQuery: string): boolean {
-    if ( this._registry.has(mediaQuery) ) {
+    if (this._registry.has(mediaQuery)) {
       let mql = this._registry.get(mediaQuery);
-      return  mql.matches;
+      return mql.matches;
     }
     return false;
   }
@@ -87,15 +87,15 @@ export class MatchMedia {
   }
 
   /**
-   * Based on the BreakPointRegistry provider, register internal listeners for each unique mediaQuery
-   * Each listener emits specific MediaChange data to observers
+   * Based on the BreakPointRegistry provider, register internal listeners for each unique
+   * mediaQuery. Each listener emits specific MediaChange data to observers
    */
   registerQuery(mediaQuery: string) {
-    if ( mediaQuery ) {
+    if (mediaQuery) {
       let mql = this._registry.get(mediaQuery);
-      let onMQLEvent = (mql: MediaQueryList) => {
+      let onMQLEvent = (e: MediaQueryList) => {
         this._zone.run(() => {
-          let change = new MediaChange(mql.matches, mediaQuery);
+          let change = new MediaChange(e.matches, mediaQuery);
           this._source.next(change);
         });
       };
@@ -122,11 +122,13 @@ export class MatchMedia {
 
     let canListen = !!(<any>window).matchMedia('all').addListener;
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
-      matches: query === 'all' || query === '',
-      media: query,
-      addListener: () => { },
-      removeListener: () => { }
-    };
+          matches: query === 'all' || query === '',
+          media: query,
+          addListener: () => {
+          },
+          removeListener: () => {
+          }
+        };
   }
 
 }

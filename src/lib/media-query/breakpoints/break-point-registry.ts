@@ -13,12 +13,13 @@ import {BREAKPOINTS} from "../providers/break-points-provider";
 @Injectable()
 export class BreakPointRegistry {
 
-  constructor(@Inject(BREAKPOINTS) private _registry : BreakPoint[ ]) { }
+  constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[ ]) {
+  }
 
   /**
    * Accessor to raw list
    */
-  get items() : BreakPoint[ ] {
+  get items(): BreakPoint[ ] {
     return [...this._registry];
   }
 
@@ -26,11 +27,11 @@ export class BreakPointRegistry {
    * Search breakpoints by alias (e.g. gt-xs)
    */
   findByAlias(alias: string): BreakPoint {
-    return this._registry.find( bp => bp.alias == alias);
+    return this._registry.find(bp => bp.alias == alias);
   }
 
-  findByQuery(query:string) : BreakPoint {
-    return this._registry.find( bp => bp.mediaQuery == query);
+  findByQuery(query: string): BreakPoint {
+    return this._registry.find(bp => bp.mediaQuery == query);
   }
 
   /**

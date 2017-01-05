@@ -94,7 +94,10 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
         return {
           pass: getDOM().hasClass(actual, className) == !isNot,
           get message() {
-            return `Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}to contain the CSS class "${className}"`;
+            return `
+              Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}
+              to contain the CSS class "${className}"
+            `;
           }
         };
       };
@@ -118,8 +121,10 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
           pass: allPassed,
           get message() {
             const expectedValueStr = typeof styles === 'string' ? styles : JSON.stringify(styles);
-            return `Expected ${actual.outerHTML} ${!allPassed ? ' ' : 'not '}to contain the
-                      CSS ${typeof styles === 'string' ? 'property' : 'styles'} "${expectedValueStr}"`;
+            return `
+              Expected ${actual.outerHTML} ${!allPassed ? ' ' : 'not '} to contain the
+              CSS ${typeof styles === 'string' ? 'property' : 'styles'} "${expectedValueStr}"
+            `;
           }
         };
       }
@@ -129,8 +134,8 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
 };
 
 function elementText(n: any): string {
-  const hasNodes = (n: any) => {
-    const children = getDOM().childNodes(n);
+  const hasNodes = (m: any) => {
+    const children = getDOM().childNodes(m);
     return children && children["length"];
   };
 

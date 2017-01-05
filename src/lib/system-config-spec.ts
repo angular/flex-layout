@@ -3,10 +3,10 @@ declare var System: any;
 
 // Apply the CLI SystemJS configuration.
 System.config({
-  transpiler:"typescript",
-  typescriptOptions : {
-    inlineSourceMap : true,
-    inlineSources : true
+  transpiler: "typescript",
+  typescriptOptions: {
+    inlineSourceMap: true,
+    inlineSources: true
   },
   map: {
     'rxjs': 'vendor/rxjs',
@@ -26,12 +26,15 @@ System.config({
     '@angular/router': 'vendor/@angular/router/bundles/router.umd.js',
     '@angular/router/testing': 'vendor/@angular/router/bundles/router-testing.umd.js',
     '@angular/platform-browser': 'vendor/@angular/platform-browser/bundles/platform-browser.umd.js',
-    '@angular/platform-browser/testing': 'vendor/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
-    '@angular/platform-browser-dynamic': 'vendor/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
-    '@angular/platform-browser-dynamic/testing': 'vendor/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+    '@angular/platform-browser/testing':
+      'vendor/@angular/platform-browser/bundles/platform-browser-testing.umd.js',
+    '@angular/platform-browser-dynamic':
+      'vendor/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+    '@angular/platform-browser-dynamic/testing':
+      'vendor/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
   },
   packages: {
-    // Thirdparty barrels.
+    // 3rd-Party barrels.
     'rxjs': {
       main: 'index'
     },

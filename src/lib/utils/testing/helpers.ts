@@ -1,5 +1,5 @@
-import {Type, DebugElement} from '@angular/core';
-import {ComponentFixture, TestBed } from '@angular/core/testing';
+import {Type} from '@angular/core';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import any = jasmine.any;
 
@@ -12,12 +12,12 @@ export type ComponentClazzFn = () => Type<any>;
  *  NOTE: These Generators (aka Partial Functions) are used only in
  *        the Karma/Jasmine testing.
  */
-export function makeExpectDOMFrom(getClass:ComponentClazzFn){
+export function makeExpectDOMFrom(getClass: ComponentClazzFn) {
   let createTestComponent;
 
   // Return actual `expectTemplate()` function
   return function expectTemplate(template: string, key?: string, value?: any): any {
-    if ( !createTestComponent ) {
+    if (!createTestComponent) {
       createTestComponent = makeCreateTestComponent(getClass);
     }
 
@@ -35,18 +35,18 @@ export function makeExpectDOMFrom(getClass:ComponentClazzFn){
  * Function generator that captures a Component Type accessor and enables
  * `createTestComponent( )` to be reusable for *any* captured Component class.
  */
-export function makeCreateTestComponent(getClass:ComponentClazzFn) {
-  let ComponentAny : Type<any>;
+export function makeCreateTestComponent(getClass: ComponentClazzFn) {
+  let componentAny: Type<any>;
 
   // Return actual `createTestComponent()` function
   return function createTestComponent(template: string): ComponentFixture<Type<any>> {
-    if ( !ComponentAny ) {
+    if (!componentAny) {
       // Defer access to Component class to enable metadata to be configured properly...
-      ComponentAny = getClass();
+      componentAny = getClass();
     }
     return TestBed
-        .overrideComponent(ComponentAny, {set: {template: template}})
-        .createComponent(ComponentAny);
+        .overrideComponent(componentAny, {set: {template: template}})
+        .createComponent(componentAny);
   };
 }
 
@@ -63,25 +63,25 @@ export function expectNativeEl(fixture: ComponentFixture<any>): any {
  * create a component and perform a CSS query to find the nativeElement
  * associated with that query selector.
  */
-export function makeExpectDOMForQuery(getClass:ComponentClazzFn){
+export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
   let createTestComponent;
 
   // Return actual `expectTemplate()` function
-  return function expectDomForQuery(template:string, selector:string) : any {
-    if ( !createTestComponent ) {
+  return function expectDomForQuery(template: string, selector: string): any {
+    if (!createTestComponent) {
       createTestComponent = makeCreateTestComponent(getClass);
     }
 
     let fixture = createTestComponent(template);
-        fixture.detectChanges();
+    fixture.detectChanges();
 
-    return expect( queryFor(fixture,selector).nativeElement );
+    return expect(queryFor(fixture, selector).nativeElement);
   };
 }
 
 
-export function  queryFor(fixture:ComponentFixture<any>, selector:string):any {
-  return fixture.debugElement.query(By.css(selector))
+export function queryFor(fixture: ComponentFixture<any>, selector: string): any {
+  return fixture.debugElement.query(By.css(selector));
 }
 
 

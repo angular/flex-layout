@@ -71,12 +71,12 @@ export class MediaMonitor {
    */
   observe(alias?: string): Observable<MediaChange> {
     let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-    let hasAlias = (change : MediaChange) => (bp ? change.mqAlias !== "" : true);
+    let hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== "" : true);
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
     return this._matchMedia
-      .observe( bp ? bp.mediaQuery : alias )
-      .map(change =>  mergeAlias( change, bp))
-      .filter( hasAlias );
+        .observe(bp ? bp.mediaQuery : alias)
+        .map(change => mergeAlias(change, bp))
+        .filter(hasAlias);
   }
 
   /**
@@ -84,8 +84,8 @@ export class MediaMonitor {
    * and prepare for immediate subscription notifications
    */
   private _registerBreakpoints() {
-    this._breakpoints.items.forEach( bp => {
-      this._matchMedia.registerQuery( bp.mediaQuery );
+    this._breakpoints.items.forEach(bp => {
+      this._matchMedia.registerQuery(bp.mediaQuery);
     })
   }
 }

@@ -1,5 +1,3 @@
-import {Directive} from '@angular/core';
-
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
 import {extendObject} from '../../utils/object-extend';
@@ -12,44 +10,43 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 export declare type SubscriptionList = Subscription[ ];
 
 /** @internal  */
-export interface BreakPointX extends BreakPoint{
-  key : string;
-  baseKey : string;
+export interface BreakPointX extends BreakPoint {
+  key: string;
+  baseKey: string;
 }
 
 /** @internal  */
 export class KeyOptions {
-  constructor(
-    public baseKey : string,
-    public defaultValue : string|number|boolean,
-    public inputKeys:{[key:string]:any}) { }
+  constructor(public baseKey: string,
+              public defaultValue: string|number|boolean,
+              public inputKeys: {[key: string]: any}) {
+  }
 }
 
 /**
  * @internal
  *
- * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery changes)
- * and the fx API directives. The MQA proxies mediaQuery change events and notifies the directive
- * via the specified callback.
+ * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
+ * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
+ * directive via the specified callback.
  *
  * - The MQA also determines which directive property should be used to determine the
  *   current change 'value'... BEFORE the original `onMediaQueryChanges()` method is called.
- * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the MediaQueryServices.
+ * - The `ngOnDestroy()` method is also head-hooked to enable auto-unsubscribe from the
+ *   MediaQueryServices.
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  */
 export class ResponsiveActivation {
-  private _subscribers : SubscriptionList = [ ];
+  private _subscribers: SubscriptionList = [];
   private _activatedInputKey: string;
 
   /**
    * Constructor
    */
-  constructor(
-      private _options : KeyOptions,
-      private _mediaMonitor: MediaMonitor,
-      private _onMediaChanges : MediaQuerySubscriber )
-  {
+  constructor(private _options: KeyOptions,
+              private _mediaMonitor: MediaMonitor,
+              private _onMediaChanges: MediaQuerySubscriber) {
     this._subscribers = this._configureChangeObservers();
   }
 
@@ -58,7 +55,7 @@ export class ResponsiveActivation {
    * Each directive instance has a reference to the MediaMonitor which is
    * used HERE to subscribe to mediaQuery change notifications.
    */
-  get mediaMonitor() : MediaMonitor {
+  get mediaMonitor(): MediaMonitor {
     return this._mediaMonitor;
   }
 
@@ -89,7 +86,7 @@ export class ResponsiveActivation {
     this._subscribers.forEach((link: Subscription) => {
       link.unsubscribe();
     });
-    this._subscribers = [ ];
+    this._subscribers = [];
   }
 
   /**
@@ -99,21 +96,21 @@ export class ResponsiveActivation {
   private _configureChangeObservers(): SubscriptionList {
     let subscriptions = [];
 
-    this._buildRegistryMap().forEach((bp:BreakPointX)=> {
-      if ( this._keyInUse(bp.key) ) {
+    this._buildRegistryMap().forEach((bp: BreakPointX) => {
+      if (this._keyInUse(bp.key)) {
         // Inject directive default property key name: to let onMediaChange() calls
         // know which property is being triggered...
         let buildChanges = (change: MediaChange) => {
-              change.property = this._options.baseKey;
-              return change;
-            };
+          change.property = this._options.baseKey;
+          return change;
+        };
 
         subscriptions.push(
-          this.mediaMonitor.observe(bp.alias)
-              .map(buildChanges)
-              .subscribe(change => {
-                this._onMonitorEvents(change);
-              })
+            this.mediaMonitor.observe(bp.alias)
+                .map(buildChanges)
+                .subscribe(change => {
+                  this._onMonitorEvents(change);
+                })
         );
       }
     });
@@ -129,11 +126,11 @@ export class ResponsiveActivation {
     return this.mediaMonitor.breakpoints
         .map(bp => {
           return <BreakPointX> extendObject({}, bp, {
-            baseKey : this._options.baseKey,              // e.g.  layout, hide, self-align, flex-wrap
-            key     : this._options.baseKey + bp.suffix   // e.g.  layoutGtSm, layoutMd, layoutGtLg
+            baseKey: this._options.baseKey,             // e.g. layout, hide, self-align, flex-wrap
+            key: this._options.baseKey + bp.suffix  // e.g.  layoutGtSm, layoutMd, layoutGtLg
           });
         })
-        .filter( bp => this._keyInUse(bp.key) );
+        .filter(bp => this._keyInUse(bp.key));
   }
 
   /**
@@ -141,7 +138,7 @@ export class ResponsiveActivation {
    * mq-activated input value or the default value
    */
   _onMonitorEvents(change: MediaChange) {
-    if ( change.property == this._options.baseKey ) {
+    if (change.property == this._options.baseKey) {
       change.value = this._calculateActivatedValue(change);
 
       this._onMediaChanges(change);
@@ -152,7 +149,7 @@ export class ResponsiveActivation {
    * Has the key been specified in the HTML markup and thus is intended
    * to participate in activation processes.
    */
-  private _keyInUse(key ):boolean {
+  private _keyInUse(key): boolean {
     return this._lookupKeyValue(key) !== undefined;
   }
 
@@ -164,11 +161,11 @@ export class ResponsiveActivation {
    *     so make sure the deactivate is used ONLY when the keys match
    *     (since a different activate may be in use)
    */
-  private _calculateActivatedValue(current:MediaChange): any  {
-    const currentKey = this._options.baseKey + current.suffix;    // e.g. suffix == 'GtSm', _baseKey == 'hide'
-    let   newKey = this._activatedInputKey;                     // e.g. newKey == hideGtSm
+  private _calculateActivatedValue(current: MediaChange): any {
+    const currentKey = this._options.baseKey + current.suffix;  // e.g. suffix == 'GtSm',
+    let newKey = this._activatedInputKey;                     // e.g. newKey == hideGtSm
 
-          newKey = current.matches ? currentKey : ((newKey == currentKey) ? null : newKey);
+    newKey = current.matches ? currentKey : ((newKey == currentKey) ? null : newKey);
 
     this._activatedInputKey = this._validateInputKey(newKey);
     return this.activatedInput;
@@ -184,10 +181,10 @@ export class ResponsiveActivation {
     let items: BreakPoint[] = this.mediaMonitor.activeOverlaps;
     let isMissingKey = (key) => !this._keyInUse(key);
 
-    if ( isMissingKey( inputKey ) ) {
-      items.some( bp => {
+    if (isMissingKey(inputKey)) {
+      items.some(bp => {
         let key = this._options.baseKey + bp.suffix;
-        if ( !isMissingKey(key) ) {
+        if (!isMissingKey(key)) {
           inputKey = key;
           return true;  // exit .some()
         }
