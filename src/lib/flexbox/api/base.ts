@@ -6,8 +6,6 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 
 /**
- * @internal
- *
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
  * map of property name and value (e.g. {display: 'none', flex-order: 5}).
  */

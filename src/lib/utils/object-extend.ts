@@ -1,6 +1,4 @@
 /**
- * @internal
- *
  * Extends an object with the *enumerable* and *own* properties of one or more source objects,
  * similar to Object.assign.
  *
