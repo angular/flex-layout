@@ -153,7 +153,8 @@ export var FlexDirective = (function (_super) {
         basis = basis.replace(";", "");
         var hasCalc = basis && basis.indexOf("calc") > -1;
         var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"), this._queryInput("shrink"), basis];
+        return (matches.length === 3) ? matches : [this._queryInput("grow"),
+            this._queryInput("shrink"), basis];
     };
     /**
      * Extract more complicated short-hand versions.
@@ -234,11 +235,14 @@ export var FlexDirective = (function (_super) {
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
                 // Defaults to percentage sizing unless `px` is explicitly set
-                if (!isValue && !isPercent && !isNaN(basis))
+                if (!isValue && !isPercent && !isNaN(basis)) {
                     basis = basis + '%';
-                if (basis === '0px')
+                }
+                if (basis === '0px') {
                     basis = '0%';
+                }
                 // Set max-width = basis if using layout-wrap
+                // tslint:disable-next-line:max-line-length
                 // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),

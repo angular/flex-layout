@@ -9,7 +9,8 @@ export declare const RAW_DEFAULTS: BreakPoint[];
 export declare const BREAKPOINTS: OpaqueToken;
 /**
  *  Provider to return observable to ALL known BreakPoint(s)
- *  Developers should build custom providers to override this default BreakPointRegistry dataset provider
+ *  Developers should build custom providers to override
+ *  this default BreakPointRegistry dataset provider
  *  NOTE: !! custom breakpoints lists MUST contain the following aliases & suffixes:
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
