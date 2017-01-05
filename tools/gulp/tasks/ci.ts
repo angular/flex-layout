@@ -5,7 +5,7 @@ task('ci:lint', ['ci:forbidden-identifiers', 'lint']);
 
 task('ci:extract-metadata', [':build:components:ngc']);
 task('ci:forbidden-identifiers', function() {
-  require('../../../scripts/ci/forbidden-identifiers.js');
+  require('../../scripts/ci/forbidden-identifiers.js');
 });
 
 // Travis sometimes does not exit the process and times out. This is to prevent that.

@@ -28,7 +28,7 @@ const blocked_statements = [
   'from \\\'rxjs/Rx\\\'',
 ];
 
-const sourceFolders = ['./src', './e2e'];
+const sourceFolders = ['./src'];
 const libRoot = 'src/lib';
 const blockedRegex = new RegExp(blocked_statements.join('|'), 'g');
 const importRegex = /from\s+'(.*)';/g;

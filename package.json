@@ -121,7 +121,7 @@
     "karma-sauce-launcher": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "1.8.0",
-    "madge": "^0.6.0",
+    "madge": "^1.4.4",
     "merge2": "^1.0.2",
     "minimist": "^1.2.0",
     "null-loader": "^0.1.1",

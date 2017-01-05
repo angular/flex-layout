@@ -13,6 +13,10 @@ source tools/scripts/ci/sources/tunnel.sh
 start_tunnel
 wait_for_tunnel
 
-$(npm bin)/gulp ci:test
+if is_lint; then
+  $(npm bin)/gulp ci:lint
+else
+  $(npm bin)/gulp ci:test
+fi
 
 teardown_tunnel
