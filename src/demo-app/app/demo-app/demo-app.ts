@@ -3,7 +3,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
 @Component({
   selector: 'demo-app',
   styleUrls : [ 'demo-app.css' ],
-  templateUrl: `
+  template: `
     <md-toolbar class="bigger">
         <div fxLayout="row" fxLayoutAlign="start center" style="height:40px; min-height:40px;">
           <h2>Layout Demos: </h2>
