@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs";
+import {Subscription} from "rxjs/Subscription";
 import 'rxjs/add/operator/filter';
 
 import {MediaChange} from "../../../lib/media-query/media-change";
