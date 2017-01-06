@@ -7287,9 +7287,9 @@ traverse-chain@~0.1.0:
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.3.9.tgz#717b8f220cc0bb7b44e40514c22b2e8bbc70d8b9"
 
-travis-after-modes@0.0.6-2:
-  version "0.0.6-2"
-  resolved "https://registry.yarnpkg.com/travis-after-modes/-/travis-after-modes-0.0.6-2.tgz#1c7bd73f1fd3e9c646bb1eb7600d63e01433e23b"
+travis-after-modes@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/travis-after-modes/-/travis-after-modes-0.0.7.tgz#a3f3c058d3e86aaa7bf41bb087c75db9145a718c"
   dependencies:
     request "^2.79.0"
     request-promise "^4.1.1"
