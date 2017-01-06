@@ -2,11 +2,11 @@
 # yarn lockfile v1
 
 
-"@angular/common@^2.4.0":
+"@angular/common@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-2.4.1.tgz#a70167430574959c3423ac96ebdec98032d3500d"
 
-"@angular/compiler-cli@^2.4.0":
+"@angular/compiler-cli@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-2.4.1.tgz#9291504197a199fee2f48353d67431a1a9e40833"
   dependencies:
@@ -14,19 +14,19 @@
     minimist "^1.2.0"
     reflect-metadata "^0.1.2"
 
-"@angular/compiler@^2.4.0":
+"@angular/compiler@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-2.4.1.tgz#62b4fbfc53c934bd5def78db594cbf245b3f446a"
 
-"@angular/core@^2.4.0":
+"@angular/core@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-2.4.1.tgz#3a6d2dc7fd86fdebe4febae7eb28abad7d04c76a"
 
-"@angular/forms@^2.4.0":
+"@angular/forms@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-2.4.1.tgz#440ff9b864b3b79c55423c9ce5863030a25767ce"
 
-"@angular/http@^2.4.0":
+"@angular/http@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/http/-/http-2.4.1.tgz#f06067e370c44d025ed00a03ef704f6c46ea59ac"
 
@@ -36,15 +36,15 @@
   dependencies:
     "@types/hammerjs" "^2.0.30"
 
-"@angular/platform-browser-dynamic@^2.4.0":
+"@angular/platform-browser-dynamic@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-2.4.1.tgz#5fb72038f76c1e3646cea95f5b4722d67a4419dd"
 
-"@angular/platform-browser@^2.4.0":
+"@angular/platform-browser@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-2.4.1.tgz#4eaa829b450be34f0029796b6c3b99e27d3d5740"
 
-"@angular/platform-server@^2.4.0":
+"@angular/platform-server@^2.2.3":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-2.4.1.tgz#9e5e427b8226d1a073949effea00a4df352682de"
   dependencies:
