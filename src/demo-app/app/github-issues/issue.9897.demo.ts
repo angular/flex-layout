@@ -12,7 +12,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
       <md-card-subtitle>Safari bug with layout-wrap and flex % values</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div [fxLayout]="row" [fxLayoutWrap]="wrapDirection" class="colored wrapped box" >
+          <div fxLayout="row" [fxLayoutWrap]="wrapDirection" class="colored wrapped box" >
             
               <div fxFlex="30"> fxFlex="30" </div>
               <div fxFlex="45"> fxFlex="45" </div>

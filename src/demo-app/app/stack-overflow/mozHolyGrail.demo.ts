@@ -42,7 +42,7 @@ import {Component} from '@angular/core';
   `
 })
 export class DemoMozHolyGrail  {
-  private direction = "row";
+  public direction = "row";
   toggleDirection() {
     this.direction = (this.direction === "column") ? "row" : "column";
   }
