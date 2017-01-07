@@ -50,7 +50,7 @@ describe('layout-gap directive', () => {
     }
   });
 
-  fdescribe('with static features', () => {
+  describe('with static features', () => {
 
     it('should not add gap for a single child', () => {
       let template = `
@@ -63,7 +63,7 @@ describe('layout-gap directive', () => {
       });
     });
 
-    fit('should add gap all children except the 1st child', () => {
+    it('should add gap all children except the 1st child', () => {
       let template = `
               <div fxLayoutAlign="center center" fxLayoutGap="13px">
                   <div fxFlex></div>
