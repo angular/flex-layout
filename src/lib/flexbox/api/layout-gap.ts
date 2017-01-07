@@ -11,7 +11,7 @@ import {
   Input,
   OnChanges,
   Renderer,
-  SimpleChanges, AfterContentInit,
+  SimpleChanges, AfterContentInit, ContentChildren, QueryList,
 } from '@angular/core';
 
 import {BaseFxDirective} from './base';
@@ -79,7 +79,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    *
    */
   private _updateWithValue(value?: string) {
-    value = value || this._queryInput("padding") || '0';
+    value = value || this._queryInput("gap") || '0';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

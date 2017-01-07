@@ -74,7 +74,7 @@ export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
   let createTestComponent;
 
   // Return actual `expectTemplate()` function
-  return function expectDomForQuery(template: string, selector: string): any {
+  return function expectDomForQuery(template: string, selector: string, index:number = 0): any {
     if (!createTestComponent) {
       createTestComponent = makeCreateTestComponent(getClass);
     }
@@ -82,13 +82,14 @@ export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
     let fixture = createTestComponent(template);
     fixture.detectChanges();
 
-    return expect(queryFor(fixture, selector).nativeElement);
+    let nodes = queryFor(fixture, selector);
+    return nodes.length > index ? expect(nodes[index].nativeElement) : null;
   };
 }
 
 
 export function queryFor(fixture: ComponentFixture<any>, selector: string): any {
-  return fixture.debugElement.query(By.css(selector));
+  return fixture.debugElement.queryAll(By.css(selector));
 }
 
 
