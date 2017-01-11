@@ -74,7 +74,7 @@ export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
   let createTestComponent;
 
   // Return actual `expectTemplate()` function
-  return function expectDomForQuery(template: string, selector: string, index:number = 0): any {
+  return function expectDomForQuery(template: string, selector: string, index = 0): any {
     if (!createTestComponent) {
       createTestComponent = makeCreateTestComponent(getClass);
     }
