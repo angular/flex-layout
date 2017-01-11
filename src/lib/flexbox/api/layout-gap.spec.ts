@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -23,7 +23,6 @@ import {
 } from '../../utils/testing/helpers';
 
 describe('layout-gap directive', () => {
-  let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(() => TestLayoutGapComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestLayoutGapComponent);
 
@@ -39,12 +38,6 @@ describe('layout-gap directive', () => {
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
-  });
-  afterEach(() => {
-    if (fixture) {
-      fixture.debugElement.injector.get(MatchMedia).clearAll();
-      fixture = null;
-    }
   });
 
   describe('with static features', () => {
@@ -78,7 +71,33 @@ describe('layout-gap directive', () => {
       expect(nodes[2].nativeElement).toHaveCssStyle({ 'margin-left': '13px'});
     });
 
+    it('should apply margin-top for column layouts', () => {
+      verifyCorrectMargin('column', 'margin-top');
+    });
+
+    it('should apply margin-right for row-reverse layouts', () => {
+      verifyCorrectMargin('row-reverse', 'margin-right');
+    });
+
+    it('should apply margin-bottom for column-reverse layouts', () => {
+      verifyCorrectMargin('column-reverse', 'margin-bottom');
+    });
   });
+
+  function verifyCorrectMargin(layout: string, expectedMarginType: string) {
+    const margin = '8px';
+    const template = `
+            <div fxLayout='${layout}' fxLayoutGap='${margin}'>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+    const fixture = createTestComponent(template);
+    fixture.detectChanges();
+
+    const nodes = queryFor(fixture, 'span');
+    expect(nodes[1].nativeElement).toHaveCssStyle({ [expectedMarginType]: margin});
+  }
 
   describe('with responsive features', () => {
 
@@ -105,4 +124,5 @@ export class TestLayoutGapComponent implements OnInit {
   ngOnInit() {
   }
 }
+
 
