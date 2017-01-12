@@ -42,5 +42,9 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
      *
      */
     private _updateWithValue(value?);
+    /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     */
     private _buildCSS(value);
 }

@@ -131,19 +131,36 @@ export var LayoutGapDirective = (function (_super) {
             .filter(function (el, j) { return j > 0; }); // skip first element since gaps are needed
         this._applyStyleToElements(this._buildCSS(value), items);
     };
+    /**
+     * Prepare margin CSS, remove any previous explicitly
+     * assigned margin assignments
+     */
     LayoutGapDirective.prototype._buildCSS = function (value) {
-        var margin = 'margin-left';
-        if (this._layout === 'row-reverse') {
-            margin = 'margin-right';
+        var key, margins = {
+            'margin-left': null,
+            'margin-right': null,
+            'margin-top': null,
+            'margin-bottom': null
+        };
+        switch (this._layout) {
+            case 'column':
+                key = 'margin-top';
+                break;
+            case 'column-reverse':
+                key = 'margin-bottom';
+                break;
+            case 'row-reverse':
+                key = 'margin-right';
+                break;
+            case "row":
+                key = 'margin-left';
+                break;
+            default:
+                key = 'margin-left';
+                break;
         }
-        if (this._layout === 'column') {
-            margin = 'margin-top';
-        }
-        if (this._layout === 'column-reverse') {
-            margin = 'margin-bottom';
-        }
-        return (_a = {}, _a[margin] = value, _a);
-        var _a;
+        margins[key] = value;
+        return margins;
     };
     LayoutGapDirective.decorators = [
         { type: Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" },] },
