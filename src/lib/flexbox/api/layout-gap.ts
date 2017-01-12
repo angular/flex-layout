@@ -128,12 +128,38 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
     this._applyStyleToElements(this._buildCSS(value), items );
   }
 
+  /**
+   * Prepare margin CSS, remove any previous explicitly
+   * assigned margin assignments
+   */
   private _buildCSS(value) {
-    let margin = 'margin-left';
-    if (this._layout === 'row-reverse') { margin = 'margin-right'; }
-    if (this._layout === 'column') { margin = 'margin-top'; }
-    if (this._layout === 'column-reverse') { margin = 'margin-bottom'; }
-    return { [margin] : value };
+    let key, margins = {
+      'margin-left': null,
+      'margin-right': null,
+      'margin-top': null,
+      'margin-bottom': null
+    };
+
+    switch (this._layout) {
+      case 'column':
+        key = 'margin-top';
+        break;
+      case 'column-reverse':
+        key = 'margin-bottom';
+        break;
+      case 'row-reverse':
+        key = 'margin-right';
+        break;
+      case "row" :
+        key = 'margin-left';
+        break;
+      default :
+        key = 'margin-left';
+        break;
+    }
+    margins[key] = value;
+
+    return margins;
   }
 
 }

@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {TestBed} from '@angular/core/testing';
+import {TestBed, ComponentFixture} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -62,13 +62,13 @@ describe('layout-gap directive', () => {
               </div>
           `;
       let fixture = createTestComponent(template); // tslint:disable-line:no-shadowed-variable
-          fixture.detectChanges();
+      fixture.detectChanges();
 
       let nodes = queryFor(fixture, "[fxFlex]");
       expect(nodes.length).toEqual(3);
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({ 'margin-left': '13px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({ 'margin-left': '13px'});
-      expect(nodes[2].nativeElement).toHaveCssStyle({ 'margin-left': '13px'});
+      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-left': '13px'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-left': '13px'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'margin-left': '13px'});
     });
 
     it('should apply margin-top for column layouts', () => {
@@ -82,9 +82,46 @@ describe('layout-gap directive', () => {
     it('should apply margin-bottom for column-reverse layouts', () => {
       verifyCorrectMargin('column-reverse', 'margin-bottom');
     });
+
+    it('should remove obsolete margin and apply valid margin for layout changes', () => {
+      let fixture: ComponentFixture<any> = createTestComponent(`
+          <div [fxLayout]="direction" [fxLayoutGap]="gap">
+              <span></span>
+              <span></span>
+          </div>
+      `);
+      let instance = fixture.componentInstance;
+
+      // layout = column, use margin-top
+      instance.direction = "column";
+      instance.gap = "8px";
+      fixture.detectChanges();
+      let nodes = queryFor(fixture, 'span');
+
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'margin-left': '8px'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-top': '8px'});
+
+
+      // layout = column-reverse, use margin-bottom
+      instance.direction = "column-reverse";
+      fixture.detectChanges();
+      nodes = queryFor(fixture, 'span');
+
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'margin-top': '8px'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-bottom': '8px'});
+
+
+      // layout = row-reverse, use margin-right
+      instance.direction = "row-reverse";
+      fixture.detectChanges();
+      nodes = queryFor(fixture, 'span');
+
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'margin-bottom': '8px'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '8px'});
+    });
   });
 
-  function verifyCorrectMargin(layout: string, expectedMarginType: string) {
+  function verifyCorrectMargin(layout: string, marginKey: string) {
     const margin = '8px';
     const template = `
             <div fxLayout='${layout}' fxLayoutGap='${margin}'>
@@ -92,11 +129,12 @@ describe('layout-gap directive', () => {
                 <span></span>
             </div>
         `;
+
     const fixture = createTestComponent(template);
     fixture.detectChanges();
 
     const nodes = queryFor(fixture, 'span');
-    expect(nodes[1].nativeElement).toHaveCssStyle({ [expectedMarginType]: margin});
+    expect(nodes[1].nativeElement).toHaveCssStyle({[marginKey]: margin});
   }
 
   describe('with responsive features', () => {
@@ -117,6 +155,7 @@ describe('layout-gap directive', () => {
 })
 export class TestLayoutGapComponent implements OnInit {
   direction = "column";
+  gap = "8px";
 
   constructor() {
   }
