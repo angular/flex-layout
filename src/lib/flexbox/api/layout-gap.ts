@@ -11,7 +11,8 @@ import {
   Input,
   OnChanges,
   Renderer,
-  SimpleChanges, AfterContentInit, ContentChildren, QueryList,
+  SimpleChanges,
+  AfterContentInit
 } from '@angular/core';
 
 import {BaseFxDirective} from './base';

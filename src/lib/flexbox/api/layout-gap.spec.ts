@@ -15,19 +15,16 @@ import {BreakPointsProvider} from '../../media-query/providers/break-points-prov
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
-import {extendObject} from '../../utils/object-extend';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent,
-  makeExpectDOMFrom,
   makeExpectDOMForQuery,
-  expectNativeEl, queryFor
+  queryFor
 } from '../../utils/testing/helpers';
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(() => TestLayoutGapComponent);
-  let expectDOMFrom = makeExpectDOMFrom(() => TestLayoutGapComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestLayoutGapComponent);
 
   beforeEach(() => {
@@ -71,7 +68,7 @@ describe('layout-gap directive', () => {
                   <div fxFlex></div>
               </div>
           `;
-      let fixture = createTestComponent(template);
+      let fixture = createTestComponent(template); // tslint:disable-line:no-shadowed-variable
           fixture.detectChanges();
 
       let nodes = queryFor(fixture, "[fxFlex]");
