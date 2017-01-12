@@ -20,31 +20,38 @@
   var defaultOptions = { encoding: 'utf-8' };
   var origin         = 'git@github.com:angular/flex-layout.git';
   var lineWidth      = 80;
-  var lastMajorVer = releases.latest, newVersion;
+  var lastMajorVer = releases.latest;
+  var newVersion = "";
   var isYes = matches.bind(this, "yes");
   var dryRun = isYes(prompt(`Is this a dry-run? ${"[yes/no]".cyan} `));
 
-  if (dryRun) {
-    let msg = `What would you like the old version to be? (default: ${oldVersion.cyan}) `;
-    oldVersion = prompt(msg) || oldVersion;
-    newVersion = getNewVersion();
-    build();
-  } else if (validate()) {
+  let msg = `What would you like the old version to be? (default: ${oldVersion.cyan}) `;
+  oldVersion = prompt(msg) || oldVersion;
+  newVersion = getNewVersion();
+
+  let validated = dryRun || validate();
+  if ( validated ) {
     build();
   }
+
+  // ********************************************************
+  // Scripts and Utils
+  // ********************************************************
+
+  /** start the build script */
 
   function build () {
     line();
 
     checkoutVersionBranch();
-    updateVersion(newVersion);
+    updateVersion();
     createChangelog();
     writeReleasesJson();
     commitChanges();
     tagRelease();
     cloneRepo();
     generateLatestBuild();
-    updateMaster(newVersion);
+    updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
     writeScript('push', (dryRun ? abortCmds :pushCmds).concat(cleanupCmds));
 
@@ -55,7 +62,6 @@
     log(`When you are ready, please run "${"./push".cyan}" to finish the process.`);
   }
 
-  //-- utility methods
 
   /** confirms that you will be able to perform the release before attempting */
   function validate () {
@@ -95,7 +101,7 @@
   }
 
   /** writes the new version to package.json */
-  function updateVersion(newVersion) {
+  function updateVersion() {
     start(`Updating ${"package.json".cyan} version from ${oldVersion.cyan} to ${newVersion.cyan}...`);
 
     // Update the repo-root package.json
@@ -300,12 +306,12 @@
 
 
   /** copies the changelog back over to master branch */
-  function updateMaster (newVersion) {
+  function updateMaster () {
     pushCmds.push(
         comment('update package.json in master'),
         'git checkout master',
         `git pull --rebase ${origin} master --strategy=theirs`,
-        `git checkout release/${newVersion} -- CHANGELOG.md`,
+      `git checkout release/${newVersion} -- CHANGELOG.md`,
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(buildCommand)}"`,
         'git add CHANGELOG.md',
         'git add package.json',
