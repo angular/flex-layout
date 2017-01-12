@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Type} from '@angular/core';
+import {Type, DebugElement} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import any = jasmine.any; // tslint:disable-line:no-unused-variable
@@ -88,7 +88,7 @@ export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
 }
 
 
-export function queryFor(fixture: ComponentFixture<any>, selector: string): any {
+export function queryFor(fixture: ComponentFixture<any>, selector: string): DebugElement[] {
   return fixture.debugElement.queryAll(By.css(selector));
 }
 
