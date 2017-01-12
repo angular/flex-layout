@@ -3072,14 +3072,21 @@ var __decorate$15 = (this && this.__decorate) || function (decorators, target, k
 var __metadata$15 = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param$6 = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
 var LayoutGapDirective = (function (_super) {
     __extends$10(LayoutGapDirective, _super);
-    function LayoutGapDirective(monitor, elRef, renderer) {
+    function LayoutGapDirective(monitor, elRef, renderer, container) {
         _super.call(this, monitor, elRef, renderer);
+        this._layout = 'row'; // default flex-direction
+        if (container) {
+            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
+        }
     }
     Object.defineProperty(LayoutGapDirective.prototype, "gap", {
         set: function (val) { this._cacheInput('gap', val); },
@@ -3158,14 +3165,31 @@ var LayoutGapDirective = (function (_super) {
         });
         this._updateWithValue();
     };
+    LayoutGapDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
     // *********************************************
     // Protected methods
     // *********************************************
     /**
+     * Cache the parent container 'flex-direction' and update the 'margin' styles
+     */
+    LayoutGapDirective.prototype._onLayoutChange = function (direction) {
+        var _this = this;
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+            this._layout = 'row';
+        }
+        this._updateWithValue();
+    };
+    /**
      *
      */
     LayoutGapDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("padding") || '0';
+        value = value || this._queryInput("gap") || '0';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
@@ -3176,7 +3200,18 @@ var LayoutGapDirective = (function (_super) {
         this._applyStyleToElements(this._buildCSS(value), items);
     };
     LayoutGapDirective.prototype._buildCSS = function (value) {
-        return { 'margin-left': value };
+        var margin = 'margin-left';
+        if (this._layout === 'row-reverse') {
+            margin = 'margin-right';
+        }
+        if (this._layout === 'column') {
+            margin = 'margin-top';
+        }
+        if (this._layout === 'column-reverse') {
+            margin = 'margin-bottom';
+        }
+        return (_a = {}, _a[margin] = value, _a);
+        var _a;
     };
     __decorate$15([
         _angular_core.Input('fxLayoutGap'), 
@@ -3229,8 +3264,10 @@ var LayoutGapDirective = (function (_super) {
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapXl", null);
     LayoutGapDirective = __decorate$15([
-        _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" }), 
-        __metadata$15('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+        _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" }),
+        __param$6(3, _angular_core.Optional()),
+        __param$6(3, _angular_core.Self()), 
+        __metadata$15('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer, LayoutDirective])
     ], LayoutGapDirective);
     return LayoutGapDirective;
 }(BaseFxDirective));
