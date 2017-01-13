@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 echo "=======  Starting build-and-test.sh  ========================================"
 
@@ -18,9 +18,5 @@ if is_lint; then
 else
   $(npm bin)/gulp ci:test
 fi
-
-echo
-echo "Task exited with Error Code: $?"
-echo
 
 teardown_tunnel
