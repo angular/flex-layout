@@ -38,9 +38,6 @@ matrix:
   - env: "MODE=saucelabs_optional"
   - env: "MODE=browserstack_optional"
 
-install:
-  - yarn
-
 before_script:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
