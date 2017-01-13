@@ -52,6 +52,7 @@ export function config(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
+    singleRun: false,
 
     sauceLabs: {
       testName: 'flex-layout',
@@ -78,8 +79,6 @@ export function config(config) {
     browserNoActivityTimeout: 240000,
     captureTimeout: 120000,
     browsers: ['Chrome_1024x768'],
-
-    singleRun: false
   });
 
   if (process.env['TRAVIS']) {

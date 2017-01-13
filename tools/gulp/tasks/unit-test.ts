@@ -60,14 +60,16 @@ gulp.task('test', [':test:watch'], (done: (error?: Error) => void) => {
 gulp.task('test:single-run', [':test:deps:inline'], (done: (error?: Error) => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
-    singleRun: true
+    singleRun: true,
+    autoWatch: false,
   }, onKarmaFinished(done)).start();
 });
 
 /** Function to create a karma callback that properly reports to gulp. */
 function onKarmaFinished(doneFn: (error?: Error) => void) {
   return (exitCode: number) => {
-    // Gulp is not able to format the exit code number, so we pass a string.
-    doneFn(exitCode ? new Error('Karma failed') : undefined);
+    // Immediately exit the process if Karma reported errors, because due to
+    // potential running Saucelabs browsers gulp won't exit properly.
+    exitCode === 0 ? doneFn() : process.exit(exitCode);
   }
 }
