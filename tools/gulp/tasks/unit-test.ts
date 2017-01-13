@@ -61,8 +61,5 @@ gulp.task('test:single-run', [':test:deps:inline'], (done: () => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
     singleRun: true
-  }, (errCode) =>{
-    console.log(`karma.Server => ${errCode}`);
-    done()
-  }).start();
+  }, done).start();
 });

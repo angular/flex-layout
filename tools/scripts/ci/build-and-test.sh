@@ -19,4 +19,8 @@ else
   $(npm bin)/gulp ci:test
 fi
 
+echo
+echo "Task exited with Error Code: $?"
+echo
+
 teardown_tunnel
