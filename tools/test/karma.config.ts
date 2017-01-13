@@ -102,5 +102,7 @@ export function config(config) {
     }
 
     config.browsers = platformMap[platform][alias.toUpperCase()];
+    config.autoWatch = false;
+    config.singleRun = true;
   }
-};
+}

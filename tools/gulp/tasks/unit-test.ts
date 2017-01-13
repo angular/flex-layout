@@ -46,10 +46,10 @@ gulp.task(':test:deps:inline', sequenceTask(':test:deps', ':inline-resources'));
  *
  * This task should be used when running unit tests locally.
  */
-gulp.task('test', [':test:watch'], (done: () => void) => {
+gulp.task('test', [':test:watch'], (done: (error?: string) => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js')
-  }, done).start();
+  }, onKarmaFinished(done)).start();
 });
 
 /**
@@ -57,9 +57,17 @@ gulp.task('test', [':test:watch'], (done: () => void) => {
  *
  * This task should be used when running tests on the CI server.
  */
-gulp.task('test:single-run', [':test:deps:inline'], (done: () => void) => {
+gulp.task('test:single-run', [':test:deps:inline'], (done: (error?: string) => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
     singleRun: true
-  }, done).start();
+  }, onKarmaFinished(done)).start();
 });
+
+/** Function to create a karma callback that properly reports to gulp. */
+function onKarmaFinished(doneFn: (error?: string) => void) {
+  return (exitCode: number) => {
+    // Gulp is not able to format the exit code number, so we pass a string.
+    doneFn(exitCode ? 'Karma failed' : undefined);
+  }
+}
