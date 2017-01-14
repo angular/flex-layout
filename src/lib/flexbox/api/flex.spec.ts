@@ -54,10 +54,10 @@ describe('flex directive', () => {
   describe('with static features', () => {
 
     it('should add correct styles for default `fxFlex` usage', () => {
-      let fixture = componentWithTemplate(`<div fxFlex></div>`);
-      fixture.detectChanges();
+      let fRef = componentWithTemplate(`<div fxFlex></div>`);
+      fRef.detectChanges();
 
-      let dom = fixture.debugElement.children[0].nativeElement;
+      let dom = fRef.debugElement.children[0].nativeElement;
       let isBox = getDOM().hasStyle(dom, 'box-sizing', 'border-box');
       let hasFlex =  getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||
                      getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||
