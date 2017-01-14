@@ -52,6 +52,7 @@ export function config(config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
+    singleRun: false,
 
     sauceLabs: {
       testName: 'flex-layout',
@@ -78,12 +79,10 @@ export function config(config) {
     browserNoActivityTimeout: 240000,
     captureTimeout: 120000,
     browsers: ['Chrome_1024x768'],
-
-    singleRun: false
   });
 
   if (process.env['TRAVIS']) {
-    var buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
+    let buildId = `TRAVIS #${process.env.TRAVIS_BUILD_NUMBER} (${process.env.TRAVIS_BUILD_ID})`;
 
     // The MODE variable is the indicator of what row in the test matrix we're running.
     // It will look like <platform>_<alias>, where platform is one of 'saucelabs' or 'browserstack',
@@ -91,15 +90,10 @@ export function config(config) {
     // browser-providers.ts.
     let [platform, alias] = process.env.MODE.split('_');
 
-    if (platform == 'saucelabs') {
+    if (platform === 'saucelabs') {
       config.sauceLabs.build = buildId;
       config.sauceLabs.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
-
-      // TODO(mlaval): remove once SauceLabs supports websockets.
-      // This speeds up the capturing a bit, as browsers don't even try to use websocket.
-      console.log('>>>> setting socket.io transport to polling <<<<');
-      config.transports = ['polling'];
-    } else if (platform == 'browserstack') {
+    } else if (platform === 'browserstack') {
       config.browserStack.build = buildId;
       config.browserStack.tunnelIdentifier = process.env.TRAVIS_JOB_NUMBER;
     } else {
@@ -107,5 +101,7 @@ export function config(config) {
     }
 
     config.browsers = platformMap[platform][alias.toUpperCase()];
+    config.autoWatch = false;
+    config.singleRun = true;
   }
-};
+}

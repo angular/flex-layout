@@ -46,10 +46,10 @@ gulp.task(':test:deps:inline', sequenceTask(':test:deps', ':inline-resources'));
  *
  * This task should be used when running unit tests locally.
  */
-gulp.task('test', [':test:watch'], (done: () => void) => {
+gulp.task('test', [':test:watch'], (done: (error?: Error) => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js')
-  }, done).start();
+  }, onKarmaFinished(done)).start();
 });
 
 /**
@@ -57,12 +57,19 @@ gulp.task('test', [':test:watch'], (done: () => void) => {
  *
  * This task should be used when running tests on the CI server.
  */
-gulp.task('test:single-run', [':test:deps:inline'], (done: () => void) => {
+gulp.task('test:single-run', [':test:deps:inline'], (done: (error?: Error) => void) => {
   new karma.Server({
     configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
-    singleRun: true
-  }, (errCode) =>{
-    console.log(`karma.Server => ${errCode}`);
-    done()
-  }).start();
+    singleRun: true,
+    autoWatch: false,
+  }, onKarmaFinished(done)).start();
 });
+
+/** Function to create a karma callback that properly reports to gulp. */
+function onKarmaFinished(doneFn: (error?: Error) => void) {
+  return (exitCode: number) => {
+    // Immediately exit the process if Karma reported errors, because due to
+    // potential running Saucelabs browsers gulp won't exit properly.
+    exitCode === 0 ? doneFn() : process.exit(exitCode);
+  }
+}

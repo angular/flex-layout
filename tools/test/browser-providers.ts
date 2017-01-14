@@ -2,7 +2,7 @@ type ContextConfigurationInfo = { target: string, required: boolean };
 export interface ConfigurationInfo {
   unitTest: ContextConfigurationInfo;
   e2e: ContextConfigurationInfo;
-};
+}
 
 export interface BrowserLauncherInfo {
   base: string;
@@ -16,7 +16,7 @@ export interface BrowserLauncherInfo {
   os?: string;
   os_version?: string;
   resolution?:string;
-};
+}
 
 export type AliasMap = { [name: string]: string[] };
 
@@ -28,26 +28,26 @@ export type AliasMap = { [name: string]: string[] };
 // out in Travis configuration.
 const configuration: { [name: string]: ConfigurationInfo } = {
   'Chrome':       { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
-  'Firefox':      { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
-  'ChromeBeta':   { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
+  'Firefox':      { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
+  'ChromeBeta':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'FirefoxBeta':  { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'ChromeDev':    { unitTest: {target: null, required: true}, e2e: {target: null, required: true}},
   'FirefoxDev':   { unitTest: {target: null, required: true}, e2e: {target: null, required: true}},
   'IE9':          { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'IE10':         { unitTest: {target: null, required: true}, e2e: {target: null, required: true}},
-  'IE11':         { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
+  'IE11':         { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
   'Edge':         { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
   'Android4.1':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Android4.2':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Android4.3':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
-  'Android4.4':   { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
+  'Android4.4':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Android5':     { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
   'Safari7':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari8':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
   'Safari9':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
   'iOS7':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS8':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
-  'iOS9':         { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
+  'iOS9':         { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
   'WindowsPhone': { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}}
 };
 
@@ -65,7 +65,7 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
   'SL_CHROME': {
     base: 'SauceLabs',
     browserName: 'chrome',
-    version: '46'
+    version: 'latest'
   },
   'SL_CHROMEBETA': {
     base: 'SauceLabs',
@@ -80,7 +80,7 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
   'SL_FIREFOX': {
     base: 'SauceLabs',
     browserName: 'firefox',
-    version: '42'
+    version: 'latest'
   },
   'SL_FIREFOXBETA': {
     base: 'SauceLabs',
