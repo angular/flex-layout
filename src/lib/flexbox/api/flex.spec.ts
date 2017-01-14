@@ -15,16 +15,21 @@ import {BreakPointsProvider} from '../../media-query/providers/break-points-prov
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {__platform_browser_private__} from '@angular/platform-browser';
+import {customMatchers, expect } from '../../utils/testing/custom-matchers';
 import {
   makeExpectDOMFrom,
-  makeExpectDOMForQuery
+  makeExpectDOMForQuery,
+  makeCreateTestComponent
 } from '../../utils/testing/helpers';
+
+const getDOM = __platform_browser_private__.getDOM;
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
   let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestFlexComponent);
+  let componentWithTemplate = makeCreateTestComponent(() => TestFlexComponent);
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -49,11 +54,19 @@ describe('flex directive', () => {
   describe('with static features', () => {
 
     it('should add correct styles for default `fxFlex` usage', () => {
-      expectDOMFrom(`<div fxFlex></div>`).toHaveCssStyle({
-        'flex': '1 1 1e-09px',  // === flex : "1"
-        'box-sizing': 'border-box',
-      });
+      let fixture = componentWithTemplate(`<div fxFlex></div>`);
+      fixture.detectChanges();
+
+      let dom = fixture.debugElement.children[0].nativeElement;
+      let isBox = getDOM().hasStyle(dom, 'box-sizing', 'border-box');
+      let hasFlex =  getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||
+                     getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||
+                     getDOM().hasStyle(dom, 'flex', '1 1 0px');
+
+      expect(isBox).toBeTruthy();
+      expect(hasFlex).toBeTruthy();
     });
+
     it('should add correct styles for `fxFlex="0%"` usage', () => {
       expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
         'max-width': '2%',
