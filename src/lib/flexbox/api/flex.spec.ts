@@ -24,6 +24,7 @@ import {
 } from '../../utils/testing/helpers';
 
 const getDOM = __platform_browser_private__.getDOM;
+const isIE = !!document["documentMode"];
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
@@ -89,10 +90,12 @@ describe('flex directive', () => {
       });
     });
     it('should work with calc values', () => {
-      expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
-        'box-sizing': 'border-box',
-        'flex': '1 1 calc(30vw - 10px)'
-      });
+      if ( !isIE ) {
+        expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
+          'box-sizing': 'border-box',
+          'flex': '1 1 calc(30vw - 10px)'
+        });
+      }
     });
     it('should work with named values', () => {
       expectDOMFrom(`<div fxFlex="nogrow"></div>`).toHaveCssStyle({
