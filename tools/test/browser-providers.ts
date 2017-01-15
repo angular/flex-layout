@@ -43,8 +43,9 @@ const configuration: { [name: string]: ConfigurationInfo } = {
   'Android4.4':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Android5':     { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
   'Safari7':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
-  'Safari8':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
+  'Safari8':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari9':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
+  'Safari10':     { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
   'iOS7':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS8':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS9':         { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
@@ -60,6 +61,10 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
   // On CI, both SauceLabs and Browserstack already default all browser window sizes to 1024x768.
   'Chrome_1024x768': {
     base : 'Chrome',
+    flags: ['--window-size=1024,768']
+  },
+  'Safari_1024x768': {
+    base : 'Safari',
     flags: ['--window-size=1024,768']
   },
   'SL_CHROME': {
@@ -105,10 +110,16 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
     version: '8'
   },
   'SL_SAFARI9': {
+      base: 'SauceLabs',
+      browserName: 'safari',
+      platform: 'OS X 10.11',
+      version: '9.0'
+    },
+  'SL_SAFARI10': {
     base: 'SauceLabs',
     browserName: 'safari',
-    platform: 'OS X 10.11',
-    version: '9.0'
+    platform: 'OS X 10.12',
+    version: '10'
   },
   'SL_IOS7': {
     base: 'SauceLabs',
@@ -304,13 +315,13 @@ const sauceAliases: AliasMap = {
     return customLaunchers[item].base == 'SauceLabs';
   }),
   'DESKTOP': ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI7',
-              'SL_SAFARI8', 'SL_SAFARI9'],
+              'SL_SAFARI8', 'SL_SAFARI9', , 'SL_SAFARI10'],
   'MOBILE': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5',
              'SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
   'ANDROID': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5'],
   'IE': ['SL_IE9', 'SL_IE10', 'SL_IE11'],
   'IOS': ['SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
-  'SAFARI': ['SL_SAFARI7', 'SL_SAFARI8', 'SL_SAFARI9'],
+  'SAFARI': ['SL_SAFARI7', 'SL_SAFARI8', 'SL_SAFARI9', , 'SL_SAFARI10'],
   'BETA': ['SL_CHROMEBETA', 'SL_FIREFOXBETA'],
   'DEV': ['SL_CHROMEDEV', 'SL_FIREFOXDEV'],
   'REQUIRED': buildConfiguration('unitTest', 'SL', true),
