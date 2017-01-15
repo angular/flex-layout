@@ -7,6 +7,7 @@
  */
 
 import {__platform_browser_private__} from '@angular/platform-browser';
+import {applyCssPrefixes} from '../auto-prefixer';
 
 declare var global: any;
 
@@ -121,7 +122,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
         } else {
           allPassed = Object.keys(styles).length !== 0;
           Object.keys(styles).forEach(prop => {
-            allPassed = allPassed && getDOM().hasStyle(actual, prop, styles[prop]);
+            allPassed = allPassed && hasPrefixedStyles(actual, prop, styles[prop]);
           });
         }
 
@@ -140,6 +141,23 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
   }
 
 };
+
+/**
+ * Validate presence of requested style or use fallback
+ * to possible `prefixed` styles. Useful when some browsers
+ * (Safari, IE, etc) will use prefixed style instead of defaults.
+ */
+function hasPrefixedStyles(actual, key, value) {
+  let hasStyle = getDOM().hasStyle(actual, key, value);
+  if (!hasStyle) {
+    let prefixedStyles = applyCssPrefixes({[key]: value});
+    Object.keys(prefixedStyles).forEach(prop => {
+      // Search for optional prefixed values
+      hasStyle = hasStyle || getDOM().hasStyle(actual, prop, prefixedStyles[prop]);
+    });
+  }
+  return hasStyle;
+}
 
 function elementText(n: any): string {
   const hasNodes = (m: any) => {
