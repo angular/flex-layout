@@ -60,8 +60,9 @@ describe('flex directive', () => {
 
       let dom = fRef.debugElement.children[0].nativeElement;
       let isBox = getDOM().hasStyle(dom, 'box-sizing', 'border-box');
-      let hasFlex =  getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||
-                     getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||
+      let hasFlex =  getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
+                     getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
+                     getDOM().hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
                      getDOM().hasStyle(dom, 'flex', '1 1 0px');
 
       expect(isBox).toBeTruthy();
@@ -90,6 +91,7 @@ describe('flex directive', () => {
       });
     });
     it('should work with calc values', () => {
+      // @see http://caniuse.com/#feat=calc for IE issues with calc()
       if ( !isIE ) {
         expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
           'box-sizing': 'border-box',
