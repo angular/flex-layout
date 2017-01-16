@@ -79,7 +79,7 @@ export function config(config) {
     browserDisconnectTimeout: 20000,
     browserNoActivityTimeout: 240000,
     captureTimeout: 120000,
-    browsers: ['Chrome_1024x768', 'Safari_1024x768'],
+    browsers: ['Chrome_1024x768'],
   });
 
   if (process.env['TRAVIS']) {
