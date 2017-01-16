@@ -1,6 +1,7 @@
 {
   "versions": [
+    "2.0.0-beta.2",
     "2.0.0-beta.1"
   ],
-  "latest": "2.0.0-beta.1"
+  "latest": "2.0.0-beta.2"
 }

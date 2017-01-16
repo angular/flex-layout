@@ -4,10 +4,12 @@ import path = require('path');
 
 import parseArgs = require('minimist');
 import gulpUtils = require('gulp-util');
+import fs = require('fs');
+const addStream = require('add-stream');
 const chalk = gulpUtils.colors;
 const log = gulpUtils.log;
 
-const changelog = require('gulp-conventional-changelog');
+const changelog = require('conventional-changelog');
 const semver = require('semver');
 const args = parseArgs(process.argv.slice(2),{'string':["sha","SHA"]});
 
@@ -23,7 +25,6 @@ task('changelog', function() {
   const changelogPath = path.join(ROOT, 'CHANGELOG.md');
   const previousTag = getLatestTag();
   const currentTag = 'v' + VERSION;
-  const fromSHA = SHA || previousTag.sha;
   const contextOptions = {
     version: VERSION,
     previousTag: previousTag.name,
@@ -40,13 +41,20 @@ task('changelog', function() {
     log('Generating changelog from tag ' + previousTag.name + ' (' + shortSha + ')');
   }
 
-  return src(changelogPath)
-    .pipe(changelog({ preset: 'angular' }, contextOptions, {
-      from: fromSHA
-    }, {}, {
-      generateOn: _shouldGenerate
-    }))
-    .pipe(dest(ROOT));
+  /* Create our changelog and append the current changelog stream. */
+  const inputStream = fs.createReadStream(changelogPath);
+  let changelogStream = changelog(
+        { preset: 'angular' },
+        contextOptions,
+        { from: SHA || previousTag.sha}
+  ).pipe(addStream(inputStream));
+
+
+  /* Wait for the changelog to be ready and overwrite it. */
+  inputStream.on('end', function() {
+    changelogStream.pipe(fs.createWriteStream(changelogPath));
+  });
+
 
 });
 
@@ -70,19 +78,4 @@ function getLatestTag() {
  */
 function getShortSha(sha:string) {
   return sha.substring(0, 7);
-}
-
-/**
- * Function which determines whether the conventional-changelog should create
- * a new section in the CHANGELOG or not.
- *
- * - If a SHA is specified, the first checked SHA will be used to generate a new section.
- * - By default it just checks if the commit is tagged and if the version is valid.
- *
- * @param {Object=} commit Parsed commit from the conventional-changelog-parser.
- */
-let _isGenerated = 0;
-function _shouldGenerate(commit) {
-  let addSection = false;   // _isGenerated++ === 0;
-  return SHA ?  addSection : semver.valid(commit.version);
 }

@@ -45,15 +45,15 @@
 
     checkoutVersionBranch();
     updateVersion();
-    createChangelog();
     writeReleasesJson();
     commitChanges();
     tagRelease();
+    createChangelog();
     cloneRepo();
     generateLatestBuild();
     updateMaster();
     writeScript('abort', abortCmds.concat(cleanupCmds));
-    writeScript('push', (dryRun ? abortCmds :pushCmds).concat(cleanupCmds));
+    writeScript('push', (dryRun ? abortCmds : pushCmds).concat(cleanupCmds));
 
     line();
     log(`Your repo is ${"ready".cyan} to be pushed.`);
@@ -129,7 +129,7 @@
 
     exec(`git fetch --tags ${origin}`);
     exec(`git checkout v${lastMajorVer} -- CHANGELOG.md`);
-    exec(`gulp changelog --sha=$(git merge-base v${lastMajorVer} HEAD)`);
+    exec(`gulp changelog --sha=$(git rev-list -n 1 v${lastMajorVer})`);
 
     done();
 
@@ -278,21 +278,24 @@
      ]);
     done();
 
-    let path = "./"+BUILD_REPO;
-    start(`Copy files into ${path.cyan} repo...`);
+    let options = {cwd: "./"+BUILD_REPO};
+
+    start(`Copy files into ${options.cwd.cyan} repo...`);
+
     exec([
-           'cp -Rf ../dist/* ./',
-           'git add -A',
-           `git commit -m "release: version ${newVersion}"`,
-           'rm -rf ../dist/*'
-         ]);
+      'cp -Rf ../dist/@angular/flex-layout/* ./',
+      'cp -f ../tools/scripts/release/npm_assets/package.json ./',
+      'git add -A',
+      `git commit -m "release deploy: version ${newVersion}"`,
+      'rm -rf ../dist'
+    ], options);
     done();
 
     //-- add steps to push script
     pushCmds.push(
       comment('push to builds (master and tag) and publish to npm'),
       `cd ./${BUILD_REPO}`,
-      'cp ../CHANGELOG.md .',
+      'cp -f ../CHANGELOG.md .',
       'git add CHANGELOG.md',
       'git commit --amend --no-edit',
       `git tag -f v${newVersion}`,
@@ -311,7 +314,7 @@
         comment('update package.json in master'),
         'git checkout master',
         `git pull --rebase ${origin} master --strategy=theirs`,
-      `git checkout release/${newVersion} -- CHANGELOG.md`,
+        `git checkout release/${newVersion} -- CHANGELOG.md`,
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(buildCommand)}"`,
         'git add CHANGELOG.md',
         'git add package.json',
@@ -332,7 +335,7 @@
           .toString()
           .split('\n')
           .slice(1, -1)
-          .map(function (line) { return line.trim(); })
+          .map((line) => line.trim() )
           .join(' ')
           .replace(/"/g, '\\"');
     }
@@ -362,7 +365,7 @@
   /** utility method for executing terminal commands */
   function exec (cmd, userOptions) {
     if (cmd instanceof Array) {
-      return cmd.map(function (cmd) { return exec(cmd, userOptions); });
+      return cmd.map( (cmd) => exec(cmd, userOptions) );
     }
     try {
       var options = Object.create(defaultOptions);
