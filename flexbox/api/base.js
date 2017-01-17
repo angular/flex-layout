@@ -106,4 +106,4 @@ export var BaseFxDirective = (function () {
     });
     return BaseFxDirective;
 }());
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base.js.map
+//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/base.js.map
