@@ -133,4 +133,4 @@ export var FlexOrderDirective = (function (_super) {
     };
     return FlexOrderDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/flex-order.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-order.js.map

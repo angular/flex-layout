@@ -8,4 +8,4 @@
 export * from './api/base';
 export * from './responsive/responsive-activation';
 export * from './_module';
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/index.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/index.js.map

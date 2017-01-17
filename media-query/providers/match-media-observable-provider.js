@@ -89,4 +89,4 @@ export var MatchMediaObservableProvider = {
     deps: [MatchMedia, BreakPointRegistry],
     useFactory: MatchMediaObservableFactory
 };
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/media-query/providers/match-media-observable-provider.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/providers/match-media-observable-provider.js.map

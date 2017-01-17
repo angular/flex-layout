@@ -130,4 +130,4 @@ function prepareQueryCSS(query) {
         }
     }
 }
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/media-query/match-media.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/match-media.js.map

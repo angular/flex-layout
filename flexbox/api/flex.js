@@ -310,4 +310,4 @@ export var FlexDirective = (function (_super) {
     };
     return FlexDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/flex.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex.js.map

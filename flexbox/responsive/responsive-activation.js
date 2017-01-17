@@ -183,4 +183,4 @@ export var ResponsiveActivation = (function () {
     };
     return ResponsiveActivation;
 }());
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map

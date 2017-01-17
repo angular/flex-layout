@@ -70,4 +70,4 @@ export var BreakPointRegistry = (function () {
     ]; };
     return BreakPointRegistry;
 }());
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/media-query/breakpoints/break-point-registry.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-point-registry.js.map

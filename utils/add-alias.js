@@ -9,4 +9,4 @@ export function mergeAlias(dest, source) {
         suffix: source.suffix
     } : {});
 }
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/utils/add-alias.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/add-alias.js.map

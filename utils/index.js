@@ -8,4 +8,4 @@
 export * from './auto-prefixer';
 export * from './object-extend';
 export * from './add-alias';
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/utils/index.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/index.js.map

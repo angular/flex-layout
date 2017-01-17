@@ -12,4 +12,4 @@ export * from './match-media';
 export * from './media-change';
 export * from './media-monitor';
 export * from './_module';
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/media-query/index.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/index.js.map
