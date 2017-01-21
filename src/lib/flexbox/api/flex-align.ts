@@ -28,7 +28,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 @Directive({
   selector: `
   [fxFlexAlign],
-  [fxFlexAlign.xs]
+  [fxFlexAlign.xs],
   [fxFlexAlign.gt-xs],
   [fxFlexAlign.sm],
   [fxFlexAlign.gt-sm]

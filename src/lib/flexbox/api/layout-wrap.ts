@@ -31,7 +31,7 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  */
 @Directive({selector: `
   [fxLayoutWrap],
-  [fxLayoutWrap.xs]
+  [fxLayoutWrap.xs],
   [fxLayoutWrap.gt-xs],
   [fxLayoutWrap.sm],
   [fxLayoutWrap.gt-sm]

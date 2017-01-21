@@ -30,7 +30,7 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  */
 @Directive({selector: `
   [fxLayoutGap],
-  [fxLayoutGap.xs]
+  [fxLayoutGap.xs],
   [fxLayoutGap.gt-xs],
   [fxLayoutGap.sm],
   [fxLayoutGap.gt-sm]

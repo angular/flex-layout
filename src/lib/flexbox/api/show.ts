@@ -27,16 +27,16 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from './layout';
 
 
-
 const FALSY = ['false', false, 0];
 
 /**
  * 'show' Layout API directive
  *
  */
-@Directive({selector: `
+@Directive({
+  selector: `
   [fxShow],
-  [fxShow.xs]
+  [fxShow.xs],
   [fxShow.gt-xs],
   [fxShow.sm],
   [fxShow.gt-sm]
@@ -45,37 +45,63 @@ const FALSY = ['false', false, 0];
   [fxShow.lg],
   [fxShow.gt-lg],
   [fxShow.xl]
-`})
+`
+})
 export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  /**
-   * Original dom Elements CSS display style
-   */
-  private _display = 'flex';
 
   /**
-    * Subscription to the parent flex container's layout changes.
-    * Stored so we can unsubscribe when this directive is destroyed.
-    */
+   * Subscription to the parent flex container's layout changes.
+   * Stored so we can unsubscribe when this directive is destroyed.
+   */
   private _layoutWatcher: Subscription;
 
-  @Input('fxShow')       set show(val)     { this._cacheInput("show", val); }
-  @Input('fxShow.xs')    set showXs(val)   { this._cacheInput('showXs', val); }
-  @Input('fxShow.gt-xs') set showGtXs(val) { this._cacheInput('showGtXs', val); };
-  @Input('fxShow.sm')    set showSm(val)   { this._cacheInput('showSm', val); };
-  @Input('fxShow.gt-sm') set showGtSm(val) { this._cacheInput('showGtSm', val); };
-  @Input('fxShow.md')    set showMd(val)   { this._cacheInput('showMd', val); };
-  @Input('fxShow.gt-md') set showGtMd(val) { this._cacheInput('showGtMd', val); };
-  @Input('fxShow.lg')    set showLg(val)   { this._cacheInput('showLg', val); };
-  @Input('fxShow.gt-lg') set showGtLg(val) { this._cacheInput('showGtLg', val); };
-  @Input('fxShow.xl')    set showXl(val)   { this._cacheInput('showXl', val); };
+  @Input('fxShow')       set show(val) {
+    this._cacheInput("show", val);
+  }
+
+  @Input('fxShow.xs')    set showXs(val) {
+    this._cacheInput('showXs', val);
+  }
+
+  @Input('fxShow.gt-xs') set showGtXs(val) {
+    this._cacheInput('showGtXs', val);
+  };
+
+  @Input('fxShow.sm')    set showSm(val) {
+    this._cacheInput('showSm', val);
+  };
+
+  @Input('fxShow.gt-sm') set showGtSm(val) {
+    this._cacheInput('showGtSm', val);
+  };
+
+  @Input('fxShow.md')    set showMd(val) {
+    this._cacheInput('showMd', val);
+  };
+
+  @Input('fxShow.gt-md') set showGtMd(val) {
+    this._cacheInput('showGtMd', val);
+  };
+
+  @Input('fxShow.lg')    set showLg(val) {
+    this._cacheInput('showLg', val);
+  };
+
+  @Input('fxShow.gt-lg') set showGtLg(val) {
+    this._cacheInput('showGtLg', val);
+  };
+
+  @Input('fxShow.xl')    set showXl(val) {
+    this._cacheInput('showXl', val);
+  };
+
   /**
    *
    */
-  constructor(
-      monitor: MediaMonitor,
-      @Optional() @Self() private _layout: LayoutDirective,
-      protected elRef: ElementRef,
-      protected renderer: Renderer) {
+  constructor(monitor: MediaMonitor,
+              @Optional() @Self() private _layout: LayoutDirective,
+              protected elRef: ElementRef,
+              protected renderer: Renderer) {
 
     super(monitor, elRef, renderer);
 
@@ -108,18 +134,20 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('show', true, (changes: MediaChange) => {
+    let value = this._getDefaultVal("show", true);
+
+    this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
   }
 
   ngOnDestroy() {
-     super.ngOnDestroy();
-     if (this._layoutWatcher) {
-       this._layoutWatcher.unsubscribe();
-     }
-   }
+    super.ngOnDestroy();
+    if (this._layoutWatcher) {
+      this._layoutWatcher.unsubscribe();
+    }
+  }
 
   // *********************************************
   // Protected methods
@@ -127,7 +155,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
   /** Validate the visibility value and then update the host's inline display style */
   private _updateWithValue(value?: string|number|boolean) {
-    value = value || this._queryInput("show") || true;
+    value = value || this._getDefaultVal("show", true);
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

@@ -130,6 +130,55 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
+    it('should preserve display and update only on activated mediaQuery', () => {
+      let visibleStyle = {'display': 'inline-block'};
+      fixture = createTestComponent(`
+        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
+      `);
+      fixture.componentInstance.isHidden = false;
+      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+
+      // should hide with this activation and setting
+      activateMediaQuery('xs');
+      fixture.componentInstance.isHidden = true;
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+    });
+
+    it('should restore display when not enabled', () => {
+      let visibleStyle = {'display': 'inline-block'};
+      fixture = createTestComponent(`
+        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
+      `);
+      fixture.componentInstance.isHidden = false;
+      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+
+      // mqActivation but the isHidden == false, so show it
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+
+      // should hide with this activation
+      fixture.componentInstance.isHidden = true;
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+    });
+
+    it('should restore display when the mediaQuery deactivates', () => {
+      let visibleStyle = {'display': 'inline-block'};
+      fixture = createTestComponent(`
+        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
+      `);
+      fixture.componentInstance.isHidden = true;
+      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+
+      // should hide with this activation
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+      // should reset to original display style
+      activateMediaQuery('md');
+      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+    });
+
+
   });
 });
 
@@ -144,6 +193,7 @@ describe('show directive', () => {
 })
 export class TestShowComponent implements OnInit {
   isVisible = 0;
+  isHidden = false;
   menuOpen: boolean = true;
 
   constructor(@Inject(MatchMediaObservable) private media) {

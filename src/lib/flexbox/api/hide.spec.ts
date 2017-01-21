@@ -5,7 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit, Inject} from '@angular/core';
+import {
+  Component, OnInit, Inject
+} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
@@ -13,12 +15,15 @@ import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
-import {FlexLayoutModule} from '../_module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {
+  makeCreateTestComponent, expectNativeEl,
+} from '../../utils/testing/helpers';
+import {HideDirective} from './hide';
+import {MediaQueriesModule} from '../../media-query/_module';
 
-describe('show directive', () => {
+describe('hide directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(() => TestHideComponent);
   let activateMediaQuery = (alias) => {
@@ -29,10 +34,11 @@ describe('show directive', () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
+
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
-      declarations: [TestHideComponent],
+      imports: [CommonModule, MediaQueriesModule.forRoot()],
+      declarations: [TestHideComponent, HideDirective],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
         {provide: MatchMedia, useClass: MockMatchMedia}
@@ -77,7 +83,7 @@ describe('show directive', () => {
 
     it('should update styles with binding changes', () => {
       fixture = createTestComponent(`
-        <div [fxHide]="menuHidden"  >
+        <div [fxHide]="menuHidden">
           ...content
         </div>
       `);
@@ -92,7 +98,7 @@ describe('show directive', () => {
 
   describe('with responsive features', () => {
 
-    it('should show on `xs` viewports only', () => {
+    it('should show on `xs` viewports only when the default is included', () => {
       fixture = createTestComponent(`
             <div fxHide="" fxHide.xs="false" >
               ...content
@@ -107,6 +113,52 @@ describe('show directive', () => {
     });
 
   });
+
+  it('should preserve display and update only on activated mediaQuery', () => {
+    fixture = createTestComponent(`
+      <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
+    `);
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+
+    // should hide with this activation
+    activateMediaQuery('xs');
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+    // should reset to original display style
+    activateMediaQuery('md');
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+  });
+
+  it('should restore original display when disabled', () => {
+    fixture = createTestComponent(`
+      <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
+    `);
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+
+    // should hide with this activation
+    activateMediaQuery('xs');
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+    // should reset to original display style
+    fixture.componentInstance.isHidden = false;
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+  });
+
+  it('should restore original display when the mediaQuery deactivates', () => {
+      let originalDisplay = {'display': 'table'};
+      fixture = createTestComponent(`
+        <div [fxHide.xs]="isHidden" style="display:table"></div>
+      `);
+      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+
+      // should hide with this activation
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+      // should reset to original display style
+      activateMediaQuery('md');
+      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+    });
 
   it('should support use of the `media` observable in templates ', () => {
     fixture = createTestComponent(`
@@ -150,7 +202,8 @@ describe('show directive', () => {
 })
 export class TestHideComponent implements OnInit {
   isVisible = 0;
-  menuHidden: boolean = true;
+  isHidden = true;
+  menuHidden = true;
 
   constructor(@Inject(MatchMediaObservable) private media) {
   }

@@ -41,7 +41,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 @Directive({
   selector: `
   [fxFlex],
-  [fxFlex.xs]
+  [fxFlex.xs],
   [fxFlex.gt-xs],
   [fxFlex.sm],
   [fxFlex.gt-sm]
