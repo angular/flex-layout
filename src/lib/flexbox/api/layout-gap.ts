@@ -28,9 +28,10 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-@Directive({selector: `
+@Directive({
+  selector: `
   [fxLayoutGap],
-  [fxLayoutGap.xs]
+  [fxLayoutGap.xs],
   [fxLayoutGap.gt-xs],
   [fxLayoutGap.sm],
   [fxLayoutGap.gt-sm]
@@ -39,28 +40,58 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
   [fxLayoutGap.lg],
   [fxLayoutGap.gt-lg],
   [fxLayoutGap.xl]
-`})
+`
+})
 export class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges,
-                                                                   OnDestroy {
+    OnDestroy {
   private _layout = 'row';  // default flex-direction
   private _layoutWatcher: Subscription;
+  private _observer: MutationObserver;
 
-  @Input('fxLayoutGap')       set gap(val)     { this._cacheInput('gap', val); }
-  @Input('fxLayoutGap.xs')    set gapXs(val)   { this._cacheInput('gapXs', val); }
-  @Input('fxLayoutGap.gt-xs') set gapGtXs(val) { this._cacheInput('gapGtXs', val); };
-  @Input('fxLayoutGap.sm')    set gapSm(val)   { this._cacheInput('gapSm', val); };
-  @Input('fxLayoutGap.gt-sm') set gapGtSm(val) { this._cacheInput('gapGtSm', val); };
-  @Input('fxLayoutGap.md')    set gapMd(val)   { this._cacheInput('gapMd', val); };
-  @Input('fxLayoutGap.gt-md') set gapGtMd(val) { this._cacheInput('gapGtMd', val); };
-  @Input('fxLayoutGap.lg')    set gapLg(val)   { this._cacheInput('gapLg', val); };
-  @Input('fxLayoutGap.gt-lg') set gapGtLg(val) { this._cacheInput('gapGtLg', val); };
-  @Input('fxLayoutGap.xl')    set gapXl(val)   { this._cacheInput('gapXl', val); };
+  @Input('fxLayoutGap')       set gap(val) {
+    this._cacheInput('gap', val);
+  }
 
-  constructor(
-    monitor: MediaMonitor,
-    elRef: ElementRef,
-    renderer: Renderer,
-    @Optional() @Self() container: LayoutDirective) {
+  @Input('fxLayoutGap.xs')    set gapXs(val) {
+    this._cacheInput('gapXs', val);
+  }
+
+  @Input('fxLayoutGap.gt-xs') set gapGtXs(val) {
+    this._cacheInput('gapGtXs', val);
+  };
+
+  @Input('fxLayoutGap.sm')    set gapSm(val) {
+    this._cacheInput('gapSm', val);
+  };
+
+  @Input('fxLayoutGap.gt-sm') set gapGtSm(val) {
+    this._cacheInput('gapGtSm', val);
+  };
+
+  @Input('fxLayoutGap.md')    set gapMd(val) {
+    this._cacheInput('gapMd', val);
+  };
+
+  @Input('fxLayoutGap.gt-md') set gapGtMd(val) {
+    this._cacheInput('gapGtMd', val);
+  };
+
+  @Input('fxLayoutGap.lg')    set gapLg(val) {
+    this._cacheInput('gapLg', val);
+  };
+
+  @Input('fxLayoutGap.gt-lg') set gapGtLg(val) {
+    this._cacheInput('gapGtLg', val);
+  };
+
+  @Input('fxLayoutGap.xl')    set gapXl(val) {
+    this._cacheInput('gapXl', val);
+  };
+
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer,
+              @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
@@ -83,6 +114,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    * mql change events to onMediaQueryChange handlers
    */
   ngAfterContentInit() {
+    this._watchContentChanges();
     this._listenForMediaQueryChanges('gap', '0', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
@@ -90,15 +122,34 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   }
 
   ngOnDestroy() {
-     super.ngOnDestroy();
-     if (this._layoutWatcher) {
-       this._layoutWatcher.unsubscribe();
-     }
-   }
+    super.ngOnDestroy();
+    if (this._layoutWatcher) {
+      this._layoutWatcher.unsubscribe();
+    }
+    if (this._observer) {
+      this._observer.disconnect();
+    }
+  }
 
   // *********************************************
   // Protected methods
   // *********************************************
+
+  /**
+   * Watch for child nodes to be added... and apply the layout gap styles to each.
+   * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+   */
+  private _watchContentChanges() {
+    let onMutationCallback = (mutations) => {
+      // update gap styles only for 'addedNodes' events
+      mutations
+          .filter((it: MutationRecord) => it.addedNodes && it.addedNodes.length)
+          .map(() => this._updateWithValue());
+    };
+
+    this._observer = new MutationObserver(onMutationCallback);
+    this._observer.observe(this._elementRef.nativeElement, {childList: true});
+  }
 
   /**
    * Cache the parent container 'flex-direction' and update the 'margin' styles
@@ -108,7 +159,6 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
     }
-
     this._updateWithValue();
   }
 
@@ -121,11 +171,18 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       value = this._mqActivation.activatedInput;
     }
 
-    // For each `element` child, set the padding styles...
+    // Reset 1st child element to 0px gap
     let items = this.childrenNodes
-          .filter( el => (el.nodeType === 1))   // only Element types
-          .filter( (el, j) => j > 0 );          // skip first element since gaps are needed
-    this._applyStyleToElements(this._buildCSS(value), items );
+        .filter(el => (el.nodeType === 1))   // only Element types
+        .filter((el, j) => j == 0);
+    this._applyStyleToElements(this._buildCSS(0), items);
+
+    // For each `element` child, set the padding styles...
+    items = this.childrenNodes
+        .filter(el => (el.nodeType === 1))   // only Element types
+        .filter((el, j) => j > 0);          // skip first element since gaps are needed
+    this._applyStyleToElements(this._buildCSS(value), items);
+
   }
 
   /**
