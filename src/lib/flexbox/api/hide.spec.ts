@@ -16,9 +16,9 @@ import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
-  makeCreateTestComponent, expectNativeEl,
+  makeCreateTestComponent, expectNativeEl, queryFor
 } from '../../utils/testing/helpers';
 import {HideDirective} from './hide';
 import {MediaQueriesModule} from '../../media-query/_module';
@@ -112,44 +112,11 @@ describe('hide directive', () => {
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
-  });
-
-  it('should preserve display and update only on activated mediaQuery', () => {
-    fixture = createTestComponent(`
-      <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
-    `);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
-
-    // should hide with this activation
-    activateMediaQuery('xs');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
-
-    // should reset to original display style
-    activateMediaQuery('md');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
-  });
-
-  it('should restore original display when disabled', () => {
-    fixture = createTestComponent(`
-      <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
-    `);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
-
-    // should hide with this activation
-    activateMediaQuery('xs');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
-
-    // should reset to original display style
-    fixture.componentInstance.isHidden = false;
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
-  });
-
-  it('should restore original display when the mediaQuery deactivates', () => {
-      let originalDisplay = {'display': 'table'};
+    it('should preserve display and update only on activated mediaQuery', () => {
       fixture = createTestComponent(`
-        <div [fxHide.xs]="isHidden" style="display:table"></div>
+        <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
 
       // should hide with this activation
       activateMediaQuery('xs');
@@ -157,38 +124,103 @@ describe('hide directive', () => {
 
       // should reset to original display style
       activateMediaQuery('md');
-      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
     });
 
-  it('should support use of the `media` observable in templates ', () => {
-    fixture = createTestComponent(`
-            <div [fxHide]="media.isActive('xs')" >
-              ...content
-            </div>
+    it('should restore original display when disabled', () => {
+      fixture = createTestComponent(`
+        <div [fxHide.xs]="isHidden" style="display:inline-block"></div>
+      `);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+
+      // should hide with this activation
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+      // should reset to original display style
+      fixture.componentInstance.isHidden = false;
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+    });
+
+    it('should restore original display when the mediaQuery deactivates', () => {
+        let originalDisplay = {'display': 'table'};
+        fixture = createTestComponent(`
+          <div [fxHide.xs]="isHidden" style="display:table"></div>
         `);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+        expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
 
-    activateMediaQuery('xs');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+        // should hide with this activation
+        activateMediaQuery('xs');
+        expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-    activateMediaQuery('lg');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+        // should reset to original display style
+        activateMediaQuery('md');
+        expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      });
+
+    it('should support use of the `media` observable in templates ', () => {
+      fixture = createTestComponent(`
+              <div [fxHide]="media.isActive('xs')" >
+                ...content
+              </div>
+          `);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+      activateMediaQuery('lg');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+    });
+
+    it('should support use of the `media` observable in adaptive templates ', () => {
+      fixture = createTestComponent(`
+              <div fxHide="false" [fxHide.md]="media.isActive('xs')" >
+                ...content
+              </div>
+          `);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+
+      activateMediaQuery('md');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+    });
+
+    fit('should hide when used with fxLayout and the ".md" breakpoint activates', () => {
+        let template = `
+          <div fxLayout="row" >
+            <div  fxLayout="row" 
+                  fxLayout.md="column" 
+                  fxHide.md 
+                  class="hideOnMd">
+              <div fxFlex>Col #1: First item in row</div>
+              <div fxFlex>Col #1: Second item in row</div>
+            </div>
+            <div fxLayout="column" fxFlex>
+              <div fxFlex>Col #2: First item in column</div>
+              <div fxFlex>Col #2: Second item in column</div>
+            </div>
+          </div>
+        `;
+
+        fixture = createTestComponent(template);
+        fixture.detectChanges();
+
+        let nodes = queryFor(fixture, ".hideOnMd");
+        expect(nodes.length).toEqual(1);
+        expect(nodes[0].nativeElement).toHaveCssStyle({'display':'flex'});
+
+        activateMediaQuery('md');
+        fixture.detectChanges();
+
+        nodes = queryFor(fixture, ".hideOnMd");
+        expect(nodes.length).toEqual(1);
+        expect(nodes[0].nativeElement).toHaveCssStyle({'display':'none'});
+      })
   });
 
-  it('should support use of the `media` observable in adaptive templates ', () => {
-    fixture = createTestComponent(`
-            <div fxHide="false" [fxHide.md]="media.isActive('xs')" >
-              ...content
-            </div>
-        `);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
-
-    activateMediaQuery('xs');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
-
-    activateMediaQuery('md');
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
-  });
 });
 
 

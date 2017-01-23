@@ -163,13 +163,13 @@ export abstract class BaseFxDirective implements OnDestroy {
    */
   protected get childrenNodes() {
     var obj = this._elementRef.nativeElement.childNodes;
-    var array = [];
+    var buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for (var i = obj.length; i--;) {
-      array[i] = obj[i];
+    for ( var i = obj.length; i--; ) {
+      buffer[i] = obj[i];
     }
-    return array;
+    return buffer;
   }
 
 }

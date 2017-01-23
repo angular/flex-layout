@@ -39,9 +39,9 @@ const FALSY = ['false', false, 0];
   [fxShow.xs],
   [fxShow.gt-xs],
   [fxShow.sm],
-  [fxShow.gt-sm]
+  [fxShow.gt-sm],
   [fxShow.md],
-  [fxShow.gt-md]
+  [fxShow.gt-md],
   [fxShow.lg],
   [fxShow.gt-lg],
   [fxShow.xl]

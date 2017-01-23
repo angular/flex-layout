@@ -36,9 +36,9 @@ import {LayoutDirective} from './layout';
   [fxHide.xs],
   [fxHide.gt-xs],
   [fxHide.sm],
-  [fxHide.gt-sm]
+  [fxHide.gt-sm],
   [fxHide.md],
-  [fxHide.gt-md]
+  [fxHide.gt-md],
   [fxHide.lg],
   [fxHide.gt-lg],
   [fxHide.xl]

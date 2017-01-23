@@ -44,9 +44,9 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
   [fxFlex.xs],
   [fxFlex.gt-xs],
   [fxFlex.sm],
-  [fxFlex.gt-sm]
+  [fxFlex.gt-sm],
   [fxFlex.md],
-  [fxFlex.gt-md]
+  [fxFlex.gt-md],
   [fxFlex.lg],
   [fxFlex.gt-lg],
   [fxFlex.xl]

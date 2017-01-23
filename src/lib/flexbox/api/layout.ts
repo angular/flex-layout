@@ -36,9 +36,9 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
   [fxLayout.xs],
   [fxLayout.gt-xs],
   [fxLayout.sm],
-  [fxLayout.gt-sm]
+  [fxLayout.gt-sm],
   [fxLayout.md],
-  [fxLayout.gt-md]
+  [fxLayout.gt-md],
   [fxLayout.lg],
   [fxLayout.gt-lg],
   [fxLayout.xl]

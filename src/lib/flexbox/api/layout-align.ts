@@ -40,9 +40,9 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
   [fxLayoutAlign.xs],
   [fxLayoutAlign.gt-xs],
   [fxLayoutAlign.sm],
-  [fxLayoutAlign.gt-sm]
+  [fxLayoutAlign.gt-sm],
   [fxLayoutAlign.md],
-  [fxLayoutAlign.gt-md]
+  [fxLayoutAlign.gt-md],
   [fxLayoutAlign.lg],
   [fxLayoutAlign.gt-lg],
   [fxLayoutAlign.xl]

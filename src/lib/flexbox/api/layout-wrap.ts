@@ -34,9 +34,9 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
   [fxLayoutWrap.xs],
   [fxLayoutWrap.gt-xs],
   [fxLayoutWrap.sm],
-  [fxLayoutWrap.gt-sm]
+  [fxLayoutWrap.gt-sm],
   [fxLayoutWrap.md],
-  [fxLayoutWrap.gt-md]
+  [fxLayoutWrap.gt-md],
   [fxLayoutWrap.lg],
   [fxLayoutWrap.gt-lg],
   [fxLayoutWrap.xl]
