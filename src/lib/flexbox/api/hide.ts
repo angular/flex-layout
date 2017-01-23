@@ -101,6 +101,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
               protected renderer: Renderer) {
     super(monitor, elRef, renderer);
 
+    this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
     if (_layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -114,6 +115,16 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   // *********************************************
   // Lifecycle Methods
   // *********************************************
+
+  /**
+   * Override accessor to the current HTMLElement's `display` style
+   * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+   * unless it was already explicitly defined.
+   */
+  protected _getDisplayStyle(): string {
+    let element: HTMLElement = this._elementRef.nativeElement;
+    return (element.style as any)['display'] || (this._layout ? "flex" : "block");
+  }
 
   /**
    * On changes to any @Input properties...

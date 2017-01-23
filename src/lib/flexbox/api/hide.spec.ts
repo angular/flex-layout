@@ -69,7 +69,7 @@ describe('hide directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should initial with component visible when set to `0`', () => {
@@ -78,7 +78,7 @@ describe('hide directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture, {isVisible: 0}).toHaveCssStyle({'display': 'block'});
     });
 
     it('should update styles with binding changes', () => {
@@ -89,10 +89,31 @@ describe('hide directive', () => {
       `);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
       fixture.componentInstance.toggleMenu();
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
+
+    it('should use "block" display style when not explicitly defined', () => {
+      fixture = createTestComponent(`
+        <button [fxHide]="isHidden">
+          ...content
+        </button>
+      `);
+      expectNativeEl(fixture, {isHidden: true}).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'block'});
+    });
+
+    it('should use "flex" display style when the element also has an fxLayout', () => {
+      fixture = createTestComponent(`
+        <div fxLayout [fxHide]="isHidden" >
+          ...content
+        </div>
+      `);
+      expectNativeEl(fixture, {isHidden: true}).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'block'});
+    });
+
 
   });
 
@@ -107,7 +128,7 @@ describe('hide directive', () => {
 
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
       activateMediaQuery('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
       activateMediaQuery('md');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
@@ -143,20 +164,20 @@ describe('hide directive', () => {
     });
 
     it('should restore original display when the mediaQuery deactivates', () => {
-        let originalDisplay = {'display': 'table'};
-        fixture = createTestComponent(`
+      let originalDisplay = {'display': 'table'};
+      fixture = createTestComponent(`
           <div [fxHide.xs]="isHidden" style="display:table"></div>
         `);
-        expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
 
-        // should hide with this activation
-        activateMediaQuery('xs');
-        expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      // should hide with this activation
+      activateMediaQuery('xs');
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-        // should reset to original display style
-        activateMediaQuery('md');
-        expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
-      });
+      // should reset to original display style
+      activateMediaQuery('md');
+      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+    });
 
     it('should support use of the `media` observable in templates ', () => {
       fixture = createTestComponent(`
@@ -164,13 +185,13 @@ describe('hide directive', () => {
                 ...content
               </div>
           `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('xs');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       activateMediaQuery('lg');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should support use of the `media` observable in adaptive templates ', () => {
@@ -179,17 +200,17 @@ describe('hide directive', () => {
                 ...content
               </div>
           `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('md');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
-    fit('should hide when used with fxLayout and the ".md" breakpoint activates', () => {
-        let template = `
+    it('should hide when used with fxLayout and the ".md" breakpoint activates', () => {
+      let template = `
           <div fxLayout="row" >
             <div  fxLayout="row" 
                   fxLayout.md="column" 
@@ -205,20 +226,20 @@ describe('hide directive', () => {
           </div>
         `;
 
-        fixture = createTestComponent(template);
-        fixture.detectChanges();
+      fixture = createTestComponent(template);
+      fixture.detectChanges();
 
-        let nodes = queryFor(fixture, ".hideOnMd");
-        expect(nodes.length).toEqual(1);
-        expect(nodes[0].nativeElement).toHaveCssStyle({'display':'flex'});
+      let nodes = queryFor(fixture, ".hideOnMd");
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'display': 'block'});
 
-        activateMediaQuery('md');
-        fixture.detectChanges();
+      activateMediaQuery('md');
+      fixture.detectChanges();
 
-        nodes = queryFor(fixture, ".hideOnMd");
-        expect(nodes.length).toEqual(1);
-        expect(nodes[0].nativeElement).toHaveCssStyle({'display':'none'});
-      })
+      nodes = queryFor(fixture, ".hideOnMd");
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'display': 'none'});
+    });
   });
 
 });

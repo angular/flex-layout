@@ -54,7 +54,7 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should initial with component not visible when set to `false`', () => {
@@ -75,7 +75,7 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       fixture.componentInstance.isVisible = true;
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should update styles with binding changes', () => {
@@ -85,10 +85,28 @@ describe('show directive', () => {
           ...content
         </div>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
       fixture.componentInstance.toggleMenu();
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
       fixture.componentInstance.toggleMenu();
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+    });
+
+    it('should use "block" display style when not explicitly defined', () => {
+      fixture = createTestComponent(`
+        <button fxShow >
+          ...content
+        </button>
+      `);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+    });
+
+    it('should use "flex" display style when the element also has an fxLayout', () => {
+      fixture = createTestComponent(`
+        <div fxLayout fxShow >
+          ...content
+        </div>
+      `);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     });
 
@@ -98,18 +116,18 @@ describe('show directive', () => {
 
     it('should hide on `xs` viewports only', () => {
       fixture = createTestComponent(`<div fxShow fxShow.xs="false" >...content</div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('xs');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       activateMediaQuery('md');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
       fixture = createTestComponent(`<div fxShow fxShow.gt-xs="false" >...content</div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('md', true);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
@@ -124,7 +142,7 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       activateMediaQuery('xs', true);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
       activateMediaQuery('gt-md', true);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
