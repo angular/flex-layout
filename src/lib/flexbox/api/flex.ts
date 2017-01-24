@@ -41,7 +41,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 @Directive({
   selector: `
   [fxFlex],
-  [fxFlex.xs]
+  [fxFlex.xs],
   [fxFlex.gt-xs],
   [fxFlex.sm],
   [fxFlex.gt-sm]
@@ -249,30 +249,24 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       case '':
         css = extendObject(clearStyles, {'flex': '1 1 0.000000001px'});
         break;
-      case 'grow':
-        css = extendObject(clearStyles, {'flex': '1 1 100%'});
-        break;
-      case 'initial':
-        css = extendObject(clearStyles, {'flex': '0 1 auto'});
-        break;  // default
-      case 'auto':
-        css = extendObject(clearStyles, {'flex': '1 1 auto'});
-        break;
-      case 'none':
-        shrink = 0;
-        css = extendObject(clearStyles, {'flex': '0 0 auto'});
-        break;
+      case 'initial':   // default
       case 'nogrow':
         css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;
-      case 'none':
-        css = extendObject(clearStyles, {'flex': 'none'});
+      case 'grow':
+        css = extendObject(clearStyles, {'flex': '1 1 100%'});
         break;
       case 'noshrink':
         shrink = 0;
         css = extendObject(clearStyles, {'flex': '1 0 auto'});
         break;
-
+      case 'auto':
+        css = extendObject(clearStyles, {'flex': `${grow} ${shrink} auto`});
+        break;
+      case 'none':
+        shrink = 0;
+        css = extendObject(clearStyles, {'flex': '0 0 auto'});
+        break;
       default:
         let isPercent = String(basis).indexOf('%') > -1;
 

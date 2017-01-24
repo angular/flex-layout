@@ -90,6 +90,18 @@ describe('flex directive', () => {
         'box-sizing': 'border-box',
       });
     });
+    it('should work with "1 0 auto" values', () => {
+      expectDOMFrom(`<div fxFlex="1 0 auto"></div>`).toHaveCssStyle({
+        'flex': '1 0 auto',
+        'box-sizing': 'border-box',
+      });
+    });
+    it('should work with "1 1 auto" values', () => {
+      expectDOMFrom(`<div fxFlex="1 1 auto"></div>`).toHaveCssStyle({
+        'flex': '1 1 auto',
+        'box-sizing': 'border-box',
+      });
+    });
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       if ( !isIE ) {
@@ -99,9 +111,35 @@ describe('flex directive', () => {
         });
       }
     });
-    it('should work with named values', () => {
+
+    it('should work with "auto" values', () => {
+      expectDOMFrom(`<div fxFlex="auto"></div>`).toHaveCssStyle({
+        'flex': '1 1 auto'
+      });
+    });
+    it('should work with "nogrow" values', () => {
       expectDOMFrom(`<div fxFlex="nogrow"></div>`).toHaveCssStyle({
         'flex': '0 1 auto'
+      });
+    });
+    it('should work with "grow" values', () => {
+      expectDOMFrom(`<div fxFlex="grow"></div>`).toHaveCssStyle({
+        'flex': '1 1 100%'
+      });
+    });
+    it('should work with "initial" values', () => {
+      expectDOMFrom(`<div fxFlex="initial"></div>`).toHaveCssStyle({
+        'flex': '0 1 auto'
+      });
+    });
+    it('should work with "noshrink" values', () => {
+      expectDOMFrom(`<div fxFlex="noshrink"></div>`).toHaveCssStyle({
+        'flex': '1 0 auto'
+      });
+    });
+    it('should work with "none" values', () => {
+      expectDOMFrom(`<div fxFlex="none"></div>`).toHaveCssStyle({
+        'flex': '0 0 auto'
       });
     });
 
