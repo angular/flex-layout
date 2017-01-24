@@ -25,8 +25,7 @@ import {MatchMediaObservable} from "../../../lib/media-query/match-media";
                     [fxLayout.gt-lg]="firstColGtLg" 
                     fxFlex="50%" 
                     fxFlex.gt-sm="25"
-                    fxShow="true"
-                    fxShow.md="false" 
+                    fxHide.md 
                     (click)="toggleLayoutFor(1)" style="cursor: pointer;">
                 <div fxFlex>Col #1: First item in row</div>
                 <div fxFlex>Col #1: Second item in row</div>
@@ -43,7 +42,7 @@ import {MatchMediaObservable} from "../../../lib/media-query/match-media";
       <!--</md-card-actions>-->
       <md-card-footer style="width:95%">
          <div fxLayout="row" class="hint" fxLayoutAlign="space-around" > 
-            <div>&lt;div fxLayout="{{ firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxShow.md="false" &gt;</div>
+            <div>&lt;div fxLayout="{{ firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxHide.md &gt;</div>
             <div fxFlex></div>
             <div>&lt;div  fxLayout="{{ secondCol }}" fxFlex &gt;</div>
          </div>

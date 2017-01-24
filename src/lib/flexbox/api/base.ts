@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
- import {ElementRef, Renderer, OnDestroy} from '@angular/core';
+import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
@@ -20,6 +20,11 @@ export type StyleDefinition = string|{[property: string]: string|number};
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy {
+  /**
+   * Original dom Elements CSS display style
+   */
+  protected _display;
+
   /**
    * MediaQuery Activation Tracker
    */
@@ -36,6 +41,7 @@ export abstract class BaseFxDirective implements OnDestroy {
   constructor(private _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
               private _renderer: Renderer) {
+    this._display = this._getDisplayStyle();
   }
 
   // *********************************************
@@ -64,6 +70,26 @@ export abstract class BaseFxDirective implements OnDestroy {
   // *********************************************
   // Protected Methods
   // *********************************************
+
+  /**
+   * Was the directive's default selector used ?
+   * If not, use the fallback value!
+   */
+  protected _getDefaultVal(key: string, fallbackVal: any): string|boolean {
+    let val = this._queryInput(key);
+    let hasDefaultVal = (val !== undefined && val !== null);
+    return (hasDefaultVal && val !== '') ? val : fallbackVal;
+  }
+
+  /**
+   * Quick accessor to the current HTMLElement's `display` style
+   * Note: this allows use to preserve the original style
+   * and optional restore it when the mediaQueries deactivate
+   */
+  protected _getDisplayStyle(): string {
+    let element: HTMLElement = this._elementRef.nativeElement;
+    return (element.style as any)['display'] || "flex";
+  }
 
   /**
    * Applies styles given via string pair or object map to the directive element.
@@ -137,13 +163,13 @@ export abstract class BaseFxDirective implements OnDestroy {
    */
   protected get childrenNodes() {
     var obj = this._elementRef.nativeElement.childNodes;
-    var array = [];
+    var buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
     for ( var i = obj.length; i--; ) {
-      array[i] = obj[i];
+      buffer[i] = obj[i];
     }
-    return array;
+    return buffer;
   }
 
 }

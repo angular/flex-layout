@@ -30,51 +30,78 @@ import {LayoutDirective} from './layout';
  * 'show' Layout API directive
  *
  */
-@Directive({selector: `
+@Directive({
+  selector: `
   [fxHide],
-  [fxHide.xs]
+  [fxHide.xs],
   [fxHide.gt-xs],
   [fxHide.sm],
-  [fxHide.gt-sm]
+  [fxHide.gt-sm],
   [fxHide.md],
-  [fxHide.gt-md]
+  [fxHide.gt-md],
   [fxHide.lg],
   [fxHide.gt-lg],
   [fxHide.xl]
-`})
+`
+})
 export class HideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  /**
-   * Original dom Elements CSS display style
-   */
-  private _display = 'flex';
 
   /**
-    * Subscription to the parent flex container's layout changes.
-    * Stored so we can unsubscribe when this directive is destroyed.
-    */
+   * Subscription to the parent flex container's layout changes.
+   * Stored so we can unsubscribe when this directive is destroyed.
+   */
   private _layoutWatcher: Subscription;
 
-  @Input('fxHide')       set hide(val)     { this._cacheInput("hide", val); }
-  @Input('fxHide.xs')    set hideXs(val)   { this._cacheInput('hideXs', val); }
-  @Input('fxHide.gt-xs') set hideGtXs(val) { this._cacheInput('hideGtXs', val); };
-  @Input('fxHide.sm')    set hideSm(val)   { this._cacheInput('hideSm', val); };
-  @Input('fxHide.gt-sm') set hideGtSm(val) { this._cacheInput('hideGtSm', val); };
-  @Input('fxHide.md')    set hideMd(val)   { this._cacheInput('hideMd', val); };
-  @Input('fxHide.gt-md') set hideGtMd(val) { this._cacheInput('hideGtMd', val); };
-  @Input('fxHide.lg')    set hideLg(val)   { this._cacheInput('hideLg', val); };
-  @Input('fxHide.gt-lg') set hideGtLg(val) { this._cacheInput('hideGtLg', val); };
-  @Input('fxHide.xl')    set hideXl(val)   { this._cacheInput('hideXl', val); };
+  @Input('fxHide')       set hide(val) {
+    this._cacheInput("hide", val);
+  }
+
+  @Input('fxHide.xs')    set hideXs(val) {
+    this._cacheInput('hideXs', val);
+  }
+
+  @Input('fxHide.gt-xs') set hideGtXs(val) {
+    this._cacheInput('hideGtXs', val);
+  };
+
+  @Input('fxHide.sm')    set hideSm(val) {
+    this._cacheInput('hideSm', val);
+  };
+
+  @Input('fxHide.gt-sm') set hideGtSm(val) {
+    this._cacheInput('hideGtSm', val);
+  };
+
+  @Input('fxHide.md')    set hideMd(val) {
+    this._cacheInput('hideMd', val);
+  };
+
+  @Input('fxHide.gt-md') set hideGtMd(val) {
+    this._cacheInput('hideGtMd', val);
+  };
+
+  @Input('fxHide.lg')    set hideLg(val) {
+    this._cacheInput('hideLg', val);
+  };
+
+  @Input('fxHide.gt-lg') set hideGtLg(val) {
+    this._cacheInput('hideGtLg', val);
+  };
+
+  @Input('fxHide.xl')    set hideXl(val) {
+    this._cacheInput('hideXl', val);
+  };
 
   /**
    *
    */
-  constructor(
-      monitor: MediaMonitor,
-      @Optional() @Self() private _layout: LayoutDirective,
-      protected elRef: ElementRef,
-      protected renderer: Renderer) {
+  constructor(monitor: MediaMonitor,
+              @Optional() @Self() private _layout: LayoutDirective,
+              protected elRef: ElementRef,
+              protected renderer: Renderer) {
     super(monitor, elRef, renderer);
 
+    this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
     if (_layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -88,6 +115,16 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   // *********************************************
   // Lifecycle Methods
   // *********************************************
+
+  /**
+   * Override accessor to the current HTMLElement's `display` style
+   * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+   * unless it was already explicitly defined.
+   */
+  protected _getDisplayStyle(): string {
+    let element: HTMLElement = this._elementRef.nativeElement;
+    return (element.style as any)['display'] || (this._layout ? "flex" : "block");
+  }
 
   /**
    * On changes to any @Input properties...
@@ -105,7 +142,8 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    this._listenForMediaQueryChanges('hide', true, (changes: MediaChange) => {
+    let value = this._getDefaultVal("hide", false);
+    this._listenForMediaQueryChanges('hide', value, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
     this._updateWithValue();
@@ -127,7 +165,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the visibility value and then update the host's inline display style
    */
   private _updateWithValue(value?: string|number|boolean) {
-    value = value || this._queryInput("hide") || true;
+    value = value || this._getDefaultVal("hide", false);
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
@@ -141,7 +179,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Build the CSS that should be assigned to the element instance
    */
   private _buildCSS(value) {
-    return {'display': value ? 'none' :  this._display };
+    return {'display': value ? 'none' : this._display};
   }
 
   /**

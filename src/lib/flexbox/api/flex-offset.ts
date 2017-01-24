@@ -28,12 +28,12 @@ import {MediaMonitor} from '../../media-query/media-monitor';
  */
 @Directive({selector: `
   [fxFlexOffset],
-  [fxFlexOffset.xs]
+  [fxFlexOffset.xs],
   [fxFlexOffset.gt-xs],
   [fxFlexOffset.sm],
-  [fxFlexOffset.gt-sm]
+  [fxFlexOffset.gt-sm],
   [fxFlexOffset.md],
-  [fxFlexOffset.gt-md]
+  [fxFlexOffset.gt-md],
   [fxFlexOffset.lg],
   [fxFlexOffset.gt-lg],
   [fxFlexOffset.xl]

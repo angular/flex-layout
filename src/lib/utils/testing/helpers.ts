@@ -8,7 +8,7 @@
 import {Type, DebugElement} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import any = jasmine.any; // tslint:disable-line:no-unused-variable
+import {extendObject} from '../object-extend'; // tslint:disable-line:no-unused-variable
 
 export type ComponentClazzFn = () => Type<any>;
 
@@ -60,7 +60,8 @@ export function makeCreateTestComponent(getClass: ComponentClazzFn) {
 /**
  *
  */
-export function expectNativeEl(fixture: ComponentFixture<any>): any {
+export function expectNativeEl(fixture: ComponentFixture<any>, instanceOptions ?: any): any {
+  extendObject(fixture.componentInstance, instanceOptions || {});
   fixture.detectChanges();
   return expect(fixture.debugElement.children[0].nativeElement);
 }

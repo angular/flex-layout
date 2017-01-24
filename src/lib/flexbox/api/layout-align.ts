@@ -37,12 +37,12 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
  */
 @Directive({selector: `
   [fxLayoutAlign],
-  [fxLayoutAlign.xs]
+  [fxLayoutAlign.xs],
   [fxLayoutAlign.gt-xs],
   [fxLayoutAlign.sm],
-  [fxLayoutAlign.gt-sm]
+  [fxLayoutAlign.gt-sm],
   [fxLayoutAlign.md],
-  [fxLayoutAlign.gt-md]
+  [fxLayoutAlign.gt-md],
   [fxLayoutAlign.lg],
   [fxLayoutAlign.gt-lg],
   [fxLayoutAlign.xl]

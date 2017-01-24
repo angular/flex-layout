@@ -27,12 +27,12 @@ import {MediaMonitor} from '../../media-query/media-monitor';
  */
 @Directive({selector: `
   [fxFlexOrder],
-  [fxFlexOrder.xs]
+  [fxFlexOrder.xs],
   [fxFlexOrder.gt-xs],
   [fxFlexOrder.sm],
-  [fxFlexOrder.gt-sm]
+  [fxFlexOrder.gt-sm],
   [fxFlexOrder.md],
-  [fxFlexOrder.gt-md]
+  [fxFlexOrder.gt-md],
   [fxFlexOrder.lg],
   [fxFlexOrder.gt-lg],
   [fxFlexOrder.xl]
