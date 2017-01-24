@@ -1635,28 +1635,23 @@ var FlexDirective = (function (_super) {
             case '':
                 css = extendObject(clearStyles, { 'flex': '1 1 0.000000001px' });
                 break;
-            case 'grow':
-                css = extendObject(clearStyles, { 'flex': '1 1 100%' });
-                break;
-            case 'initial':
-                css = extendObject(clearStyles, { 'flex': '0 1 auto' });
-                break; // default
-            case 'auto':
-                css = extendObject(clearStyles, { 'flex': '1 1 auto' });
-                break;
-            case 'none':
-                shrink = 0;
-                css = extendObject(clearStyles, { 'flex': '0 0 auto' });
-                break;
+            case 'initial': // default
             case 'nogrow':
                 css = extendObject(clearStyles, { 'flex': '0 1 auto' });
                 break;
-            case 'none':
-                css = extendObject(clearStyles, { 'flex': 'none' });
+            case 'grow':
+                css = extendObject(clearStyles, { 'flex': '1 1 100%' });
                 break;
             case 'noshrink':
                 shrink = 0;
                 css = extendObject(clearStyles, { 'flex': '1 0 auto' });
+                break;
+            case 'auto':
+                css = extendObject(clearStyles, { 'flex': grow + " " + shrink + " auto" });
+                break;
+            case 'none':
+                shrink = 0;
+                css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
                 var isPercent = String(basis).indexOf('%') > -1;
@@ -1750,7 +1745,7 @@ var FlexDirective = (function (_super) {
     ], FlexDirective.prototype, "flexXl", null);
     FlexDirective = __decorate$5([
         _angular_core.Directive({
-            selector: "\n  [fxFlex],\n  [fxFlex.xs]\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+            selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm]\n  [fxFlex.md],\n  [fxFlex.gt-md]\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
         }),
         __param$1(3, _angular_core.Optional()),
         __param$1(3, _angular_core.SkipSelf()),
