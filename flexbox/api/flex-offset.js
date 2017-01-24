@@ -113,7 +113,7 @@ export var FlexOffsetDirective = (function (_super) {
         return { 'margin-left': "" + offset };
     };
     FlexOffsetDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs]\n  [fxFlexOffset.gt-xs],\n  [fxFlexOffset.sm],\n  [fxFlexOffset.gt-sm]\n  [fxFlexOffset.md],\n  [fxFlexOffset.gt-md]\n  [fxFlexOffset.lg],\n  [fxFlexOffset.gt-lg],\n  [fxFlexOffset.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs],\n  [fxFlexOffset.gt-xs],\n  [fxFlexOffset.sm],\n  [fxFlexOffset.gt-sm],\n  [fxFlexOffset.md],\n  [fxFlexOffset.gt-md],\n  [fxFlexOffset.lg],\n  [fxFlexOffset.gt-lg],\n  [fxFlexOffset.xl]\n" },] },
     ];
     /** @nocollapse */
     FlexOffsetDirective.ctorParameters = function () { return [

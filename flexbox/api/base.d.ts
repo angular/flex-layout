@@ -22,6 +22,10 @@ export declare abstract class BaseFxDirective implements OnDestroy {
     protected _elementRef: ElementRef;
     private _renderer;
     /**
+     * Original dom Elements CSS display style
+     */
+    protected _display: any;
+    /**
      * MediaQuery Activation Tracker
      */
     protected _mqActivation: ResponsiveActivation;
@@ -38,6 +42,17 @@ export declare abstract class BaseFxDirective implements OnDestroy {
      */
     protected _queryInput(key: any): any;
     ngOnDestroy(): void;
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     */
+    protected _getDefaultVal(key: string, fallbackVal: any): string | boolean;
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows use to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     */
+    protected _getDisplayStyle(): string;
     /**
      * Applies styles given via string pair or object map to the directive element.
      */

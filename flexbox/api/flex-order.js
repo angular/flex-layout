@@ -111,7 +111,7 @@ export var FlexOrderDirective = (function (_super) {
         return { order: isNaN(value) ? 0 : value };
     };
     FlexOrderDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs]\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm]\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md]\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" },] },
+        { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs],\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm],\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md],\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" },] },
     ];
     /** @nocollapse */
     FlexOrderDirective.ctorParameters = function () { return [

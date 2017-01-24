@@ -18,13 +18,9 @@ export declare class HideDirective extends BaseFxDirective implements OnInit, On
     protected elRef: ElementRef;
     protected renderer: Renderer;
     /**
-     * Original dom Elements CSS display style
+     * Subscription to the parent flex container's layout changes.
+     * Stored so we can unsubscribe when this directive is destroyed.
      */
-    private _display;
-    /**
-      * Subscription to the parent flex container's layout changes.
-      * Stored so we can unsubscribe when this directive is destroyed.
-      */
     private _layoutWatcher;
     hide: any;
     hideXs: any;
@@ -40,6 +36,12 @@ export declare class HideDirective extends BaseFxDirective implements OnInit, On
      *
      */
     constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer);
+    /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly defined.
+     */
+    protected _getDisplayStyle(): string;
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxHide')

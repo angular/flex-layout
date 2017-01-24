@@ -23,10 +23,7 @@ export var ShowDirective = (function (_super) {
         this._layout = _layout;
         this.elRef = elRef;
         this.renderer = renderer;
-        /**
-         * Original dom Elements CSS display style
-         */
-        this._display = 'flex';
+        this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
         if (_layout) {
             /**
              * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -36,59 +33,79 @@ export var ShowDirective = (function (_super) {
         }
     }
     Object.defineProperty(ShowDirective.prototype, "show", {
-        set: function (val) { this._cacheInput("show", val); },
+        set: function (val) {
+            this._cacheInput("show", val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ShowDirective.prototype, "showXs", {
-        set: function (val) { this._cacheInput('showXs', val); },
+        set: function (val) {
+            this._cacheInput('showXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ShowDirective.prototype, "showGtXs", {
-        set: function (val) { this._cacheInput('showGtXs', val); },
+        set: function (val) {
+            this._cacheInput('showGtXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showSm", {
-        set: function (val) { this._cacheInput('showSm', val); },
+        set: function (val) {
+            this._cacheInput('showSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showGtSm", {
-        set: function (val) { this._cacheInput('showGtSm', val); },
+        set: function (val) {
+            this._cacheInput('showGtSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showMd", {
-        set: function (val) { this._cacheInput('showMd', val); },
+        set: function (val) {
+            this._cacheInput('showMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showGtMd", {
-        set: function (val) { this._cacheInput('showGtMd', val); },
+        set: function (val) {
+            this._cacheInput('showGtMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showLg", {
-        set: function (val) { this._cacheInput('showLg', val); },
+        set: function (val) {
+            this._cacheInput('showLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showGtLg", {
-        set: function (val) { this._cacheInput('showGtLg', val); },
+        set: function (val) {
+            this._cacheInput('showGtLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowDirective.prototype, "showXl", {
-        set: function (val) { this._cacheInput('showXl', val); },
+        set: function (val) {
+            this._cacheInput('showXl', val);
+        },
         enumerable: true,
         configurable: true
     });
@@ -96,6 +113,15 @@ export var ShowDirective = (function (_super) {
     // *********************************************
     // Lifecycle Methods
     // *********************************************
+    /**
+     * Override accessor to the current HTMLElement's `display` style
+     * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+     * unless it was already explicitly defined.
+     */
+    ShowDirective.prototype._getDisplayStyle = function () {
+        var element = this._elementRef.nativeElement;
+        return element.style['display'] || (this._layout ? "flex" : "block");
+    };
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxShow')
@@ -112,7 +138,8 @@ export var ShowDirective = (function (_super) {
      */
     ShowDirective.prototype.ngOnInit = function () {
         var _this = this;
-        this._listenForMediaQueryChanges('show', true, function (changes) {
+        var value = this._getDefaultVal("show", true);
+        this._listenForMediaQueryChanges('show', value, function (changes) {
             _this._updateWithValue(changes.value);
         });
         this._updateWithValue();
@@ -128,7 +155,7 @@ export var ShowDirective = (function (_super) {
     // *********************************************
     /** Validate the visibility value and then update the host's inline display style */
     ShowDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("show") || true;
+        value = value || this._getDefaultVal("show", true);
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
@@ -144,7 +171,9 @@ export var ShowDirective = (function (_super) {
         return (FALSY.indexOf(show) == -1);
     };
     ShowDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxShow],\n  [fxShow.xs]\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm]\n  [fxShow.md],\n  [fxShow.gt-md]\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n" },] },
+        { type: Directive, args: [{
+                    selector: "\n  [fxShow],\n  [fxShow.xs],\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm],\n  [fxShow.md],\n  [fxShow.gt-md],\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n"
+                },] },
     ];
     /** @nocollapse */
     ShowDirective.ctorParameters = function () { return [

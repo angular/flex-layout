@@ -13,6 +13,7 @@ export var BaseFxDirective = (function () {
          *  Dictionary of input keys with associated values
          */
         this._inputMap = {};
+        this._display = this._getDisplayStyle();
     }
     // *********************************************
     // Accessor Methods
@@ -35,6 +36,24 @@ export var BaseFxDirective = (function () {
     // *********************************************
     // Protected Methods
     // *********************************************
+    /**
+     * Was the directive's default selector used ?
+     * If not, use the fallback value!
+     */
+    BaseFxDirective.prototype._getDefaultVal = function (key, fallbackVal) {
+        var val = this._queryInput(key);
+        var hasDefaultVal = (val !== undefined && val !== null);
+        return (hasDefaultVal && val !== '') ? val : fallbackVal;
+    };
+    /**
+     * Quick accessor to the current HTMLElement's `display` style
+     * Note: this allows use to preserve the original style
+     * and optional restore it when the mediaQueries deactivate
+     */
+    BaseFxDirective.prototype._getDisplayStyle = function () {
+        var element = this._elementRef.nativeElement;
+        return element.style['display'] || "flex";
+    };
     /**
      * Applies styles given via string pair or object map to the directive element.
      */
@@ -94,12 +113,12 @@ export var BaseFxDirective = (function () {
          */
         get: function () {
             var obj = this._elementRef.nativeElement.childNodes;
-            var array = [];
+            var buffer = [];
             // iterate backwards ensuring that length is an UInt32
             for (var i = obj.length; i--;) {
-                array[i] = obj[i];
+                buffer[i] = obj[i];
             }
-            return array;
+            return buffer;
         },
         enumerable: true,
         configurable: true
