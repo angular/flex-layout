@@ -3089,59 +3089,79 @@ var LayoutGapDirective = (function (_super) {
         }
     }
     Object.defineProperty(LayoutGapDirective.prototype, "gap", {
-        set: function (val) { this._cacheInput('gap', val); },
+        set: function (val) {
+            this._cacheInput('gap', val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(LayoutGapDirective.prototype, "gapXs", {
-        set: function (val) { this._cacheInput('gapXs', val); },
+        set: function (val) {
+            this._cacheInput('gapXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
-        set: function (val) { this._cacheInput('gapGtXs', val); },
+        set: function (val) {
+            this._cacheInput('gapGtXs', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
-        set: function (val) { this._cacheInput('gapSm', val); },
+        set: function (val) {
+            this._cacheInput('gapSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
-        set: function (val) { this._cacheInput('gapGtSm', val); },
+        set: function (val) {
+            this._cacheInput('gapGtSm', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
-        set: function (val) { this._cacheInput('gapMd', val); },
+        set: function (val) {
+            this._cacheInput('gapMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
-        set: function (val) { this._cacheInput('gapGtMd', val); },
+        set: function (val) {
+            this._cacheInput('gapGtMd', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
-        set: function (val) { this._cacheInput('gapLg', val); },
+        set: function (val) {
+            this._cacheInput('gapLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
-        set: function (val) { this._cacheInput('gapGtLg', val); },
+        set: function (val) {
+            this._cacheInput('gapGtLg', val);
+        },
         enumerable: true,
         configurable: true
     });
     
     Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
-        set: function (val) { this._cacheInput('gapXl', val); },
+        set: function (val) {
+            this._cacheInput('gapXl', val);
+        },
         enumerable: true,
         configurable: true
     });
@@ -3160,6 +3180,7 @@ var LayoutGapDirective = (function (_super) {
      */
     LayoutGapDirective.prototype.ngAfterContentInit = function () {
         var _this = this;
+        this._watchContentChanges();
         this._listenForMediaQueryChanges('gap', '0', function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -3170,10 +3191,28 @@ var LayoutGapDirective = (function (_super) {
         if (this._layoutWatcher) {
             this._layoutWatcher.unsubscribe();
         }
+        if (this._observer) {
+            this._observer.disconnect();
+        }
     };
     // *********************************************
     // Protected methods
     // *********************************************
+    /**
+     * Watch for child nodes to be added... and apply the layout gap styles to each.
+     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+     */
+    LayoutGapDirective.prototype._watchContentChanges = function () {
+        var _this = this;
+        var onMutationCallback = function (mutations) {
+            // update gap styles only for 'addedNodes' events
+            mutations
+                .filter(function (it) { return it.addedNodes && it.addedNodes.length; })
+                .map(function () { return _this._updateWithValue(); });
+        };
+        this._observer = new MutationObserver(onMutationCallback);
+        this._observer.observe(this._elementRef.nativeElement, { childList: true });
+    };
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
@@ -3193,8 +3232,13 @@ var LayoutGapDirective = (function (_super) {
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        // For each `element` child, set the padding styles...
+        // Reset 1st child element to 0px gap
         var items = this.childrenNodes
+            .filter(function (el) { return (el.nodeType === 1); }) // only Element types
+            .filter(function (el, j) { return j == 0; });
+        this._applyStyleToElements(this._buildCSS(0), items);
+        // For each `element` child, set the padding styles...
+        items = this.childrenNodes
             .filter(function (el) { return (el.nodeType === 1); }) // only Element types
             .filter(function (el, j) { return j > 0; }); // skip first element since gaps are needed
         this._applyStyleToElements(this._buildCSS(value), items);
@@ -3281,7 +3325,9 @@ var LayoutGapDirective = (function (_super) {
         __metadata$15('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapXl", null);
     LayoutGapDirective = __decorate$15([
-        _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs]\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n" }),
+        _angular_core.Directive({
+            selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
+        }),
         __param$6(3, _angular_core.Optional()),
         __param$6(3, _angular_core.Self()), 
         __metadata$15('design:paramtypes', [MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer, LayoutDirective])

@@ -16,6 +16,7 @@ import { LayoutDirective } from './layout';
 export declare class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges, OnDestroy {
     private _layout;
     private _layoutWatcher;
+    private _observer;
     gap: any;
     gapXs: any;
     gapGtXs: any;
@@ -34,6 +35,11 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
      */
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    /**
+     * Watch for child nodes to be added... and apply the layout gap styles to each.
+     * NOTE: this does NOT! differentiate between viewChildren and contentChildren
+     */
+    private _watchContentChanges();
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
