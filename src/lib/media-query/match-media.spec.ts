@@ -18,8 +18,9 @@ import {BreakPoint} from './breakpoints/break-point';
 import {MockMatchMedia} from './mock/mock-match-media';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 import {BreakPointsProvider} from './providers/break-points-provider';
-import {MatchMedia, MatchMediaObservable} from './match-media';
-import {MatchMediaObservableProvider} from './providers/match-media-observable-provider';
+import {MatchMedia} from './match-media';
+import {ObservableMediaService} from './observable-media-service';
+import {ObservableMediaServiceProvider} from './providers/observable-media-service-provider';
 
 describe('match-media', () => {
   let matchMedia: MockMatchMedia;
@@ -130,14 +131,14 @@ describe('match-media-observable', () => {
         BreakPointsProvider,  // Supports developer overrides of list of known breakpoints
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
         {provide: MatchMedia, useClass: MockMatchMedia},
-        MatchMediaObservableProvider  // injectable `media$` matchMedia observable
+        ObservableMediaServiceProvider  // injectable `media$` matchMedia observable
       ]
     });
   });
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
-      [MatchMediaObservable, MatchMedia, BreakPointRegistry],
+      [ObservableMediaService, MatchMedia, BreakPointRegistry],
       (_media$_, _matchMedia_, _breakPoints_) => {
         matchMedia = _matchMedia_;      // inject only to manually activate mediaQuery ranges
         breakPoints = _breakPoints_;
@@ -204,7 +205,7 @@ describe('match-media-observable', () => {
   });
 
   /**
-   * Only the MatchMediaObservable ignores de-activations;
+   * Only the ObservableMediaService ignores de-activations;
    * MediaMonitor and MatchMedia report both activations and de-activations!
    */
   it('ignores mediaQuery de-activations', () => {

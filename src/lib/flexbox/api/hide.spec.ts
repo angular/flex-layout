@@ -12,7 +12,8 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
-import {MatchMedia, MatchMediaObservable} from '../../media-query/match-media';
+import {MatchMedia} from '../../media-query/match-media';
+import {ObservableMediaService} from '../../media-query/observable-media-service';
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
@@ -258,7 +259,7 @@ export class TestHideComponent implements OnInit {
   isHidden = true;
   menuHidden = true;
 
-  constructor(@Inject(MatchMediaObservable) private media) {
+  constructor(@Inject(ObservableMediaService) private media) {
   }
 
   toggleMenu() {
