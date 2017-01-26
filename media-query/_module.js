@@ -3,7 +3,7 @@ import { BreakPointRegistry } from './breakpoints/break-point-registry';
 import { BreakPointsProvider } from "./providers/break-points-provider";
 import { MatchMedia } from './match-media';
 import { MediaMonitor } from './media-monitor';
-import { MatchMediaObservableProvider } from './providers/match-media-observable-provider';
+import { ObservableMediaServiceProvider } from './providers/observable-media-service-provider';
 /**
  * *****************************************************************
  * Define module for the MediaQuery API
@@ -24,7 +24,7 @@ export var MediaQueriesModule = (function () {
                         MediaMonitor,
                         BreakPointRegistry,
                         BreakPointsProvider,
-                        MatchMediaObservableProvider // easy subscription injectable `media$` matchMedia observable
+                        ObservableMediaServiceProvider // easy subscription injectable `media$` matchMedia observable
                     ]
                 },] },
     ];

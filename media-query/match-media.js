@@ -1,18 +1,8 @@
-import { OpaqueToken } from '@angular/core';
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { MediaChange } from './media-change';
-/**
- *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom
- *  `MatchMediaObservableProvider` provider.
- *
- *  @see ./providers/match-media-observable-provider.ts
- */
-// tslint:disable-next-line:variable-name
-export var MatchMediaObservable = new OpaqueToken('fxObservableMatchMedia');
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
  * convert mediaQuery change callbacks to subscriber notifications. These notifications will be

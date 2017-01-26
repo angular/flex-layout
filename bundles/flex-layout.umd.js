@@ -626,15 +626,6 @@ var __metadata$3 = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
- *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom
- *  `MatchMediaObservableProvider` provider.
- *
- *  @see ./providers/match-media-observable-provider.ts
- */
-// tslint:disable-next-line:variable-name
-var MatchMediaObservable = new _angular_core.OpaqueToken('fxObservableMatchMedia');
-/**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
  * convert mediaQuery change callbacks to subscriber notifications. These notifications will be
  * performed within the ng Zone to trigger change detections and component updates.
@@ -872,83 +863,141 @@ var MediaMonitor = (function () {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * Factory returns a simple service instance that exposes a feature to subscribe to mediaQuery
- * changes and a validator to test if a mediaQuery (or alias) is currently active.
+ *  Opaque Token unique to the flex-layout library.
+ *  Note: Developers must use this token when building their own custom
+ *  `ObservableMediaServiceProvider` provider.
  *
- * !! Only mediaChange activations (not de-activations) are announced by the MatchMediaObservable
+ *  @see ./providers/match-media-observable-provider.ts
+ */
+// tslint:disable-next-line:variable-name
+var ObservableMediaService = new _angular_core.OpaqueToken('flex-layout-media-service');
+/**
+ * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
+
+ * This an Observable with that exposes a feature to subscribe to mediaQuery
+ * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
+ * currently active.
  *
- * This factory uses the BreakPoint Registry to inject alias information into the raw MediaChange
+ * !! Only mediaChange activations (not de-activations) are announced by the ObservableMediaService
+ *
+ * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and
  * those fields will be ''.
  *
- * @return Object with two (2) methods: subscribe(observer) and isActive(alias|query)
+ * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
+ * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
+ * `.asObservable()` with syntax like media.asObservable().map(....).
+ *
+ *  @usage
+ *
+ *  // RxJS
+ *  import 'rxjs/add/operator/map';
+ *
+ *  @Component({ ... })
+ *  export class AppComponent {
+ *    constructor( @Inject(ObservableMediaService) media) {
+ *      media.asObservable()
+ *        .map( (change:MediaChange) => change.mqAlias == 'md' )
+ *        .subscribe((change:MediaChange) => {
+ *          console.log( change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "" );
+ *        });
+ *    }
+ *  }
  */
-function MatchMediaObservableFactory(mediaWatcher, breakpoints) {
+var MediaService = (function () {
+    function MediaService(mediaWatcher, breakpoints) {
+        this.mediaWatcher = mediaWatcher;
+        this.breakpoints = breakpoints;
+        this._registerBreakPoints();
+        this.observable$ = this._buildObservable();
+    }
     /**
-     * Only pass/announce activations (not de-activations)
+     * Test if specified query/alias is active.
      */
-    var onlyActivations = function (change) {
-        return change.matches === true;
+    MediaService.prototype.isActive = function (alias) {
+        var query = this._toMediaQuery(alias);
+        return this.mediaWatcher.isActive(query);
+    };
+    
+    /**
+     * Proxy to the Observable subscribe method
+     */
+    MediaService.prototype.subscribe = function (next, error, complete) {
+        return this.observable$.subscribe(next, error, complete);
+    };
+    
+    /**
+     * Access to observable for use with operators like
+     * .filter(), .map(), etc.
+     */
+    MediaService.prototype.asObservable = function () {
+        return this.observable$;
+    };
+    // ************************************************
+    // Internal Methods
+    // ************************************************
+    /**
+     * Register all the mediaQueries registered in the BreakPointRegistry
+     * This is needed so subscribers can be auto-notified of all standard, registered
+     * mediaQuery activations
+     */
+    MediaService.prototype._registerBreakPoints = function () {
+        var _this = this;
+        this.breakpoints.items.forEach(function (bp) {
+            _this.mediaWatcher.registerQuery(bp.mediaQuery);
+            return bp;
+        });
     };
     /**
-     * Inject associated (if any) alias information into the MediaChange event
+     * Prepare internal observable
+     * NOTE: the raw MediaChange events [from MatchMedia] do not contain important alias information
+     * these must be injected into the MediaChange
      */
-    var injectAlias = function (change) {
-        return mergeAlias(change, findByQuery(change.mediaQuery));
+    MediaService.prototype._buildObservable = function () {
+        var _this = this;
+        return this.mediaWatcher.observe()
+            .filter(function (change) {
+            // Only pass/announce activations (not de-activations)
+            return change.matches === true;
+        })
+            .map(function (change) {
+            // Inject associated (if any) alias information into the MediaChange event
+            return mergeAlias(change, _this._findByQuery(change.mediaQuery));
+        });
     };
     /**
      * Breakpoint locator by alias
      */
-    var findByAlias = function (alias) {
-        return breakpoints.findByAlias(alias);
+    MediaService.prototype._findByAlias = function (alias) {
+        return this.breakpoints.findByAlias(alias);
     };
+    
     /**
      * Breakpoint locator by mediaQuery
      */
-    var findByQuery = function (query) {
-        return breakpoints.findByQuery(query);
+    MediaService.prototype._findByQuery = function (query) {
+        return this.breakpoints.findByQuery(query);
     };
+    
     /**
      * Find associated breakpoint (if any)
      */
-    var toMediaQuery = function (query) {
-        var bp = findByAlias(query) || findByQuery(query);
+    MediaService.prototype._toMediaQuery = function (query) {
+        var bp = this._findByAlias(query) || this._findByQuery(query);
         return bp ? bp.mediaQuery : query;
     };
-    /**
-     * Proxy to the Observable subscribe method
-     */
-    var subscribe = function (next, error, complete) {
-        return observable$.subscribe(next, error, complete);
-    };
-    /**
-     * Test if specified query/alias is active.
-     */
-    var isActive = function (alias) {
-        return mediaWatcher.isActive(toMediaQuery(alias));
-    };
-    // Register all the mediaQueries registered in the BreakPointRegistry
-    // This is needed so subscribers can be auto-notified of all standard, registered
-    // mediaQuery activations
-    breakpoints.items.forEach(function (bp) { return mediaWatcher.observe(bp.mediaQuery); });
-    // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
-    //       these must be injected into the MediaChange
-    var observable$ = mediaWatcher.observe()
-        .filter(onlyActivations).map(injectAlias);
-    // Publish service
-    return {
-        "subscribe": subscribe,
-        "isActive": isActive
-    };
-}
+    
+    return MediaService;
+}());
+
 /**
  *  Provider to return observable to ALL MediaQuery events
  *  Developers should build custom providers to override this default MediaQuery Observable
  */
-var MatchMediaObservableProvider = {
-    provide: MatchMediaObservable,
-    deps: [MatchMedia, BreakPointRegistry],
-    useFactory: MatchMediaObservableFactory
+var ObservableMediaServiceProvider = {
+    provide: ObservableMediaService,
+    useClass: MediaService,
+    deps: [MatchMedia, BreakPointRegistry]
 };
 
 var __decorate$4 = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -980,7 +1029,7 @@ var MediaQueriesModule = (function () {
                 MediaMonitor,
                 BreakPointRegistry,
                 BreakPointsProvider,
-                MatchMediaObservableProvider // easy subscription injectable `media$` matchMedia observable
+                ObservableMediaServiceProvider // easy subscription injectable `media$` matchMedia observable
             ]
         }), 
         __metadata$4('design:paramtypes', [])
@@ -3498,9 +3547,7 @@ exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
 exports.RAW_DEFAULTS = RAW_DEFAULTS;
 exports.BREAKPOINTS = BREAKPOINTS;
 exports.BreakPointsProvider = BreakPointsProvider;
-exports.MatchMediaObservableFactory = MatchMediaObservableFactory;
-exports.MatchMediaObservableProvider = MatchMediaObservableProvider;
-exports.MatchMediaObservable = MatchMediaObservable;
+exports.ObservableMediaServiceProvider = ObservableMediaServiceProvider;
 exports.MatchMedia = MatchMedia;
 exports.MediaChange = MediaChange;
 exports.MediaMonitor = MediaMonitor;
