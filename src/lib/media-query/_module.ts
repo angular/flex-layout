@@ -13,7 +13,7 @@ import {BreakPointsProvider} from "./providers/break-points-provider";
 
 import {MatchMedia} from './match-media';
 import {MediaMonitor} from './media-monitor';
-import {MatchMediaObservableProvider} from './providers/match-media-observable-provider';
+import {ObservableMediaServiceProvider} from './providers/observable-media-service-provider';
 
 /**
  * *****************************************************************
@@ -27,7 +27,7 @@ import {MatchMediaObservableProvider} from './providers/match-media-observable-p
     MediaMonitor,                 // MediaQuery monitor service observes all known breakpoints
     BreakPointRegistry,           // Registry of known/used BreakPoint(s)
     BreakPointsProvider,           // Supports developer overrides of list of known breakpoints
-    MatchMediaObservableProvider  // easy subscription injectable `media$` matchMedia observable
+    ObservableMediaServiceProvider  // easy subscription injectable `media$` matchMedia observable
   ]
 })
 export class MediaQueriesModule {

@@ -16,8 +16,9 @@ import {TestBed, inject, async} from '@angular/core/testing';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MediaChange} from '../media-change';
 import {MockMatchMedia} from '../mock/mock-match-media';
-import {MatchMediaObservable, MatchMedia} from '../match-media';
-import {MatchMediaObservableProvider} from './match-media-observable-provider';
+import {MatchMedia} from '../match-media';
+import {ObservableMediaServiceProvider} from './observable-media-service-provider';
+import {ObservableMediaService} from '../observable-media-service';
 import {BreakPointsProvider, RAW_DEFAULTS} from './break-points-provider';
 
 describe('match-media-observable-provider', () => {
@@ -37,13 +38,13 @@ describe('match-media-observable-provider', () => {
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
         BreakPointsProvider,  // Supports developer overrides of list of known breakpoints
         {provide: MatchMedia, useClass: MockMatchMedia},
-        MatchMediaObservableProvider
+        ObservableMediaServiceProvider
       ]
     });
   });
 
   it('can supports the `.isActive()` API', async(inject(
-      [MatchMediaObservable, MatchMedia],
+      [ObservableMediaService, MatchMedia],
       (media, matchMedia) => {
         expect(media).toBeDefined();
 
@@ -57,8 +58,41 @@ describe('match-media-observable-provider', () => {
 
       })));
 
+  it('can supports RxJS operators', inject(
+      [ObservableMediaService, MatchMedia],
+      (mediaService, matchMedia) => {
+        let count = 0,
+            subscription = mediaService
+                .asObservable()
+                .filter(change => change.mqAlias == 'md')
+                .map(change => change.mqAlias)
+                .subscribe((alias) => {
+                  count += 1;
+                });
+
+        // Activate mediaQuery associated with 'md' alias
+        matchMedia.activate('sm');
+        expect(count).toEqual(0);
+
+        matchMedia.activate('md');
+        expect(count).toEqual(1);
+
+        matchMedia.activate('lg');
+        expect(count).toEqual(1);
+
+        matchMedia.activate('md');
+        expect(count).toEqual(2);
+
+        matchMedia.activate('gt-md');
+        matchMedia.activate('gt-lg');
+        matchMedia.activate('invalid');
+        expect(count).toEqual(2);
+
+        subscription.unsubscribe();
+      }));
+
   it('can can subscribe to built-in mediaQueries', async(inject(
-      [MatchMediaObservable, MatchMedia],
+      [ObservableMediaService, MatchMedia],
       (media$, matchMedia) => {
         let current: MediaChange;
 
@@ -93,7 +127,7 @@ describe('match-media-observable-provider', () => {
       })));
 
   it('can `.unsubscribe()` properly', async(inject(
-      [MatchMediaObservable, MatchMedia],
+      [ObservableMediaService, MatchMedia],
       (media, matchMedia) => {
         let current: MediaChange;
         let subscription = media.subscribe((change: MediaChange) => {

@@ -5,7 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {OpaqueToken} from '@angular/core';
 import {Injectable, NgZone} from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -34,16 +33,6 @@ export interface MediaQueryList {
   addListener(listener: MediaQueryListListener): void;
   removeListener(listener: MediaQueryListListener): void;
 }
-
-/**
- *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom
- *  `MatchMediaObservableProvider` provider.
- *
- *  @see ./providers/match-media-observable-provider.ts
- */
-// tslint:disable-next-line:variable-name
-export const MatchMediaObservable: OpaqueToken = new OpaqueToken('fxObservableMatchMedia');
 
 
 /**

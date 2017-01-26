@@ -3,7 +3,7 @@ import {Subscription} from "rxjs/Subscription";
 import 'rxjs/add/operator/filter';
 
 import {MediaChange} from "../../../lib/media-query/media-change";
-import {MatchMediaObservable} from "../../../lib/media-query/match-media";
+import {ObservableMediaService} from "../../../lib/media-query/observable-media-service";
 
 @Component({
   selector: 'demo-responsive-row-column',
@@ -64,7 +64,7 @@ export class DemoResponsiveRows implements OnDestroy {
 
   isVisible = true;
 
-  constructor(@Inject(MatchMediaObservable) private _media$) {
+  constructor(@Inject(ObservableMediaService) private _media$) {
     this._watcher = this._media$
         .subscribe((e:MediaChange) => {
           this._activeMQC = e;
