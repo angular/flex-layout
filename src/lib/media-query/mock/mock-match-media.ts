@@ -20,7 +20,7 @@ export class MockMatchMedia extends MatchMedia {
   /**
    * Special flag used to test BreakPoint registrations with MatchMedia
    */
-  public autoRegisterQueries: boolean = true;
+  public autoRegisterQueries = true;
 
   constructor(_zone: NgZone, private _breakpoints: BreakPointRegistry) {
     super(_zone);
@@ -163,7 +163,7 @@ export class MockMatchMedia extends MatchMedia {
  * - manages listeners
  */
 export class MockMediaQueryList implements MediaQueryList {
-  private _isActive: boolean = false;
+  private _isActive = false;
   private _listeners: Array<MediaQueryListListener> = [];
 
   get matches(): boolean {

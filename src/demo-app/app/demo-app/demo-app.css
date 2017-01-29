@@ -192,3 +192,35 @@ md-toolbar .md-toolbar-layout md-toolbar-row {
 .demo-content .small-demo:first-child {
   margin-top: 40px;
 }
+
+md-card-content pre {
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+.fxClass-all {
+  font-style: italic;
+}
+
+.fxClass-xs {
+  font-size: 10px;
+  color: blue!important;
+}
+.fxClass-sm {
+  font-size: 12px;
+  color: lightblue!important;
+}
+.fxClass-md {
+  font-size: 14px;
+  color: orange!important;
+}
+.fxClass-md2 {
+  font-weight: bold;
+}
+.fxClass-lg {
+  font-size: 16px;
+  color: lightgreen!important;
+}
+.fxClass-lg2 {
+  font-style: normal;
+}
