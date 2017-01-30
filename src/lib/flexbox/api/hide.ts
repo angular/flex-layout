@@ -101,14 +101,14 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
               protected renderer: Renderer) {
     super(monitor, elRef, renderer);
 
-    this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
+    /**
+     * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+     * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+     */
     if (_layout) {
-      /**
-       * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-       * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-       */
       this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
     }
+    this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
   }
 
 
@@ -122,8 +122,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * unless it was already explicitly defined.
    */
   protected _getDisplayStyle(): string {
-    let element: HTMLElement = this._elementRef.nativeElement;
-    return (element.style as any)['display'] || (this._layout ? "flex" : "block");
+    return this._layout ? "flex" : super._getDisplayStyle();
   }
 
   /**
@@ -140,9 +139,15 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * After the initial onChanges, build an mqActivation object that bridges
    * mql change events to onMediaQueryChange handlers
+   * NOTE: fxHide has special fallback defaults.
+   *       - If the non-responsive fxHide="" is specified we default to hide==true
+   *       - If the non-responsive fxHide is NOT specified, use default hide == false
+   *       This logic supports mixed usages with fxShow; e.g. `<div fxHide fxShow.gt-sm>`
    */
   ngOnInit() {
-    let value = this._getDefaultVal("hide", false);
+    // If the attribute 'fxHide' is specified we default to hide==true, otherwise do nothing..
+    let value = (this._queryInput('hide') == "") ? true : this._getDefaultVal("hide", false);
+
     this._listenForMediaQueryChanges('hide', value, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });

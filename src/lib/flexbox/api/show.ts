@@ -25,6 +25,7 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
+import {HideDirective} from './hide';
 
 
 const FALSY = ['false', false, 0];
@@ -100,6 +101,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   constructor(monitor: MediaMonitor,
               @Optional() @Self() private _layout: LayoutDirective,
+              @Optional() @Self() private _hide: HideDirective,
               protected elRef: ElementRef,
               protected renderer: Renderer) {
 
@@ -148,10 +150,16 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   ngOnInit() {
     let value = this._getDefaultVal("show", true);
 
+    // Build _mqActivation controller
     this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
-      this._updateWithValue(changes.value);
+      if (!this._delegateToHide(changes)) {
+        this._updateWithValue(changes.value);
+      }
     });
-    this._updateWithValue();
+
+    if (!this._delegateToHide()) {
+      this._updateWithValue();
+    }
   }
 
   ngOnDestroy() {
@@ -164,6 +172,21 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   // *********************************************
   // Protected methods
   // *********************************************
+
+  /**
+   * If deactiving Show, then delegate action to the Hide directive if it is
+   * specified on same element.
+   */
+  protected _delegateToHide(changes?: MediaChange) {
+    if (this._hide) {
+      let delegate = (changes && !changes.matches) || (!changes && !this.hasKeyValue('show'));
+      if (delegate) {
+        this._hide.ngOnChanges({});
+        return true;
+      }
+    }
+    return false;
+  }
 
   /** Validate the visibility value and then update the host's inline display style */
   private _updateWithValue(value?: string|number|boolean) {

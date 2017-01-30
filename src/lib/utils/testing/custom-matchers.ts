@@ -148,7 +148,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
  * (Safari, IE, etc) will use prefixed style instead of defaults.
  */
 function hasPrefixedStyles(actual, key, value) {
-  let hasStyle = getDOM().hasStyle(actual, key, value);
+  let hasStyle = getDOM().hasStyle(actual, key, value.trim());
   if (!hasStyle) {
     let prefixedStyles = applyCssPrefixes({[key]: value});
     Object.keys(prefixedStyles).forEach(prop => {

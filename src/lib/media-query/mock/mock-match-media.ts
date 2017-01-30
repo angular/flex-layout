@@ -217,7 +217,9 @@ export class MockMediaQueryList implements MediaQueryList {
     if (this._listeners.indexOf(listener) === -1) {
       this._listeners.push(listener);
     }
-    if (this._isActive) { listener(this); }
+    if (this._isActive) {
+      listener(this);
+    }
   }
 
   removeListener(listener: MediaQueryListListener) {

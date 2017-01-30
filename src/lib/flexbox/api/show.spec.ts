@@ -199,6 +199,25 @@ describe('show directive', () => {
 
 
   });
+
+  describe('with fxHide features', () => {
+
+    it('should support hide and show', () => {
+      fixture = createTestComponent(`
+          <div fxHide fxShow.gt-sm>
+            This content to be shown ONLY when gt-sm
+          </div>
+       `);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+      activateMediaQuery('md', true);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+
+      activateMediaQuery('xs', true);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+    });
+  });
+
 });
 
 

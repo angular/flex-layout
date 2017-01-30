@@ -17,7 +17,7 @@ import {ObservableMediaService} from '../../media-query/observable-media-service
 import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
 } from '../../utils/testing/helpers';
@@ -27,9 +27,22 @@ import {MediaQueriesModule} from '../../media-query/_module';
 describe('hide directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(() => TestHideComponent);
-  let activateMediaQuery = (alias) => {
+  let activateMediaQuery: Function = (alias, useOverlaps = false): void => {
     let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-    matchMedia.activate(alias);
+    matchMedia.activate(alias, useOverlaps);
+  };
+  let makeExpectWithActivation = (_fixture_: ComponentFixture<any>, selector: string) => {
+    fixture = _fixture_;
+    return (alias?: string): NgMatchers => {
+      if (alias) {
+        activateMediaQuery(alias);
+      }
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, selector);
+      expect(nodes.length).toEqual(1);
+      return expect(nodes[0].nativeElement);
+    };
   };
 
   beforeEach(() => {
@@ -102,7 +115,7 @@ describe('hide directive', () => {
         </button>
       `);
       expectNativeEl(fixture, {isHidden: true}).toHaveCssStyle({'display': 'none'});
-      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'inline-block'});
     });
 
     it('should use "flex" display style when the element also has an fxLayout', () => {
@@ -226,21 +239,39 @@ describe('hide directive', () => {
             </div>
           </div>
         `;
+      let expectActivation = makeExpectWithActivation(createTestComponent(template), '.hideOnMd');
 
-      fixture = createTestComponent(template);
-      fixture.detectChanges();
-
-      let nodes = queryFor(fixture, ".hideOnMd");
-      expect(nodes.length).toEqual(1);
-      expect(nodes[0].nativeElement).toHaveCssStyle({'display': 'block'});
-
-      activateMediaQuery('md');
-      fixture.detectChanges();
-
-      nodes = queryFor(fixture, ".hideOnMd");
-      expect(nodes.length).toEqual(1);
-      expect(nodes[0].nativeElement).toHaveCssStyle({'display': 'none'});
+      expectActivation().toHaveCssStyle({'display': 'block'});
+      expectActivation('md').toHaveCssStyle({'display': 'none'});
     });
+
+    it('should restore proper display mode when not hiding', () => {
+      let template = `
+              <div>
+                <span fxHide.xs class="hideOnXs">Label</span>
+              </div>
+           `;
+      let expectActivation = makeExpectWithActivation(createTestComponent(template), '.hideOnXs');
+
+      expectActivation().toHaveCssStyle({'display': 'inline'});
+      expectActivation('xs').toHaveCssStyle({'display': 'none'});
+      expectActivation('md').toHaveCssStyle({'display': 'inline'});
+    });
+  });
+
+  it('should support hide and show', () => {
+    fixture = createTestComponent(`
+          <div fxShow fxHide.gt-sm style="display:inline-block;">
+            This content to be shown ONLY when gt-sm
+          </div>
+       `);
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+
+    activateMediaQuery('md', true);
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+
+    activateMediaQuery('xs', true);
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
   });
 
 });
