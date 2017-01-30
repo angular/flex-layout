@@ -41,6 +41,22 @@ describe('layout-gap directive', () => {
     });
   });
 
+  function verifyCorrectMargin(layout: string, marginKey: string) {
+    const margin = '8px';
+    const template = `
+            <div fxLayout='${layout}' fxLayoutGap='${margin}'>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+
+    const fixture1 = createTestComponent(template);
+    fixture1.detectChanges();
+
+    const nodes = queryFor(fixture1, 'span');
+    expect(nodes[1].nativeElement).toHaveCssStyle({[marginKey]: margin});
+  }
+
   describe('with static features', () => {
 
     it('should not add gap styles for a single child', () => {
@@ -163,23 +179,29 @@ describe('layout-gap directive', () => {
       expect(nodes[1].nativeElement).not.toHaveCssStyle({'margin-bottom': '8px'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '8px'});
     });
+
+    it('should recognize hidden elements when applying gaps', () => {
+      let styles = ['.col1 { display:none !important;'];
+      let template = `
+        <div class="container" fxLayout="row" fxLayoutGap="16px">
+          <div fxFlex class="col1">Div 1</div>
+          <div fxFlex class="col2">Div 2</div>
+          <div fxFlex class="col3">Div 3</div>
+        </div>
+      `;
+      fixture = createTestComponent(template, styles);
+      fixture.componentInstance.direction = 'row';
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+
+      expect(nodes.length).toEqual(3);
+      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-left': '0px'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-left': '0px'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'margin-left': '16px'});
+
+    });
   });
-
-  function verifyCorrectMargin(layout: string, marginKey: string) {
-    const margin = '8px';
-    const template = `
-            <div fxLayout='${layout}' fxLayoutGap='${margin}'>
-                <span></span>
-                <span></span>
-            </div>
-        `;
-
-    const fixture1 = createTestComponent(template);
-    fixture1.detectChanges();
-
-    const nodes = queryFor(fixture1, 'span');
-    expect(nodes[1].nativeElement).toHaveCssStyle({[marginKey]: margin});
-  }
 
   describe('with responsive features', () => {
 

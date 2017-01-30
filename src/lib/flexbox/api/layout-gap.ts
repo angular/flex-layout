@@ -171,18 +171,18 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       value = this._mqActivation.activatedInput;
     }
 
-    // Reset 1st child element to 0px gap
+    // Gather all non-hidden Element nodes
     let items = this.childrenNodes
-        .filter(el => (el.nodeType === 1))   // only Element types
-        .filter((el, j) => j == 0);
-    this._applyStyleToElements(this._buildCSS(0), items);
+          .filter(el => (el.nodeType === 1))   // only Element types
+          .filter(el => this._getDisplayStyle(el) != "none");
+
+    // Reset 1st child element to 0px gap
+    let skipped = items.filter((el, j) => j == 0);
+    this._applyStyleToElements(this._buildCSS(0), skipped);
 
     // For each `element` child, set the padding styles...
-    items = this.childrenNodes
-        .filter(el => (el.nodeType === 1))   // only Element types
-        .filter((el, j) => j > 0);          // skip first element since gaps are needed
+    items = items.filter((el, j) => j > 0);          // skip first element since gaps are needed
     this._applyStyleToElements(this._buildCSS(value), items);
-
   }
 
   /**

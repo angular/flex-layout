@@ -82,6 +82,14 @@ export class ResponsiveActivation {
   }
 
   /**
+   * Fast validator for presence of attribute on the host element
+   */
+  public hasKeyValue(key) {
+    let value = this._options.inputKeys[key];
+    return typeof value !== 'undefined';
+  }
+
+  /**
    * Remove interceptors, restore original functions, and forward the onDestroy() call
    */
   destroy() {

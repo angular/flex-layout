@@ -46,13 +46,18 @@ export function makeCreateTestComponent(getClass: ComponentClazzFn) {
   let componentAny: Type<any>;
 
   // Return actual `createTestComponent()` function
-  return function createTestComponent(template: string): ComponentFixture<Type<any>> {
+  return function createTestComponent(template: string, styles?: any): ComponentFixture<Type<any>> {
     if (!componentAny) {
       // Defer access to Component class to enable metadata to be configured properly...
       componentAny = getClass();
     }
     return TestBed
-        .overrideComponent(componentAny, {set: {template: template}})
+        .overrideComponent(componentAny, {
+          set: {
+            template: template,
+            styles: styles || [],
+          }
+        })
         .createComponent(componentAny);
   };
 }
