@@ -141,10 +141,15 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    */
   private _watchContentChanges() {
     let onMutationCallback = (mutations) => {
-      // update gap styles only for 'addedNodes' events
-      mutations
-          .filter((it: MutationRecord) => it.addedNodes && it.addedNodes.length)
-          .map(() => this._updateWithValue());
+      let validatedChanges = (it: MutationRecord) => {
+        return (it.addedNodes && it.addedNodes.length) ||
+            (it.removedNodes && it.removedNodes.length);
+      };
+
+      // update gap styles only for child 'added' or 'removed' events
+      if (mutations.filter(validatedChanges).length) {
+        this._updateWithValue();
+      }
     };
 
     this._observer = new MutationObserver(onMutationCallback);
@@ -173,23 +178,28 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
     // Gather all non-hidden Element nodes
     let items = this.childrenNodes
-          .filter(el => (el.nodeType === 1))   // only Element types
-          .filter(el => this._getDisplayStyle(el) != "none");
+        .filter(el => (el.nodeType === 1))   // only Element types
+        .filter(el => this._getDisplayStyle(el) != "none");
+    let numItems = items.length;
 
-    // Reset 1st child element to 0px gap
-    let skipped = items.filter((el, j) => j == 0);
-    this._applyStyleToElements(this._buildCSS(0), skipped);
+    if (numItems > 1) {
+      let lastItem = items[numItems - 1];
 
-    // For each `element` child, set the padding styles...
-    items = items.filter((el, j) => j > 0);          // skip first element since gaps are needed
-    this._applyStyleToElements(this._buildCSS(value), items);
+      // For each `element` children EXCEPT the last,
+      // set the margin right/bottom styles...
+      items = items.filter((el, j) => j < numItems - 1);
+      this._applyStyleToElements(this._buildCSS(value), items);
+
+      // Clear all gaps for all visible elements
+      this._applyStyleToElements(this._buildCSS(), [lastItem]);
+    }
   }
 
   /**
    * Prepare margin CSS, remove any previous explicitly
    * assigned margin assignments
    */
-  private _buildCSS(value) {
+  private _buildCSS(value: any = null) {
     let key, margins = {
       'margin-left': null,
       'margin-right': null,
@@ -199,19 +209,13 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
     switch (this._layout) {
       case 'column':
-        key = 'margin-top';
-        break;
       case 'column-reverse':
         key = 'margin-bottom';
         break;
-      case 'row-reverse':
-        key = 'margin-right';
-        break;
       case "row" :
-        key = 'margin-left';
-        break;
+      case 'row-reverse':
       default :
-        key = 'margin-left';
+        key = 'margin-right';
         break;
     }
     margins[key] = value;
