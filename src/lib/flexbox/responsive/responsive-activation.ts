@@ -7,6 +7,7 @@
  */
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import {extendObject} from '../../utils/object-extend';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
@@ -23,7 +24,7 @@ export interface BreakPointX extends BreakPoint {
 export class KeyOptions {
   constructor(public baseKey: string,
               public defaultValue: string|number|boolean,
-              public inputKeys: {[key: string]: any}) {
+              public inputKeys: { [key: string]: any }) {
   }
 }
 
@@ -78,7 +79,7 @@ export class ResponsiveActivation {
    */
   get activatedInput(): any {
     let key = this.activatedInputKey;
-    return this._hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
+    return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
   }
 
   /**
@@ -211,8 +212,4 @@ export class ResponsiveActivation {
     return this._options.inputKeys[key];
   }
 
-  private _hasKeyValue(key) {
-    let value = this._options.inputKeys[key];
-    return typeof value !== 'undefined';
-  }
 }
