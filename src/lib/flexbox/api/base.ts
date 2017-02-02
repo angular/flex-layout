@@ -6,6 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ElementRef, Renderer, OnDestroy} from '@angular/core';
+
+import {__platform_browser_private__} from '@angular/platform-browser';
+const getDOM = __platform_browser_private__.getDOM;
+
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
@@ -16,7 +20,7 @@ import {MediaQuerySubscriber} from '../../media-query/media-change';
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
  * map of property name and value (e.g. {display: 'none', flex-order: 5}).
  */
-export type StyleDefinition = string|{[property: string]: string|number};
+export type StyleDefinition = string|{ [property: string]: string|number };
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy {
@@ -86,9 +90,10 @@ export abstract class BaseFxDirective implements OnDestroy {
    * Note: this allows use to preserve the original style
    * and optional restore it when the mediaQueries deactivate
    */
-  protected _getDisplayStyle(): string {
-    let element: HTMLElement = this._elementRef.nativeElement;
-    return (element.style as any)['display'] || "flex";
+  protected _getDisplayStyle(source?: HTMLElement): string {
+    let element: HTMLElement = source || this._elementRef.nativeElement;
+    let value = (element.style as any)['display'] || getDOM().getComputedStyle(element)['display'];
+    return value.trim();
   }
 
   /**
@@ -109,7 +114,7 @@ export abstract class BaseFxDirective implements OnDestroy {
 
     // Iterate all properties in hashMap and set styles
     for (let key in styles) {
-      this._renderer.setElementStyle(element, key, styles[key]);
+      this._renderer.setElementStyle(element, key, styles[key] as string);
     }
   }
 
@@ -122,7 +127,7 @@ export abstract class BaseFxDirective implements OnDestroy {
     elements.forEach(el => {
       // Iterate all properties in hashMap and set styles
       for (let key in styles) {
-        this._renderer.setElementStyle(el, key, styles[key]);
+        this._renderer.setElementStyle(el, key, styles[key] as string);
       }
     });
 
@@ -170,6 +175,13 @@ export abstract class BaseFxDirective implements OnDestroy {
       buffer[i] = obj[i];
     }
     return buffer;
+  }
+
+  /**
+   * Fast validator for presence of attribute on the host element
+   */
+  protected hasKeyValue(key) {
+    return this._mqActivation.hasKeyValue(key);
   }
 
 }
