@@ -51,6 +51,10 @@ export declare class HideDirective extends BaseFxDirective implements OnInit, On
     /**
      * After the initial onChanges, build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
+     * NOTE: fxHide has special fallback defaults.
+     *       - If the non-responsive fxHide="" is specified we default to hide==true
+     *       - If the non-responsive fxHide is NOT specified, use default hide == false
+     *       This logic supports mixed usages with fxShow; e.g. `<div fxHide fxShow.gt-sm>`
      */
     ngOnInit(): void;
     ngOnDestroy(): void;

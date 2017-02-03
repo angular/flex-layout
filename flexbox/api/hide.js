@@ -22,14 +22,14 @@ export var HideDirective = (function (_super) {
         this._layout = _layout;
         this.elRef = elRef;
         this.renderer = renderer;
-        this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
+        /**
+         * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+         * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+         */
         if (_layout) {
-            /**
-             * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-             * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-             */
             this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
         }
+        this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
     }
     Object.defineProperty(HideDirective.prototype, "hide", {
         set: function (val) {
@@ -118,8 +118,7 @@ export var HideDirective = (function (_super) {
      * unless it was already explicitly defined.
      */
     HideDirective.prototype._getDisplayStyle = function () {
-        var element = this._elementRef.nativeElement;
-        return element.style['display'] || (this._layout ? "flex" : "block");
+        return this._layout ? "flex" : _super.prototype._getDisplayStyle.call(this);
     };
     /**
      * On changes to any @Input properties...
@@ -134,10 +133,15 @@ export var HideDirective = (function (_super) {
     /**
      * After the initial onChanges, build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
+     * NOTE: fxHide has special fallback defaults.
+     *       - If the non-responsive fxHide="" is specified we default to hide==true
+     *       - If the non-responsive fxHide is NOT specified, use default hide == false
+     *       This logic supports mixed usages with fxShow; e.g. `<div fxHide fxShow.gt-sm>`
      */
     HideDirective.prototype.ngOnInit = function () {
         var _this = this;
-        var value = this._getDefaultVal("hide", false);
+        // If the attribute 'fxHide' is specified we default to hide==true, otherwise do nothing..
+        var value = (this._queryInput('hide') == "") ? true : this._getDefaultVal("hide", false);
         this._listenForMediaQueryChanges('hide', value, function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -202,4 +206,4 @@ export var HideDirective = (function (_super) {
     return HideDirective;
 }(BaseFxDirective));
 var FALSY = ['false', false, 0];
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/flexbox/api/hide.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/hide.js.map

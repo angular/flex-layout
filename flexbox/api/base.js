@@ -1,3 +1,5 @@
+import { __platform_browser_private__ } from '@angular/platform-browser';
+var getDOM = __platform_browser_private__.getDOM;
 import { applyCssPrefixes } from '../../utils/auto-prefixer';
 import { ResponsiveActivation, KeyOptions } from '../responsive/responsive-activation';
 /** Abstract base class for the Layout API styling directives. */
@@ -50,9 +52,10 @@ export var BaseFxDirective = (function () {
      * Note: this allows use to preserve the original style
      * and optional restore it when the mediaQueries deactivate
      */
-    BaseFxDirective.prototype._getDisplayStyle = function () {
-        var element = this._elementRef.nativeElement;
-        return element.style['display'] || "flex";
+    BaseFxDirective.prototype._getDisplayStyle = function (source) {
+        var element = source || this._elementRef.nativeElement;
+        var value = element.style['display'] || getDOM().getComputedStyle(element)['display'];
+        return value.trim();
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -123,6 +126,12 @@ export var BaseFxDirective = (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    BaseFxDirective.prototype.hasKeyValue = function (key) {
+        return this._mqActivation.hasKeyValue(key);
+    };
     return BaseFxDirective;
 }());
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/flexbox/api/base.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base.js.map

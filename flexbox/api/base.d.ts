@@ -52,7 +52,7 @@ export declare abstract class BaseFxDirective implements OnDestroy {
      * Note: this allows use to preserve the original style
      * and optional restore it when the mediaQueries deactivate
      */
-    protected _getDisplayStyle(): string;
+    protected _getDisplayStyle(source?: HTMLElement): string;
     /**
      * Applies styles given via string pair or object map to the directive element.
      */
@@ -76,4 +76,8 @@ export declare abstract class BaseFxDirective implements OnDestroy {
      * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
      */
     protected readonly childrenNodes: any[];
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    protected hasKeyValue(key: any): boolean;
 }

@@ -7,14 +7,17 @@
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
 import { BaseFxDirective } from './base';
+import { MediaChange } from '../../media-query/media-change';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { HideDirective } from './hide';
 /**
  * 'show' Layout API directive
  *
  */
 export declare class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     private _layout;
+    private _hide;
     protected elRef: ElementRef;
     protected renderer: Renderer;
     /**
@@ -35,7 +38,7 @@ export declare class ShowDirective extends BaseFxDirective implements OnInit, On
     /**
      *
      */
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer);
+    constructor(monitor: MediaMonitor, _layout: LayoutDirective, _hide: HideDirective, elRef: ElementRef, renderer: Renderer);
     /**
      * Override accessor to the current HTMLElement's `display` style
      * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
@@ -54,6 +57,11 @@ export declare class ShowDirective extends BaseFxDirective implements OnInit, On
      */
     ngOnInit(): void;
     ngOnDestroy(): void;
+    /**
+     * If deactiving Show, then delegate action to the Hide directive if it is
+     * specified on same element.
+     */
+    protected _delegateToHide(changes?: MediaChange): boolean;
     /** Validate the visibility value and then update the host's inline display style */
     private _updateWithValue(value?);
     /** Build the CSS that should be assigned to the element instance */

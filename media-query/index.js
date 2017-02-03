@@ -11,5 +11,6 @@ export * from './providers/observable-media-service-provider';
 export * from './match-media';
 export * from './media-change';
 export * from './media-monitor';
+export * from './observable-media-service';
 export * from './_module';
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/media-query/index.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/index.js.map

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
-}(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject')) :
+    typeof define === 'function' && define.amd ? define(['exports', '@angular/platform-browser', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject'], factory) :
+    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.platformBrowser,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
+}(this, (function (exports,_angular_platformBrowser,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
 
 /**
  * @license
@@ -192,11 +192,18 @@ var ResponsiveActivation = (function () {
          */
         get: function () {
             var key = this.activatedInputKey;
-            return this._hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
+            return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    ResponsiveActivation.prototype.hasKeyValue = function (key) {
+        var value = this._options.inputKeys[key];
+        return typeof value !== 'undefined';
+    };
     /**
      * Remove interceptors, restore original functions, and forward the onDestroy() call
      */
@@ -305,13 +312,10 @@ var ResponsiveActivation = (function () {
     ResponsiveActivation.prototype._lookupKeyValue = function (key) {
         return this._options.inputKeys[key];
     };
-    ResponsiveActivation.prototype._hasKeyValue = function (key) {
-        var value = this._options.inputKeys[key];
-        return typeof value !== 'undefined';
-    };
     return ResponsiveActivation;
 }());
 
+var getDOM = _angular_platformBrowser.__platform_browser_private__.getDOM;
 /** Abstract base class for the Layout API styling directives. */
 var BaseFxDirective = (function () {
     /**
@@ -362,9 +366,10 @@ var BaseFxDirective = (function () {
      * Note: this allows use to preserve the original style
      * and optional restore it when the mediaQueries deactivate
      */
-    BaseFxDirective.prototype._getDisplayStyle = function () {
-        var element = this._elementRef.nativeElement;
-        return element.style['display'] || "flex";
+    BaseFxDirective.prototype._getDisplayStyle = function (source) {
+        var element = source || this._elementRef.nativeElement;
+        var value = element.style['display'] || getDOM().getComputedStyle(element)['display'];
+        return value.trim();
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -435,6 +440,12 @@ var BaseFxDirective = (function () {
         enumerable: true,
         configurable: true
     });
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    BaseFxDirective.prototype.hasKeyValue = function (key) {
+        return this._mqActivation.hasKeyValue(key);
+    };
     return BaseFxDirective;
 }());
 
@@ -1856,14 +1867,14 @@ var HideDirective = (function (_super) {
         this._layout = _layout;
         this.elRef = elRef;
         this.renderer = renderer;
-        this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
+        /**
+         * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+         * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+         */
         if (_layout) {
-            /**
-             * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-             * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-             */
             this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
         }
+        this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
     }
     Object.defineProperty(HideDirective.prototype, "hide", {
         set: function (val) {
@@ -1952,8 +1963,7 @@ var HideDirective = (function (_super) {
      * unless it was already explicitly defined.
      */
     HideDirective.prototype._getDisplayStyle = function () {
-        var element = this._elementRef.nativeElement;
-        return element.style['display'] || (this._layout ? "flex" : "block");
+        return this._layout ? "flex" : _super.prototype._getDisplayStyle.call(this);
     };
     /**
      * On changes to any @Input properties...
@@ -1968,10 +1978,15 @@ var HideDirective = (function (_super) {
     /**
      * After the initial onChanges, build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
+     * NOTE: fxHide has special fallback defaults.
+     *       - If the non-responsive fxHide="" is specified we default to hide==true
+     *       - If the non-responsive fxHide is NOT specified, use default hide == false
+     *       This logic supports mixed usages with fxShow; e.g. `<div fxHide fxShow.gt-sm>`
      */
     HideDirective.prototype.ngOnInit = function () {
         var _this = this;
-        var value = this._getDefaultVal("hide", false);
+        // If the attribute 'fxHide' is specified we default to hide==true, otherwise do nothing..
+        var value = (this._queryInput('hide') == "") ? true : this._getDefaultVal("hide", false);
         this._listenForMediaQueryChanges('hide', value, function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -2098,10 +2113,11 @@ var ShowDirective = (function (_super) {
     /**
      *
      */
-    function ShowDirective(monitor, _layout, elRef, renderer) {
+    function ShowDirective(monitor, _layout, _hide, elRef, renderer) {
         var _this = this;
         _super.call(this, monitor, elRef, renderer);
         this._layout = _layout;
+        this._hide = _hide;
         this.elRef = elRef;
         this.renderer = renderer;
         this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
@@ -2220,10 +2236,15 @@ var ShowDirective = (function (_super) {
     ShowDirective.prototype.ngOnInit = function () {
         var _this = this;
         var value = this._getDefaultVal("show", true);
+        // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, function (changes) {
-            _this._updateWithValue(changes.value);
+            if (!_this._delegateToHide(changes)) {
+                _this._updateWithValue(changes.value);
+            }
         });
-        this._updateWithValue();
+        if (!this._delegateToHide()) {
+            this._updateWithValue();
+        }
     };
     ShowDirective.prototype.ngOnDestroy = function () {
         _super.prototype.ngOnDestroy.call(this);
@@ -2234,6 +2255,20 @@ var ShowDirective = (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    /**
+     * If deactiving Show, then delegate action to the Hide directive if it is
+     * specified on same element.
+     */
+    ShowDirective.prototype._delegateToHide = function (changes) {
+        if (this._hide) {
+            var delegate = (changes && !changes.matches) || (!changes && !this.hasKeyValue('show'));
+            if (delegate) {
+                this._hide.ngOnChanges({});
+                return true;
+            }
+        }
+        return false;
+    };
     /** Validate the visibility value and then update the host's inline display style */
     ShowDirective.prototype._updateWithValue = function (value) {
         value = value || this._getDefaultVal("show", true);
@@ -2306,8 +2341,10 @@ var ShowDirective = (function (_super) {
             selector: "\n  [fxShow],\n  [fxShow.xs],\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm],\n  [fxShow.md],\n  [fxShow.gt-md],\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl]\n"
         }),
         __param$4(1, _angular_core.Optional()),
-        __param$4(1, _angular_core.Self()), 
-        __metadata$9('design:paramtypes', [MediaMonitor, LayoutDirective, _angular_core.ElementRef, _angular_core.Renderer])
+        __param$4(1, _angular_core.Self()),
+        __param$4(2, _angular_core.Optional()),
+        __param$4(2, _angular_core.Self()), 
+        __metadata$9('design:paramtypes', [MediaMonitor, LayoutDirective, HideDirective, _angular_core.ElementRef, _angular_core.Renderer])
     ], ShowDirective);
     return ShowDirective;
 }(BaseFxDirective));
@@ -3349,19 +3386,20 @@ var LayoutGapDirective = (function (_super) {
      *
      */
     LayoutGapDirective.prototype._updateWithValue = function (value) {
+        var _this = this;
         value = value || this._queryInput("gap") || '0';
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        // Reset 1st child element to 0px gap
+        // Gather all non-hidden Element nodes
         var items = this.childrenNodes
             .filter(function (el) { return (el.nodeType === 1); }) // only Element types
-            .filter(function (el, j) { return j == 0; });
-        this._applyStyleToElements(this._buildCSS(0), items);
+            .filter(function (el) { return _this._getDisplayStyle(el) != "none"; });
+        // Reset 1st child element to 0px gap
+        var skipped = items.filter(function (el, j) { return j == 0; });
+        this._applyStyleToElements(this._buildCSS(0), skipped);
         // For each `element` child, set the padding styles...
-        items = this.childrenNodes
-            .filter(function (el) { return (el.nodeType === 1); }) // only Element types
-            .filter(function (el, j) { return j > 0; }); // skip first element since gaps are needed
+        items = items.filter(function (el, j) { return j > 0; }); // skip first element since gaps are needed
         this._applyStyleToElements(this._buildCSS(value), items);
     };
     /**
@@ -3551,6 +3589,8 @@ exports.ObservableMediaServiceProvider = ObservableMediaServiceProvider;
 exports.MatchMedia = MatchMedia;
 exports.MediaChange = MediaChange;
 exports.MediaMonitor = MediaMonitor;
+exports.ObservableMediaService = ObservableMediaService;
+exports.MediaService = MediaService;
 exports.MediaQueriesModule = MediaQueriesModule;
 exports.applyCssPrefixes = applyCssPrefixes;
 exports.toAlignContentValue = toAlignContentValue;

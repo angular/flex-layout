@@ -7,6 +7,7 @@ import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { HideDirective } from './hide';
 var FALSY = ['false', false, 0];
 /**
  * 'show' Layout API directive
@@ -17,10 +18,11 @@ export var ShowDirective = (function (_super) {
     /**
      *
      */
-    function ShowDirective(monitor, _layout, elRef, renderer) {
+    function ShowDirective(monitor, _layout, _hide, elRef, renderer) {
         var _this = this;
         _super.call(this, monitor, elRef, renderer);
         this._layout = _layout;
+        this._hide = _hide;
         this.elRef = elRef;
         this.renderer = renderer;
         this._display = this._getDisplayStyle(); // re-invoke override to use `this._layout`
@@ -139,10 +141,15 @@ export var ShowDirective = (function (_super) {
     ShowDirective.prototype.ngOnInit = function () {
         var _this = this;
         var value = this._getDefaultVal("show", true);
+        // Build _mqActivation controller
         this._listenForMediaQueryChanges('show', value, function (changes) {
-            _this._updateWithValue(changes.value);
+            if (!_this._delegateToHide(changes)) {
+                _this._updateWithValue(changes.value);
+            }
         });
-        this._updateWithValue();
+        if (!this._delegateToHide()) {
+            this._updateWithValue();
+        }
     };
     ShowDirective.prototype.ngOnDestroy = function () {
         _super.prototype.ngOnDestroy.call(this);
@@ -153,6 +160,20 @@ export var ShowDirective = (function (_super) {
     // *********************************************
     // Protected methods
     // *********************************************
+    /**
+     * If deactiving Show, then delegate action to the Hide directive if it is
+     * specified on same element.
+     */
+    ShowDirective.prototype._delegateToHide = function (changes) {
+        if (this._hide) {
+            var delegate = (changes && !changes.matches) || (!changes && !this.hasKeyValue('show'));
+            if (delegate) {
+                this._hide.ngOnChanges({});
+                return true;
+            }
+        }
+        return false;
+    };
     /** Validate the visibility value and then update the host's inline display style */
     ShowDirective.prototype._updateWithValue = function (value) {
         value = value || this._getDefaultVal("show", true);
@@ -179,6 +200,7 @@ export var ShowDirective = (function (_super) {
     ShowDirective.ctorParameters = function () { return [
         { type: MediaMonitor, },
         { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+        { type: HideDirective, decorators: [{ type: Optional }, { type: Self },] },
         { type: ElementRef, },
         { type: Renderer, },
     ]; };
@@ -196,4 +218,4 @@ export var ShowDirective = (function (_super) {
     };
     return ShowDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/flexbox/api/show.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/show.js.map

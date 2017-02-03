@@ -7,6 +7,7 @@
  */
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import { MediaChange, MediaQuerySubscriber } from '../../media-query/media-change';
 import { BreakPoint } from '../../media-query/breakpoints/break-point';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -67,6 +68,10 @@ export declare class ResponsiveActivation {
      */
     readonly activatedInput: any;
     /**
+     * Fast validator for presence of attribute on the host element
+     */
+    hasKeyValue(key: any): boolean;
+    /**
      * Remove interceptors, restore original functions, and forward the onDestroy() call
      */
     destroy(): void;
@@ -110,5 +115,4 @@ export declare class ResponsiveActivation {
      * Get the value (if any) for the directive instances @Input property (aka key)
      */
     private _lookupKeyValue(key);
-    private _hasKeyValue(key);
 }

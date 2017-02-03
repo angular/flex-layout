@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import { extendObject } from '../../utils/object-extend';
 export var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -64,11 +65,18 @@ export var ResponsiveActivation = (function () {
          */
         get: function () {
             var key = this.activatedInputKey;
-            return this._hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
+            return this.hasKeyValue(key) ? this._lookupKeyValue(key) : this._options.defaultValue;
         },
         enumerable: true,
         configurable: true
     });
+    /**
+     * Fast validator for presence of attribute on the host element
+     */
+    ResponsiveActivation.prototype.hasKeyValue = function (key) {
+        var value = this._options.inputKeys[key];
+        return typeof value !== 'undefined';
+    };
     /**
      * Remove interceptors, restore original functions, and forward the onDestroy() call
      */
@@ -177,10 +185,6 @@ export var ResponsiveActivation = (function () {
     ResponsiveActivation.prototype._lookupKeyValue = function (key) {
         return this._options.inputKeys[key];
     };
-    ResponsiveActivation.prototype._hasKeyValue = function (key) {
-        var value = this._options.inputKeys[key];
-        return typeof value !== 'undefined';
-    };
     return ResponsiveActivation;
 }());
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map

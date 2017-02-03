@@ -10,4 +10,4 @@ export var ObservableMediaServiceProvider = {
     useClass: MediaService,
     deps: [MatchMedia, BreakPointRegistry]
 };
-//# sourceMappingURL=/usr/local/google/home/andrewjs/Desktop/caretaker/flex-layout/src/lib/media-query/providers/observable-media-service-provider.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/providers/observable-media-service-provider.js.map
