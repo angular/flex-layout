@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "declaration": true,
     "inlineSources": true,
-    "skipDefaultLibCheck":true,
-    "noImplicitAny": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "stripInternal": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "noImplicitAny": false,
-
     "mapRoot": "",
     "rootDir": ".",
     "sourceMap": true,
