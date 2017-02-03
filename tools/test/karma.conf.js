@@ -10,10 +10,8 @@ module.exports = (config) => {
     plugins: [
       require('karma-jasmine'),
       require('karma-browserstack-launcher'),
-      require('karma-safari-launcher'),
       require('karma-sauce-launcher'),
       require('karma-chrome-launcher'),
-      require('karma-firefox-launcher'),
     ],
 
     files: [
