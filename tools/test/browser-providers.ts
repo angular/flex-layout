@@ -28,6 +28,7 @@ export type AliasMap = { [name: string]: string[] };
 // out in Travis configuration.
 const configuration: { [name: string]: ConfigurationInfo } = {
   'Chrome':       { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
+  'Firefox':      { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
   'Firefox':      { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
   'ChromeBeta':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'FirefoxBeta':  { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
@@ -45,7 +46,7 @@ const configuration: { [name: string]: ConfigurationInfo } = {
   'Safari7':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari8':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari9':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
-  'Safari':       { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
+  'Safari10':     { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS7':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS8':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS9':         { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
@@ -115,17 +116,11 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
       platform: 'OS X 10.11',
       version: '9.0'
     },
-  'SL_SAFARI': {
+  'SL_SAFARI10': {
     base: 'SauceLabs',
     browserName: 'safari',
-    platform: 'OS X 10.11',
+    platform: 'macOS 10.12',
     version: '10.0'
-  },
-  'SL_SAFARI': {
-    base: 'SauceLabs',
-    browserName: 'safari',
-    platform: 'OS X 10.11',
-    version: 'latest'
   },
   'SL_IOS7': {
     base: 'SauceLabs',
@@ -160,8 +155,8 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
   'SL_IE11': {
     base: 'SauceLabs',
     browserName: 'internet explorer',
-    platform: 'Windows 8.1',
-    version: '11'
+    platform: 'Windows 10',
+    version: '11.103'
   },
   'SL_EDGE': {
     base: 'SauceLabs',
@@ -229,12 +224,6 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
     browser: 'safari',
     os: 'OS X',
     os_version: 'El Capitan'
-  },
-  'BS_SAFARI': {
-    base: 'BrowserStack',
-    browserName: 'safari',
-    platform: 'OS X',
-    version: 'latest'
   },
   'BS_IOS7': {
     base: 'BrowserStack',
@@ -327,7 +316,7 @@ const sauceAliases: AliasMap = {
     return customLaunchers[item].base == 'SauceLabs';
   }),
   'DESKTOP': ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI7',
-              'SL_SAFARI8', 'SL_SAFARI9', 'SL_SAFARI10', 'SL_SAFARI'],
+              'SL_SAFARI8', 'SL_SAFARI9', 'SL_SAFARI10'],
   'MOBILE': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5',
              'SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
   'ANDROID': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5'],
@@ -345,12 +334,12 @@ const browserstackAliases: AliasMap = {
     return customLaunchers[item].base == 'BrowserStack';
   }),
   'DESKTOP': ['BS_CHROME', 'BS_FIREFOX', 'BS_IE9', 'BS_IE10', 'BS_IE11', 'BS_EDGE', 'BS_SAFARI7',
-              'BS_SAFARI8', 'BS_SAFARI9'],
+              'BS_SAFARI8', 'BS_SAFARI9', 'BS_SAFARI10'],
   'MOBILE': ['BS_ANDROID4.3', 'BS_ANDROID4.4', 'BS_IOS7', 'BS_IOS8', 'BS_IOS9', 'BS_WINDOWSPHONE'],
   'ANDROID': ['BS_ANDROID4.3', 'BS_ANDROID4.4'],
   'IE': ['BS_IE9', 'BS_IE10', 'BS_IE11'],
   'IOS': ['BS_IOS7', 'BS_IOS8', 'BS_IOS9'],
-  'SAFARI': ['BS_SAFARI7', 'BS_SAFARI8', 'BS_SAFARI9'],
+  'SAFARI': ['BS_SAFARI7', 'BS_SAFARI8', 'BS_SAFARI9', 'BS_SAFARI10'],
   'REQUIRED': buildConfiguration('unitTest', 'BS', true),
   'OPTIONAL': buildConfiguration('unitTest', 'BS', false)
 };
