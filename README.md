@@ -36,7 +36,7 @@ Playing with the latest changes from [master](https://github.com/angular/flex-la
 `npm install https://github.com/angular/flex-layout-builds.git -save`
 
 
-### Important Changes with v2.0.0-beta.0 
+### Important Changes
 
 Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
 
