@@ -2,7 +2,7 @@ import gulp = require('gulp');
 import path = require('path');
 import gulpMerge = require('merge2');
 
-import {PROJECT_ROOT, DIST_COMPONENTS_ROOT} from '../constants';
+import {PROJECT_ROOT} from '../constants';
 import {sequenceTask} from '../task_helpers';
 
 const karma = require('karma');
@@ -71,5 +71,5 @@ function onKarmaFinished(doneFn: (error?: Error) => void) {
     // Immediately exit the process if Karma reported errors, because due to
     // potential running Saucelabs browsers gulp won't exit properly.
     exitCode === 0 ? doneFn() : process.exit(exitCode);
-  }
+  };
 }
