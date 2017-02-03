@@ -53,9 +53,9 @@ Directive selectors are now camelCase (instead of dash-case); as specified in th
      fxLayout.xs="column"
      fxLayoutAlign="center center"
      fxLayoutAlign.xs="start">
-  <div class="flex-item" fxFlex="20%" fxFlex.xs="40%">  </div>
-  <div class="flex-item" fxFlex>        </div>
-  <div class="flex-item" fxFlex="25px"> </div>
+  <div fxFlex="20%" fxFlex.xs="40%">  </div>
+  <div fxFlex>        </div>
+  <div fxFlex="25px"> </div>
 </div> 
 ```
 
