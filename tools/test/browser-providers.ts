@@ -35,7 +35,7 @@ const configuration: { [name: string]: ConfigurationInfo } = {
   'FirefoxDev':   { unitTest: {target: null, required: true}, e2e: {target: null, required: true}},
   'IE9':          { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'IE10':         { unitTest: {target: null, required: true}, e2e: {target: null, required: true}},
-  'IE11':         { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
+  'IE11':         { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
   'Edge':         { unitTest: {target: 'SL', required: true}, e2e: {target: null, required: true}},
   'Android4.1':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Android4.2':   { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
@@ -45,7 +45,7 @@ const configuration: { [name: string]: ConfigurationInfo } = {
   'Safari7':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari8':      { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'Safari9':      { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
-  'Safari10':     { unitTest: {target: 'BS', required: false}, e2e: {target: null, required: true}},
+  'Safari':       { unitTest: {target: 'BS', required: true}, e2e: {target: null, required: true}},
   'iOS7':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS8':         { unitTest: {target: null, required: false}, e2e: {target: null, required: true}},
   'iOS9':         { unitTest: {target: 'SL', required: false}, e2e: {target: null, required: true}},
@@ -115,11 +115,17 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
       platform: 'OS X 10.11',
       version: '9.0'
     },
-  'SL_SAFARI10': {
+  'SL_SAFARI': {
     base: 'SauceLabs',
     browserName: 'safari',
     platform: 'OS X 10.11',
-    version: '10'
+    version: '10.0'
+  },
+  'SL_SAFARI': {
+    base: 'SauceLabs',
+    browserName: 'safari',
+    platform: 'OS X 10.11',
+    version: 'latest'
   },
   'SL_IOS7': {
     base: 'SauceLabs',
@@ -224,6 +230,12 @@ export const customLaunchers: { [name: string]: BrowserLauncherInfo } = {
     os: 'OS X',
     os_version: 'El Capitan'
   },
+  'BS_SAFARI': {
+    base: 'BrowserStack',
+    browserName: 'safari',
+    platform: 'OS X',
+    version: 'latest'
+  },
   'BS_IOS7': {
     base: 'BrowserStack',
     device: 'iPhone 5S',
@@ -315,7 +327,7 @@ const sauceAliases: AliasMap = {
     return customLaunchers[item].base == 'SauceLabs';
   }),
   'DESKTOP': ['SL_CHROME', 'SL_FIREFOX', 'SL_IE9', 'SL_IE10', 'SL_IE11', 'SL_EDGE', 'SL_SAFARI7',
-              'SL_SAFARI8', 'SL_SAFARI9', 'SL_SAFARI10'],
+              'SL_SAFARI8', 'SL_SAFARI9', 'SL_SAFARI10', 'SL_SAFARI'],
   'MOBILE': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5',
              'SL_IOS7', 'SL_IOS8', 'SL_IOS9'],
   'ANDROID': ['SL_ANDROID4.1', 'SL_ANDROID4.2', 'SL_ANDROID4.3', 'SL_ANDROID4.4', 'SL_ANDROID5'],
