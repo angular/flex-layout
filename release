@@ -11,9 +11,8 @@
   var fs             = require('fs');
   var prompt         = require('prompt-sync')();
   var child_process  = require('child_process');
-  var pkg            = require('./package.json');
   var releases       = require('./tools/releases.json');
-  var oldVersion     = pkg.version;
+  var oldVersion     = require('./package.json').version;
   var abortCmds      = [ 'git reset --hard', 'git checkout staging', 'rm ./abort ./push' ];
   var pushCmds       = [ 'rm ./abort ./push' ];
   var cleanupCmds    = [];
@@ -104,23 +103,15 @@
   function updateVersion() {
     start(`Updating ${"package.json".cyan} version from ${oldVersion.cyan} to ${newVersion.cyan}...`);
 
-    // Update the repo-root package.json
-    pkg.version = newVersion;
-    fs.writeFileSync('./package.json', JSON.stringify(pkg, null, 2));
-
-    // update the package.json deploy to npm
-    let npmPackagePath = './tools/scripts/release/npm_assets/package.json';
-    pkg = require(npmPackagePath);
-    pkg.version = newVersion;
-    fs.writeFileSync(npmPackagePath, JSON.stringify(pkg, null, 2));
+    updatePackageVersions();
 
     done();
 
-    abortCmds.push('git checkout package.json');
-    abortCmds.push(`git checkout ${npmPackagePath}`);
+    abortCmds.push(`git checkout ${SOURCE_PACKAGE}`);
+    abortCmds.push(`git checkout ${NPM_PACKAGE}`);
 
-    pushCmds.push('git add package.json');
-    pushCmds.push(`git add ${npmPackagePath}`);
+    pushCmds.push(`git add ${SOURCE_PACKAGE}`);
+    pushCmds.push(`git add ${NPM_PACKAGE}`);
   }
 
   /** generates the changelog from the commits since the last release */
@@ -315,7 +306,7 @@
         'git checkout master',
         `git pull --rebase ${origin} master --strategy=theirs`,
         `git checkout release/${newVersion} -- CHANGELOG.md`,
-        `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(buildCommand)}"`,
+        `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updatePackageVersions)}"`,
         'git add CHANGELOG.md',
         'git add package.json',
         'git add tools/scripts/release/npm_assets/package.json',
@@ -323,11 +314,19 @@
         `git push ${origin} master`
     );
 
-    function buildCommand () {
-      var json = require('./package.json');
-          json.version = newVersion;
-
-      fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
+    /**
+     * When updating the 'master' branch, update both the source repository 'package.json',
+     * and also the npm version that is used when deploying the releases to npm.
+     */
+    function updatePackageVersions () {
+      [
+        './package.json',
+        './tools/scripts/release/npm_assets/package.json'
+      ].forEach(filePath => {
+        let json = require(filePath);
+            json.version = newVersion;
+        fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
+      });
     }
 
     function stringifyFunction (method) {
