@@ -13,13 +13,12 @@ import 'rxjs/add/operator/map';
 
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {BreakPointRegistry} from '../breakpoints/break-point-registry';
-import {MediaChange} from '../media-change';
-import {MockMatchMedia} from '../mock/mock-match-media';
-import {MatchMedia} from '../match-media';
-import {ObservableMediaServiceProvider} from './observable-media-service-provider';
-import {ObservableMediaService} from '../observable-media-service';
-import {BreakPointsProvider, RAW_DEFAULTS} from './break-points-provider';
+import {BreakPointRegistry} from './breakpoints/break-point-registry';
+import {MediaChange} from './media-change';
+import {MockMatchMedia} from './mock/mock-match-media';
+import {MatchMedia} from './match-media';
+import {ObservableMedia, MediaService} from './observable-media-service';
+import {BREAKPOINTS, RAW_DEFAULTS} from './breakpoints/break-points';
 
 describe('match-media-observable-provider', () => {
   let findMediaQuery = (alias) => {
@@ -36,15 +35,19 @@ describe('match-media-observable-provider', () => {
     TestBed.configureTestingModule({
       providers: [
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
-        BreakPointsProvider,  // Supports developer overrides of list of known breakpoints
+        {provide: BREAKPOINTS, useValue: RAW_DEFAULTS},
         {provide: MatchMedia, useClass: MockMatchMedia},
-        ObservableMediaServiceProvider
+        {
+          provide: ObservableMedia,
+          useClass: MediaService,
+          deps: [MatchMedia, BreakPointRegistry]
+        }
       ]
     });
   });
 
   it('can supports the `.isActive()` API', async(inject(
-      [ObservableMediaService, MatchMedia],
+      [ObservableMedia, MatchMedia],
       (media, matchMedia) => {
         expect(media).toBeDefined();
 
@@ -59,7 +62,7 @@ describe('match-media-observable-provider', () => {
       })));
 
   it('can supports RxJS operators', inject(
-      [ObservableMediaService, MatchMedia],
+      [ObservableMedia, MatchMedia],
       (mediaService, matchMedia) => {
         let count = 0,
             subscription = mediaService
@@ -92,7 +95,7 @@ describe('match-media-observable-provider', () => {
       }));
 
   it('can can subscribe to built-in mediaQueries', async(inject(
-      [ObservableMediaService, MatchMedia],
+      [ObservableMedia, MatchMedia],
       (media$, matchMedia) => {
         let current: MediaChange;
 
@@ -127,7 +130,7 @@ describe('match-media-observable-provider', () => {
       })));
 
   it('can `.unsubscribe()` properly', async(inject(
-      [ObservableMediaService, MatchMedia],
+      [ObservableMedia, MatchMedia],
       (media, matchMedia) => {
         let current: MediaChange;
         let subscription = media.subscribe((change: MediaChange) => {
