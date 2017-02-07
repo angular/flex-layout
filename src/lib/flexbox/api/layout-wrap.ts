@@ -42,8 +42,8 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
   [fxLayoutWrap.xl]
 `})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-  private _layout = 'row';  // default flex-direction
-  private _layoutWatcher: Subscription;
+  protected _layout = 'row';  // default flex-direction
+  protected _layoutWatcher: Subscription;
 
   @Input('fxLayoutWrap')       set wrap(val)     { this._cacheInput("wrap", val); }
   @Input('fxLayoutWrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
@@ -98,7 +98,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   /**
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
-  private _onLayoutChange(direction) {
+  protected _onLayoutChange(direction) {
     this._layout = (direction || '').toLowerCase().replace('-reverse', '');
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
@@ -107,7 +107,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
     this._updateWithValue();
   }
 
-  private _updateWithValue(value?: string) {
+  protected _updateWithValue(value?: string) {
     value = value || this._queryInput("wrap") || 'wrap';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -121,7 +121,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  private _buildCSS(value) {
+  protected _buildCSS(value) {
     return extendObject({ 'flex-wrap': value }, {
       'display' : 'flex',
       'flex-direction' : this._layout || 'row'
@@ -131,7 +131,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   /**
    * Convert layout-wrap="<value>" to expected flex-wrap style
    */
-  private _validateValue(value) {
+  protected _validateValue(value) {
     switch (value.toLowerCase()) {
       case 'reverse':
       case 'wrap-reverse':

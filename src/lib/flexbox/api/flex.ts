@@ -38,8 +38,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-@Directive({
-  selector: `
+@Directive({selector: `
   [fxFlex],
   [fxFlex.xs],
   [fxFlex.gt-xs],
@@ -55,13 +54,13 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
-  private _layout = 'row';
+  protected _layout = 'row';
 
   /**
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  private _layoutWatcher: Subscription;
+  protected _layoutWatcher: Subscription;
 
   @Input('fxFlex')       set flex(val) {
     this._cacheInput("flex", val);
@@ -117,8 +116,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer,
-              @Optional() @SkipSelf() private _container: LayoutDirective,
-              @Optional() @SkipSelf() private _wrap: LayoutWrapDirective) {
+              @Optional() @SkipSelf() protected _container: LayoutDirective,
+              @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective) {
 
     super(monitor, elRef, renderer);
 
@@ -168,12 +167,12 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Caches the parent container's 'flex-direction' and updates the element's style.
    * Used as a handler for layout change events from the parent flex container.
    */
-  private _onLayoutChange(direction?: string) {
+  protected _onLayoutChange(direction?: string) {
     this._layout = direction || this._layout || "row";
     this._updateStyle();
   }
 
-  private _updateStyle(value?: string|number) {
+  protected _updateStyle(value?: string|number) {
     let flexBasis = value || this._queryInput("flex") || '';
     if (this._mqActivation) {
       flexBasis = this._mqActivation.activatedInput;
@@ -186,7 +185,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
    */
-  private _parseFlexParts(basis: string) {
+  protected _parseFlexParts(basis: string) {
     basis = basis.replace(";", "");
 
     let hasCalc = basis && basis.indexOf("calc") > -1;
@@ -200,7 +199,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * e.g.
    * fxFlex="3 3 calc(15em + 20px)"
    */
-  private _getPartsWithCalc(value: string) {
+  protected _getPartsWithCalc(value: string) {
     let parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
     let j = value.indexOf('calc');
 
@@ -219,7 +218,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  private _validateValue(grow: number|string,
+  protected _validateValue(grow: number|string,
                          shrink: number|string,
                          basis: string|number|FlexBasisAlias) {
     let css, isValue;

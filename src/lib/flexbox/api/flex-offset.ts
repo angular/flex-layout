@@ -83,7 +83,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   // *********************************************
 
 
-  private _updateWithValue(value?: string|number) {
+  protected _updateWithValue(value?: string|number) {
     value = value || this._queryInput("offset") || 0;
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -92,7 +92,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
     this._applyStyleToElement(this._buildCSS(value));
   }
 
-  private _buildCSS(offset) {
+  protected _buildCSS(offset) {
     let isPercent = String(offset).indexOf('%') > -1;
     let isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(offset)) {

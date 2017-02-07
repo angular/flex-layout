@@ -49,8 +49,8 @@ import {LAYOUT_VALUES, LayoutDirective} from './layout';
 `})
 export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
-  private _layout = 'row';  // default flex-direction
-  private _layoutWatcher: Subscription;
+  protected _layout = 'row';  // default flex-direction
+  protected _layoutWatcher: Subscription;
 
   @Input('fxLayoutAlign')       set align(val)     { this._cacheInput('align', val); }
   @Input('fxLayoutAlign.xs')    set alignXs(val)   { this._cacheInput('alignXs', val); }
@@ -110,7 +110,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    *
    */
-  private _updateWithValue(value?: string) {
+  protected _updateWithValue(value?: string) {
     value = value || this._queryInput("align") || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -123,7 +123,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
-  private _onLayoutChange(direction) {
+  protected _onLayoutChange(direction) {
     this._layout = (direction || '').toLowerCase();
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
@@ -136,7 +136,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
     this._allowStretching(value, this._layout || "row");
   }
 
-  private _buildCSS(align) {
+  protected _buildCSS(align) {
     let css = {}, [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     css['justify-content'] = 'flex-start';  // default main axis
@@ -188,7 +188,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * Update container element to 'stretch' as needed...
    * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
    */
-  private _allowStretching(align, layout) {
+  protected _allowStretching(align, layout) {
     let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     if (cross_axis == 'stretch') {

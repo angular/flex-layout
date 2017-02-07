@@ -42,9 +42,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   /**
    *
    */
-  constructor(private _mediaMonitor: MediaMonitor,
+  constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              private _renderer: Renderer) {
+              protected _renderer: Renderer) {
     this._display = this._getDisplayStyle();
   }
 

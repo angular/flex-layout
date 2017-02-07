@@ -49,7 +49,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Create Observable for nested/child 'flex' directives. This allows
    * child flex directives to subscribe/listen for flexbox direction changes.
    */
-  private _announcer: BehaviorSubject<string>;
+  protected _announcer: BehaviorSubject<string>;
 
   /**
    * Publish observer to enabled nested, dependent directives to listen
@@ -57,9 +57,8 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   public layout$: Observable<string>;
 
-
-  @Input('fxLayout') set layout(val) { this._cacheInput("layout", val); }
-  @Input('fxLayout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); }
+  @Input('fxLayout')       set layout(val)     { this._cacheInput("layout", val); };
+  @Input('fxLayout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); };
   @Input('fxLayout.gt-xs') set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); };
   @Input('fxLayout.sm')    set layoutSm(val)   { this._cacheInput('layoutSm', val); };
   @Input('fxLayout.gt-sm') set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); };
@@ -111,7 +110,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    * Validate the direction value and then update the host's inline flexbox styles
    */
-  private _updateWithDirection(direction?: string) {
+  protected _updateWithDirection(direction?: string) {
     direction = direction || this._queryInput("layout") || 'row';
     if (this._mqActivation) {
       direction = this._mqActivation.activatedInput;
@@ -136,7 +135,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    *         laid out and drawn inside that element's specified width and height.
    *
    */
-  private _buildCSS(value) {
+  protected _buildCSS(value) {
     return {'display': 'flex', 'box-sizing': 'border-box', 'flex-direction': value};
   }
 
@@ -144,7 +143,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Validate the value to be one of the acceptable value options
    * Use default fallback of "row"
    */
-  private _validateValue(value) {
+  protected _validateValue(value) {
     value = value ? value.toLowerCase() : '';
     return LAYOUT_VALUES.find(x => x === value) ? value : LAYOUT_VALUES[0];  // "row"
   }
