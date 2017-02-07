@@ -1,23 +1,17 @@
-/**
- * @license
- * Copyright Google Inc. All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-import { OpaqueToken } from '@angular/core';
+import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
+import { BreakPointRegistry } from './breakpoints/break-point-registry';
+import { MatchMedia } from './match-media';
 import { mergeAlias } from './../utils/add-alias';
 /**
- *  Opaque Token unique to the flex-layout library.
- *  Note: Developers must use this token when building their own custom
- *  `ObservableMediaServiceProvider` provider.
- *
- *  @see ./providers/match-media-observable-provider.ts
+ * Base class for MediaService and pseudo-token for
  */
-// tslint:disable-next-line:variable-name
-export var ObservableMediaService = new OpaqueToken('flex-layout-media-service');
+export var ObservableMedia = (function () {
+    function ObservableMedia() {
+    }
+    return ObservableMedia;
+}());
 /**
  * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
 
@@ -25,7 +19,7 @@ export var ObservableMediaService = new OpaqueToken('flex-layout-media-service')
  * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
  * currently active.
  *
- * !! Only mediaChange activations (not de-activations) are announced by the ObservableMediaService
+ * !! Only mediaChange activations (not de-activations) are announced by the ObservableMedia
  *
  * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and
@@ -38,16 +32,25 @@ export var ObservableMediaService = new OpaqueToken('flex-layout-media-service')
  *  @usage
  *
  *  // RxJS
- *  import 'rxjs/add/operator/map';
+ *  import 'rxjs/add/operator/filter';
+ *  import { ObservableMedia } from '@angular/flex-layout';
  *
  *  @Component({ ... })
  *  export class AppComponent {
- *    constructor( @Inject(ObservableMediaService) media) {
+ *    status : string = '';
+ *
+ *    constructor(  media:ObservableMedia ) {
+ *      let onChange = (change:MediaChange) => {
+ *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
+ *      };
+ *
+ *      // Subscribe directly or access observable to use filter/map operators
+ *      // e.g.
+ *      //      media.subscribe(onChange);
+ *
  *      media.asObservable()
- *        .map( (change:MediaChange) => change.mqAlias == 'md' )
- *        .subscribe((change:MediaChange) => {
- *          console.log( change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "" );
- *        });
+ *        .filter((change:MediaChange) => true)   // silly noop filter
+ *        .subscribe(onChange);
  *    }
  *  }
  */
@@ -134,6 +137,23 @@ export var MediaService = (function () {
         return bp ? bp.mediaQuery : query;
     };
     ;
+    MediaService.decorators = [
+        { type: Injectable },
+    ];
+    /** @nocollapse */
+    MediaService.ctorParameters = function () { return [
+        { type: MatchMedia, },
+        { type: BreakPointRegistry, },
+    ]; };
     return MediaService;
 }());
+/**
+ *  Provider to return observable to ALL MediaQuery events
+ *  Developers should build custom providers to override this default MediaQuery Observable
+ */
+export var ObservableMediaProvider = {
+    provide: ObservableMedia,
+    useClass: MediaService,
+    deps: [MatchMedia, BreakPointRegistry]
+};
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media-service.js.map

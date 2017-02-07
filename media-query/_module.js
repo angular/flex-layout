@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { BreakPointRegistry } from './breakpoints/break-point-registry';
-import { BreakPointsProvider } from "./providers/break-points-provider";
 import { MatchMedia } from './match-media';
 import { MediaMonitor } from './media-monitor';
-import { ObservableMediaServiceProvider } from './providers/observable-media-service-provider';
+import { ObservableMediaProvider } from './observable-media-service';
+import { BreakPointsProvider } from './breakpoints/break-points';
+import { BreakPointRegistry } from './breakpoints/break-point-registry';
 /**
  * *****************************************************************
  * Define module for the MediaQuery API
@@ -24,7 +24,7 @@ export var MediaQueriesModule = (function () {
                         MediaMonitor,
                         BreakPointRegistry,
                         BreakPointsProvider,
-                        ObservableMediaServiceProvider // easy subscription injectable `media$` matchMedia observable
+                        ObservableMediaProvider // easy subscription injectable `media$` matchMedia observable
                     ]
                 },] },
     ];
