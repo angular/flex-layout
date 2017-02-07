@@ -16,11 +16,10 @@ import {TestBed, inject, async} from '@angular/core/testing';
 import {MediaChange} from './media-change';
 import {BreakPoint} from './breakpoints/break-point';
 import {MockMatchMedia} from './mock/mock-match-media';
+import {BreakPointsProvider} from './breakpoints/break-points';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
-import {BreakPointsProvider} from './providers/break-points-provider';
 import {MatchMedia} from './match-media';
-import {ObservableMediaService} from './observable-media-service';
-import {ObservableMediaServiceProvider} from './providers/observable-media-service-provider';
+import {ObservableMedia, ObservableMediaProvider} from './observable-media-service';
 
 describe('match-media', () => {
   let matchMedia: MockMatchMedia;
@@ -130,15 +129,15 @@ describe('match-media-observable', () => {
       providers: [
         BreakPointsProvider,  // Supports developer overrides of list of known breakpoints
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        ObservableMediaServiceProvider  // injectable `media$` matchMedia observable
+        ObservableMediaProvider,  // injectable `media$` matchMedia observable
+        {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
   });
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
-      [ObservableMediaService, MatchMedia, BreakPointRegistry],
+      [ObservableMedia, MatchMedia, BreakPointRegistry],
       (_media$_, _matchMedia_, _breakPoints_) => {
         matchMedia = _matchMedia_;      // inject only to manually activate mediaQuery ranges
         breakPoints = _breakPoints_;
@@ -205,7 +204,7 @@ describe('match-media-observable', () => {
   });
 
   /**
-   * Only the ObservableMediaService ignores de-activations;
+   * Only the ObservableMedia ignores de-activations;
    * MediaMonitor and MatchMedia report both activations and de-activations!
    */
   it('ignores mediaQuery de-activations', () => {

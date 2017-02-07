@@ -12,11 +12,11 @@ import 'rxjs/add/operator/map';
 
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {RAW_DEFAULTS} from './providers/break-points-provider';
+import {RAW_DEFAULTS} from './breakpoints/break-points';
 import {MediaChange} from './media-change';
 import {MockMatchMedia} from './mock/mock-match-media';
+import {BreakPointsProvider} from './breakpoints/break-points';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
-import {BreakPointsProvider} from './providers/break-points-provider';
 import {MatchMedia} from './match-media';
 import {MediaMonitor} from './media-monitor';
 

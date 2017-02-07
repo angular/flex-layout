@@ -14,7 +14,7 @@ import 'rxjs/add/operator/map';
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {BreakPoint} from '../breakpoints/break-point';
-import {BREAKPOINTS, RAW_DEFAULTS} from '../providers/break-points-provider';
+import {BREAKPOINTS, RAW_DEFAULTS} from './break-points';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[ ];

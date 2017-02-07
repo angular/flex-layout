@@ -6,16 +6,16 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {
-  Component, OnInit, Inject
+  Component, OnInit
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {ObservableMediaService} from '../../media-query/observable-media-service';
-import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
-import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
+import {ObservableMedia} from '../../media-query/observable-media-service';
 
 import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
 import {
@@ -290,7 +290,7 @@ export class TestHideComponent implements OnInit {
   isHidden = true;
   menuHidden = true;
 
-  constructor(@Inject(ObservableMediaService) private media) {
+  constructor(private media: ObservableMedia) {
   }
 
   toggleMenu() {
