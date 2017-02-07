@@ -8,9 +8,11 @@
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
-import {ModuleWithProviders, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
+
 import {MediaMonitor} from '../media-query/media-monitor';
 import {MediaQueriesModule} from '../media-query/_module';
+
 import {FlexDirective} from './api/flex';
 import {LayoutDirective} from './api/layout';
 import {HideDirective} from './api/hide';
@@ -52,10 +54,6 @@ const ALL_DIRECTIVES = [
   declarations: ALL_DIRECTIVES,
   imports: [MediaQueriesModule],
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
-  providers: []
+  providers: [ MediaMonitor ]
 })
-export class FlexLayoutModule {
-  static forRoot(): ModuleWithProviders {
-    return {ngModule: FlexLayoutModule, providers: [MediaMonitor]};
-  }
-}
+export class FlexLayoutModule { }
