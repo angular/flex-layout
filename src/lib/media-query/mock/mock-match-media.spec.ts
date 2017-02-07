@@ -16,8 +16,8 @@ import {TestBed, inject, async} from '@angular/core/testing';
 import {MediaChange} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';
 import {MockMatchMedia} from './mock-match-media';
+import {BreakPointsProvider} from '../breakpoints/break-points';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
-import {BreakPointsProvider} from '../providers/break-points-provider';
 
 describe('mock-match-media', () => {
   let breakPoints: BreakPointRegistry;

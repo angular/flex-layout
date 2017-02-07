@@ -9,10 +9,11 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
+
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
-import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
 import {extendObject} from '../../utils/object-extend';
@@ -33,7 +34,7 @@ describe('layout-align directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,

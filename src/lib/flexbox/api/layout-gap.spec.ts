@@ -9,10 +9,10 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture} from '@angular/core/testing';
 
+import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {BreakPointsProvider} from '../../media-query/providers/break-points-provider';
-import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {FlexLayoutModule} from '../_module';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
@@ -32,7 +32,7 @@ describe('layout-gap directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutGapComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,

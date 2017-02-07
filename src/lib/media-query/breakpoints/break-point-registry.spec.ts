@@ -7,10 +7,9 @@
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {BreakPointRegistry} from './break-point-registry';
-import {BREAKPOINTS} from '../providers/break-points-provider';
-import {RAW_DEFAULTS} from "../providers/break-points-provider";
 import {BreakPoint} from './break-point';
+import {BreakPointRegistry} from './break-point-registry';
+import {BREAKPOINTS, RAW_DEFAULTS} from './break-points';
 
 describe('break-points', () => {
   let breakPoints: BreakPointRegistry;
