@@ -32,7 +32,7 @@ describe('show directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestShowComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,

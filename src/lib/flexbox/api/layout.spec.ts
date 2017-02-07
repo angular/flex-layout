@@ -38,7 +38,7 @@ describe('layout directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
