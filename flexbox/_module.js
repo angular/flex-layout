@@ -40,6 +40,13 @@ var ALL_DIRECTIVES = [
 export var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
     }
+    /** @deprecated */
+    FlexLayoutModule.forRoot = function () {
+        console.warn('FlexLayoutModule.forRoot() has been deprecated and is no longer needed.');
+        return {
+            ngModule: FlexLayoutModule
+        };
+    };
     FlexLayoutModule.decorators = [
         { type: NgModule, args: [{
                     declarations: ALL_DIRECTIVES,

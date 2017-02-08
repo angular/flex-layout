@@ -7,8 +7,11 @@
  */
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
+import { ModuleWithProviders } from '@angular/core';
 /**
  *
  */
 export declare class FlexLayoutModule {
+    /** @deprecated */
+    static forRoot(): ModuleWithProviders;
 }
