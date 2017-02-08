@@ -137,10 +137,14 @@ export var LayoutGapDirective = (function (_super) {
     LayoutGapDirective.prototype._watchContentChanges = function () {
         var _this = this;
         var onMutationCallback = function (mutations) {
-            // update gap styles only for 'addedNodes' events
-            mutations
-                .filter(function (it) { return it.addedNodes && it.addedNodes.length; })
-                .map(function () { return _this._updateWithValue(); });
+            var validatedChanges = function (it) {
+                return (it.addedNodes && it.addedNodes.length) ||
+                    (it.removedNodes && it.removedNodes.length);
+            };
+            // update gap styles only for child 'added' or 'removed' events
+            if (mutations.filter(validatedChanges).length) {
+                _this._updateWithValue();
+            }
         };
         this._observer = new MutationObserver(onMutationCallback);
         this._observer.observe(this._elementRef.nativeElement, { childList: true });
@@ -169,18 +173,23 @@ export var LayoutGapDirective = (function (_super) {
         var items = this.childrenNodes
             .filter(function (el) { return (el.nodeType === 1); }) // only Element types
             .filter(function (el) { return _this._getDisplayStyle(el) != "none"; });
-        // Reset 1st child element to 0px gap
-        var skipped = items.filter(function (el, j) { return j == 0; });
-        this._applyStyleToElements(this._buildCSS(0), skipped);
-        // For each `element` child, set the padding styles...
-        items = items.filter(function (el, j) { return j > 0; }); // skip first element since gaps are needed
-        this._applyStyleToElements(this._buildCSS(value), items);
+        var numItems = items.length;
+        if (numItems > 1) {
+            var lastItem = items[numItems - 1];
+            // For each `element` children EXCEPT the last,
+            // set the margin right/bottom styles...
+            items = items.filter(function (el, j) { return j < numItems - 1; });
+            this._applyStyleToElements(this._buildCSS(value), items);
+            // Clear all gaps for all visible elements
+            this._applyStyleToElements(this._buildCSS(), [lastItem]);
+        }
     };
     /**
      * Prepare margin CSS, remove any previous explicitly
      * assigned margin assignments
      */
     LayoutGapDirective.prototype._buildCSS = function (value) {
+        if (value === void 0) { value = null; }
         var key, margins = {
             'margin-left': null,
             'margin-right': null,
@@ -189,19 +198,13 @@ export var LayoutGapDirective = (function (_super) {
         };
         switch (this._layout) {
             case 'column':
-                key = 'margin-top';
-                break;
             case 'column-reverse':
                 key = 'margin-bottom';
                 break;
-            case 'row-reverse':
-                key = 'margin-right';
-                break;
             case "row":
-                key = 'margin-left';
-                break;
+            case 'row-reverse':
             default:
-                key = 'margin-left';
+                key = 'margin-right';
                 break;
         }
         margins[key] = value;
