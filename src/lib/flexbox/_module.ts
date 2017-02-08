@@ -8,8 +8,7 @@
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 
-import {NgModule} from '@angular/core';
-
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {MediaMonitor} from '../media-query/media-monitor';
 import {MediaQueriesModule} from '../media-query/_module';
 
@@ -56,4 +55,12 @@ const ALL_DIRECTIVES = [
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
   providers: [ MediaMonitor ]
 })
-export class FlexLayoutModule { }
+export class FlexLayoutModule {
+  /** @deprecated */
+  static forRoot(): ModuleWithProviders {
+    console.warn('FlexLayoutModule.forRoot() has been deprecated and is no longer needed.');
+    return {
+      ngModule: FlexLayoutModule
+    };
+  }
+}
