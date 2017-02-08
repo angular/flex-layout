@@ -34,7 +34,7 @@ describe('layout-align directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,

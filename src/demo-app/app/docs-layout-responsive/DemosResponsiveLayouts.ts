@@ -40,7 +40,7 @@ import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
     CommonModule,
     FormsModule,
     MaterialModule,
-    FlexLayoutModule.forRoot()
+    FlexLayoutModule
   ]
 
 })

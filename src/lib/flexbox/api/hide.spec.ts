@@ -51,7 +51,7 @@ describe('hide directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, MediaQueriesModule.forRoot()],
+      imports: [CommonModule, MediaQueriesModule],
       declarations: [TestHideComponent, HideDirective],
       providers: [
         BreakPointRegistry, BreakPointsProvider,

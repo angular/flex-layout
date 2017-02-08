@@ -16,7 +16,7 @@ import { DemosResponsiveLayoutsModule } from './docs-layout-responsive/DemosResp
   imports         : [
     BrowserModule,
     MaterialModule.forRoot(),
-    FlexLayoutModule.forRoot(),
+    FlexLayoutModule,
     DemoAppRoutingModule,
 
     /* Internal Demo App Modules */

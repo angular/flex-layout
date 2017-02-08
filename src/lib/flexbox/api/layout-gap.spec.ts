@@ -32,7 +32,7 @@ describe('layout-gap directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule.forRoot()],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutGapComponent],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
