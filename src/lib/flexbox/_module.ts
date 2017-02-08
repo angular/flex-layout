@@ -23,6 +23,8 @@ import {FlexOrderDirective} from './api/flex-order';
 import {LayoutAlignDirective} from './api/layout-align';
 import {LayoutWrapDirective} from './api/layout-wrap';
 import {LayoutGapDirective} from './api/layout-gap';
+import {ClassDirective} from './api/class';
+import {StyleDirective} from './api/style';
 
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
@@ -44,6 +46,8 @@ const ALL_DIRECTIVES = [
   FlexAlignDirective,
   ShowDirective,
   HideDirective,
+  ClassDirective,
+  StyleDirective,
 ];
 
 /**
