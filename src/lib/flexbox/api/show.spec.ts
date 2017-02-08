@@ -232,7 +232,7 @@ describe('show directive', () => {
 export class TestShowComponent implements OnInit {
   isVisible = 0;
   isHidden = false;
-  menuOpen: boolean = true;
+  menuOpen = true;
 
   constructor(private media: ObservableMedia) {
   }
