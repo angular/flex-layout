@@ -55,7 +55,7 @@ export var RAW_DEFAULTS = [
         alias: 'xl',
         suffix: 'Xl',
         overlapping: false,
-        mediaQuery: 'screen and (min-width: 1921px)' // should be distinct from 'gt-lg' range
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)'
     }
 ];
 /**

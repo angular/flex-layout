@@ -505,7 +505,7 @@ var RAW_DEFAULTS = [
         alias: 'xl',
         suffix: 'Xl',
         overlapping: false,
-        mediaQuery: 'screen and (min-width: 1921px)' // should be distinct from 'gt-lg' range
+        mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)'
     }
 ];
 /**
@@ -1041,18 +1041,13 @@ var __metadata$4 = (this && this.__metadata) || function (k, v) {
 var MediaQueriesModule = (function () {
     function MediaQueriesModule() {
     }
-    MediaQueriesModule.forRoot = function () {
-        return {
-            ngModule: MediaQueriesModule
-        };
-    };
     MediaQueriesModule = __decorate$4([
         _angular_core.NgModule({
             providers: [
                 MatchMedia,
-                MediaMonitor,
-                BreakPointRegistry,
                 BreakPointsProvider,
+                BreakPointRegistry,
+                MediaMonitor,
                 ObservableMediaProvider // easy subscription injectable `media$` matchMedia observable
             ]
         }), 
@@ -3545,15 +3540,12 @@ var ALL_DIRECTIVES = [
 var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
     }
-    FlexLayoutModule.forRoot = function () {
-        return { ngModule: FlexLayoutModule, providers: [MediaMonitor] };
-    };
     FlexLayoutModule = __decorate([
         _angular_core.NgModule({
             declarations: ALL_DIRECTIVES,
             imports: [MediaQueriesModule],
             exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-            providers: []
+            providers: [MediaMonitor]
         }), 
         __metadata('design:paramtypes', [])
     ], FlexLayoutModule);

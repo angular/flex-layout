@@ -12,18 +12,13 @@ import { BreakPointRegistry } from './breakpoints/break-point-registry';
 export var MediaQueriesModule = (function () {
     function MediaQueriesModule() {
     }
-    MediaQueriesModule.forRoot = function () {
-        return {
-            ngModule: MediaQueriesModule
-        };
-    };
     MediaQueriesModule.decorators = [
         { type: NgModule, args: [{
                     providers: [
                         MatchMedia,
-                        MediaMonitor,
-                        BreakPointRegistry,
                         BreakPointsProvider,
+                        BreakPointRegistry,
+                        MediaMonitor,
                         ObservableMediaProvider // easy subscription injectable `media$` matchMedia observable
                     ]
                 },] },

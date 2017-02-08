@@ -40,15 +40,12 @@ var ALL_DIRECTIVES = [
 export var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
     }
-    FlexLayoutModule.forRoot = function () {
-        return { ngModule: FlexLayoutModule, providers: [MediaMonitor] };
-    };
     FlexLayoutModule.decorators = [
         { type: NgModule, args: [{
                     declarations: ALL_DIRECTIVES,
                     imports: [MediaQueriesModule],
                     exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-                    providers: []
+                    providers: [MediaMonitor]
                 },] },
     ];
     /** @nocollapse */
