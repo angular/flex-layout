@@ -15,7 +15,7 @@ import { ObservableMedia } from "../../../lib/media-query/observable-media-servi
     <md-card class="card-demo" >
       <md-card-title>Responsive Style</md-card-title>
       <md-card-subtitle>
-        Use the class and style APIs to responsively apply styles to elements:
+        Use the fxClass and fxStyle APIs to responsively apply styles to elements:
       </md-card-subtitle>
 
       <md-card-content>
@@ -87,7 +87,7 @@ import { ObservableMedia } from "../../../lib/media-query/observable-media-servi
     </md-card>
   `
 })
-export class DemoResponsiveStyle implements OnInit, OnDestroy {
+export class DemoResponsiveStyle implements OnDestroy {
   private _watcher: Subscription;
   public activeMediaQuery = "";
   public activeMediaQueryAlias = "";
@@ -97,21 +97,14 @@ export class DemoResponsiveStyle implements OnInit, OnDestroy {
     color: 'lightgreen'
   };
 
-  constructor( @Inject(ObservableMedia) private _media$) { }
-
-  ngOnInit() {
-    this._watcher = this.watchMQChanges();
+  constructor( private _media$:ObservableMedia ) {
+    this._watcher = this._media$.subscribe((change: MediaChange) => {
+      this.activeMediaQuery = change ? `'${change.mqAlias}' = ${change.mediaQuery} )` : "";
+      this.activeMediaQueryAlias = change.mqAlias;
+    });
   }
 
   ngOnDestroy() {
     this._watcher.unsubscribe();
-  }
-
-  watchMQChanges() {
-    return this._media$.subscribe((change: MediaChange) => {
-      let value = change ? `'${change.mqAlias}' = ${change.mediaQuery} )` : "";
-      this.activeMediaQuery = value;
-      this.activeMediaQueryAlias = change.mqAlias;
-    });
   }
 }

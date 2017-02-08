@@ -17,16 +17,15 @@ import {
   IterableDiffers,
   KeyValueDiffers
 } from '@angular/core';
-import { NgClass } from '@angular/common';
+import {NgClass} from '@angular/common';
 
-import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
-import { ResponsiveActivation } from './../responsive/responsive-activation';
-import { BaseFxDirective } from './base';
-import { MediaChange } from '../../media-query/media-change';
-import { MediaMonitor } from '../../media-query/media-monitor';
+import {BaseFxDirectiveAdapter} from './base-adapter';
+import {BreakPointRegistry} from './../../media-query/breakpoints/break-point-registry';
+import {MediaChange} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
 
 /** NgClass allowed inputs **/
-export type NgClassType = string | string[] | Set<string> | { [klass: string]: any };
+export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
 
 /**
  * Directive to add responsive support for ngClass.
@@ -91,15 +90,11 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
     this._base.cacheInput('classXl', val);
   };
 
-  private _base: BaseFxDirectiveAdapter;
-
   constructor(private monitor: MediaMonitor,
-    private _bpRegistry: BreakPointRegistry,
-    _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
-    _ngEl: ElementRef, _renderer: Renderer) {
-
+              private _bpRegistry: BreakPointRegistry,
+              _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
+              _ngEl: ElementRef, _renderer: Renderer) {
     super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
-
     this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
   }
 
@@ -133,85 +128,14 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
     if (this._base.mqActivation) {
       clazz = this._base.mqActivation.activatedInput;
     }
-
+    // Delegate subsequent activity to the NgClass logic
     this.ngClass = clazz;
   }
+
+  /**
+   * Special adapter to cross-cut responsive behaviors
+   * into the ClassDirective
+   */
+  private _base: BaseFxDirectiveAdapter;
 }
 
-/**
- * Adapted BaseFxDirective abtract class version so it can be used via composition.
- *
- * @see BaseFxDirective
- */
-import { MediaQuerySubscriber } from '../../media-query/media-change';
-
-export class BaseFxDirectiveAdapter extends BaseFxDirective {
-  get inputMap() {
-    return this._inputMap;
-  }
-
-  /**
-   *  Save the property value.
-   */
-  cacheInput(key?: string, source?: any) {
-    if (Array.isArray(source)) {
-      this._cacheInputArray(key, source);
-    } else if (typeof source === 'object') {
-      this._cacheInputObject(key, source);
-    } else if (typeof source === 'string') {
-      this._cacheInputString(key, source);
-    } else {
-      throw new Error('Invalid class value provided');
-    }
-  }
-
-  /**
-   *  Save the property value for Array values.
-   */
-  _cacheInputArray(key?: string, source?: boolean[]) {
-    this._inputMap[key] = source.join(' ');
-  }
-
-  /**
-   *  Save the property value for key/value pair values.
-   */
-  _cacheInputObject(key?: string, source?: { [key: string]: boolean }) {
-    let classes = [];
-    for (let prop in source) {
-      if (!!source[prop]) {
-        classes.push(prop);
-      }
-    }
-    this._inputMap[key] = classes.join(' ');
-  }
-
-  /**
-   *  Save the property value for string values.
-   */
-  _cacheInputString(key?: string, source?: string) {
-    this._inputMap[key] = source;
-  }
-
-  /**
-   * @see BaseFxDirective._listenForMediaQueryChanges
-   */
-  listenForMediaQueryChanges(key: string,
-    defaultValue: any,
-    onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation {
-    return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-  }
-
-  /**
-   * @see BaseFxDirective._queryInput
-   */
-  queryInput(key) {
-    return this._queryInput(key);
-  }
-
-  /**
-   * @see BaseFxDirective._mqActivation
-   */
-  get mqActivation(): ResponsiveActivation {
-    return this._mqActivation;
-  }
-}

@@ -207,20 +207,20 @@ md-card-content pre {
   color: blue!important;
 }
 .fxClass-sm {
-  font-size: 12px;
+  font-size: 20px;
   color: lightblue!important;
 }
 .fxClass-md {
-  font-size: 14px;
+  font-size: 30px;
   color: orange!important;
 }
 .fxClass-md2 {
   font-weight: bold;
 }
 .fxClass-lg {
-  font-size: 16px;
+  font-size: 40px;
   color: lightgreen!important;
 }
 .fxClass-lg2 {
-  font-style: normal;
+  text-shadow: #5c5c5c;
 }

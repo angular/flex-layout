@@ -6,24 +6,23 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {
-  Component, OnInit, Inject, ElementRef
+  Component, OnInit
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {CommonModule} from '@angular/common';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MockMatchMedia } from '../../media-query/mock/mock-match-media';
-import { MatchMedia } from '../../media-query/match-media';
-import { ObservableMedia } from '../../media-query/observable-media-service';
-import { BreakPointsProvider } from '../../media-query/breakpoints/break-points';
-import { BreakPointRegistry } from '../../media-query/breakpoints/break-point-registry';
-import { BaseFxDirectiveAdapter } from './class';
+import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
+import {MatchMedia} from '../../media-query/match-media';
+import {ObservableMedia} from '../../media-query/observable-media-service';
+import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
-import { customMatchers, expect } from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl
 } from '../../utils/testing/helpers';
-import { ClassDirective } from './class';
-import { MediaQueriesModule } from '../../media-query/_module';
+import {ClassDirective} from './class';
+import {MediaQueriesModule} from '../../media-query/_module';
 
 describe('class directive', () => {
   let fixture: ComponentFixture<any>;
@@ -42,7 +41,7 @@ describe('class directive', () => {
       declarations: [TestClassComponent, ClassDirective],
       providers: [
         BreakPointRegistry, BreakPointsProvider,
-        { provide: MatchMedia, useClass: MockMatchMedia }
+        {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
   });
@@ -54,17 +53,17 @@ describe('class directive', () => {
   });
 
   ['xs', 'sm', 'md', 'lg']
-    .forEach(mq => {
-      const selector = `class-${mq}`;
-      it(`should apply '${selector}' with '${mq}' media query`, () => {
-        fixture = createTestComponent(`
+      .forEach(mq => {
+        const selector = `class-${mq}`;
+        it(`should apply '${selector}' with '${mq}' media query`, () => {
+          fixture = createTestComponent(`
               <div class.${mq}="${selector}">
               </div>
           `);
-        activateMediaQuery(mq, true);
-        expectNativeEl(fixture).toHaveCssClass(selector);
+          activateMediaQuery(mq, true);
+          expectNativeEl(fixture).toHaveCssClass(selector);
+        });
       });
-    });
 
   it('should keep existing class selector', () => {
     fixture = createTestComponent(`
@@ -96,11 +95,11 @@ describe('class directive', () => {
                 </div>
             `);
     activateMediaQuery('xs', true);
-    expectNativeEl(fixture, { hasXs1: true, hasXs2: false }).toHaveCssClass('xs-1');
-    expectNativeEl(fixture, { hasXs1: true, hasXs2: false }).not.toHaveCssClass('xs-2');
+    expectNativeEl(fixture, {hasXs1: true, hasXs2: false}).toHaveCssClass('xs-1');
+    expectNativeEl(fixture, {hasXs1: true, hasXs2: false}).not.toHaveCssClass('xs-2');
 
-    expectNativeEl(fixture, { hasXs1: false, hasXs2: true }).toHaveCssClass('xs-2');
-    expectNativeEl(fixture, { hasXs1: false, hasXs2: true }).not.toHaveCssClass('xs-1');
+    expectNativeEl(fixture, {hasXs1: false, hasXs2: true}).toHaveCssClass('xs-2');
+    expectNativeEl(fixture, {hasXs1: false, hasXs2: true}).not.toHaveCssClass('xs-1');
   });
 
   it('should work with ngClass array notation', () => {
@@ -112,42 +111,6 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('xs-1');
     expectNativeEl(fixture).toHaveCssClass('xs-2');
   });
-});
-
-export class MockElementRef extends ElementRef {
-  constructor() {
-    const nEl = document.createElement('DIV');
-    super(nEl);
-    this.nativeElement = nEl;
-  }
-}
-
-describe('BaseFxDirectiveAdapter class', () => {
-  let component;
-  beforeEach(() => {
-    component = new BaseFxDirectiveAdapter(null, new MockElementRef(), null);
-  });
-  describe('cacheInput', () => {
-    it('should call _cacheInputArray when source is an array', () => {
-      spyOn(component, '_cacheInputArray');
-      component.cacheInput('key', []);
-      expect(component._cacheInputArray).toHaveBeenCalled();
-    });
-    it('should call _cacheInputObject when source is an object', () => {
-      spyOn(component, '_cacheInputObject');
-      component.cacheInput('key', {});
-      expect(component._cacheInputObject).toHaveBeenCalled();
-    });
-    it('should call _cacheInputString when source is a string', () => {
-      spyOn(component, '_cacheInputString');
-      component.cacheInput('key', '');
-      expect(component._cacheInputString).toHaveBeenCalled();
-    });
-    it('should throw when source is not an object, array or string', () => {
-      expect(component.cacheInput.bind(null, true)).toThrow();
-    });
-  });
-
 });
 
 // *****************************************************************
@@ -162,7 +125,7 @@ export class TestClassComponent implements OnInit {
   hasXs1: boolean;
   hasXs2: boolean;
 
-  constructor( @Inject(ObservableMedia) private media) {
+  constructor(private media: ObservableMedia) {
   }
 
   ngOnInit() {
