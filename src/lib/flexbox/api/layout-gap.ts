@@ -28,8 +28,7 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-@Directive({
-  selector: `
+@Directive({selector: `
   [fxLayoutGap],
   [fxLayoutGap.xs],
   [fxLayoutGap.gt-xs],
@@ -44,9 +43,9 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
 })
 export class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges,
     OnDestroy {
-  private _layout = 'row';  // default flex-direction
-  private _layoutWatcher: Subscription;
-  private _observer: MutationObserver;
+  protected _layout = 'row';  // default flex-direction
+  protected _layoutWatcher: Subscription;
+  protected _observer: MutationObserver;
 
   @Input('fxLayoutGap')       set gap(val) {
     this._cacheInput('gap', val);
@@ -139,7 +138,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    * Watch for child nodes to be added... and apply the layout gap styles to each.
    * NOTE: this does NOT! differentiate between viewChildren and contentChildren
    */
-  private _watchContentChanges() {
+  protected _watchContentChanges() {
     let onMutationCallback = (mutations) => {
       let validatedChanges = (it: MutationRecord) => {
         return (it.addedNodes && it.addedNodes.length) ||
@@ -159,7 +158,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   /**
    * Cache the parent container 'flex-direction' and update the 'margin' styles
    */
-  private _onLayoutChange(direction) {
+  protected _onLayoutChange(direction) {
     this._layout = (direction || '').toLowerCase();
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
@@ -170,7 +169,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   /**
    *
    */
-  private _updateWithValue(value?: string) {
+  protected _updateWithValue(value?: string) {
     value = value || this._queryInput("gap") || '0';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;

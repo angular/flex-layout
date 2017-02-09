@@ -50,7 +50,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  private _layoutWatcher: Subscription;
+  protected _layoutWatcher: Subscription;
 
   @Input('fxHide')       set hide(val) {
     this._cacheInput("hide", val);
@@ -96,7 +96,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
    *
    */
   constructor(monitor: MediaMonitor,
-              @Optional() @Self() private _layout: LayoutDirective,
+              @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
               protected renderer: Renderer) {
     super(monitor, elRef, renderer);
@@ -169,7 +169,7 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * Validate the visibility value and then update the host's inline display style
    */
-  private _updateWithValue(value?: string|number|boolean) {
+  protected _updateWithValue(value?: string|number|boolean) {
     value = value || this._getDefaultVal("hide", false);
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -183,14 +183,14 @@ export class HideDirective extends BaseFxDirective implements OnInit, OnChanges,
   /**
    * Build the CSS that should be assigned to the element instance
    */
-  private _buildCSS(value) {
+  protected _buildCSS(value) {
     return {'display': value ? 'none' : this._display};
   }
 
   /**
    * Validate the value to NOT be FALSY
    */
-  private _validateTruthy(value) {
+  protected _validateTruthy(value) {
     return FALSY.indexOf(value) === -1;
   }
 }

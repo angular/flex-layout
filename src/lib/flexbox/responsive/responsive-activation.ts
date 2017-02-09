@@ -148,7 +148,7 @@ export class ResponsiveActivation {
    * Synchronizes change notifications with the current mq-activated @Input and calculates the
    * mq-activated input value or the default value
    */
-  _onMonitorEvents(change: MediaChange) {
+  protected _onMonitorEvents(change: MediaChange) {
     if (change.property == this._options.baseKey) {
       change.value = this._calculateActivatedValue(change);
 

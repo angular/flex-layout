@@ -54,7 +54,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  private _layoutWatcher: Subscription;
+  protected _layoutWatcher: Subscription;
 
   @Input('fxShow')       set show(val) {
     this._cacheInput("show", val);
@@ -100,8 +100,8 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    *
    */
   constructor(monitor: MediaMonitor,
-              @Optional() @Self() private _layout: LayoutDirective,
-              @Optional() @Self() private _hide: HideDirective,
+              @Optional() @Self() protected _layout: LayoutDirective,
+              @Optional() @Self() protected _hide: HideDirective,
               protected elRef: ElementRef,
               protected renderer: Renderer) {
 
@@ -189,7 +189,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   }
 
   /** Validate the visibility value and then update the host's inline display style */
-  private _updateWithValue(value?: string|number|boolean) {
+  protected _updateWithValue(value?: string|number|boolean) {
     value = value || this._getDefaultVal("show", true);
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
@@ -201,7 +201,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
 
   /** Build the CSS that should be assigned to the element instance */
-  private _buildCSS(show) {
+  protected _buildCSS(show) {
     return {'display': show ? this._display : 'none'};
   }
 
