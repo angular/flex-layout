@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject')) :
-    typeof define === 'function' && define.amd ? define(['exports', '@angular/platform-browser', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.platformBrowser,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx));
-}(this, (function (exports,_angular_platformBrowser,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define(['exports', '@angular/platform-browser', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common'], factory) :
+    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.platformBrowser,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common));
+}(this, (function (exports,_angular_platformBrowser,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject,_angular_common) { 'use strict';
 
 /**
  * @license
@@ -3505,6 +3505,458 @@ var LayoutGapDirective = (function (_super) {
     return LayoutGapDirective;
 }(BaseFxDirective));
 
+var __extends$12 = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var BaseFxDirectiveAdapter = (function (_super) {
+    __extends$12(BaseFxDirectiveAdapter, _super);
+    function BaseFxDirectiveAdapter() {
+        _super.apply(this, arguments);
+    }
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
+        get: function () {
+            return this._inputMap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     *  Save the property value.
+     */
+    BaseFxDirectiveAdapter.prototype.cacheInput = function (key, source) {
+        if (Array.isArray(source)) {
+            this._cacheInputArray(key, source);
+        }
+        else if (typeof source === 'object') {
+            this._cacheInputObject(key, source);
+        }
+        else if (typeof source === 'string') {
+            this._cacheInputString(key, source);
+        }
+        else {
+            throw new Error('Invalid class value provided');
+        }
+    };
+    BaseFxDirectiveAdapter.prototype._cacheInputRaw = function (key, source) {
+        this._inputMap[key] = source;
+    };
+    /**
+     *  Save the property value for Array values.
+     */
+    BaseFxDirectiveAdapter.prototype._cacheInputArray = function (key, source) {
+        this._inputMap[key] = source.join(' ');
+    };
+    /**
+     *  Save the property value for key/value pair values.
+     */
+    BaseFxDirectiveAdapter.prototype._cacheInputObject = function (key, source) {
+        var classes = [];
+        for (var prop in source) {
+            if (!!source[prop]) {
+                classes.push(prop);
+            }
+        }
+        this._inputMap[key] = classes.join(' ');
+    };
+    /**
+     *  Save the property value for string values.
+     */
+    BaseFxDirectiveAdapter.prototype._cacheInputString = function (key, source) {
+        this._inputMap[key] = source;
+    };
+    /**
+     * @see BaseFxDirective._listenForMediaQueryChanges
+     */
+    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    };
+    /**
+     * @see BaseFxDirective._queryInput
+     */
+    BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
+        return this._queryInput(key);
+    };
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
+        /**
+         * @see BaseFxDirective._mqActivation
+         */
+        get: function () {
+            return this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return BaseFxDirectiveAdapter;
+}(BaseFxDirective));
+
+var __extends$11 = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var __decorate$17 = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata$17 = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * Directive to add responsive support for ngClass.
+ */
+var ClassDirective = (function (_super) {
+    __extends$11(ClassDirective, _super);
+    function ClassDirective(monitor, _bpRegistry, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
+        _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
+        this.monitor = monitor;
+        this._bpRegistry = _bpRegistry;
+        this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
+    }
+    Object.defineProperty(ClassDirective.prototype, "classXs", {
+        set: function (val) {
+            this._base.cacheInput('classXs', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClassDirective.prototype, "classGtXs", {
+        set: function (val) {
+            this._base.cacheInput('classGtXs', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classSm", {
+        set: function (val) {
+            this._base.cacheInput('classSm', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classGtSm", {
+        set: function (val) {
+            this._base.cacheInput('classGtSm', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classMd", {
+        set: function (val) {
+            this._base.cacheInput('classMd', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classGtMd", {
+        set: function (val) {
+            this._base.cacheInput('classGtMd', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classLg", {
+        set: function (val) {
+            this._base.cacheInput('classLg', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classGtLg", {
+        set: function (val) {
+            this._base.cacheInput('classGtLg', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(ClassDirective.prototype, "classXl", {
+        set: function (val) {
+            this._base.cacheInput('classXl', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    /**
+     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     */
+    ClassDirective.prototype.ngOnChanges = function (changes) {
+        var changed = this._bpRegistry.items.some(function (it) { return "class" + it.suffix in changes; });
+        if (changed || this._base.mqActivation) {
+            this._updateStyle();
+        }
+    };
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    ClassDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this._base.listenForMediaQueryChanges('class', '', function (changes) {
+            _this._updateStyle(changes.value);
+        });
+        this._updateStyle();
+    };
+    ClassDirective.prototype.ngOnDestroy = function () {
+        this._base.ngOnDestroy();
+    };
+    ClassDirective.prototype._updateStyle = function (value) {
+        var clazz = value || this._base.queryInput("class") || '';
+        if (this._base.mqActivation) {
+            clazz = this._base.mqActivation.activatedInput;
+        }
+        // Delegate subsequent activity to the NgClass logic
+        this.ngClass = clazz;
+    };
+    __decorate$17([
+        _angular_core.Input('class.xs'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classXs", null);
+    __decorate$17([
+        _angular_core.Input('class.gt-xs'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classGtXs", null);
+    __decorate$17([
+        _angular_core.Input('class.sm'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classSm", null);
+    __decorate$17([
+        _angular_core.Input('class.gt-sm'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classGtSm", null);
+    __decorate$17([
+        _angular_core.Input('class.md'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classMd", null);
+    __decorate$17([
+        _angular_core.Input('class.gt-md'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classGtMd", null);
+    __decorate$17([
+        _angular_core.Input('class.lg'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classLg", null);
+    __decorate$17([
+        _angular_core.Input('class.gt-lg'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classGtLg", null);
+    __decorate$17([
+        _angular_core.Input('class.xl'), 
+        __metadata$17('design:type', Object), 
+        __metadata$17('design:paramtypes', [Object])
+    ], ClassDirective.prototype, "classXl", null);
+    ClassDirective = __decorate$17([
+        _angular_core.Directive({
+            selector: "\n    [class.xs],\n    [class.gt-xs],\n    [class.sm],\n    [class.gt-sm],\n    [class.md],\n    [class.gt-md],\n    [class.lg],\n    [class.gt-lg],\n    [class.xl]\n  "
+        }), 
+        __metadata$17('design:paramtypes', [MediaMonitor, BreakPointRegistry, _angular_core.IterableDiffers, _angular_core.KeyValueDiffers, _angular_core.ElementRef, _angular_core.Renderer])
+    ], ClassDirective);
+    return ClassDirective;
+}(_angular_common.NgClass));
+
+var __extends$13 = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var __decorate$18 = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata$18 = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * Directive to add responsive support for ngStyle.
+ *
+ */
+var StyleDirective = (function (_super) {
+    __extends$13(StyleDirective, _super);
+    /**
+     *
+     */
+    function StyleDirective(monitor, _bpRegistry, _differs, _ngEl, _renderer) {
+        _super.call(this, _differs, _ngEl, _renderer);
+        this.monitor = monitor;
+        this._bpRegistry = _bpRegistry;
+        this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
+    }
+    Object.defineProperty(StyleDirective.prototype, "styleXs", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleXs', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleGtXs', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleSm", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleSm', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleGtSm', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleMd", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleMd', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleGtMd', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleLg", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleLg', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleGtLg', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleXl", {
+        set: function (val) {
+            this._base._cacheInputRaw('styleXl', val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    
+    /**
+     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     */
+    StyleDirective.prototype.ngOnChanges = function (changes) {
+        var changed = this._bpRegistry.items.some(function (it) { return "style" + it.suffix in changes; });
+        if (changed || this._base.mqActivation) {
+            this._updateStyle();
+        }
+    };
+    /**
+     * After the initial onChanges, build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    StyleDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this._base.listenForMediaQueryChanges('style', '', function (changes) {
+            _this._updateStyle(changes.value);
+        });
+        this._updateStyle();
+    };
+    StyleDirective.prototype.ngOnDestroy = function () {
+        this._base.ngOnDestroy();
+    };
+    StyleDirective.prototype._updateStyle = function (value) {
+        var style = value || this._base.queryInput("style") || '';
+        if (this._base.mqActivation) {
+            style = this._base.mqActivation.activatedInput;
+        }
+        // Delegate subsequent activity to the NgStyle logic
+        this.ngStyle = style;
+    };
+    __decorate$18([
+        _angular_core.Input('style.xs'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleXs", null);
+    __decorate$18([
+        _angular_core.Input('style.gt-xs'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleGtXs", null);
+    __decorate$18([
+        _angular_core.Input('style.sm'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleSm", null);
+    __decorate$18([
+        _angular_core.Input('style.gt-sm'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleGtSm", null);
+    __decorate$18([
+        _angular_core.Input('style.md'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleMd", null);
+    __decorate$18([
+        _angular_core.Input('style.gt-md'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleGtMd", null);
+    __decorate$18([
+        _angular_core.Input('style.lg'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleLg", null);
+    __decorate$18([
+        _angular_core.Input('style.gt-lg'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleGtLg", null);
+    __decorate$18([
+        _angular_core.Input('style.xl'), 
+        __metadata$18('design:type', Object), 
+        __metadata$18('design:paramtypes', [Object])
+    ], StyleDirective.prototype, "styleXl", null);
+    StyleDirective = __decorate$18([
+        _angular_core.Directive({
+            selector: "\n    [style.xs],\n    [style.gt-xs],\n    [style.sm],\n    [style.gt-sm],\n    [style.md],\n    [style.gt-md],\n    [style.lg],\n    [style.gt-lg],\n    [style.xl]\n  "
+        }), 
+        __metadata$18('design:paramtypes', [MediaMonitor, BreakPointRegistry, _angular_core.KeyValueDiffers, _angular_core.ElementRef, _angular_core.Renderer])
+    ], StyleDirective);
+    return StyleDirective;
+}(_angular_common.NgStyle));
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3533,6 +3985,8 @@ var ALL_DIRECTIVES = [
     FlexAlignDirective,
     ShowDirective,
     HideDirective,
+    ClassDirective,
+    StyleDirective,
 ];
 /**
  *
