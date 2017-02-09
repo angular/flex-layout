@@ -47,47 +47,47 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
 
   @Input('style.xs')
   set styleXs(val: NgStyleType) {
-    this._base._cacheInputRaw('styleXs', val as string);
+    this._base.cacheInput('styleXs', val, true);
   }
 
   @Input('style.gt-xs')
   set styleGtXs(val: NgStyleType) {
-    this._base._cacheInputRaw('styleGtXs', val);
+    this._base.cacheInput('styleGtXs', val, true);
   };
 
   @Input('style.sm')
   set styleSm(val: NgStyleType) {
-    this._base._cacheInputRaw('styleSm', val);
+    this._base.cacheInput('styleSm', val, true);
   };
 
   @Input('style.gt-sm')
   set styleGtSm(val: NgStyleType) {
-    this._base._cacheInputRaw('styleGtSm', val);
+    this._base.cacheInput('styleGtSm', val, true);
   };
 
   @Input('style.md')
   set styleMd(val: NgStyleType) {
-    this._base._cacheInputRaw('styleMd', val);
+    this._base.cacheInput('styleMd', val, true);
   };
 
   @Input('style.gt-md')
   set styleGtMd(val: NgStyleType) {
-    this._base._cacheInputRaw('styleGtMd', val);
+    this._base.cacheInput('styleGtMd', val, true);
   };
 
   @Input('style.lg')
   set styleLg(val: NgStyleType) {
-    this._base._cacheInputRaw('styleLg', val);
+    this._base.cacheInput('styleLg', val, true);
   };
 
   @Input('style.gt-lg')
   set styleGtLg(val: NgStyleType) {
-    this._base._cacheInputRaw('styleGtLg', val);
+    this._base.cacheInput('styleGtLg', val, true);
   };
 
   @Input('style.xl')
   set styleXl(val: NgStyleType) {
-    this._base._cacheInputRaw('styleXl', val);
+    this._base.cacheInput('styleXl', val, true);
   };
 
   /**
