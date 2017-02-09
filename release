@@ -298,6 +298,20 @@
     );
   }
 
+  /**
+   * When updating the 'master' branch, update both the source repository 'package.json',
+   * and also the npm version that is used when deploying the releases to npm.
+   */
+  function updatePackageVersions () {
+    [
+      './package.json',
+      './tools/scripts/release/npm_assets/package.json'
+    ].forEach(filePath => {
+      let json = require(filePath);
+          json.version = newVersion;
+      fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
+    });
+  }
 
   /** copies the changelog back over to master branch */
   function updateMaster () {
@@ -314,20 +328,7 @@
         `git push ${origin} master`
     );
 
-    /**
-     * When updating the 'master' branch, update both the source repository 'package.json',
-     * and also the npm version that is used when deploying the releases to npm.
-     */
-    function updatePackageVersions () {
-      [
-        './package.json',
-        './tools/scripts/release/npm_assets/package.json'
-      ].forEach(filePath => {
-        let json = require(filePath);
-            json.version = newVersion;
-        fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
-      });
-    }
+
 
     function stringifyFunction (method) {
       return method

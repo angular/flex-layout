@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -20,31 +20,28 @@ import {customMatchers, expect } from '../../utils/testing/custom-matchers';
 import {
   makeExpectDOMFrom,
   makeExpectDOMForQuery,
-  makeCreateTestComponent
+  makeCreateTestComponent,
+  expectNativeEl
 } from '../../utils/testing/helpers';
 
 const getDOM = __platform_browser_private__.getDOM;
 const isIE = !!document["documentMode"];
 
 describe('flex directive', () => {
+  let matchMedia : MockMatchMedia;
   let fixture: ComponentFixture<any>;
+  let createTestComponent = makeCreateTestComponent(() => TestFlexComponent);
   let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestFlexComponent);
   let componentWithTemplate = makeCreateTestComponent(() => TestFlexComponent);
+  let activateMediaQuery = (alias, allowOverlaps=true) => {
+    if ( !matchMedia ) {
+      matchMedia = fixture.debugElement.injector.get(MatchMedia);
+    }
+    matchMedia.activate(alias, allowOverlaps);
+  };
 
-  beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
-
-    // Configure testbed to prepare services
-    TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
-      declarations: [TestFlexComponent],
-      providers: [
-        BreakPointRegistry, BreakPointsProvider,
-        {provide: MatchMedia, useClass: MockMatchMedia}
-      ]
-    });
-  });
+  beforeEach(() => { jasmine.addMatchers(customMatchers); });
   afterEach(() => {
     if (fixture) {
       fixture.debugElement.injector.get(MatchMedia).clearAll();
@@ -53,6 +50,18 @@ describe('flex directive', () => {
   });
 
   describe('with static features', () => {
+
+    beforeEach(() => {
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [CommonModule, FlexLayoutModule],
+        declarations: [TestFlexComponent],
+        providers: [
+          BreakPointRegistry, BreakPointsProvider,
+          {provide: MatchMedia, useClass: MockMatchMedia}
+        ]
+      });
+    });
 
     it('should add correct styles for default `fxFlex` usage', () => {
       let fRef = componentWithTemplate(`<div fxFlex></div>`);
@@ -246,6 +255,41 @@ describe('flex directive', () => {
     });
   });
 
+  describe('with responsive features', () => {
+    let testBed : any;
+
+    beforeEach(() => {
+      // Configure testbed to prepare services
+      testBed = TestBed.configureTestingModule({
+        imports: [CommonModule, FlexLayoutModule],
+        declarations: [TestFlexComponent],
+        providers: [
+          BreakPointRegistry, BreakPointsProvider,
+          {provide: MatchMedia, useClass: MockMatchMedia}
+        ]
+      })
+      .overrideComponent(TestFlexComponent, {
+        set: { template: `
+          <div fxFlex="auto" 
+               fxFlex.gt-xs="33%" 
+               fxFlex.gt-sm="50%">
+          </div>
+        `}
+      });
+    });
+
+    fit('should initial with largest overlapping breakpoint', inject([MatchMedia],
+        (service: MockMatchMedia) => {
+           matchMedia = service;
+           activateMediaQuery('xl');
+           fixture = testBed.createComponent(TestFlexComponent);
+
+           expectNativeEl(fixture).toHaveCssStyle({
+             'flex': '1 1 50%'
+           });
+        })
+    );
+  });
 
 });
 

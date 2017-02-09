@@ -149,6 +149,7 @@ describe('layout directive', () => {
       fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
+
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
