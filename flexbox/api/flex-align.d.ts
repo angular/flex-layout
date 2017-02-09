@@ -34,6 +34,6 @@ export declare class FlexAlignDirective extends BaseFxDirective implements OnIni
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
-    private _updateWithValue(value?);
-    private _buildCSS(align);
+    protected _updateWithValue(value?: string | number): void;
+    protected _buildCSS(align: any): {};
 }

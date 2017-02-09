@@ -30,11 +30,13 @@ export var LayoutDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutXs", {
         set: function (val) { this._cacheInput('layoutXs', val); },
         enumerable: true,
         configurable: true
     });
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
         set: function (val) { this._cacheInput('layoutGtXs', val); },
         enumerable: true,

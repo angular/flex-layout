@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -14,9 +15,9 @@ import { LayoutDirective } from './layout';
  *  Defines padding of child elements in a layout container
  */
 export declare class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges, OnDestroy {
-    private _layout;
-    private _layoutWatcher;
-    private _observer;
+    protected _layout: string;
+    protected _layoutWatcher: Subscription;
+    protected _observer: MutationObserver;
     gap: any;
     gapXs: any;
     gapGtXs: any;
@@ -39,15 +40,15 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
      * Watch for child nodes to be added... and apply the layout gap styles to each.
      * NOTE: this does NOT! differentiate between viewChildren and contentChildren
      */
-    private _watchContentChanges();
+    protected _watchContentChanges(): void;
     /**
      * Cache the parent container 'flex-direction' and update the 'margin' styles
      */
-    private _onLayoutChange(direction);
+    protected _onLayoutChange(direction: any): void;
     /**
      *
      */
-    private _updateWithValue(value?);
+    protected _updateWithValue(value?: string): void;
     /**
      * Prepare margin CSS, remove any previous explicitly
      * assigned margin assignments

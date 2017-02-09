@@ -34,6 +34,8 @@ export declare class FlexOrderDirective extends BaseFxDirective implements OnIni
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
-    private _updateWithValue(value?);
-    private _buildCSS(value);
+    protected _updateWithValue(value?: string): void;
+    protected _buildCSS(value: any): {
+        order: any;
+    };
 }

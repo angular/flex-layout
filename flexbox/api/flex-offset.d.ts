@@ -33,6 +33,8 @@ export declare class FlexOffsetDirective extends BaseFxDirective implements OnIn
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
-    private _updateWithValue(value?);
-    private _buildCSS(offset);
+    protected _updateWithValue(value?: string | number): void;
+    protected _buildCSS(offset: any): {
+        'margin-left': string;
+    };
 }

@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -22,7 +23,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
      * Create Observable for nested/child 'flex' directives. This allows
      * child flex directives to subscribe/listen for flexbox direction changes.
      */
-    private _announcer;
+    protected _announcer: BehaviorSubject<string>;
     /**
      * Publish observer to enabled nested, dependent directives to listen
      * to parent "layout" direction changes
@@ -56,7 +57,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     /**
      * Validate the direction value and then update the host's inline flexbox styles
      */
-    private _updateWithDirection(direction?);
+    protected _updateWithDirection(direction?: string): void;
     /**
      * Build the CSS that should be assigned to the element instance
      * BUG:
@@ -69,10 +70,14 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
      *         laid out and drawn inside that element's specified width and height.
      *
      */
-    private _buildCSS(value);
+    protected _buildCSS(value: any): {
+        'display': string;
+        'box-sizing': string;
+        'flex-direction': any;
+    };
     /**
      * Validate the value to be one of the acceptable value options
      * Use default fallback of "row"
      */
-    private _validateValue(value);
+    protected _validateValue(value: any): any;
 }

@@ -89,7 +89,7 @@ export declare class ResponsiveActivation {
      * Synchronizes change notifications with the current mq-activated @Input and calculates the
      * mq-activated input value or the default value
      */
-    _onMonitorEvents(change: MediaChange): void;
+    protected _onMonitorEvents(change: MediaChange): void;
     /**
      * Has the key been specified in the HTML markup and thus is intended
      * to participate in activation processes.

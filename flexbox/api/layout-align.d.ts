@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -19,8 +20,8 @@ import { LayoutDirective } from './layout';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 export declare class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-    private _layout;
-    private _layoutWatcher;
+    protected _layout: string;
+    protected _layoutWatcher: Subscription;
     align: any;
     alignXs: any;
     alignGtXs: any;
@@ -42,15 +43,15 @@ export declare class LayoutAlignDirective extends BaseFxDirective implements OnI
     /**
      *
      */
-    private _updateWithValue(value?);
+    protected _updateWithValue(value?: string): void;
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
-    private _onLayoutChange(direction);
-    private _buildCSS(align);
+    protected _onLayoutChange(direction: any): void;
+    protected _buildCSS(align: any): any;
     /**
      * Update container element to 'stretch' as needed...
      * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
      */
-    private _allowStretching(align, layout);
+    protected _allowStretching(align: any, layout: any): void;
 }

@@ -1093,11 +1093,13 @@ var LayoutDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutXs", {
         set: function (val) { this._cacheInput('layoutXs', val); },
         enumerable: true,
         configurable: true
     });
+    
     Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
         set: function (val) { this._cacheInput('layoutGtXs', val); },
         enumerable: true,
@@ -1831,8 +1833,7 @@ var FlexDirective = (function (_super) {
         __metadata$6('design:paramtypes', [Object])
     ], FlexDirective.prototype, "flexXl", null);
     FlexDirective = __decorate$6([
-        _angular_core.Directive({
-            selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+        _angular_core.Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
         }),
         __param$1(3, _angular_core.Optional()),
         __param$1(3, _angular_core.SkipSelf()),
@@ -3495,8 +3496,7 @@ var LayoutGapDirective = (function (_super) {
         __metadata$16('design:paramtypes', [Object])
     ], LayoutGapDirective.prototype, "gapXl", null);
     LayoutGapDirective = __decorate$16([
-        _angular_core.Directive({
-            selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
+        _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
         }),
         __param$6(3, _angular_core.Optional()),
         __param$6(3, _angular_core.Self()), 

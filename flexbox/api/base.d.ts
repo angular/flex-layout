@@ -18,9 +18,9 @@ export declare type StyleDefinition = string | {
 };
 /** Abstract base class for the Layout API styling directives. */
 export declare abstract class BaseFxDirective implements OnDestroy {
-    private _mediaMonitor;
+    protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    private _renderer;
+    protected _renderer: Renderer;
     /**
      * Original dom Elements CSS display style
      */

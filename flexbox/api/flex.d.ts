@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -19,15 +20,15 @@ export declare type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nog
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 export declare class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-    private _container;
-    private _wrap;
+    protected _container: LayoutDirective;
+    protected _wrap: LayoutWrapDirective;
     /** The flex-direction of this element's flex container. Defaults to 'row'. */
-    private _layout;
+    protected _layout: string;
     /**
      * Subscription to the parent flex container's layout changes.
      * Stored so we can unsubscribe when this directive is destroyed.
      */
-    private _layoutWatcher;
+    protected _layoutWatcher: Subscription;
     flex: any;
     shrink: any;
     grow: any;
@@ -55,21 +56,21 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
      * Caches the parent container's 'flex-direction' and updates the element's style.
      * Used as a handler for layout change events from the parent flex container.
      */
-    private _onLayoutChange(direction?);
-    private _updateStyle(value?);
+    protected _onLayoutChange(direction?: string): void;
+    protected _updateStyle(value?: string | number): void;
     /**
      * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
      */
-    private _parseFlexParts(basis);
+    protected _parseFlexParts(basis: string): any[];
     /**
      * Extract more complicated short-hand versions.
      * e.g.
      * fxFlex="3 3 calc(15em + 20px)"
      */
-    private _getPartsWithCalc(value);
+    protected _getPartsWithCalc(value: string): any[];
     /**
      * Validate the value to be one of the acceptable value options
      * Use default fallback of "row"
      */
-    private _validateValue(grow, shrink, basis);
+    protected _validateValue(grow: number | string, shrink: number | string, basis: string | number | FlexBasisAlias): any;
 }

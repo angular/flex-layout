@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -16,8 +17,8 @@ import { LayoutDirective } from './layout';
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 export declare class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-    private _layout;
-    private _layoutWatcher;
+    protected _layout: string;
+    protected _layoutWatcher: Subscription;
     wrap: any;
     wrapXs: any;
     wrapGtXs: any;
@@ -38,14 +39,14 @@ export declare class LayoutWrapDirective extends BaseFxDirective implements OnIn
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
-    private _onLayoutChange(direction);
-    private _updateWithValue(value?);
+    protected _onLayoutChange(direction: any): void;
+    protected _updateWithValue(value?: string): void;
     /**
      * Build the CSS that should be assigned to the element instance
      */
-    private _buildCSS(value);
+    protected _buildCSS(value: any): any;
     /**
      * Convert layout-wrap="<value>" to expected flex-wrap style
      */
-    private _validateValue(value);
+    protected _validateValue(value: any): any;
 }

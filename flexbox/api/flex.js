@@ -277,8 +277,7 @@ export var FlexDirective = (function (_super) {
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     FlexDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+        { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
                 },] },
     ];
     /** @nocollapse */
