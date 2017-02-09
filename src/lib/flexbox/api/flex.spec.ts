@@ -255,42 +255,6 @@ describe('flex directive', () => {
     });
   });
 
-  describe('with responsive features', () => {
-    let testBed : any;
-
-    beforeEach(() => {
-      // Configure testbed to prepare services
-      testBed = TestBed.configureTestingModule({
-        imports: [CommonModule, FlexLayoutModule],
-        declarations: [TestFlexComponent],
-        providers: [
-          BreakPointRegistry, BreakPointsProvider,
-          {provide: MatchMedia, useClass: MockMatchMedia}
-        ]
-      })
-      .overrideComponent(TestFlexComponent, {
-        set: { template: `
-          <div fxFlex="auto" 
-               fxFlex.gt-xs="33%" 
-               fxFlex.gt-sm="50%">
-          </div>
-        `}
-      });
-    });
-
-    fit('should initial with largest overlapping breakpoint', inject([MatchMedia],
-        (service: MockMatchMedia) => {
-           matchMedia = service;
-           activateMediaQuery('xl');
-           fixture = testBed.createComponent(TestFlexComponent);
-
-           expectNativeEl(fixture).toHaveCssStyle({
-             'flex': '1 1 50%'
-           });
-        })
-    );
-  });
-
 });
 
 
