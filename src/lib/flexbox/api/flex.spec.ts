@@ -151,11 +151,52 @@ describe('flex directive', () => {
     it('should set a min-width when the shrink == 0', () => {
       expectDOMFrom(`<div fxFlex="1 0 37px"></div>`).toHaveCssStyle({
         'flex': '1 0 37px',
-        'max-width': '37px',
         'min-width': '37px',
         'box-sizing': 'border-box',
       });
     });
+    it('should set a min-width and max-width when the grow == 0 and shrink == 0', () => {
+      expectDOMFrom(`<div fxFlex="0 0 375px"></div>`).toHaveCssStyle({
+        'flex': '0 0 375px',
+        'max-width': '375px',
+        'min-width': '375px',
+        'box-sizing': 'border-box',
+      });
+    });
+
+
+    it('should not set max-width to 69px when fxFlex="1 0 69px"', () => {
+      expectDOMFrom(`<div fxFlex="1 0 69px"></div>`).not.toHaveCssStyle({
+        'max-width': '69px',
+      });
+    });
+
+    it('should not set a max-width when the shrink == 0', () => {
+      let fRef = componentWithTemplate(`<div fxFlex="1 0 303px"></div>`);
+      fRef.detectChanges();
+
+      let dom = fRef.debugElement.children[0].nativeElement;
+      let maxWidthStyle = getDOM().getStyle(dom, 'max-width');
+
+      expect(maxWidthStyle).toBeFalsy();
+    });
+
+    it('should not set min-width to 96px when fxFlex="0 1 96px"', () => {
+      expectDOMFrom(`<div fxFlex="0 1 96px"></div>`).not.toHaveCssStyle({
+        'min-width': '96px',
+      });
+    });
+
+    it('should not set a min-width when the grow == 0', () => {
+      let fRef = componentWithTemplate(`<div fxFlex="0 1 313px"></div>`);
+      fRef.detectChanges();
+
+      let dom = fRef.debugElement.children[0].nativeElement;
+      let minWidthStyle = getDOM().getStyle(dom, 'min-width');
+
+      expect(minWidthStyle).toBeFalsy();
+    });
+
     it('should set a min-width when basis is a Px value', () => {
       expectDOMFrom(`<div fxFlex="312px"></div>`).toHaveCssStyle({
         'flex': '1 1 312px',

@@ -226,6 +226,14 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         'column' :
         'row';
 
+    if ( grow == "0" ) {
+      grow = 0;
+    }
+
+    if ( shrink == "0" ) {
+      shrink = 0;
+    }
+
     // flex-basis allows you to specify the initial/starting main-axis size of the element,
     // before anything else is computed. It can either be a percentage or an absolute value.
     // It is, however, not the breaking point for flex-grow/shrink properties
@@ -250,6 +258,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         break;
       case 'initial':   // default
       case 'nogrow':
+        grow = 0;
         css = extendObject(clearStyles, {'flex': '0 1 auto'});
         break;
       case 'grow':
@@ -263,6 +272,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         css = extendObject(clearStyles, {'flex': `${grow} ${shrink} auto`});
         break;
       case 'none':
+        grow = 0;
         shrink = 0;
         css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
@@ -300,8 +310,13 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     let usingCalc = String(basis).indexOf('calc') > -1;
     let isPx = String(basis).indexOf('px') > -1 || usingCalc;
 
-    css[min] = (basis == '0%') ? 0 : isPx ? basis : null;
-    css[max] = (basis == '0%') ? 0 : usingCalc ? null : basis;
+
+    // make box inflexible when shrink and grow are both zero
+    // should not set a min when the grow is zero
+    // should not set a max when the shrink is zero
+    let isFixed = !grow && !shrink;
+    css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
+    css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
 
     return extendObject(css, {'box-sizing': 'border-box'});
   }
