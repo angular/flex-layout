@@ -2,9 +2,12 @@
 (function () {
   'use strict';
 
+  const REPO_TITLE   = 'Angular Flex-Layout';
   const SOURCE_REPO  = 'flex-layout';
-  const SOURCE_REPO_TITLE = 'Angular Flex-Layout';
   const BUILD_REPO   = 'flex-layout-builds';
+
+  const SOURCE_PACKAGE = './package.json';
+  const NPM_PACKAGE = './tools/scripts/release/npm_assets/package.json';
 
   var colors         = require('colors');
   var strip          = require('cli-color/strip');
@@ -303,10 +306,7 @@
    * and also the npm version that is used when deploying the releases to npm.
    */
   function updatePackageVersions () {
-    [
-      './package.json',
-      './tools/scripts/release/npm_assets/package.json'
-    ].forEach(filePath => {
+    [ SOURCE_PACKAGE, NPM_PACKAGE ].forEach(filePath => {
       let json = require(filePath);
           json.version = newVersion;
       fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
@@ -345,7 +345,7 @@
   function header () {
     clear();
     line();
-    log(center(`${SOURCE_REPO_TITLE} : NPM Release`));
+    log(center(`${REPO_TITLE} : NPM Release`));
     line();
   }
 
