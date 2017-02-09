@@ -3522,6 +3522,10 @@ var __extends$12 = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+/**
+ * Adapter to the BaseFxDirective abstract class so it can be used via composition.
+ * @see BaseFxDirective
+ */
 var BaseFxDirectiveAdapter = (function (_super) {
     __extends$12(BaseFxDirectiveAdapter, _super);
     function BaseFxDirectiveAdapter() {
@@ -3534,11 +3538,31 @@ var BaseFxDirectiveAdapter = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
+        /**
+         * @see BaseFxDirective._mqActivation
+         */
+        get: function () {
+            return this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @see BaseFxDirective._queryInput
+     */
+    BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
+        return this._queryInput(key);
+    };
     /**
      *  Save the property value.
      */
-    BaseFxDirectiveAdapter.prototype.cacheInput = function (key, source) {
-        if (Array.isArray(source)) {
+    BaseFxDirectiveAdapter.prototype.cacheInput = function (key, source, cacheRaw) {
+        if (cacheRaw === void 0) { cacheRaw = false; }
+        if (cacheRaw) {
+            this._cacheInputRaw(key, source);
+        }
+        else if (Array.isArray(source)) {
             this._cacheInputArray(key, source);
         }
         else if (typeof source === 'object') {
@@ -3548,9 +3572,22 @@ var BaseFxDirectiveAdapter = (function (_super) {
             this._cacheInputString(key, source);
         }
         else {
-            throw new Error('Invalid class value provided');
+            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
         }
     };
+    /**
+     * @see BaseFxDirective._listenForMediaQueryChanges
+     */
+    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    };
+    // ************************************************************
+    // Protected Methods
+    // ************************************************************
+    /**
+     * No implicit transforms of the source.
+     * Required when caching values expected later for KeyValueDiffers
+     */
     BaseFxDirectiveAdapter.prototype._cacheInputRaw = function (key, source) {
         this._inputMap[key] = source;
     };
@@ -3578,28 +3615,6 @@ var BaseFxDirectiveAdapter = (function (_super) {
     BaseFxDirectiveAdapter.prototype._cacheInputString = function (key, source) {
         this._inputMap[key] = source;
     };
-    /**
-     * @see BaseFxDirective._listenForMediaQueryChanges
-     */
-    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    };
-    /**
-     * @see BaseFxDirective._queryInput
-     */
-    BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
-        return this._queryInput(key);
-    };
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
-        /**
-         * @see BaseFxDirective._mqActivation
-         */
-        get: function () {
-            return this._mqActivation;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
 
@@ -3815,14 +3830,14 @@ var StyleDirective = (function (_super) {
     }
     Object.defineProperty(StyleDirective.prototype, "styleXs", {
         set: function (val) {
-            this._base._cacheInputRaw('styleXs', val);
+            this._base.cacheInput('styleXs', val, true);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtXs', val);
+            this._base.cacheInput('styleGtXs', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3830,7 +3845,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleSm", {
         set: function (val) {
-            this._base._cacheInputRaw('styleSm', val);
+            this._base.cacheInput('styleSm', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3838,7 +3853,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtSm', val);
+            this._base.cacheInput('styleGtSm', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3846,7 +3861,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleMd", {
         set: function (val) {
-            this._base._cacheInputRaw('styleMd', val);
+            this._base.cacheInput('styleMd', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3854,7 +3869,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtMd', val);
+            this._base.cacheInput('styleGtMd', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3862,7 +3877,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleLg", {
         set: function (val) {
-            this._base._cacheInputRaw('styleLg', val);
+            this._base.cacheInput('styleLg', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3870,7 +3885,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtLg', val);
+            this._base.cacheInput('styleGtLg', val, true);
         },
         enumerable: true,
         configurable: true
@@ -3878,7 +3893,7 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleXl", {
         set: function (val) {
-            this._base._cacheInputRaw('styleXl', val);
+            this._base.cacheInput('styleXl', val, true);
         },
         enumerable: true,
         configurable: true

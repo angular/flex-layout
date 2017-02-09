@@ -25,14 +25,14 @@ export var StyleDirective = (function (_super) {
     }
     Object.defineProperty(StyleDirective.prototype, "styleXs", {
         set: function (val) {
-            this._base._cacheInputRaw('styleXs', val);
+            this._base.cacheInput('styleXs', val, true);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtXs', val);
+            this._base.cacheInput('styleGtXs', val, true);
         },
         enumerable: true,
         configurable: true
@@ -40,7 +40,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleSm", {
         set: function (val) {
-            this._base._cacheInputRaw('styleSm', val);
+            this._base.cacheInput('styleSm', val, true);
         },
         enumerable: true,
         configurable: true
@@ -48,7 +48,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtSm', val);
+            this._base.cacheInput('styleGtSm', val, true);
         },
         enumerable: true,
         configurable: true
@@ -56,7 +56,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleMd", {
         set: function (val) {
-            this._base._cacheInputRaw('styleMd', val);
+            this._base.cacheInput('styleMd', val, true);
         },
         enumerable: true,
         configurable: true
@@ -64,7 +64,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtMd', val);
+            this._base.cacheInput('styleGtMd', val, true);
         },
         enumerable: true,
         configurable: true
@@ -72,7 +72,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleLg", {
         set: function (val) {
-            this._base._cacheInputRaw('styleLg', val);
+            this._base.cacheInput('styleLg', val, true);
         },
         enumerable: true,
         configurable: true
@@ -80,7 +80,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
         set: function (val) {
-            this._base._cacheInputRaw('styleGtLg', val);
+            this._base.cacheInput('styleGtLg', val, true);
         },
         enumerable: true,
         configurable: true
@@ -88,7 +88,7 @@ export var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleXl", {
         set: function (val) {
-            this._base._cacheInputRaw('styleXl', val);
+            this._base.cacheInput('styleXl', val, true);
         },
         enumerable: true,
         configurable: true
