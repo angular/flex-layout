@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
       <demo-responsive-flex-directive  class="small-demo">  </demo-responsive-flex-directive>
       <demo-responsive-flex-order  class="small-demo">  </demo-responsive-flex-order>
       <demo-responsive-show-hide  class="small-demo">  </demo-responsive-show-hide>
+      <demo-responsive-style  class="small-demo">  </demo-responsive-style>
     `
 })
 export class DemosResponsiveLayout { }
@@ -23,7 +24,7 @@ import {DemoResponsiveLayoutDirection }  from "./responsiveLayoutDirections.demo
 import {DemoResponsiveShowHide} from "./responsiveShowHide.demo";
 import {DemoResponsiveFlexDirectives} from "./responsiveFlexDirective.demo";
 import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
-
+import {DemoResponsiveStyle} from "./responsiveStyle.demo";
 
 @NgModule({
   declarations : [
@@ -33,7 +34,8 @@ import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
     DemoResponsiveLayoutDirection,
     DemoResponsiveFlexDirectives,
     DemoResponsiveFlexOrder,
-    DemoResponsiveShowHide
+    DemoResponsiveShowHide,
+    DemoResponsiveStyle
 
   ],
   imports : [
