@@ -135,4 +135,4 @@ export var FlexOffsetDirective = (function (_super) {
     };
     return FlexOffsetDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/flex-offset.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-offset.js.map

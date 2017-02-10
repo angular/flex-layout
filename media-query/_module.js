@@ -27,4 +27,4 @@ export var MediaQueriesModule = (function () {
     MediaQueriesModule.ctorParameters = function () { return []; };
     return MediaQueriesModule;
 }());
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/_module.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/_module.js.map

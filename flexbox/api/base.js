@@ -134,4 +134,4 @@ export var BaseFxDirective = (function () {
     };
     return BaseFxDirective;
 }());
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/base.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base.js.map
