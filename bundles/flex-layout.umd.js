@@ -4023,7 +4023,6 @@ var FlexLayoutModule = (function () {
     }
     /** @deprecated */
     FlexLayoutModule.forRoot = function () {
-        console.warn('FlexLayoutModule.forRoot() has been deprecated and is no longer needed.');
         return {
             ngModule: FlexLayoutModule
         };
