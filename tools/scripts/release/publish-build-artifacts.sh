@@ -33,6 +33,7 @@ git clone $repoUrl $repoDir
 # Copy the build files to the repository
 rm -rf $repoDir/*
 cp -r $buildDir/* $repoDir
+cp CHANGELOG.md $repoDir
 
 # Create the build commit and push the changes to the repository.
 cd $repoDir
