@@ -4,8 +4,8 @@
 ### Bug Fixes
 
 * **breakpoints:** resolve 1px hole between lg -> xl breakpoints ([#159](https://github.com/angular/flex-layout/issues/159)) ([d78527c](https://github.com/angular/flex-layout/commit/d78527c)), closes [#149](https://github.com/angular/flex-layout/issues/149)
-* **build:** remove use of static ngModule.forRoot() ([#167](https://github.com/angular/flex-layout/issues/167)) ([86010bf](https://github.com/angular/flex-layout/commit/86010bf))
-* **build:** add observable-media-service to exported barrel ([#139](https://github.com/angular/flex-layout/issues/139)) ([b7dffaa](https://github.com/angular/flex-layout/commit/b7dffaa))
+* **FlexLayoutModule:** remove use of static ngModule.forRoot() ([#167](https://github.com/angular/flex-layout/issues/167)) ([86010bf](https://github.com/angular/flex-layout/commit/86010bf))
+* **FlexLayoutModule:** add observable-media-service to exported barrel ([#139](https://github.com/angular/flex-layout/issues/139)) ([b7dffaa](https://github.com/angular/flex-layout/commit/b7dffaa))
 * **fxFlex:** fix use of values with 'auto' ([#122](https://github.com/angular/flex-layout/issues/122)) ([04d24d5](https://github.com/angular/flex-layout/commit/04d24d5)), closes [#120](https://github.com/angular/flex-layout/issues/120)
 * **fxFlex:** prevent setting min/max-size when grow/shrink is zero ([#160](https://github.com/angular/flex-layout/issues/160)) ([942939e](https://github.com/angular/flex-layout/commit/942939e)), closes [#153](https://github.com/angular/flex-layout/issues/153)
 * **fxHide,fxShow:** restore orig display mode and more... ([#143](https://github.com/angular/flex-layout/issues/143)) ([d269d73](https://github.com/angular/flex-layout/commit/d269d73)), closes [#140](https://github.com/angular/flex-layout/issues/140) [#141](https://github.com/angular/flex-layout/issues/141)
@@ -14,18 +14,18 @@
 * **fxLayoutGap:** fxLayoutWrap to apply gap logic for reverse directions ([#148](https://github.com/angular/flex-layout/issues/148)) ([9f7137e](https://github.com/angular/flex-layout/commit/9f7137e)), closes [#108](https://github.com/angular/flex-layout/issues/108)
 * **fxLayoutGap:** skip hidden element nodes ([#145](https://github.com/angular/flex-layout/issues/145)) ([6c45b35](https://github.com/angular/flex-layout/commit/6c45b35)), closes [#136](https://github.com/angular/flex-layout/issues/136)
 * **fxClass,fxStyle:** enable raw input caching ([#173](https://github.com/angular/flex-layout/issues/173)) ([d5b283c](https://github.com/angular/flex-layout/commit/d5b283c))
-* **matchMediaObservable:** expose observable for rxjs operators ([#133](https://github.com/angular/flex-layout/issues/133)) ([6e46561](https://github.com/angular/flex-layout/commit/6e46561)), closes [#125](https://github.com/angular/flex-layout/issues/125)
+* **ObservableMedia:** expose `asObservable()` for rxjs operators ([#133](https://github.com/angular/flex-layout/issues/133)) ([6e46561](https://github.com/angular/flex-layout/commit/6e46561)), closes [#125](https://github.com/angular/flex-layout/issues/125)
 
 ### Features
 
-* **build:** use protected access to allow API directives to be easily extended ([#163](https://github.com/angular/flex-layout/issues/163)) ([e6bc451](https://github.com/angular/flex-layout/commit/e6bc451))
+* **API:** use protected access to allow API directives to be easily extended ([#163](https://github.com/angular/flex-layout/issues/163)) ([e6bc451](https://github.com/angular/flex-layout/commit/e6bc451))
 * **fxClass,fxStyle:** add responsive support for ngClass and ngStyle ([#170](https://github.com/angular/flex-layout/issues/170)) ([f57a63d](https://github.com/angular/flex-layout/commit/f57a63d))
 * **ObservableMedia:** use ObservableMedia class as provider token ([#158](https://github.com/angular/flex-layout/issues/158)) ([dad69fe](https://github.com/angular/flex-layout/commit/dad69fe))
 
 ### BREAKING CHANGES
 
 * ObservableMedia: Deprecated use of `ObservableMediaService` opaque token. Developers now simply use the ObservableMedia class to inject the service.
-* build: Previously releases used FlexLayoutModule.forRoot(). This has been deprecated and removed.
+* FlexLayoutModule: Previously releases used FlexLayoutModule.forRoot(). This has been deprecated and removed.
 
 *before*
 
@@ -37,7 +37,7 @@ constructor( @Inject(ObserverableMediaService) private media:any ) { ... }
 ```js
 constructor(private media:ObservableMedia) { ... }
 ```
-* matchMediaObservable: * use opaque token `ObservableMediateService` to inject instance of `MediaService`
+* ObservableMedia: use class `ObservableMedia` to inject instance of service
 * use `MediaService::asObservable()` to get instance of observable
 
 ```js
