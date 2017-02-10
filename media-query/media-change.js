@@ -18,4 +18,4 @@ export var MediaChange = (function () {
     }
     return MediaChange;
 }());
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/media-change.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/media-change.js.map

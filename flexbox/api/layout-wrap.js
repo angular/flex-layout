@@ -176,4 +176,4 @@ export var LayoutWrapDirective = (function (_super) {
     };
     return LayoutWrapDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/layout-wrap.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-wrap.js.map
