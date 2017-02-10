@@ -312,7 +312,7 @@
     ].forEach(filePath => {
       let json = require(filePath);
           json.version = newVersion;
-      fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
+      require('fs').writeFileSync(filePath, JSON.stringify(json, null, 2));
     });
   }
 
