@@ -1,7 +1,3 @@
-<a name="2.0.0-beta.3"></a>
-# [2.0.0-beta.3](https://github.com/angular/flex-layout/compare/v2.0.0-beta.2...v2.0.0-beta.3) (2017-01-17)
-
-
 <a name="2.0.0-beta.2"></a>
 # [2.0.0-beta.2](https://github.com/angular/flex-layout/compare/v2.0.0-beta.1...v2.0.0-beta.2) (2017-01-13)
 
