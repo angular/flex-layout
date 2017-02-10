@@ -156,4 +156,4 @@ export var ObservableMediaProvider = {
     useClass: MediaService,
     deps: [MatchMedia, BreakPointRegistry]
 };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media-service.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/observable-media-service.js.map
