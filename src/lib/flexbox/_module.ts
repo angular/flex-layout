@@ -57,12 +57,11 @@ const ALL_DIRECTIVES = [
   declarations: ALL_DIRECTIVES,
   imports: [MediaQueriesModule],
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
-  providers: [ MediaMonitor ]
+  providers: [MediaMonitor]
 })
 export class FlexLayoutModule {
   /** @deprecated */
   static forRoot(): ModuleWithProviders {
-    console.warn('FlexLayoutModule.forRoot() has been deprecated and is no longer needed.');
     return {
       ngModule: FlexLayoutModule
     };

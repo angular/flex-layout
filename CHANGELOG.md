@@ -25,7 +25,7 @@
 ### BREAKING CHANGES
 
 * ObservableMedia: Deprecated use of `ObservableMediaService` opaque token. Developers now simply use the ObservableMedia class to inject the service.
-* FlexLayoutModule: Previously releases used FlexLayoutModule.forRoot(). This has been deprecated; and a console warning will be issued if used.
+* FlexLayoutModule: Previously releases used FlexLayoutModule.forRoot(); This has been deprecated.
 
 *before*
 

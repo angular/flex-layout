@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
-    selector: 'demos-docs-layout',
-    template: `
+  selector: 'demos-docs-layout',
+  template: `
       <demo-layout-alignment      class="small-demo">  </demo-layout-alignment>          
       <demo-layout-fill           class="small-demo">  </demo-layout-fill>
       <demo-flex-row-fill         class="small-demo">  </demo-flex-row-fill>
@@ -12,14 +12,14 @@ import { Component } from '@angular/core';
       <demo-flex-offset-values    class="small-demo">  </demo-flex-offset-values>
     `
 })
-export class DemosLayoutAPI { }
+export class DemosLayoutAPI {
+}
 
 import {NgModule}            from '@angular/core';
 import {CommonModule}        from "@angular/common";
 import {FormsModule}         from "@angular/forms";
 import {MaterialModule}      from "@angular/material";
 import {FlexLayoutModule}    from "../../../lib";     // `gulp build:components` to deploy to node_modules manually
-
 
 import {DemoLayoutAlignment} from "./layoutAlignment.demo";
 import {DemoFlexRowFill}     from "./flexRowFill.demo";
@@ -29,9 +29,8 @@ import {DemoFlexOffsetValues}    from "./flexOffetValues.demo";
 import {DemoLayoutFill}      from "./layoutFill.demo";
 import {DemoFlexAlignSelf}   from "./FlexAlignSelf.demo";
 
-
 @NgModule({
-  declarations : [
+  declarations: [
     DemosLayoutAPI,       // used by the Router with the root app component
 
     DemoFlexRowFill,
@@ -42,12 +41,12 @@ import {DemoFlexAlignSelf}   from "./FlexAlignSelf.demo";
     DemoLayoutFill,
     DemoFlexAlignSelf
   ],
-  imports : [
+  imports: [
     CommonModule,
     FormsModule,
     MaterialModule,
     FlexLayoutModule
   ]
-
 })
-export class DemosLayoutAPIModule { }
+export class DemosLayoutAPIModule {
+}
