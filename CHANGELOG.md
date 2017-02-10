@@ -25,12 +25,12 @@
 ### BREAKING CHANGES
 
 * ObservableMedia: Deprecated use of `ObservableMediaService` opaque token. Developers now simply use the ObservableMedia class to inject the service.
-* FlexLayoutModule: Previously releases used FlexLayoutModule.forRoot(). This has been deprecated and removed.
+* FlexLayoutModule: Previously releases used FlexLayoutModule.forRoot(). This has been deprecated; and a console warning will be issued if used.
 
 *before*
 
 ```js
-constructor( @Inject(ObserverableMediaService) private media:any ) { ... }
+constructor( @Inject(ObserverableMediaService) media:any ) { ... }
 ```
 
 **after**
@@ -51,7 +51,7 @@ export class MyComponent {
     media.asObservable()
       .map( (change:MediaChange) => change.mqAlias == 'md' )
       .subscribe((change:MediaChange) => {
-        let state = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : ""
+        let state = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
         console.log( state );
       });
   }
