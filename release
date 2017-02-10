@@ -306,7 +306,10 @@
    * and also the npm version that is used when deploying the releases to npm.
    */
   function updatePackageVersions () {
-    [ SOURCE_PACKAGE, NPM_PACKAGE ].forEach(filePath => {
+    [
+      './package.json',
+      './tools/scripts/release/npm_assets/package.json'
+    ].forEach(filePath => {
       let json = require(filePath);
           json.version = newVersion;
       fs.writeFileSync(filePath, JSON.stringify(json, null, 2));
