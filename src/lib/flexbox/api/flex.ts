@@ -307,7 +307,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     let max = (direction === 'row') ? 'max-width' : 'max-height';
     let min = (direction === 'row') ? 'min-width' : 'min-height';
 
-    let usingCalc = String(basis).indexOf('calc') > -1;
+    let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
     let isPx = String(basis).indexOf('px') > -1 || usingCalc;
 
 

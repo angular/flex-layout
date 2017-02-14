@@ -16,11 +16,13 @@ import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../_module';
 
 import {__platform_browser_private__} from '@angular/platform-browser';
-import {customMatchers, expect } from '../../utils/testing/custom-matchers';
+import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
   makeExpectDOMFrom,
   makeExpectDOMForQuery,
-  makeCreateTestComponent
+  makeCreateTestComponent,
+  expectNativeEl,
+  queryFor
 } from '../../utils/testing/helpers';
 
 const getDOM = __platform_browser_private__.getDOM;
@@ -31,6 +33,10 @@ describe('flex directive', () => {
   let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestFlexComponent);
   let componentWithTemplate = makeCreateTestComponent(() => TestFlexComponent);
+  let activateMediaQuery = (alias, allowOverlaps?: boolean) => {
+    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+    matchMedia.activate(alias, allowOverlaps);
+  };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -60,10 +66,10 @@ describe('flex directive', () => {
 
       let dom = fRef.debugElement.children[0].nativeElement;
       let isBox = getDOM().hasStyle(dom, 'box-sizing', 'border-box');
-      let hasFlex =  getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
-                     getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
-                     getDOM().hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
-                     getDOM().hasStyle(dom, 'flex', '1 1 0px');
+      let hasFlex = getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
+          getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
+          getDOM().hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
+          getDOM().hasStyle(dom, 'flex', '1 1 0px');
 
       expect(isBox).toBeTruthy();
       expect(hasFlex).toBeTruthy();
@@ -104,7 +110,7 @@ describe('flex directive', () => {
     });
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
-      if ( !isIE ) {
+      if (!isIE) {
         expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
           'box-sizing': 'border-box',
           'flex': '1 1 calc(30vw - 10px)'
@@ -246,7 +252,70 @@ describe('flex directive', () => {
     });
   });
 
+  describe('with responsive features', () => {
 
+    it('should initialize the component with the largest matching breakpoint', () => {
+      fixture = componentWithTemplate(`
+          <div  fxFlex="auto" 
+                fxFlex.gt-xs="33%" 
+                fxFlex.gt-sm="50%" >
+          </div>
+        `);
+
+      activateMediaQuery('xl');
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex': '1 1 50%'
+      });
+
+      activateMediaQuery('sm');
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex': '1 1 33%'
+      });
+    });
+
+    it('should fallback the default layout properly', () => {
+      fixture = componentWithTemplate(`
+          <div fxLayout="column">
+            <div fxFlex="auto" fxFlex.gt-sm="50"  >  </div>
+            <div fxFlex="auto" fxFlex.gt-sm="24.4">  </div>
+            <div fxFlex="auto" fxFlex.gt-sm="25.6">  </div>
+          </div>
+        `);
+
+      activateMediaQuery('sm', true);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes.length).toEqual(3);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
+      activateMediaQuery('xl', true);
+      fixture.detectChanges();
+
+      nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '50%'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '24.4%'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '25.6%'});
+
+      activateMediaQuery('sm', true);
+      fixture.detectChanges();
+
+      nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes.length).toEqual(3);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
+      expect(nodes[0].nativeElement).not.toHaveCssStyle({'max-height': '50%'});
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'max-height': '24.4%'});
+      expect(nodes[2].nativeElement).not.toHaveCssStyle({'max-height': '25.6%'});
+      expect(nodes[0].nativeElement).not.toHaveCssStyle({'max-height': '*'});
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'max-height': '*'});
+      expect(nodes[2].nativeElement).not.toHaveCssStyle({'max-height': '*'});
+    });
+  });
 });
 
 

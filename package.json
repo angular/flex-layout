@@ -63,7 +63,7 @@
     "@types/glob": "^5.0.29",
     "@types/gulp": "^3.8.29",
     "@types/hammerjs": "~2.0.33",
-    "@types/jasmine": "^2.2.34",
+    "@types/jasmine": "2.5.38",
     "@types/merge2": "0.0.28",
     "@types/minimist": "^1.1.28",
     "@types/node": "^6.0.45",
