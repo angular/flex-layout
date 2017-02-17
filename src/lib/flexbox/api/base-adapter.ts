@@ -17,6 +17,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   get mqActivation(): ResponsiveActivation {
     return this._mqActivation;
   }
+
   /**
    * @see BaseFxDirective._queryInput
    */
@@ -28,7 +29,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
    *  Save the property value.
    */
   cacheInput(key?: string, source?: any, cacheRaw = false) {
-    if ( cacheRaw ) {
+    if (cacheRaw) {
       this._cacheInputRaw(key, source);
     } else if (Array.isArray(source)) {
       this._cacheInputArray(key, source);

@@ -99,7 +99,7 @@ describe('show directive', () => {
           ...content
         </button>
       `);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
     });
 
     it('should use "flex" display style when the element also has an fxLayout', () => {

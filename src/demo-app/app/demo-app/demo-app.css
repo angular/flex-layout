@@ -42,15 +42,15 @@ div.coloredContainerX > div, div.colorNested > div > div {
   text-align: center;
 }
 
-div.coloredContainerX > div:nth-child(1), div.colorNested > div > div:nth-child(1) {
+div.coloredContainerX > div:nth-child(1), div.colorNested > div > div:nth-child(1), div.box1 {
   background-color: #009688;
 }
 
-div.coloredContainerX > div:nth-child(2), div.colorNested > div > div:nth-child(2) {
+div.coloredContainerX > div:nth-child(2), div.colorNested > div > div:nth-child(2), div.box2 {
   background-color: #3949ab;
 }
 
-div.coloredContainerX > div:nth-child(3), div.coloredChildren > div:nth-child(3), div.colorNested > div > div:nth-child(3) {
+div.coloredContainerX > div:nth-child(3), div.coloredChildren > div:nth-child(3), div.colorNested > div > div:nth-child(3), div.box3 {
   background-color: #9c27b0;
 }
 
@@ -224,3 +224,5 @@ md-card-content pre {
 .fxClass-lg2 {
   text-shadow: #5c5c5c;
 }
+
+.fixed { height:275px; }

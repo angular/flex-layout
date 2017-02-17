@@ -6,5 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 export * from './api/base';
+export * from './api/base-adapter';
 export * from './responsive/responsive-activation';
 export * from './_module';

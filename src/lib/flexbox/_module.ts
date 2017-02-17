@@ -14,8 +14,7 @@ import {MediaQueriesModule} from '../media-query/_module';
 
 import {FlexDirective} from './api/flex';
 import {LayoutDirective} from './api/layout';
-import {HideDirective} from './api/hide';
-import {ShowDirective} from './api/show';
+import {ShowHideDirective} from './api/show-hide';
 import {FlexAlignDirective} from './api/flex-align';
 import {FlexFillDirective} from './api/flex-fill';
 import {FlexOffsetDirective} from './api/flex-offset';
@@ -44,8 +43,7 @@ const ALL_DIRECTIVES = [
   FlexOffsetDirective,
   FlexFillDirective,
   FlexAlignDirective,
-  ShowDirective,
-  HideDirective,
+  ShowHideDirective,
   ClassDirective,
   StyleDirective,
 ];
