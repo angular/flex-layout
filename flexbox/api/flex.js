@@ -278,7 +278,7 @@ export var FlexDirective = (function (_super) {
         }
         var max = (direction === 'row') ? 'max-width' : 'max-height';
         var min = (direction === 'row') ? 'min-width' : 'min-height';
-        var usingCalc = String(basis).indexOf('calc') > -1;
+        var usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
         var isPx = String(basis).indexOf('px') > -1 || usingCalc;
         // make box inflexible when shrink and grow are both zero
         // should not set a min when the grow is zero
