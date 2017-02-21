@@ -23,12 +23,20 @@ import {Subscription} from 'rxjs/Subscription';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-
 import {LayoutDirective} from './layout';
-import {HideDirective} from './hide';
-
 
 const FALSY = ['false', false, 0];
+
+/**
+ * For fxHide selectors, we invert the 'value'
+ * and assign to the equivalent fxShow selector cache
+ */
+export function negativeOf(hide: any) {
+  // where 'hide' === '', do NOT show the element
+  // where 'hide' === false or 0... we WILL show the element
+  return (hide === "") ? false :
+         ((hide === "false") || (hide === 0)) ? true : !hide;
+}
 
 /**
  * 'show' Layout API directive
@@ -45,10 +53,20 @@ const FALSY = ['false', false, 0];
   [fxShow.gt-md],
   [fxShow.lg],
   [fxShow.gt-lg],
-  [fxShow.xl]
+  [fxShow.xl],
+  [fxHide],
+  [fxHide.xs],
+  [fxHide.gt-xs],
+  [fxHide.sm],
+  [fxHide.gt-sm],
+  [fxHide.md],
+  [fxHide.gt-md],
+  [fxHide.lg],
+  [fxHide.gt-lg],
+  [fxHide.xl]  
 `
 })
-export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Subscription to the parent flex container's layout changes.
@@ -56,44 +74,85 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   protected _layoutWatcher: Subscription;
 
+
   @Input('fxShow')       set show(val) {
     this._cacheInput("show", val);
+  }
+
+  @Input('fxHide')       set hide(val) {
+    this._cacheInput("show", negativeOf(val));
   }
 
   @Input('fxShow.xs')    set showXs(val) {
     this._cacheInput('showXs', val);
   }
 
+  @Input('fxHide.xs')    set hideXs(val) {
+    this._cacheInput("showXs", negativeOf(val));
+  }
+
   @Input('fxShow.gt-xs') set showGtXs(val) {
     this._cacheInput('showGtXs', val);
+  };
+
+  @Input('fxHide.gt-xs') set hideGtXs(val) {
+    this._cacheInput('showGtXs', negativeOf(val));
   };
 
   @Input('fxShow.sm')    set showSm(val) {
     this._cacheInput('showSm', val);
   };
 
+  @Input('fxHide.sm')    set hideSm(val) {
+    this._cacheInput('showSm', negativeOf(val));
+  };
+
   @Input('fxShow.gt-sm') set showGtSm(val) {
     this._cacheInput('showGtSm', val);
+  };
+
+  @Input('fxHide.gt-sm') set hideGtSm(val) {
+    this._cacheInput('showGtSm', negativeOf(val));
   };
 
   @Input('fxShow.md')    set showMd(val) {
     this._cacheInput('showMd', val);
   };
 
+  @Input('fxHide.md')    set hideMd(val) {
+    this._cacheInput('showMd', negativeOf(val));
+  };
+
   @Input('fxShow.gt-md') set showGtMd(val) {
     this._cacheInput('showGtMd', val);
+  };
+
+  @Input('fxHide.gt-md') set hideGtMd(val) {
+    this._cacheInput('showGtMd', negativeOf(val));
   };
 
   @Input('fxShow.lg')    set showLg(val) {
     this._cacheInput('showLg', val);
   };
 
+  @Input('fxHide.lg')    set hideLg(val) {
+    this._cacheInput('showLg', negativeOf(val));
+  };
+
   @Input('fxShow.gt-lg') set showGtLg(val) {
     this._cacheInput('showGtLg', val);
   };
 
+  @Input('fxHide.gt-lg') set hideGtLg(val) {
+    this._cacheInput('showGtLg', negativeOf(val));
+  };
+
   @Input('fxShow.xl')    set showXl(val) {
     this._cacheInput('showXl', val);
+  };
+
+  @Input('fxHide.xl')    set hideXl(val) {
+    this._cacheInput('showXl', negativeOf(val));
   };
 
   /**
@@ -101,7 +160,6 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected _layout: LayoutDirective,
-              @Optional() @Self() protected _hide: HideDirective,
               protected elRef: ElementRef,
               protected renderer: Renderer) {
 
@@ -127,8 +185,7 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
    * unless it was already explicitly defined.
    */
   protected _getDisplayStyle(): string {
-    let element: HTMLElement = this._elementRef.nativeElement;
-    return (element.style as any)['display'] || (this._layout ? "flex" : "block");
+    return this._layout ? "flex" : super._getDisplayStyle();
   }
 
 
@@ -152,14 +209,10 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     // Build _mqActivation controller
     this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
-      if (!this._delegateToHide(changes)) {
-        this._updateWithValue(changes.value);
-      }
+      this._updateWithValue(changes.value);
     });
 
-    if (!this._delegateToHide()) {
-      this._updateWithValue();
-    }
+    this._updateWithValue();
   }
 
   ngOnDestroy() {
@@ -172,21 +225,6 @@ export class ShowDirective extends BaseFxDirective implements OnInit, OnChanges,
   // *********************************************
   // Protected methods
   // *********************************************
-
-  /**
-   * If deactiving Show, then delegate action to the Hide directive if it is
-   * specified on same element.
-   */
-  protected _delegateToHide(changes?: MediaChange) {
-    if (this._hide) {
-      let delegate = (changes && !changes.matches) || (!changes && !this.hasKeyValue('show'));
-      if (delegate) {
-        this._hide.ngOnChanges({});
-        return true;
-      }
-    }
-    return false;
-  }
 
   /** Validate the visibility value and then update the host's inline display style */
   protected _updateWithValue(value?: string|number|boolean) {
