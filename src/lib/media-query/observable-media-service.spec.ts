@@ -94,7 +94,7 @@ describe('match-media-observable-provider', () => {
         subscription.unsubscribe();
       }));
 
-  it('can can subscribe to built-in mediaQueries', async(inject(
+  it('can subscribe to built-in mediaQueries', inject(
       [ObservableMedia, MatchMedia],
       (media$, matchMedia) => {
         let current: MediaChange;
@@ -117,6 +117,9 @@ describe('match-media-observable-provider', () => {
           matchMedia.activate('md');
           expect(current.mediaQuery).toEqual(findMediaQuery('md'));
 
+          // Allow overlapping activations to be announced to observers
+          media$.filterOverlaps = false;
+
           matchMedia.activate('gt-lg');
           expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
 
@@ -127,7 +130,7 @@ describe('match-media-observable-provider', () => {
           matchMedia.autoRegisterQueries = true;
           subscription.unsubscribe();
         }
-      })));
+      }));
 
   it('can `.unsubscribe()` properly', async(inject(
       [ObservableMedia, MatchMedia],

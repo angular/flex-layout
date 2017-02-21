@@ -75,7 +75,7 @@ export class MockMatchMedia extends MatchMedia {
    *   "xs"    active == false
    *
    */
-  private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean) {
+  private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean): boolean {
     if (useOverlaps) {
       let bp = this._breakpoints.findByQuery(mediaQuery);
       switch (bp ? bp.alias : 'unknown') {
@@ -96,7 +96,7 @@ export class MockMatchMedia extends MatchMedia {
       }
     }
     // Activate last since the responsiveActivation is watching *this* mediaQuery
-    this._activateByQuery(mediaQuery);
+    return this._activateByQuery(mediaQuery);
   }
 
   /**
