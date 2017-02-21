@@ -35,8 +35,7 @@ import {DemoResponsiveStyle} from "./responsiveStyle.demo";
     DemoResponsiveFlexDirectives,
     DemoResponsiveFlexOrder,
     DemoResponsiveShowHide,
-    DemoResponsiveStyle
-
+    DemoResponsiveStyle,
   ],
   imports : [
     CommonModule,
