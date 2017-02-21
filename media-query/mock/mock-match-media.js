@@ -87,7 +87,7 @@ export var MockMatchMedia = (function (_super) {
             }
         }
         // Activate last since the responsiveActivation is watching *this* mediaQuery
-        this._activateByQuery(mediaQuery);
+        return this._activateByQuery(mediaQuery);
     };
     /**
      *

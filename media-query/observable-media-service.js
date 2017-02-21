@@ -58,8 +58,12 @@ export var MediaService = (function () {
     function MediaService(mediaWatcher, breakpoints) {
         this.mediaWatcher = mediaWatcher;
         this.breakpoints = breakpoints;
-        this._registerBreakPoints();
+        /**
+         * Should we announce gt-<xxx> breakpoint activations ?
+         */
+        this.filterOverlaps = true;
         this.observable$ = this._buildObservable();
+        this._registerBreakPoints();
     }
     /**
      * Test if specified query/alias is active.
@@ -113,6 +117,10 @@ export var MediaService = (function () {
             .map(function (change) {
             // Inject associated (if any) alias information into the MediaChange event
             return mergeAlias(change, _this._findByQuery(change.mediaQuery));
+        })
+            .filter(function (change) {
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
         });
     };
     /**
@@ -121,7 +129,6 @@ export var MediaService = (function () {
     MediaService.prototype._findByAlias = function (alias) {
         return this.breakpoints.findByAlias(alias);
     };
-    ;
     /**
      * Breakpoint locator by mediaQuery
      */

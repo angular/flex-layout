@@ -13,6 +13,8 @@ import { LayoutDirective } from './layout';
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
+ *  - When 'hide' === '' === true, do NOT show the element
+ *  - When 'hide' === false or 0... we WILL show the element
  */
 export declare function negativeOf(hide: any): boolean;
 /**

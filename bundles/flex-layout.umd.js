@@ -1030,8 +1030,12 @@ var MediaService = (function () {
     function MediaService(mediaWatcher, breakpoints) {
         this.mediaWatcher = mediaWatcher;
         this.breakpoints = breakpoints;
-        this._registerBreakPoints();
+        /**
+         * Should we announce gt-<xxx> breakpoint activations ?
+         */
+        this.filterOverlaps = true;
         this.observable$ = this._buildObservable();
+        this._registerBreakPoints();
     }
     /**
      * Test if specified query/alias is active.
@@ -1085,6 +1089,10 @@ var MediaService = (function () {
             .map(function (change) {
             // Inject associated (if any) alias information into the MediaChange event
             return mergeAlias(change, _this._findByQuery(change.mediaQuery));
+        })
+            .filter(function (change) {
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
         });
     };
     /**
@@ -1093,7 +1101,6 @@ var MediaService = (function () {
     MediaService.prototype._findByAlias = function (alias) {
         return this.breakpoints.findByAlias(alias);
     };
-    
     /**
      * Breakpoint locator by mediaQuery
      */
@@ -1978,10 +1985,10 @@ var FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
+ *  - When 'hide' === '' === true, do NOT show the element
+ *  - When 'hide' === false or 0... we WILL show the element
  */
 function negativeOf(hide) {
-    // where 'hide' === '', do NOT show the element
-    // where 'hide' === false or 0... we WILL show the element
     return (hide === "") ? false :
         ((hide === "false") || (hide === 0)) ? true : !hide;
 }
@@ -2327,7 +2334,7 @@ var ShowHideDirective = (function (_super) {
     ], ShowHideDirective.prototype, "hideXl", null);
     ShowHideDirective = __decorate$9([
         _angular_core.Directive({
-            selector: "\n  [fxShow],\n  [fxShow.xs],\n  [fxShow.gt-xs],\n  [fxShow.sm],\n  [fxShow.gt-sm],\n  [fxShow.md],\n  [fxShow.gt-md],\n  [fxShow.lg],\n  [fxShow.gt-lg],\n  [fxShow.xl],\n  [fxHide],\n  [fxHide.xs],\n  [fxHide.gt-xs],\n  [fxHide.sm],\n  [fxHide.gt-sm],\n  [fxHide.md],\n  [fxHide.gt-md],\n  [fxHide.lg],\n  [fxHide.gt-lg],\n  [fxHide.xl]  \n"
+            selector: "\n  [fxShow],\n  [fxShow.xs],[fxShow.gt-xs],[fxShow.sm],[fxShow.gt-sm],\n  [fxShow.md],[fxShow.gt-md],[fxShow.lg],[fxShow.gt-lg],[fxShow.xl],  \n  [fxHide],\n  [fxHide.xs],[fxHide.gt-xs],[fxHide.sm],[fxHide.gt-sm],\n  [fxHide.md],[fxHide.gt-md],[fxHide.lg],[fxHide.gt-lg],[fxHide.xl]  \n"
         }),
         __param$3(1, _angular_core.Optional()),
         __param$3(1, _angular_core.Self()), 

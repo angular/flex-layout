@@ -58,7 +58,10 @@ export declare abstract class ObservableMedia implements Subscribable<MediaChang
 export declare class MediaService implements ObservableMedia {
     private mediaWatcher;
     private breakpoints;
-    private observable$;
+    /**
+     * Should we announce gt-<xxx> breakpoint activations ?
+     */
+    filterOverlaps: boolean;
     constructor(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry);
     /**
      * Test if specified query/alias is active.
@@ -97,6 +100,7 @@ export declare class MediaService implements ObservableMedia {
      * Find associated breakpoint (if any)
      */
     private _toMediaQuery(query);
+    private observable$;
 }
 /**
  *  Provider to return observable to ALL MediaQuery events
