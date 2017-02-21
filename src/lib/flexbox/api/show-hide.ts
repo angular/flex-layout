@@ -30,10 +30,10 @@ const FALSY = ['false', false, 0];
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
+ *  - When 'hide' === '' === true, do NOT show the element
+ *  - When 'hide' === false or 0... we WILL show the element
  */
 export function negativeOf(hide: any) {
-  // where 'hide' === '', do NOT show the element
-  // where 'hide' === false or 0... we WILL show the element
   return (hide === "") ? false :
          ((hide === "false") || (hide === 0)) ? true : !hide;
 }
@@ -45,25 +45,11 @@ export function negativeOf(hide: any) {
 @Directive({
   selector: `
   [fxShow],
-  [fxShow.xs],
-  [fxShow.gt-xs],
-  [fxShow.sm],
-  [fxShow.gt-sm],
-  [fxShow.md],
-  [fxShow.gt-md],
-  [fxShow.lg],
-  [fxShow.gt-lg],
-  [fxShow.xl],
+  [fxShow.xs],[fxShow.gt-xs],[fxShow.sm],[fxShow.gt-sm],
+  [fxShow.md],[fxShow.gt-md],[fxShow.lg],[fxShow.gt-lg],[fxShow.xl],  
   [fxHide],
-  [fxHide.xs],
-  [fxHide.gt-xs],
-  [fxHide.sm],
-  [fxHide.gt-sm],
-  [fxHide.md],
-  [fxHide.gt-md],
-  [fxHide.lg],
-  [fxHide.gt-lg],
-  [fxHide.xl]  
+  [fxHide.xs],[fxHide.gt-xs],[fxHide.sm],[fxHide.gt-sm],
+  [fxHide.md],[fxHide.gt-md],[fxHide.lg],[fxHide.gt-lg],[fxHide.xl]  
 `
 })
 export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {

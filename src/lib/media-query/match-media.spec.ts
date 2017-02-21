@@ -223,7 +223,7 @@ describe('match-media-observable', () => {
 
     // "all" mediaQuery is already active; total count should be (3)
 
-    expect(activationCount).toEqual(3);
+    expect(activationCount).toEqual(2);
     expect(deactivationCount).toEqual(0);
 
     subscription.unsubscribe();
