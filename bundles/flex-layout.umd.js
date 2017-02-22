@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/platform-browser'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common')) :
-    typeof define === 'function' && define.amd ? define(['exports', '@angular/platform-browser', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.platformBrowser,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common));
-}(this, (function (exports,_angular_platformBrowser,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject,_angular_common) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common'], factory) :
+    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common));
+}(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject,_angular_common) { 'use strict';
 
 /**
  * @license
@@ -315,7 +315,6 @@ var ResponsiveActivation = (function () {
     return ResponsiveActivation;
 }());
 
-var getDOM = _angular_platformBrowser.__platform_browser_private__.getDOM;
 /** Abstract base class for the Layout API styling directives. */
 var BaseFxDirective = (function () {
     /**
@@ -368,7 +367,7 @@ var BaseFxDirective = (function () {
      */
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
-        var value = element.style['display'] || getDOM().getComputedStyle(element)['display'];
+        var value = element.style['display'] || getComputedStyle(element)['display'];
         return value.trim();
     };
     /**

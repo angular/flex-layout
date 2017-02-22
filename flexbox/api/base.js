@@ -1,5 +1,3 @@
-import { __platform_browser_private__ } from '@angular/platform-browser';
-var getDOM = __platform_browser_private__.getDOM;
 import { applyCssPrefixes } from '../../utils/auto-prefixer';
 import { ResponsiveActivation, KeyOptions } from '../responsive/responsive-activation';
 /** Abstract base class for the Layout API styling directives. */
@@ -54,7 +52,7 @@ export var BaseFxDirective = (function () {
      */
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
-        var value = element.style['display'] || getDOM().getComputedStyle(element)['display'];
+        var value = element.style['display'] || getComputedStyle(element)['display'];
         return value.trim();
     };
     /**
