@@ -7,9 +7,6 @@
  */
 import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 
-import {__platform_browser_private__} from '@angular/platform-browser';
-const getDOM = __platform_browser_private__.getDOM;
-
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
@@ -92,7 +89,7 @@ export abstract class BaseFxDirective implements OnDestroy {
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
-    let value = (element.style as any)['display'] || getDOM().getComputedStyle(element)['display'];
+    let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
     return value.trim();
   }
 

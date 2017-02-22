@@ -15,8 +15,9 @@ import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../_module';
 
-import {__platform_browser_private__} from '@angular/platform-browser';
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect } from '../../utils/testing/custom-matchers';
+import { _dom as _ } from '../../utils/testing/dom-tools';
+
 import {
   makeExpectDOMFrom,
   makeExpectDOMForQuery,
@@ -25,7 +26,6 @@ import {
   queryFor
 } from '../../utils/testing/helpers';
 
-const getDOM = __platform_browser_private__.getDOM;
 const isIE = !!document["documentMode"];
 
 describe('flex directive', () => {
@@ -65,11 +65,11 @@ describe('flex directive', () => {
       fRef.detectChanges();
 
       let dom = fRef.debugElement.children[0].nativeElement;
-      let isBox = getDOM().hasStyle(dom, 'box-sizing', 'border-box');
-      let hasFlex = getDOM().hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
-          getDOM().hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
-          getDOM().hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
-          getDOM().hasStyle(dom, 'flex', '1 1 0px');
+      let isBox = _.hasStyle(dom, 'box-sizing', 'border-box');
+      let hasFlex = _.hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
+          _.hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
+          _.hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
+          _.hasStyle(dom, 'flex', '1 1 0px');
 
       expect(isBox).toBeTruthy();
       expect(hasFlex).toBeTruthy();
@@ -182,7 +182,7 @@ describe('flex directive', () => {
       fRef.detectChanges();
 
       let dom = fRef.debugElement.children[0].nativeElement;
-      let maxWidthStyle = getDOM().getStyle(dom, 'max-width');
+      let maxWidthStyle = _.getStyle(dom, 'max-width');
 
       expect(maxWidthStyle).toBeFalsy();
     });
@@ -198,7 +198,7 @@ describe('flex directive', () => {
       fRef.detectChanges();
 
       let dom = fRef.debugElement.children[0].nativeElement;
-      let minWidthStyle = getDOM().getStyle(dom, 'min-width');
+      let minWidthStyle = _.getStyle(dom, 'min-width');
 
       expect(minWidthStyle).toBeFalsy();
     });

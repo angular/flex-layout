@@ -6,13 +6,11 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {__platform_browser_private__} from '@angular/platform-browser';
-import {applyCssPrefixes} from '../auto-prefixer';
-
 declare var global: any;
-
-const getDOM = __platform_browser_private__.getDOM;
 const _global = <any>(typeof window === 'undefined' ? global : window);
+
+import {_dom as _} from './dom-tools';
+import {applyCssPrefixes} from '../auto-prefixer';
 
 export const expect: (actual: any) => NgMatchers = <any> _global.expect;
 
@@ -101,7 +99,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
     function buildError(isNot: boolean) {
       return function (actual: any, className: string) {
         return {
-          pass: getDOM().hasClass(actual, className) == !isNot,
+          pass: _.hasClass(actual, className) == !isNot,
           get message() {
             return `
               Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}
@@ -118,7 +116,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
       compare: function (actual: any, styles: {[k: string]: string}|string) {
         let allPassed: boolean;
         if (typeof styles === 'string') {
-          allPassed = getDOM().hasStyle(actual, styles);
+          allPassed = _.hasStyle(actual, styles);
         } else {
           allPassed = Object.keys(styles).length !== 0;
           Object.keys(styles).forEach(prop => {
@@ -149,20 +147,20 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
  */
 function hasPrefixedStyles(actual, key, value) {
   value = value !== "*" ? value.trim() : undefined;
-  let hasStyle = getDOM().hasStyle(actual, key, value);
-  if (!hasStyle) {
+  let elHasStyle = _.hasStyle(actual, key, value);
+  if (!elHasStyle) {
     let prefixedStyles = applyCssPrefixes({[key]: value});
     Object.keys(prefixedStyles).forEach(prop => {
       // Search for optional prefixed values
-      hasStyle = hasStyle || getDOM().hasStyle(actual, prop, prefixedStyles[prop]);
+      elHasStyle = elHasStyle || _.hasStyle(actual, prop, prefixedStyles[prop]);
     });
   }
-  return hasStyle;
+  return elHasStyle;
 }
 
 function elementText(n: any): string {
   const hasNodes = (m: any) => {
-    const children = getDOM().childNodes(m);
+    const children = _.childNodes(m);
     return children && children["length"];
   };
 
@@ -170,22 +168,22 @@ function elementText(n: any): string {
     return n.map(elementText).join('');
   }
 
-  if (getDOM().isCommentNode(n)) {
+  if (_.isCommentNode(n)) {
     return '';
   }
 
-  if (getDOM().isElementNode(n) && getDOM().tagName(n) == 'CONTENT') {
-    return elementText(Array.prototype.slice.apply(getDOM().getDistributedNodes(n)));
+  if (_.isElementNode(n) && _.tagName(n) == 'CONTENT') {
+    return elementText(Array.prototype.slice.apply(_.getDistributedNodes(n)));
   }
 
-  if (getDOM().hasShadowRoot(n)) {
-    return elementText(getDOM().childNodesAsList(getDOM().getShadowRoot(n)));
+  if (_.hasShadowRoot(n)) {
+    return elementText(_.childNodesAsList(_.getShadowRoot(n)));
   }
 
   if (hasNodes(n)) {
-    return elementText(getDOM().childNodesAsList(n));
+    return elementText(_.childNodesAsList(n));
   }
 
-  return getDOM().getText(n);
+  return _.getText(n);
 }
 
