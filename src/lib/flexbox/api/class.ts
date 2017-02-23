@@ -32,66 +32,43 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
  */
 @Directive({
   selector: `
-    [class.xs],
-    [class.gt-xs],
-    [class.sm],
-    [class.gt-sm],
-    [class.md],
-    [class.gt-md],
-    [class.lg],
-    [class.gt-lg],
-    [class.xl]
+    [ngClass.xs],     [class.xs],
+    [ngClass.gt-xs],  [class.gt-xs],
+    [ngClass.sm],     [class.sm],
+    [ngClass.gt-sm],  [class.gt-sm],
+    [ngClass.md],     [class.md],
+    [ngClass.gt-md],  [class.gt-md],
+    [ngClass.lg],     [class.lg],
+    [ngClass.gt-lg],  [class.gt-lg]  
   `
 })
 export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDestroy {
 
-  @Input('class.xs')
-  set classXs(val: NgClassType) {
-    this._base.cacheInput('classXs', val);
-  }
+  /* tslint:disable */
+  @Input('ngClass.xs')    set ngClassXs(val: NgClassType) { this._base.cacheInput('classXs', val, true); }
+  @Input('ngClass.gt-xs') set ngClassGtXs(val: NgClassType) { this._base.cacheInput('classGtXs', val, true); };
+  @Input('ngClass.sm')    set ngClassSm(val: NgClassType) {  this._base.cacheInput('classSm', val, true); };
+  @Input('ngClass.gt-sm') set ngClassGtSm(val: NgClassType) { this._base.cacheInput('classGtSm', val, true);} ;
+  @Input('ngClass.md')    set ngClassMd(val: NgClassType) { this._base.cacheInput('classMd', val, true); };
+  @Input('ngClass.gt-md') set ngClassGtMd(val: NgClassType) { this._base.cacheInput('classGtMd', val, true);};
+  @Input('ngClass.lg')    set ngClassLg(val: NgClassType) { this._base.cacheInput('classLg', val, true);};
+  @Input('ngClass.gt-lg') set ngClassGtLg(val: NgClassType) { this._base.cacheInput('classGtLg', val, true); };
+  @Input('ngClass.xl')    set ngClassXl(val: NgClassType) { this._base.cacheInput('classXl', val, true); };
 
-  @Input('class.gt-xs')
-  set classGtXs(val: NgClassType) {
-    this._base.cacheInput('classGtXs', val);
-  };
+  /** Deprecated selectors */
+  @Input('class.xs')      set classXs(val: NgClassType) { this._base.cacheInput('classXs', val, true); }
+  @Input('class.gt-xs')   set classGtXs(val: NgClassType) { this._base.cacheInput('classGtXs', val, true); };
+  @Input('class.sm')      set classSm(val: NgClassType) {  this._base.cacheInput('classSm', val, true); };
+  @Input('class.gt-sm')   set classGtSm(val: NgClassType) { this._base.cacheInput('classGtSm', val, true); };
+  @Input('class.md')      set classMd(val: NgClassType) { this._base.cacheInput('classMd', val, true);};
+  @Input('class.gt-md')   set classGtMd(val: NgClassType) { this._base.cacheInput('classGtMd', val, true);};
+  @Input('class.lg')      set classLg(val: NgClassType) { this._base.cacheInput('classLg', val, true); };
+  @Input('class.gt-lg')   set classGtLg(val: NgClassType) { this._base.cacheInput('classGtLg', val, true); };
+  @Input('class.xl')      set classXl(val: NgClassType) { this._base.cacheInput('classXl', val, true); };
 
-  @Input('class.sm')
-  set classSm(val: NgClassType) {
-    this._base.cacheInput('classSm', val);
-  };
-
-  @Input('class.gt-sm')
-  set classGtSm(val: NgClassType) {
-    this._base.cacheInput('classGtSm', val);
-  };
-
-  @Input('class.md')
-  set classMd(val: NgClassType) {
-    this._base.cacheInput('classMd', val);
-  };
-
-  @Input('class.gt-md')
-  set classGtMd(val: NgClassType) {
-    this._base.cacheInput('classGtMd', val);
-  };
-
-  @Input('class.lg')
-  set classLg(val: NgClassType) {
-    this._base.cacheInput('classLg', val);
-  };
-
-  @Input('class.gt-lg')
-  set classGtLg(val: NgClassType) {
-    this._base.cacheInput('classGtLg', val);
-  };
-
-  @Input('class.xl')
-  set classXl(val: NgClassType) {
-    this._base.cacheInput('classXl', val);
-  };
-
-  constructor(private monitor: MediaMonitor,
-              private _bpRegistry: BreakPointRegistry,
+  /* tslint:enable */
+  constructor(protected monitor: MediaMonitor,
+              protected _bpRegistry: BreakPointRegistry,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
               _ngEl: ElementRef, _renderer: Renderer) {
     super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
@@ -102,7 +79,9 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
    * For @Input changes on the current mq activation property, see onMediaQueryChanges()
    */
   ngOnChanges(changes: SimpleChanges) {
-    const changed = this._bpRegistry.items.some(it => `class${it.suffix}` in changes);
+    const changed = this._bpRegistry.items.some(it => {
+      return (`ngClass${it.suffix}` in changes) || (`class${it.suffix}` in changes);
+    });
     if (changed || this._base.mqActivation) {
       this._updateStyle();
     }
@@ -123,7 +102,7 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
     this._base.ngOnDestroy();
   }
 
-  private _updateStyle(value?: NgClassType) {
+  protected _updateStyle(value?: NgClassType) {
     let clazz = value || this._base.queryInput("class") || '';
     if (this._base.mqActivation) {
       clazz = this._base.mqActivation.activatedInput;
@@ -136,6 +115,6 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
    * Special adapter to cross-cut responsive behaviors
    * into the ClassDirective
    */
-  private _base: BaseFxDirectiveAdapter;
+  protected _base: BaseFxDirectiveAdapter;
 }
 
