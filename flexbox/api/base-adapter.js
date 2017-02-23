@@ -99,4 +99,4 @@ export var BaseFxDirectiveAdapter = (function (_super) {
     };
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/base-adapter.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base-adapter.js.map

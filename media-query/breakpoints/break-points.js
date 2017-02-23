@@ -74,4 +74,4 @@ export var BreakPointsProvider = {
     provide: BREAKPOINTS,
     useValue: RAW_DEFAULTS
 };
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/media-query/breakpoints/break-points.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-points.js.map

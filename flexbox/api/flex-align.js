@@ -167,4 +167,4 @@ export var FlexAlignDirective = (function (_super) {
     };
     return FlexAlignDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/flex-align.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-align.js.map

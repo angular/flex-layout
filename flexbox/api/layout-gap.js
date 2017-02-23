@@ -235,4 +235,4 @@ export var LayoutGapDirective = (function (_super) {
     };
     return LayoutGapDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/layout-gap.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-gap.js.map
