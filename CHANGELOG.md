@@ -1,3 +1,15 @@
+<a name="2.0.0-rc.1"></a>
+# [2.0.0-rc.1](https://github.com/angular/flex-layout/compare/v2.0.0-beta.5...v2.0.0-rc.1) (2017-02-23)
+
+### Bug Fixes
+
+* **build:** remove use of Angular private API ([#195](https://github.com/angular/flex-layout/issues/195)) ([d95cb09](https://github.com/angular/flex-layout/commit/d95cb09)), closes [#193](https://github.com/angular/flex-layout/issues/193)
+* **FlexLayoutModule:** remove console.warn() conflicts with ngc+AOT ([#179](https://github.com/angular/flex-layout/issues/179)) ([0797c85](https://github.com/angular/flex-layout/commit/0797c85)), closes [#174](https://github.com/angular/flex-layout/issues/174) [#175](https://github.com/angular/flex-layout/issues/175) [#176](https://github.com/angular/flex-layout/issues/176) [#178](https://github.com/angular/flex-layout/issues/178)
+* **fxFlex:** fxFlex=auto with overlapping breakpoints activated ([#183](https://github.com/angular/flex-layout/issues/183)) ([cb614ed](https://github.com/angular/flex-layout/commit/cb614ed)), closes [#135](https://github.com/angular/flex-layout/issues/135)
+* **fxShow, fxHide:** support fxHide+fxShow usages on same element ([#190](https://github.com/angular/flex-layout/issues/190)) ([eee20b2](https://github.com/angular/flex-layout/commit/eee20b2))
+* **ObservableMedia:** provide consistent reporting of active breakpoint ([#186](https://github.com/angular/flex-layout/issues/186)) ([aa0dab4](https://github.com/angular/flex-layout/commit/aa0dab4)), closes [#185](https://github.com/angular/flex-layout/issues/185)
+* **release:** fix checkout CHANGELOG.md from origin/master ([e17cdc1](https://github.com/angular/flex-layout/commit/e17cdc1))
+
 <a name="2.0.0-beta.5"></a>
 # [2.0.0-beta.5](https://github.com/angular/flex-layout/compare/v2.0.0-beta.4...v2.0.0-beta.5) (2017-02-09)
 
