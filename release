@@ -123,7 +123,7 @@
 
     exec(`git fetch --all --tags ${origin}`);
     // Do not use last tag's CHANGELOG; use one from master
-    //exec(`git checkout v${lastMajorVer} -- CHANGELOG.md`);
+    exec(`git co origin/master -- CHANGELOG.md`);
     exec(`gulp changelog --sha=$(git rev-list -n 1 v${lastMajorVer})`);
 
     done();
