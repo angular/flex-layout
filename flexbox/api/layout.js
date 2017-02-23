@@ -171,4 +171,4 @@ export var LayoutDirective = (function (_super) {
     };
     return LayoutDirective;
 }(BaseFxDirective));
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout.js.map
+//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/layout.js.map

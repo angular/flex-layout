@@ -148,4 +148,4 @@ export var ClassDirective = (function (_super) {
     };
     return ClassDirective;
 }(NgClass));
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/class.js.map
+//# sourceMappingURL=/usr/local/google/home/mmalerba/flex-layout/src/lib/flexbox/api/class.js.map
