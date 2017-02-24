@@ -16,6 +16,10 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The [R
 enables developers to easily specify different layouts, sizing, visibilities for different 
 viewport sizes and display devices.
   
+### Updated CHANGELOG
+
+Please consult our [CHANGELOG](https://github.com/angular/flex-layout-builds/blob/master/CHANGELOG.md) for latest changes and new features.
+  
 ### Why choose Flex-Layout
 
 While other Flexbox CSS libraries are implementations of:
