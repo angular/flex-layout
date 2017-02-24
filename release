@@ -324,7 +324,7 @@
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updatePackageVersions)}"`,
         'git add package.json',
         'git add tools/scripts/release/npm_assets/package.json',
-        `node -e ${stringifyFunction(updateReleasesJson)}`,
+        `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updateReleasesJson)}"`,
         `git add tools/releases.json`,
         `git commit -m "chore(version): update version number in package.json to ${newVersion}"`,
         `git push ${origin} master`
