@@ -36,11 +36,11 @@
     "node": ">= 5.4.1 < 7"
   },
   "dependencies": {
-    "@angular/common": "^2.3.1",
-    "@angular/compiler": "^2.3.1",
-    "@angular/core": "^2.3.1",
-    "@angular/platform-browser": "^2.3.1",
-    "@angular/platform-browser-dynamic": "^2.3.1",
+    "@angular/common": "^2.3.5",
+    "@angular/compiler": "^2.3.5",
+    "@angular/core": "^2.3.5",
+    "@angular/platform-browser": "^2.3.5",
+    "@angular/platform-browser-dynamic": "^2.3.5",
     "@types/gulp-util": "^3.0.30",
     "core-js": "^2.4.1",
     "reflect-metadata": "^0.1.8",
@@ -49,11 +49,11 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^2.3.1",
-    "@angular/forms": "^2.3.1",
-    "@angular/http": "^2.3.1",
+    "@angular/compiler-cli": "^2.3.5",
+    "@angular/forms": "^2.3.5",
+    "@angular/http": "^2.3.5",
     "@angular/material": "^2.0.0-beta.2",
-    "@angular/platform-server": "^2.3.1",
+    "@angular/platform-server": "^2.3.5",
     "@angular/router": "~3.1.1",
     "@angular/tsc-wrapped": "~0.4.0",
     "@angularclass/conventions-loader": "^1.0.2",
