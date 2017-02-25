@@ -61,7 +61,15 @@
     line();
     log(`Your repo is ${"ready".cyan} to be pushed.`);
     log(`Please look over ${"CHANGELOG.md".cyan} and make any changes.`);
-    log(`If you would like to cancel this release, please run "${"./abort".red}"`);
+
+    let hint = "git add CHANGELOG.md; git commit --amend --no-edit;";
+    log(`! ------------ `);
+    log(`! NOTE: If you make changes to the CHANGELOG, use `);
+    log(`!   ${hint.red} `);
+    log(`! before proceeding!`);
+    log(`! ------------ `);
+
+    log(`If you would like to cancel this release, please run "${"./abort".cyan}"`);
     log(`When you are ready, please run "${"./push".cyan}" to finish the process.`);
   }
 
