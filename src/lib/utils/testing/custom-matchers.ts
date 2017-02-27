@@ -28,6 +28,11 @@ export interface NgMatchers extends jasmine.Matchers {
   toHaveText(expected: string): boolean;
 
   /**
+   * Compare key:value pairs as matching EXACTLY
+   */
+  toHaveMap(expected: {[k: string]: string}): boolean;
+
+  /**
    * Expect the element to have the given CSS class.
    *
    * ## Example
@@ -109,6 +114,28 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
         };
       };
     }
+  },
+
+  toHaveMap : function() {
+    return {
+      compare: function (actual: {[k: string]: string}, map: {[k: string]: string}) {
+        let allPassed: boolean;
+        allPassed = Object.keys(map).length !== 0;
+        Object.keys(map).forEach(key => {
+          allPassed = allPassed && (actual[key] === map[key]);
+        });
+
+        return {
+          pass: allPassed,
+          get message() {
+            return `
+              Expected ${JSON.stringify(actual)} ${!allPassed ? ' ' : 'not '} to contain the
+              "${JSON.stringify(map)}"
+            `;
+          }
+        };
+      }
+    };
   },
 
   toHaveCssStyle: function () {

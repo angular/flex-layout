@@ -57,44 +57,49 @@ describe('class directive', () => {
         const selector = `class-${mq}`;
         it(`should apply '${selector}' with '${mq}' media query`, () => {
           fixture = createTestComponent(`
-              <div class.${mq}="${selector}">
+              <div ngClass.${mq}="${selector}">
               </div>
           `);
-          activateMediaQuery(mq, true);
+          activateMediaQuery(mq);
           expectNativeEl(fixture).toHaveCssClass(selector);
         });
       });
 
   it('should keep existing class selector', () => {
     fixture = createTestComponent(`
-                <div class="existing-class" class.xs="xs-class">
-                </div>
-            `);
+        <div class="existing-class" ngClass.xs="xs-class">
+        </div>
+    `);
+
     expectNativeEl(fixture).toHaveCssClass('existing-class');
-    activateMediaQuery('xs', true);
+    activateMediaQuery('xs');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
+
+    activateMediaQuery('lg');
+    expectNativeEl(fixture).toHaveCssClass('existing-class');
+    expectNativeEl(fixture).not.toHaveCssClass('xs-class');
   });
 
   it('should allow more than one responsive breakpoint on one element', () => {
     fixture = createTestComponent(`
-                <div class.xs="xs-class"
-                  class.md="md-class">
+                <div ngClass.xs="xs-class"
+                  ngClass.md="md-class">
                 </div>
             `);
-    activateMediaQuery('xs', true);
+    activateMediaQuery('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
     expectNativeEl(fixture).not.toHaveCssClass('md-class');
-    activateMediaQuery('md', true);
+    activateMediaQuery('md');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
     expectNativeEl(fixture).toHaveCssClass('md-class');
   });
 
   it('should work with ngClass object notation', () => {
     fixture = createTestComponent(`
-                <div [class.xs]="{'xs-1': hasXs1, 'xs-2': hasXs2}">
-                </div>
-            `);
-    activateMediaQuery('xs', true);
+        <div [ngClass.xs]="{'xs-1': hasXs1, 'xs-2': hasXs2}">
+        </div>
+    `);
+    activateMediaQuery('xs');
     expectNativeEl(fixture, {hasXs1: true, hasXs2: false}).toHaveCssClass('xs-1');
     expectNativeEl(fixture, {hasXs1: true, hasXs2: false}).not.toHaveCssClass('xs-2');
 
@@ -104,10 +109,10 @@ describe('class directive', () => {
 
   it('should work with ngClass array notation', () => {
     fixture = createTestComponent(`
-                <div [class.xs]="['xs-1', 'xs-2']">
-                </div>
-            `);
-    activateMediaQuery('xs', true);
+        <div [ngClass.xs]="['xs-1', 'xs-2']">
+        </div>
+    `);
+    activateMediaQuery('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-1');
     expectNativeEl(fixture).toHaveCssClass('xs-2');
   });
