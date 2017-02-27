@@ -1,9 +1,33 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular/core';
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective, LAYOUT_VALUES } from './layout';
@@ -11,14 +35,15 @@ import { LayoutDirective, LAYOUT_VALUES } from './layout';
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-export var LayoutGapDirective = (function (_super) {
+var LayoutGapDirective = (function (_super) {
     __extends(LayoutGapDirective, _super);
     function LayoutGapDirective(monitor, elRef, renderer, container) {
-        _super.call(this, monitor, elRef, renderer);
-        this._layout = 'row'; // default flex-direction
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._layout = 'row'; // default flex-direction
         if (container) {
-            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
+            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
         }
+        return _this;
     }
     Object.defineProperty(LayoutGapDirective.prototype, "gap", {
         set: function (val) {
@@ -210,29 +235,66 @@ export var LayoutGapDirective = (function (_super) {
         margins[key] = value;
         return margins;
     };
-    LayoutGapDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
-                },] },
-    ];
-    /** @nocollapse */
-    LayoutGapDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: ElementRef, },
-        { type: Renderer, },
-        { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    ]; };
-    LayoutGapDirective.propDecorators = {
-        'gap': [{ type: Input, args: ['fxLayoutGap',] },],
-        'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
-        'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
-        'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
-        'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
-        'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
-        'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
-        'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
-        'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
-        'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
-    };
     return LayoutGapDirective;
 }(BaseFxDirective));
+__decorate([
+    Input('fxLayoutGap'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gap", null);
+__decorate([
+    Input('fxLayoutGap.xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapXs", null);
+__decorate([
+    Input('fxLayoutGap.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtXs", null);
+__decorate([
+    Input('fxLayoutGap.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapSm", null);
+__decorate([
+    Input('fxLayoutGap.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtSm", null);
+__decorate([
+    Input('fxLayoutGap.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapMd", null);
+__decorate([
+    Input('fxLayoutGap.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtMd", null);
+__decorate([
+    Input('fxLayoutGap.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapLg", null);
+__decorate([
+    Input('fxLayoutGap.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtLg", null);
+__decorate([
+    Input('fxLayoutGap.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapXl", null);
+LayoutGapDirective = __decorate([
+    Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
+    }),
+    __param(3, Optional()), __param(3, Self()),
+    __metadata("design:paramtypes", [MediaMonitor,
+        ElementRef,
+        Renderer,
+        LayoutDirective])
+], LayoutGapDirective);
+export { LayoutGapDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-gap.js.map

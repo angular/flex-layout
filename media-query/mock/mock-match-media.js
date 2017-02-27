@@ -1,8 +1,29 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { Injectable, NgZone } from '@angular/core';
 import { MatchMedia } from '../match-media';
 import { BreakPointRegistry } from '../breakpoints/break-point-registry';
@@ -11,17 +32,18 @@ import { BreakPointRegistry } from '../breakpoints/break-point-registry';
  * MockMediaQueryListener. Methods are available to simulate an activation of a mediaQuery
  * range and to clearAll mediaQuery listeners.
  */
-export var MockMatchMedia = (function (_super) {
+var MockMatchMedia = (function (_super) {
     __extends(MockMatchMedia, _super);
     function MockMatchMedia(_zone, _breakpoints) {
-        _super.call(this, _zone);
-        this._breakpoints = _breakpoints;
+        var _this = _super.call(this, _zone) || this;
+        _this._breakpoints = _breakpoints;
         /**
          * Special flag used to test BreakPoint registrations with MatchMedia
          */
-        this.autoRegisterQueries = true;
-        this._actives = [];
-        this._actives = [];
+        _this.autoRegisterQueries = true;
+        _this._actives = [];
+        _this._actives = [];
+        return _this;
     }
     /**
      * Easy method to clear all listeners for all mediaQueries
@@ -142,22 +164,19 @@ export var MockMatchMedia = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    MockMatchMedia.decorators = [
-        { type: Injectable },
-    ];
-    /** @nocollapse */
-    MockMatchMedia.ctorParameters = function () { return [
-        { type: NgZone, },
-        { type: BreakPointRegistry, },
-    ]; };
     return MockMatchMedia;
 }(MatchMedia));
+MockMatchMedia = __decorate([
+    Injectable(),
+    __metadata("design:paramtypes", [NgZone, BreakPointRegistry])
+], MockMatchMedia);
+export { MockMatchMedia };
 /**
  * Special internal class to simulate a MediaQueryList and
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-export var MockMediaQueryList = (function () {
+var MockMediaQueryList = (function () {
     function MockMediaQueryList(_mediaQuery) {
         this._mediaQuery = _mediaQuery;
         this._isActive = false;
@@ -223,4 +242,5 @@ export var MockMediaQueryList = (function () {
     };
     return MockMediaQueryList;
 }());
+export { MockMediaQueryList };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/mock/mock-match-media.js.map

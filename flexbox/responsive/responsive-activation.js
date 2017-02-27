@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import { extendObject } from '../../utils/object-extend';
-export var KeyOptions = (function () {
+var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
         this.defaultValue = defaultValue;
@@ -9,6 +9,7 @@ export var KeyOptions = (function () {
     }
     return KeyOptions;
 }());
+export { KeyOptions };
 /**
  * ResponsiveActivation acts as a proxy between the MonitorMedia service (which emits mediaQuery
  * changes) and the fx API directives. The MQA proxies mediaQuery change events and notifies the
@@ -21,7 +22,7 @@ export var KeyOptions = (function () {
  *
  * NOTE: these interceptions enables the logic in the fx API directives to remain terse and clean.
  */
-export var ResponsiveActivation = (function () {
+var ResponsiveActivation = (function () {
     /**
      * Constructor
      */
@@ -187,4 +188,5 @@ export var ResponsiveActivation = (function () {
     };
     return ResponsiveActivation;
 }());
+export { ResponsiveActivation };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map

@@ -5,21 +5,36 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnDestroy, OnInit, Renderer, OnChanges, SimpleChanges, KeyValueDiffers } from '@angular/core';
+import { ElementRef, OnDestroy, OnInit, OnChanges, Renderer, KeyValueDiffers, SimpleChanges } from '@angular/core';
 import { NgStyle } from '@angular/common';
+import { BaseFxDirectiveAdapter } from './base-adapter';
 import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
 import { MediaMonitor } from '../../media-query/media-monitor';
-/** NgStyle allowed inputs **/
-export declare type NgStyleType = string | string[] | Set<string> | {
-    [klass: string]: any;
-};
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgStyleType } from '../../utils/style-transforms';
 /**
  * Directive to add responsive support for ngStyle.
  *
  */
 export declare class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDestroy {
     private monitor;
-    private _bpRegistry;
+    protected _bpRegistry: BreakPointRegistry;
+    protected _sanitizer: DomSanitizer;
+    /**
+     * Intercept ngStyle assignments so we cache the default styles
+     * which are merged with activated styles or used as fallbacks.
+     */
+    styleBase: NgStyleType;
+    ngStyleXs: NgStyleType;
+    ngStyleGtXs: NgStyleType;
+    ngStyleSm: NgStyleType;
+    ngStyleGtSm: NgStyleType;
+    ngStyleMd: NgStyleType;
+    ngStyleGtMd: NgStyleType;
+    ngStyleLg: NgStyleType;
+    ngStyleGtLg: NgStyleType;
+    ngStyleXl: NgStyleType;
+    /** Deprecated selectors */
     styleXs: NgStyleType;
     styleGtXs: NgStyleType;
     styleSm: NgStyleType;
@@ -30,9 +45,10 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
     styleGtLg: NgStyleType;
     styleXl: NgStyleType;
     /**
-     *
+     *  Constructor for the ngStyle subclass; which adds selectors and
+     *  a MediaQuery Activation Adapter
      */
-    constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
+    constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _sanitizer: DomSanitizer, _differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -43,10 +59,27 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
      */
     ngOnInit(): void;
     ngOnDestroy(): void;
-    private _updateStyle(value?);
+    /**
+     * Use the currently activated input property and assign to
+     * `ngStyle` which does the style injections...
+     */
+    protected _updateStyle(value?: NgStyleType): void;
+    /**
+     * Build MediaQuery Activation Adapter
+     * This adapter manages listening to mediaQuery change events and identifying
+     * which property value should be used for the style update
+     */
+    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer): void;
+    /**
+     * Convert raw strings to ngStyleMap; which is required by ngStyle
+     * NOTE: Raw string key-value pairs MUST be delimited by `;`
+     *       Comma-delimiters are not supported due to complexities of
+     *       possible style values such as `rgba(x,x,x,x)` and others
+     */
+    protected _buildStyleMap(styles: NgStyleType): NgStyleType;
     /**
      * Special adapter to cross-cut responsive behaviors
      * into the StyleDirective
      */
-    private _base;
+    protected _base: BaseFxDirectiveAdapter;
 }

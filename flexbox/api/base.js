@@ -1,7 +1,7 @@
 import { applyCssPrefixes } from '../../utils/auto-prefixer';
 import { ResponsiveActivation, KeyOptions } from '../responsive/responsive-activation';
 /** Abstract base class for the Layout API styling directives. */
-export var BaseFxDirective = (function () {
+var BaseFxDirective = (function () {
     /**
      *
      */
@@ -132,4 +132,5 @@ export var BaseFxDirective = (function () {
     };
     return BaseFxDirective;
 }());
+export { BaseFxDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base.js.map

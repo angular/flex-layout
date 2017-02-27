@@ -6,7 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 /** Applies CSS prefixes to appropriate style keys.*/
-export function applyCssPrefixes(target) {
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */ export function applyCssPrefixes(target) {
     for (var key in target) {
         var value = target[key];
         switch (key) {

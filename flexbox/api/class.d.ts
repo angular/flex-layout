@@ -7,6 +7,7 @@
  */
 import { ElementRef, OnDestroy, OnInit, Renderer, OnChanges, SimpleChanges, IterableDiffers, KeyValueDiffers } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { BaseFxDirectiveAdapter } from './base-adapter';
 import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /** NgClass allowed inputs **/
@@ -17,8 +18,18 @@ export declare type NgClassType = string | string[] | Set<string> | {
  * Directive to add responsive support for ngClass.
  */
 export declare class ClassDirective extends NgClass implements OnInit, OnChanges, OnDestroy {
-    private monitor;
-    private _bpRegistry;
+    protected monitor: MediaMonitor;
+    protected _bpRegistry: BreakPointRegistry;
+    ngClassXs: NgClassType;
+    ngClassGtXs: NgClassType;
+    ngClassSm: NgClassType;
+    ngClassGtSm: NgClassType;
+    ngClassMd: NgClassType;
+    ngClassGtMd: NgClassType;
+    ngClassLg: NgClassType;
+    ngClassGtLg: NgClassType;
+    ngClassXl: NgClassType;
+    /** Deprecated selectors */
     classXs: NgClassType;
     classGtXs: NgClassType;
     classSm: NgClassType;
@@ -39,10 +50,10 @@ export declare class ClassDirective extends NgClass implements OnInit, OnChanges
      */
     ngOnInit(): void;
     ngOnDestroy(): void;
-    private _updateStyle(value?);
+    protected _updateStyle(value?: NgClassType): void;
     /**
      * Special adapter to cross-cut responsive behaviors
      * into the ClassDirective
      */
-    private _base;
+    protected _base: BaseFxDirectiveAdapter;
 }

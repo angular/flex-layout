@@ -1,3 +1,19 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
@@ -7,11 +23,12 @@ import { mergeAlias } from './../utils/add-alias';
 /**
  * Base class for MediaService and pseudo-token for
  */
-export var ObservableMedia = (function () {
+var ObservableMedia = (function () {
     function ObservableMedia() {
     }
     return ObservableMedia;
 }());
+export { ObservableMedia };
 /**
  * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
 
@@ -54,7 +71,7 @@ export var ObservableMedia = (function () {
  *    }
  *  }
  */
-export var MediaService = (function () {
+var MediaService = (function () {
     function MediaService(mediaWatcher, breakpoints) {
         this.mediaWatcher = mediaWatcher;
         this.breakpoints = breakpoints;
@@ -144,16 +161,14 @@ export var MediaService = (function () {
         return bp ? bp.mediaQuery : query;
     };
     ;
-    MediaService.decorators = [
-        { type: Injectable },
-    ];
-    /** @nocollapse */
-    MediaService.ctorParameters = function () { return [
-        { type: MatchMedia, },
-        { type: BreakPointRegistry, },
-    ]; };
     return MediaService;
 }());
+MediaService = __decorate([
+    Injectable(),
+    __metadata("design:paramtypes", [MatchMedia,
+        BreakPointRegistry])
+], MediaService);
+export { MediaService };
 /**
  *  Provider to return observable to ALL MediaQuery events
  *  Developers should build custom providers to override this default MediaQuery Observable

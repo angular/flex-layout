@@ -1,9 +1,30 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -11,10 +32,10 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  * Allows element-specific overrides for cross-axis alignments in a layout container
  * @see https://css-tricks.com/almanac/properties/a/align-self/
  */
-export var FlexAlignDirective = (function (_super) {
+var FlexAlignDirective = (function (_super) {
     __extends(FlexAlignDirective, _super);
     function FlexAlignDirective(monitor, elRef, renderer) {
-        _super.call(this, monitor, elRef, renderer);
+        return _super.call(this, monitor, elRef, renderer) || this;
     }
     Object.defineProperty(FlexAlignDirective.prototype, "align", {
         set: function (val) {
@@ -142,29 +163,63 @@ export var FlexAlignDirective = (function (_super) {
         }
         return css;
     };
-    FlexAlignDirective.decorators = [
-        { type: Directive, args: [{
-                    selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs],\n  [fxFlexAlign.gt-xs],\n  [fxFlexAlign.sm],\n  [fxFlexAlign.gt-sm],\n  [fxFlexAlign.md],\n  [fxFlexAlign.gt-md],\n  [fxFlexAlign.lg],\n  [fxFlexAlign.gt-lg],\n  [fxFlexAlign.xl]\n"
-                },] },
-    ];
-    /** @nocollapse */
-    FlexAlignDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    FlexAlignDirective.propDecorators = {
-        'align': [{ type: Input, args: ['fxFlexAlign',] },],
-        'alignXs': [{ type: Input, args: ['fxFlexAlign.xs',] },],
-        'alignGtXs': [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
-        'alignSm': [{ type: Input, args: ['fxFlexAlign.sm',] },],
-        'alignGtSm': [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
-        'alignMd': [{ type: Input, args: ['fxFlexAlign.md',] },],
-        'alignGtMd': [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
-        'alignLg': [{ type: Input, args: ['fxFlexAlign.lg',] },],
-        'alignGtLg': [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
-        'alignXl': [{ type: Input, args: ['fxFlexAlign.xl',] },],
-    };
     return FlexAlignDirective;
 }(BaseFxDirective));
+__decorate([
+    Input('fxFlexAlign'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "align", null);
+__decorate([
+    Input('fxFlexAlign.xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignXs", null);
+__decorate([
+    Input('fxFlexAlign.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtXs", null);
+__decorate([
+    Input('fxFlexAlign.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignSm", null);
+__decorate([
+    Input('fxFlexAlign.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtSm", null);
+__decorate([
+    Input('fxFlexAlign.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignMd", null);
+__decorate([
+    Input('fxFlexAlign.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtMd", null);
+__decorate([
+    Input('fxFlexAlign.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignLg", null);
+__decorate([
+    Input('fxFlexAlign.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtLg", null);
+__decorate([
+    Input('fxFlexAlign.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignXl", null);
+FlexAlignDirective = __decorate([
+    Directive({
+        selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs],\n  [fxFlexAlign.gt-xs],\n  [fxFlexAlign.sm],\n  [fxFlexAlign.gt-sm],\n  [fxFlexAlign.md],\n  [fxFlexAlign.gt-md],\n  [fxFlexAlign.lg],\n  [fxFlexAlign.gt-lg],\n  [fxFlexAlign.xl]\n"
+    }),
+    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
+], FlexAlignDirective);
+export { FlexAlignDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-align.js.map

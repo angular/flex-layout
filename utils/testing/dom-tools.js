@@ -8,7 +8,13 @@
 /**
  * Exported DOM accessor utility functions
  */
-export var _dom = {
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */ export var _dom = {
     hasStyle: hasStyle,
     getDistributedNodes: getDistributedNodes,
     getShadowRoot: getShadowRoot,

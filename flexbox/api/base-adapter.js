@@ -1,17 +1,22 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 import { BaseFxDirective } from './base';
 /**
  * Adapter to the BaseFxDirective abstract class so it can be used via composition.
  * @see BaseFxDirective
  */
-export var BaseFxDirectiveAdapter = (function (_super) {
+var BaseFxDirectiveAdapter = (function (_super) {
     __extends(BaseFxDirectiveAdapter, _super);
     function BaseFxDirectiveAdapter() {
-        _super.apply(this, arguments);
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
         get: function () {
@@ -99,4 +104,5 @@ export var BaseFxDirectiveAdapter = (function (_super) {
     };
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
+export { BaseFxDirectiveAdapter };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base-adapter.js.map

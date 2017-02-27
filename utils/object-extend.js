@@ -12,7 +12,13 @@
  * @param dest The object which will have properties copied to it.
  * @param sources The source objects from which properties will be copied.
  */
-export function extendObject(dest) {
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */ export function extendObject(dest) {
     var sources = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         sources[_i - 1] = arguments[_i];

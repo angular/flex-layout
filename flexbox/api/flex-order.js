@@ -1,9 +1,30 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -11,10 +32,10 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
-export var FlexOrderDirective = (function (_super) {
+var FlexOrderDirective = (function (_super) {
     __extends(FlexOrderDirective, _super);
     function FlexOrderDirective(monitor, elRef, renderer) {
-        _super.call(this, monitor, elRef, renderer);
+        return _super.call(this, monitor, elRef, renderer) || this;
     }
     Object.defineProperty(FlexOrderDirective.prototype, "order", {
         set: function (val) { this._cacheInput('order', val); },
@@ -110,27 +131,61 @@ export var FlexOrderDirective = (function (_super) {
         value = parseInt(value, 10);
         return { order: isNaN(value) ? 0 : value };
     };
-    FlexOrderDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs],\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm],\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md],\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" },] },
-    ];
-    /** @nocollapse */
-    FlexOrderDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    FlexOrderDirective.propDecorators = {
-        'order': [{ type: Input, args: ['fxFlexOrder',] },],
-        'orderXs': [{ type: Input, args: ['fxFlexOrder.xs',] },],
-        'orderGtXs': [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
-        'orderSm': [{ type: Input, args: ['fxFlexOrder.sm',] },],
-        'orderGtSm': [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
-        'orderMd': [{ type: Input, args: ['fxFlexOrder.md',] },],
-        'orderGtMd': [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
-        'orderLg': [{ type: Input, args: ['fxFlexOrder.lg',] },],
-        'orderGtLg': [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
-        'orderXl': [{ type: Input, args: ['fxFlexOrder.xl',] },],
-    };
     return FlexOrderDirective;
 }(BaseFxDirective));
+__decorate([
+    Input('fxFlexOrder'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "order", null);
+__decorate([
+    Input('fxFlexOrder.xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderXs", null);
+__decorate([
+    Input('fxFlexOrder.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtXs", null);
+__decorate([
+    Input('fxFlexOrder.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderSm", null);
+__decorate([
+    Input('fxFlexOrder.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtSm", null);
+__decorate([
+    Input('fxFlexOrder.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderMd", null);
+__decorate([
+    Input('fxFlexOrder.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtMd", null);
+__decorate([
+    Input('fxFlexOrder.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderLg", null);
+__decorate([
+    Input('fxFlexOrder.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtLg", null);
+__decorate([
+    Input('fxFlexOrder.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderXl", null);
+FlexOrderDirective = __decorate([
+    Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs],\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm],\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md],\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" }),
+    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
+], FlexOrderDirective);
+export { FlexOrderDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-order.js.map

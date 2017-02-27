@@ -1,3 +1,16 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { NgModule } from '@angular/core';
@@ -39,25 +52,25 @@ var ALL_DIRECTIVES = [
 /**
  *
  */
-export var FlexLayoutModule = (function () {
+var FlexLayoutModule = FlexLayoutModule_1 = (function () {
     function FlexLayoutModule() {
     }
     /** @deprecated */
     FlexLayoutModule.forRoot = function () {
         return {
-            ngModule: FlexLayoutModule
+            ngModule: FlexLayoutModule_1
         };
     };
-    FlexLayoutModule.decorators = [
-        { type: NgModule, args: [{
-                    declarations: ALL_DIRECTIVES,
-                    imports: [MediaQueriesModule],
-                    exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-                    providers: [MediaMonitor]
-                },] },
-    ];
-    /** @nocollapse */
-    FlexLayoutModule.ctorParameters = function () { return []; };
     return FlexLayoutModule;
 }());
+FlexLayoutModule = FlexLayoutModule_1 = __decorate([
+    NgModule({
+        declarations: ALL_DIRECTIVES,
+        imports: [MediaQueriesModule],
+        exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
+        providers: [MediaMonitor]
+    })
+], FlexLayoutModule);
+export { FlexLayoutModule };
+var FlexLayoutModule_1;
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/_module.js.map

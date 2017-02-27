@@ -1,9 +1,33 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Directive, ElementRef, Input, Optional, Renderer, SkipSelf } from '@angular/core';
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { Directive, ElementRef, Input, Optional, Renderer, SkipSelf, } from '@angular/core';
 import { extendObject } from '../../utils/object-extend';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -15,28 +39,28 @@ import { LayoutWrapDirective } from './layout-wrap';
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-export var FlexDirective = (function (_super) {
+var FlexDirective = (function (_super) {
     __extends(FlexDirective, _super);
     // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
     // parent flex container for this flex item.
     function FlexDirective(monitor, elRef, renderer, _container, _wrap) {
-        var _this = this;
-        _super.call(this, monitor, elRef, renderer);
-        this._container = _container;
-        this._wrap = _wrap;
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._container = _container;
+        _this._wrap = _wrap;
         /** The flex-direction of this element's flex container. Defaults to 'row'. */
-        this._layout = 'row';
-        this._cacheInput("flex", "");
-        this._cacheInput("shrink", 1);
-        this._cacheInput("grow", 1);
+        _this._layout = 'row';
+        _this._cacheInput("flex", "");
+        _this._cacheInput("shrink", 1);
+        _this._cacheInput("grow", 1);
         if (_container) {
             // If this flex item is inside of a flex container marked with
             // Subscribe to layout immediate parent direction changes
-            this._layoutWatcher = _container.layout$.subscribe(function (direction) {
+            _this._layoutWatcher = _container.layout$.subscribe(function (direction) {
                 // `direction` === null if parent container does not have a `fxLayout`
                 _this._onLayoutChange(direction);
             });
         }
+        return _this;
     }
     Object.defineProperty(FlexDirective.prototype, "flex", {
         set: function (val) {
@@ -288,32 +312,78 @@ export var FlexDirective = (function (_super) {
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
-    FlexDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
-                },] },
-    ];
-    /** @nocollapse */
-    FlexDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: ElementRef, },
-        { type: Renderer, },
-        { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-        { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
-    ]; };
-    FlexDirective.propDecorators = {
-        'flex': [{ type: Input, args: ['fxFlex',] },],
-        'shrink': [{ type: Input, args: ['fxShrink',] },],
-        'grow': [{ type: Input, args: ['fxGrow',] },],
-        'flexXs': [{ type: Input, args: ['fxFlex.xs',] },],
-        'flexGtXs': [{ type: Input, args: ['fxFlex.gt-xs',] },],
-        'flexSm': [{ type: Input, args: ['fxFlex.sm',] },],
-        'flexGtSm': [{ type: Input, args: ['fxFlex.gt-sm',] },],
-        'flexMd': [{ type: Input, args: ['fxFlex.md',] },],
-        'flexGtMd': [{ type: Input, args: ['fxFlex.gt-md',] },],
-        'flexLg': [{ type: Input, args: ['fxFlex.lg',] },],
-        'flexGtLg': [{ type: Input, args: ['fxFlex.gt-lg',] },],
-        'flexXl': [{ type: Input, args: ['fxFlex.xl',] },],
-    };
     return FlexDirective;
 }(BaseFxDirective));
+__decorate([
+    Input('fxFlex'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flex", null);
+__decorate([
+    Input('fxShrink'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "shrink", null);
+__decorate([
+    Input('fxGrow'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "grow", null);
+__decorate([
+    Input('fxFlex.xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexXs", null);
+__decorate([
+    Input('fxFlex.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtXs", null);
+__decorate([
+    Input('fxFlex.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexSm", null);
+__decorate([
+    Input('fxFlex.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtSm", null);
+__decorate([
+    Input('fxFlex.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexMd", null);
+__decorate([
+    Input('fxFlex.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtMd", null);
+__decorate([
+    Input('fxFlex.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexLg", null);
+__decorate([
+    Input('fxFlex.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtLg", null);
+__decorate([
+    Input('fxFlex.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexXl", null);
+FlexDirective = __decorate([
+    Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+    }),
+    __param(3, Optional()), __param(3, SkipSelf()),
+    __param(4, Optional()), __param(4, SkipSelf()),
+    __metadata("design:paramtypes", [MediaMonitor,
+        ElementRef,
+        Renderer,
+        LayoutDirective,
+        LayoutWrapDirective])
+], FlexDirective);
+export { FlexDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex.js.map

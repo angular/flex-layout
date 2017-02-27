@@ -1,9 +1,30 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { Directive, ElementRef, Input, Renderer } from '@angular/core';
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -15,15 +36,16 @@ export var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-export var LayoutDirective = (function (_super) {
+var LayoutDirective = (function (_super) {
     __extends(LayoutDirective, _super);
     /**
      *
      */
     function LayoutDirective(monitor, elRef, renderer) {
-        _super.call(this, monitor, elRef, renderer);
-        this._announcer = new BehaviorSubject("row");
-        this.layout$ = this._announcer.asObservable();
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._announcer = new BehaviorSubject("row");
+        _this.layout$ = _this._announcer.asObservable();
+        return _this;
     }
     Object.defineProperty(LayoutDirective.prototype, "layout", {
         set: function (val) { this._cacheInput("layout", val); },
@@ -148,27 +170,61 @@ export var LayoutDirective = (function (_super) {
         value = value ? value.toLowerCase() : '';
         return LAYOUT_VALUES.find(function (x) { return x === value; }) ? value : LAYOUT_VALUES[0]; // "row"
     };
-    LayoutDirective.decorators = [
-        { type: Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs],\n  [fxLayout.gt-xs],\n  [fxLayout.sm],\n  [fxLayout.gt-sm],\n  [fxLayout.md],\n  [fxLayout.gt-md],\n  [fxLayout.lg],\n  [fxLayout.gt-lg],\n  [fxLayout.xl]\n" },] },
-    ];
-    /** @nocollapse */
-    LayoutDirective.ctorParameters = function () { return [
-        { type: MediaMonitor, },
-        { type: ElementRef, },
-        { type: Renderer, },
-    ]; };
-    LayoutDirective.propDecorators = {
-        'layout': [{ type: Input, args: ['fxLayout',] },],
-        'layoutXs': [{ type: Input, args: ['fxLayout.xs',] },],
-        'layoutGtXs': [{ type: Input, args: ['fxLayout.gt-xs',] },],
-        'layoutSm': [{ type: Input, args: ['fxLayout.sm',] },],
-        'layoutGtSm': [{ type: Input, args: ['fxLayout.gt-sm',] },],
-        'layoutMd': [{ type: Input, args: ['fxLayout.md',] },],
-        'layoutGtMd': [{ type: Input, args: ['fxLayout.gt-md',] },],
-        'layoutLg': [{ type: Input, args: ['fxLayout.lg',] },],
-        'layoutGtLg': [{ type: Input, args: ['fxLayout.gt-lg',] },],
-        'layoutXl': [{ type: Input, args: ['fxLayout.xl',] },],
-    };
     return LayoutDirective;
 }(BaseFxDirective));
+__decorate([
+    Input('fxLayout'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layout", null);
+__decorate([
+    Input('fxLayout.xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutXs", null);
+__decorate([
+    Input('fxLayout.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtXs", null);
+__decorate([
+    Input('fxLayout.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutSm", null);
+__decorate([
+    Input('fxLayout.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtSm", null);
+__decorate([
+    Input('fxLayout.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutMd", null);
+__decorate([
+    Input('fxLayout.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtMd", null);
+__decorate([
+    Input('fxLayout.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutLg", null);
+__decorate([
+    Input('fxLayout.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtLg", null);
+__decorate([
+    Input('fxLayout.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutXl", null);
+LayoutDirective = __decorate([
+    Directive({ selector: "\n  [fxLayout],\n  [fxLayout.xs],\n  [fxLayout.gt-xs],\n  [fxLayout.sm],\n  [fxLayout.gt-sm],\n  [fxLayout.md],\n  [fxLayout.gt-md],\n  [fxLayout.lg],\n  [fxLayout.gt-lg],\n  [fxLayout.xl]\n" }),
+    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
+], LayoutDirective);
+export { LayoutDirective };
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout.js.map

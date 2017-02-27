@@ -1,5 +1,22 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// RxJS Operators used by the classes...
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { MediaChange } from './media-change';
@@ -10,7 +27,7 @@ import { MediaChange } from './media-change';
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
-export var MatchMedia = (function () {
+var MatchMedia = (function () {
     function MatchMedia(_zone) {
         this._zone = _zone;
         this._registry = new Map();
@@ -81,15 +98,13 @@ export var MatchMedia = (function () {
             }
         };
     };
-    MatchMedia.decorators = [
-        { type: Injectable },
-    ];
-    /** @nocollapse */
-    MatchMedia.ctorParameters = function () { return [
-        { type: NgZone, },
-    ]; };
     return MatchMedia;
 }());
+MatchMedia = __decorate([
+    Injectable(),
+    __metadata("design:paramtypes", [NgZone])
+], MatchMedia);
+export { MatchMedia };
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
