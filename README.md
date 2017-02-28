@@ -12,11 +12,11 @@ The Flex Layout engine intelligently automates the process of applying appropria
 Flexbox CSS to browser view hierarchies. This automation also addresses many of the 
 complexities and workarounds encountered with the traditional, manual, CSS-only application of box CSS. 
 
-The **real** power of Flex Layout, however, is its **responsive** engine. The [Responsive API](https://github.com/angular/flex-layout/wiki/API-Overview#responsive-features)
-enables developers to easily specify different layouts, sizing, visibilities for different 
-viewport sizes and display devices.
+The **real** power of Flex Layout, however, is its **responsive** engine. The [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) enables developers to easily specify different layouts, sizing, visibilities for different viewport sizes and display devices.
 
 ---
+
+### License
 
 The sources for this package are in the [Flex Layout](https://github.com/angular/flex-layout) repository. <br/>
 Please file issues and pull requests against that repo.
@@ -25,48 +25,15 @@ License: MIT
 
 ---
 
-### Installation
-
-The latest release of Angular Flex-Layout can be installed from npm
-
-`npm install @angular/flex-layout -save`
-
-Playing with the latest changes from [master](https://github.com/angular/flex-layout/tree/master) is also possible
-
-`npm install https://github.com/angular/flex-layout-builds.git -save`
-
-
-### Important Changes
-
-Directive selectors are now camelCase (instead of dash-case); as specified in the Angular Style Guide (Q4, 2016):
-
-*  @Component selectors always use dash-case
-*  @Directive selectors always use camelCase
-> Except when the directive is pretending to be a component (i.e, if it had a template it would be '<ng-content></ng-content>').
-*  @Directive properties are prefixed with namespace info
-> @Component properties are not
-
-
-```html
-<div class="flex-container" 
-     fxLayout="row" 
-     fxLayout.xs="column"
-     fxLayoutAlign="center center"
-     fxLayoutAlign.xs="start">
-  <div fxFlex="20%" fxFlex.xs="40%">  </div>
-  <div fxFlex>        </div>
-  <div fxFlex="25px"> </div>
-</div> 
-```
-
 ### Quick Links
 
-*  [Wiki Docs](https://github.com/angular/flex-layout/wiki)
+*  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
+*  [Gitter Room](https://gitter.im/angular/flex-layout)
 *  [Discussion Forum](https://groups.google.com/forum/#!forum/angular-flex-layout)
 
 Developers
 
-*  [API Overview](https://github.com/angular/flex-layout/wiki/API-Overview)
+*  [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
 *  [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
 *  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts)
 *  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
@@ -81,24 +48,6 @@ Templates
 *  [Plunkr Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview)
 
 ----
-
-
-### Why choose Angular Flex Layout
-
-While other Flexbox CSS libraries are implementations of:
-
-* pure CSS-only implementations, or 
-* the JS+CSS Stylesheets implementation of Angular Material v1.x Layouts.
-
-Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with an implementation that: 
-
-*  uses HTML attributes (aka Layout API) to specify the layout configurations
-*  is currently only available for Angular (v2.4.3 or higher) Applications.
-*  is independent of Angular Material (v1 or v2).
-*  requires no external stylesheets.
-*  requires Angular v2.4.3 or higher.
-
-<br/>
 
 ### Browser Support
 
@@ -149,56 +98,5 @@ In our previous sample (above), the Flex Layout API is used to define default, n
      fxLayoutAlign="center center"
      fxLayoutAlign.xs="start">
   <div class="flex-item" fxFlex="20%" fxFlex.xs="40%">  </div>
-  <div class="flex-item" fxFlex>        </div>
-  <div class="flex-item" fxFlex="25px"> </div>
-</div> 
-```
-   
-With Responsive configurations, DOM elements can be adjusted [for layout-directions, visibility, and sizing constraints] based on specific viewport sizes (desktop or mobile devices) and orientations (portrait or landscape). 
-
-> Of course, these configuration can be specified in the CSS. Flex Layout, however, makes it super easy
-and intuitive to specify these configurations in the HTML layer as HTML element attributes.
- 
-<br/>
-
-----
-
-### Featured Demo
-
-One of the hardest features to implement is a grid layout with specific column spans. Our online demo shows how easy this is!
-
-Live Demo:
-
-<a href="https://tburleson-layouts-demos.firebaseapp.com/#/stackoverflow" target="_blank">
-![screen shot 2016-12-16 at 1 00 51 pm](https://cloud.githubusercontent.com/assets/210413/21274826/bc8553f2-c38f-11e6-8188-bc7fd36026c2.png)
-</a>
-
-Source Code:
-
-<a href="https://github.com/angular/flex-layout/blob/master/src/demo-app/app/stack-overflow/columnSpan.demo.ts#L23" target="_blank">
-![screen shot 2016-12-16 at 1 05 45 pm](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)
-</a>
-
- 
-<br/>
-
-----
-
-### Advantages 
-
-Compared to the Layout API in Angular Material v1.x, this codebase is easier to maintain and debug.
-And other more important benefits have also been realized:
-
-*  Independent of Angular Material 
-*  No external CSS requirements
-*  Use provider to supply custom breakpoints
-*  Notifications for breakpoints changes
-  *  Includes workaround for MediaQuery issues with **overlapping** breakpoints
-*  Support (future) for Handset/Tablet and Orientation breakpoints
-*  Support for **ANY** Layout injector value (instead of increments for 5)
-*  Change detection for Layout injector values
-*  MediaQuery Activation detection 
-*  Support for raw values or interpolated values
-*  Support for raw, percentage or px-suffix values
 
 
