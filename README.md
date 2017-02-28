@@ -21,6 +21,7 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The [R
 *  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
 *  [Gitter Room](https://gitter.im/angular/flex-layout)
 *  [Discussion Forum](https://groups.google.com/forum/#!forum/angular-flex-layout)
+*  [Wiki Documentation](https://github.com/angular/flex-layout/wiki)
 
 Developers
 
