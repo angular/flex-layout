@@ -16,15 +16,6 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The [R
 
 ---
 
-### License
-
-The sources for this package are in the [Flex Layout](https://github.com/angular/flex-layout) repository. <br/>
-Please file issues and pull requests against that repo.
-
-License: MIT
-
----
-
 ### Quick Links
 
 *  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
@@ -57,46 +48,14 @@ Templates
 
 <br/>
 
-----
+---
 
-### How it works!
+### License
 
-The Angular Flex Layout features enable developers to organize UI page elements in row and column structures with 
-alignments, resizing, and padding. These layouts can be nested and easily used within hierarchical DOM structures.
+The sources for this package are in the [Flex Layout](https://github.com/angular/flex-layout) repository. <br/>
+Please file issues and pull requests against that repo.
 
-![css3-flexbox-model](https://cloud.githubusercontent.com/assets/210413/20034148/49a4fb62-a382-11e6-9822-42b90dec69be.jpg)
+License: MIT
 
-
-The Flex Layout API is used *simply* as attributes on your HTML elements. That is it! 
-
-> Technically the API is a set of Angular directives with intuitively-named selectors... 🤓
-
-All the magic of applying the Flexbox CSS is handled under-the-hood. The Layout applies (injects) **Flexbox CSS** styles to each DOM element... and your layout and elements will fluidly update their positioning and sizes as the  viewport size changes. 
-
-```html
-<div class="flex-container" fxLayout="row" fxLayoutAlign="center center">
-  <div class="flex-item" fxFlex="20%">  </div>
-  <div class="flex-item" fxFlex>        </div>
-  <div class="flex-item" fxFlex="25px"> </div>
-</div> 
-```
-
-> The above Flex Layout usages do not require any external stylesheets nor any custom CSS programming. 
-
-Flex Layout also added mediaQuery support into the Layout engine. Integrating **mediaQuery** features enables the API and your Application's UX to be **Responsive** to changes in viewport size and orientations. 
-
-Responsive layouts have multiple layout configurations. Responsive layouts add extra configurations that override the default configurations. These overrides will be applied dynamically
-when the viewport size changes to match a specific *responsive override*.
-
-In our previous sample (above), the Flex Layout API is used to define default, non-responsive flows and sizing. Now let's consider an HTML sample which specifies **both** default configurations and *mobile* responsive overrides:
-
-
-```html
-<div class="flex-container" 
-     fxLayout="row" 
-     fxLayout.xs="column"
-     fxLayoutAlign="center center"
-     fxLayoutAlign.xs="start">
-  <div class="flex-item" fxFlex="20%" fxFlex.xs="40%">  </div>
 
 
