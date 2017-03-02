@@ -28,29 +28,31 @@ import {MediaMonitor} from '../../media-query/media-monitor';
  */
 @Directive({selector: `
   [fxFlexOffset],
-  [fxFlexOffset.xs],
-  [fxFlexOffset.gt-xs],
-  [fxFlexOffset.sm],
-  [fxFlexOffset.gt-sm],
-  [fxFlexOffset.md],
-  [fxFlexOffset.gt-md],
-  [fxFlexOffset.lg],
-  [fxFlexOffset.gt-lg],
-  [fxFlexOffset.xl]
+  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],
+  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],
+  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]
 `})
 export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
+  /* tslint:disable */
   @Input('fxFlexOffset')       set offset(val)     { this._cacheInput('offset', val); }
   @Input('fxFlexOffset.xs')    set offsetXs(val)   { this._cacheInput('offsetXs', val); }
-  @Input('fxFlexOffset.gt-xs') set offsetGtXs(val) { this._cacheInput('offsetGtXs', val); };
   @Input('fxFlexOffset.sm')    set offsetSm(val)   { this._cacheInput('offsetSm', val); };
-  @Input('fxFlexOffset.gt-sm') set offsetGtSm(val) { this._cacheInput('offsetGtSm', val); };
   @Input('fxFlexOffset.md')    set offsetMd(val)   { this._cacheInput('offsetMd', val); };
-  @Input('fxFlexOffset.gt-md') set offsetGtMd(val) { this._cacheInput('offsetGtMd', val); };
   @Input('fxFlexOffset.lg')    set offsetLg(val)   { this._cacheInput('offsetLg', val); };
-  @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
   @Input('fxFlexOffset.xl')    set offsetXl(val)   { this._cacheInput('offsetXl', val); };
 
+  @Input('fxFlexOffset.lt-sm') set offsetLtSm(val) { this._cacheInput('offsetLtSm', val); };
+  @Input('fxFlexOffset.lt-md') set offsetLtMd(val) { this._cacheInput('offsetLtMd', val); };
+  @Input('fxFlexOffset.lt-lg') set offsetLtLg(val) { this._cacheInput('offsetLtLg', val); };
+  @Input('fxFlexOffset.lt-xl') set offsetLtXl(val) { this._cacheInput('offsetLtXl', val); };
+
+  @Input('fxFlexOffset.gt-xs') set offsetGtXs(val) { this._cacheInput('offsetGtXs', val); };
+  @Input('fxFlexOffset.gt-sm') set offsetGtSm(val) { this._cacheInput('offsetGtSm', val); };
+  @Input('fxFlexOffset.gt-md') set offsetGtMd(val) { this._cacheInput('offsetGtMd', val); };
+  @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
+
+  /* tslint:enable */
   constructor(monitor: MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
   }

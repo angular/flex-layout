@@ -11,11 +11,11 @@ import {
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {ObservableMedia} from '../../media-query/observable-media-service';
+import {ObservableMedia} from '../../media-query/observable-media';
 
 import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
 import {
@@ -54,7 +54,7 @@ describe('hide directive', () => {
       imports: [CommonModule, MediaQueriesModule],
       declarations: [TestHideComponent, ShowHideDirective],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

@@ -83,7 +83,7 @@ export function toBoxValue(value = "") {
   return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
 
-/** Convert flex Direction to Box orientation */
+/** Convert flex Direction to Box orientations */
 export function toBoxOrient(flexDirection = 'row') {
   return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';
 }

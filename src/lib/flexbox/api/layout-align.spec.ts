@@ -9,7 +9,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
@@ -37,7 +37,7 @@ describe('layout-align directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
@@ -283,6 +283,7 @@ describe('layout-align directive', () => {
           </div>
       `);
       let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+      matchMedia.useOverlaps = true;
 
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
@@ -315,7 +316,7 @@ describe('layout-align directive', () => {
       });
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('gt-lg', true);
+      matchMedia.activate('xl', true);
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-end'

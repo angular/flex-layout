@@ -87,15 +87,9 @@ task(':build:components:rollup', () => {
       'rxjs/Subscription': 'Rx',
       'rxjs/BehaviorSubject': 'Rx',
       'rxjs/Observable': 'Rx',
-      'rxjs/add/observable/forkJoin': 'Rx.Observable',
       'rxjs/add/observable/of': 'Rx.Observable',
-      'rxjs/add/operator/toPromise': 'Rx.Observable.prototype',
       'rxjs/add/operator/map': 'Rx.Observable.prototype',
       'rxjs/add/operator/filter': 'Rx.Observable.prototype',
-      'rxjs/add/operator/do': 'Rx.Observable.prototype',
-      'rxjs/add/operator/share': 'Rx.Observable.prototype',
-      'rxjs/add/operator/finally': 'Rx.Observable.prototype',
-      'rxjs/add/operator/catch': 'Rx.Observable.prototype'
     };
 
     const rollupOptions = {

@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 
 import {TestBed, inject} from '@angular/core/testing';
 
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
@@ -47,7 +47,7 @@ describe('responsive-activation', () => {
       providers: [
         MediaMonitor,
         BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        BreakPointsProvider,          // Supports developer overrides of list of known breakpoints
+        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

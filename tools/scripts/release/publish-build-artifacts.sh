@@ -43,7 +43,7 @@ git config user.name "$commitAuthorName"
 git config user.email "$commitAuthorEmail"
 git config credential.helper "store --file=.git/credentials"
 
-echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
+echo https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
 
 git add -A
 git commit -m "$commitMessage"

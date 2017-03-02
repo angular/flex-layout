@@ -38,16 +38,13 @@ import {
  */
 @Directive({
   selector: `
-    [ngStyle],
-    [ngStyle.xs],    [style.xs],    
-    [ngStyle.gt-xs], [style.gt-xs], 
-    [ngStyle.sm],    [style.sm],
-    [ngStyle.gt-sm], [style.gt-sm], 
-    [ngStyle.md],    [style.md],        
-    [ngStyle.gt-md], [style.gt-md], 
-    [ngStyle.lg],    [style.lg],    
-    [ngStyle.gt-lg], [style.gt-lg], 
-    [ngStyle.xl],    [style.xl]     
+    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],      
+    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl], 
+    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg], 
+    [ngStyle], 
+    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],   
+    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl], 
+    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] 
   `
 })
 export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDestroy {
@@ -64,25 +61,37 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
 
   /* tslint:disable */
   @Input('ngStyle.xs')    set ngStyleXs(val: NgStyleType) { this._base.cacheInput('styleXs', val, true); }
-  @Input('ngStyle.gt-xs') set ngStyleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
   @Input('ngStyle.sm')    set ngStyleSm(val: NgStyleType) {  this._base.cacheInput('styleSm', val, true); };
-  @Input('ngStyle.gt-sm') set ngStyleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true);} ;
   @Input('ngStyle.md')    set ngStyleMd(val: NgStyleType) { this._base.cacheInput('styleMd', val, true); };
-  @Input('ngStyle.gt-md') set ngStyleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
   @Input('ngStyle.lg')    set ngStyleLg(val: NgStyleType) { this._base.cacheInput('styleLg', val, true);};
-  @Input('ngStyle.gt-lg') set ngStyleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
   @Input('ngStyle.xl')    set ngStyleXl(val: NgStyleType) { this._base.cacheInput('styleXl', val, true); };
+
+  @Input('ngStyle.lt-sm') set ngStyleLtSm(val: NgStyleType) { this._base.cacheInput('styleLtSm', val, true); };
+  @Input('ngStyle.lt-md') set ngStyleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true); };
+  @Input('ngStyle.lt-lg') set ngStyleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true); };
+  @Input('ngStyle.lt-xl') set ngStyleLtXl(val: NgStyleType) { this._base.cacheInput('styleLtXl', val, true); };
+
+  @Input('ngStyle.gt-xs') set ngStyleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
+  @Input('ngStyle.gt-sm') set ngStyleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true);} ;
+  @Input('ngStyle.gt-md') set ngStyleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
+  @Input('ngStyle.gt-lg') set ngStyleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
 
   /** Deprecated selectors */
   @Input('style.xs')      set styleXs(val: NgStyleType) { this._base.cacheInput('styleXs', val, true); }
-  @Input('style.gt-xs')   set styleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
   @Input('style.sm')      set styleSm(val: NgStyleType) {  this._base.cacheInput('styleSm', val, true); };
-  @Input('style.gt-sm')   set styleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true); };
   @Input('style.md')      set styleMd(val: NgStyleType) { this._base.cacheInput('styleMd', val, true);};
-  @Input('style.gt-md')   set styleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
   @Input('style.lg')      set styleLg(val: NgStyleType) { this._base.cacheInput('styleLg', val, true); };
-  @Input('style.gt-lg')   set styleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
   @Input('style.xl')      set styleXl(val: NgStyleType) { this._base.cacheInput('styleXl', val, true); };
+
+  @Input('style.lt-xs')   set styleLtXs(val: NgStyleType) { this._base.cacheInput('styleLtXs', val, true); };
+  @Input('style.lt-sm')   set styleLtSm(val: NgStyleType) { this._base.cacheInput('styleLtSm', val, true); };
+  @Input('style.lt-md')   set styleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true);};
+  @Input('style.lt-lg')   set styleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true); };
+
+  @Input('style.gt-xs')   set styleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
+  @Input('style.gt-sm')   set styleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true); };
+  @Input('style.gt-md')   set styleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
+  @Input('style.gt-lg')   set styleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
 
   /* tslint:enable */
   /**

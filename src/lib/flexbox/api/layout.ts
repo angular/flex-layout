@@ -32,16 +32,10 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  *
  */
 @Directive({selector: `
-  [fxLayout],
-  [fxLayout.xs],
-  [fxLayout.gt-xs],
-  [fxLayout.sm],
-  [fxLayout.gt-sm],
-  [fxLayout.md],
-  [fxLayout.gt-md],
-  [fxLayout.lg],
-  [fxLayout.gt-lg],
-  [fxLayout.xl]
+  [fxLayout], 
+  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],
+  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],
+  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]
 `})
 export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
@@ -57,17 +51,25 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   public layout$: Observable<string>;
 
+  /* tslint:disable */
   @Input('fxLayout')       set layout(val)     { this._cacheInput("layout", val); };
   @Input('fxLayout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); };
-  @Input('fxLayout.gt-xs') set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); };
   @Input('fxLayout.sm')    set layoutSm(val)   { this._cacheInput('layoutSm', val); };
-  @Input('fxLayout.gt-sm') set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); };
   @Input('fxLayout.md')    set layoutMd(val)   { this._cacheInput('layoutMd', val); };
-  @Input('fxLayout.gt-md') set layoutGtMd(val) { this._cacheInput('layoutGtMd', val); };
   @Input('fxLayout.lg')    set layoutLg(val)   { this._cacheInput('layoutLg', val); };
-  @Input('fxLayout.gt-lg') set layoutGtLg(val) { this._cacheInput('layoutGtLg', val); };
   @Input('fxLayout.xl')    set layoutXl(val)   { this._cacheInput('layoutXl', val); };
 
+  @Input('fxLayout.gt-xs') set layoutGtXs(val) { this._cacheInput('layoutGtXs', val); };
+  @Input('fxLayout.gt-sm') set layoutGtSm(val) { this._cacheInput('layoutGtSm', val); };
+  @Input('fxLayout.gt-md') set layoutGtMd(val) { this._cacheInput('layoutGtMd', val); };
+  @Input('fxLayout.gt-lg') set layoutGtLg(val) { this._cacheInput('layoutGtLg', val); };
+
+  @Input('fxLayout.lt-sm') set layoutLtSm(val) { this._cacheInput('layoutLtSm', val); };
+  @Input('fxLayout.lt-md') set layoutLtMd(val) { this._cacheInput('layoutLtMd', val); };
+  @Input('fxLayout.lt-lg') set layoutLtLg(val) { this._cacheInput('layoutLtLg', val); };
+  @Input('fxLayout.lt-xl') set layoutLtXl(val) { this._cacheInput('layoutLtXl', val); };
+
+  /* tslint:enable */
   /**
    *
    */

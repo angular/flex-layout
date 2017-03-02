@@ -13,8 +13,9 @@ import 'rxjs/add/operator/map';
 
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {BreakPoint} from '../breakpoints/break-point';
-import {BREAKPOINTS, RAW_DEFAULTS} from './break-points';
+import {BreakPoint} from '../break-point';
+import {BREAKPOINTS} from '../break-points-token';
+import {DEFAULT_BREAKPOINTS} from './break-points';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[ ];
@@ -23,7 +24,7 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [{provide: BREAKPOINTS, useValue: RAW_DEFAULTS}]
+        providers: [{provide: BREAKPOINTS, useValue: DEFAULT_BREAKPOINTS}]
       });
     });
     beforeEach(async(inject([BREAKPOINTS], (_breakPoints_) => {
@@ -31,7 +32,7 @@ describe('break-point-provider', () => {
     })));
 
     it('has the standard breakpoints', () => {
-      expect(breakPoints.length).toEqual(RAW_DEFAULTS.length);
+      expect(breakPoints.length).toEqual(DEFAULT_BREAKPOINTS.length);
       expect(breakPoints[0].alias).toEqual('xs');
       expect(breakPoints[breakPoints.length - 1].alias).toEqual('xl');
     });

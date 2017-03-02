@@ -35,32 +35,33 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({selector: `
-  [fxLayoutWrap],
-  [fxLayoutWrap.xs],
-  [fxLayoutWrap.gt-xs],
-  [fxLayoutWrap.sm],
-  [fxLayoutWrap.gt-sm],
-  [fxLayoutWrap.md],
-  [fxLayoutWrap.gt-md],
-  [fxLayoutWrap.lg],
-  [fxLayoutWrap.gt-lg],
-  [fxLayoutWrap.xl]
+  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],
+  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],
+  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]
 `})
 export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;
 
+  /* tslint:disable */
   @Input('fxLayoutWrap')       set wrap(val)     { this._cacheInput("wrap", val); }
   @Input('fxLayoutWrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
-  @Input('fxLayoutWrap.gt-xs') set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); };
   @Input('fxLayoutWrap.sm')    set wrapSm(val)   { this._cacheInput('wrapSm', val); };
-  @Input('fxLayoutWrap.gt-sm') set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); };
   @Input('fxLayoutWrap.md')    set wrapMd(val)   { this._cacheInput('wrapMd', val); };
-  @Input('fxLayoutWrap.gt-md') set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); };
   @Input('fxLayoutWrap.lg')    set wrapLg(val)   { this._cacheInput('wrapLg', val); };
-  @Input('fxLayoutWrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
   @Input('fxLayoutWrap.xl')    set wrapXl(val)   { this._cacheInput('wrapXl', val); };
 
+  @Input('fxLayoutWrap.gt-xs') set wrapGtXs(val) { this._cacheInput('wrapGtXs', val); };
+  @Input('fxLayoutWrap.gt-sm') set wrapGtSm(val) { this._cacheInput('wrapGtSm', val); };
+  @Input('fxLayoutWrap.gt-md') set wrapGtMd(val) { this._cacheInput('wrapGtMd', val); };
+  @Input('fxLayoutWrap.gt-lg') set wrapGtLg(val) { this._cacheInput('wrapGtLg', val); };
+
+  @Input('fxLayoutWrap.lt-sm') set wrapLtSm(val) { this._cacheInput('wrapLtSm', val); };
+  @Input('fxLayoutWrap.lt-md') set wrapLtMd(val) { this._cacheInput('wrapLtMd', val); };
+  @Input('fxLayoutWrap.lt-lg') set wrapLtLg(val) { this._cacheInput('wrapLtLg', val); };
+  @Input('fxLayoutWrap.lt-xl') set wrapLtXl(val) { this._cacheInput('wrapLtXl', val); };
+
+  /* tslint:enable */
   constructor(
     monitor: MediaMonitor,
     elRef: ElementRef,
