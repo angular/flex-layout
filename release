@@ -106,9 +106,7 @@
     exec(`git checkout -q -b release/${newVersion}`);
 
     pushCmds.push(`# build release/${newVersion} branch...`);
-
     abortCmds.push('git checkout staging -q');
-    abortCmds.push(`git branch -D release/${newVersion}`);
   }
 
   /** writes the new version to package.json */
@@ -232,8 +230,8 @@
 
     pushCmds.push(
         `git tag v${newVersion} -f`,
-        `git push ${origin} HEAD`,
         `git push --tags ${origin}`
+        //  `git push ${origin} HEAD`, // do not push the release branch to origin
     );
   }
 
@@ -259,7 +257,8 @@
 
     cleanupCmds.push(
       `rm -Rf ${path}`,
-      'rm -rf dist'
+      'rm -rf dist',
+      `git branch -D release/${newVersion}`
     );
 
   }
