@@ -110,15 +110,15 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    * Validate the direction value and then update the host's inline flexbox styles
    */
-  protected _updateWithDirection(direction?: string) {
-    direction = direction || this._queryInput("layout") || 'row';
+  protected _updateWithDirection(value?: string) {
+    value = value || this._queryInput("layout") || 'row';
     if (this._mqActivation) {
-      direction = this._mqActivation.activatedInput;
+      value = this._mqActivation.activatedInput;
     }
-    direction = this._validateValue(direction);
+    let [direction, wrap] = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._applyStyleToElement(this._buildCSS(direction));
+    this._applyStyleToElement(this._buildCSS(direction, wrap));
     this._announcer.next(direction);
   }
 
@@ -135,8 +135,13 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    *         laid out and drawn inside that element's specified width and height.
    *
    */
-  protected _buildCSS(value) {
-    return {'display': 'flex', 'box-sizing': 'border-box', 'flex-direction': value};
+  protected _buildCSS(direction, wrap = null) {
+    return {
+      'display': 'flex',
+      'box-sizing': 'border-box',
+      'flex-direction': direction,
+      'flex-wrap': !!wrap ? wrap : null
+    };
   }
 
   /**
@@ -145,6 +150,38 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   protected _validateValue(value) {
     value = value ? value.toLowerCase() : '';
-    return LAYOUT_VALUES.find(x => x === value) ? value : LAYOUT_VALUES[0];  // "row"
+    let [ direction, wrap ] = value.split(" ");
+    if (!LAYOUT_VALUES.find(x => x === direction)) {
+      direction = LAYOUT_VALUES[0];
+    }
+    return [direction, this._validateWrapValue(wrap)];
+
   }
+
+  /**
+     * Convert layout-wrap="<value>" to expected flex-wrap style
+     */
+    protected _validateWrapValue(value) {
+      if (!!value) {
+        switch (value.toLowerCase()) {
+          case 'reverse':
+          case 'wrap-reverse':
+          case 'reverse-wrap':
+            value = 'wrap-reverse';
+            break;
+
+          case 'no':
+          case 'none':
+          case 'nowrap':
+            value = 'nowrap';
+            break;
+
+          // All other values fallback to "wrap"
+          default:
+            value = 'wrap';
+            break;
+        }
+      }
+      return value;
+    }
 }

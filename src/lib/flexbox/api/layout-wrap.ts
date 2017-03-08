@@ -24,9 +24,14 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective, LAYOUT_VALUES} from './layout';
 
 /**
+ * @deprecated
+ * This functionality is now part of the `fxLayout` API
+ *
  * 'layout-wrap' flexbox styling directive
  * Defines wrapping of child elements in layout container
  * Optional values: reverse, wrap-reverse, none, nowrap, wrap (default)]
+ *
+ *
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 @Directive({selector: `

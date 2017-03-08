@@ -71,6 +71,16 @@ describe('layout directive', () => {
         'box-sizing': 'border-box'
       });
     });
+    it('should add correct styles for `fxLayout="row wrap"` usage', () => {
+      expectDOMFrom(`
+        <div fxLayout="row wrap"></div>
+      `).toHaveCssStyle({
+        'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box',
+        'flex-wrap': "wrap"
+      });
+    });
     it('should add correct styles for `fxLayout="column"` usage', () => {
       expectDOMFrom(`<div fxLayout="column"></div>`).toHaveCssStyle({
         'display': 'flex',
@@ -146,7 +156,7 @@ describe('layout directive', () => {
       });
     });
     it('should add responsive styles when configured', () => {
-      fixture = createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
+      fixture = createTestComponent(`<div fxLayout fxLayout.md="column reverse-wrap"></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
 
@@ -159,7 +169,13 @@ describe('layout directive', () => {
       expectNativeEl(fixture).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
-        'box-sizing': 'border-box'
+        'box-sizing': 'border-box',
+        'flex-wrap': 'wrap-reverse'
+      });
+
+      activateMediaQuery('lg');
+      expectNativeEl(fixture).not.toHaveCssStyle({
+        'flex-wrap': 'reverse-wrap'
       });
     });
     it('should update responsive styles when the active mediaQuery changes', () => {
