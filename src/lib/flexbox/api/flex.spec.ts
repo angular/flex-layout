@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
 import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -15,8 +15,8 @@ import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../_module';
 
-import {customMatchers, expect } from '../../utils/testing/custom-matchers';
-import { _dom as _ } from '../../utils/testing/dom-tools';
+import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {_dom as _} from '../../utils/testing/dom-tools';
 
 import {
   makeExpectDOMFrom,
@@ -117,6 +117,21 @@ describe('flex directive', () => {
         });
       }
     });
+
+    it('should work with calc without internal whitespaces', async(() => {
+      // @see http://caniuse.com/#feat=calc for IE issues with calc()
+      if (!isIE) {
+        let fRef = componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
+        fRef.detectChanges();
+
+        setTimeout(() => {
+          expectNativeEl(fRef).toHaveCssStyle({
+            'box-sizing': 'border-box',
+            'flex': '1 1 calc(75% - 10px)'      // correct version has whitespace
+          });
+        });
+      }
+    }));
 
     it('should work with "auto" values', () => {
       expectDOMFrom(`<div fxFlex="auto"></div>`).toHaveCssStyle({

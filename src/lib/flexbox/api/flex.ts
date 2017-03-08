@@ -26,6 +26,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
+import {validateBasis} from '../../utils/basis-validator';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -178,40 +179,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._validateValue.apply(this,
-        this._parseFlexParts(String(flexBasis))));
-  }
-
-  /**
-   * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
-   */
-  protected _parseFlexParts(basis: string) {
-    basis = basis.replace(";", "");
-
-    let hasCalc = basis && basis.indexOf("calc") > -1;
-    let matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-    return (matches.length === 3) ? matches : [this._queryInput("grow"),
-          this._queryInput("shrink"), basis];
-  }
-
-  /**
-   * Extract more complicated short-hand versions.
-   * e.g.
-   * fxFlex="3 3 calc(15em + 20px)"
-   */
-  protected _getPartsWithCalc(value: string) {
-    let parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
-    let j = value.indexOf('calc');
-
-    if (j > 0) {
-      parts[2] = value.substring(j);
-      let matches = value.substr(0, j).trim().split(" ");
-      if (matches.length == 2) {
-        parts[0] = matches[0];
-        parts[1] = matches[1];
-      }
-    }
-    return parts;
+    let basis = String(flexBasis).replace(";", "");
+    let parts = validateBasis(basis, this._queryInput("grow"), this._queryInput("shrink"));
+    this._applyStyleToElement(this._validateValue.apply(this, parts));
   }
 
   /**
@@ -277,10 +247,11 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
       default:
-        let isPercent = String(basis).indexOf('%') > -1;
+        let hasCalc = String(basis).indexOf('calc') > -1;
+        let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
 
-        isValue = String(basis).indexOf('px') > -1 ||
-            String(basis).indexOf('calc') > -1 ||
+        isValue = hasCalc ||
+            String(basis).indexOf('px') > -1 ||
             String(basis).indexOf('em') > -1 ||
             String(basis).indexOf('vw') > -1 ||
             String(basis).indexOf('vh') > -1;
