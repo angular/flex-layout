@@ -57,7 +57,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     /**
      * Validate the direction value and then update the host's inline flexbox styles
      */
-    protected _updateWithDirection(value?: string): void;
+    protected _updateWithDirection(direction?: string): void;
     /**
      * Build the CSS that should be assigned to the element instance
      * BUG:
@@ -70,19 +70,14 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
      *         laid out and drawn inside that element's specified width and height.
      *
      */
-    protected _buildCSS(direction: any, wrap?: any): {
+    protected _buildCSS(value: any): {
         'display': string;
         'box-sizing': string;
         'flex-direction': any;
-        'flex-wrap': any;
     };
     /**
      * Validate the value to be one of the acceptable value options
      * Use default fallback of "row"
      */
-    protected _validateValue(value: any): any[];
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    protected _validateWrapValue(value: any): any;
+    protected _validateValue(value: any): any;
 }

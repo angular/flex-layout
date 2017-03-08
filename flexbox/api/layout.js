@@ -137,14 +137,14 @@ var LayoutDirective = (function (_super) {
     /**
      * Validate the direction value and then update the host's inline flexbox styles
      */
-    LayoutDirective.prototype._updateWithDirection = function (value) {
-        value = value || this._queryInput("layout") || 'row';
+    LayoutDirective.prototype._updateWithDirection = function (direction) {
+        direction = direction || this._queryInput("layout") || 'row';
         if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
+            direction = this._mqActivation.activatedInput;
         }
-        var _a = this._validateValue(value), direction = _a[0], wrap = _a[1];
+        direction = this._validateValue(direction);
         // Update styles and announce to subscribers the *new* direction
-        this._applyStyleToElement(this._buildCSS(direction, wrap));
+        this._applyStyleToElement(this._buildCSS(direction));
         this._announcer.next(direction);
     };
     /**
@@ -159,14 +159,8 @@ var LayoutDirective = (function (_super) {
      *         laid out and drawn inside that element's specified width and height.
      *
      */
-    LayoutDirective.prototype._buildCSS = function (direction, wrap) {
-        if (wrap === void 0) { wrap = null; }
-        return {
-            'display': 'flex',
-            'box-sizing': 'border-box',
-            'flex-direction': direction,
-            'flex-wrap': !!wrap ? wrap : null
-        };
+    LayoutDirective.prototype._buildCSS = function (value) {
+        return { 'display': 'flex', 'box-sizing': 'border-box', 'flex-direction': value };
     };
     /**
      * Validate the value to be one of the acceptable value options
@@ -174,35 +168,7 @@ var LayoutDirective = (function (_super) {
      */
     LayoutDirective.prototype._validateValue = function (value) {
         value = value ? value.toLowerCase() : '';
-        var _a = value.split(" "), direction = _a[0], wrap = _a[1];
-        if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
-            direction = LAYOUT_VALUES[0];
-        }
-        return [direction, this._validateWrapValue(wrap)];
-    };
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    LayoutDirective.prototype._validateWrapValue = function (value) {
-        if (!!value) {
-            switch (value.toLowerCase()) {
-                case 'reverse':
-                case 'wrap-reverse':
-                case 'reverse-wrap':
-                    value = 'wrap-reverse';
-                    break;
-                case 'no':
-                case 'none':
-                case 'nowrap':
-                    value = 'nowrap';
-                    break;
-                // All other values fallback to "wrap"
-                default:
-                    value = 'wrap';
-                    break;
-            }
-        }
-        return value;
+        return LAYOUT_VALUES.find(function (x) { return x === value; }) ? value : LAYOUT_VALUES[0]; // "row"
     };
     return LayoutDirective;
 }(BaseFxDirective));

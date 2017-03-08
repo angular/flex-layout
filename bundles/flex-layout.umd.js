@@ -1355,14 +1355,14 @@ var LayoutDirective = (function (_super) {
     /**
      * Validate the direction value and then update the host's inline flexbox styles
      */
-    LayoutDirective.prototype._updateWithDirection = function (value) {
-        value = value || this._queryInput("layout") || 'row';
+    LayoutDirective.prototype._updateWithDirection = function (direction) {
+        direction = direction || this._queryInput("layout") || 'row';
         if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
+            direction = this._mqActivation.activatedInput;
         }
-        var _a = this._validateValue(value), direction = _a[0], wrap = _a[1];
+        direction = this._validateValue(direction);
         // Update styles and announce to subscribers the *new* direction
-        this._applyStyleToElement(this._buildCSS(direction, wrap));
+        this._applyStyleToElement(this._buildCSS(direction));
         this._announcer.next(direction);
     };
     /**
@@ -1377,14 +1377,8 @@ var LayoutDirective = (function (_super) {
      *         laid out and drawn inside that element's specified width and height.
      *
      */
-    LayoutDirective.prototype._buildCSS = function (direction, wrap) {
-        if (wrap === void 0) { wrap = null; }
-        return {
-            'display': 'flex',
-            'box-sizing': 'border-box',
-            'flex-direction': direction,
-            'flex-wrap': !!wrap ? wrap : null
-        };
+    LayoutDirective.prototype._buildCSS = function (value) {
+        return { 'display': 'flex', 'box-sizing': 'border-box', 'flex-direction': value };
     };
     /**
      * Validate the value to be one of the acceptable value options
@@ -1392,35 +1386,7 @@ var LayoutDirective = (function (_super) {
      */
     LayoutDirective.prototype._validateValue = function (value) {
         value = value ? value.toLowerCase() : '';
-        var _a = value.split(" "), direction = _a[0], wrap = _a[1];
-        if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
-            direction = LAYOUT_VALUES[0];
-        }
-        return [direction, this._validateWrapValue(wrap)];
-    };
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    LayoutDirective.prototype._validateWrapValue = function (value) {
-        if (!!value) {
-            switch (value.toLowerCase()) {
-                case 'reverse':
-                case 'wrap-reverse':
-                case 'reverse-wrap':
-                    value = 'wrap-reverse';
-                    break;
-                case 'no':
-                case 'none':
-                case 'nowrap':
-                    value = 'nowrap';
-                    break;
-                // All other values fallback to "wrap"
-                default:
-                    value = 'wrap';
-                    break;
-            }
-        }
-        return value;
+        return LAYOUT_VALUES.find(function (x) { return x === value; }) ? value : LAYOUT_VALUES[0]; // "row"
     };
     return LayoutDirective;
 }(BaseFxDirective));
@@ -1509,14 +1475,9 @@ var __param$2 = (this && this.__param) || function (paramIndex, decorator) {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- * @deprecated
- * This functionality is now part of the `fxLayout` API
- *
  * 'layout-wrap' flexbox styling directive
  * Defines wrapping of child elements in layout container
  * Optional values: reverse, wrap-reverse, none, nowrap, wrap (default)]
- *
- *
  * @see https://css-tricks.com/almanac/properties/f/flex-wrap/
  */
 var LayoutWrapDirective = (function (_super) {
@@ -1719,68 +1680,6 @@ LayoutWrapDirective = __decorate$8([
         LayoutDirective])
 ], LayoutWrapDirective);
 
-/**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
- * Flex-Basis values can be complicated short-hand versions such as:
- *   - "3 3 calc(15em + 20px)"
- *   - "calc(15em + 20px)"
- *   - "calc(15em+20px)"
- *   - "37px"
- *   = "43%"
- */
-/**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
- * Flex-Basis values can be complicated short-hand versions such as:
- *   - "3 3 calc(15em + 20px)"
- *   - "calc(15em + 20px)"
- *   - "calc(15em+20px)"
- *   - "37px"
- *   = "43%"
- */ function validateBasis(basis, grow, shrink) {
-    if (grow === void 0) { grow = "1"; }
-    if (shrink === void 0) { shrink = "1"; }
-    var parts = [grow, shrink, basis];
-    var j = basis.indexOf('calc');
-    if (j > 0) {
-        parts[2] = _validateCalcValue(basis.substring(j).trim());
-        var matches = basis.substr(0, j).trim().split(" ");
-        if (matches.length == 2) {
-            parts[0] = matches[0];
-            parts[1] = matches[1];
-        }
-    }
-    else if (j == 0) {
-        parts[2] = _validateCalcValue(basis.trim());
-    }
-    else {
-        var matches = basis.split(" ");
-        parts = (matches.length === 3) ? matches : [
-            grow, shrink, basis
-        ];
-    }
-    return parts;
-}
-/**
- * Calc expressions require whitespace before & after the operator
- * This is a simple, crude whitespace padding solution.
- */
-function _validateCalcValue(calc) {
-    var operators = ["+", "-", "*", "/"];
-    var findOperator = function () { return operators.reduce(function (index, operator) {
-        return index || (calc.indexOf(operator) + 1);
-    }, 0); };
-    if (findOperator() > 0) {
-        calc = calc.replace(/[\s]/g, "");
-        var offset = findOperator() - 1;
-        calc = calc.substr(0, offset) + " " + calc.charAt(offset) + " " + calc.substr(offset + 1);
-    }
-    return calc;
-}
-
 var __extends$1 = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1969,9 +1868,35 @@ var FlexDirective = (function (_super) {
         if (this._mqActivation) {
             flexBasis = this._mqActivation.activatedInput;
         }
-        var basis = String(flexBasis).replace(";", "");
-        var parts = validateBasis(basis, this._queryInput("grow"), this._queryInput("shrink"));
-        this._applyStyleToElement(this._validateValue.apply(this, parts));
+        this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis))));
+    };
+    /**
+     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
+     */
+    FlexDirective.prototype._parseFlexParts = function (basis) {
+        basis = basis.replace(";", "");
+        var hasCalc = basis && basis.indexOf("calc") > -1;
+        var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
+        return (matches.length === 3) ? matches : [this._queryInput("grow"),
+            this._queryInput("shrink"), basis];
+    };
+    /**
+     * Extract more complicated short-hand versions.
+     * e.g.
+     * fxFlex="3 3 calc(15em + 20px)"
+     */
+    FlexDirective.prototype._getPartsWithCalc = function (value) {
+        var parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
+        var j = value.indexOf('calc');
+        if (j > 0) {
+            parts[2] = value.substring(j);
+            var matches = value.substr(0, j).trim().split(" ");
+            if (matches.length == 2) {
+                parts[0] = matches[0];
+                parts[1] = matches[1];
+            }
+        }
+        return parts;
     };
     /**
      * Validate the value to be one of the acceptable value options
@@ -2030,10 +1955,9 @@ var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
-                var hasCalc = String(basis).indexOf('calc') > -1;
-                var isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
-                isValue = hasCalc ||
-                    String(basis).indexOf('px') > -1 ||
+                var isPercent = String(basis).indexOf('%') > -1;
+                isValue = String(basis).indexOf('px') > -1 ||
+                    String(basis).indexOf('calc') > -1 ||
                     String(basis).indexOf('em') > -1 ||
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
