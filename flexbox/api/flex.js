@@ -33,6 +33,7 @@ import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
 import { LayoutWrapDirective } from './layout-wrap';
+import { validateBasis } from '../../utils/basis-validator';
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
  * Corresponds to the css `flex` shorthand property.
@@ -192,35 +193,9 @@ var FlexDirective = (function (_super) {
         if (this._mqActivation) {
             flexBasis = this._mqActivation.activatedInput;
         }
-        this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis))));
-    };
-    /**
-     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
-     */
-    FlexDirective.prototype._parseFlexParts = function (basis) {
-        basis = basis.replace(";", "");
-        var hasCalc = basis && basis.indexOf("calc") > -1;
-        var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"),
-            this._queryInput("shrink"), basis];
-    };
-    /**
-     * Extract more complicated short-hand versions.
-     * e.g.
-     * fxFlex="3 3 calc(15em + 20px)"
-     */
-    FlexDirective.prototype._getPartsWithCalc = function (value) {
-        var parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
-        var j = value.indexOf('calc');
-        if (j > 0) {
-            parts[2] = value.substring(j);
-            var matches = value.substr(0, j).trim().split(" ");
-            if (matches.length == 2) {
-                parts[0] = matches[0];
-                parts[1] = matches[1];
-            }
-        }
-        return parts;
+        var basis = String(flexBasis).replace(";", "");
+        var parts = validateBasis(basis, this._queryInput("grow"), this._queryInput("shrink"));
+        this._applyStyleToElement(this._validateValue.apply(this, parts));
     };
     /**
      * Validate the value to be one of the acceptable value options
@@ -279,9 +254,10 @@ var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
-                var isPercent = String(basis).indexOf('%') > -1;
-                isValue = String(basis).indexOf('px') > -1 ||
-                    String(basis).indexOf('calc') > -1 ||
+                var hasCalc = String(basis).indexOf('calc') > -1;
+                var isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
+                isValue = hasCalc ||
+                    String(basis).indexOf('px') > -1 ||
                     String(basis).indexOf('em') > -1 ||
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;

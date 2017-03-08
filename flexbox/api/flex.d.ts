@@ -59,16 +59,6 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     protected _onLayoutChange(direction?: string): void;
     protected _updateStyle(value?: string | number): void;
     /**
-     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
-     */
-    protected _parseFlexParts(basis: string): any[];
-    /**
-     * Extract more complicated short-hand versions.
-     * e.g.
-     * fxFlex="3 3 calc(15em + 20px)"
-     */
-    protected _getPartsWithCalc(value: string): any[];
-    /**
      * Validate the value to be one of the acceptable value options
      * Use default fallback of "row"
      */
