@@ -29,18 +29,18 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
      * Stored so we can unsubscribe when this directive is destroyed.
      */
     protected _layoutWatcher: Subscription;
-    flex: any;
     shrink: any;
     grow: any;
+    flex: any;
     flexXs: any;
-    flexGtXs: any;
     flexSm: any;
-    flexGtSm: any;
     flexMd: any;
-    flexGtMd: any;
     flexLg: any;
-    flexGtLg: any;
     flexXl: any;
+    flexGtXs: any;
+    flexGtSm: any;
+    flexGtMd: any;
+    flexGtLg: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, _container: LayoutDirective, _wrap: LayoutWrapDirective);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
@@ -58,16 +58,6 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
      */
     protected _onLayoutChange(direction?: string): void;
     protected _updateStyle(value?: string | number): void;
-    /**
-     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
-     */
-    protected _parseFlexParts(basis: string): any[];
-    /**
-     * Extract more complicated short-hand versions.
-     * e.g.
-     * fxFlex="3 3 calc(15em + 20px)"
-     */
-    protected _getPartsWithCalc(value: string): any[];
     /**
      * Validate the value to be one of the acceptable value options
      * Use default fallback of "row"

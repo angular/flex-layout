@@ -33,6 +33,7 @@ import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
 import { LayoutWrapDirective } from './layout-wrap';
+import { validateBasis } from '../../utils/basis-validator';
 /**
  * Directive to control the size of a flex item using flex-basis, flex-grow, and flex-shrink.
  * Corresponds to the css `flex` shorthand property.
@@ -41,6 +42,7 @@ import { LayoutWrapDirective } from './layout-wrap';
  */
 var FlexDirective = (function (_super) {
     __extends(FlexDirective, _super);
+    /* tslint:enable */
     // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
     // parent flex container for this flex item.
     function FlexDirective(monitor, elRef, renderer, _container, _wrap) {
@@ -62,94 +64,75 @@ var FlexDirective = (function (_super) {
         }
         return _this;
     }
-    Object.defineProperty(FlexDirective.prototype, "flex", {
-        set: function (val) {
-            this._cacheInput("flex", val);
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(FlexDirective.prototype, "shrink", {
-        set: function (val) {
-            this._cacheInput("shrink", val);
-        },
+        /* tslint:disable */
+        set: function (val) { this._cacheInput("shrink", val); },
         enumerable: true,
         configurable: true
     });
+    ;
     Object.defineProperty(FlexDirective.prototype, "grow", {
-        set: function (val) {
-            this._cacheInput("grow", val);
-        },
+        set: function (val) { this._cacheInput("grow", val); },
         enumerable: true,
         configurable: true
     });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flex", {
+        set: function (val) { this._cacheInput("flex", val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexXs", {
-        set: function (val) {
-            this._cacheInput('flexXs', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
-        set: function (val) {
-            this._cacheInput('flexGtXs', val);
-        },
+        set: function (val) { this._cacheInput('flexXs', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
-        set: function (val) {
-            this._cacheInput('flexSm', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
-        set: function (val) {
-            this._cacheInput('flexGtSm', val);
-        },
+        set: function (val) { this._cacheInput('flexSm', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
-        set: function (val) {
-            this._cacheInput('flexMd', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
-        set: function (val) {
-            this._cacheInput('flexGtMd', val);
-        },
+        set: function (val) { this._cacheInput('flexMd', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
-        set: function (val) {
-            this._cacheInput('flexLg', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
-        set: function (val) {
-            this._cacheInput('flexGtLg', val);
-        },
+        set: function (val) { this._cacheInput('flexLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
-        set: function (val) {
-            this._cacheInput('flexXl', val);
-        },
+        set: function (val) { this._cacheInput('flexXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
+        set: function (val) { this._cacheInput('flexGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
+        set: function (val) { this._cacheInput('flexGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
+        set: function (val) { this._cacheInput('flexGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
+        set: function (val) { this._cacheInput('flexGtLg', val); },
         enumerable: true,
         configurable: true
     });
@@ -192,35 +175,9 @@ var FlexDirective = (function (_super) {
         if (this._mqActivation) {
             flexBasis = this._mqActivation.activatedInput;
         }
-        this._applyStyleToElement(this._validateValue.apply(this, this._parseFlexParts(String(flexBasis))));
-    };
-    /**
-     * If the used the short-form `fxFlex="1 0 37%"`, then parse the parts
-     */
-    FlexDirective.prototype._parseFlexParts = function (basis) {
-        basis = basis.replace(";", "");
-        var hasCalc = basis && basis.indexOf("calc") > -1;
-        var matches = !hasCalc ? basis.split(" ") : this._getPartsWithCalc(basis.trim());
-        return (matches.length === 3) ? matches : [this._queryInput("grow"),
-            this._queryInput("shrink"), basis];
-    };
-    /**
-     * Extract more complicated short-hand versions.
-     * e.g.
-     * fxFlex="3 3 calc(15em + 20px)"
-     */
-    FlexDirective.prototype._getPartsWithCalc = function (value) {
-        var parts = [this._queryInput("grow"), this._queryInput("shrink"), value];
-        var j = value.indexOf('calc');
-        if (j > 0) {
-            parts[2] = value.substring(j);
-            var matches = value.substr(0, j).trim().split(" ");
-            if (matches.length == 2) {
-                parts[0] = matches[0];
-                parts[1] = matches[1];
-            }
-        }
-        return parts;
+        var basis = String(flexBasis).replace(";", "");
+        var parts = validateBasis(basis, this._queryInput("grow"), this._queryInput("shrink"));
+        this._applyStyleToElement(this._validateValue.apply(this, parts));
     };
     /**
      * Validate the value to be one of the acceptable value options
@@ -247,7 +204,7 @@ var FlexDirective = (function (_super) {
         //       the same row since they have a default value of 1.
         //   ≥2 (integer n): Stretch. Will be n times the size of other elements
         //      with 'flex-grow: 1' on the same row.
-        // Use `null` to clear existing styles.
+        var hasCalc = String(basis).indexOf('calc') > -1;
         var clearStyles = {
             'max-width': null,
             'max-height': null,
@@ -279,9 +236,9 @@ var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
-                var isPercent = String(basis).indexOf('%') > -1;
-                isValue = String(basis).indexOf('px') > -1 ||
-                    String(basis).indexOf('calc') > -1 ||
+                var isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
+                isValue = hasCalc ||
+                    String(basis).indexOf('px') > -1 ||
                     String(basis).indexOf('em') > -1 ||
                     String(basis).indexOf('vw') > -1 ||
                     String(basis).indexOf('vh') > -1;
@@ -294,31 +251,27 @@ var FlexDirective = (function (_super) {
                 }
                 // Set max-width = basis if using layout-wrap
                 // tslint:disable-next-line:max-line-length
-                // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
+                // @see http://bit.ly/2m5pZVI
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
                 });
                 break;
         }
-        var max = (direction === 'row') ? 'max-width' : 'max-height';
-        var min = (direction === 'row') ? 'min-width' : 'min-height';
-        var usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
-        var isPx = String(basis).indexOf('px') > -1 || usingCalc;
-        // make box inflexible when shrink and grow are both zero
-        // should not set a min when the grow is zero
-        // should not set a max when the shrink is zero
-        var isFixed = !grow && !shrink;
-        css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
-        css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
+        if (basis !== 'auto') {
+            var max = (direction === 'row') ? 'max-width' : 'max-height';
+            var min = (direction === 'row') ? 'min-width' : 'min-height';
+            var isPx = String(basis).indexOf('px') > -1 || hasCalc;
+            // make box inflexible when shrink and grow are both zero
+            //   * do not set a min when the grow is zero
+            //   * do not set a max when the shrink is zero
+            var isFixed = !grow && !shrink;
+            css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
+            css[max] = (basis == '0%') ? 0 : isFixed || (!hasCalc && shrink) ? basis : null;
+        }
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     return FlexDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxFlex'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flex", null);
 __decorate([
     Input('fxShrink'),
     __metadata("design:type", Object),
@@ -330,52 +283,57 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "grow", null);
 __decorate([
+    Input('fxFlex'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flex", null);
+__decorate([
     Input('fxFlex.xs'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexXs", null);
-__decorate([
-    Input('fxFlex.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtXs", null);
 __decorate([
     Input('fxFlex.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexSm", null);
 __decorate([
-    Input('fxFlex.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtSm", null);
-__decorate([
     Input('fxFlex.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexMd", null);
-__decorate([
-    Input('fxFlex.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtMd", null);
 __decorate([
     Input('fxFlex.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexLg", null);
 __decorate([
-    Input('fxFlex.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtLg", null);
-__decorate([
     Input('fxFlex.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexXl", null);
+__decorate([
+    Input('fxFlex.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtXs", null);
+__decorate([
+    Input('fxFlex.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtSm", null);
+__decorate([
+    Input('fxFlex.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtMd", null);
+__decorate([
+    Input('fxFlex.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexGtLg", null);
 FlexDirective = __decorate([
-    Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs],\n  [fxFlex.gt-xs],\n  [fxFlex.sm],\n  [fxFlex.gt-sm],\n  [fxFlex.md],\n  [fxFlex.gt-md],\n  [fxFlex.lg],\n  [fxFlex.gt-lg],\n  [fxFlex.xl]\n"
+    Directive({ selector: "\n  [fxFlex], \n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg]\n"
     }),
     __param(3, Optional()), __param(3, SkipSelf()),
     __param(4, Optional()), __param(4, SkipSelf()),
