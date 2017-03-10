@@ -40,16 +40,9 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({selector: `
-  [fxFlex],
-  [fxFlex.xs],
-  [fxFlex.gt-xs],
-  [fxFlex.sm],
-  [fxFlex.gt-sm],
-  [fxFlex.md],
-  [fxFlex.gt-md],
-  [fxFlex.lg],
-  [fxFlex.gt-lg],
-  [fxFlex.xl]
+  [fxFlex], 
+  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],
+  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg]
 `
 })
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
@@ -63,55 +56,23 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   protected _layoutWatcher: Subscription;
 
-  @Input('fxFlex')       set flex(val) {
-    this._cacheInput("flex", val);
-  }
+  /* tslint:disable */
+  @Input('fxShrink')     set shrink(val)    { this._cacheInput("shrink", val); };
+  @Input('fxGrow')       set grow(val)      { this._cacheInput("grow", val); };
 
-  @Input('fxShrink')     set shrink(val) {
-    this._cacheInput("shrink", val);
-  }
+  @Input('fxFlex')       set flex(val)      { this._cacheInput("flex", val); };
+  @Input('fxFlex.xs')    set flexXs(val)    { this._cacheInput('flexXs', val); };
+  @Input('fxFlex.sm')    set flexSm(val)    { this._cacheInput('flexSm', val); };
+  @Input('fxFlex.md')    set flexMd(val)    { this._cacheInput('flexMd', val); };
+  @Input('fxFlex.lg')    set flexLg(val)    { this._cacheInput('flexLg', val); };
+  @Input('fxFlex.xl')    set flexXl(val)    { this._cacheInput('flexXl', val); };
 
-  @Input('fxGrow')       set grow(val) {
-    this._cacheInput("grow", val);
-  }
+  @Input('fxFlex.gt-xs') set flexGtXs(val)  { this._cacheInput('flexGtXs', val); };
+  @Input('fxFlex.gt-sm') set flexGtSm(val)  { this._cacheInput('flexGtSm', val); };
+  @Input('fxFlex.gt-md') set flexGtMd(val)  { this._cacheInput('flexGtMd', val); };
+  @Input('fxFlex.gt-lg') set flexGtLg(val)  { this._cacheInput('flexGtLg', val); };
 
-  @Input('fxFlex.xs')    set flexXs(val) {
-    this._cacheInput('flexXs', val);
-  }
-
-  @Input('fxFlex.gt-xs') set flexGtXs(val) {
-    this._cacheInput('flexGtXs', val);
-  };
-
-  @Input('fxFlex.sm')    set flexSm(val) {
-    this._cacheInput('flexSm', val);
-  };
-
-  @Input('fxFlex.gt-sm') set flexGtSm(val) {
-    this._cacheInput('flexGtSm', val);
-  };
-
-  @Input('fxFlex.md')    set flexMd(val) {
-    this._cacheInput('flexMd', val);
-  };
-
-  @Input('fxFlex.gt-md') set flexGtMd(val) {
-    this._cacheInput('flexGtMd', val);
-  };
-
-  @Input('fxFlex.lg')    set flexLg(val) {
-    this._cacheInput('flexLg', val);
-  };
-
-  @Input('fxFlex.gt-lg') set flexGtLg(val) {
-    this._cacheInput('flexGtLg', val);
-  };
-
-  @Input('fxFlex.xl')    set flexXl(val) {
-    this._cacheInput('flexXl', val);
-  };
-
-
+  /* tslint:enable */
   // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
   // parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
@@ -215,13 +176,14 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     //   ≥2 (integer n): Stretch. Will be n times the size of other elements
     //      with 'flex-grow: 1' on the same row.
 
-    // Use `null` to clear existing styles.
-    let clearStyles = {
+    let hasCalc = String(basis).indexOf('calc') > -1;
+    let clearStyles = {     // Use `null` to clear existing styles.
       'max-width': null,
       'max-height': null,
       'min-width': null,
       'min-height': null
     };
+
     switch (basis || '') {
       case '':
         css = extendObject(clearStyles, {'flex': '1 1 0.000000001px'});
@@ -247,7 +209,6 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         css = extendObject(clearStyles, {'flex': '0 0 auto'});
         break;
       default:
-        let hasCalc = String(basis).indexOf('calc') > -1;
         let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
 
         isValue = hasCalc ||
@@ -267,7 +228,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
         // Set max-width = basis if using layout-wrap
         // tslint:disable-next-line:max-line-length
-        // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
+        // @see http://bit.ly/2m5pZVI
 
         css = extendObject(clearStyles, { // fix issue #5345
           'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,
@@ -275,19 +236,18 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
         break;
     }
 
-    let max = (direction === 'row') ? 'max-width' : 'max-height';
-    let min = (direction === 'row') ? 'min-width' : 'min-height';
+    if (basis !== 'auto') {
+      let max = (direction === 'row') ? 'max-width' : 'max-height';
+      let min = (direction === 'row') ? 'min-width' : 'min-height';
+      let isPx = String(basis).indexOf('px') > -1 || hasCalc;
 
-    let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
-    let isPx = String(basis).indexOf('px') > -1 || usingCalc;
-
-
-    // make box inflexible when shrink and grow are both zero
-    // should not set a min when the grow is zero
-    // should not set a max when the shrink is zero
-    let isFixed = !grow && !shrink;
-    css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
-    css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
+      // make box inflexible when shrink and grow are both zero
+      //   * do not set a min when the grow is zero
+      //   * do not set a max when the shrink is zero
+      let isFixed = !grow && !shrink;
+      css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
+      css[max] = (basis == '0%') ? 0 : isFixed || (!hasCalc && shrink) ? basis : null;
+    }
 
     return extendObject(css, {'box-sizing': 'border-box'});
   }
