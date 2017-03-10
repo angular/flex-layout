@@ -22,7 +22,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
         </div>
     </md-toolbar>
     
-    <div #root="$implicit" dir="ltr" class="demo-content">
+    <div class="demo-content">
       <router-outlet></router-outlet>
     </div>
   `,
