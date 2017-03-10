@@ -30,6 +30,11 @@ describe('validateBasis', () => {
     expect( result ).toEqual('3 3 calc(15em + 20px)');
   });
 
+  it('should validate calc() expression with multiple operators', () => {
+    let result = validateBasis('calc(100% / 7 * 2)').join(" ");
+    expect( result ).toEqual('1 1 calc(100% / 7 * 2)');
+  });
+
   it('should validate with complex value that includes a bad calc() expression', () => {
     let result = validateBasis('3 3 calc(15em +20px)').join(" ");
     expect( result ).toEqual('3 3 calc(15em + 20px)');
