@@ -14,10 +14,7 @@ import { Component } from '@angular/core';
 export class DemosResponsiveLayout { }
 
 import {NgModule}            from '@angular/core';
-import {CommonModule}        from "@angular/common";
 import {FormsModule}         from "@angular/forms";
-import {MaterialModule}      from "@angular/material";
-import {FlexLayoutModule}    from "../../../lib";     // `gulp build:components` to deploy to node_modules manually
 
 import {DemoResponsiveRows}  from "./responsiveRowColumns.demo";
 import {DemoResponsiveLayoutDirection }  from "./responsiveLayoutDirections.demo";
@@ -25,6 +22,7 @@ import {DemoResponsiveShowHide} from "./responsiveShowHide.demo";
 import {DemoResponsiveFlexDirectives} from "./responsiveFlexDirective.demo";
 import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
 import {DemoResponsiveStyle} from "./responsiveStyle.demo";
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations : [
@@ -35,13 +33,11 @@ import {DemoResponsiveStyle} from "./responsiveStyle.demo";
     DemoResponsiveFlexDirectives,
     DemoResponsiveFlexOrder,
     DemoResponsiveShowHide,
-    DemoResponsiveStyle,
+    DemoResponsiveStyle
   ],
   imports : [
-    CommonModule,
-    FormsModule,
-    MaterialModule,
-    FlexLayoutModule
+    SharedModule,
+    FormsModule
   ]
 
 })

@@ -1,9 +1,4 @@
-import {Component, OnInit, Inject, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs/Subscription";
-import 'rxjs/add/operator/filter';
-
-import {MediaChange} from "../../../lib/media-query/media-change";
-import { ObservableMedia } from "../../../lib/media-query/observable-media-service";
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'demo-responsive-flex-order',
@@ -35,30 +30,10 @@ import { ObservableMedia } from "../../../lib/media-query/observable-media-servi
         </div>
       </md-card-content>
       <md-card-footer style="width:95%">
-        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+        <media-query-status></media-query-status>
       </md-card-footer>      
     </md-card>
   `
 })
-export class DemoResponsiveFlexOrder implements OnInit, OnDestroy {
-  public activeMediaQuery = "";
-  private _watcher : Subscription;
-
-  constructor(private _media$:ObservableMedia) { }
-
-  ngOnInit() {
-    this._watcher = this.watchMQChanges();
-  }
-
-  ngOnDestroy() {
-    this._watcher.unsubscribe();
-  }
-
-
-  watchMQChanges() {
-    return this._media$.subscribe((change:MediaChange) => {
-      let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
-      this.activeMediaQuery = value;
-    });
-  }
+export class DemoResponsiveFlexOrder  {
 }

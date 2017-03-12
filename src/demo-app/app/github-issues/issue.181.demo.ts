@@ -30,29 +30,16 @@ import {ObservableMedia} from "../../../lib/media-query/observable-media-service
         </div>
       </md-card-content>
       <md-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
-        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+         <media-query-status></media-query-status>
       </md-card-footer>      
     </md-card>
   `
 })
-export class DemoIssue181 implements OnDestroy {
+export class DemoIssue181 {
   public direction = "column";
-  public activeMediaQuery = "";
-
-  constructor(media$: ObservableMedia) {
-    this._watcher = media$.subscribe((change: MediaChange) => {
-      let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
-      this.activeMediaQuery = value;
-    });
-  }
 
   pivot() {
     this.direction = (this.direction === "row") ? "column" : "row";
   }
 
-  ngOnDestroy() {
-    this._watcher.unsubscribe();
-  }
-
-  private _watcher: Subscription;
 }
