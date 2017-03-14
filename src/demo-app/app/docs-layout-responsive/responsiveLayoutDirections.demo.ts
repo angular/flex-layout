@@ -17,6 +17,9 @@ import { Component } from '@angular/core';
           </div>
         </div>
       </md-card-content>
+      <md-card-footer style="width:95%">
+        <media-query-status></media-query-status>
+      </md-card-footer>        
     </md-card>
   `
 })

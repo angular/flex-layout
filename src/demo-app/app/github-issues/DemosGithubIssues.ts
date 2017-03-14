@@ -14,15 +14,13 @@ export class DemosGithubIssues {
 }
 
 import {NgModule}         from '@angular/core';
-import {CommonModule}     from "@angular/common";
-import {MaterialModule}   from "@angular/material";
-import {FlexLayoutModule} from "../../../lib";     // `gulp build:components` to deploy to node_modules manually
 
 import {DemoIssue5345}    from "./issue.5345.demo";
 import {DemoIssue9897}    from "./issue.9897.demo";
 import {DemoIssue135}     from "./issue.135.demo";
 import {DemoIssue181}     from './issue.181.demo';
 import {DemoIssue197}     from './issue.197.demo';
+import {SharedModule}     from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -34,9 +32,7 @@ import {DemoIssue197}     from './issue.197.demo';
     DemoIssue197
   ],
   imports: [
-    CommonModule,
-    MaterialModule,
-    FlexLayoutModule
+    SharedModule
   ]
 })
 export class DemosGithubIssuesModule {

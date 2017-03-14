@@ -1,9 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs/Subscription";
-import 'rxjs/add/operator/filter';
-
-import {MediaChange} from "../../../lib/media-query/media-change";
-import {ObservableMedia} from "../../../lib/media-query/observable-media-service";
+import {Component} from '@angular/core';
 
 // [ngStyle="{'font-size.px': 10, color: 'rgb(0,0,0)', 'text-align':'left'}"
 //  style="font-size:10px; color:black; text-align:left;"
@@ -35,24 +30,9 @@ import {ObservableMedia} from "../../../lib/media-query/observable-media-service
         </div>
       </md-card-content>
       <md-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
-        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
+         <media-query-status></media-query-status>
       </md-card-footer>      
     </md-card>
   `
 })
-export class DemoIssue197 implements OnDestroy {
-  public activeMediaQuery = "";
-
-  constructor(media$: ObservableMedia) {
-    this._watcher = media$.subscribe((change: MediaChange) => {
-      let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
-      this.activeMediaQuery = value;
-    });
-  }
-
-  ngOnDestroy() {
-    this._watcher.unsubscribe();
-  }
-
-  private _watcher: Subscription;
-}
+export class DemoIssue197 { }
