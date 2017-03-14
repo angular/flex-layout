@@ -134,19 +134,25 @@ export class MediaService implements ObservableMedia {
    * these must be injected into the MediaChange
    */
   private _buildObservable() {
+    const self = this;
+    // Only pass/announce activations (not de-activations)
+    // Inject associated (if any) alias information into the MediaChange event
+    // Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+    const activationsOnly = (change: MediaChange) => {
+      return change.matches === true;
+    };
+    const addAliasInformation = (change: MediaChange) => {
+      return mergeAlias(change, this._findByQuery(change.mediaQuery));
+    };
+    const excludeOverlaps = (change: MediaChange) => {
+      let bp = this.breakpoints.findByQuery(change.mediaQuery);
+      return !bp ? true : !(self.filterOverlaps && bp.overlapping);
+    };
+
     return this.mediaWatcher.observe()
-        .filter((change: MediaChange) => {
-          // Only pass/announce activations (not de-activations)
-          return change.matches === true;
-        })
-        .map((change: MediaChange) => {
-          // Inject associated (if any) alias information into the MediaChange event
-          return mergeAlias(change, this._findByQuery(change.mediaQuery));
-        })
-        .filter((change: MediaChange) => {
-          let bp = this.breakpoints.findByQuery(change.mediaQuery);
-          return !bp ? true : !(this.filterOverlaps && bp.overlapping);
-        });
+        .filter(activationsOnly)
+        .map(addAliasInformation)
+        .filter(excludeOverlaps);
   }
 
   /**
@@ -174,12 +180,4 @@ export class MediaService implements ObservableMedia {
   private observable$: Observable<MediaChange>;
 }
 
-/**
- *  Provider to return observable to ALL MediaQuery events
- *  Developers should build custom providers to override this default MediaQuery Observable
- */
-export const ObservableMediaProvider = { // tslint:disable-line:variable-name
-  provide: ObservableMedia,
-  useClass: MediaService,
-  deps: [MatchMedia, BreakPointRegistry]
-};
+

@@ -22,6 +22,12 @@ export class MockMatchMedia extends MatchMedia {
    */
   public autoRegisterQueries = true;
 
+  /**
+   * Allow fallback to overlapping mediaQueries to determine
+   * activatedInput(s).
+   */
+  public useOverlaps = false;
+
   constructor(_zone: NgZone, private _breakpoints: BreakPointRegistry) {
     super(_zone);
     this._actives = [];
@@ -35,15 +41,17 @@ export class MockMatchMedia extends MatchMedia {
       mql.destroy();
     });
     this._registry.clear();
+    this.useOverlaps = false;
   }
 
   /**
    * Feature to support manual, simulated activation of a mediaQuery.
    */
   activate(mediaQuery: string, useOverlaps = false): boolean {
+    useOverlaps = useOverlaps || this.useOverlaps;
     mediaQuery = this._validateQuery(mediaQuery);
 
-    if (!this.isActive(mediaQuery)) {
+    if (useOverlaps || !this.isActive(mediaQuery)) {
       this._deactivateAll();
 
       this._registerMediaQuery(mediaQuery);
@@ -67,32 +75,26 @@ export class MockMatchMedia extends MatchMedia {
   /**
    * Manually activate any overlapping mediaQueries to simulate
    * similar functionality in the window.matchMedia()
-   *
-   *   "md"    active == true
-   *   "gt-sm" active == true
-   *   "sm"    active == false
-   *   "gt-xs" active == true
-   *   "xs"    active == false
-   *
    */
   private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean): boolean {
     if (useOverlaps) {
       let bp = this._breakpoints.findByQuery(mediaQuery);
-      switch (bp ? bp.alias : 'unknown') {
-        case 'xl'   :
-          this._activateByAlias('gt-lg');   // note the fall-thrus
-        case 'gt-lg':
-        case 'lg'   :
-          this._activateByAlias('gt-md');
-        case 'gt-md':
-        case 'md'   :
-          this._activateByAlias('gt-sm');
-        case 'gt-sm':
-        case 'sm'   :
-          this._activateByAlias('gt-xs');
-          break;
-        default     :
-          break;
+      let alias = bp ? bp.alias : 'unknown';
+
+      // Simulate activation of overlapping lt-<XXX> ranges
+      switch (alias) {
+        case 'lg'   :   this._activateByAlias('lt-xl'); break;
+        case 'md'   :   this._activateByAlias('lt-xl, lt-lg'); break;
+        case 'sm'   :   this._activateByAlias('lt-xl, lt-lg, lt-md'); break;
+        case 'xs'   :   this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm'); break;
+      }
+
+      // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+      switch (alias) {
+        case 'xl'   : this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs'); break;
+        case 'lg'   : this._activateByAlias('gt-md, gt-sm, gt-xs'); break;
+        case 'md'   : this._activateByAlias('gt-sm, gt-xs'); break;
+        case 'sm'   : this._activateByAlias('gt-xs'); break;
       }
     }
     // Activate last since the responsiveActivation is watching *this* mediaQuery
@@ -102,12 +104,12 @@ export class MockMatchMedia extends MatchMedia {
   /**
    *
    */
-  private _activateByAlias(alias) {
-    let bp = this._breakpoints.findByAlias(alias);
-    if (bp) {
-      alias = bp.mediaQuery;
-    }
-    this._activateByQuery(alias);
+  private _activateByAlias(aliases) {
+    let activate = (alias) => {
+      let bp = this._breakpoints.findByAlias(alias);
+      this._activateByQuery(bp ? bp.mediaQuery : alias);
+    };
+    aliases.split(",").forEach(alias => activate(alias.trim()));
   }
 
   /**
@@ -115,7 +117,11 @@ export class MockMatchMedia extends MatchMedia {
    */
   private _activateByQuery(mediaQuery) {
     let mql = <MockMediaQueryList> this._registry.get(mediaQuery);
-    if (mql) {
+    let alreadyAdded = this._actives.reduce((found, it) => {
+      return found || (mql && (it.media === mql.media));
+    }, false);
+
+    if (mql && !alreadyAdded) {
       this._actives.push(mql.activate());
     }
     return this.hasActivated;
@@ -189,11 +195,12 @@ export class MockMediaQueryList implements MediaQueryList {
    * Notify all listeners that 'matches === TRUE'
    */
   activate(): MockMediaQueryList {
-    this._isActive = true;
-    this._listeners.forEach((callback) => {
-      callback(this);
-    });
-
+    if ( !this._isActive ) {
+      this._isActive = true;
+      this._listeners.forEach((callback) => {
+        callback(this);
+      });
+    }
     return this;
   }
 
@@ -226,5 +233,12 @@ export class MockMediaQueryList implements MediaQueryList {
   }
 }
 
+/**
+ * Pre-configured provider for MockMatchMedia
+ */
+export const MockMatchMediaProvider = {  // tslint:disable-line:variable-name
+  provide: MatchMedia,
+  useClass: MockMatchMedia
+};
 
 

@@ -9,7 +9,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async} from '@angular/core/testing';
 
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -46,7 +46,7 @@ describe('flex directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestFlexComponent],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
@@ -102,12 +102,27 @@ describe('flex directive', () => {
         'box-sizing': 'border-box',
       });
     });
+
     it('should work with "1 1 auto" values', () => {
-      expectDOMFrom(`<div fxFlex="1 1 auto"></div>`).toHaveCssStyle({
+      fixture = componentWithTemplate(`
+                <div fxLayout="column">
+                  <div fxFlex="auto" fxFlex.gt-sm="50"  >  </div>
+                  <div fxFlex="auto" fxFlex.gt-sm="24.4">  </div>
+                  <div fxFlex="auto" fxFlex.gt-sm="25.6">  </div>
+                </div>
+              `);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes.length).toEqual(3);
+      expect(nodes[1].nativeElement).not.toHaveCssStyle({'max-height': '*', 'min-height': '*'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({
         'flex': '1 1 auto',
-        'box-sizing': 'border-box',
+        'box-sizing': 'border-box'
       });
     });
+
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       if (!isIE) {
@@ -277,18 +292,24 @@ describe('flex directive', () => {
           </div>
         `);
 
-      activateMediaQuery('xl');
+      activateMediaQuery('xl', true);
+      fixture.detectChanges();
+
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex': '1 1 50%'
+        'flex': '1 1 50%',
+        'max-width': '50%'
       });
 
-      activateMediaQuery('sm');
+      activateMediaQuery('sm', true);
+      fixture.detectChanges();
+
       expectNativeEl(fixture).toHaveCssStyle({
-        'flex': '1 1 33%'
+        'flex': '1 1 33%',
+        'max-width': '33%'
       });
     });
 
-    it('should fallback the default layout properly', () => {
+    it('should fallback properly to default flex values', () => {
       fixture = componentWithTemplate(`
           <div fxLayout="column">
             <div fxFlex="auto" fxFlex.gt-sm="50"  >  </div>
@@ -296,8 +317,10 @@ describe('flex directive', () => {
             <div fxFlex="auto" fxFlex.gt-sm="25.6">  </div>
           </div>
         `);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+      matchMedia.useOverlaps = true;
 
-      activateMediaQuery('sm', true);
+      activateMediaQuery('sm');
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, "[fxFlex]");
@@ -306,7 +329,7 @@ describe('flex directive', () => {
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
       expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
 
-      activateMediaQuery('xl', true);
+      activateMediaQuery('xl');
       fixture.detectChanges();
 
       nodes = queryFor(fixture, "[fxFlex]");
@@ -314,7 +337,7 @@ describe('flex directive', () => {
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '24.4%'});
       expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '25.6%'});
 
-      activateMediaQuery('sm', true);
+      activateMediaQuery('sm');
       fixture.detectChanges();
 
       nodes = queryFor(fixture, "[fxFlex]");
@@ -329,6 +352,74 @@ describe('flex directive', () => {
       expect(nodes[0].nativeElement).not.toHaveCssStyle({'max-height': '*'});
       expect(nodes[1].nativeElement).not.toHaveCssStyle({'max-height': '*'});
       expect(nodes[2].nativeElement).not.toHaveCssStyle({'max-height': '*'});
+    });
+
+    it('should fallback to the default layout from gt-md selectors', () => {
+      fixture = componentWithTemplate(`
+          <div fxLayout="column">
+            <div fxFlex="auto" fxFlex.gt-md="50"  >  </div>
+            <div fxFlex="auto" fxFlex.gt-md="24.4">  </div>
+            <div fxFlex="auto" fxFlex.gt-md="25.6">  </div>
+          </div>
+        `);
+      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+      matchMedia.useOverlaps = true;
+
+      activateMediaQuery('md');
+      fixture.detectChanges();
+      let nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes.length).toEqual(3);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
+      activateMediaQuery('sm');
+      fixture.detectChanges();
+      nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
+      activateMediaQuery('lg', true);
+      fixture.detectChanges();
+      nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '50%'});
+      expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '24.4%'});
+      expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '25.6%'});
+    });
+
+    it('should fallback to the default layout from lt-md selectors', () => {
+      fixture = componentWithTemplate(`
+              <div fxLayout="column">
+                <div fxFlex="auto" fxFlex.lt-md="50"  >  </div>
+              </div>
+            `);
+
+      activateMediaQuery('md', true);
+      fixture.detectChanges();
+      let nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
+      activateMediaQuery('sm', true);
+      fixture.detectChanges();
+      nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes[0].nativeElement).toHaveCssStyle({
+        'flex': '1 1 100%',
+        'max-height': '50%'
+      });
+
+      activateMediaQuery('lg', true);
+      fixture.detectChanges();
+      nodes = queryFor(fixture, "[fxFlex]");
+
+      expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
+
     });
   });
 });

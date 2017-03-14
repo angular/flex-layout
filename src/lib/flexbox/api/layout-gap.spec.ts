@@ -9,7 +9,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture, async} from '@angular/core/testing';
 
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -35,7 +35,7 @@ describe('layout-gap directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutGapComponent],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

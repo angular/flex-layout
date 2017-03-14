@@ -9,7 +9,7 @@ import {Injectable, Inject} from '@angular/core';
 import {OpaqueToken} from '@angular/core';  // tslint:disable-line:no-unused-variable
 
 import {BreakPoint} from './break-point';
-import {BREAKPOINTS} from "./break-points";
+import {BREAKPOINTS} from "./break-points-token";
 
 
 /**

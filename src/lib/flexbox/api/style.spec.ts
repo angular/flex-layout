@@ -11,7 +11,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
 import {LayoutDirective} from './layout';
@@ -39,7 +39,7 @@ describe('style directive', () => {
       imports: [CommonModule, MediaQueriesModule],
       declarations: [TestStyleComponent, LayoutDirective, StyleDirective],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

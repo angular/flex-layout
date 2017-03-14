@@ -29,16 +29,10 @@ import {LayoutDirective, LAYOUT_VALUES} from './layout';
  *  Defines padding of child elements in a layout container
  */
 @Directive({selector: `
-  [fxLayoutGap],
-  [fxLayoutGap.xs],
-  [fxLayoutGap.gt-xs],
-  [fxLayoutGap.sm],
-  [fxLayoutGap.gt-sm]
-  [fxLayoutGap.md],
-  [fxLayoutGap.gt-md]
-  [fxLayoutGap.lg],
-  [fxLayoutGap.gt-lg],
-  [fxLayoutGap.xl]
+  [fxLayoutGap], 
+  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],
+  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],
+  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
 `
 })
 export class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges,
@@ -47,46 +41,25 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   protected _layoutWatcher: Subscription;
   protected _observer: MutationObserver;
 
-  @Input('fxLayoutGap')       set gap(val) {
-    this._cacheInput('gap', val);
-  }
+  /* tslint:disable */
+  @Input('fxLayoutGap')       set gap(val) { this._cacheInput('gap', val); }
+  @Input('fxLayoutGap.xs')    set gapXs(val) { this._cacheInput('gapXs', val); }
+  @Input('fxLayoutGap.sm')    set gapSm(val) { this._cacheInput('gapSm', val); };
+  @Input('fxLayoutGap.md')    set gapMd(val) { this._cacheInput('gapMd', val); };
+  @Input('fxLayoutGap.lg')    set gapLg(val) { this._cacheInput('gapLg', val); };
+  @Input('fxLayoutGap.xl')    set gapXl(val) { this._cacheInput('gapXl', val); };
 
-  @Input('fxLayoutGap.xs')    set gapXs(val) {
-    this._cacheInput('gapXs', val);
-  }
+  @Input('fxLayoutGap.gt-xs') set gapGtXs(val) { this._cacheInput('gapGtXs', val); };
+  @Input('fxLayoutGap.gt-sm') set gapGtSm(val) { this._cacheInput('gapGtSm', val); };
+  @Input('fxLayoutGap.gt-md') set gapGtMd(val) { this._cacheInput('gapGtMd', val); };
+  @Input('fxLayoutGap.gt-lg') set gapGtLg(val) { this._cacheInput('gapGtLg', val); };
 
-  @Input('fxLayoutGap.gt-xs') set gapGtXs(val) {
-    this._cacheInput('gapGtXs', val);
-  };
+  @Input('fxLayoutGap.lt-sm') set gapLtSm(val) { this._cacheInput('gapLtSm', val); };
+  @Input('fxLayoutGap.lt-md') set gapLtMd(val) { this._cacheInput('gapLtMd', val); };
+  @Input('fxLayoutGap.lt-lg') set gapLtLg(val) { this._cacheInput('gapLtLg', val); };
+  @Input('fxLayoutGap.lt-xl') set gapLtXl(val) { this._cacheInput('gapLtXl', val); };
 
-  @Input('fxLayoutGap.sm')    set gapSm(val) {
-    this._cacheInput('gapSm', val);
-  };
-
-  @Input('fxLayoutGap.gt-sm') set gapGtSm(val) {
-    this._cacheInput('gapGtSm', val);
-  };
-
-  @Input('fxLayoutGap.md')    set gapMd(val) {
-    this._cacheInput('gapMd', val);
-  };
-
-  @Input('fxLayoutGap.gt-md') set gapGtMd(val) {
-    this._cacheInput('gapGtMd', val);
-  };
-
-  @Input('fxLayoutGap.lg')    set gapLg(val) {
-    this._cacheInput('gapLg', val);
-  };
-
-  @Input('fxLayoutGap.gt-lg') set gapGtLg(val) {
-    this._cacheInput('gapGtLg', val);
-  };
-
-  @Input('fxLayoutGap.xl')    set gapXl(val) {
-    this._cacheInput('gapXl', val);
-  };
-
+  /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer,

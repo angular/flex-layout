@@ -16,7 +16,7 @@ import {TestBed, inject, async} from '@angular/core/testing';
 import {MediaChange} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';
 import {MockMatchMedia} from './mock-match-media';
-import {BreakPointsProvider} from '../breakpoints/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 
 describe('mock-match-media', () => {
@@ -29,7 +29,7 @@ describe('mock-match-media', () => {
       providers: [
         MockMatchMedia,
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
-        BreakPointsProvider,  // Supports developer overrides of list of known breakpoints
+        DEFAULT_BREAKPOINTS_PROVIDER,  // Supports developer overrides of list of known breakpoints
       ]
     });
   });
@@ -162,7 +162,9 @@ describe('mock-match-media', () => {
     let subscription = matchMedia.observe(bpGtSM.mediaQuery).subscribe((change: MediaChange) => {
       if (change.matches) {
         ++activates;
-      } else { ++deactivates; }
+      } else {
+        ++deactivates;
+      }
     });
 
     expect(activates).toEqual(0);   // from alias == '' == 'all'
@@ -188,7 +190,9 @@ describe('mock-match-media', () => {
         bpLg = breakPoints.findByAlias('lg');
 
     let subscription = matchMedia.observe().subscribe((change: MediaChange) => {
-      if (change.matches) { ++activates; }
+      if (change.matches) {
+        ++activates;
+      }
     });
 
     expect(activates).toEqual(1);   // from alias == '' == 'all'

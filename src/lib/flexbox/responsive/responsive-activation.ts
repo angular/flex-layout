@@ -112,6 +112,7 @@ export class ResponsiveActivation {
         // Inject directive default property key name: to let onMediaChange() calls
         // know which property is being triggered...
         let buildChanges = (change: MediaChange) => {
+          change = change.clone();
           change.property = this._options.baseKey;
           return change;
         };

@@ -9,12 +9,13 @@ import {TestBed, inject, async} from '@angular/core/testing';
 
 import {BreakPoint} from './break-point';
 import {BreakPointRegistry} from './break-point-registry';
-import {BREAKPOINTS, RAW_DEFAULTS} from './break-points';
+import {BREAKPOINTS} from './break-points-token';
+import {DEFAULT_BREAKPOINTS} from './data/break-points';
 
 describe('break-points', () => {
   let breakPoints: BreakPointRegistry;
   beforeEach(() => {
-    breakPoints = new BreakPointRegistry(RAW_DEFAULTS);
+    breakPoints = new BreakPointRegistry(DEFAULT_BREAKPOINTS);
   });
 
   it('registry has all aliases defined', () => {
@@ -30,7 +31,7 @@ describe('break-points', () => {
     expect(breakPoints.findByAlias('gt-lg')).toBeDefined();   // Overlapping
     expect(breakPoints.findByAlias('xl')).toBeDefined();
 
-    expect(breakPoints.overlappings.length).toBe(4);
+    expect(breakPoints.overlappings.length).toBe(8);
   });
 
   describe('overridden with custom provider', () => {

@@ -13,8 +13,8 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {ObservableMedia} from '../../media-query/observable-media-service';
-import {BreakPointsProvider} from '../../media-query/breakpoints/break-points';
+import {ObservableMedia} from '../../media-query/observable-media';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
@@ -40,7 +40,7 @@ describe('class directive', () => {
       imports: [CommonModule, MediaQueriesModule],
       declarations: [TestClassComponent, ClassDirective],
       providers: [
-        BreakPointRegistry, BreakPointsProvider,
+        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
