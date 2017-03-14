@@ -8,10 +8,18 @@
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { ModuleWithProviders } from '@angular/core';
+import { BreakPoint } from '../media-query/breakpoints/break-point';
+import { BreakPointProviderOptions } from '../media-query/breakpoints/break-points-provider';
 /**
  *
  */
 export declare class FlexLayoutModule {
-    /** @deprecated */
-    static forRoot(): ModuleWithProviders;
+    /**
+     * External uses can easily add custom breakpoints AND include internal orientations
+     * breakpoints; which are not available by default.
+     *
+     * !! Selector aliases are not auto-configured. Developers must subclass
+     * the API directives to support extra selectors for the orientations breakpoints !!
+     */
+    static provideBreakPoints(breakpoints: BreakPoint[], options?: BreakPointProviderOptions): ModuleWithProviders;
 }

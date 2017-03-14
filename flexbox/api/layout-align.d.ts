@@ -24,14 +24,18 @@ export declare class LayoutAlignDirective extends BaseFxDirective implements OnI
     protected _layoutWatcher: Subscription;
     align: any;
     alignXs: any;
-    alignGtXs: any;
     alignSm: any;
-    alignGtSm: any;
     alignMd: any;
-    alignGtMd: any;
     alignLg: any;
-    alignGtLg: any;
     alignXl: any;
+    alignGtXs: any;
+    alignGtSm: any;
+    alignGtMd: any;
+    alignGtLg: any;
+    alignLtSm: any;
+    alignLtMd: any;
+    alignLtLg: any;
+    alignLtXl: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
     ngOnChanges(changes: SimpleChanges): void;
     /**

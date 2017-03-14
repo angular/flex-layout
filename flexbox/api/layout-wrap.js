@@ -45,6 +45,7 @@ import { LayoutDirective, LAYOUT_VALUES } from './layout';
  */
 var LayoutWrapDirective = (function (_super) {
     __extends(LayoutWrapDirective, _super);
+    /* tslint:enable */
     function LayoutWrapDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = 'row'; // default flex-direction
@@ -54,6 +55,7 @@ var LayoutWrapDirective = (function (_super) {
         return _this;
     }
     Object.defineProperty(LayoutWrapDirective.prototype, "wrap", {
+        /* tslint:disable */
         set: function (val) { this._cacheInput("wrap", val); },
         enumerable: true,
         configurable: true
@@ -63,20 +65,8 @@ var LayoutWrapDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtXs", {
-        set: function (val) { this._cacheInput('wrapGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapSm", {
         set: function (val) { this._cacheInput('wrapSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtSm", {
-        set: function (val) { this._cacheInput('wrapGtSm', val); },
         enumerable: true,
         configurable: true
     });
@@ -87,14 +77,32 @@ var LayoutWrapDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtMd", {
-        set: function (val) { this._cacheInput('wrapGtMd', val); },
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLg", {
+        set: function (val) { this._cacheInput('wrapLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLg", {
-        set: function (val) { this._cacheInput('wrapLg', val); },
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapXl", {
+        set: function (val) { this._cacheInput('wrapXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtXs", {
+        set: function (val) { this._cacheInput('wrapGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtSm", {
+        set: function (val) { this._cacheInput('wrapGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtMd", {
+        set: function (val) { this._cacheInput('wrapGtMd', val); },
         enumerable: true,
         configurable: true
     });
@@ -105,8 +113,26 @@ var LayoutWrapDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutWrapDirective.prototype, "wrapXl", {
-        set: function (val) { this._cacheInput('wrapXl', val); },
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtSm", {
+        set: function (val) { this._cacheInput('wrapLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtMd", {
+        set: function (val) { this._cacheInput('wrapLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtLg", {
+        set: function (val) { this._cacheInput('wrapLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtXl", {
+        set: function (val) { this._cacheInput('wrapLtXl', val); },
         enumerable: true,
         configurable: true
     });
@@ -195,47 +221,67 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], LayoutWrapDirective.prototype, "wrapXs", null);
 __decorate([
-    Input('fxLayoutWrap.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtXs", null);
-__decorate([
     Input('fxLayoutWrap.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutWrapDirective.prototype, "wrapSm", null);
-__decorate([
-    Input('fxLayoutWrap.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtSm", null);
 __decorate([
     Input('fxLayoutWrap.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutWrapDirective.prototype, "wrapMd", null);
 __decorate([
-    Input('fxLayoutWrap.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtMd", null);
-__decorate([
     Input('fxLayoutWrap.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutWrapDirective.prototype, "wrapLg", null);
+__decorate([
+    Input('fxLayoutWrap.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapXl", null);
+__decorate([
+    Input('fxLayoutWrap.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapGtXs", null);
+__decorate([
+    Input('fxLayoutWrap.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapGtSm", null);
+__decorate([
+    Input('fxLayoutWrap.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapGtMd", null);
 __decorate([
     Input('fxLayoutWrap.gt-lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutWrapDirective.prototype, "wrapGtLg", null);
 __decorate([
-    Input('fxLayoutWrap.xl'),
+    Input('fxLayoutWrap.lt-sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapXl", null);
+], LayoutWrapDirective.prototype, "wrapLtSm", null);
+__decorate([
+    Input('fxLayoutWrap.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapLtMd", null);
+__decorate([
+    Input('fxLayoutWrap.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapLtLg", null);
+__decorate([
+    Input('fxLayoutWrap.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutWrapDirective.prototype, "wrapLtXl", null);
 LayoutWrapDirective = __decorate([
-    Directive({ selector: "\n  [fxLayoutWrap],\n  [fxLayoutWrap.xs],\n  [fxLayoutWrap.gt-xs],\n  [fxLayoutWrap.sm],\n  [fxLayoutWrap.gt-sm],\n  [fxLayoutWrap.md],\n  [fxLayoutWrap.gt-md],\n  [fxLayoutWrap.lg],\n  [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.xl]\n" }),
+    Directive({ selector: "\n  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],\n  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]\n" }),
     __param(3, Optional()), __param(3, Self()),
     __metadata("design:paramtypes", [MediaMonitor,
         ElementRef,

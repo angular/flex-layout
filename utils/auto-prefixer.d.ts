@@ -10,7 +10,7 @@ export declare function applyCssPrefixes(target: any): any;
 export declare function toAlignContentValue(value: string): string;
 /** Convert flex values flex-start, flex-end to start, end. */
 export declare function toBoxValue(value?: string): string;
-/** Convert flex Direction to Box orientation */
+/** Convert flex Direction to Box orientations */
 export declare function toBoxOrient(flexDirection?: string): "horizontal" | "vertical";
 /** Convert flex Direction to Box direction type */
 export declare function toBoxDirection(flexDirection?: string): "reverse" | "normal";

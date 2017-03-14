@@ -14,8 +14,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import { NgModule } from '@angular/core';
 import { MatchMedia } from './match-media';
 import { MediaMonitor } from './media-monitor';
-import { ObservableMediaProvider } from './observable-media-service';
-import { BreakPointsProvider } from './breakpoints/break-points';
+import { OBSERVABLE_MEDIA_PROVIDER } from './observable-media-provider';
+import { DEFAULT_BREAKPOINTS_PROVIDER } from './breakpoints/break-points-provider';
 import { BreakPointRegistry } from './breakpoints/break-point-registry';
 /**
  * *****************************************************************
@@ -30,11 +30,11 @@ var MediaQueriesModule = (function () {
 MediaQueriesModule = __decorate([
     NgModule({
         providers: [
-            MatchMedia,
-            BreakPointsProvider,
+            DEFAULT_BREAKPOINTS_PROVIDER,
             BreakPointRegistry,
+            MatchMedia,
             MediaMonitor,
-            ObservableMediaProvider // easy subscription injectable `media$` matchMedia observable
+            OBSERVABLE_MEDIA_PROVIDER // easy subscription injectable `media$` matchMedia observable
         ]
     })
 ], MediaQueriesModule);

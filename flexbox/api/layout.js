@@ -38,6 +38,7 @@ export var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  */
 var LayoutDirective = (function (_super) {
     __extends(LayoutDirective, _super);
+    /* tslint:enable */
     /**
      *
      */
@@ -48,6 +49,7 @@ var LayoutDirective = (function (_super) {
         return _this;
     }
     Object.defineProperty(LayoutDirective.prototype, "layout", {
+        /* tslint:disable */
         set: function (val) { this._cacheInput("layout", val); },
         enumerable: true,
         configurable: true
@@ -59,20 +61,8 @@ var LayoutDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
-        set: function (val) { this._cacheInput('layoutGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutSm", {
         set: function (val) { this._cacheInput('layoutSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
-        set: function (val) { this._cacheInput('layoutGtSm', val); },
         enumerable: true,
         configurable: true
     });
@@ -83,14 +73,32 @@ var LayoutDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
-        set: function (val) { this._cacheInput('layoutGtMd', val); },
+    Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
+        set: function (val) { this._cacheInput('layoutLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
-        set: function (val) { this._cacheInput('layoutLg', val); },
+    Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
+        set: function (val) { this._cacheInput('layoutXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
+        set: function (val) { this._cacheInput('layoutGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
+        set: function (val) { this._cacheInput('layoutGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
+        set: function (val) { this._cacheInput('layoutGtMd', val); },
         enumerable: true,
         configurable: true
     });
@@ -101,8 +109,26 @@ var LayoutDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
-        set: function (val) { this._cacheInput('layoutXl', val); },
+    Object.defineProperty(LayoutDirective.prototype, "layoutLtSm", {
+        set: function (val) { this._cacheInput('layoutLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutLtMd", {
+        set: function (val) { this._cacheInput('layoutLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutLtLg", {
+        set: function (val) { this._cacheInput('layoutLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutDirective.prototype, "layoutLtXl", {
+        set: function (val) { this._cacheInput('layoutLtXl', val); },
         enumerable: true,
         configurable: true
     });
@@ -217,47 +243,67 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutXs", null);
 __decorate([
-    Input('fxLayout.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtXs", null);
-__decorate([
     Input('fxLayout.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutSm", null);
-__decorate([
-    Input('fxLayout.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtSm", null);
 __decorate([
     Input('fxLayout.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutMd", null);
 __decorate([
-    Input('fxLayout.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtMd", null);
-__decorate([
     Input('fxLayout.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutLg", null);
+__decorate([
+    Input('fxLayout.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutXl", null);
+__decorate([
+    Input('fxLayout.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtXs", null);
+__decorate([
+    Input('fxLayout.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtSm", null);
+__decorate([
+    Input('fxLayout.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutGtMd", null);
 __decorate([
     Input('fxLayout.gt-lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutGtLg", null);
 __decorate([
-    Input('fxLayout.xl'),
+    Input('fxLayout.lt-sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutXl", null);
+], LayoutDirective.prototype, "layoutLtSm", null);
+__decorate([
+    Input('fxLayout.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutLtMd", null);
+__decorate([
+    Input('fxLayout.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutLtLg", null);
+__decorate([
+    Input('fxLayout.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutDirective.prototype, "layoutLtXl", null);
 LayoutDirective = __decorate([
-    Directive({ selector: "\n  [fxLayout],\n  [fxLayout.xs],\n  [fxLayout.gt-xs],\n  [fxLayout.sm],\n  [fxLayout.gt-sm],\n  [fxLayout.md],\n  [fxLayout.gt-md],\n  [fxLayout.lg],\n  [fxLayout.gt-lg],\n  [fxLayout.xl]\n" }),
+    Directive({ selector: "\n  [fxLayout], \n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" }),
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], LayoutDirective);
 export { LayoutDirective };

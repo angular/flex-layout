@@ -31,14 +31,18 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     layout$: Observable<string>;
     layout: any;
     layoutXs: any;
-    layoutGtXs: any;
     layoutSm: any;
-    layoutGtSm: any;
     layoutMd: any;
-    layoutGtMd: any;
     layoutLg: any;
-    layoutGtLg: any;
     layoutXl: any;
+    layoutGtXs: any;
+    layoutGtSm: any;
+    layoutGtMd: any;
+    layoutGtLg: any;
+    layoutLtSm: any;
+    layoutLtMd: any;
+    layoutLtLg: any;
+    layoutLtXl: any;
     /**
      *
      */

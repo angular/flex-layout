@@ -26,24 +26,32 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
      */
     styleBase: NgStyleType;
     ngStyleXs: NgStyleType;
-    ngStyleGtXs: NgStyleType;
     ngStyleSm: NgStyleType;
-    ngStyleGtSm: NgStyleType;
     ngStyleMd: NgStyleType;
-    ngStyleGtMd: NgStyleType;
     ngStyleLg: NgStyleType;
-    ngStyleGtLg: NgStyleType;
     ngStyleXl: NgStyleType;
+    ngStyleLtSm: NgStyleType;
+    ngStyleLtMd: NgStyleType;
+    ngStyleLtLg: NgStyleType;
+    ngStyleLtXl: NgStyleType;
+    ngStyleGtXs: NgStyleType;
+    ngStyleGtSm: NgStyleType;
+    ngStyleGtMd: NgStyleType;
+    ngStyleGtLg: NgStyleType;
     /** Deprecated selectors */
     styleXs: NgStyleType;
-    styleGtXs: NgStyleType;
     styleSm: NgStyleType;
-    styleGtSm: NgStyleType;
     styleMd: NgStyleType;
-    styleGtMd: NgStyleType;
     styleLg: NgStyleType;
-    styleGtLg: NgStyleType;
     styleXl: NgStyleType;
+    styleLtXs: NgStyleType;
+    styleLtSm: NgStyleType;
+    styleLtMd: NgStyleType;
+    styleLtLg: NgStyleType;
+    styleGtXs: NgStyleType;
+    styleGtSm: NgStyleType;
+    styleGtMd: NgStyleType;
+    styleGtLg: NgStyleType;
     /**
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter

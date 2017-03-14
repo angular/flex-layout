@@ -48,20 +48,8 @@ var ClassDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtXs", {
-        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(ClassDirective.prototype, "ngClassSm", {
         set: function (val) { this._base.cacheInput('classSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtSm", {
-        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -72,20 +60,8 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtMd", {
-        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(ClassDirective.prototype, "ngClassLg", {
         set: function (val) { this._base.cacheInput('classLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ClassDirective.prototype, "ngClassGtLg", {
-        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -96,26 +72,62 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassLtXs", {
+        set: function (val) { this._base.cacheInput('classLtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassLtSm", {
+        set: function (val) { this._base.cacheInput('classLtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassLtMd", {
+        set: function (val) { this._base.cacheInput('classLtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassLtLg", {
+        set: function (val) { this._base.cacheInput('classLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassGtXs", {
+        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassGtSm", {
+        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassGtMd", {
+        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "ngClassGtLg", {
+        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
     Object.defineProperty(ClassDirective.prototype, "classXs", {
         /** Deprecated selectors */
         set: function (val) { this._base.cacheInput('classXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClassDirective.prototype, "classGtXs", {
-        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(ClassDirective.prototype, "classSm", {
         set: function (val) { this._base.cacheInput('classSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ClassDirective.prototype, "classGtSm", {
-        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -126,26 +138,62 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(ClassDirective.prototype, "classGtMd", {
-        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(ClassDirective.prototype, "classLg", {
         set: function (val) { this._base.cacheInput('classLg', val, true); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(ClassDirective.prototype, "classGtLg", {
-        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
+    Object.defineProperty(ClassDirective.prototype, "classXl", {
+        set: function (val) { this._base.cacheInput('classXl', val, true); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(ClassDirective.prototype, "classXl", {
-        set: function (val) { this._base.cacheInput('classXl', val, true); },
+    Object.defineProperty(ClassDirective.prototype, "classLtXs", {
+        set: function (val) { this._base.cacheInput('classLtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classLtSm", {
+        set: function (val) { this._base.cacheInput('classLtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classLtMd", {
+        set: function (val) { this._base.cacheInput('classLtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classLtLg", {
+        set: function (val) { this._base.cacheInput('classLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classGtXs", {
+        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classGtSm", {
+        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classGtMd", {
+        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ClassDirective.prototype, "classGtLg", {
+        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -191,93 +239,133 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassXs", null);
 __decorate([
-    Input('ngClass.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtXs", null);
-__decorate([
     Input('ngClass.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassSm", null);
-__decorate([
-    Input('ngClass.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtSm", null);
 __decorate([
     Input('ngClass.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassMd", null);
 __decorate([
-    Input('ngClass.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtMd", null);
-__decorate([
     Input('ngClass.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassLg", null);
-__decorate([
-    Input('ngClass.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtLg", null);
 __decorate([
     Input('ngClass.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassXl", null);
 __decorate([
+    Input('ngClass.lt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassLtXs", null);
+__decorate([
+    Input('ngClass.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassLtSm", null);
+__decorate([
+    Input('ngClass.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassLtMd", null);
+__decorate([
+    Input('ngClass.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassLtLg", null);
+__decorate([
+    Input('ngClass.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassGtXs", null);
+__decorate([
+    Input('ngClass.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassGtSm", null);
+__decorate([
+    Input('ngClass.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassGtMd", null);
+__decorate([
+    Input('ngClass.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassGtLg", null);
+__decorate([
     Input('class.xs'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classXs", null);
-__decorate([
-    Input('class.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtXs", null);
 __decorate([
     Input('class.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classSm", null);
 __decorate([
-    Input('class.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtSm", null);
-__decorate([
     Input('class.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classMd", null);
-__decorate([
-    Input('class.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtMd", null);
 __decorate([
     Input('class.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classLg", null);
 __decorate([
-    Input('class.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtLg", null);
-__decorate([
     Input('class.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classXl", null);
+__decorate([
+    Input('class.lt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classLtXs", null);
+__decorate([
+    Input('class.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classLtSm", null);
+__decorate([
+    Input('class.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classLtMd", null);
+__decorate([
+    Input('class.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classLtLg", null);
+__decorate([
+    Input('class.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classGtXs", null);
+__decorate([
+    Input('class.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classGtSm", null);
+__decorate([
+    Input('class.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classGtMd", null);
+__decorate([
+    Input('class.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classGtLg", null);
 ClassDirective = __decorate([
     Directive({
-        selector: "\n    [ngClass.xs],     [class.xs],\n    [ngClass.gt-xs],  [class.gt-xs],\n    [ngClass.sm],     [class.sm],\n    [ngClass.gt-sm],  [class.gt-sm],\n    [ngClass.md],     [class.md],\n    [ngClass.gt-md],  [class.gt-md],\n    [ngClass.lg],     [class.lg],\n    [ngClass.gt-lg],  [class.gt-lg]  \n  "
+        selector: "\n    [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n        \n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
     }),
     __metadata("design:paramtypes", [MediaMonitor,
         BreakPointRegistry,

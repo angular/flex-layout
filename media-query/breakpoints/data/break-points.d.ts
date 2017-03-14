@@ -5,4 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/screen-types.js.map
+import { BreakPoint } from '../break-point';
+export declare const RESPONSIVE_ALIASES: string[];
+export declare const DEFAULT_BREAKPOINTS: BreakPoint[];

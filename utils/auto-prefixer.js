@@ -76,7 +76,7 @@ export function toBoxValue(value) {
     if (value === void 0) { value = ""; }
     return (value == 'flex-start') ? 'start' : ((value == 'flex-end') ? 'end' : value);
 }
-/** Convert flex Direction to Box orientation */
+/** Convert flex Direction to Box orientations */
 export function toBoxOrient(flexDirection) {
     if (flexDirection === void 0) { flexDirection = 'row'; }
     return flexDirection.indexOf('column') === -1 ? 'horizontal' : 'vertical';

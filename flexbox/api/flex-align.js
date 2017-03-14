@@ -34,83 +34,91 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  */
 var FlexAlignDirective = (function (_super) {
     __extends(FlexAlignDirective, _super);
+    /* tslint:enable */
     function FlexAlignDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
     Object.defineProperty(FlexAlignDirective.prototype, "align", {
-        set: function (val) {
-            this._cacheInput('align', val);
-        },
+        /* tslint:disable */
+        set: function (val) { this._cacheInput('align', val); },
         enumerable: true,
         configurable: true
     });
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignXs", {
-        set: function (val) {
-            this._cacheInput('alignXs', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtXs", {
-        set: function (val) {
-            this._cacheInput('alignGtXs', val);
-        },
+        set: function (val) { this._cacheInput('alignXs', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignSm", {
-        set: function (val) {
-            this._cacheInput('alignSm', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
-        set: function (val) {
-            this._cacheInput('alignGtSm', val);
-        },
+        set: function (val) { this._cacheInput('alignSm', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignMd", {
-        set: function (val) {
-            this._cacheInput('alignMd', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
-        set: function (val) {
-            this._cacheInput('alignGtMd', val);
-        },
+        set: function (val) { this._cacheInput('alignMd', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLg", {
-        set: function (val) {
-            this._cacheInput('alignLg', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
-        set: function (val) {
-            this._cacheInput('alignGtLg', val);
-        },
+        set: function (val) { this._cacheInput('alignLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignXl", {
-        set: function (val) {
-            this._cacheInput('alignXl', val);
-        },
+        set: function (val) { this._cacheInput('alignXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignLtSm", {
+        set: function (val) { this._cacheInput('alignLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignLtMd", {
+        set: function (val) { this._cacheInput('alignLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignLtLg", {
+        set: function (val) { this._cacheInput('alignLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignLtXl", {
+        set: function (val) { this._cacheInput('alignLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignGtXs", {
+        set: function (val) { this._cacheInput('alignGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
+        set: function (val) { this._cacheInput('alignGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
+        set: function (val) { this._cacheInput('alignGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
+        set: function (val) { this._cacheInput('alignGtLg', val); },
         enumerable: true,
         configurable: true
     });
@@ -176,48 +184,68 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], FlexAlignDirective.prototype, "alignXs", null);
 __decorate([
-    Input('fxFlexAlign.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtXs", null);
-__decorate([
     Input('fxFlexAlign.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexAlignDirective.prototype, "alignSm", null);
-__decorate([
-    Input('fxFlexAlign.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtSm", null);
 __decorate([
     Input('fxFlexAlign.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexAlignDirective.prototype, "alignMd", null);
 __decorate([
-    Input('fxFlexAlign.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtMd", null);
-__decorate([
     Input('fxFlexAlign.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexAlignDirective.prototype, "alignLg", null);
 __decorate([
-    Input('fxFlexAlign.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtLg", null);
-__decorate([
     Input('fxFlexAlign.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexAlignDirective.prototype, "alignXl", null);
+__decorate([
+    Input('fxFlexAlign.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignLtSm", null);
+__decorate([
+    Input('fxFlexAlign.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignLtMd", null);
+__decorate([
+    Input('fxFlexAlign.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignLtLg", null);
+__decorate([
+    Input('fxFlexAlign.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignLtXl", null);
+__decorate([
+    Input('fxFlexAlign.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtXs", null);
+__decorate([
+    Input('fxFlexAlign.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtSm", null);
+__decorate([
+    Input('fxFlexAlign.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtMd", null);
+__decorate([
+    Input('fxFlexAlign.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexAlignDirective.prototype, "alignGtLg", null);
 FlexAlignDirective = __decorate([
     Directive({
-        selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs],\n  [fxFlexAlign.gt-xs],\n  [fxFlexAlign.sm],\n  [fxFlexAlign.gt-sm],\n  [fxFlexAlign.md],\n  [fxFlexAlign.gt-md],\n  [fxFlexAlign.lg],\n  [fxFlexAlign.gt-lg],\n  [fxFlexAlign.xl]\n"
+        selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
     }),
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], FlexAlignDirective);

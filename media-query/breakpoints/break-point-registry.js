@@ -18,7 +18,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * found in the LICENSE file at https://angular.io/license
  */
 import { Injectable, Inject } from '@angular/core';
-import { BREAKPOINTS } from "./break-points";
+import { BREAKPOINTS } from "./break-points-token";
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
  * This is published as a provider and may be overriden from custom, application-specific ranges

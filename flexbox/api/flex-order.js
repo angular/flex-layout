@@ -34,10 +34,12 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  */
 var FlexOrderDirective = (function (_super) {
     __extends(FlexOrderDirective, _super);
+    /* tslint:enable */
     function FlexOrderDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
     Object.defineProperty(FlexOrderDirective.prototype, "order", {
+        /* tslint:disable */
         set: function (val) { this._cacheInput('order', val); },
         enumerable: true,
         configurable: true
@@ -47,20 +49,8 @@ var FlexOrderDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
-        set: function (val) { this._cacheInput('orderGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderSm", {
         set: function (val) { this._cacheInput('orderSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
-        set: function (val) { this._cacheInput('orderGtSm', val); },
         enumerable: true,
         configurable: true
     });
@@ -71,14 +61,32 @@ var FlexOrderDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
-        set: function (val) { this._cacheInput('orderGtMd', val); },
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
+        set: function (val) { this._cacheInput('orderLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
-        set: function (val) { this._cacheInput('orderLg', val); },
+    Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
+        set: function (val) { this._cacheInput('orderXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
+        set: function (val) { this._cacheInput('orderGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
+        set: function (val) { this._cacheInput('orderGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
+        set: function (val) { this._cacheInput('orderGtMd', val); },
         enumerable: true,
         configurable: true
     });
@@ -89,8 +97,26 @@ var FlexOrderDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
-        set: function (val) { this._cacheInput('orderXl', val); },
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
+        set: function (val) { this._cacheInput('orderLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
+        set: function (val) { this._cacheInput('orderLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
+        set: function (val) { this._cacheInput('orderLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
+        set: function (val) { this._cacheInput('orderLtXl', val); },
         enumerable: true,
         configurable: true
     });
@@ -144,47 +170,67 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], FlexOrderDirective.prototype, "orderXs", null);
 __decorate([
-    Input('fxFlexOrder.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtXs", null);
-__decorate([
     Input('fxFlexOrder.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOrderDirective.prototype, "orderSm", null);
-__decorate([
-    Input('fxFlexOrder.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtSm", null);
 __decorate([
     Input('fxFlexOrder.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOrderDirective.prototype, "orderMd", null);
 __decorate([
-    Input('fxFlexOrder.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtMd", null);
-__decorate([
     Input('fxFlexOrder.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOrderDirective.prototype, "orderLg", null);
+__decorate([
+    Input('fxFlexOrder.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderXl", null);
+__decorate([
+    Input('fxFlexOrder.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtXs", null);
+__decorate([
+    Input('fxFlexOrder.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtSm", null);
+__decorate([
+    Input('fxFlexOrder.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderGtMd", null);
 __decorate([
     Input('fxFlexOrder.gt-lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOrderDirective.prototype, "orderGtLg", null);
 __decorate([
-    Input('fxFlexOrder.xl'),
+    Input('fxFlexOrder.lt-sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderXl", null);
+], FlexOrderDirective.prototype, "orderLtSm", null);
+__decorate([
+    Input('fxFlexOrder.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderLtMd", null);
+__decorate([
+    Input('fxFlexOrder.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderLtLg", null);
+__decorate([
+    Input('fxFlexOrder.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOrderDirective.prototype, "orderLtXl", null);
 FlexOrderDirective = __decorate([
-    Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs],\n  [fxFlexOrder.gt-xs],\n  [fxFlexOrder.sm],\n  [fxFlexOrder.gt-sm],\n  [fxFlexOrder.md],\n  [fxFlexOrder.gt-md],\n  [fxFlexOrder.lg],\n  [fxFlexOrder.gt-lg],\n  [fxFlexOrder.xl]\n" }),
+    Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" }),
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], FlexOrderDirective);
 export { FlexOrderDirective };

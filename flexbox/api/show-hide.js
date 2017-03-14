@@ -48,6 +48,7 @@ export function negativeOf(hide) {
  */
 var ShowHideDirective = (function (_super) {
     __extends(ShowHideDirective, _super);
+    /* tslint:enable */
     /**
      *
      */
@@ -67,157 +68,166 @@ var ShowHideDirective = (function (_super) {
         return _this;
     }
     Object.defineProperty(ShowHideDirective.prototype, "show", {
-        set: function (val) {
-            this._cacheInput("show", val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hide", {
-        set: function (val) {
-            this._cacheInput("show", negativeOf(val));
-        },
+        /* tslint:disable */
+        set: function (val) { this._cacheInput("show", val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ShowHideDirective.prototype, "showXs", {
-        set: function (val) {
-            this._cacheInput('showXs', val);
-        },
+        set: function (val) { this._cacheInput('showXs', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ShowHideDirective.prototype, "hideXs", {
-        set: function (val) {
-            this._cacheInput("showXs", negativeOf(val));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
-        set: function (val) {
-            this._cacheInput('showGtXs', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
-        set: function (val) {
-            this._cacheInput('showGtXs', negativeOf(val));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(ShowHideDirective.prototype, "showSm", {
-        set: function (val) {
-            this._cacheInput('showSm', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideSm", {
-        set: function (val) {
-            this._cacheInput('showSm', negativeOf(val));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
-        set: function (val) {
-            this._cacheInput('showGtSm', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
-        set: function (val) {
-            this._cacheInput('showGtSm', negativeOf(val));
-        },
+        set: function (val) { this._cacheInput('showSm', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowHideDirective.prototype, "showMd", {
-        set: function (val) {
-            this._cacheInput('showMd', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
-        set: function (val) {
-            this._cacheInput('showMd', negativeOf(val));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
-        set: function (val) {
-            this._cacheInput('showGtMd', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
-        set: function (val) {
-            this._cacheInput('showGtMd', negativeOf(val));
-        },
+        set: function (val) { this._cacheInput('showMd', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowHideDirective.prototype, "showLg", {
-        set: function (val) {
-            this._cacheInput('showLg', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
-        set: function (val) {
-            this._cacheInput('showLg', negativeOf(val));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
-        set: function (val) {
-            this._cacheInput('showGtLg', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
-        set: function (val) {
-            this._cacheInput('showGtLg', negativeOf(val));
-        },
+        set: function (val) { this._cacheInput('showLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowHideDirective.prototype, "showXl", {
-        set: function (val) {
-            this._cacheInput('showXl', val);
-        },
+        set: function (val) { this._cacheInput('showXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
+        set: function (val) { this._cacheInput('showLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
+        set: function (val) { this._cacheInput('showLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
+        set: function (val) { this._cacheInput('showLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
+        set: function (val) { this._cacheInput('showLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
+        set: function (val) { this._cacheInput('showGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
+        set: function (val) { this._cacheInput('showGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
+        set: function (val) { this._cacheInput('showGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
+        set: function (val) { this._cacheInput('showGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hide", {
+        set: function (val) { this._cacheInput("show", negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "hideXs", {
+        set: function (val) { this._cacheInput("showXs", negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "hideSm", {
+        set: function (val) { this._cacheInput('showSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
+        set: function (val) { this._cacheInput('showMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
+        set: function (val) { this._cacheInput('showLg', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
-        set: function (val) {
-            this._cacheInput('showXl', negativeOf(val));
-        },
+        set: function (val) { this._cacheInput('showXl', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
+        set: function (val) { this._cacheInput('showLtSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
+        set: function (val) { this._cacheInput('showLtMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
+        set: function (val) { this._cacheInput('showLtLg', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
+        set: function (val) { this._cacheInput('showLtXl', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
+        set: function (val) { this._cacheInput('showGtXs', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
+        set: function (val) { this._cacheInput('showGtSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
+        set: function (val) { this._cacheInput('showGtMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
+        set: function (val) { this._cacheInput('showGtLg', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
@@ -290,103 +300,143 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "show", null);
 __decorate([
-    Input('fxHide'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hide", null);
-__decorate([
     Input('fxShow.xs'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "showXs", null);
-__decorate([
-    Input('fxHide.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideXs", null);
-__decorate([
-    Input('fxShow.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtXs", null);
-__decorate([
-    Input('fxHide.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtXs", null);
 __decorate([
     Input('fxShow.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "showSm", null);
 __decorate([
-    Input('fxHide.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideSm", null);
-__decorate([
-    Input('fxShow.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtSm", null);
-__decorate([
-    Input('fxHide.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtSm", null);
-__decorate([
     Input('fxShow.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "showMd", null);
-__decorate([
-    Input('fxHide.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideMd", null);
-__decorate([
-    Input('fxShow.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtMd", null);
-__decorate([
-    Input('fxHide.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtMd", null);
 __decorate([
     Input('fxShow.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "showLg", null);
 __decorate([
-    Input('fxHide.lg'),
+    Input('fxShow.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLg", null);
+], ShowHideDirective.prototype, "showXl", null);
+__decorate([
+    Input('fxShow.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showLtSm", null);
+__decorate([
+    Input('fxShow.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showLtMd", null);
+__decorate([
+    Input('fxShow.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showLtLg", null);
+__decorate([
+    Input('fxShow.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showLtXl", null);
+__decorate([
+    Input('fxShow.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showGtXs", null);
+__decorate([
+    Input('fxShow.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showGtSm", null);
+__decorate([
+    Input('fxShow.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "showGtMd", null);
 __decorate([
     Input('fxShow.gt-lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "showGtLg", null);
 __decorate([
-    Input('fxHide.gt-lg'),
+    Input('fxHide'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtLg", null);
+], ShowHideDirective.prototype, "hide", null);
 __decorate([
-    Input('fxShow.xl'),
+    Input('fxHide.xs'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showXl", null);
+], ShowHideDirective.prototype, "hideXs", null);
+__decorate([
+    Input('fxHide.sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideSm", null);
+__decorate([
+    Input('fxHide.md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideMd", null);
+__decorate([
+    Input('fxHide.lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideLg", null);
 __decorate([
     Input('fxHide.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ShowHideDirective.prototype, "hideXl", null);
+__decorate([
+    Input('fxHide.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideLtSm", null);
+__decorate([
+    Input('fxHide.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideLtMd", null);
+__decorate([
+    Input('fxHide.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideLtLg", null);
+__decorate([
+    Input('fxHide.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideLtXl", null);
+__decorate([
+    Input('fxHide.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideGtXs", null);
+__decorate([
+    Input('fxHide.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideGtSm", null);
+__decorate([
+    Input('fxHide.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideGtMd", null);
+__decorate([
+    Input('fxHide.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ShowHideDirective.prototype, "hideGtLg", null);
 ShowHideDirective = __decorate([
     Directive({
-        selector: "\n  [fxShow],\n  [fxShow.xs],[fxShow.gt-xs],[fxShow.sm],[fxShow.gt-sm],\n  [fxShow.md],[fxShow.gt-md],[fxShow.lg],[fxShow.gt-lg],[fxShow.xl],  \n  [fxHide],\n  [fxHide.xs],[fxHide.gt-xs],[fxHide.sm],[fxHide.gt-sm],\n  [fxHide.md],[fxHide.gt-md],[fxHide.lg],[fxHide.gt-lg],[fxHide.xl]  \n"
+        selector: "\n  [fxShow], \n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl], \n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide], \n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],  \n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
     }),
     __param(1, Optional()), __param(1, Self()),
     __metadata("design:paramtypes", [MediaMonitor,

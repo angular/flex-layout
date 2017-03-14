@@ -37,6 +37,7 @@ import { LayoutDirective, LAYOUT_VALUES } from './layout';
  */
 var LayoutGapDirective = (function (_super) {
     __extends(LayoutGapDirective, _super);
+    /* tslint:enable */
     function LayoutGapDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = 'row'; // default flex-direction
@@ -46,79 +47,84 @@ var LayoutGapDirective = (function (_super) {
         return _this;
     }
     Object.defineProperty(LayoutGapDirective.prototype, "gap", {
-        set: function (val) {
-            this._cacheInput('gap', val);
-        },
+        /* tslint:disable */
+        set: function (val) { this._cacheInput('gap', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(LayoutGapDirective.prototype, "gapXs", {
-        set: function (val) {
-            this._cacheInput('gapXs', val);
-        },
+        set: function (val) { this._cacheInput('gapXs', val); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
-        set: function (val) {
-            this._cacheInput('gapGtXs', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
-        set: function (val) {
-            this._cacheInput('gapSm', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
-        set: function (val) {
-            this._cacheInput('gapGtSm', val);
-        },
+        set: function (val) { this._cacheInput('gapSm', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
-        set: function (val) {
-            this._cacheInput('gapMd', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
-        set: function (val) {
-            this._cacheInput('gapGtMd', val);
-        },
+        set: function (val) { this._cacheInput('gapMd', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
-        set: function (val) {
-            this._cacheInput('gapLg', val);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
-        set: function (val) {
-            this._cacheInput('gapGtLg', val);
-        },
+        set: function (val) { this._cacheInput('gapLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
-        set: function (val) {
-            this._cacheInput('gapXl', val);
-        },
+        set: function (val) { this._cacheInput('gapXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
+        set: function (val) { this._cacheInput('gapGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
+        set: function (val) { this._cacheInput('gapGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
+        set: function (val) { this._cacheInput('gapGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
+        set: function (val) { this._cacheInput('gapGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
+        set: function (val) { this._cacheInput('gapLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
+        set: function (val) { this._cacheInput('gapLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
+        set: function (val) { this._cacheInput('gapLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
+        set: function (val) { this._cacheInput('gapLtXl', val); },
         enumerable: true,
         configurable: true
     });
@@ -248,47 +254,67 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapXs", null);
 __decorate([
-    Input('fxLayoutGap.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtXs", null);
-__decorate([
     Input('fxLayoutGap.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapSm", null);
-__decorate([
-    Input('fxLayoutGap.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtSm", null);
 __decorate([
     Input('fxLayoutGap.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapMd", null);
 __decorate([
-    Input('fxLayoutGap.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtMd", null);
-__decorate([
     Input('fxLayoutGap.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapLg", null);
+__decorate([
+    Input('fxLayoutGap.xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapXl", null);
+__decorate([
+    Input('fxLayoutGap.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtXs", null);
+__decorate([
+    Input('fxLayoutGap.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtSm", null);
+__decorate([
+    Input('fxLayoutGap.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapGtMd", null);
 __decorate([
     Input('fxLayoutGap.gt-lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapGtLg", null);
 __decorate([
-    Input('fxLayoutGap.xl'),
+    Input('fxLayoutGap.lt-sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapXl", null);
+], LayoutGapDirective.prototype, "gapLtSm", null);
+__decorate([
+    Input('fxLayoutGap.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapLtMd", null);
+__decorate([
+    Input('fxLayoutGap.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapLtLg", null);
+__decorate([
+    Input('fxLayoutGap.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], LayoutGapDirective.prototype, "gapLtXl", null);
 LayoutGapDirective = __decorate([
-    Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs],\n  [fxLayoutGap.gt-xs],\n  [fxLayoutGap.sm],\n  [fxLayoutGap.gt-sm]\n  [fxLayoutGap.md],\n  [fxLayoutGap.gt-md]\n  [fxLayoutGap.lg],\n  [fxLayoutGap.gt-lg],\n  [fxLayoutGap.xl]\n"
+    Directive({ selector: "\n  [fxLayoutGap], \n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
     }),
     __param(3, Optional()), __param(3, Self()),
     __metadata("design:paramtypes", [MediaMonitor,

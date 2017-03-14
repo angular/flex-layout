@@ -41,6 +41,10 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     flexGtSm: any;
     flexGtMd: any;
     flexGtLg: any;
+    flexLtSm: any;
+    flexLtMd: any;
+    flexLtLg: any;
+    flexLtXl: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, _container: LayoutDirective, _wrap: LayoutWrapDirective);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()

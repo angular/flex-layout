@@ -17,4 +17,5 @@ export declare class MediaChange {
     property: string;
     value: any;
     constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string);
+    clone(): MediaChange;
 }

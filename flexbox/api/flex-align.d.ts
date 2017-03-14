@@ -16,14 +16,18 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     align: any;
     alignXs: any;
-    alignGtXs: any;
     alignSm: any;
-    alignGtSm: any;
     alignMd: any;
-    alignGtMd: any;
     alignLg: any;
-    alignGtLg: any;
     alignXl: any;
+    alignLtSm: any;
+    alignLtMd: any;
+    alignLtLg: any;
+    alignLtXl: any;
+    alignGtXs: any;
+    alignGtSm: any;
+    alignGtMd: any;
+    alignGtLg: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()

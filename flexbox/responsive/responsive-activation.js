@@ -99,6 +99,7 @@ var ResponsiveActivation = (function () {
                 // Inject directive default property key name: to let onMediaChange() calls
                 // know which property is being triggered...
                 var buildChanges = function (change) {
+                    change = change.clone();
                     change.property = _this._options.baseKey;
                     return change;
                 };

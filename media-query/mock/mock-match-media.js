@@ -41,6 +41,11 @@ var MockMatchMedia = (function (_super) {
          * Special flag used to test BreakPoint registrations with MatchMedia
          */
         _this.autoRegisterQueries = true;
+        /**
+         * Allow fallback to overlapping mediaQueries to determine
+         * activatedInput(s).
+         */
+        _this.useOverlaps = false;
         _this._actives = [];
         _this._actives = [];
         return _this;
@@ -53,14 +58,16 @@ var MockMatchMedia = (function (_super) {
             mql.destroy();
         });
         this._registry.clear();
+        this.useOverlaps = false;
     };
     /**
      * Feature to support manual, simulated activation of a mediaQuery.
      */
     MockMatchMedia.prototype.activate = function (mediaQuery, useOverlaps) {
         if (useOverlaps === void 0) { useOverlaps = false; }
+        useOverlaps = useOverlaps || this.useOverlaps;
         mediaQuery = this._validateQuery(mediaQuery);
-        if (!this.isActive(mediaQuery)) {
+        if (useOverlaps || !this.isActive(mediaQuery)) {
             this._deactivateAll();
             this._registerMediaQuery(mediaQuery);
             this._activateWithOverlaps(mediaQuery, useOverlaps);
@@ -80,31 +87,39 @@ var MockMatchMedia = (function (_super) {
     /**
      * Manually activate any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
-     *
-     *   "md"    active == true
-     *   "gt-sm" active == true
-     *   "sm"    active == false
-     *   "gt-xs" active == true
-     *   "xs"    active == false
-     *
      */
     MockMatchMedia.prototype._activateWithOverlaps = function (mediaQuery, useOverlaps) {
         if (useOverlaps) {
             var bp = this._breakpoints.findByQuery(mediaQuery);
-            switch (bp ? bp.alias : 'unknown') {
-                case 'xl':
-                    this._activateByAlias('gt-lg'); // note the fall-thrus
-                case 'gt-lg':
+            var alias = bp ? bp.alias : 'unknown';
+            // Simulate activation of overlapping lt-<XXX> ranges
+            switch (alias) {
                 case 'lg':
-                    this._activateByAlias('gt-md');
-                case 'gt-md':
+                    this._activateByAlias('lt-xl');
+                    break;
                 case 'md':
-                    this._activateByAlias('gt-sm');
-                case 'gt-sm':
+                    this._activateByAlias('lt-xl, lt-lg');
+                    break;
+                case 'sm':
+                    this._activateByAlias('lt-xl, lt-lg, lt-md');
+                    break;
+                case 'xs':
+                    this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
+                    break;
+            }
+            // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+            switch (alias) {
+                case 'xl':
+                    this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
+                    break;
+                case 'lg':
+                    this._activateByAlias('gt-md, gt-sm, gt-xs');
+                    break;
+                case 'md':
+                    this._activateByAlias('gt-sm, gt-xs');
+                    break;
                 case 'sm':
                     this._activateByAlias('gt-xs');
-                    break;
-                default:
                     break;
             }
         }
@@ -114,19 +129,23 @@ var MockMatchMedia = (function (_super) {
     /**
      *
      */
-    MockMatchMedia.prototype._activateByAlias = function (alias) {
-        var bp = this._breakpoints.findByAlias(alias);
-        if (bp) {
-            alias = bp.mediaQuery;
-        }
-        this._activateByQuery(alias);
+    MockMatchMedia.prototype._activateByAlias = function (aliases) {
+        var _this = this;
+        var activate = function (alias) {
+            var bp = _this._breakpoints.findByAlias(alias);
+            _this._activateByQuery(bp ? bp.mediaQuery : alias);
+        };
+        aliases.split(",").forEach(function (alias) { return activate(alias.trim()); });
     };
     /**
      *
      */
     MockMatchMedia.prototype._activateByQuery = function (mediaQuery) {
         var mql = this._registry.get(mediaQuery);
-        if (mql) {
+        var alreadyAdded = this._actives.reduce(function (found, it) {
+            return found || (mql && (it.media === mql.media));
+        }, false);
+        if (mql && !alreadyAdded) {
             this._actives.push(mql.activate());
         }
         return this.hasActivated;
@@ -208,10 +227,12 @@ var MockMediaQueryList = (function () {
      */
     MockMediaQueryList.prototype.activate = function () {
         var _this = this;
-        this._isActive = true;
-        this._listeners.forEach(function (callback) {
-            callback(_this);
-        });
+        if (!this._isActive) {
+            this._isActive = true;
+            this._listeners.forEach(function (callback) {
+                callback(_this);
+            });
+        }
         return this;
     };
     /**
@@ -243,4 +264,11 @@ var MockMediaQueryList = (function () {
     return MockMediaQueryList;
 }());
 export { MockMediaQueryList };
+/**
+ * Pre-configured provider for MockMatchMedia
+ */
+export var MockMatchMediaProvider = {
+    provide: MatchMedia,
+    useClass: MockMatchMedia
+};
 //# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/mock/mock-match-media.js.map

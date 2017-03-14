@@ -15,14 +15,18 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     offset: any;
     offsetXs: any;
-    offsetGtXs: any;
     offsetSm: any;
-    offsetGtSm: any;
     offsetMd: any;
-    offsetGtMd: any;
     offsetLg: any;
-    offsetGtLg: any;
     offsetXl: any;
+    offsetLtSm: any;
+    offsetLtMd: any;
+    offsetLtLg: any;
+    offsetLtXl: any;
+    offsetGtXs: any;
+    offsetGtSm: any;
+    offsetGtMd: any;
+    offsetGtLg: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()

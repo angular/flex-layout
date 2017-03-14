@@ -102,12 +102,3 @@ export declare class MediaService implements ObservableMedia {
     private _toMediaQuery(query);
     private observable$;
 }
-/**
- *  Provider to return observable to ALL MediaQuery events
- *  Developers should build custom providers to override this default MediaQuery Observable
- */
-export declare const ObservableMediaProvider: {
-    provide: typeof ObservableMedia;
-    useClass: typeof MediaService;
-    deps: (typeof BreakPointRegistry | typeof MatchMedia)[];
-};

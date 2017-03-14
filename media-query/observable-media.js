@@ -126,19 +126,24 @@ var MediaService = (function () {
      */
     MediaService.prototype._buildObservable = function () {
         var _this = this;
-        return this.mediaWatcher.observe()
-            .filter(function (change) {
-            // Only pass/announce activations (not de-activations)
+        var self = this;
+        // Only pass/announce activations (not de-activations)
+        // Inject associated (if any) alias information into the MediaChange event
+        // Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+        var activationsOnly = function (change) {
             return change.matches === true;
-        })
-            .map(function (change) {
-            // Inject associated (if any) alias information into the MediaChange event
+        };
+        var addAliasInformation = function (change) {
             return mergeAlias(change, _this._findByQuery(change.mediaQuery));
-        })
-            .filter(function (change) {
+        };
+        var excludeOverlaps = function (change) {
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(_this.filterOverlaps && bp.overlapping);
-        });
+            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
+        };
+        return this.mediaWatcher.observe()
+            .filter(activationsOnly)
+            .map(addAliasInformation)
+            .filter(excludeOverlaps);
     };
     /**
      * Breakpoint locator by alias
@@ -169,13 +174,4 @@ MediaService = __decorate([
         BreakPointRegistry])
 ], MediaService);
 export { MediaService };
-/**
- *  Provider to return observable to ALL MediaQuery events
- *  Developers should build custom providers to override this default MediaQuery Observable
- */
-export var ObservableMediaProvider = {
-    provide: ObservableMedia,
-    useClass: MediaService,
-    deps: [MatchMedia, BreakPointRegistry]
-};
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media-service.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media.js.map

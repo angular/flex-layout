@@ -14,11 +14,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
+import { Injectable, } from '@angular/core';
 import { BreakPointRegistry } from './breakpoints/break-point-registry';
 import { MatchMedia } from './match-media';
 import { mergeAlias } from '../utils/add-alias';
+import 'rxjs/add/operator/map';
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
  * deactivations). These changes are are published as MediaChange notifications.

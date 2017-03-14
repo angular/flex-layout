@@ -14,8 +14,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import { NgModule } from '@angular/core';
-import { MediaMonitor } from '../media-query/media-monitor';
 import { MediaQueriesModule } from '../media-query/_module';
+import { DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY } from '../media-query/breakpoints/break-points-provider';
+import { MEDIA_MONITOR_PROVIDER } from '../media-query/media-monitor-provider';
+import { OBSERVABLE_MEDIA_PROVIDER } from '../media-query/observable-media-provider';
 import { FlexDirective } from './api/flex';
 import { LayoutDirective } from './api/layout';
 import { ShowHideDirective } from './api/show-hide';
@@ -55,10 +57,19 @@ var ALL_DIRECTIVES = [
 var FlexLayoutModule = FlexLayoutModule_1 = (function () {
     function FlexLayoutModule() {
     }
-    /** @deprecated */
-    FlexLayoutModule.forRoot = function () {
+    /**
+     * External uses can easily add custom breakpoints AND include internal orientations
+     * breakpoints; which are not available by default.
+     *
+     * !! Selector aliases are not auto-configured. Developers must subclass
+     * the API directives to support extra selectors for the orientations breakpoints !!
+     */
+    FlexLayoutModule.provideBreakPoints = function (breakpoints, options) {
         return {
-            ngModule: FlexLayoutModule_1
+            ngModule: FlexLayoutModule_1,
+            providers: [
+                CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(breakpoints, options || { orientations: false })
+            ]
         };
     };
     return FlexLayoutModule;
@@ -68,7 +79,11 @@ FlexLayoutModule = FlexLayoutModule_1 = __decorate([
         declarations: ALL_DIRECTIVES,
         imports: [MediaQueriesModule],
         exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-        providers: [MediaMonitor]
+        providers: [
+            MEDIA_MONITOR_PROVIDER,
+            DEFAULT_BREAKPOINTS_PROVIDER,
+            OBSERVABLE_MEDIA_PROVIDER
+        ]
     })
 ], FlexLayoutModule);
 export { FlexLayoutModule };

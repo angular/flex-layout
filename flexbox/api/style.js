@@ -71,20 +71,8 @@ var StyleDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
-        set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleSm", {
         set: function (val) { this._base.cacheInput('styleSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
-        set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -95,20 +83,8 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
-        set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
         set: function (val) { this._base.cacheInput('styleLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
-        set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -119,26 +95,62 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
+        set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
+        set: function (val) { this._base.cacheInput('styleLtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
+        set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
+        set: function (val) { this._base.cacheInput('styleLtXl', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
+        set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
+        set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
+        set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
+        set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleXs", {
         /** Deprecated selectors */
         set: function (val) { this._base.cacheInput('styleXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
-        set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(StyleDirective.prototype, "styleSm", {
         set: function (val) { this._base.cacheInput('styleSm', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
-        set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -149,26 +161,62 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
-        set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(StyleDirective.prototype, "styleLg", {
         set: function (val) { this._base.cacheInput('styleLg', val, true); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
-        set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
+    Object.defineProperty(StyleDirective.prototype, "styleXl", {
+        set: function (val) { this._base.cacheInput('styleXl', val, true); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(StyleDirective.prototype, "styleXl", {
-        set: function (val) { this._base.cacheInput('styleXl', val, true); },
+    Object.defineProperty(StyleDirective.prototype, "styleLtXs", {
+        set: function (val) { this._base.cacheInput('styleLtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleLtSm", {
+        set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleLtMd", {
+        set: function (val) { this._base.cacheInput('styleLtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleLtLg", {
+        set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
+        set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
+        set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
+        set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
+        set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -267,93 +315,133 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "ngStyleXs", null);
 __decorate([
-    Input('ngStyle.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtXs", null);
-__decorate([
     Input('ngStyle.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "ngStyleSm", null);
-__decorate([
-    Input('ngStyle.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtSm", null);
 __decorate([
     Input('ngStyle.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "ngStyleMd", null);
 __decorate([
-    Input('ngStyle.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtMd", null);
-__decorate([
     Input('ngStyle.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "ngStyleLg", null);
-__decorate([
-    Input('ngStyle.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtLg", null);
 __decorate([
     Input('ngStyle.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "ngStyleXl", null);
 __decorate([
+    Input('ngStyle.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleLtSm", null);
+__decorate([
+    Input('ngStyle.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleLtMd", null);
+__decorate([
+    Input('ngStyle.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleLtLg", null);
+__decorate([
+    Input('ngStyle.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleLtXl", null);
+__decorate([
+    Input('ngStyle.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleGtXs", null);
+__decorate([
+    Input('ngStyle.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleGtSm", null);
+__decorate([
+    Input('ngStyle.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleGtMd", null);
+__decorate([
+    Input('ngStyle.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "ngStyleGtLg", null);
+__decorate([
     Input('style.xs'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleXs", null);
-__decorate([
-    Input('style.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtXs", null);
 __decorate([
     Input('style.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleSm", null);
 __decorate([
-    Input('style.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtSm", null);
-__decorate([
     Input('style.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleMd", null);
-__decorate([
-    Input('style.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtMd", null);
 __decorate([
     Input('style.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleLg", null);
 __decorate([
-    Input('style.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtLg", null);
-__decorate([
     Input('style.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleXl", null);
+__decorate([
+    Input('style.lt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtXs", null);
+__decorate([
+    Input('style.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtSm", null);
+__decorate([
+    Input('style.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtMd", null);
+__decorate([
+    Input('style.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtLg", null);
+__decorate([
+    Input('style.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleGtXs", null);
+__decorate([
+    Input('style.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleGtSm", null);
+__decorate([
+    Input('style.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleGtMd", null);
+__decorate([
+    Input('style.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleGtLg", null);
 StyleDirective = __decorate([
     Directive({
-        selector: "\n    [ngStyle],\n    [ngStyle.xs],    [style.xs],    \n    [ngStyle.gt-xs], [style.gt-xs], \n    [ngStyle.sm],    [style.sm],\n    [ngStyle.gt-sm], [style.gt-sm], \n    [ngStyle.md],    [style.md],        \n    [ngStyle.gt-md], [style.gt-md], \n    [ngStyle.lg],    [style.lg],    \n    [ngStyle.gt-lg], [style.gt-lg], \n    [ngStyle.xl],    [style.xl]     \n  "
+        selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],      \n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl], \n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg], \n    [ngStyle], \n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],   \n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl], \n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] \n  "
     }),
     __metadata("design:paramtypes", [MediaMonitor,
         BreakPointRegistry,

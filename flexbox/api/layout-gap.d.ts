@@ -20,14 +20,18 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     protected _observer: MutationObserver;
     gap: any;
     gapXs: any;
-    gapGtXs: any;
     gapSm: any;
-    gapGtSm: any;
     gapMd: any;
-    gapGtMd: any;
     gapLg: any;
-    gapGtLg: any;
     gapXl: any;
+    gapGtXs: any;
+    gapGtSm: any;
+    gapGtMd: any;
+    gapGtLg: any;
+    gapLtSm: any;
+    gapLtMd: any;
+    gapLtLg: any;
+    gapLtXl: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
     ngOnChanges(changes: SimpleChanges): void;
     /**

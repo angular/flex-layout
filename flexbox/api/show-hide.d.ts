@@ -31,25 +31,33 @@ export declare class ShowHideDirective extends BaseFxDirective implements OnInit
      */
     protected _layoutWatcher: Subscription;
     show: any;
-    hide: any;
     showXs: any;
-    hideXs: any;
-    showGtXs: any;
-    hideGtXs: any;
     showSm: any;
-    hideSm: any;
-    showGtSm: any;
-    hideGtSm: any;
     showMd: any;
-    hideMd: any;
-    showGtMd: any;
-    hideGtMd: any;
     showLg: any;
-    hideLg: any;
-    showGtLg: any;
-    hideGtLg: any;
     showXl: any;
+    showLtSm: any;
+    showLtMd: any;
+    showLtLg: any;
+    showLtXl: any;
+    showGtXs: any;
+    showGtSm: any;
+    showGtMd: any;
+    showGtLg: any;
+    hide: any;
+    hideXs: any;
+    hideSm: any;
+    hideMd: any;
+    hideLg: any;
     hideXl: any;
+    hideLtSm: any;
+    hideLtMd: any;
+    hideLtLg: any;
+    hideLtXl: any;
+    hideGtXs: any;
+    hideGtSm: any;
+    hideGtMd: any;
+    hideGtLg: any;
     /**
      *
      */

@@ -19,6 +19,11 @@ export declare class MockMatchMedia extends MatchMedia {
      * Special flag used to test BreakPoint registrations with MatchMedia
      */
     autoRegisterQueries: boolean;
+    /**
+     * Allow fallback to overlapping mediaQueries to determine
+     * activatedInput(s).
+     */
+    useOverlaps: boolean;
     constructor(_zone: NgZone, _breakpoints: BreakPointRegistry);
     /**
      * Easy method to clear all listeners for all mediaQueries
@@ -35,19 +40,12 @@ export declare class MockMatchMedia extends MatchMedia {
     /**
      * Manually activate any overlapping mediaQueries to simulate
      * similar functionality in the window.matchMedia()
-     *
-     *   "md"    active == true
-     *   "gt-sm" active == true
-     *   "sm"    active == false
-     *   "gt-xs" active == true
-     *   "xs"    active == false
-     *
      */
     private _activateWithOverlaps(mediaQuery, useOverlaps);
     /**
      *
      */
-    private _activateByAlias(alias);
+    private _activateByAlias(aliases);
     /**
      *
      */
@@ -98,3 +96,10 @@ export declare class MockMediaQueryList implements MediaQueryList {
     addListener(listener: MediaQueryListListener): void;
     removeListener(listener: MediaQueryListListener): void;
 }
+/**
+ * Pre-configured provider for MockMatchMedia
+ */
+export declare const MockMatchMediaProvider: {
+    provide: typeof MatchMedia;
+    useClass: typeof MockMatchMedia;
+};

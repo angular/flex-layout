@@ -26,14 +26,18 @@ export declare class LayoutWrapDirective extends BaseFxDirective implements OnIn
     protected _layoutWatcher: Subscription;
     wrap: any;
     wrapXs: any;
-    wrapGtXs: any;
     wrapSm: any;
-    wrapGtSm: any;
     wrapMd: any;
-    wrapGtMd: any;
     wrapLg: any;
-    wrapGtLg: any;
     wrapXl: any;
+    wrapGtXs: any;
+    wrapGtSm: any;
+    wrapGtMd: any;
+    wrapGtLg: any;
+    wrapLtSm: any;
+    wrapLtMd: any;
+    wrapLtLg: any;
+    wrapLtXl: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
     ngOnChanges(changes: SimpleChanges): void;
     /**

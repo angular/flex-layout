@@ -16,6 +16,9 @@ var MediaChange = (function () {
         this.mqAlias = mqAlias;
         this.suffix = suffix; // e.g.   GtSM, Md, GtLg
     }
+    MediaChange.prototype.clone = function () {
+        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+    };
     return MediaChange;
 }());
 export { MediaChange };

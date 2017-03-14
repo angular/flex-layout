@@ -33,10 +33,12 @@ import { MediaMonitor } from '../../media-query/media-monitor';
  */
 var FlexOffsetDirective = (function (_super) {
     __extends(FlexOffsetDirective, _super);
+    /* tslint:enable */
     function FlexOffsetDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
     Object.defineProperty(FlexOffsetDirective.prototype, "offset", {
+        /* tslint:disable */
         set: function (val) { this._cacheInput('offset', val); },
         enumerable: true,
         configurable: true
@@ -46,20 +48,8 @@ var FlexOffsetDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
-        set: function (val) { this._cacheInput('offsetGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetSm", {
         set: function (val) { this._cacheInput('offsetSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
-        set: function (val) { this._cacheInput('offsetGtSm', val); },
         enumerable: true,
         configurable: true
     });
@@ -70,26 +60,62 @@ var FlexOffsetDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
-        set: function (val) { this._cacheInput('offsetGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
         set: function (val) { this._cacheInput('offsetLg', val); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
-        set: function (val) { this._cacheInput('offsetGtLg', val); },
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
+        set: function (val) { this._cacheInput('offsetXl', val); },
         enumerable: true,
         configurable: true
     });
     ;
-    Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
-        set: function (val) { this._cacheInput('offsetXl', val); },
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
+        set: function (val) { this._cacheInput('offsetLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
+        set: function (val) { this._cacheInput('offsetLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
+        set: function (val) { this._cacheInput('offsetLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
+        set: function (val) { this._cacheInput('offsetLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
+        set: function (val) { this._cacheInput('offsetGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
+        set: function (val) { this._cacheInput('offsetGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
+        set: function (val) { this._cacheInput('offsetGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
+        set: function (val) { this._cacheInput('offsetGtLg', val); },
         enumerable: true,
         configurable: true
     });
@@ -146,47 +172,67 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], FlexOffsetDirective.prototype, "offsetXs", null);
 __decorate([
-    Input('fxFlexOffset.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtXs", null);
-__decorate([
     Input('fxFlexOffset.sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOffsetDirective.prototype, "offsetSm", null);
-__decorate([
-    Input('fxFlexOffset.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtSm", null);
 __decorate([
     Input('fxFlexOffset.md'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOffsetDirective.prototype, "offsetMd", null);
 __decorate([
-    Input('fxFlexOffset.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtMd", null);
-__decorate([
     Input('fxFlexOffset.lg'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOffsetDirective.prototype, "offsetLg", null);
 __decorate([
-    Input('fxFlexOffset.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtLg", null);
-__decorate([
     Input('fxFlexOffset.xl'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexOffsetDirective.prototype, "offsetXl", null);
+__decorate([
+    Input('fxFlexOffset.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetLtSm", null);
+__decorate([
+    Input('fxFlexOffset.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetLtMd", null);
+__decorate([
+    Input('fxFlexOffset.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetLtLg", null);
+__decorate([
+    Input('fxFlexOffset.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetLtXl", null);
+__decorate([
+    Input('fxFlexOffset.gt-xs'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetGtXs", null);
+__decorate([
+    Input('fxFlexOffset.gt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetGtSm", null);
+__decorate([
+    Input('fxFlexOffset.gt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetGtMd", null);
+__decorate([
+    Input('fxFlexOffset.gt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexOffsetDirective.prototype, "offsetGtLg", null);
 FlexOffsetDirective = __decorate([
-    Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs],\n  [fxFlexOffset.gt-xs],\n  [fxFlexOffset.sm],\n  [fxFlexOffset.gt-sm],\n  [fxFlexOffset.md],\n  [fxFlexOffset.gt-md],\n  [fxFlexOffset.lg],\n  [fxFlexOffset.gt-lg],\n  [fxFlexOffset.xl]\n" }),
+    Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" }),
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], FlexOffsetDirective);
 export { FlexOffsetDirective };

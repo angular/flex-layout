@@ -16,14 +16,18 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     order: any;
     orderXs: any;
-    orderGtXs: any;
     orderSm: any;
-    orderGtSm: any;
     orderMd: any;
-    orderGtMd: any;
     orderLg: any;
-    orderGtLg: any;
     orderXl: any;
+    orderGtXs: any;
+    orderGtSm: any;
+    orderGtMd: any;
+    orderGtLg: any;
+    orderLtSm: any;
+    orderLtMd: any;
+    orderLtLg: any;
+    orderLtXl: any;
     constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()

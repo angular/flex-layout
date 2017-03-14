@@ -137,6 +137,30 @@ var FlexDirective = (function (_super) {
         configurable: true
     });
     ;
+    Object.defineProperty(FlexDirective.prototype, "flexLtSm", {
+        set: function (val) { this._cacheInput('flexLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexLtMd", {
+        set: function (val) { this._cacheInput('flexLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexLtLg", {
+        set: function (val) { this._cacheInput('flexLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(FlexDirective.prototype, "flexLtXl", {
+        set: function (val) { this._cacheInput('flexLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */
@@ -204,7 +228,7 @@ var FlexDirective = (function (_super) {
         //       the same row since they have a default value of 1.
         //   ≥2 (integer n): Stretch. Will be n times the size of other elements
         //      with 'flex-grow: 1' on the same row.
-        var hasCalc = String(basis).indexOf('calc') > -1;
+        // Use `null` to clear existing styles.
         var clearStyles = {
             'max-width': null,
             'max-height': null,
@@ -236,6 +260,7 @@ var FlexDirective = (function (_super) {
                 css = extendObject(clearStyles, { 'flex': '0 0 auto' });
                 break;
             default:
+                var hasCalc = String(basis).indexOf('calc') > -1;
                 var isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
                 isValue = hasCalc ||
                     String(basis).indexOf('px') > -1 ||
@@ -251,23 +276,22 @@ var FlexDirective = (function (_super) {
                 }
                 // Set max-width = basis if using layout-wrap
                 // tslint:disable-next-line:max-line-length
-                // @see http://bit.ly/2m5pZVI
+                // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
                 css = extendObject(clearStyles, {
                     'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
                 });
                 break;
         }
-        if (basis !== 'auto') {
-            var max = (direction === 'row') ? 'max-width' : 'max-height';
-            var min = (direction === 'row') ? 'min-width' : 'min-height';
-            var isPx = String(basis).indexOf('px') > -1 || hasCalc;
-            // make box inflexible when shrink and grow are both zero
-            //   * do not set a min when the grow is zero
-            //   * do not set a max when the shrink is zero
-            var isFixed = !grow && !shrink;
-            css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
-            css[max] = (basis == '0%') ? 0 : isFixed || (!hasCalc && shrink) ? basis : null;
-        }
+        var max = (direction === 'row') ? 'max-width' : 'max-height';
+        var min = (direction === 'row') ? 'min-width' : 'min-height';
+        var usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
+        var isPx = String(basis).indexOf('px') > -1 || usingCalc;
+        // make box inflexible when shrink and grow are both zero
+        // should not set a min when the grow is zero
+        // should not set a max when the shrink is zero
+        var isFixed = !grow && !shrink;
+        css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
+        css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
     return FlexDirective;
@@ -332,8 +356,28 @@ __decorate([
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexGtLg", null);
+__decorate([
+    Input('fxFlex.lt-sm'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexLtSm", null);
+__decorate([
+    Input('fxFlex.lt-md'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexLtMd", null);
+__decorate([
+    Input('fxFlex.lt-lg'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexLtLg", null);
+__decorate([
+    Input('fxFlex.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], FlexDirective.prototype, "flexLtXl", null);
 FlexDirective = __decorate([
-    Directive({ selector: "\n  [fxFlex], \n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg]\n"
+    Directive({ selector: "\n  [fxFlex], \n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
     }),
     __param(3, Optional()), __param(3, SkipSelf()),
     __param(4, Optional()), __param(4, SkipSelf()),

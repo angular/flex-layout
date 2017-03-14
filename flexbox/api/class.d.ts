@@ -21,24 +21,32 @@ export declare class ClassDirective extends NgClass implements OnInit, OnChanges
     protected monitor: MediaMonitor;
     protected _bpRegistry: BreakPointRegistry;
     ngClassXs: NgClassType;
-    ngClassGtXs: NgClassType;
     ngClassSm: NgClassType;
-    ngClassGtSm: NgClassType;
     ngClassMd: NgClassType;
-    ngClassGtMd: NgClassType;
     ngClassLg: NgClassType;
-    ngClassGtLg: NgClassType;
     ngClassXl: NgClassType;
+    ngClassLtXs: NgClassType;
+    ngClassLtSm: NgClassType;
+    ngClassLtMd: NgClassType;
+    ngClassLtLg: NgClassType;
+    ngClassGtXs: NgClassType;
+    ngClassGtSm: NgClassType;
+    ngClassGtMd: NgClassType;
+    ngClassGtLg: NgClassType;
     /** Deprecated selectors */
     classXs: NgClassType;
-    classGtXs: NgClassType;
     classSm: NgClassType;
-    classGtSm: NgClassType;
     classMd: NgClassType;
-    classGtMd: NgClassType;
     classLg: NgClassType;
-    classGtLg: NgClassType;
     classXl: NgClassType;
+    classLtXs: NgClassType;
+    classLtSm: NgClassType;
+    classLtMd: NgClassType;
+    classLtLg: NgClassType;
+    classGtXs: NgClassType;
+    classGtSm: NgClassType;
+    classGtMd: NgClassType;
+    classGtLg: NgClassType;
     constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
