@@ -1,5 +1,9 @@
-import {Component} from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Subscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/filter';
+
+import { MediaChange } from "../../../lib/media-query/media-change";
+import { ObservableMedia } from "../../../lib/media-query/observable-media-service";
 
 @Component({
   selector: 'demo-responsive-style',
@@ -24,14 +28,13 @@ import 'rxjs/add/operator/filter';
               [class.sm]="{'fxClass-sm': hasStyle}"
               [class.md]="{'fxClass-md': hasStyle, 'fxClass-md2': hasStyle}"
               [class.lg]="['fxClass-lg', 'fxClass-lg2']">
-              Sample Text #1
-              <br/>
+              {{ activeMediaQueryAlias }}
               <md-checkbox
                 [(ngModel)]="hasStyle"
                 fxShow="false"
                 [fxShow.sm]="true"
                 [fxShow.md]="true">
-                Use Responsive Styles
+                Activate styles
               </md-checkbox>
             </div>
           </div>
@@ -60,7 +63,7 @@ import 'rxjs/add/operator/filter';
               [style.sm]="{'font-size.px': 20, color: 'lightblue'}"
               [style.md]="{'font-size.px': 30, color: 'orange'}"
               [style.lg]="styleLgExp">
-                Sample Text #2
+              {{ activeMediaQueryAlias }}
             </div>
           </div>
         </div>
@@ -79,16 +82,29 @@ import 'rxjs/add/operator/filter';
 
 
       <md-card-footer style="width:95%">
-        <media-query-status></media-query-status>
+        <div class="hint" >Active mediaQuery: <span style="padding-left: 20px; color: rgba(0, 0, 0, 0.54)">{{  activeMediaQuery }}</span></div>
       </md-card-footer>
     </md-card>
   `
 })
-export class DemoResponsiveStyle  {
+export class DemoResponsiveStyle implements OnDestroy {
+  private _watcher: Subscription;
+  public activeMediaQuery = "";
+  public activeMediaQueryAlias = "";
   public hasStyle: boolean = false;
   public styleLgExp = {
     'font-size': '40px',
     color: 'lightgreen'
   };
 
+  constructor( private _media$:ObservableMedia ) {
+    this._watcher = this._media$.subscribe((change: MediaChange) => {
+      this.activeMediaQuery = change ? `'${change.mqAlias}' = ${change.mediaQuery} )` : "";
+      this.activeMediaQueryAlias = change.mqAlias;
+    });
+  }
+
+  ngOnDestroy() {
+    this._watcher.unsubscribe();
+  }
 }
