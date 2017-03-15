@@ -108,7 +108,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['flex'] != null || this._mqActivation) {
-      this._onLayoutChange();
+      this._updateStyle();
     }
   }
 
@@ -120,7 +120,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) => {
       this._updateStyle(changes.value);
     });
-    this._onLayoutChange();
+    this._updateStyle();
   }
 
   ngOnDestroy() {
@@ -158,18 +158,13 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   protected _validateValue(grow: number|string,
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
+      // The flex-direction of this element's flex container. Defaults to 'row'.
+      let layout = this._getFlowDirection(this.parentElement, true);
+      let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
       let css, isValue;
-      let direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
-          'column' :
-          'row';
 
-      if ( grow == "0" ) {
-        grow = 0;
-      }
-
-      if ( shrink == "0" ) {
-        shrink = 0;
-      }
+      grow = (grow == "0") ? 0 : grow;
+      shrink = (shrink == "0") ? 0 : shrink;
 
       // flex-basis allows you to specify the initial/starting main-axis size of the element,
       // before anything else is computed. It can either be a percentage or an absolute value.
@@ -256,6 +251,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
       css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
 
-      return extendObject(css, {'box-sizing': 'border-box'});
-    }
+    return extendObject(css, {'box-sizing': 'border-box'});
+  }
+
+  protected get parentElement(): any {
+    return this._elementRef.nativeElement.parentNode;
+  }
 }

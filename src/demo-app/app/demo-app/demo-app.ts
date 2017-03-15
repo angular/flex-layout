@@ -4,8 +4,7 @@ import {Component, ViewEncapsulation} from '@angular/core';
   selector: 'demo-app',
   styleUrls : [ 'demo-app.css' ],
   template: `
-    <md-toolbar class="bigger" style="padding:0 20px;padding-bottom:30px;">
-      <md-toolbar-row>
+    <div fxLayout="column" class="bigger">
         <div fxLayout="row" 
              fxLayoutAlign="start center"
              fxLayoutGap="20px" 
@@ -16,18 +15,16 @@ import {Component, ViewEncapsulation} from '@angular/core';
           <button md-raised-button color="primary" [routerLink]="['issues']">         Github        </button>
           <button md-raised-button color="primary" [routerLink]="['stackoverflow']">  StackOverflow </button>
         </div>
-        <div fxFlex="15px"></div>
-      </md-toolbar-row>
-      <md-toolbar-row fxFlex fxLayout="column"  
+      <div fxFlex fxLayout="column"  
                       fxLayoutAlign="left top"
-                      style="font-size: 0.85em; margin-top: 0px; padding-bottom:20px; white-space:normal">
+                      style="font-size: 0.85em; margin-top: 10px; padding-bottom:20px; white-space:normal">
            These Layout demos are curated from the Angular Material v1.x documentation, GitHub Issues, StackOverflow, 
            and CodePen.      
           <span class="title" style="font-size: 0.7em; font-weight:normal;">
             Hint: Click on any of the samples below to toggle the layout direction(s).
           </span>
-      </md-toolbar-row>
-    </md-toolbar>
+      </div>
+    </div>
     
     <div class="demo-content">
       <router-outlet></router-outlet>

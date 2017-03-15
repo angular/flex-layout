@@ -20,10 +20,10 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from './base';
+import {LayoutDirective} from './layout';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {LayoutDirective, LAYOUT_VALUES} from './layout';
-
+import {LAYOUT_VALUES} from '../../utils/layout-validator';
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container

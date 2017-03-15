@@ -20,7 +20,7 @@ import {DemoIssue9897}    from "./issue.9897.demo";
 import {DemoIssue135}     from "./issue.135.demo";
 import {DemoIssue181}     from './issue.181.demo';
 import {DemoIssue197}     from './issue.197.demo';
-import {SharedModule}     from '../shared/shared.module';
+import {SharedModule}     from '../shared/_module';
 
 @NgModule({
   declarations: [

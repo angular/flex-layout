@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 
-import {DemosLayoutAPI}         from "../docs-layout/DemosLayoutAPI";
-import {DemosResponsiveLayout}  from "../docs-layout-responsive/DemosResponsiveLayouts";
-import {DemosGithubIssues}      from "../github-issues/DemosGithubIssues";
-import {DemosStackOverflow}     from "../stack-overflow/DemosStackOverflow";
+import {DemosLayoutAPI}         from "../docs-layout/_module";
+import {DemosResponsiveLayout}  from "../docs-layout-responsive/_module";
+import {DemosGithubIssues}      from "../github-issues/_module";
+import {DemosStackOverflow}     from "../stack-overflow/_module";
 
 const DemoAppRoutes: Routes = [
   {path: ''             , redirectTo: 'docs', pathMatch: 'full'},
@@ -24,7 +24,7 @@ const DemoAppRoutes: Routes = [
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ]
 })
-export class DemoAppRoutingModule { }
+export class DemoRoutesModule { }
 
 // These components are already exported in their associated Feature modules
 // export const DemoAppRoutingComponents = [DemosLayoutAPI, DemosResponsiveLayout, DemosGithubIssues, DemosStackOverflow];

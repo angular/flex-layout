@@ -1,13 +1,14 @@
 import {NgModule}         from '@angular/core';
 import {BrowserModule}    from '@angular/platform-browser';
-import {SharedModule}     from './shared/shared.module';
 
 import {DemoApp}          from './demo-app/demo-app';
-import {DemoAppRoutingModule} from "./demo-app/demo-app-routes";
-import {DemosStackOverflowModule} from "./stack-overflow/DemosStackOverflow";
-import {DemosGithubIssuesModule}  from './github-issues/DemosGithubIssues';
-import {DemosLayoutAPIModule}     from './docs-layout/DemosLayoutAPI';
-import {DemosResponsiveLayoutsModule} from './docs-layout-responsive/DemosResponsiveLayouts';
+import {SharedModule}     from './shared/_module';
+import {DemoRoutesModule} from "./demo-app/demo-routes";
+
+import {DemosStackOverflowModule} from "./stack-overflow/_module";
+import {DemosGithubIssuesModule}  from './github-issues/_module';
+import {DemosLayoutAPIModule}     from './docs-layout/_module';
+import {DemosResponsiveLayoutsModule} from './docs-layout-responsive/_module';
 
 @NgModule({
   declarations: [DemoApp],
@@ -15,7 +16,7 @@ import {DemosResponsiveLayoutsModule} from './docs-layout-responsive/DemosRespon
   imports: [
     BrowserModule,
     SharedModule,
-    DemoAppRoutingModule,
+    DemoRoutesModule,
 
     /* Internal Demo App Modules */
     DemosStackOverflowModule,

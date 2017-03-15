@@ -177,9 +177,9 @@ div.colored.box.nopad > div {
   min-width: 100px;
 }
 
-md-toolbar.bigger {
-  min-height: 145px;
-  padding: 10px;
+.bigger {
+  padding: 0 20px;
+  padding-bottom: 30px;
 }
 
 md-toolbar .md-toolbar-layout md-toolbar-row {

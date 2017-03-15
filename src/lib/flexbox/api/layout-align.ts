@@ -23,7 +23,8 @@ import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
-import {LAYOUT_VALUES, LayoutDirective} from './layout';
+import {LayoutDirective} from './layout';
+import {LAYOUT_VALUES} from '../../utils/layout-validator';
 
 
 /**
