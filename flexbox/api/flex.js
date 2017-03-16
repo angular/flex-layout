@@ -166,7 +166,7 @@ var FlexDirective = (function (_super) {
      */
     FlexDirective.prototype.ngOnChanges = function (changes) {
         if (changes['flex'] != null || this._mqActivation) {
-            this._onLayoutChange();
+            this._updateStyle();
         }
     };
     /**
@@ -178,7 +178,7 @@ var FlexDirective = (function (_super) {
         this._listenForMediaQueryChanges('flex', '', function (changes) {
             _this._updateStyle(changes.value);
         });
-        this._onLayoutChange();
+        this._updateStyle();
     };
     FlexDirective.prototype.ngOnDestroy = function () {
         _super.prototype.ngOnDestroy.call(this);
@@ -208,16 +208,12 @@ var FlexDirective = (function (_super) {
      * Use default fallback of "row"
      */
     FlexDirective.prototype._validateValue = function (grow, shrink, basis) {
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        var layout = this._getFlowDirection(this.parentElement, true);
+        var direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var css, isValue;
-        var direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
-            'column' :
-            'row';
-        if (grow == "0") {
-            grow = 0;
-        }
-        if (shrink == "0") {
-            shrink = 0;
-        }
+        grow = (grow == "0") ? 0 : grow;
+        shrink = (shrink == "0") ? 0 : shrink;
         // flex-basis allows you to specify the initial/starting main-axis size of the element,
         // before anything else is computed. It can either be a percentage or an absolute value.
         // It is, however, not the breaking point for flex-grow/shrink properties
@@ -294,6 +290,13 @@ var FlexDirective = (function (_super) {
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
+    Object.defineProperty(FlexDirective.prototype, "parentElement", {
+        get: function () {
+            return this._elementRef.nativeElement.parentNode;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return FlexDirective;
 }(BaseFxDirective));
 __decorate([

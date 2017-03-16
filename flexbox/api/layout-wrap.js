@@ -28,10 +28,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * found in the LICENSE file at https://angular.io/license
  */
 import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
-import { extendObject } from '../../utils/object-extend';
 import { BaseFxDirective } from './base';
+import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { LayoutDirective, LAYOUT_VALUES } from './layout';
+import { validateWrapValue, LAYOUT_VALUES } from '../../utils/layout-validator';
 /**
  * @deprecated
  * This functionality is now part of the `fxLayout` API
@@ -156,6 +156,12 @@ var LayoutWrapDirective = (function (_super) {
         });
         this._updateWithValue();
     };
+    LayoutWrapDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
     // *********************************************
     // Protected methods
     // *********************************************
@@ -171,43 +177,32 @@ var LayoutWrapDirective = (function (_super) {
         this._updateWithValue();
     };
     LayoutWrapDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("wrap") || 'wrap';
+        value = value || this._queryInput("wrap");
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        value = this._validateValue(value);
+        value = validateWrapValue(value || 'wrap');
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
      * Build the CSS that should be assigned to the element instance
      */
     LayoutWrapDirective.prototype._buildCSS = function (value) {
-        return extendObject({ 'flex-wrap': value }, {
+        return {
             'display': 'flex',
-            'flex-direction': this._layout || 'row'
-        });
+            'flex-wrap': value,
+            'flex-direction': this.flowDirection
+        };
     };
-    /**
-     * Convert layout-wrap="<value>" to expected flex-wrap style
-     */
-    LayoutWrapDirective.prototype._validateValue = function (value) {
-        switch (value.toLowerCase()) {
-            case 'reverse':
-            case 'wrap-reverse':
-                value = 'wrap-reverse';
-                break;
-            case 'no':
-            case 'none':
-            case 'nowrap':
-                value = 'nowrap';
-                break;
-            // All other values fallback to "wrap"
-            default:
-                value = 'wrap';
-                break;
-        }
-        return value;
-    };
+    Object.defineProperty(LayoutWrapDirective.prototype, "flowDirection", {
+        get: function () {
+            var _this = this;
+            var computeFlowDirection = function () { return _this._getFlowDirection(_this._elementRef.nativeElement); };
+            return this._layoutWatcher ? this._layout : computeFlowDirection();
+        },
+        enumerable: true,
+        configurable: true
+    });
     return LayoutWrapDirective;
 }(BaseFxDirective));
 __decorate([

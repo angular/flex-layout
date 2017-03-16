@@ -10,7 +10,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-export declare const LAYOUT_VALUES: string[];
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -62,31 +61,4 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
      * Validate the direction value and then update the host's inline flexbox styles
      */
     protected _updateWithDirection(value?: string): void;
-    /**
-     * Build the CSS that should be assigned to the element instance
-     * BUG:
-     *
-     *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
-     *      Use height instead if possible; height : <xxx>vh;
-     *
-     * @todo - update all child containers to have "box-sizing: border-box"
-     *         This way any padding or border specified on the child elements are
-     *         laid out and drawn inside that element's specified width and height.
-     *
-     */
-    protected _buildCSS(direction: any, wrap?: any): {
-        'display': string;
-        'box-sizing': string;
-        'flex-direction': any;
-        'flex-wrap': any;
-    };
-    /**
-     * Validate the value to be one of the acceptable value options
-     * Use default fallback of "row"
-     */
-    protected _validateValue(value: any): any[];
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    protected _validateWrapValue(value: any): any;
 }

@@ -53,6 +53,7 @@ export declare abstract class BaseFxDirective implements OnDestroy {
      * and optional restore it when the mediaQueries deactivate
      */
     protected _getDisplayStyle(source?: HTMLElement): string;
+    protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
     /**
      * Applies styles given via string pair or object map to the directive element.
      */

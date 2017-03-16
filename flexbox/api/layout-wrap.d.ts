@@ -8,8 +8,8 @@
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
-import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { MediaMonitor } from '../../media-query/media-monitor';
 /**
  * @deprecated
  * This functionality is now part of the `fxLayout` API
@@ -45,6 +45,7 @@ export declare class LayoutWrapDirective extends BaseFxDirective implements OnIn
      * mql change events to onMediaQueryChange handlers
      */
     ngOnInit(): void;
+    ngOnDestroy(): void;
     /**
      * Cache the parent container 'flex-direction' and update the 'flex' styles
      */
@@ -53,9 +54,10 @@ export declare class LayoutWrapDirective extends BaseFxDirective implements OnIn
     /**
      * Build the CSS that should be assigned to the element instance
      */
-    protected _buildCSS(value: any): any;
-    /**
-     * Convert layout-wrap="<value>" to expected flex-wrap style
-     */
-    protected _validateValue(value: any): any;
+    protected _buildCSS(value: any): {
+        'display': string;
+        'flex-wrap': any;
+        'flex-direction': string;
+    };
+    protected readonly flowDirection: string;
 }

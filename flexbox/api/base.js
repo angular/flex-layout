@@ -1,4 +1,5 @@
 import { applyCssPrefixes } from '../../utils/auto-prefixer';
+import { buildLayoutCSS } from '../../utils/layout-validator';
 import { ResponsiveActivation, KeyOptions } from '../responsive/responsive-activation';
 /** Abstract base class for the Layout API styling directives. */
 var BaseFxDirective = (function () {
@@ -54,6 +55,23 @@ var BaseFxDirective = (function () {
         var element = source || this._elementRef.nativeElement;
         var value = element.style['display'] || getComputedStyle(element)['display'];
         return value.trim();
+    };
+    BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
+        if (addIfMissing === void 0) { addIfMissing = false; }
+        var value = "";
+        if (target) {
+            var directionKeys_1 = Object.keys(applyCssPrefixes({ 'flex-direction': '' }));
+            var findDirection = function (styles) { return directionKeys_1.reduce(function (direction, key) {
+                return direction || styles[key];
+            }, null); };
+            var immediateValue = findDirection(target['style']);
+            value = immediateValue || findDirection(getComputedStyle(target));
+            if (!immediateValue && addIfMissing) {
+                value = value || 'row';
+                this._applyStyleToElements(buildLayoutCSS(value), [target]);
+            }
+        }
+        return value ? value.trim() : "row";
     };
     /**
      * Applies styles given via string pair or object map to the directive element.

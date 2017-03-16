@@ -31,7 +31,8 @@ import { Directive, ElementRef, Input, Optional, Renderer, Self, } from '@angula
 import { extendObject } from '../../utils/object-extend';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { LAYOUT_VALUES, LayoutDirective } from './layout';
+import { LayoutDirective } from './layout';
+import { LAYOUT_VALUES } from '../../utils/layout-validator';
 /**
  * 'layout-align' flexbox styling directive
  *  Defines positioning of child elements along main and cross axis in a layout container

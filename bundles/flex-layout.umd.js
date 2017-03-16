@@ -1,7 +1,7 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
-    (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common,global.ng.platformBrowser));
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
+  (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common,global.ng.platformBrowser));
 }(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject,_angular_common,_angular_platformBrowser) { 'use strict';
 
 /**
@@ -97,6 +97,82 @@ function toBoxOrdinal(order) {
     if (order === void 0) { order = '0'; }
     var value = order ? parseInt(order) + 1 : 1;
     return isNaN(value) ? "0" : value.toString();
+}
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */ var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+/**
+ * Validate the direction|"direction wrap" value and then update the host's inline flexbox styles
+ */
+function buildLayoutCSS(value) {
+    var _a = validateValue(value), direction = _a[0], wrap = _a[1];
+    return buildCSS(direction, wrap);
+}
+/**
+  * Validate the value to be one of the acceptable value options
+  * Use default fallback of "row"
+  */
+function validateValue(value) {
+    value = value ? value.toLowerCase() : '';
+    var _a = value.split(" "), direction = _a[0], wrap = _a[1];
+    if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
+        direction = LAYOUT_VALUES[0];
+    }
+    return [direction, validateWrapValue(wrap)];
+}
+/**
+ * Convert layout-wrap="<value>" to expected flex-wrap style
+ */
+function validateWrapValue(value) {
+    if (!!value) {
+        switch (value.toLowerCase()) {
+            case 'reverse':
+            case 'wrap-reverse':
+            case 'reverse-wrap':
+                value = 'wrap-reverse';
+                break;
+            case 'no':
+            case 'none':
+            case 'nowrap':
+                value = 'nowrap';
+                break;
+            // All other values fallback to "wrap"
+            default:
+                value = 'wrap';
+                break;
+        }
+    }
+    return value;
+}
+/**
+ * Build the CSS that should be assigned to the element instance
+ * BUG:
+ *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
+ *      Use height instead if possible; height : <xxx>vh;
+ *
+ *  This way any padding or border specified on the child elements are
+ *  laid out and drawn inside that element's specified width and height.
+ */
+function buildCSS(direction, wrap) {
+    if (wrap === void 0) { wrap = null; }
+    return {
+        'display': 'flex',
+        'box-sizing': 'border-box',
+        'flex-direction': direction,
+        'flex-wrap': !!wrap ? wrap : null
+    };
 }
 
 /**
@@ -382,6 +458,23 @@ var BaseFxDirective = (function () {
         var element = source || this._elementRef.nativeElement;
         var value = element.style['display'] || getComputedStyle(element)['display'];
         return value.trim();
+    };
+    BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
+        if (addIfMissing === void 0) { addIfMissing = false; }
+        var value = "";
+        if (target) {
+            var directionKeys_1 = Object.keys(applyCssPrefixes({ 'flex-direction': '' }));
+            var findDirection = function (styles) { return directionKeys_1.reduce(function (direction, key) {
+                return direction || styles[key];
+            }, null); };
+            var immediateValue = findDirection(target['style']);
+            value = immediateValue || findDirection(getComputedStyle(target));
+            if (!immediateValue && addIfMissing) {
+                value = value || 'row';
+                this._applyStyleToElements(buildLayoutCSS(value), [target]);
+            }
+        }
+        return value ? value.trim() : "row";
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -1247,6 +1340,13 @@ var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
 
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
 var ALIAS_DELIMITERS = /(\.|-|_)/g;
 function firstUpperCase(part) {
     var first = part.length > 0 ? part.charAt(0) : "";
@@ -1432,7 +1532,6 @@ var __metadata$5 = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -1572,67 +1671,10 @@ var LayoutDirective = (function (_super) {
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        var _a = this._validateValue(value), direction = _a[0], wrap = _a[1];
         // Update styles and announce to subscribers the *new* direction
-        this._applyStyleToElement(this._buildCSS(direction, wrap));
-        this._announcer.next(direction);
-    };
-    /**
-     * Build the CSS that should be assigned to the element instance
-     * BUG:
-     *
-     *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
-     *      Use height instead if possible; height : <xxx>vh;
-     *
-     * @todo - update all child containers to have "box-sizing: border-box"
-     *         This way any padding or border specified on the child elements are
-     *         laid out and drawn inside that element's specified width and height.
-     *
-     */
-    LayoutDirective.prototype._buildCSS = function (direction, wrap) {
-        if (wrap === void 0) { wrap = null; }
-        return {
-            'display': 'flex',
-            'box-sizing': 'border-box',
-            'flex-direction': direction,
-            'flex-wrap': !!wrap ? wrap : null
-        };
-    };
-    /**
-     * Validate the value to be one of the acceptable value options
-     * Use default fallback of "row"
-     */
-    LayoutDirective.prototype._validateValue = function (value) {
-        value = value ? value.toLowerCase() : '';
-        var _a = value.split(" "), direction = _a[0], wrap = _a[1];
-        if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
-            direction = LAYOUT_VALUES[0];
-        }
-        return [direction, this._validateWrapValue(wrap)];
-    };
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    LayoutDirective.prototype._validateWrapValue = function (value) {
-        if (!!value) {
-            switch (value.toLowerCase()) {
-                case 'reverse':
-                case 'wrap-reverse':
-                case 'reverse-wrap':
-                    value = 'wrap-reverse';
-                    break;
-                case 'no':
-                case 'none':
-                case 'nowrap':
-                    value = 'nowrap';
-                    break;
-                // All other values fallback to "wrap"
-                default:
-                    value = 'wrap';
-                    break;
-            }
-        }
-        return value;
+        var css = buildLayoutCSS(value);
+        this._applyStyleToElement(css);
+        this._announcer.next(css['flex-direction']);
     };
     return LayoutDirective;
 }(BaseFxDirective));
@@ -1864,6 +1906,12 @@ var LayoutWrapDirective = (function (_super) {
         });
         this._updateWithValue();
     };
+    LayoutWrapDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
     // *********************************************
     // Protected methods
     // *********************************************
@@ -1879,43 +1927,32 @@ var LayoutWrapDirective = (function (_super) {
         this._updateWithValue();
     };
     LayoutWrapDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput("wrap") || 'wrap';
+        value = value || this._queryInput("wrap");
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        value = this._validateValue(value);
+        value = validateWrapValue(value || 'wrap');
         this._applyStyleToElement(this._buildCSS(value));
     };
     /**
      * Build the CSS that should be assigned to the element instance
      */
     LayoutWrapDirective.prototype._buildCSS = function (value) {
-        return extendObject({ 'flex-wrap': value }, {
+        return {
             'display': 'flex',
-            'flex-direction': this._layout || 'row'
-        });
+            'flex-wrap': value,
+            'flex-direction': this.flowDirection
+        };
     };
-    /**
-     * Convert layout-wrap="<value>" to expected flex-wrap style
-     */
-    LayoutWrapDirective.prototype._validateValue = function (value) {
-        switch (value.toLowerCase()) {
-            case 'reverse':
-            case 'wrap-reverse':
-                value = 'wrap-reverse';
-                break;
-            case 'no':
-            case 'none':
-            case 'nowrap':
-                value = 'nowrap';
-                break;
-            // All other values fallback to "wrap"
-            default:
-                value = 'wrap';
-                break;
-        }
-        return value;
-    };
+    Object.defineProperty(LayoutWrapDirective.prototype, "flowDirection", {
+        get: function () {
+            var _this = this;
+            var computeFlowDirection = function () { return _this._getFlowDirection(_this._elementRef.nativeElement); };
+            return this._layoutWatcher ? this._layout : computeFlowDirection();
+        },
+        enumerable: true,
+        configurable: true
+    });
     return LayoutWrapDirective;
 }(BaseFxDirective));
 __decorate$8([
@@ -1998,14 +2035,23 @@ LayoutWrapDirective = __decorate$8([
 ], LayoutWrapDirective);
 
 /**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */
 /**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
+* The flex API permits 3 or 1 parts of the value:
+*    - `flex-grow flex-shrink flex-basis`, or
+*    - `flex-basis`
+*/
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */ function validateBasis(basis, grow, shrink) {
     if (grow === void 0) { grow = "1"; }
     if (shrink === void 0) { shrink = "1"; }
@@ -2205,7 +2251,7 @@ var FlexDirective = (function (_super) {
      */
     FlexDirective.prototype.ngOnChanges = function (changes) {
         if (changes['flex'] != null || this._mqActivation) {
-            this._onLayoutChange();
+            this._updateStyle();
         }
     };
     /**
@@ -2217,7 +2263,7 @@ var FlexDirective = (function (_super) {
         this._listenForMediaQueryChanges('flex', '', function (changes) {
             _this._updateStyle(changes.value);
         });
-        this._onLayoutChange();
+        this._updateStyle();
     };
     FlexDirective.prototype.ngOnDestroy = function () {
         _super.prototype.ngOnDestroy.call(this);
@@ -2247,16 +2293,12 @@ var FlexDirective = (function (_super) {
      * Use default fallback of "row"
      */
     FlexDirective.prototype._validateValue = function (grow, shrink, basis) {
+        // The flex-direction of this element's flex container. Defaults to 'row'.
+        var layout = this._getFlowDirection(this.parentElement, true);
+        var direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
         var css, isValue;
-        var direction = (this._layout === 'column') || (this._layout == 'column-reverse') ?
-            'column' :
-            'row';
-        if (grow == "0") {
-            grow = 0;
-        }
-        if (shrink == "0") {
-            shrink = 0;
-        }
+        grow = (grow == "0") ? 0 : grow;
+        shrink = (shrink == "0") ? 0 : shrink;
         // flex-basis allows you to specify the initial/starting main-axis size of the element,
         // before anything else is computed. It can either be a percentage or an absolute value.
         // It is, however, not the breaking point for flex-grow/shrink properties
@@ -2333,6 +2375,13 @@ var FlexDirective = (function (_super) {
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
+    Object.defineProperty(FlexDirective.prototype, "parentElement", {
+        get: function () {
+            return this._elementRef.nativeElement.parentNode;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return FlexDirective;
 }(BaseFxDirective));
 __decorate$6([
@@ -5331,6 +5380,9 @@ exports.toBoxOrient = toBoxOrient;
 exports.toBoxDirection = toBoxDirection;
 exports.toBoxOrdinal = toBoxOrdinal;
 exports.validateBasis = validateBasis;
+exports.LAYOUT_VALUES = LAYOUT_VALUES;
+exports.buildLayoutCSS = buildLayoutCSS;
+exports.validateWrapValue = validateWrapValue;
 exports.validateSuffixes = validateSuffixes;
 exports.mergeByAlias = mergeByAlias;
 exports.extendObject = extendObject;

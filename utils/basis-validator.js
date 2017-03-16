@@ -1,12 +1,21 @@
 /**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */
 /**
- * The flex API permits 3 or 1 parts of the value:
- *    - `flex-grow flex-shrink flex-basis`, or
- *    - `flex-basis`
+* The flex API permits 3 or 1 parts of the value:
+*    - `flex-grow flex-shrink flex-basis`, or
+*    - `flex-basis`
+*/
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
  */ export function validateBasis(basis, grow, shrink) {
     if (grow === void 0) { grow = "1"; }
     if (shrink === void 0) { shrink = "1"; }

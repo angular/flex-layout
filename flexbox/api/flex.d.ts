@@ -67,4 +67,5 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
      * Use default fallback of "row"
      */
     protected _validateValue(grow: number | string, shrink: number | string, basis: string | number | FlexBasisAlias): any;
+    protected readonly parentElement: any;
 }

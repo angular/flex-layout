@@ -8,8 +8,8 @@
 import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
-import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
+import { MediaMonitor } from '../../media-query/media-monitor';
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container

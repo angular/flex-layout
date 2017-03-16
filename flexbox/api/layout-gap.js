@@ -29,8 +29,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  */
 import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
 import { BaseFxDirective } from './base';
+import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { LayoutDirective, LAYOUT_VALUES } from './layout';
+import { LAYOUT_VALUES } from '../../utils/layout-validator';
 /**
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container

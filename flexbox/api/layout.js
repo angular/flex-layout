@@ -28,7 +28,7 @@ import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-export var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+import { buildLayoutCSS } from '../../utils/layout-validator';
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -168,67 +168,10 @@ var LayoutDirective = (function (_super) {
         if (this._mqActivation) {
             value = this._mqActivation.activatedInput;
         }
-        var _a = this._validateValue(value), direction = _a[0], wrap = _a[1];
         // Update styles and announce to subscribers the *new* direction
-        this._applyStyleToElement(this._buildCSS(direction, wrap));
-        this._announcer.next(direction);
-    };
-    /**
-     * Build the CSS that should be assigned to the element instance
-     * BUG:
-     *
-     *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
-     *      Use height instead if possible; height : <xxx>vh;
-     *
-     * @todo - update all child containers to have "box-sizing: border-box"
-     *         This way any padding or border specified on the child elements are
-     *         laid out and drawn inside that element's specified width and height.
-     *
-     */
-    LayoutDirective.prototype._buildCSS = function (direction, wrap) {
-        if (wrap === void 0) { wrap = null; }
-        return {
-            'display': 'flex',
-            'box-sizing': 'border-box',
-            'flex-direction': direction,
-            'flex-wrap': !!wrap ? wrap : null
-        };
-    };
-    /**
-     * Validate the value to be one of the acceptable value options
-     * Use default fallback of "row"
-     */
-    LayoutDirective.prototype._validateValue = function (value) {
-        value = value ? value.toLowerCase() : '';
-        var _a = value.split(" "), direction = _a[0], wrap = _a[1];
-        if (!LAYOUT_VALUES.find(function (x) { return x === direction; })) {
-            direction = LAYOUT_VALUES[0];
-        }
-        return [direction, this._validateWrapValue(wrap)];
-    };
-    /**
-       * Convert layout-wrap="<value>" to expected flex-wrap style
-       */
-    LayoutDirective.prototype._validateWrapValue = function (value) {
-        if (!!value) {
-            switch (value.toLowerCase()) {
-                case 'reverse':
-                case 'wrap-reverse':
-                case 'reverse-wrap':
-                    value = 'wrap-reverse';
-                    break;
-                case 'no':
-                case 'none':
-                case 'nowrap':
-                    value = 'nowrap';
-                    break;
-                // All other values fallback to "wrap"
-                default:
-                    value = 'wrap';
-                    break;
-            }
-        }
-        return value;
+        var css = buildLayoutCSS(value);
+        this._applyStyleToElement(css);
+        this._announcer.next(css['flex-direction']);
     };
     return LayoutDirective;
 }(BaseFxDirective));
