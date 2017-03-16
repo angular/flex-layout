@@ -20,6 +20,11 @@ export declare type NgClassType = string | string[] | Set<string> | {
 export declare class ClassDirective extends NgClass implements OnInit, OnChanges, OnDestroy {
     protected monitor: MediaMonitor;
     protected _bpRegistry: BreakPointRegistry;
+    /**
+     * Intercept ngClass assignments so we cache the default classes
+     * which are merged with activated styles or used as fallbacks.
+     */
+    ngClassBase: NgClassType;
     ngClassXs: NgClassType;
     ngClassSm: NgClassType;
     ngClassMd: NgClassType;
@@ -34,6 +39,7 @@ export declare class ClassDirective extends NgClass implements OnInit, OnChanges
     ngClassGtMd: NgClassType;
     ngClassGtLg: NgClassType;
     /** Deprecated selectors */
+    classBase: NgClassType;
     classXs: NgClassType;
     classSm: NgClassType;
     classMd: NgClassType;
@@ -58,7 +64,7 @@ export declare class ClassDirective extends NgClass implements OnInit, OnChanges
      */
     ngOnInit(): void;
     ngOnDestroy(): void;
-    protected _updateStyle(value?: NgClassType): void;
+    protected _updateClass(value?: NgClassType): void;
     /**
      * Special adapter to cross-cut responsive behaviors
      * into the ClassDirective

@@ -42,6 +42,18 @@ var ClassDirective = (function (_super) {
         _this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
         return _this;
     }
+    Object.defineProperty(ClassDirective.prototype, "ngClassBase", {
+        /**
+         * Intercept ngClass assignments so we cache the default classes
+         * which are merged with activated styles or used as fallbacks.
+         */
+        set: function (val) {
+            this._base.cacheInput('class', val, true);
+            this.ngClass = this._base.inputMap['class'];
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClassDirective.prototype, "ngClassXs", {
         /* tslint:disable */
         set: function (val) { this._base.cacheInput('classXs', val, true); },
@@ -120,8 +132,13 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(ClassDirective.prototype, "classXs", {
+    Object.defineProperty(ClassDirective.prototype, "classBase", {
         /** Deprecated selectors */
+        set: function (val) { this._base.cacheInput('class', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClassDirective.prototype, "classXs", {
         set: function (val) { this._base.cacheInput('classXs', val, true); },
         enumerable: true,
         configurable: true
@@ -206,7 +223,7 @@ var ClassDirective = (function (_super) {
             return ("ngClass" + it.suffix in changes) || ("class" + it.suffix in changes);
         });
         if (changed || this._base.mqActivation) {
-            this._updateStyle();
+            this._updateClass();
         }
     };
     /**
@@ -216,14 +233,14 @@ var ClassDirective = (function (_super) {
     ClassDirective.prototype.ngOnInit = function () {
         var _this = this;
         this._base.listenForMediaQueryChanges('class', '', function (changes) {
-            _this._updateStyle(changes.value);
+            _this._updateClass(changes.value);
         });
-        this._updateStyle();
+        this._updateClass();
     };
     ClassDirective.prototype.ngOnDestroy = function () {
         this._base.ngOnDestroy();
     };
-    ClassDirective.prototype._updateStyle = function (value) {
+    ClassDirective.prototype._updateClass = function (value) {
         var clazz = value || this._base.queryInput("class") || '';
         if (this._base.mqActivation) {
             clazz = this._base.mqActivation.activatedInput;
@@ -233,6 +250,11 @@ var ClassDirective = (function (_super) {
     };
     return ClassDirective;
 }(NgClass));
+__decorate([
+    Input('ngClass'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassBase", null);
 __decorate([
     Input('ngClass.xs'),
     __metadata("design:type", Object),
@@ -298,6 +320,11 @@ __decorate([
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassGtLg", null);
+__decorate([
+    Input('class'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], ClassDirective.prototype, "classBase", null);
 __decorate([
     Input('class.xs'),
     __metadata("design:type", Object),
@@ -365,7 +392,7 @@ __decorate([
 ], ClassDirective.prototype, "classGtLg", null);
 ClassDirective = __decorate([
     Directive({
-        selector: "\n    [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n        \n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
+        selector: "\n    [class],\n    [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],        \n    [ngClass], \n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
     }),
     __metadata("design:paramtypes", [MediaMonitor,
         BreakPointRegistry,
