@@ -103,6 +103,62 @@ describe('flex directive', () => {
       });
     });
 
+    it('should work fxLayout parents', () => {
+      fixture = componentWithTemplate(`
+                <div fxLayout="column" class="test">
+                  <div fxFlex="30px" fxFlex.gt-sm="50"  >  </div>
+                </div>
+              `);
+      fixture.detectChanges();
+      let parent = queryFor(fixture, ".test")[0].nativeElement;
+      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
+
+      // parent flex-direction found with 'column' with child height styles
+      expect(parent).toHaveCssStyle({'flex-direction': 'column', 'display': 'flex'});
+      expect(element).toHaveCssStyle({'min-height': '30px'});
+      expect(element).not.toHaveCssStyle({'min-width': '30px'});
+    });
+
+    it('should not work with non-direct-parent fxLayouts', async(() => {
+      fixture = componentWithTemplate(`
+                <div fxLayout="column">
+                  <div class="test">
+                    <div fxFlex="40px" fxFlex.gt-sm="50"  >  </div>
+                  </div>
+                </div>
+              `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
+      let parent  = queryFor(fixture, ".test")[0].nativeElement;
+
+      setTimeout(() => {
+        // The parent flex-direction not found;
+        // A flex-direction should have been auto-injected to the parent...
+        // fallback to 'row' and set child width styles accordingly
+        expect(parent).toHaveCssStyle({ 'flex-direction': 'row' });
+        expect(element).toHaveCssStyle({ 'min-width': '40px' });
+        expect(element).not.toHaveCssStyle({ 'min-height': '40px' });
+      });
+
+    }));
+
+    it('should work with styled-parent flex directions', () => {
+      fixture = componentWithTemplate(`
+                <div fxLayout="row">
+                  <div style="flex-direction:column" class="parent">
+                    <div fxFlex="60px" >  </div>
+                  </div>
+                </div>
+              `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
+      let parent  = queryFor(fixture, ".parent")[0].nativeElement;
+
+      // parent flex-direction found with 'column'; set child with height styles
+      expect(element).toHaveCssStyle({ 'min-height': '60px' });
+      expect(parent).toHaveCssStyle({ 'flex-direction': 'column' });
+    });
+
     it('should work with "1 1 auto" values', () => {
       fixture = componentWithTemplate(`
                 <div fxLayout="column">

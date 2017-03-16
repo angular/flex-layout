@@ -21,9 +21,7 @@ import {Observable} from 'rxjs/Observable';
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-
-export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
-
+import {buildLayoutCSS} from '../../utils/layout-validator';
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -117,73 +115,17 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-    let [direction, wrap] = this._validateValue(value);
 
     // Update styles and announce to subscribers the *new* direction
-    this._applyStyleToElement(this._buildCSS(direction, wrap));
-    this._announcer.next(direction);
+    let css = buildLayoutCSS(value);
+
+    this._applyStyleToElement(css);
+    this._announcer.next(css['flex-direction']);
   }
 
 
-  /**
-   * Build the CSS that should be assigned to the element instance
-   * BUG:
-   *
-   *   1) min-height on a column flex container won’t apply to its flex item children in IE 10-11.
-   *      Use height instead if possible; height : <xxx>vh;
-   *
-   * @todo - update all child containers to have "box-sizing: border-box"
-   *         This way any padding or border specified on the child elements are
-   *         laid out and drawn inside that element's specified width and height.
-   *
-   */
-  protected _buildCSS(direction, wrap = null) {
-    return {
-      'display': 'flex',
-      'box-sizing': 'border-box',
-      'flex-direction': direction,
-      'flex-wrap': !!wrap ? wrap : null
-    };
-  }
 
-  /**
-   * Validate the value to be one of the acceptable value options
-   * Use default fallback of "row"
-   */
-  protected _validateValue(value) {
-    value = value ? value.toLowerCase() : '';
-    let [ direction, wrap ] = value.split(" ");
-    if (!LAYOUT_VALUES.find(x => x === direction)) {
-      direction = LAYOUT_VALUES[0];
-    }
-    return [direction, this._validateWrapValue(wrap)];
 
-  }
 
-  /**
-     * Convert layout-wrap="<value>" to expected flex-wrap style
-     */
-    protected _validateWrapValue(value) {
-      if (!!value) {
-        switch (value.toLowerCase()) {
-          case 'reverse':
-          case 'wrap-reverse':
-          case 'reverse-wrap':
-            value = 'wrap-reverse';
-            break;
 
-          case 'no':
-          case 'none':
-          case 'nowrap':
-            value = 'nowrap';
-            break;
-
-          // All other values fallback to "wrap"
-          default:
-            value = 'wrap';
-            break;
-        }
-      }
-      return value;
-    }
 }

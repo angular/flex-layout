@@ -11,7 +11,7 @@ import {Component} from '@angular/core';
       <md-card-subtitle>Explore impact of non-numerical values for the 'fxFlex' API:</md-card-subtitle>
       <md-card-content>
         <div class="containerX">
-          <div fxLayout="row" fxLayoutWrap class="colored box nopad" >
+          <div fxLayout="row wrap" class="colored box nopad" >
             <div fxFlex="none">     [flex="none"]       </div>
             <div fxFlex>            [flex]              </div>
             <div fxFlex="nogrow">   [flex="nogrow"]     </div>

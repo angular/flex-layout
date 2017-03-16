@@ -16,13 +16,12 @@ import {
   SimpleChanges, Self, Optional,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {extendObject} from '../../utils/object-extend';
 
 import {BaseFxDirective} from './base';
+import {LayoutDirective} from './layout';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {LayoutDirective, LAYOUT_VALUES} from './layout';
-
+import {validateWrapValue, LAYOUT_VALUES} from '../../utils/layout-validator';
 /**
  * @deprecated
  * This functionality is now part of the `fxLayout` API
@@ -96,6 +95,12 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
     this._updateWithValue();
   }
 
+  ngOnDestroy() {
+      super.ngOnDestroy();
+    if (this._layoutWatcher) {
+      this._layoutWatcher.unsubscribe();
+    }
+  }
 
   // *********************************************
   // Protected methods
@@ -114,47 +119,29 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   }
 
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput("wrap") || 'wrap';
+    value = value || this._queryInput("wrap");
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-    value = this._validateValue(value);
+    value = validateWrapValue(value || 'wrap');
 
     this._applyStyleToElement(this._buildCSS(value));
   }
-
 
   /**
    * Build the CSS that should be assigned to the element instance
    */
   protected _buildCSS(value) {
-    return extendObject({ 'flex-wrap': value }, {
-      'display' : 'flex',
-      'flex-direction' : this._layout || 'row'
-    });
+    return {
+      'display': 'flex',
+      'flex-wrap': value,
+      'flex-direction': this.flowDirection
+    };
   }
 
-  /**
-   * Convert layout-wrap="<value>" to expected flex-wrap style
-   */
-  protected _validateValue(value) {
-    switch (value.toLowerCase()) {
-      case 'reverse':
-      case 'wrap-reverse':
-        value = 'wrap-reverse';
-        break;
-
-      case 'no':
-      case 'none':
-      case 'nowrap':
-        value = 'nowrap';
-        break;
-
-      // All other values fallback to "wrap"
-      default:
-        value = 'wrap';
-        break;
-    }
-    return value;
+  protected get flowDirection(): string {
+    let computeFlowDirection = () => this._getFlowDirection(this._elementRef.nativeElement);
+    return this._layoutWatcher ? this._layout : computeFlowDirection();
   }
+
 }

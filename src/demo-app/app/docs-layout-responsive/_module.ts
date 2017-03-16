@@ -22,7 +22,7 @@ import {DemoResponsiveShowHide} from "./responsiveShowHide.demo";
 import {DemoResponsiveFlexDirectives} from "./responsiveFlexDirective.demo";
 import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
 import {DemoResponsiveStyle} from "./responsiveStyle.demo";
-import {SharedModule} from '../shared/shared.module';
+import {SharedModule} from '../shared/_module';
 
 @NgModule({
   declarations : [

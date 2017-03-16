@@ -8,6 +8,7 @@
 import {ElementRef, Renderer, OnDestroy} from '@angular/core';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
+import {buildLayoutCSS} from '../../utils/layout-validator';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
@@ -91,6 +92,25 @@ export abstract class BaseFxDirective implements OnDestroy {
     let element: HTMLElement = source || this._elementRef.nativeElement;
     let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
     return value.trim();
+  }
+
+  protected _getFlowDirection(target: any, addIfMissing = false): string {
+      let value = "";
+      if ( target ) {
+        let directionKeys = Object.keys(applyCssPrefixes({'flex-direction': ''}));
+        let findDirection = (styles) => directionKeys.reduce((direction, key) => {
+          return direction || styles[key];
+        }, null);
+
+        let immediateValue = findDirection(target['style']);
+        value = immediateValue || findDirection(getComputedStyle(target as Element));
+        if ( !immediateValue && addIfMissing ) {
+          value = value || 'row';
+          this._applyStyleToElements(buildLayoutCSS(value), [target]);
+        }
+      }
+
+      return value ? value.trim() : "row";
   }
 
   /**
