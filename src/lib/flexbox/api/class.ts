@@ -32,16 +32,27 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
  */
 @Directive({
   selector: `
+    [class],
     [class.xs], [class.sm], [class.md], [class.lg], [class.xl], 
     [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     
-    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],
-        
+    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],        
+    [ngClass], 
     [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
     [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], 
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  
   `
 })
 export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDestroy {
+
+  /**
+   * Intercept ngClass assignments so we cache the default classes
+   * which are merged with activated styles or used as fallbacks.
+   */
+  @Input('ngClass')
+  set ngClassBase(val: NgClassType) {
+    this._base.cacheInput('class', val, true);
+    this.ngClass = this._base.inputMap['class'];
+  }
 
   /* tslint:disable */
   @Input('ngClass.xs')    set ngClassXs(val: NgClassType) { this._base.cacheInput('classXs', val, true); }
@@ -61,6 +72,7 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
   @Input('ngClass.gt-lg') set ngClassGtLg(val: NgClassType) { this._base.cacheInput('classGtLg', val, true); };
 
   /** Deprecated selectors */
+  @Input('class')         set classBase(val: NgClassType) { this._base.cacheInput('class', val, true); }
   @Input('class.xs')      set classXs(val: NgClassType) { this._base.cacheInput('classXs', val, true); }
   @Input('class.sm')      set classSm(val: NgClassType) {  this._base.cacheInput('classSm', val, true); };
   @Input('class.md')      set classMd(val: NgClassType) { this._base.cacheInput('classMd', val, true);};
@@ -94,7 +106,7 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
       return (`ngClass${it.suffix}` in changes) || (`class${it.suffix}` in changes);
     });
     if (changed || this._base.mqActivation) {
-      this._updateStyle();
+      this._updateClass();
     }
   }
 
@@ -104,16 +116,16 @@ export class ClassDirective extends NgClass implements OnInit, OnChanges, OnDest
    */
   ngOnInit() {
     this._base.listenForMediaQueryChanges('class', '', (changes: MediaChange) => {
-      this._updateStyle(changes.value);
+      this._updateClass(changes.value);
     });
-    this._updateStyle();
+    this._updateClass();
   }
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
   }
 
-  protected _updateStyle(value?: NgClassType) {
+  protected _updateClass(value?: NgClassType) {
     let clazz = value || this._base.queryInput("class") || '';
     if (this._base.mqActivation) {
       clazz = this._base.mqActivation.activatedInput;
