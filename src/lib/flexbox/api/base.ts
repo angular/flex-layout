@@ -22,20 +22,10 @@ export type StyleDefinition = string|{[property: string]: string|number};
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy {
-  /**
-   * Original dom Elements CSS display style
-   */
-  protected _display;
 
-  /**
-   * MediaQuery Activation Tracker
-   */
-  protected _mqActivation: ResponsiveActivation;
-
-  /**
-   *  Dictionary of input keys with associated values
-   */
-  protected _inputMap = {};
+  get hasMediaQueryListener() {
+    return !!this._mqActivation;
+  }
 
   /**
    *
@@ -45,6 +35,7 @@ export abstract class BaseFxDirective implements OnDestroy {
               protected _renderer: Renderer) {
     this._display = this._getDisplayStyle();
   }
+
 
   // *********************************************
   // Accessor Methods
@@ -172,12 +163,15 @@ export abstract class BaseFxDirective implements OnDestroy {
   protected _listenForMediaQueryChanges(key: string,
                                         defaultValue: any,
                                         onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
-    let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-    return this._mqActivation = new ResponsiveActivation(
-        keyOptions,
-        this._mediaMonitor,
-        (change) => onMediaQueryChange.call(this, change)
-    );
+    if ( !this._mqActivation ) {
+      let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+      this._mqActivation = new ResponsiveActivation(
+          keyOptions,
+          this._mediaMonitor,
+          (change) => onMediaQueryChange(change)
+      );
+    }
+    return this._mqActivation;
   }
 
   /**
@@ -201,4 +195,16 @@ export abstract class BaseFxDirective implements OnDestroy {
     return this._mqActivation.hasKeyValue(key);
   }
 
+  /** Original dom Elements CSS display style */
+  protected _display;
+
+  /**
+   * MediaQuery Activation Tracker
+   */
+  protected _mqActivation: ResponsiveActivation;
+
+  /**
+   *  Dictionary of input keys with associated values
+   */
+  protected _inputMap = {};
 }

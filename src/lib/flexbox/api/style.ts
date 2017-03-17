@@ -10,11 +10,11 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  OnInit,
-  OnChanges,
+  DoCheck,
   Renderer,
   KeyValueDiffers,
-  SimpleChanges, SecurityContext
+  SimpleChanges, OnChanges,
+  SecurityContext
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 
@@ -47,7 +47,7 @@ import {
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] 
   `
 })
-export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDestroy {
+export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDestroy {
 
   /**
    * Intercept ngStyle assignments so we cache the default styles
@@ -78,15 +78,15 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
 
   /** Deprecated selectors */
   @Input('style.xs')      set styleXs(val: NgStyleType) { this._base.cacheInput('styleXs', val, true); }
-  @Input('style.sm')      set styleSm(val: NgStyleType) {  this._base.cacheInput('styleSm', val, true); };
+  @Input('style.sm')      set styleSm(val: NgStyleType) { this._base.cacheInput('styleSm', val, true); };
   @Input('style.md')      set styleMd(val: NgStyleType) { this._base.cacheInput('styleMd', val, true);};
   @Input('style.lg')      set styleLg(val: NgStyleType) { this._base.cacheInput('styleLg', val, true); };
   @Input('style.xl')      set styleXl(val: NgStyleType) { this._base.cacheInput('styleXl', val, true); };
 
-  @Input('style.lt-xs')   set styleLtXs(val: NgStyleType) { this._base.cacheInput('styleLtXs', val, true); };
   @Input('style.lt-sm')   set styleLtSm(val: NgStyleType) { this._base.cacheInput('styleLtSm', val, true); };
-  @Input('style.lt-md')   set styleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true);};
-  @Input('style.lt-lg')   set styleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true); };
+  @Input('style.lt-md')   set styleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true); };
+  @Input('style.lt-lg')   set styleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true);};
+  @Input('style.lt-xl')   set styleLtXl(val: NgStyleType) { this._base.cacheInput('styleLtXl', val, true); };
 
   @Input('style.gt-xs')   set styleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
   @Input('style.gt-sm')   set styleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true); };
@@ -110,31 +110,49 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
     this._base.cacheInput('style', _ngEl.nativeElement.getAttribute("style"), true);
   }
 
+  // ******************************************************************
+  // Lifecycle Hookks
+  // ******************************************************************
+
   /**
-   * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+   * For @Input changes on the current mq activation property
    */
   ngOnChanges(changes: SimpleChanges) {
-    const changed = this._bpRegistry.items.some(it => {
-      return (`ngStyle${it.suffix}` in changes) || (`style${it.suffix}` in changes);
-    });
-    if (changed || this._base.mqActivation) {
+    if (this._base.activeKey in changes) {
       this._updateStyle();
     }
   }
 
   /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
+   * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
    */
-  ngOnInit() {
-    this._base.listenForMediaQueryChanges('style', '', (changes: MediaChange) => {
-      this._updateStyle(changes.value);
-    });
+  ngDoCheck() {
+    if (!this._base.hasMediaQueryListener) {
+      this._configureMQListener();
+    }
+    super.ngDoCheck();
   }
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
   }
+
+  // ******************************************************************
+  // Internal Methods
+  // ******************************************************************
+
+  /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    protected _configureMQListener() {
+      this._base.listenForMediaQueryChanges('style', '', (changes: MediaChange) => {
+        this._updateStyle(changes.value);
+
+        // trigger NgClass::_applyIterableChanges()
+        super.ngDoCheck();
+      });
+    }
 
   // ************************************************************************
   // Private Internal Methods
@@ -161,9 +179,15 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
    * which property value should be used for the style update
    */
   protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer) {
-    this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
+    this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
+    this._buildCacheInterceptor();
+  }
 
-    // Build intercept to convert raw strings to ngStyleMap
+
+  /**
+   * Build intercept to convert raw strings to ngStyleMap
+   */
+  protected _buildCacheInterceptor() {
     let cacheInput = this._base.cacheInput.bind(this._base);
     this._base.cacheInput = (key?: string, source?: any, cacheRaw = false, merge = true) => {
       let styles = this._buildStyleMap(source);
@@ -173,7 +197,6 @@ export class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDest
       cacheInput(key, styles, cacheRaw);
     };
   }
-
   /**
    * Convert raw strings to ngStyleMap; which is required by ngStyle
    * NOTE: Raw string key-value pairs MUST be delimited by `;`

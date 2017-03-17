@@ -1,12 +1,36 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import {ElementRef, Renderer} from '@angular/core';
+
 import {BaseFxDirective} from './base';
 import {ResponsiveActivation} from './../responsive/responsive-activation';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
+import {MediaMonitor} from '../../media-query/media-monitor';
+
 
 /**
  * Adapter to the BaseFxDirective abstract class so it can be used via composition.
  * @see BaseFxDirective
  */
 export class BaseFxDirectiveAdapter extends BaseFxDirective {
+
+  /**
+   * Accessor to determine which @Input property is "active"
+   * e.g. which property value will be used.
+   */
+  get activeKey() {
+    let mqa = this._mqActivation;
+    let key = mqa ? mqa.activatedInputKey : this._baseKey;
+    // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
+    return (key === 'class') ? 'klazz' : key;
+  }
+
+  /** Hash map of all @Input keys/values defined/used */
   get inputMap() {
     return this._inputMap;
   }
@@ -19,10 +43,21 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   }
 
   /**
+   * BaseFxDirectiveAdapter constructor
+   */
+  constructor(protected _baseKey: string,   // non-responsive @Input property name
+              protected _mediaMonitor: MediaMonitor,
+              protected _elementRef: ElementRef,
+              protected _renderer: Renderer ) {
+    super(_mediaMonitor, _elementRef, _renderer);
+  }
+
+
+  /**
    * @see BaseFxDirective._queryInput
    */
   queryInput(key) {
-    return this._queryInput(key);
+    return key ? this._queryInput(key) : undefined;
   }
 
   /**
