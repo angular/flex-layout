@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
-    "@angular/common": ">=2.3 <4.1",
-    "@angular/core": ">=2.3 <4.1",
+    "@angular/common": "^2.3.5",
+    "@angular/core": "^2.3.5",
     "rxjs": "^5.0.1",
-    "zone.js": "^0.8.5"
+    "zone.js": "^0.7.2"
   }
 }
