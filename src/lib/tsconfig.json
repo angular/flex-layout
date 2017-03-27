@@ -19,9 +19,6 @@
     "outDir": "../../dist/@angular/flex-layout",
     "typeRoots": [
       "../../node_modules/@types"
-    ],
-    "types": [
-      "rx/rx.all"
     ]
   },
   "exclude": [
