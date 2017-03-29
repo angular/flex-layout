@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnDestroy, OnInit, OnChanges, Renderer, KeyValueDiffers, SimpleChanges } from '@angular/core';
+import { ElementRef, OnDestroy, DoCheck, Renderer, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
@@ -16,7 +16,7 @@ import { NgStyleType } from '../../utils/style-transforms';
  * Directive to add responsive support for ngStyle.
  *
  */
-export declare class StyleDirective extends NgStyle implements OnInit, OnChanges, OnDestroy {
+export declare class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDestroy {
     private monitor;
     protected _bpRegistry: BreakPointRegistry;
     protected _sanitizer: DomSanitizer;
@@ -44,10 +44,10 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
     styleMd: NgStyleType;
     styleLg: NgStyleType;
     styleXl: NgStyleType;
-    styleLtXs: NgStyleType;
     styleLtSm: NgStyleType;
     styleLtMd: NgStyleType;
     styleLtLg: NgStyleType;
+    styleLtXl: NgStyleType;
     styleGtXs: NgStyleType;
     styleGtSm: NgStyleType;
     styleGtMd: NgStyleType;
@@ -58,15 +58,19 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
      */
     constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _sanitizer: DomSanitizer, _differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
     /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     * For @Input changes on the current mq activation property
      */
     ngOnChanges(changes: SimpleChanges): void;
     /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
-    ngOnInit(): void;
+    ngDoCheck(): void;
     ngOnDestroy(): void;
+    /**
+       * Build an mqActivation object that bridges
+       * mql change events to onMediaQueryChange handlers
+       */
+    protected _configureMQListener(): void;
     /**
      * Use the currently activated input property and assign to
      * `ngStyle` which does the style injections...
@@ -78,6 +82,10 @@ export declare class StyleDirective extends NgStyle implements OnInit, OnChanges
      * which property value should be used for the style update
      */
     protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer): void;
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     */
+    protected _buildCacheInterceptor(): void;
     /**
      * Convert raw strings to ngStyleMap; which is required by ngStyle
      * NOTE: Raw string key-value pairs MUST be delimited by `;`

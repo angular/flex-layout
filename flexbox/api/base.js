@@ -16,6 +16,13 @@ var BaseFxDirective = (function () {
         this._inputMap = {};
         this._display = this._getDisplayStyle();
     }
+    Object.defineProperty(BaseFxDirective.prototype, "hasMediaQueryListener", {
+        get: function () {
+            return !!this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // *********************************************
     // Accessor Methods
     // *********************************************
@@ -122,9 +129,11 @@ var BaseFxDirective = (function () {
      *  (or closest match).
      */
     BaseFxDirective.prototype._listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
-        var _this = this;
-        var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-        return this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange.call(_this, change); });
+        if (!this._mqActivation) {
+            var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
+        }
+        return this._mqActivation;
     };
     Object.defineProperty(BaseFxDirective.prototype, "childrenNodes", {
         /**

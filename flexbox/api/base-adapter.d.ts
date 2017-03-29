@@ -1,16 +1,39 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { ElementRef, Renderer } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { ResponsiveActivation } from './../responsive/responsive-activation';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
+import { MediaMonitor } from '../../media-query/media-monitor';
 /**
  * Adapter to the BaseFxDirective abstract class so it can be used via composition.
  * @see BaseFxDirective
  */
 export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
+    protected _baseKey: string;
+    protected _mediaMonitor: MediaMonitor;
+    protected _elementRef: ElementRef;
+    protected _renderer: Renderer;
+    /**
+     * Accessor to determine which @Input property is "active"
+     * e.g. which property value will be used.
+     */
+    readonly activeKey: string;
+    /** Hash map of all @Input keys/values defined/used */
     readonly inputMap: {};
     /**
      * @see BaseFxDirective._mqActivation
      */
     readonly mqActivation: ResponsiveActivation;
+    /**
+     * BaseFxDirectiveAdapter constructor
+     */
+    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer);
     /**
      * @see BaseFxDirective._queryInput
      */

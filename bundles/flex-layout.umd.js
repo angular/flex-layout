@@ -419,6 +419,13 @@ var BaseFxDirective = (function () {
         this._inputMap = {};
         this._display = this._getDisplayStyle();
     }
+    Object.defineProperty(BaseFxDirective.prototype, "hasMediaQueryListener", {
+        get: function () {
+            return !!this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // *********************************************
     // Accessor Methods
     // *********************************************
@@ -525,9 +532,11 @@ var BaseFxDirective = (function () {
      *  (or closest match).
      */
     BaseFxDirective.prototype._listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
-        var _this = this;
-        var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-        return this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange.call(_this, change); });
+        if (!this._mqActivation) {
+            var keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
+            this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor, function (change) { return onMediaQueryChange(change); });
+        }
+        return this._mqActivation;
     };
     Object.defineProperty(BaseFxDirective.prototype, "childrenNodes", {
         /**
@@ -570,10 +579,34 @@ var __extends = (this && this.__extends) || (function () {
  */
 var BaseFxDirectiveAdapter = (function (_super) {
     __extends(BaseFxDirectiveAdapter, _super);
-    function BaseFxDirectiveAdapter() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    /**
+     * BaseFxDirectiveAdapter constructor
+     */
+    function BaseFxDirectiveAdapter(_baseKey, // non-responsive @Input property name
+        _mediaMonitor, _elementRef, _renderer) {
+        var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
+        _this._baseKey = _baseKey;
+        _this._mediaMonitor = _mediaMonitor;
+        _this._elementRef = _elementRef;
+        _this._renderer = _renderer;
+        return _this;
     }
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "activeKey", {
+        /**
+         * Accessor to determine which @Input property is "active"
+         * e.g. which property value will be used.
+         */
+        get: function () {
+            var mqa = this._mqActivation;
+            var key = mqa ? mqa.activatedInputKey : this._baseKey;
+            // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
+            return (key === 'class') ? 'klazz' : key;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
+        /** Hash map of all @Input keys/values defined/used */
         get: function () {
             return this._inputMap;
         },
@@ -594,7 +627,7 @@ var BaseFxDirectiveAdapter = (function (_super) {
      * @see BaseFxDirective._queryInput
      */
     BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
-        return this._queryInput(key);
+        return key ? this._queryInput(key) : undefined;
     };
     /**
      *  Save the property value.
@@ -4368,218 +4401,247 @@ var __metadata$14 = (this && this.__metadata) || function (k, v) {
 var ClassDirective = (function (_super) {
     __extends$11(ClassDirective, _super);
     /* tslint:enable */
-    function ClassDirective(monitor, _bpRegistry, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
+    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
         var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
         _this.monitor = monitor;
-        _this._bpRegistry = _bpRegistry;
-        _this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
+        _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
+        _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "ngClassBase", {
         /**
          * Intercept ngClass assignments so we cache the default classes
          * which are merged with activated styles or used as fallbacks.
+         * Note: Base ngClass values are applied during ngDoCheck()
          */
         set: function (val) {
-            this._base.cacheInput('class', val, true);
-            this.ngClass = this._base.inputMap['class'];
+            this._ngClassAdapter.cacheInput('ngClass', val, true);
+            this.ngClass = val;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "ngClassXs", {
         /* tslint:disable */
-        set: function (val) { this._base.cacheInput('classXs', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassXs', val, true); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "ngClassSm", {
-        set: function (val) { this._base.cacheInput('classSm', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassMd", {
-        set: function (val) { this._base.cacheInput('classMd', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassLg", {
-        set: function (val) { this._base.cacheInput('classLg', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassXl", {
-        set: function (val) { this._base.cacheInput('classXl', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
-    Object.defineProperty(ClassDirective.prototype, "ngClassLtXs", {
-        set: function (val) { this._base.cacheInput('classLtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassLtSm", {
-        set: function (val) { this._base.cacheInput('classLtSm', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassLtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassLtMd", {
-        set: function (val) { this._base.cacheInput('classLtMd', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassLtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassLtLg", {
-        set: function (val) { this._base.cacheInput('classLtLg', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassLtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    Object.defineProperty(ClassDirective.prototype, "ngClassLtXl", {
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassLtXl', val, true); },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClassDirective.prototype, "ngClassGtXs", {
-        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassGtXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassGtSm", {
-        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassGtMd", {
-        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassGtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "ngClassGtLg", {
-        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
+        set: function (val) { this._ngClassAdapter.cacheInput('ngClassGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classBase", {
         /** Deprecated selectors */
-        set: function (val) { this._base.cacheInput('class', val, true); },
+        /**
+         * Base class selector values get applied immediately and are considered destructive overwrites to
+         * all previous class assignments
+         *
+         * Delegate to NgClass:klass setter and cache value for base fallback from responsive APIs.
+         */
+        set: function (val) {
+            this._classAdapter.cacheInput('_rawClass', val, true);
+            this.klass = val;
+        },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classXs", {
-        set: function (val) { this._base.cacheInput('classXs', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classXs', val, true); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classSm", {
-        set: function (val) { this._base.cacheInput('classSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classMd", {
-        set: function (val) { this._base.cacheInput('classMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classLg", {
-        set: function (val) { this._base.cacheInput('classLg', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classXl", {
-        set: function (val) { this._base.cacheInput('classXl', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
-    Object.defineProperty(ClassDirective.prototype, "classLtXs", {
-        set: function (val) { this._base.cacheInput('classLtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    
     Object.defineProperty(ClassDirective.prototype, "classLtSm", {
-        set: function (val) { this._base.cacheInput('classLtSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classLtMd", {
-        set: function (val) { this._base.cacheInput('classLtMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classLtLg", {
-        set: function (val) { this._base.cacheInput('classLtLg', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    Object.defineProperty(ClassDirective.prototype, "classLtXl", {
+        set: function (val) { this._classAdapter.cacheInput('classLtXl', val, true); },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClassDirective.prototype, "classGtXs", {
-        set: function (val) { this._base.cacheInput('classGtXs', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classGtSm", {
-        set: function (val) { this._base.cacheInput('classGtSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classGtMd", {
-        set: function (val) { this._base.cacheInput('classGtMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
     Object.defineProperty(ClassDirective.prototype, "classGtLg", {
-        set: function (val) { this._base.cacheInput('classGtLg', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    Object.defineProperty(ClassDirective.prototype, "initialClasses", {
+        /**
+         * Initial value of the `class` attribute; used as
+         * fallback and will be merged with nay `ngClass` values
+         */
+        get: function () {
+            return this._classAdapter.queryInput('_rawClass') || "";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // ******************************************************************
+    // Lifecycle Hookks
+    // ******************************************************************
     /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     * For @Input changes on the current mq activation property
      */
     ClassDirective.prototype.ngOnChanges = function (changes) {
-        var changed = this._bpRegistry.items.some(function (it) {
-            return ("ngClass" + it.suffix in changes) || ("class" + it.suffix in changes);
-        });
-        if (changed || this._base.mqActivation) {
-            this._updateClass();
+        if (this._classAdapter.activeKey in changes) {
+            this._updateKlass();
+        }
+        if (this._ngClassAdapter.activeKey in changes) {
+            this._updateNgClass();
         }
     };
     /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
-    ClassDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        this._base.listenForMediaQueryChanges('class', '', function (changes) {
-            _this._updateClass(changes.value);
-        });
-        this._updateClass();
+    ClassDirective.prototype.ngDoCheck = function () {
+        if (!this._classAdapter.hasMediaQueryListener) {
+            this._configureMQListener();
+        }
+        _super.prototype.ngDoCheck.call(this);
     };
     ClassDirective.prototype.ngOnDestroy = function () {
-        this._base.ngOnDestroy();
+        this._classAdapter.ngOnDestroy();
+        this._ngClassAdapter.ngOnDestroy();
     };
-    ClassDirective.prototype._updateClass = function (value) {
-        var clazz = value || this._base.queryInput("class") || '';
-        if (this._base.mqActivation) {
-            clazz = this._base.mqActivation.activatedInput;
+    // ******************************************************************
+    // Internal Methods
+    // ******************************************************************
+    /**
+     * Build an mqActivation object that bridges
+     * mql change events to onMediaQueryChange handlers
+     */
+    ClassDirective.prototype._configureMQListener = function () {
+        var _this = this;
+        this._classAdapter.listenForMediaQueryChanges('class', '', function (changes) {
+            _this._updateKlass(changes.value);
+        });
+        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', function (changes) {
+            _this._updateNgClass(changes.value);
+            _super.prototype.ngDoCheck.call(_this); // trigger NgClass::_applyIterableChanges()
+        });
+    };
+    /**
+     *  Apply updates directly to the NgClass:klass property
+     *  ::ngDoCheck() is not needed
+     */
+    ClassDirective.prototype._updateKlass = function (value) {
+        var klass = value || this._classAdapter.queryInput('class') || '';
+        if (this._classAdapter.mqActivation) {
+            klass = this._classAdapter.mqActivation.activatedInput;
         }
-        // Delegate subsequent activity to the NgClass logic
-        this.ngClass = clazz;
+        this.klass = klass || this.initialClasses;
+    };
+    /**
+     *  Identify the activated input value and update the ngClass iterables...
+     *  needs ngDoCheck() to actually apply the values to the element
+     */
+    ClassDirective.prototype._updateNgClass = function (value) {
+        if (this._ngClassAdapter.mqActivation) {
+            value = this._ngClassAdapter.mqActivation.activatedInput;
+        }
+        this.ngClass = value || ''; // Delegate subsequent activity to the NgClass logic
     };
     return ClassDirective;
 }(_angular_common.NgClass));
@@ -4614,11 +4676,6 @@ __decorate$16([
     __metadata$14("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassXl", null);
 __decorate$16([
-    _angular_core.Input('ngClass.lt-xs'),
-    __metadata$14("design:type", Object),
-    __metadata$14("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLtXs", null);
-__decorate$16([
     _angular_core.Input('ngClass.lt-sm'),
     __metadata$14("design:type", Object),
     __metadata$14("design:paramtypes", [Object])
@@ -4633,6 +4690,11 @@ __decorate$16([
     __metadata$14("design:type", Object),
     __metadata$14("design:paramtypes", [Object])
 ], ClassDirective.prototype, "ngClassLtLg", null);
+__decorate$16([
+    _angular_core.Input('ngClass.lt-xl'),
+    __metadata$14("design:type", Object),
+    __metadata$14("design:paramtypes", [Object])
+], ClassDirective.prototype, "ngClassLtXl", null);
 __decorate$16([
     _angular_core.Input('ngClass.gt-xs'),
     __metadata$14("design:type", Object),
@@ -4655,8 +4717,8 @@ __decorate$16([
 ], ClassDirective.prototype, "ngClassGtLg", null);
 __decorate$16([
     _angular_core.Input('class'),
-    __metadata$14("design:type", Object),
-    __metadata$14("design:paramtypes", [Object])
+    __metadata$14("design:type", String),
+    __metadata$14("design:paramtypes", [String])
 ], ClassDirective.prototype, "classBase", null);
 __decorate$16([
     _angular_core.Input('class.xs'),
@@ -4684,11 +4746,6 @@ __decorate$16([
     __metadata$14("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classXl", null);
 __decorate$16([
-    _angular_core.Input('class.lt-xs'),
-    __metadata$14("design:type", Object),
-    __metadata$14("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLtXs", null);
-__decorate$16([
     _angular_core.Input('class.lt-sm'),
     __metadata$14("design:type", Object),
     __metadata$14("design:paramtypes", [Object])
@@ -4703,6 +4760,11 @@ __decorate$16([
     __metadata$14("design:type", Object),
     __metadata$14("design:paramtypes", [Object])
 ], ClassDirective.prototype, "classLtLg", null);
+__decorate$16([
+    _angular_core.Input('class.lt-xl'),
+    __metadata$14("design:type", Object),
+    __metadata$14("design:paramtypes", [Object])
+], ClassDirective.prototype, "classLtXl", null);
 __decorate$16([
     _angular_core.Input('class.gt-xs'),
     __metadata$14("design:type", Object),
@@ -4725,10 +4787,9 @@ __decorate$16([
 ], ClassDirective.prototype, "classGtLg", null);
 ClassDirective = __decorate$16([
     _angular_core.Directive({
-        selector: "\n    [class],\n    [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],        \n    [ngClass], \n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
+        selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg], \n           \n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
     }),
     __metadata$14("design:paramtypes", [exports.MediaMonitor,
-        exports.BreakPointRegistry,
         _angular_core.IterableDiffers, _angular_core.KeyValueDiffers,
         _angular_core.ElementRef, _angular_core.Renderer])
 ], ClassDirective);
@@ -5000,12 +5061,6 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     
-    Object.defineProperty(StyleDirective.prototype, "styleLtXs", {
-        set: function (val) { this._base.cacheInput('styleLtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    
     Object.defineProperty(StyleDirective.prototype, "styleLtSm", {
         set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
         enumerable: true,
@@ -5020,6 +5075,12 @@ var StyleDirective = (function (_super) {
     
     Object.defineProperty(StyleDirective.prototype, "styleLtLg", {
         set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    
+    Object.defineProperty(StyleDirective.prototype, "styleLtXl", {
+        set: function (val) { this._base.cacheInput('styleLtXl', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -5048,29 +5109,43 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     
+    // ******************************************************************
+    // Lifecycle Hookks
+    // ******************************************************************
     /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     * For @Input changes on the current mq activation property
      */
     StyleDirective.prototype.ngOnChanges = function (changes) {
-        var changed = this._bpRegistry.items.some(function (it) {
-            return ("ngStyle" + it.suffix in changes) || ("style" + it.suffix in changes);
-        });
-        if (changed || this._base.mqActivation) {
+        if (this._base.activeKey in changes) {
             this._updateStyle();
         }
     };
     /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
-    StyleDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        this._base.listenForMediaQueryChanges('style', '', function (changes) {
-            _this._updateStyle(changes.value);
-        });
+    StyleDirective.prototype.ngDoCheck = function () {
+        if (!this._base.hasMediaQueryListener) {
+            this._configureMQListener();
+        }
+        _super.prototype.ngDoCheck.call(this);
     };
     StyleDirective.prototype.ngOnDestroy = function () {
         this._base.ngOnDestroy();
+    };
+    // ******************************************************************
+    // Internal Methods
+    // ******************************************************************
+    /**
+       * Build an mqActivation object that bridges
+       * mql change events to onMediaQueryChange handlers
+       */
+    StyleDirective.prototype._configureMQListener = function () {
+        var _this = this;
+        this._base.listenForMediaQueryChanges('style', '', function (changes) {
+            _this._updateStyle(changes.value);
+            // trigger NgClass::_applyIterableChanges()
+            _super.prototype.ngDoCheck.call(_this);
+        });
     };
     // ************************************************************************
     // Private Internal Methods
@@ -5093,9 +5168,14 @@ var StyleDirective = (function (_super) {
      * which property value should be used for the style update
      */
     StyleDirective.prototype._buildAdapter = function (monitor, _ngEl, _renderer) {
+        this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
+        this._buildCacheInterceptor();
+    };
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     */
+    StyleDirective.prototype._buildCacheInterceptor = function () {
         var _this = this;
-        this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
-        // Build intercept to convert raw strings to ngStyleMap
         var cacheInput = this._base.cacheInput.bind(this._base);
         this._base.cacheInput = function (key, source, cacheRaw, merge) {
             if (cacheRaw === void 0) { cacheRaw = false; }
@@ -5227,11 +5307,6 @@ __decorate$17([
     __metadata$15("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleXl", null);
 __decorate$17([
-    _angular_core.Input('style.lt-xs'),
-    __metadata$15("design:type", Object),
-    __metadata$15("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtXs", null);
-__decorate$17([
     _angular_core.Input('style.lt-sm'),
     __metadata$15("design:type", Object),
     __metadata$15("design:paramtypes", [Object])
@@ -5246,6 +5321,11 @@ __decorate$17([
     __metadata$15("design:type", Object),
     __metadata$15("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleLtLg", null);
+__decorate$17([
+    _angular_core.Input('style.lt-xl'),
+    __metadata$15("design:type", Object),
+    __metadata$15("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtXl", null);
 __decorate$17([
     _angular_core.Input('style.gt-xs'),
     __metadata$15("design:type", Object),

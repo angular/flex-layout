@@ -15,10 +15,34 @@ import { BaseFxDirective } from './base';
  */
 var BaseFxDirectiveAdapter = (function (_super) {
     __extends(BaseFxDirectiveAdapter, _super);
-    function BaseFxDirectiveAdapter() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    /**
+     * BaseFxDirectiveAdapter constructor
+     */
+    function BaseFxDirectiveAdapter(_baseKey, // non-responsive @Input property name
+        _mediaMonitor, _elementRef, _renderer) {
+        var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
+        _this._baseKey = _baseKey;
+        _this._mediaMonitor = _mediaMonitor;
+        _this._elementRef = _elementRef;
+        _this._renderer = _renderer;
+        return _this;
     }
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "activeKey", {
+        /**
+         * Accessor to determine which @Input property is "active"
+         * e.g. which property value will be used.
+         */
+        get: function () {
+            var mqa = this._mqActivation;
+            var key = mqa ? mqa.activatedInputKey : this._baseKey;
+            // Note: ClassDirective::SimpleChanges uses 'klazz' instead of 'class' as a key
+            return (key === 'class') ? 'klazz' : key;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
+        /** Hash map of all @Input keys/values defined/used */
         get: function () {
             return this._inputMap;
         },
@@ -39,7 +63,7 @@ var BaseFxDirectiveAdapter = (function (_super) {
      * @see BaseFxDirective._queryInput
      */
     BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
-        return this._queryInput(key);
+        return key ? this._queryInput(key) : undefined;
     };
     /**
      *  Save the property value.

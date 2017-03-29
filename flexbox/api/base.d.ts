@@ -21,18 +21,7 @@ export declare abstract class BaseFxDirective implements OnDestroy {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
     protected _renderer: Renderer;
-    /**
-     * Original dom Elements CSS display style
-     */
-    protected _display: any;
-    /**
-     * MediaQuery Activation Tracker
-     */
-    protected _mqActivation: ResponsiveActivation;
-    /**
-     *  Dictionary of input keys with associated values
-     */
-    protected _inputMap: {};
+    readonly hasMediaQueryListener: boolean;
     /**
      *
      */
@@ -81,4 +70,14 @@ export declare abstract class BaseFxDirective implements OnDestroy {
      * Fast validator for presence of attribute on the host element
      */
     protected hasKeyValue(key: any): boolean;
+    /** Original dom Elements CSS display style */
+    protected _display: any;
+    /**
+     * MediaQuery Activation Tracker
+     */
+    protected _mqActivation: ResponsiveActivation;
+    /**
+     *  Dictionary of input keys with associated values
+     */
+    protected _inputMap: {};
 }

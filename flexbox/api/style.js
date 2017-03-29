@@ -173,12 +173,6 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     ;
-    Object.defineProperty(StyleDirective.prototype, "styleLtXs", {
-        set: function (val) { this._base.cacheInput('styleLtXs', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
     Object.defineProperty(StyleDirective.prototype, "styleLtSm", {
         set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
         enumerable: true,
@@ -193,6 +187,12 @@ var StyleDirective = (function (_super) {
     ;
     Object.defineProperty(StyleDirective.prototype, "styleLtLg", {
         set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(StyleDirective.prototype, "styleLtXl", {
+        set: function (val) { this._base.cacheInput('styleLtXl', val, true); },
         enumerable: true,
         configurable: true
     });
@@ -221,29 +221,43 @@ var StyleDirective = (function (_super) {
         configurable: true
     });
     ;
+    // ******************************************************************
+    // Lifecycle Hookks
+    // ******************************************************************
     /**
-     * For @Input changes on the current mq activation property, see onMediaQueryChanges()
+     * For @Input changes on the current mq activation property
      */
     StyleDirective.prototype.ngOnChanges = function (changes) {
-        var changed = this._bpRegistry.items.some(function (it) {
-            return ("ngStyle" + it.suffix in changes) || ("style" + it.suffix in changes);
-        });
-        if (changed || this._base.mqActivation) {
+        if (this._base.activeKey in changes) {
             this._updateStyle();
         }
     };
     /**
-     * After the initial onChanges, build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
+     * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
      */
-    StyleDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        this._base.listenForMediaQueryChanges('style', '', function (changes) {
-            _this._updateStyle(changes.value);
-        });
+    StyleDirective.prototype.ngDoCheck = function () {
+        if (!this._base.hasMediaQueryListener) {
+            this._configureMQListener();
+        }
+        _super.prototype.ngDoCheck.call(this);
     };
     StyleDirective.prototype.ngOnDestroy = function () {
         this._base.ngOnDestroy();
+    };
+    // ******************************************************************
+    // Internal Methods
+    // ******************************************************************
+    /**
+       * Build an mqActivation object that bridges
+       * mql change events to onMediaQueryChange handlers
+       */
+    StyleDirective.prototype._configureMQListener = function () {
+        var _this = this;
+        this._base.listenForMediaQueryChanges('style', '', function (changes) {
+            _this._updateStyle(changes.value);
+            // trigger NgClass::_applyIterableChanges()
+            _super.prototype.ngDoCheck.call(_this);
+        });
     };
     // ************************************************************************
     // Private Internal Methods
@@ -266,9 +280,14 @@ var StyleDirective = (function (_super) {
      * which property value should be used for the style update
      */
     StyleDirective.prototype._buildAdapter = function (monitor, _ngEl, _renderer) {
+        this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
+        this._buildCacheInterceptor();
+    };
+    /**
+     * Build intercept to convert raw strings to ngStyleMap
+     */
+    StyleDirective.prototype._buildCacheInterceptor = function () {
         var _this = this;
-        this._base = new BaseFxDirectiveAdapter(monitor, _ngEl, _renderer);
-        // Build intercept to convert raw strings to ngStyleMap
         var cacheInput = this._base.cacheInput.bind(this._base);
         this._base.cacheInput = function (key, source, cacheRaw, merge) {
             if (cacheRaw === void 0) { cacheRaw = false; }
@@ -400,11 +419,6 @@ __decorate([
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleXl", null);
 __decorate([
-    Input('style.lt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtXs", null);
-__decorate([
     Input('style.lt-sm'),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
@@ -419,6 +433,11 @@ __decorate([
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], StyleDirective.prototype, "styleLtLg", null);
+__decorate([
+    Input('style.lt-xl'),
+    __metadata("design:type", Object),
+    __metadata("design:paramtypes", [Object])
+], StyleDirective.prototype, "styleLtXl", null);
 __decorate([
     Input('style.gt-xs'),
     __metadata("design:type", Object),
