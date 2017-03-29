@@ -20,7 +20,7 @@ export class MockElementRef extends ElementRef {
 describe('BaseFxDirectiveAdapter class', () => {
   let component;
   beforeEach(() => {
-    component = new BaseFxDirectiveAdapter(null, new MockElementRef(), null);
+    component = new BaseFxDirectiveAdapter(null, null, new MockElementRef(), null);
   });
   describe('cacheInput', () => {
     it('should call _cacheInputArray when source is an array', () => {
