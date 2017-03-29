@@ -192,9 +192,6 @@ var LayoutAlignDirective = (function (_super) {
     };
     LayoutAlignDirective.prototype._buildCSS = function (align) {
         var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1]; // tslint:disable-line:variable-name
-        css['justify-content'] = 'flex-start'; // default main axis
-        css['align-items'] = 'stretch'; // default cross axis
-        css['align-content'] = 'stretch'; // default cross axis
         // Main axis
         switch (main_axis) {
             case 'center':
@@ -207,12 +204,19 @@ var LayoutAlignDirective = (function (_super) {
                 css['justify-content'] = 'space-between';
                 break;
             case 'end':
+            case 'flex-end':
                 css['justify-content'] = 'flex-end';
+                break;
+            case 'start':
+            case 'flex-start':
+            default:
+                css['justify-content'] = 'flex-start'; // default main axis
                 break;
         }
         // Cross-axis
         switch (cross_axis) {
             case 'start':
+            case 'flex-start':
                 css['align-items'] = css['align-content'] = 'flex-start';
                 break;
             case 'baseline':
@@ -222,9 +226,12 @@ var LayoutAlignDirective = (function (_super) {
                 css['align-items'] = css['align-content'] = 'center';
                 break;
             case 'end':
+            case 'flex-end':
                 css['align-items'] = css['align-content'] = 'flex-end';
                 break;
+            case 'stretch':
             default:
+                css['align-items'] = css['align-content'] = 'stretch'; // default cross axis
                 break;
         }
         return extendObject(css, {
