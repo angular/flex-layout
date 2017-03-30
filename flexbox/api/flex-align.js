@@ -250,4 +250,4 @@ FlexAlignDirective = __decorate([
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], FlexAlignDirective);
 export { FlexAlignDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-align.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/flex-align.js.map

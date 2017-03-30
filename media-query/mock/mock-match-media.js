@@ -271,4 +271,4 @@ export var MockMatchMediaProvider = {
     provide: MatchMedia,
     useClass: MockMatchMedia
 };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/mock/mock-match-media.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/mock/mock-match-media.js.map

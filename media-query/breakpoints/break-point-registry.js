@@ -88,4 +88,4 @@ BreakPointRegistry = __decorate([
     __metadata("design:paramtypes", [Array])
 ], BreakPointRegistry);
 export { BreakPointRegistry };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-point-registry.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/breakpoints/break-point-registry.js.map

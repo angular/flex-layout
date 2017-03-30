@@ -88,4 +88,4 @@ FlexLayoutModule = FlexLayoutModule_1 = __decorate([
 ], FlexLayoutModule);
 export { FlexLayoutModule };
 var FlexLayoutModule_1;
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/_module.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/_module.js.map

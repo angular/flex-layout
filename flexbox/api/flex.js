@@ -391,4 +391,4 @@ FlexDirective = __decorate([
         LayoutWrapDirective])
 ], FlexDirective);
 export { FlexDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/flex.js.map

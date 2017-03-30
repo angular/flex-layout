@@ -174,4 +174,4 @@ MediaService = __decorate([
         BreakPointRegistry])
 ], MediaService);
 export { MediaService };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/observable-media.js.map

@@ -63,4 +63,4 @@ export var DEFAULT_BREAKPOINTS = [
         mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)'
     }
 ];
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/data/break-points.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/breakpoints/data/break-points.js.map

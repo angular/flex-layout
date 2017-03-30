@@ -469,4 +469,4 @@ StyleDirective = __decorate([
         ElementRef, Renderer])
 ], StyleDirective);
 export { StyleDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/style.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/style.js.map

@@ -190,4 +190,4 @@ var ResponsiveActivation = (function () {
     return ResponsiveActivation;
 }());
 export { ResponsiveActivation };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/responsive/responsive-activation.js.map

@@ -47,4 +47,4 @@ export function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
         useFactory: buildMergedBreakPoints(_custom, options)
     };
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-points-provider.js.map
+//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/breakpoints/break-points-provider.js.map
