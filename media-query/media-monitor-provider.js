@@ -28,4 +28,4 @@ export var MEDIA_MONITOR_PROVIDER = {
     ],
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/media-monitor-provider.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/media-monitor-provider.js.map

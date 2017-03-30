@@ -236,4 +236,4 @@ FlexOffsetDirective = __decorate([
     __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
 ], FlexOffsetDirective);
 export { FlexOffsetDirective };
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/flex-offset.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-offset.js.map

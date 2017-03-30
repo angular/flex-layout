@@ -335,4 +335,4 @@ LayoutAlignDirective = __decorate([
         LayoutDirective])
 ], LayoutAlignDirective);
 export { LayoutAlignDirective };
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/layout-align.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-align.js.map

@@ -37,4 +37,4 @@ export var ORIENTATION_BREAKPOINTS = [
     { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
     { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
 ];
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/breakpoints/data/orientation-break-points.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/data/orientation-break-points.js.map

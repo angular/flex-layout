@@ -9,4 +9,4 @@ export * from './api/base';
 export * from './api/base-adapter';
 export * from './responsive/responsive-activation';
 export * from './_module';
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/index.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/index.js.map

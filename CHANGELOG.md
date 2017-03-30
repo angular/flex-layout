@@ -1,70 +1,3 @@
-<a name="2.0.0-beta.7"></a>
-# [2.0.0-beta.7](https://github.com/angular/flex-layout/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2017-03-17)
-
-> ##### Note: Previous Release
-> We prematurely labeled the previously release **@angular/flex-layout v2.0.0-rc.1**.  
-It should have been a beta release and is therefore renamed to @angular/flex-layout v2.0.0-beta.6.
-
-### Bug Fixes
-
-* **demo:** improve use of ObservableMedia service ([#214](https://github.com/angular/flex-layout/issues/214)) ([64b122a](https://github.com/angular/flex-layout/commit/64b122a))
-* **fxFlex:** improve support for 'auto' and flex-basis variations ([#212](https://github.com/angular/flex-layout/issues/212)) ([c28dfc7](https://github.com/angular/flex-layout/commit/c28dfc7))
-* **fxLayoutAlign:** support flex-start and flex-end options ([#239](https://github.com/angular/flex-layout/issues/239)) ([eb5cb9f](https://github.com/angular/flex-layout/commit/eb5cb9f)), closes [#232](https://github.com/angular/flex-layout/issues/232)
-* **ngClass:** add ngClass selector support ([#223](https://github.com/angular/flex-layout/issues/223)) ([980d412](https://github.com/angular/flex-layout/commit/980d412)), closes [#206](https://github.com/angular/flex-layout/issues/206)
-* **ngClass,ngStyle:** support proper API usages and ChangeDetectionStrategy.OnPush strategies ([#228](https://github.com/angular/flex-layout/issues/228)) ([5db01e7](https://github.com/angular/flex-layout/commit/5db01e7)), closes [#206](https://github.com/angular/flex-layout/issues/206) [#215](https://github.com/angular/flex-layout/issues/215)
-* **ngStyle, ngClass:** StyleDirective security fixes &  merge activated styles ([#198](https://github.com/angular/flex-layout/issues/198)) ([eb22fe5](https://github.com/angular/flex-layout/commit/eb22fe5)), closes [#197](https://github.com/angular/flex-layout/issues/197)
-
-### Features
-
-* **breakpoints:** support custom breakpoints and enhanced selectors ([#204](https://github.com/angular/flex-layout/issues/204)) ([ecc6e51](https://github.com/angular/flex-layout/commit/ecc6e51))
-* **fxFlex:** compute immediate parent flex-direction ([#220](https://github.com/angular/flex-layout/issues/220)) ([ba0d85d](https://github.com/angular/flex-layout/commit/ba0d85d))
-* **fxLayout:** add wrap options support to fxLayout ([#207](https://github.com/angular/flex-layout/issues/207)) ([2340a19](https://github.com/angular/flex-layout/commit/2340a19))
-
-
-### BREAKING CHANGES
-
-* `FlexLayoutModule.forRoot()` was deprecated in *beta.6* and is now removed.
-
-##### - before -
-
-```js
-imports : [  FlexLayoutModule.forRoot() ]
-```
-
-##### - after -
-
-```js
-imports : [  FlexLayoutModule ]
-```
-
-* **ngStyle, ngClass:** * `[style.<alias>]` selectors are deprecated in favor of `[ngStyle.<alias>]` selectors
-* `[class.<alias>]` selectors are deprecated in favor of `[ngClass.<alias>]` selectors
-* default styles are merged with activated styles
-  *  see [ngClass API](http://bit.ly/ngClassAPI), [ngStyle API](http://bit.ly/ngStyleAPI) docs(s) for details.
-
-##### - before -
-
-```html
-<div fxLayout
-  [class.xs]="['xs-1', 'xs-2']"
-  [style]="{'font-size': '10px', 'margin-left' : '13px'}"
-  [style.xs]="{'font-size': '16px'}"
-  [style.md]="{'font-size': '12px'}">
-</div>
-```
-##### - after -
-
-```html
-<div fxLayout
-  [ngClass.xs]="['xs-1', 'xs-2']"
-  [ngStyle]="{'font-size': '10px', 'margin-left' : '13px'}"
-  [ngStyle.xs]="{'font-size': '16px'}"
-  [ngStyle.md]="{'font-size': '12px'}">
-</div>
-```
-
-
-
 <a name="2.0.0-beta.6"></a>
 # [2.0.0-beta.6](https://github.com/angular/flex-layout/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2017-02-23)
 
@@ -225,4 +158,4 @@ export class MyComponent {
 <a name"2.0.0-beta.1"></a>
 ## 2.0.0-beta.1 (2016-12-24)
 
-Initial public release to NPM
+Initial public release to NPM.

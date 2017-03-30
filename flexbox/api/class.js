@@ -427,4 +427,4 @@ ClassDirective = __decorate([
         ElementRef, Renderer])
 ], ClassDirective);
 export { ClassDirective };
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/flexbox/api/class.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/class.js.map

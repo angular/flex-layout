@@ -11,4 +11,4 @@ import { OpaqueToken } from '@angular/core';
  *  Use this token when build a custom provider (see below).
  */
 export var BREAKPOINTS = new OpaqueToken('Token (@angular/flex-layout) Breakpoints');
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/breakpoints/break-points-token.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-points-token.js.map

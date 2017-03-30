@@ -39,4 +39,4 @@ MediaQueriesModule = __decorate([
     })
 ], MediaQueriesModule);
 export { MediaQueriesModule };
-//# sourceMappingURL=/usr/local/google/home/tinagao/WebstormProjects/caretaker/flex-layout/src/lib/media-query/_module.js.map
+//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/_module.js.map
