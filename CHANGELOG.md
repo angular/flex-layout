@@ -1,5 +1,5 @@
-<a name="2.0.0-rc.1"></a>
-# [2.0.0-rc.1](https://github.com/angular/flex-layout/compare/v2.0.0-beta.5...v2.0.0-rc.1) (2017-02-23)
+<a name="2.0.0-beta.6"></a>
+# [2.0.0-beta.6](https://github.com/angular/flex-layout/compare/v2.0.0-beta.5...v2.0.0-beta.6) (2017-02-23)
 
 ### Bug Fixes
 
