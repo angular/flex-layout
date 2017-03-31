@@ -39,7 +39,8 @@ imports : [  FlexLayoutModule ]
 
 * **ngStyle, ngClass:** 
   * `[style.<alias>]` selectors are deprecated in favor of `[ngStyle.<alias>]` selectors
-  * `[class.<alias>]` selectors are deprecated in favor of `[ngClass.<alias>]` selectors
+  * `[class.<alias>]` selectors are [destructive replacements](https://github.com/angular/flex-layout/wiki/ngClass-API#standard-class-features) (no merging)
+  * `[ngClass.<alias>]` selectors will [merge](https://github.com/angular/flex-layout/wiki/ngClass-API#standard-ngclass-features) (add or remove classnames)
   * default styles are merged with activated styles
     *  see [ngClass API](http://bit.ly/ngClassAPI), [ngStyle API](http://bit.ly/ngStyleAPI) docs(s) for details.
 
