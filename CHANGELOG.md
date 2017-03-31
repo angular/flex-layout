@@ -37,10 +37,11 @@ imports : [  FlexLayoutModule.forRoot() ]
 imports : [  FlexLayoutModule ]
 ```
 
-* **ngStyle, ngClass:** * `[style.<alias>]` selectors are deprecated in favor of `[ngStyle.<alias>]` selectors
-* `[class.<alias>]` selectors are deprecated in favor of `[ngClass.<alias>]` selectors
-* default styles are merged with activated styles
-  *  see [ngClass API](http://bit.ly/ngClassAPI), [ngStyle API](http://bit.ly/ngStyleAPI) docs(s) for details.
+* **ngStyle, ngClass:** 
+  * `[style.<alias>]` selectors are deprecated in favor of `[ngStyle.<alias>]` selectors
+  * `[class.<alias>]` selectors are deprecated in favor of `[ngClass.<alias>]` selectors
+  * default styles are merged with activated styles
+    *  see [ngClass API](http://bit.ly/ngClassAPI), [ngStyle API](http://bit.ly/ngStyleAPI) docs(s) for details.
 
 ##### - before -
 
