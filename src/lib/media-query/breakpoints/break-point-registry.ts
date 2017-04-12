@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable, Inject} from '@angular/core';
-import {OpaqueToken} from '@angular/core';  // tslint:disable-line:no-unused-variable
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from "./break-points-token";

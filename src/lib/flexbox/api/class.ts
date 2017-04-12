@@ -12,6 +12,7 @@ import {
   DoCheck,
   OnDestroy,
   Renderer,
+  Renderer2,
   IterableDiffers,
   KeyValueDiffers, SimpleChanges, OnChanges
 } from '@angular/core';
@@ -29,13 +30,13 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
  */
 @Directive({
   selector: `
-    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl], 
-    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     
-    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg], 
-           
+    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
+    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],
+    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],
+
     [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
-    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], 
-    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  
+    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
+    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
 })
 export class ClassDirective extends NgClass implements DoCheck, OnChanges, OnDestroy {
@@ -109,15 +110,17 @@ export class ClassDirective extends NgClass implements DoCheck, OnChanges, OnDes
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
-              _ngEl: ElementRef, _renderer: Renderer) {
-    super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
+              _ngEl: ElementRef, _oldRenderer: Renderer, _renderer: Renderer2) {
+
+    // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
+    super(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
 
     this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
     this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
   }
 
   // ******************************************************************
-  // Lifecycle Hookks
+  // Lifecycle Hooks
   // ******************************************************************
 
   /**

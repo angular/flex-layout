@@ -10,7 +10,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   Self,
   AfterContentInit,
@@ -29,7 +29,7 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
  *  Defines padding of child elements in a layout container
  */
 @Directive({selector: `
-  [fxLayoutGap], 
+  [fxLayoutGap],
   [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],
   [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],
   [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
@@ -62,7 +62,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer,
+              renderer: Renderer2,
               @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 
@@ -150,8 +150,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
     // Gather all non-hidden Element nodes
     let items = this.childrenNodes
-        .filter(el => (el.nodeType === 1))   // only Element types
-        .filter(el => this._getDisplayStyle(el) != "none");
+        .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != "none");
     let numItems = items.length;
 
     if (numItems > 1) {

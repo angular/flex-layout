@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -26,8 +26,15 @@ import {
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(() => TestLayoutAlignComponent);
+  let matchMedia: MockMatchMedia;
   let expectDOMFrom = makeExpectDOMFrom(() => TestLayoutAlignComponent);
+  let createTestComponent = (template: string) => {
+    fixture = makeCreateTestComponent(() => TestLayoutAlignComponent)(template);
+
+    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
+      matchMedia = _matchMedia;
+    })();
+  };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -41,12 +48,6 @@ describe('layout-align directive', () => {
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
-  });
-  afterEach(() => {
-    if (fixture) {
-      fixture.debugElement.injector.get(MatchMedia).clearAll();
-      fixture = null;
-    }
   });
 
   describe('with static features', () => {
@@ -175,7 +176,7 @@ describe('layout-align directive', () => {
 
     describe('for dynamic inputs', () => {
       it('should add correct styles and ignore invalid axes values', () => {
-        fixture = createTestComponent(`<div [fxLayoutAlign]="alignBy"></div>`);
+        createTestComponent(`<div [fxLayoutAlign]="alignBy"></div>`);
 
         fixture.componentInstance.alignBy = "center end";
         expectNativeEl(fixture).toHaveCssStyle({
@@ -197,8 +198,7 @@ describe('layout-align directive', () => {
   describe('with responsive features', () => {
 
     it('should ignore responsive changes when not configured', () => {
-      fixture = createTestComponent(`<div fxLayoutAlign="center center"></div>`);
-      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+      createTestComponent(`<div fxLayoutAlign="center center"></div>`);
 
       matchMedia.activate('md');
 
@@ -210,10 +210,9 @@ describe('layout-align directive', () => {
     });
 
     it('should add responsive styles when configured', () => {
-      fixture = createTestComponent(`
+      createTestComponent(`
         <div fxLayoutAlign="center center" fxLayoutAlign.md="end"></div>
       `);
-      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
 
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content': 'center',
@@ -231,7 +230,7 @@ describe('layout-align directive', () => {
     });
 
     it('should update responsive styles when the layout direction changes', () => {
-      fixture = createTestComponent(`
+      createTestComponent(`
         <div fxLayout
              [fxLayout.md]="direction"
              fxLayoutAlign="center stretch"
@@ -244,7 +243,6 @@ describe('layout-align directive', () => {
         'max-height': '100%'
       });
 
-      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
       matchMedia.activate('md');
 
       expectNativeEl(fixture).toHaveCssStyle({
@@ -254,7 +252,7 @@ describe('layout-align directive', () => {
     });
 
     it('should fallback to default styles when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
-      fixture = createTestComponent(`
+      createTestComponent(`
          <div fxLayout
               [fxLayout.md]="direction"
               fxLayoutAlign="center stretch"
@@ -267,7 +265,6 @@ describe('layout-align directive', () => {
         'max-height': '100%'
       });
 
-      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
       matchMedia.activate('md');
 
       expectNativeEl(fixture).toHaveCssStyle({
@@ -276,6 +273,7 @@ describe('layout-align directive', () => {
       });
 
       matchMedia.activate('xs');
+
       expectNativeEl(fixture).toHaveCssStyle({
         'justify-content': 'center',
         'max-height': '100%'
@@ -283,7 +281,7 @@ describe('layout-align directive', () => {
     });
 
     it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
-      fixture = createTestComponent(`
+      createTestComponent(`
           <div  fxLayout
                 fxLayout.md="column"
                 fxLayoutAlign="start"
@@ -291,7 +289,7 @@ describe('layout-align directive', () => {
                 fxLayoutAlign.md="center">
           </div>
       `);
-      let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
+
       matchMedia.useOverlaps = true;
 
       expectNativeEl(fixture).toHaveCssStyle({

@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   Self,
   Optional
@@ -44,12 +44,12 @@ export function negativeOf(hide: any) {
  */
 @Directive({
   selector: `
-  [fxShow], 
+  [fxShow],
   [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
-  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl], 
+  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
   [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],
-  [fxHide], 
-  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],  
+  [fxHide],
+  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
   [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
 `
@@ -79,7 +79,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   @Input('fxShow.gt-sm') set showGtSm(val) {this._cacheInput('showGtSm', val); };
   @Input('fxShow.gt-md') set showGtMd(val) {this._cacheInput('showGtMd', val); };
   @Input('fxShow.gt-lg') set showGtLg(val) {this._cacheInput('showGtLg', val); };
-  
+
   @Input('fxHide')       set hide(val) {this._cacheInput("show", negativeOf(val));}
   @Input('fxHide.xs')    set hideXs(val) {this._cacheInput("showXs", negativeOf(val));}
   @Input('fxHide.sm')    set hideSm(val) {this._cacheInput('showSm', negativeOf(val)); };
@@ -104,7 +104,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
-              protected renderer: Renderer) {
+              protected renderer: Renderer2) {
 
     super(monitor, elRef, renderer);
 

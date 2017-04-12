@@ -7,7 +7,7 @@
  */
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -21,14 +21,13 @@ import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpe
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(() => TestShowComponent);
-  let activateMediaQuery = (alias, enableOverlaps = false) => {
-    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-    matchMedia.activate(alias, enableOverlaps);
-  };
-  let useOverlaps = (allowOverlaps) => {
-    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-    matchMedia.useOverlaps = allowOverlaps;
+  let matchMedia: MockMatchMedia;
+  let createTestComponent = (template) => {
+    fixture = makeCreateTestComponent(() => TestShowComponent)(template);
+
+    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
+      matchMedia = _matchMedia;
+    })();
   };
 
   beforeEach(() => {
@@ -44,40 +43,21 @@ describe('show directive', () => {
       ]
     });
   });
-  afterEach(() => {
-    if (fixture) {
-      fixture.debugElement.injector.get(MatchMedia).clearAll();
-
-      fixture = null;
-    }
-  });
 
   describe('without `responsive` features', () => {
 
     it('should initial with component visible as default', () => {
-      fixture = createTestComponent(`
-        <div fxShow >
-          ...content
-        </div>
-      `);
+      createTestComponent(`<div fxShow></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should initial with component not visible when set to `false`', () => {
-      fixture = createTestComponent(`
-        <div fxShow="false" >
-          ...content
-        </div>
-      `);
+      createTestComponent(`<div fxShow="false"></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
     it('should initial with component not visible when set to `0`', () => {
-      fixture = createTestComponent(`
-        <div [fxShow]="isVisible" >
-          ...content
-        </div>
-      `);
+      createTestComponent(`<div [fxShow]="isVisible"></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       fixture.componentInstance.isVisible = true;
@@ -85,12 +65,7 @@ describe('show directive', () => {
     });
 
     it('should update styles with binding changes', () => {
-      fixture = createTestComponent(`
-        <div [fxShow]="menuOpen"
-             fxShow.xs="true" >
-          ...content
-        </div>
-      `);
+      createTestComponent(`<div [fxShow]="menuOpen" fxShow.xs="true"></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
       fixture.componentInstance.toggleMenu();
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
@@ -99,20 +74,12 @@ describe('show directive', () => {
     });
 
     it('should use "block" display style when not explicitly defined', () => {
-      fixture = createTestComponent(`
-        <button fxShow >
-          ...content
-        </button>
-      `);
+      createTestComponent(`<button fxShow></button>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
     });
 
     it('should use "flex" display style when the element also has an fxLayout', () => {
-      fixture = createTestComponent(`
-        <div fxLayout fxShow >
-          ...content
-        </div>
-      `);
+      createTestComponent(`<div fxLayout fxShow></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     });
 
@@ -121,66 +88,57 @@ describe('show directive', () => {
   describe('with responsive features', () => {
 
     it('should hide on `xs` viewports only', () => {
-      fixture = createTestComponent(`<div fxShow fxShow.xs="false" >...content</div>`);
+      createTestComponent(`<div fxShow fxShow.xs="false"></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
-      activateMediaQuery('xs');
+      matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-      activateMediaQuery('md');
+      matchMedia.activate('md');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
     });
 
     it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
-      fixture = createTestComponent(`<div fxShow fxShow.gt-xs="false" >...content</div>`);
+      createTestComponent(`<div fxShow fxShow.gt-xs="false"></div>`);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
-      activateMediaQuery('md', true);
+      matchMedia.activate('md', true);
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
     it('should support use of the `media` observable in templates ', () => {
-      fixture = createTestComponent(`
-            <div [fxShow]="media.isActive('xs')" >
-              ...content
-            </div>
-        `);
+      createTestComponent(`<div [fxShow]="media.isActive('xs')"></div>`);
 
-      useOverlaps(true);
+      matchMedia.useOverlaps = true;
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-      activateMediaQuery('xs');
+      matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
-      activateMediaQuery('gt-md');
+      matchMedia.activate('gt-md');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
     it('should preserve display and update only on activated mediaQuery', () => {
-      let visibleStyle = {'display': 'inline-block'};
-      fixture = createTestComponent(`
-        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
-      `);
+      createTestComponent(`<div [fxShow.xs]="!isHidden" style="display:inline-block"></div>`);
       fixture.componentInstance.isHidden = false;
 
-      expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
+      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
 
       // should hide with this activation and setting
-      activateMediaQuery('xs');
+      matchMedia.activate('xs');
       fixture.componentInstance.isHidden = true;
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
 
     it('should restore display when not enabled', () => {
       let visibleStyle = {'display': 'inline-block'};
-      fixture = createTestComponent(`
-        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
-      `);
+      createTestComponent(`<div [fxShow.xs]="!isHidden" style="display:inline-block"></div>`);
       fixture.componentInstance.isHidden = false;
       expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
 
       // mqActivation but the isHidden == false, so show it
-      activateMediaQuery('xs');
+      matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
 
       // should hide with this activation
@@ -190,18 +148,16 @@ describe('show directive', () => {
 
     it('should restore display when the mediaQuery deactivates', () => {
       let visibleStyle = {'display': 'inline-block'};
-      fixture = createTestComponent(`
-        <div [fxShow.xs]="!isHidden" style="display:inline-block"></div>
-      `);
+      createTestComponent(`<div [fxShow.xs]="!isHidden" style="display:inline-block"></div>`);
       fixture.componentInstance.isHidden = true;
       expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
 
       // should hide with this activation
-      activateMediaQuery('xs');
+      matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
       // should reset to original display style
-      activateMediaQuery('md');
+      matchMedia.activate('md');
       expectNativeEl(fixture).toHaveCssStyle(visibleStyle);
     });
 
@@ -211,19 +167,19 @@ describe('show directive', () => {
   describe('with fxHide features', () => {
 
     it('should support hide and show', () => {
-      fixture = createTestComponent(`
-          <div fxHide fxShow.gt-md>
-            This content to be shown ONLY when gt-sm
-          </div>
-       `);
-      useOverlaps(true);
+      createTestComponent(`
+        <div fxHide fxShow.gt-md>
+          This content to be shown ONLY when gt-sm
+        </div>
+      `);
 
+      matchMedia.useOverlaps = true;
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
 
-      activateMediaQuery('lg');
+      matchMedia.activate('lg');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
 
-      activateMediaQuery('sm');
+      matchMedia.activate('sm');
       expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
     });
   });

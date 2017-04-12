@@ -9,7 +9,6 @@
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
     "stripInternal": false,
-    "mapRoot": "",
     "rootDir": ".",
     "sourceMap": true,
     "target": "es5",

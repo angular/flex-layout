@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ElementRef, Renderer, OnDestroy} from '@angular/core';
+import {ElementRef, Renderer2, OnDestroy} from '@angular/core';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {buildLayoutCSS} from '../../utils/layout-validator';
@@ -32,7 +32,7 @@ export abstract class BaseFxDirective implements OnDestroy {
    */
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer) {
+              protected _renderer: Renderer2) {
     this._display = this._getDisplayStyle();
   }
 
@@ -121,9 +121,9 @@ export abstract class BaseFxDirective implements OnDestroy {
     styles = applyCssPrefixes(style);
 
     // Iterate all properties in hashMap and set styles
-    for (let key in styles) {
-      this._renderer.setElementStyle(element, key, styles[key] as string);
-    }
+    Object.keys(styles).forEach(key => {
+      this._renderer.setStyle(element, key, styles[key]);
+    });
   }
 
   /**
@@ -132,13 +132,9 @@ export abstract class BaseFxDirective implements OnDestroy {
   protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
     let styles = applyCssPrefixes(style);
 
-    elements.forEach(el => {
-      // Iterate all properties in hashMap and set styles
-      for (let key in styles) {
-        this._renderer.setElementStyle(el, key, styles[key] as string);
-      }
+    Object.keys(styles).forEach(key => {
+      elements.forEach(el => this._renderer.setStyle(el, key, styles[key]));
     });
-
   }
 
   /**

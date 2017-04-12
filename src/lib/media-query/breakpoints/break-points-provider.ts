@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {
-  OpaqueToken,    // tslint:disable-line:no-unused-variable
+  InjectionToken,    // tslint:disable-line:no-unused-variable
 } from '@angular/core';
 
 import {BreakPoint} from './break-point';
@@ -33,7 +33,7 @@ export interface BreakPointProviderOptions {
    * @default 'false'
    */
   orientations ?: boolean;
-};
+}
 
 /**
  * Add new custom items to the default list or override existing default with custom overrides
