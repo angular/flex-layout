@@ -4,9 +4,9 @@
 [![Build Status](https://travis-ci.org/angular/flex-layout.svg?branch=master)](https://travis-ci.org/angular/flex-layout)
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)
 
-Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + mediaQuery. 
+Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery. 
 This module provides Angular (v2.4.3 and higher) developers with component layout features using a 
-custom Layout API, mediaQuery observables,and injected DOM flexbox-2016 css stylings.  
+custom Layout API, mediaQuery observables, and injected DOM flexbox-2016 CSS stylings.  
 
 The Flex Layout engine intelligently automates the process of applying appropriate 
 Flexbox CSS to browser view hierarchies. This automation also addresses many of the 
