@@ -19,9 +19,6 @@
 
     "typeRoots": [
       "./node_modules/@types"
-    ],
-    "types": [
-      "hammerjs", "rx/rx.all"
     ]
   },
   "exclude": [
