@@ -105,6 +105,19 @@ export abstract class BaseFxDirective implements OnDestroy {
   }
 
   /**
+   * Applies the styles to the element. The styles object map may contain an array of values. Each
+   * value will be added as element style.
+   */
+  protected _applyMultiValueStyleToElement(styles: {}, element: any) {
+    Object.keys(styles).forEach(key => {
+      const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+      for (let value of values) {
+        this._renderer.setStyle(element, key, value);
+      }
+    });
+  }
+
+  /**
    * Applies styles given via string pair or object map to the directive element.
    */
   protected _applyStyleToElement(style: StyleDefinition,
@@ -120,10 +133,7 @@ export abstract class BaseFxDirective implements OnDestroy {
 
     styles = applyCssPrefixes(style);
 
-    // Iterate all properties in hashMap and set styles
-    Object.keys(styles).forEach(key => {
-      this._renderer.setStyle(element, key, styles[key]);
-    });
+    this._applyMultiValueStyleToElement(styles, element);
   }
 
   /**
@@ -132,8 +142,8 @@ export abstract class BaseFxDirective implements OnDestroy {
   protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
     let styles = applyCssPrefixes(style);
 
-    Object.keys(styles).forEach(key => {
-      elements.forEach(el => this._renderer.setStyle(el, key, styles[key]));
+    elements.forEach(el => {
+      this._applyMultiValueStyleToElement(styles, el);
     });
   }
 
