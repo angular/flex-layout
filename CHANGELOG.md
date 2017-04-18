@@ -1,3 +1,17 @@
+<a name="2.0.0-beta.8"></a>
+# [2.0.0-beta.8](https://github.com/angular/flex-layout/compare/v2.0.0-beta.7...v2.0.0-beta.8) (2017-04-18)
+
+
+### BREAKING CHANGES
+
+These changes to **@angular/flex-layout** will require Angular v4.x and will **not** be compatible with Angular v2.x.
+
+### Bug Fixes
+
+* **build:** support Angular 4 and AOT ([#255](https://github.com/angular/flex-layout/issues/255)) ([fed87fa](https://github.com/angular/flex-layout/commit/fed87fa)), closes [#254](https://github.com/angular/flex-layout/issues/254) [#236](https://github.com/angular/flex-layout/issues/236) [#227](https://github.com/angular/flex-layout/issues/227)
+
+
+
 <a name="2.0.0-beta.7"></a>
 # [2.0.0-beta.7](https://github.com/angular/flex-layout/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2017-03-17)
 
