@@ -13,7 +13,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Renderer,
+  Renderer2,
   SimpleChanges, Self,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
@@ -37,7 +37,7 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
 @Directive({selector: `
-  [fxLayoutAlign], 
+  [fxLayoutAlign],
   [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],
   [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],
   [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]
@@ -68,7 +68,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /* tslint:enable */
   constructor(
       monitor: MediaMonitor,
-      elRef: ElementRef, renderer: Renderer,
+      elRef: ElementRef, renderer: Renderer2,
       @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 

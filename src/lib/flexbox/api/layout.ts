@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer,
+  Renderer2,
   SimpleChanges,
 } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -30,7 +30,7 @@ import {buildLayoutCSS} from '../../utils/layout-validator';
  *
  */
 @Directive({selector: `
-  [fxLayout], 
+  [fxLayout],
   [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],
   [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],
   [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]
@@ -71,7 +71,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    *
    */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
     super(monitor, elRef, renderer);
     this._announcer = new BehaviorSubject<string>("row");
     this.layout$ = this._announcer.asObservable();

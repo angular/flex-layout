@@ -12,6 +12,7 @@ import {
   OnDestroy,
   DoCheck,
   Renderer,
+  Renderer2,
   KeyValueDiffers,
   SimpleChanges, OnChanges,
   SecurityContext
@@ -38,13 +39,13 @@ import {
  */
 @Directive({
   selector: `
-    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],      
-    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl], 
-    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg], 
-    [ngStyle], 
-    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],   
-    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl], 
-    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] 
+    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],
+    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],
+    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],
+    [ngStyle],
+    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],
+    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
+    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
 export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDestroy {
@@ -102,8 +103,12 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
               protected _bpRegistry: BreakPointRegistry,
               protected _sanitizer: DomSanitizer,
               _differs: KeyValueDiffers,
-              _ngEl: ElementRef, _renderer: Renderer) {
-    super(_differs, _ngEl, _renderer);
+              _ngEl: ElementRef,
+              _oldRenderer: Renderer,
+              _renderer: Renderer2) {
+
+    // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
+    super(_differs, _ngEl, _oldRenderer);
 
     // Build adapter, `cacheInput()` interceptor, and get current inline style if any
     this._buildAdapter(monitor, _ngEl, _renderer);
@@ -178,7 +183,7 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
    * This adapter manages listening to mediaQuery change events and identifying
    * which property value should be used for the style update
    */
-  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer) {
+  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2) {
     this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
     this._buildCacheInterceptor();
   }

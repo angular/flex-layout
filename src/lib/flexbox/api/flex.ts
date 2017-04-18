@@ -13,7 +13,7 @@
   OnDestroy,
   OnInit,
   Optional,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
@@ -40,7 +40,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive({selector: `
-  [fxFlex], 
+  [fxFlex],
   [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],
   [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],
   [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],
@@ -83,7 +83,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   // parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer,
+              renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
               @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective) {
 

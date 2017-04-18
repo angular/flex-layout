@@ -7,7 +7,7 @@
  */
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -25,10 +25,13 @@ import {
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(() => TestStyleComponent);
-  let activateMediaQuery: Function = (alias, useOverlaps = false): void => {
-    let matchMedia: MockMatchMedia = fixture.debugElement.injector.get(MatchMedia);
-    matchMedia.activate(alias, useOverlaps);
+  let matchMedia: MockMatchMedia;
+  let createTestComponent = (template) => {
+    fixture = makeCreateTestComponent(() => TestStyleComponent)(template);
+
+    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
+      matchMedia = _matchMedia;
+    })();
   };
 
   beforeEach(() => {
@@ -44,12 +47,6 @@ describe('style directive', () => {
       ]
     });
   });
-  afterEach(() => {
-    if (fixture) {
-      fixture.debugElement.injector.get(MatchMedia).clearAll();
-      fixture = null;
-    }
-  });
 
   [
     {mq: 'xs', styleStr: "{'font-size': '15px'}", styleObj: {'font-size': '15px'}},
@@ -59,34 +56,34 @@ describe('style directive', () => {
   ]
   .forEach(testData => {
     it(`should apply '${testData.styleStr}' with '${testData.mq}' media query`, () => {
-      fixture = createTestComponent(`
+      createTestComponent(`
         <div [style.${testData.mq}]="${testData.styleStr}">
         </div>
     `);
-      activateMediaQuery(testData.mq);
+      matchMedia.activate(testData.mq);
       expectNativeEl(fixture).toHaveCssStyle(testData.styleObj);
     });
   });
 
   it('should merge with default inline styles', () => {
-    fixture = createTestComponent(`
+    createTestComponent(`
         <div style="color: blue" [ngStyle.xs]="{'font-size.px': '15'}">
         </div>
     `);
     expectNativeEl(fixture).toHaveCssStyle({color: 'blue'});
-    activateMediaQuery('xs');
+    matchMedia.activate('xs');
     expectNativeEl(fixture).toHaveCssStyle({color: 'blue', 'font-size': '15px'});
   });
 
   it('should support raw-string notations', () => {
-    fixture = createTestComponent(`
-        <div 
-            style="color: blue" 
+    createTestComponent(`
+        <div
+            style="color: blue"
             ngStyle.xs="font-size: 15px; background-color:#fc2929;" >
         </div>
     `);
     expectNativeEl(fixture).toHaveCssStyle({color: 'blue'});
-    activateMediaQuery('xs');
+    matchMedia.activate('xs');
     expectNativeEl(fixture).toHaveCssStyle({
       'color': 'blue',
       'font-size': '15px',
@@ -95,7 +92,7 @@ describe('style directive', () => {
   });
 
   it('should allow more than one responsive breakpoint on one element', () => {
-    fixture = createTestComponent(`
+    createTestComponent(`
       <div  fxLayout
         [ngStyle]="{'font-size': '10px;', 'margin-left' : '13px'}"
         [ngStyle.xs]="{'font-size': '16px'}"
@@ -105,16 +102,16 @@ describe('style directive', () => {
 
     fixture.detectChanges();
 
-    activateMediaQuery('xs');
+    matchMedia.activate('xs');
     expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
     expectNativeEl(fixture).toHaveCssStyle({'font-size': '16px'});
     expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '12px'});
 
-    activateMediaQuery('md');
+    matchMedia.activate('md');
     expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '16px'});
     expectNativeEl(fixture).toHaveCssStyle({'font-size': '12px'});
 
-    activateMediaQuery('lg');
+    matchMedia.activate('lg');
     expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '12px'});
     expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '16px'});
     expectNativeEl(fixture).toHaveCssStyle({'font-size': '10px'});  // original is gone
@@ -123,20 +120,20 @@ describe('style directive', () => {
   });
 
   it('should work with special ngStyle px notation', () => {
-    fixture = createTestComponent(`
+    createTestComponent(`
         <div [ngStyle.xs]="{'font-size.px': 15}">
         </div>
     `);
-    activateMediaQuery('xs');
+    matchMedia.activate('xs');
     expectNativeEl(fixture).toHaveCssStyle({'font-size': '15px'});
   });
 
   it('should work with bound values', () => {
-    fixture = createTestComponent(`
+    createTestComponent(`
         <div [ngStyle.xs]="{'font-size.px': fontSize}">
         </div>
     `);
-    activateMediaQuery('xs');
+    matchMedia.activate('xs');
     expectNativeEl(fixture, {fontSize: 19}).toHaveCssStyle({'font-size': '19px'});
   });
 });

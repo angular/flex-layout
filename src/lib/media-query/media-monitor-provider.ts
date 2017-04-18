@@ -5,11 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  OpaqueToken,    // tslint:disable-line:no-unused-variable
-  Optional,
-  SkipSelf
-} from '@angular/core';
+import {Optional, SkipSelf} from '@angular/core';
 
 import {MediaMonitor} from './media-monitor';
 import {MatchMedia} from './match-media';
