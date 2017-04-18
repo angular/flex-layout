@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -175,79 +166,30 @@ var LayoutDirective = (function (_super) {
     };
     return LayoutDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxLayout'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layout", null);
-__decorate([
-    Input('fxLayout.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutXs", null);
-__decorate([
-    Input('fxLayout.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutSm", null);
-__decorate([
-    Input('fxLayout.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutMd", null);
-__decorate([
-    Input('fxLayout.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutLg", null);
-__decorate([
-    Input('fxLayout.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutXl", null);
-__decorate([
-    Input('fxLayout.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtXs", null);
-__decorate([
-    Input('fxLayout.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtSm", null);
-__decorate([
-    Input('fxLayout.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtMd", null);
-__decorate([
-    Input('fxLayout.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutGtLg", null);
-__decorate([
-    Input('fxLayout.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutLtSm", null);
-__decorate([
-    Input('fxLayout.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutLtMd", null);
-__decorate([
-    Input('fxLayout.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutLtLg", null);
-__decorate([
-    Input('fxLayout.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutDirective.prototype, "layoutLtXl", null);
-LayoutDirective = __decorate([
-    Directive({ selector: "\n  [fxLayout], \n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" }),
-    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
-], LayoutDirective);
 export { LayoutDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout.js.map
+LayoutDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" },] },
+];
+/** @nocollapse */
+LayoutDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+LayoutDirective.propDecorators = {
+    'layout': [{ type: Input, args: ['fxLayout',] },],
+    'layoutXs': [{ type: Input, args: ['fxLayout.xs',] },],
+    'layoutSm': [{ type: Input, args: ['fxLayout.sm',] },],
+    'layoutMd': [{ type: Input, args: ['fxLayout.md',] },],
+    'layoutLg': [{ type: Input, args: ['fxLayout.lg',] },],
+    'layoutXl': [{ type: Input, args: ['fxLayout.xl',] },],
+    'layoutGtXs': [{ type: Input, args: ['fxLayout.gt-xs',] },],
+    'layoutGtSm': [{ type: Input, args: ['fxLayout.gt-sm',] },],
+    'layoutGtMd': [{ type: Input, args: ['fxLayout.gt-md',] },],
+    'layoutGtLg': [{ type: Input, args: ['fxLayout.gt-lg',] },],
+    'layoutLtSm': [{ type: Input, args: ['fxLayout.lt-sm',] },],
+    'layoutLtMd': [{ type: Input, args: ['fxLayout.lt-md',] },],
+    'layoutLtLg': [{ type: Input, args: ['fxLayout.lt-lg',] },],
+    'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
+};
+//# sourceMappingURL=layout.js.map

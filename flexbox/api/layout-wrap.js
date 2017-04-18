@@ -8,18 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,7 +15,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, Self, Optional, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -205,83 +193,31 @@ var LayoutWrapDirective = (function (_super) {
     });
     return LayoutWrapDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxLayoutWrap'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrap", null);
-__decorate([
-    Input('fxLayoutWrap.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapXs", null);
-__decorate([
-    Input('fxLayoutWrap.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapSm", null);
-__decorate([
-    Input('fxLayoutWrap.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapMd", null);
-__decorate([
-    Input('fxLayoutWrap.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapLg", null);
-__decorate([
-    Input('fxLayoutWrap.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapXl", null);
-__decorate([
-    Input('fxLayoutWrap.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtXs", null);
-__decorate([
-    Input('fxLayoutWrap.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtSm", null);
-__decorate([
-    Input('fxLayoutWrap.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtMd", null);
-__decorate([
-    Input('fxLayoutWrap.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapGtLg", null);
-__decorate([
-    Input('fxLayoutWrap.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapLtSm", null);
-__decorate([
-    Input('fxLayoutWrap.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapLtMd", null);
-__decorate([
-    Input('fxLayoutWrap.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapLtLg", null);
-__decorate([
-    Input('fxLayoutWrap.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutWrapDirective.prototype, "wrapLtXl", null);
-LayoutWrapDirective = __decorate([
-    Directive({ selector: "\n  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],\n  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]\n" }),
-    __param(3, Optional()), __param(3, Self()),
-    __metadata("design:paramtypes", [MediaMonitor,
-        ElementRef,
-        Renderer,
-        LayoutDirective])
-], LayoutWrapDirective);
 export { LayoutWrapDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-wrap.js.map
+LayoutWrapDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],\n  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]\n" },] },
+];
+/** @nocollapse */
+LayoutWrapDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+]; };
+LayoutWrapDirective.propDecorators = {
+    'wrap': [{ type: Input, args: ['fxLayoutWrap',] },],
+    'wrapXs': [{ type: Input, args: ['fxLayoutWrap.xs',] },],
+    'wrapSm': [{ type: Input, args: ['fxLayoutWrap.sm',] },],
+    'wrapMd': [{ type: Input, args: ['fxLayoutWrap.md',] },],
+    'wrapLg': [{ type: Input, args: ['fxLayoutWrap.lg',] },],
+    'wrapXl': [{ type: Input, args: ['fxLayoutWrap.xl',] },],
+    'wrapGtXs': [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
+    'wrapGtSm': [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
+    'wrapGtMd': [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
+    'wrapGtLg': [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
+    'wrapLtSm': [{ type: Input, args: ['fxLayoutWrap.lt-sm',] },],
+    'wrapLtMd': [{ type: Input, args: ['fxLayoutWrap.lt-md',] },],
+    'wrapLtLg': [{ type: Input, args: ['fxLayoutWrap.lt-lg',] },],
+    'wrapLtXl': [{ type: Input, args: ['fxLayoutWrap.lt-xl',] },],
+};
+//# sourceMappingURL=layout-wrap.js.map

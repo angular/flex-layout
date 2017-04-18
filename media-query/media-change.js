@@ -22,4 +22,4 @@ var MediaChange = (function () {
     return MediaChange;
 }());
 export { MediaChange };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/media-change.js.map
+//# sourceMappingURL=media-change.js.map

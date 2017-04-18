@@ -3,7 +3,6 @@ import { DEFAULT_BREAKPOINTS } from './data/break-points';
 import { ORIENTATION_BREAKPOINTS } from './data/orientation-break-points';
 import { extendObject } from '../../utils/object-extend';
 import { mergeByAlias, validateSuffixes } from '../../utils/breakpoint-tools';
-;
 /**
  * Add new custom items to the default list or override existing default with custom overrides
  */
@@ -47,4 +46,4 @@ export function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
         useFactory: buildMergedBreakPoints(_custom, options)
     };
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/breakpoints/break-points-provider.js.map
+//# sourceMappingURL=break-points-provider.js.map

@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
-  (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common,global.ng.platformBrowser));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('@angular/core'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
+	typeof define === 'function' && define.amd ? define(['exports', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', '@angular/core', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.core,global.Rx,global.ng.common,global.ng.platformBrowser));
 }(this, (function (exports,rxjs_add_operator_map,rxjs_add_operator_filter,_angular_core,rxjs_BehaviorSubject,_angular_common,_angular_platformBrowser) { 'use strict';
 
 /**
@@ -487,6 +487,7 @@ var BaseFxDirective = (function () {
      * Applies styles given via string pair or object map to the directive element.
      */
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
+        var _this = this;
         var styles = {};
         var element = nativeElement || this._elementRef.nativeElement;
         if (typeof style === 'string') {
@@ -495,9 +496,9 @@ var BaseFxDirective = (function () {
         }
         styles = applyCssPrefixes(style);
         // Iterate all properties in hashMap and set styles
-        for (var key in styles) {
-            this._renderer.setElementStyle(element, key, styles[key]);
-        }
+        Object.keys(styles).forEach(function (key) {
+            _this._renderer.setStyle(element, key, styles[key]);
+        });
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -505,11 +506,8 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
         var _this = this;
         var styles = applyCssPrefixes(style);
-        elements.forEach(function (el) {
-            // Iterate all properties in hashMap and set styles
-            for (var key in styles) {
-                _this._renderer.setElementStyle(el, key, styles[key]);
-            }
+        Object.keys(styles).forEach(function (key) {
+            elements.forEach(function (el) { return _this._renderer.setStyle(el, key, styles[key]); });
         });
     };
     /**
@@ -857,10 +855,10 @@ function prepareQueryCSS(query) {
  * found in the LICENSE file at https://angular.io/license
  */
 /**
- *  Opaque Token unique to the flex-layout library.
+ *  Injection token unique to the flex-layout library.
  *  Use this token when build a custom provider (see below).
  */
-var BREAKPOINTS = new _angular_core.OpaqueToken('Token (@angular/flex-layout) Breakpoints');
+var BREAKPOINTS = new _angular_core.InjectionToken('Token (@angular/flex-layout) Breakpoints');
 
 var __decorate$4 = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1782,8 +1780,8 @@ __decorate$7([
     __metadata$5("design:paramtypes", [Object])
 ], LayoutDirective.prototype, "layoutLtXl", null);
 LayoutDirective = __decorate$7([
-    _angular_core.Directive({ selector: "\n  [fxLayout], \n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" }),
-    __metadata$5("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+    _angular_core.Directive({ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" }),
+    __metadata$5("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
 ], LayoutDirective);
 
 var __extends$3 = (this && this.__extends) || (function () {
@@ -2063,7 +2061,7 @@ LayoutWrapDirective = __decorate$8([
     __param$2(3, _angular_core.Optional()), __param$2(3, _angular_core.Self()),
     __metadata$6("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer,
+        _angular_core.Renderer2,
         LayoutDirective])
 ], LayoutWrapDirective);
 
@@ -2498,13 +2496,13 @@ __decorate$6([
     __metadata$4("design:paramtypes", [Object])
 ], FlexDirective.prototype, "flexLtXl", null);
 FlexDirective = __decorate$6([
-    _angular_core.Directive({ selector: "\n  [fxFlex], \n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
+    _angular_core.Directive({ selector: "\n  [fxFlex],\n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
     }),
     __param$1(3, _angular_core.Optional()), __param$1(3, _angular_core.SkipSelf()),
     __param$1(4, _angular_core.Optional()), __param$1(4, _angular_core.SkipSelf()),
     __metadata$4("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer,
+        _angular_core.Renderer2,
         LayoutDirective,
         LayoutWrapDirective])
 ], FlexDirective);
@@ -2943,13 +2941,13 @@ __decorate$9([
 ], ShowHideDirective.prototype, "hideGtLg", null);
 ShowHideDirective = __decorate$9([
     _angular_core.Directive({
-        selector: "\n  [fxShow], \n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl], \n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide], \n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],  \n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
+        selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
     }),
     __param$3(1, _angular_core.Optional()), __param$3(1, _angular_core.Self()),
     __metadata$7("design:paramtypes", [exports.MediaMonitor,
         LayoutDirective,
         _angular_core.ElementRef,
-        _angular_core.Renderer])
+        _angular_core.Renderer2])
 ], ShowHideDirective);
 
 var __extends$5 = (this && this.__extends) || (function () {
@@ -3198,7 +3196,7 @@ FlexAlignDirective = __decorate$10([
     _angular_core.Directive({
         selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
     }),
-    __metadata$8("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+    __metadata$8("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
 ], FlexAlignDirective);
 
 var __extends$6 = (this && this.__extends) || (function () {
@@ -3253,7 +3251,7 @@ var FlexFillDirective = (function (_super) {
 }(BaseFxDirective));
 FlexFillDirective = __decorate$11([
     _angular_core.Directive({ selector: "\n  [fxFill],\n  [fxFlexFill]\n" }),
-    __metadata$9("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+    __metadata$9("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
 ], FlexFillDirective);
 
 var __extends$7 = (this && this.__extends) || (function () {
@@ -3488,7 +3486,7 @@ __decorate$12([
 ], FlexOffsetDirective.prototype, "offsetGtLg", null);
 FlexOffsetDirective = __decorate$12([
     _angular_core.Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" }),
-    __metadata$10("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+    __metadata$10("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
 ], FlexOffsetDirective);
 
 var __extends$8 = (this && this.__extends) || (function () {
@@ -3721,7 +3719,7 @@ __decorate$13([
 ], FlexOrderDirective.prototype, "orderLtXl", null);
 FlexOrderDirective = __decorate$13([
     _angular_core.Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" }),
-    __metadata$11("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
+    __metadata$11("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
 ], FlexOrderDirective);
 
 var __extends$9 = (this && this.__extends) || (function () {
@@ -4048,10 +4046,10 @@ __decorate$14([
     __metadata$12("design:paramtypes", [Object])
 ], LayoutAlignDirective.prototype, "alignLtXl", null);
 LayoutAlignDirective = __decorate$14([
-    _angular_core.Directive({ selector: "\n  [fxLayoutAlign], \n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" }),
+    _angular_core.Directive({ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" }),
     __param$4(3, _angular_core.Optional()), __param$4(3, _angular_core.Self()),
     __metadata$12("design:paramtypes", [exports.MediaMonitor,
-        _angular_core.ElementRef, _angular_core.Renderer,
+        _angular_core.ElementRef, _angular_core.Renderer2,
         LayoutDirective])
 ], LayoutAlignDirective);
 
@@ -4255,8 +4253,7 @@ var LayoutGapDirective = (function (_super) {
         }
         // Gather all non-hidden Element nodes
         var items = this.childrenNodes
-            .filter(function (el) { return (el.nodeType === 1); }) // only Element types
-            .filter(function (el) { return _this._getDisplayStyle(el) != "none"; });
+            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != "none"; });
         var numItems = items.length;
         if (numItems > 1) {
             var lastItem = items[numItems - 1];
@@ -4367,12 +4364,12 @@ __decorate$15([
     __metadata$13("design:paramtypes", [Object])
 ], LayoutGapDirective.prototype, "gapLtXl", null);
 LayoutGapDirective = __decorate$15([
-    _angular_core.Directive({ selector: "\n  [fxLayoutGap], \n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
+    _angular_core.Directive({ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
     }),
     __param$5(3, _angular_core.Optional()), __param$5(3, _angular_core.Self()),
     __metadata$13("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer,
+        _angular_core.Renderer2,
         LayoutDirective])
 ], LayoutGapDirective);
 
@@ -4408,8 +4405,10 @@ var __metadata$14 = (this && this.__metadata) || function (k, v) {
 var ClassDirective = (function (_super) {
     __extends$11(ClassDirective, _super);
     /* tslint:enable */
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
-        var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
+    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer, _renderer) {
+        var _this = 
+        // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
+        _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer) || this;
         _this.monitor = monitor;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
@@ -4586,7 +4585,7 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     // ******************************************************************
-    // Lifecycle Hookks
+    // Lifecycle Hooks
     // ******************************************************************
     /**
      * For @Input changes on the current mq activation property
@@ -4794,11 +4793,11 @@ __decorate$16([
 ], ClassDirective.prototype, "classGtLg", null);
 ClassDirective = __decorate$16([
     _angular_core.Directive({
-        selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg], \n           \n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
+        selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
     }),
     __metadata$14("design:paramtypes", [exports.MediaMonitor,
         _angular_core.IterableDiffers, _angular_core.KeyValueDiffers,
-        _angular_core.ElementRef, _angular_core.Renderer])
+        _angular_core.ElementRef, _angular_core.Renderer, _angular_core.Renderer2])
 ], ClassDirective);
 
 /**
@@ -4938,8 +4937,10 @@ var StyleDirective = (function (_super) {
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _renderer) {
-        var _this = _super.call(this, _differs, _ngEl, _renderer) || this;
+    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _oldRenderer, _renderer) {
+        var _this = 
+        // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
+        _super.call(this, _differs, _ngEl, _oldRenderer) || this;
         _this.monitor = monitor;
         _this._bpRegistry = _bpRegistry;
         _this._sanitizer = _sanitizer;
@@ -5355,13 +5356,15 @@ __decorate$17([
 ], StyleDirective.prototype, "styleGtLg", null);
 StyleDirective = __decorate$17([
     _angular_core.Directive({
-        selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],      \n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl], \n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg], \n    [ngStyle], \n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],   \n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl], \n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] \n  "
+        selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],\n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],\n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
     }),
     __metadata$15("design:paramtypes", [exports.MediaMonitor,
         exports.BreakPointRegistry,
         _angular_platformBrowser.DomSanitizer,
         _angular_core.KeyValueDiffers,
-        _angular_core.ElementRef, _angular_core.Renderer])
+        _angular_core.ElementRef,
+        _angular_core.Renderer,
+        _angular_core.Renderer2])
 ], StyleDirective);
 
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {

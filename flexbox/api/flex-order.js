@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -159,79 +150,30 @@ var FlexOrderDirective = (function (_super) {
     };
     return FlexOrderDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxFlexOrder'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "order", null);
-__decorate([
-    Input('fxFlexOrder.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderXs", null);
-__decorate([
-    Input('fxFlexOrder.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderSm", null);
-__decorate([
-    Input('fxFlexOrder.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderMd", null);
-__decorate([
-    Input('fxFlexOrder.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderLg", null);
-__decorate([
-    Input('fxFlexOrder.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderXl", null);
-__decorate([
-    Input('fxFlexOrder.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtXs", null);
-__decorate([
-    Input('fxFlexOrder.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtSm", null);
-__decorate([
-    Input('fxFlexOrder.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtMd", null);
-__decorate([
-    Input('fxFlexOrder.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderGtLg", null);
-__decorate([
-    Input('fxFlexOrder.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderLtSm", null);
-__decorate([
-    Input('fxFlexOrder.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderLtMd", null);
-__decorate([
-    Input('fxFlexOrder.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderLtLg", null);
-__decorate([
-    Input('fxFlexOrder.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOrderDirective.prototype, "orderLtXl", null);
-FlexOrderDirective = __decorate([
-    Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" }),
-    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
-], FlexOrderDirective);
 export { FlexOrderDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-order.js.map
+FlexOrderDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
+];
+/** @nocollapse */
+FlexOrderDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+FlexOrderDirective.propDecorators = {
+    'order': [{ type: Input, args: ['fxFlexOrder',] },],
+    'orderXs': [{ type: Input, args: ['fxFlexOrder.xs',] },],
+    'orderSm': [{ type: Input, args: ['fxFlexOrder.sm',] },],
+    'orderMd': [{ type: Input, args: ['fxFlexOrder.md',] },],
+    'orderLg': [{ type: Input, args: ['fxFlexOrder.lg',] },],
+    'orderXl': [{ type: Input, args: ['fxFlexOrder.xl',] },],
+    'orderGtXs': [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
+    'orderGtSm': [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
+    'orderGtMd': [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
+    'orderGtLg': [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
+    'orderLtSm': [{ type: Input, args: ['fxFlexOrder.lt-sm',] },],
+    'orderLtMd': [{ type: Input, args: ['fxFlexOrder.lt-md',] },],
+    'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
+    'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
+};
+//# sourceMappingURL=flex-order.js.map

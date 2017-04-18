@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -173,81 +164,32 @@ var FlexAlignDirective = (function (_super) {
     };
     return FlexAlignDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxFlexAlign'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "align", null);
-__decorate([
-    Input('fxFlexAlign.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignXs", null);
-__decorate([
-    Input('fxFlexAlign.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignSm", null);
-__decorate([
-    Input('fxFlexAlign.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignMd", null);
-__decorate([
-    Input('fxFlexAlign.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignLg", null);
-__decorate([
-    Input('fxFlexAlign.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignXl", null);
-__decorate([
-    Input('fxFlexAlign.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignLtSm", null);
-__decorate([
-    Input('fxFlexAlign.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignLtMd", null);
-__decorate([
-    Input('fxFlexAlign.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignLtLg", null);
-__decorate([
-    Input('fxFlexAlign.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignLtXl", null);
-__decorate([
-    Input('fxFlexAlign.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtXs", null);
-__decorate([
-    Input('fxFlexAlign.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtSm", null);
-__decorate([
-    Input('fxFlexAlign.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtMd", null);
-__decorate([
-    Input('fxFlexAlign.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexAlignDirective.prototype, "alignGtLg", null);
-FlexAlignDirective = __decorate([
-    Directive({
-        selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
-    }),
-    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
-], FlexAlignDirective);
 export { FlexAlignDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-align.js.map
+FlexAlignDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
+            },] },
+];
+/** @nocollapse */
+FlexAlignDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+FlexAlignDirective.propDecorators = {
+    'align': [{ type: Input, args: ['fxFlexAlign',] },],
+    'alignXs': [{ type: Input, args: ['fxFlexAlign.xs',] },],
+    'alignSm': [{ type: Input, args: ['fxFlexAlign.sm',] },],
+    'alignMd': [{ type: Input, args: ['fxFlexAlign.md',] },],
+    'alignLg': [{ type: Input, args: ['fxFlexAlign.lg',] },],
+    'alignXl': [{ type: Input, args: ['fxFlexAlign.xl',] },],
+    'alignLtSm': [{ type: Input, args: ['fxFlexAlign.lt-sm',] },],
+    'alignLtMd': [{ type: Input, args: ['fxFlexAlign.lt-md',] },],
+    'alignLtLg': [{ type: Input, args: ['fxFlexAlign.lt-lg',] },],
+    'alignLtXl': [{ type: Input, args: ['fxFlexAlign.lt-xl',] },],
+    'alignGtXs': [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
+    'alignGtSm': [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
+    'alignGtMd': [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
+    'alignGtLg': [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
+};
+//# sourceMappingURL=flex-align.js.map

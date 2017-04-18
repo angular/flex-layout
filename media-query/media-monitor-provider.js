@@ -5,8 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { // tslint:disable-line:no-unused-variable
-Optional, SkipSelf } from '@angular/core';
+import { Optional, SkipSelf } from '@angular/core';
 import { MediaMonitor } from './media-monitor';
 import { MatchMedia } from './match-media';
 import { BreakPointRegistry } from './breakpoints/break-point-registry';
@@ -28,4 +27,4 @@ export var MEDIA_MONITOR_PROVIDER = {
     ],
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/media-monitor-provider.js.map
+//# sourceMappingURL=media-monitor-provider.js.map

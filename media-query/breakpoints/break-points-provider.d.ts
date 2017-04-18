@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { BreakPoint } from './break-point';
 /**
  * Options to identify which breakpoint types to include as part of
@@ -41,13 +41,13 @@ export declare function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY(): BreakPoint[];
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
  */
 export declare const DEFAULT_BREAKPOINTS_PROVIDER: {
-    provide: OpaqueToken;
+    provide: InjectionToken<BreakPoint[]>;
     useFactory: () => BreakPoint[];
 };
 /**
  * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
  */
 export declare function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom?: BreakPoint[], options?: BreakPointProviderOptions): {
-    provide: OpaqueToken;
+    provide: InjectionToken<BreakPoint[]>;
     useFactory: () => BreakPoint[];
 };

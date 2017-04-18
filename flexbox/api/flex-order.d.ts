@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -28,7 +28,7 @@ export declare class FlexOrderDirective extends BaseFxDirective implements OnIni
     orderLtMd: any;
     orderLtLg: any;
     orderLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */

@@ -59,4 +59,4 @@ export function mergeByAlias(defaults, custom) {
     });
     return validateSuffixes(merged);
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/breakpoint-tools.js.map
+//# sourceMappingURL=breakpoint-tools.js.map

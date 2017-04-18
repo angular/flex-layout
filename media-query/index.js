@@ -17,4 +17,4 @@ export * from './breakpoints/break-points-provider';
 export * from './observable-media-provider';
 export * from './media-monitor-provider';
 export * from './_module';
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/index.js.map
+//# sourceMappingURL=index.js.map

@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, KeyValueDiffers, SecurityContext } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, Renderer2, KeyValueDiffers, SecurityContext } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
@@ -43,8 +34,10 @@ var StyleDirective = (function (_super) {
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _renderer) {
-        var _this = _super.call(this, _differs, _ngEl, _renderer) || this;
+    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _oldRenderer, _renderer) {
+        var _this = 
+        // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
+        _super.call(this, _differs, _ngEl, _oldRenderer) || this;
         _this.monitor = monitor;
         _this._bpRegistry = _bpRegistry;
         _this._sanitizer = _sanitizer;
@@ -323,150 +316,49 @@ var StyleDirective = (function (_super) {
     };
     return StyleDirective;
 }(NgStyle));
-__decorate([
-    Input('ngStyle'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleBase", null);
-__decorate([
-    Input('ngStyle.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleXs", null);
-__decorate([
-    Input('ngStyle.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleSm", null);
-__decorate([
-    Input('ngStyle.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleMd", null);
-__decorate([
-    Input('ngStyle.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleLg", null);
-__decorate([
-    Input('ngStyle.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleXl", null);
-__decorate([
-    Input('ngStyle.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleLtSm", null);
-__decorate([
-    Input('ngStyle.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleLtMd", null);
-__decorate([
-    Input('ngStyle.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleLtLg", null);
-__decorate([
-    Input('ngStyle.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleLtXl", null);
-__decorate([
-    Input('ngStyle.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtXs", null);
-__decorate([
-    Input('ngStyle.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtSm", null);
-__decorate([
-    Input('ngStyle.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtMd", null);
-__decorate([
-    Input('ngStyle.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "ngStyleGtLg", null);
-__decorate([
-    Input('style.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleXs", null);
-__decorate([
-    Input('style.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleSm", null);
-__decorate([
-    Input('style.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleMd", null);
-__decorate([
-    Input('style.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLg", null);
-__decorate([
-    Input('style.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleXl", null);
-__decorate([
-    Input('style.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtSm", null);
-__decorate([
-    Input('style.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtMd", null);
-__decorate([
-    Input('style.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtLg", null);
-__decorate([
-    Input('style.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleLtXl", null);
-__decorate([
-    Input('style.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtXs", null);
-__decorate([
-    Input('style.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtSm", null);
-__decorate([
-    Input('style.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtMd", null);
-__decorate([
-    Input('style.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], StyleDirective.prototype, "styleGtLg", null);
-StyleDirective = __decorate([
-    Directive({
-        selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],      \n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl], \n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg], \n    [ngStyle], \n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],   \n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl], \n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg] \n  "
-    }),
-    __metadata("design:paramtypes", [MediaMonitor,
-        BreakPointRegistry,
-        DomSanitizer,
-        KeyValueDiffers,
-        ElementRef, Renderer])
-], StyleDirective);
 export { StyleDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/style.js.map
+StyleDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],\n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],\n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
+            },] },
+];
+/** @nocollapse */
+StyleDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: BreakPointRegistry, },
+    { type: DomSanitizer, },
+    { type: KeyValueDiffers, },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: Renderer2, },
+]; };
+StyleDirective.propDecorators = {
+    'styleBase': [{ type: Input, args: ['ngStyle',] },],
+    'ngStyleXs': [{ type: Input, args: ['ngStyle.xs',] },],
+    'ngStyleSm': [{ type: Input, args: ['ngStyle.sm',] },],
+    'ngStyleMd': [{ type: Input, args: ['ngStyle.md',] },],
+    'ngStyleLg': [{ type: Input, args: ['ngStyle.lg',] },],
+    'ngStyleXl': [{ type: Input, args: ['ngStyle.xl',] },],
+    'ngStyleLtSm': [{ type: Input, args: ['ngStyle.lt-sm',] },],
+    'ngStyleLtMd': [{ type: Input, args: ['ngStyle.lt-md',] },],
+    'ngStyleLtLg': [{ type: Input, args: ['ngStyle.lt-lg',] },],
+    'ngStyleLtXl': [{ type: Input, args: ['ngStyle.lt-xl',] },],
+    'ngStyleGtXs': [{ type: Input, args: ['ngStyle.gt-xs',] },],
+    'ngStyleGtSm': [{ type: Input, args: ['ngStyle.gt-sm',] },],
+    'ngStyleGtMd': [{ type: Input, args: ['ngStyle.gt-md',] },],
+    'ngStyleGtLg': [{ type: Input, args: ['ngStyle.gt-lg',] },],
+    'styleXs': [{ type: Input, args: ['style.xs',] },],
+    'styleSm': [{ type: Input, args: ['style.sm',] },],
+    'styleMd': [{ type: Input, args: ['style.md',] },],
+    'styleLg': [{ type: Input, args: ['style.lg',] },],
+    'styleXl': [{ type: Input, args: ['style.xl',] },],
+    'styleLtSm': [{ type: Input, args: ['style.lt-sm',] },],
+    'styleLtMd': [{ type: Input, args: ['style.lt-md',] },],
+    'styleLtLg': [{ type: Input, args: ['style.lt-lg',] },],
+    'styleLtXl': [{ type: Input, args: ['style.lt-xl',] },],
+    'styleGtXs': [{ type: Input, args: ['style.gt-xs',] },],
+    'styleGtSm': [{ type: Input, args: ['style.gt-sm',] },],
+    'styleGtMd': [{ type: Input, args: ['style.gt-md',] },],
+    'styleGtLg': [{ type: Input, args: ['style.gt-lg',] },],
+};
+//# sourceMappingURL=style.js.map

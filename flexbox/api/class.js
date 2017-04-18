@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, IterableDiffers, KeyValueDiffers } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, Renderer2, IterableDiffers, KeyValueDiffers } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -34,8 +25,10 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 var ClassDirective = (function (_super) {
     __extends(ClassDirective, _super);
     /* tslint:enable */
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
-        var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
+    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer, _renderer) {
+        var _this = 
+        // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
+        _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer) || this;
         _this.monitor = monitor;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
@@ -212,7 +205,7 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     // ******************************************************************
-    // Lifecycle Hookks
+    // Lifecycle Hooks
     // ******************************************************************
     /**
      * For @Input changes on the current mq activation property
@@ -278,153 +271,49 @@ var ClassDirective = (function (_super) {
     };
     return ClassDirective;
 }(NgClass));
-__decorate([
-    Input('ngClass'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassBase", null);
-__decorate([
-    Input('ngClass.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassXs", null);
-__decorate([
-    Input('ngClass.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassSm", null);
-__decorate([
-    Input('ngClass.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassMd", null);
-__decorate([
-    Input('ngClass.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLg", null);
-__decorate([
-    Input('ngClass.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassXl", null);
-__decorate([
-    Input('ngClass.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLtSm", null);
-__decorate([
-    Input('ngClass.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLtMd", null);
-__decorate([
-    Input('ngClass.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLtLg", null);
-__decorate([
-    Input('ngClass.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassLtXl", null);
-__decorate([
-    Input('ngClass.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtXs", null);
-__decorate([
-    Input('ngClass.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtSm", null);
-__decorate([
-    Input('ngClass.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtMd", null);
-__decorate([
-    Input('ngClass.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "ngClassGtLg", null);
-__decorate([
-    Input('class'),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], ClassDirective.prototype, "classBase", null);
-__decorate([
-    Input('class.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classXs", null);
-__decorate([
-    Input('class.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classSm", null);
-__decorate([
-    Input('class.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classMd", null);
-__decorate([
-    Input('class.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLg", null);
-__decorate([
-    Input('class.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classXl", null);
-__decorate([
-    Input('class.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLtSm", null);
-__decorate([
-    Input('class.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLtMd", null);
-__decorate([
-    Input('class.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLtLg", null);
-__decorate([
-    Input('class.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classLtXl", null);
-__decorate([
-    Input('class.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtXs", null);
-__decorate([
-    Input('class.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtSm", null);
-__decorate([
-    Input('class.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtMd", null);
-__decorate([
-    Input('class.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ClassDirective.prototype, "classGtLg", null);
-ClassDirective = __decorate([
-    Directive({
-        selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl], \n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],     \n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg], \n           \n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl], \n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]  \n  "
-    }),
-    __metadata("design:paramtypes", [MediaMonitor,
-        IterableDiffers, KeyValueDiffers,
-        ElementRef, Renderer])
-], ClassDirective);
 export { ClassDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/class.js.map
+ClassDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
+            },] },
+];
+/** @nocollapse */
+ClassDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: IterableDiffers, },
+    { type: KeyValueDiffers, },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: Renderer2, },
+]; };
+ClassDirective.propDecorators = {
+    'ngClassBase': [{ type: Input, args: ['ngClass',] },],
+    'ngClassXs': [{ type: Input, args: ['ngClass.xs',] },],
+    'ngClassSm': [{ type: Input, args: ['ngClass.sm',] },],
+    'ngClassMd': [{ type: Input, args: ['ngClass.md',] },],
+    'ngClassLg': [{ type: Input, args: ['ngClass.lg',] },],
+    'ngClassXl': [{ type: Input, args: ['ngClass.xl',] },],
+    'ngClassLtSm': [{ type: Input, args: ['ngClass.lt-sm',] },],
+    'ngClassLtMd': [{ type: Input, args: ['ngClass.lt-md',] },],
+    'ngClassLtLg': [{ type: Input, args: ['ngClass.lt-lg',] },],
+    'ngClassLtXl': [{ type: Input, args: ['ngClass.lt-xl',] },],
+    'ngClassGtXs': [{ type: Input, args: ['ngClass.gt-xs',] },],
+    'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
+    'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
+    'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
+    'classBase': [{ type: Input, args: ['class',] },],
+    'classXs': [{ type: Input, args: ['class.xs',] },],
+    'classSm': [{ type: Input, args: ['class.sm',] },],
+    'classMd': [{ type: Input, args: ['class.md',] },],
+    'classLg': [{ type: Input, args: ['class.lg',] },],
+    'classXl': [{ type: Input, args: ['class.xl',] },],
+    'classLtSm': [{ type: Input, args: ['class.lt-sm',] },],
+    'classLtMd': [{ type: Input, args: ['class.lt-md',] },],
+    'classLtLg': [{ type: Input, args: ['class.lt-lg',] },],
+    'classLtXl': [{ type: Input, args: ['class.lt-xl',] },],
+    'classGtXs': [{ type: Input, args: ['class.gt-xs',] },],
+    'classGtSm': [{ type: Input, args: ['class.gt-sm',] },],
+    'classGtMd': [{ type: Input, args: ['class.gt-md',] },],
+    'classGtLg': [{ type: Input, args: ['class.gt-lg',] },],
+};
+//# sourceMappingURL=class.js.map

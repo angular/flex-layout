@@ -73,4 +73,4 @@ function buildCSS(direction, wrap) {
         'flex-wrap': !!wrap ? wrap : null
     };
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/layout-validator.js.map
+//# sourceMappingURL=layout-validator.js.map

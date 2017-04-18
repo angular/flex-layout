@@ -8,18 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,7 +15,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, Self, Optional, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -203,8 +191,7 @@ var LayoutGapDirective = (function (_super) {
         }
         // Gather all non-hidden Element nodes
         var items = this.childrenNodes
-            .filter(function (el) { return (el.nodeType === 1); }) // only Element types
-            .filter(function (el) { return _this._getDisplayStyle(el) != "none"; });
+            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != "none"; });
         var numItems = items.length;
         if (numItems > 1) {
             var lastItem = items[numItems - 1];
@@ -244,84 +231,32 @@ var LayoutGapDirective = (function (_super) {
     };
     return LayoutGapDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxLayoutGap'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gap", null);
-__decorate([
-    Input('fxLayoutGap.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapXs", null);
-__decorate([
-    Input('fxLayoutGap.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapSm", null);
-__decorate([
-    Input('fxLayoutGap.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapMd", null);
-__decorate([
-    Input('fxLayoutGap.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapLg", null);
-__decorate([
-    Input('fxLayoutGap.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapXl", null);
-__decorate([
-    Input('fxLayoutGap.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtXs", null);
-__decorate([
-    Input('fxLayoutGap.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtSm", null);
-__decorate([
-    Input('fxLayoutGap.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtMd", null);
-__decorate([
-    Input('fxLayoutGap.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapGtLg", null);
-__decorate([
-    Input('fxLayoutGap.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapLtSm", null);
-__decorate([
-    Input('fxLayoutGap.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapLtMd", null);
-__decorate([
-    Input('fxLayoutGap.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapLtLg", null);
-__decorate([
-    Input('fxLayoutGap.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], LayoutGapDirective.prototype, "gapLtXl", null);
-LayoutGapDirective = __decorate([
-    Directive({ selector: "\n  [fxLayoutGap], \n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
-    }),
-    __param(3, Optional()), __param(3, Self()),
-    __metadata("design:paramtypes", [MediaMonitor,
-        ElementRef,
-        Renderer,
-        LayoutDirective])
-], LayoutGapDirective);
 export { LayoutGapDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/layout-gap.js.map
+LayoutGapDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
+            },] },
+];
+/** @nocollapse */
+LayoutGapDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+]; };
+LayoutGapDirective.propDecorators = {
+    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
+    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
+    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
+    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
+    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
+    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
+    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
+    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
+    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
+    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
+};
+//# sourceMappingURL=layout-gap.js.map

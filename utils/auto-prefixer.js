@@ -92,4 +92,4 @@ export function toBoxOrdinal(order) {
     var value = order ? parseInt(order) + 1 : 1;
     return isNaN(value) ? "0" : value.toString();
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/auto-prefixer.js.map
+//# sourceMappingURL=auto-prefixer.js.map

@@ -129,4 +129,4 @@ var BaseFxDirectiveAdapter = (function (_super) {
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
 export { BaseFxDirectiveAdapter };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base-adapter.js.map
+//# sourceMappingURL=base-adapter.js.map

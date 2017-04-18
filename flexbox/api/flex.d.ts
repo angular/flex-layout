@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
+import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -45,7 +45,7 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     flexLtMd: any;
     flexLtLg: any;
     flexLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, _container: LayoutDirective, _wrap: LayoutWrapDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, _container: LayoutDirective, _wrap: LayoutWrapDirective);
     /**
      * For @Input changes on the current mq activation property, see onMediaQueryChanges()
      */

@@ -8,18 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,7 +15,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Optional, Renderer, SkipSelf, } from '@angular/core';
+import { Directive, ElementRef, Input, Optional, Renderer2, SkipSelf, } from '@angular/core';
 import { extendObject } from '../../utils/object-extend';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -299,96 +287,35 @@ var FlexDirective = (function (_super) {
     });
     return FlexDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxShrink'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "shrink", null);
-__decorate([
-    Input('fxGrow'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "grow", null);
-__decorate([
-    Input('fxFlex'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flex", null);
-__decorate([
-    Input('fxFlex.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexXs", null);
-__decorate([
-    Input('fxFlex.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexSm", null);
-__decorate([
-    Input('fxFlex.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexMd", null);
-__decorate([
-    Input('fxFlex.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexLg", null);
-__decorate([
-    Input('fxFlex.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexXl", null);
-__decorate([
-    Input('fxFlex.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtXs", null);
-__decorate([
-    Input('fxFlex.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtSm", null);
-__decorate([
-    Input('fxFlex.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtMd", null);
-__decorate([
-    Input('fxFlex.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexGtLg", null);
-__decorate([
-    Input('fxFlex.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexLtSm", null);
-__decorate([
-    Input('fxFlex.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexLtMd", null);
-__decorate([
-    Input('fxFlex.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexLtLg", null);
-__decorate([
-    Input('fxFlex.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexDirective.prototype, "flexLtXl", null);
-FlexDirective = __decorate([
-    Directive({ selector: "\n  [fxFlex], \n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
-    }),
-    __param(3, Optional()), __param(3, SkipSelf()),
-    __param(4, Optional()), __param(4, SkipSelf()),
-    __metadata("design:paramtypes", [MediaMonitor,
-        ElementRef,
-        Renderer,
-        LayoutDirective,
-        LayoutWrapDirective])
-], FlexDirective);
 export { FlexDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex.js.map
+FlexDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
+            },] },
+];
+/** @nocollapse */
+FlexDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
+]; };
+FlexDirective.propDecorators = {
+    'shrink': [{ type: Input, args: ['fxShrink',] },],
+    'grow': [{ type: Input, args: ['fxGrow',] },],
+    'flex': [{ type: Input, args: ['fxFlex',] },],
+    'flexXs': [{ type: Input, args: ['fxFlex.xs',] },],
+    'flexSm': [{ type: Input, args: ['fxFlex.sm',] },],
+    'flexMd': [{ type: Input, args: ['fxFlex.md',] },],
+    'flexLg': [{ type: Input, args: ['fxFlex.lg',] },],
+    'flexXl': [{ type: Input, args: ['fxFlex.xl',] },],
+    'flexGtXs': [{ type: Input, args: ['fxFlex.gt-xs',] },],
+    'flexGtSm': [{ type: Input, args: ['fxFlex.gt-sm',] },],
+    'flexGtMd': [{ type: Input, args: ['fxFlex.gt-md',] },],
+    'flexGtLg': [{ type: Input, args: ['fxFlex.gt-lg',] },],
+    'flexLtSm': [{ type: Input, args: ['fxFlex.lt-sm',] },],
+    'flexLtMd': [{ type: Input, args: ['fxFlex.lt-md',] },],
+    'flexLtLg': [{ type: Input, args: ['fxFlex.lt-lg',] },],
+    'flexLtXl': [{ type: Input, args: ['fxFlex.lt-xl',] },],
+};
+//# sourceMappingURL=flex.js.map

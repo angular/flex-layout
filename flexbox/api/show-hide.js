@@ -8,18 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,7 +15,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, Self, Optional } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -294,155 +282,47 @@ var ShowHideDirective = (function (_super) {
     };
     return ShowHideDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxShow'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "show", null);
-__decorate([
-    Input('fxShow.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showXs", null);
-__decorate([
-    Input('fxShow.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showSm", null);
-__decorate([
-    Input('fxShow.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showMd", null);
-__decorate([
-    Input('fxShow.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showLg", null);
-__decorate([
-    Input('fxShow.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showXl", null);
-__decorate([
-    Input('fxShow.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showLtSm", null);
-__decorate([
-    Input('fxShow.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showLtMd", null);
-__decorate([
-    Input('fxShow.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showLtLg", null);
-__decorate([
-    Input('fxShow.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showLtXl", null);
-__decorate([
-    Input('fxShow.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtXs", null);
-__decorate([
-    Input('fxShow.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtSm", null);
-__decorate([
-    Input('fxShow.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtMd", null);
-__decorate([
-    Input('fxShow.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "showGtLg", null);
-__decorate([
-    Input('fxHide'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hide", null);
-__decorate([
-    Input('fxHide.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideXs", null);
-__decorate([
-    Input('fxHide.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideSm", null);
-__decorate([
-    Input('fxHide.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideMd", null);
-__decorate([
-    Input('fxHide.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLg", null);
-__decorate([
-    Input('fxHide.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideXl", null);
-__decorate([
-    Input('fxHide.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLtSm", null);
-__decorate([
-    Input('fxHide.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLtMd", null);
-__decorate([
-    Input('fxHide.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLtLg", null);
-__decorate([
-    Input('fxHide.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideLtXl", null);
-__decorate([
-    Input('fxHide.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtXs", null);
-__decorate([
-    Input('fxHide.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtSm", null);
-__decorate([
-    Input('fxHide.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtMd", null);
-__decorate([
-    Input('fxHide.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], ShowHideDirective.prototype, "hideGtLg", null);
-ShowHideDirective = __decorate([
-    Directive({
-        selector: "\n  [fxShow], \n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl], \n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide], \n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],  \n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
-    }),
-    __param(1, Optional()), __param(1, Self()),
-    __metadata("design:paramtypes", [MediaMonitor,
-        LayoutDirective,
-        ElementRef,
-        Renderer])
-], ShowHideDirective);
 export { ShowHideDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/show-hide.js.map
+ShowHideDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
+            },] },
+];
+/** @nocollapse */
+ShowHideDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+ShowHideDirective.propDecorators = {
+    'show': [{ type: Input, args: ['fxShow',] },],
+    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
+    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
+    'showMd': [{ type: Input, args: ['fxShow.md',] },],
+    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
+    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
+    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
+    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
+    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
+    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
+    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
+    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
+    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
+    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
+    'hide': [{ type: Input, args: ['fxHide',] },],
+    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
+    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
+    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
+    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
+    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
+    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
+    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
+    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
+    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
+    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
+    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
+    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
+    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
+};
+//# sourceMappingURL=show-hide.js.map

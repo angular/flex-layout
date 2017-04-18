@@ -84,6 +84,7 @@ var BaseFxDirective = (function () {
      * Applies styles given via string pair or object map to the directive element.
      */
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
+        var _this = this;
         var styles = {};
         var element = nativeElement || this._elementRef.nativeElement;
         if (typeof style === 'string') {
@@ -92,9 +93,9 @@ var BaseFxDirective = (function () {
         }
         styles = applyCssPrefixes(style);
         // Iterate all properties in hashMap and set styles
-        for (var key in styles) {
-            this._renderer.setElementStyle(element, key, styles[key]);
-        }
+        Object.keys(styles).forEach(function (key) {
+            _this._renderer.setStyle(element, key, styles[key]);
+        });
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -102,11 +103,8 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
         var _this = this;
         var styles = applyCssPrefixes(style);
-        elements.forEach(function (el) {
-            // Iterate all properties in hashMap and set styles
-            for (var key in styles) {
-                _this._renderer.setElementStyle(el, key, styles[key]);
-            }
+        Object.keys(styles).forEach(function (key) {
+            elements.forEach(function (el) { return _this._renderer.setStyle(el, key, styles[key]); });
         });
     };
     /**
@@ -160,4 +158,4 @@ var BaseFxDirective = (function () {
     return BaseFxDirective;
 }());
 export { BaseFxDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/base.js.map
+//# sourceMappingURL=base.js.map

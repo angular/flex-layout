@@ -53,4 +53,4 @@
 function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, "").replace(/[\/\*\+\-]/g, " $& ");
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/basis-validator.js.map
+//# sourceMappingURL=basis-validator.js.map

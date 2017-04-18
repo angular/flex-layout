@@ -1,9 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -54,7 +48,7 @@ var ALL_DIRECTIVES = [
 /**
  *
  */
-var FlexLayoutModule = FlexLayoutModule_1 = (function () {
+var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
     }
     /**
@@ -66,7 +60,7 @@ var FlexLayoutModule = FlexLayoutModule_1 = (function () {
      */
     FlexLayoutModule.provideBreakPoints = function (breakpoints, options) {
         return {
-            ngModule: FlexLayoutModule_1,
+            ngModule: FlexLayoutModule,
             providers: [
                 CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(breakpoints, options || { orientations: false })
             ]
@@ -74,18 +68,19 @@ var FlexLayoutModule = FlexLayoutModule_1 = (function () {
     };
     return FlexLayoutModule;
 }());
-FlexLayoutModule = FlexLayoutModule_1 = __decorate([
-    NgModule({
-        declarations: ALL_DIRECTIVES,
-        imports: [MediaQueriesModule],
-        exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
-        providers: [
-            MEDIA_MONITOR_PROVIDER,
-            DEFAULT_BREAKPOINTS_PROVIDER,
-            OBSERVABLE_MEDIA_PROVIDER
-        ]
-    })
-], FlexLayoutModule);
 export { FlexLayoutModule };
-var FlexLayoutModule_1;
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/_module.js.map
+FlexLayoutModule.decorators = [
+    { type: NgModule, args: [{
+                declarations: ALL_DIRECTIVES,
+                imports: [MediaQueriesModule],
+                exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
+                providers: [
+                    MEDIA_MONITOR_PROVIDER,
+                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    OBSERVABLE_MEDIA_PROVIDER
+                ]
+            },] },
+];
+/** @nocollapse */
+FlexLayoutModule.ctorParameters = function () { return []; };
+//# sourceMappingURL=_module.js.map

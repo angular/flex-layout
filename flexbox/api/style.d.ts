@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnDestroy, DoCheck, Renderer, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
+import { ElementRef, OnDestroy, DoCheck, Renderer, Renderer2, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
@@ -56,7 +56,7 @@ export declare class StyleDirective extends NgStyle implements DoCheck, OnChange
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _sanitizer: DomSanitizer, _differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
+    constructor(monitor: MediaMonitor, _bpRegistry: BreakPointRegistry, _sanitizer: DomSanitizer, _differs: KeyValueDiffers, _ngEl: ElementRef, _oldRenderer: Renderer, _renderer: Renderer2);
     /**
      * For @Input changes on the current mq activation property
      */
@@ -81,7 +81,7 @@ export declare class StyleDirective extends NgStyle implements DoCheck, OnChange
      * This adapter manages listening to mediaQuery change events and identifying
      * which property value should be used for the style update
      */
-    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer): void;
+    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2): void;
     /**
      * Build intercept to convert raw strings to ngStyleMap
      */

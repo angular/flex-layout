@@ -98,4 +98,4 @@ function keyValuesToMap(map, entry) {
     }
     return map;
 }
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/utils/style-transforms.js.map
+//# sourceMappingURL=style-transforms.js.map

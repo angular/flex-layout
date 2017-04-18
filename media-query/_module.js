@@ -1,9 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -27,16 +21,18 @@ var MediaQueriesModule = (function () {
     }
     return MediaQueriesModule;
 }());
-MediaQueriesModule = __decorate([
-    NgModule({
-        providers: [
-            DEFAULT_BREAKPOINTS_PROVIDER,
-            BreakPointRegistry,
-            MatchMedia,
-            MediaMonitor,
-            OBSERVABLE_MEDIA_PROVIDER // easy subscription injectable `media$` matchMedia observable
-        ]
-    })
-], MediaQueriesModule);
 export { MediaQueriesModule };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/_module.js.map
+MediaQueriesModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [
+                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    BreakPointRegistry,
+                    MatchMedia,
+                    MediaMonitor,
+                    OBSERVABLE_MEDIA_PROVIDER // easy subscription injectable `media$` matchMedia observable
+                ]
+            },] },
+];
+/** @nocollapse */
+MediaQueriesModule.ctorParameters = function () { return []; };
+//# sourceMappingURL=_module.js.map

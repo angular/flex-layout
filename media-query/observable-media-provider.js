@@ -29,4 +29,4 @@ export var OBSERVABLE_MEDIA_PROVIDER = {
     ],
     useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
 };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/media-query/observable-media-provider.js.map
+//# sourceMappingURL=observable-media-provider.js.map

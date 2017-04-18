@@ -8,15 +8,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -24,7 +15,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -161,79 +152,30 @@ var FlexOffsetDirective = (function (_super) {
     };
     return FlexOffsetDirective;
 }(BaseFxDirective));
-__decorate([
-    Input('fxFlexOffset'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offset", null);
-__decorate([
-    Input('fxFlexOffset.xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetXs", null);
-__decorate([
-    Input('fxFlexOffset.sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetSm", null);
-__decorate([
-    Input('fxFlexOffset.md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetMd", null);
-__decorate([
-    Input('fxFlexOffset.lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetLg", null);
-__decorate([
-    Input('fxFlexOffset.xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetXl", null);
-__decorate([
-    Input('fxFlexOffset.lt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetLtSm", null);
-__decorate([
-    Input('fxFlexOffset.lt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetLtMd", null);
-__decorate([
-    Input('fxFlexOffset.lt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetLtLg", null);
-__decorate([
-    Input('fxFlexOffset.lt-xl'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetLtXl", null);
-__decorate([
-    Input('fxFlexOffset.gt-xs'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtXs", null);
-__decorate([
-    Input('fxFlexOffset.gt-sm'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtSm", null);
-__decorate([
-    Input('fxFlexOffset.gt-md'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtMd", null);
-__decorate([
-    Input('fxFlexOffset.gt-lg'),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], FlexOffsetDirective.prototype, "offsetGtLg", null);
-FlexOffsetDirective = __decorate([
-    Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" }),
-    __metadata("design:paramtypes", [MediaMonitor, ElementRef, Renderer])
-], FlexOffsetDirective);
 export { FlexOffsetDirective };
-//# sourceMappingURL=/home/travis/build/angular/flex-layout/src/lib/flexbox/api/flex-offset.js.map
+FlexOffsetDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
+];
+/** @nocollapse */
+FlexOffsetDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+FlexOffsetDirective.propDecorators = {
+    'offset': [{ type: Input, args: ['fxFlexOffset',] },],
+    'offsetXs': [{ type: Input, args: ['fxFlexOffset.xs',] },],
+    'offsetSm': [{ type: Input, args: ['fxFlexOffset.sm',] },],
+    'offsetMd': [{ type: Input, args: ['fxFlexOffset.md',] },],
+    'offsetLg': [{ type: Input, args: ['fxFlexOffset.lg',] },],
+    'offsetXl': [{ type: Input, args: ['fxFlexOffset.xl',] },],
+    'offsetLtSm': [{ type: Input, args: ['fxFlexOffset.lt-sm',] },],
+    'offsetLtMd': [{ type: Input, args: ['fxFlexOffset.lt-md',] },],
+    'offsetLtLg': [{ type: Input, args: ['fxFlexOffset.lt-lg',] },],
+    'offsetLtXl': [{ type: Input, args: ['fxFlexOffset.lt-xl',] },],
+    'offsetGtXs': [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
+    'offsetGtSm': [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
+    'offsetGtMd': [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
+    'offsetGtLg': [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
+};
+//# sourceMappingURL=flex-offset.js.map
