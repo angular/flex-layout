@@ -76,23 +76,30 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  */
 @Injectable()
 export class MediaService implements ObservableMedia {
+
   /**
    * Should we announce gt-<xxx> breakpoint activations ?
    */
   public filterOverlaps = true;
 
-  constructor(private mediaWatcher: MatchMedia,
+  /**
+   * Constructor
+   */
+  constructor(private matchMedia: MatchMedia,
               private breakpoints: BreakPointRegistry) {
     this.observable$ = this._buildObservable();
-    this._registerBreakPoints();
   }
+
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
 
   /**
    * Test if specified query/alias is active.
    */
   isActive(alias): boolean {
-    let query = this._toMediaQuery(alias);
-    return this.mediaWatcher.isActive(query);
+    return this.breakpoints.isActive(alias);
   };
 
   /**
@@ -117,18 +124,6 @@ export class MediaService implements ObservableMedia {
   // ************************************************
 
   /**
-   * Register all the mediaQueries registered in the BreakPointRegistry
-   * This is needed so subscribers can be auto-notified of all standard, registered
-   * mediaQuery activations
-   */
-  private _registerBreakPoints() {
-    this.breakpoints.items.forEach((bp: BreakPoint) => {
-      this.mediaWatcher.registerQuery(bp.mediaQuery);
-      return bp;
-    });
-  }
-
-  /**
    * Prepare internal observable
    * NOTE: the raw MediaChange events [from MatchMedia] do not contain important alias information
    * these must be injected into the MediaChange
@@ -142,40 +137,20 @@ export class MediaService implements ObservableMedia {
       return change.matches === true;
     };
     const addAliasInformation = (change: MediaChange) => {
-      return mergeAlias(change, this._findByQuery(change.mediaQuery));
+      return mergeAlias(change, this.breakpoints.findByQuery(change.mediaQuery));
     };
     const excludeOverlaps = (change: MediaChange) => {
       let bp = this.breakpoints.findByQuery(change.mediaQuery);
       return !bp ? true : !(self.filterOverlaps && bp.overlapping);
     };
 
-    return this.mediaWatcher.observe()
+    return this.matchMedia.observe()
         .filter(activationsOnly)
         .map(addAliasInformation)
         .filter(excludeOverlaps);
   }
 
-  /**
-   * Breakpoint locator by alias
-   */
-  private _findByAlias(alias) {
-    return this.breakpoints.findByAlias(alias);
-  }
 
-  /**
-   * Breakpoint locator by mediaQuery
-   */
-  private _findByQuery(query) {
-    return this.breakpoints.findByQuery(query);
-  };
-
-  /**
-   * Find associated breakpoint (if any)
-   */
-  private _toMediaQuery(query) {
-    let bp: BreakPoint = this._findByAlias(query) || this._findByQuery(query);
-    return bp ? bp.mediaQuery : query;
-  };
 
   private observable$: Observable<MediaChange>;
 }
