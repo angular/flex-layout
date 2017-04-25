@@ -45,15 +45,40 @@ Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with a
 
 <br/>
   
-### Installation
 
-The latest release of Angular Flex-Layout can be installed from npm
 
-`npm install @angular/flex-layout`
+### NPM Install (example)
 
 Playing with the latest changes from [master](https://github.com/angular/flex-layout/tree/master) is also possible
 
 `npm install https://github.com/angular/flex-layout-builds.git`
+
+You can easily install from NPM using:
+
+```terminal
+npm install @angular/flex-layout -saveDev
+```
+
+Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
+
+```js
+import { NgModule }         from '@angular/core';
+import { BrowserModule }    from '@angular/platform-browser';
+import { FlexLayoutModule } from "@angular/flex-layout";
+
+import { DemoApp }          from './demo-app/demo-app';
+
+@NgModule({
+  declarations    : [ DemoApp ],
+  bootstrap       : [ DemoApp ],
+  imports         : [
+    BrowserModule,
+    FlexLayoutModule
+  ]
+})
+export class DemoAppModule { }
+```
+
 
 ### Quick Links
 
