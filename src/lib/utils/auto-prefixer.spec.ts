@@ -16,10 +16,18 @@ describe('auto-prefixer for ', () => {
   describe('css `display:<xxx>`', () => {
 
     it('should not apply a prefix', () => {
-      let input = {"display": "flex"};
-      let expected = {"display": "flex"};
+      let input = {"display": "block"};
+      let expected = {"display": "block"};
       let actual = applyCssPrefixes(input);
       checkCssPrefix("display", actual, expected);
+    });
+
+    it('should apply prefixes for display', () => {
+      let input = {"display": "flex"};
+      let actual = applyCssPrefixes(input);
+      expect(Array.isArray(actual['display'])).toBeTruthy();
+      expect(actual['display'][0]).toEqual('-webkit-box');
+      expect(actual['display'][4]).toEqual('flex');
     });
   });
 
