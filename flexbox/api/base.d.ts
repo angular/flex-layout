@@ -44,6 +44,11 @@ export declare abstract class BaseFxDirective implements OnDestroy {
     protected _getDisplayStyle(source?: HTMLElement): string;
     protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
     /**
+     * Applies the styles to the element. The styles object map may contain an array of values. Each
+     * value will be added as element style.
+     */
+    protected _applyMultiValueStyleToElement(styles: {}, element: any): void;
+    /**
      * Applies styles given via string pair or object map to the directive element.
      */
     protected _applyStyleToElement(style: StyleDefinition, value?: string | number, nativeElement?: any): void;

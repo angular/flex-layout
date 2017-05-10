@@ -81,10 +81,23 @@ var BaseFxDirective = (function () {
         return value ? value.trim() : "row";
     };
     /**
+     * Applies the styles to the element. The styles object map may contain an array of values. Each
+     * value will be added as element style.
+     */
+    BaseFxDirective.prototype._applyMultiValueStyleToElement = function (styles, element) {
+        var _this = this;
+        Object.keys(styles).forEach(function (key) {
+            var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+                var value = values_1[_i];
+                _this._renderer.setStyle(element, key, value);
+            }
+        });
+    };
+    /**
      * Applies styles given via string pair or object map to the directive element.
      */
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
-        var _this = this;
         var styles = {};
         var element = nativeElement || this._elementRef.nativeElement;
         if (typeof style === 'string') {
@@ -92,10 +105,7 @@ var BaseFxDirective = (function () {
             style = styles;
         }
         styles = applyCssPrefixes(style);
-        // Iterate all properties in hashMap and set styles
-        Object.keys(styles).forEach(function (key) {
-            _this._renderer.setStyle(element, key, styles[key]);
-        });
+        this._applyMultiValueStyleToElement(styles, element);
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -103,8 +113,8 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
         var _this = this;
         var styles = applyCssPrefixes(style);
-        Object.keys(styles).forEach(function (key) {
-            elements.forEach(function (el) { return _this._renderer.setStyle(el, key, styles[key]); });
+        elements.forEach(function (el) {
+            _this._applyMultiValueStyleToElement(styles, el);
         });
     };
     /**

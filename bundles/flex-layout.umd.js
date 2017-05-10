@@ -23,45 +23,90 @@
         var value = target[key];
         switch (key) {
             case 'display':
-                target['display'] = value;
-                // also need 'display : -webkit-box' and 'display : -ms-flexbox;'
+                if (value === 'flex') {
+                    target['display'] = [
+                        '-webkit-box',
+                        '-moz-box',
+                        '-ms-flexbox',
+                        '-webkit-flex',
+                        'flex'
+                    ];
+                }
+                else if (value === 'inline-flex') {
+                    target['display'] = [
+                        '-webkit-inline-box',
+                        '-moz-inline-box',
+                        '-ms-inline-flexbox',
+                        '-webkit-inline-flex',
+                        'inline-flex'
+                    ];
+                }
+                else {
+                    target['display'] = value;
+                }
                 break;
             case 'flex':
                 target['-ms-flex'] = value;
+                target['-webkit-flex'] = value;
                 target['-webkit-box-flex'] = value.split(" ")[0];
+                target['-moz-box-flex'] = value.split(" ")[0];
                 break;
             case 'flex-direction':
                 value = value || "row";
                 target['flex-direction'] = value;
                 target['-ms-flex-direction'] = value;
+                target['-webkit-flex-direction'] = value;
                 target['-webkit-box-orient'] = toBoxOrient(value);
+                target['-moz-box-orient'] = toBoxOrient(value);
                 target['-webkit-box-direction'] = toBoxDirection(value);
+                target['-moz-box-direction'] = toBoxDirection(value);
                 break;
             case 'flex-wrap':
                 target['-ms-flex-wrap'] = value;
+                target['-webkit-flex-wrap'] = value;
+                break;
+            case 'flex-grow':
+                target['-webkit-flex-grow'] = value;
+                break;
+            case 'flex-shrink':
+                target['-webkit-flex-shrink'] = value;
+                break;
+            case 'flex-basis':
+                target['-webkit-flex-basis'] = value;
+                break;
+            case 'flex-flow':
+                target['-webkit-flex-flow'] = value;
                 break;
             case 'order':
                 if (isNaN(value)) {
                     value = "0";
                 }
                 target['order'] = value;
+                target['-webkit-order'] = value;
                 target['-ms-flex-order'] = value;
+                target['-moz-box-ordinal-group'] = toBoxOrdinal(value);
                 target['-webkit-box-ordinal-group'] = toBoxOrdinal(value);
                 break;
             case 'justify-content':
                 target['-ms-flex-pack'] = toBoxValue(value);
                 target['-webkit-box-pack'] = toBoxValue(value);
+                target['-moz-box-pack'] = toBoxValue(value);
+                target['-webkit-justify-content'] = value;
                 break;
             case 'align-items':
                 target['-ms-flex-align'] = toBoxValue(value);
                 target['-webkit-box-align'] = toBoxValue(value);
+                target['-moz-box-align'] = toBoxValue(value);
+                target['-webkit-align-items'] = toBoxValue(value);
                 break;
             case 'align-self':
                 target['-ms-flex-item-align'] = toBoxValue(value);
+                target['-webkit-align-self'] = value;
                 break;
             case 'align-content':
                 target['-ms-align-content'] = toAlignContentValue(value);
                 target['-ms-flex-line-pack'] = toAlignContentValue(value);
+                target['-webkit-align-content'] = value;
                 break;
         }
     }
@@ -484,10 +529,23 @@ var BaseFxDirective = (function () {
         return value ? value.trim() : "row";
     };
     /**
+     * Applies the styles to the element. The styles object map may contain an array of values. Each
+     * value will be added as element style.
+     */
+    BaseFxDirective.prototype._applyMultiValueStyleToElement = function (styles, element) {
+        var _this = this;
+        Object.keys(styles).forEach(function (key) {
+            var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+                var value = values_1[_i];
+                _this._renderer.setStyle(element, key, value);
+            }
+        });
+    };
+    /**
      * Applies styles given via string pair or object map to the directive element.
      */
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
-        var _this = this;
         var styles = {};
         var element = nativeElement || this._elementRef.nativeElement;
         if (typeof style === 'string') {
@@ -495,10 +553,7 @@ var BaseFxDirective = (function () {
             style = styles;
         }
         styles = applyCssPrefixes(style);
-        // Iterate all properties in hashMap and set styles
-        Object.keys(styles).forEach(function (key) {
-            _this._renderer.setStyle(element, key, styles[key]);
-        });
+        this._applyMultiValueStyleToElement(styles, element);
     };
     /**
      * Applies styles given via string pair or object map to the directive element.
@@ -506,8 +561,8 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
         var _this = this;
         var styles = applyCssPrefixes(style);
-        Object.keys(styles).forEach(function (key) {
-            elements.forEach(function (el) { return _this._renderer.setStyle(el, key, styles[key]); });
+        elements.forEach(function (el) {
+            _this._applyMultiValueStyleToElement(styles, el);
         });
     };
     /**
