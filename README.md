@@ -5,7 +5,7 @@
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)
 
 Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery. 
-This module provides Angular (v2.4.3 and higher) developers with component layout features using a 
+This module provides Angular (v4.1 and higher) developers with component layout features using a 
 custom Layout API, mediaQuery observables, and injected DOM flexbox-2016 CSS stylings.  
 
 The Flex Layout engine intelligently automates the process of applying appropriate 
@@ -13,6 +13,12 @@ Flexbox CSS to browser view hierarchies. This automation also addresses many of 
 complexities and workarounds encountered with the traditional, manual, CSS-only application of box CSS. 
 
 The **real** power of Flex Layout, however, is its **responsive** engine. The [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) enables developers to easily specify different layouts, sizing, visibilities for different viewport sizes and display devices.
+
+---
+
+#### Deprecated support for Angular 2.4.x
+
+Support for recent changes to Angular v4.1 AOT and Renderers means that Angular 2.4.x will not be supported after Angular Flex-Layout v2.0.0-beta.7. 
 
 ---
 
