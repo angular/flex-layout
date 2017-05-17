@@ -38,10 +38,10 @@ While other Flexbox CSS libraries are implementations of:
 Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with an implementation that: 
 
 *  uses HTML attributes (aka Layout API) to specify the layout configurations
-*  is currently only available for Angular (v2.4.3 or higher) Applications.
+*  is currently only available for Angular (v4.1 or higher) Applications.
 *  is independent of Angular Material (v1 or v2).
 *  requires no external stylesheets.
-*  requires Angular v2.4.3 or higher.
+*  requires Angular v4.1 or higher.
 
 <br/>
 
