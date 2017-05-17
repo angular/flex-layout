@@ -15,9 +15,9 @@ import {TestBed, inject, async} from '@angular/core/testing';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider';
 import {DEFAULT_BREAKPOINTS} from './breakpoints/data/break-points';
 import {MediaChange} from './media-change';
+import {MatchMedia} from './match-media';
 import {MockMatchMedia} from './mock/mock-match-media';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
-import {MatchMedia} from './match-media';
 import {MediaMonitor} from './media-monitor';
 
 describe('media-monitor', () => {

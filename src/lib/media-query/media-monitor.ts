@@ -32,45 +32,23 @@ import 'rxjs/add/operator/map';
  */
 @Injectable()
 export class MediaMonitor {
-  constructor(private _breakpoints: BreakPointRegistry, private _matchMedia: MatchMedia) {
-    this._registerBreakpoints();
-  }
+  constructor(private _breakpoints: BreakPointRegistry, private _matchMedia: MatchMedia) { }
 
-  /**
-   * Read-only accessor to the list of breakpoints configured in the BreakPointRegistry provider
-   */
   get breakpoints(): BreakPoint[] {
-    return [...this._breakpoints.items];
+    return this._breakpoints.items;
   }
 
   get activeOverlaps(): BreakPoint[] {
-    let items: BreakPoint[] = this._breakpoints.overlappings.reverse();
-    return items.filter((bp: BreakPoint) => {
-      return this._matchMedia.isActive(bp.mediaQuery);
-    });
+    return this._breakpoints.activeOverlaps;
   }
 
-  get active(): BreakPoint {
-    let found = null, items = this.breakpoints.reverse();
-    items.forEach(bp => {
-      if (bp.alias !== '') {
-        if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
-          found = bp;
-        }
-      }
-    });
-
-    let first = this.breakpoints[0];
-    return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
+  get active() : BreakPoint {
+    return this._breakpoints.active;
   }
 
-  /**
-   * For the specified mediaQuery alias, is the mediaQuery range active?
-   */
   isActive(alias: string): boolean {
-    let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-    return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-  }
+    return this._breakpoints.isActive(alias);
+  };
 
   /**
    * External observers can watch for all (or a specific) mql changes.
@@ -80,20 +58,13 @@ export class MediaMonitor {
   observe(alias?: string): Observable<MediaChange> {
     let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
     let hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== "" : true);
+
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
+    //       so these must be dynamically added...
     return this._matchMedia
         .observe(bp ? bp.mediaQuery : alias)
         .map(change => mergeAlias(change, bp))
         .filter(hasAlias);
   }
 
-  /**
-   * Immediate calls to matchMedia() to establish listeners
-   * and prepare for immediate subscription notifications
-   */
-  private _registerBreakpoints() {
-    this._breakpoints.items.forEach(bp => {
-      this._matchMedia.registerQuery(bp.mediaQuery);
-    });
-  }
 }

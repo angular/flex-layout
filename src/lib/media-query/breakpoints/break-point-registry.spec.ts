@@ -11,11 +11,26 @@ import {BreakPoint} from './break-point';
 import {BreakPointRegistry} from './break-point-registry';
 import {BREAKPOINTS} from './break-points-token';
 import {DEFAULT_BREAKPOINTS} from './data/break-points';
+import {DEFAULT_BREAKPOINTS_PROVIDER} from './break-points-provider';
+import {MatchMedia} from '../match-media';
+import {MockMatchMedia} from '../mock/mock-match-media';
 
 describe('break-points', () => {
   let breakPoints: BreakPointRegistry;
+
   beforeEach(() => {
-    breakPoints = new BreakPointRegistry(DEFAULT_BREAKPOINTS);
+    // Configure testbed to prepare services
+    TestBed.configureTestingModule({
+      providers: [
+        BreakPointRegistry,           // Registry of known/used BreakPoint(s)
+        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
+        {provide: MatchMedia, useClass: MockMatchMedia}
+      ]
+    });
+
+    inject([BreakPointRegistry], (_breakPoints_) => {
+      breakPoints = _breakPoints_;    // Only used to look up mediaQuery by aliases
+    });
   });
 
   it('registry has all aliases defined', () => {

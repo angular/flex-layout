@@ -44,7 +44,7 @@ describe('layout directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutComponent],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
+        DEFAULT_BREAKPOINTS_PROVIDER, BreakPointRegistry,
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

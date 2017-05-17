@@ -9,6 +9,7 @@ import {Injectable, Inject} from '@angular/core';
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from "./break-points-token";
+import {MatchMedia} from '../match-media';
 
 
 /**
@@ -19,25 +20,64 @@ import {BREAKPOINTS} from "./break-points-token";
 @Injectable()
 export class BreakPointRegistry {
 
-  constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[ ]) {
+  constructor(private matchMedia: MatchMedia,
+              @Inject(BREAKPOINTS) private registry: BreakPoint[ ]) {
+    this._registerBreakPoints();
   }
+
+  get activeOverlaps(): BreakPoint[] {
+    let items: BreakPoint[] = this.registry.reverse();
+    return items.filter((bp: BreakPoint) => {
+      return this.isActive(bp.mediaQuery);
+    });
+  }
+
+  /**
+   * Return the least specific (largest mediaQuery range) active breakpoint
+   * (since 1...n may be active)
+   */
+  get active(): BreakPoint {
+    let found = null, items = this.registry.reverse();
+    items.forEach(bp => {
+      if (bp.alias !== '') {
+        if (!found && this.matchMedia.isActive(bp.mediaQuery)) {
+          found = bp;
+        }
+      }
+    });
+
+    let first = this.registry[0];
+    return found || (this.matchMedia.isActive(first.mediaQuery) ? first : null);
+  }
+
+  /**
+   * Test if specified query/alias is active.
+   */
+  isActive(alias): boolean {
+    let query = this._toMediaQuery(alias);
+    return this.matchMedia.isActive(query);
+  };
+
 
   /**
    * Accessor to raw list
    */
   get items(): BreakPoint[ ] {
-    return [...this._registry];
+    return [...this.registry];
   }
 
   /**
    * Search breakpoints by alias (e.g. gt-xs)
    */
   findByAlias(alias: string): BreakPoint {
-    return this._registry.find(bp => bp.alias == alias);
+    return this.registry.find(bp => bp.alias == alias);
   }
 
+  /**
+   * Breakpoint locator by mediaQuery
+   */
   findByQuery(query: string): BreakPoint {
-    return this._registry.find(bp => bp.mediaQuery == query);
+    return this.registry.find(bp => bp.mediaQuery == query);
   }
 
   /**
@@ -45,14 +85,14 @@ export class BreakPointRegistry {
    * e.g. gt-sm overlaps md, lg, and xl
    */
   get overlappings(): BreakPoint[] {
-    return this._registry.filter(it => it.overlapping == true);
+    return this.registry.filter(it => it.overlapping == true);
   }
 
   /**
    * Get list of all registered (non-empty) breakpoint aliases
    */
   get aliases(): string[] {
-    return this._registry.map(it => it.alias);
+    return this.registry.map(it => it.alias);
   }
 
   /**
@@ -61,6 +101,25 @@ export class BreakPointRegistry {
    * for property layoutGtSM.
    */
   get suffixes(): string[] {
-    return this._registry.map(it => it.suffix);
+    return this.registry.map(it => it.suffix);
   }
+
+  /**
+   * Register all the mediaQueries registered in the BreakPointRegistry
+   * This is needed so subscribers can be auto-notified of all standard, registered
+   * mediaQuery activations
+   */
+  private _registerBreakPoints() {
+    this.registry.forEach((bp: BreakPoint) => {
+      this.matchMedia.registerQuery(bp.mediaQuery);
+    });
+  }
+
+  /**
+   * Find associated breakpoint (if any)
+   */
+  private _toMediaQuery(query) {
+    let bp: BreakPoint = this.findByAlias(query) || this.findByQuery(query);
+    return bp ? bp.mediaQuery : query;
+  };
 }
