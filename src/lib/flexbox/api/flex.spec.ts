@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 
@@ -14,6 +14,8 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../_module';
+import {FlexDirective} from '../../flexbox/api/flex';
+import {LayoutDirective} from '../../flexbox/api/layout';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {_dom as _} from '../../utils/testing/dom-tools';
@@ -47,7 +49,7 @@ describe('flex directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, FlexLayoutModule],
-      declarations: [TestFlexComponent],
+      declarations: [TestFlexComponent, TestQueryWithFlexComponent],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia}
@@ -107,8 +109,8 @@ describe('flex directive', () => {
         </div>
       `);
       fixture.detectChanges();
-      let parent = queryFor(fixture, ".test")[0].nativeElement;
-      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
+      let parent = queryFor(fixture, '.test')[0].nativeElement;
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
 
       // parent flex-direction found with 'column' with child height styles
       expect(parent).toHaveCssStyle({'flex-direction': 'column', 'display': 'flex'});
@@ -118,23 +120,23 @@ describe('flex directive', () => {
 
     it('should not work with non-direct-parent fxLayouts', async(() => {
       componentWithTemplate(`
-        <div fxLayout="column">
+        <div fxLayout='column'>
           <div class="test">
             <div fxFlex="40px" fxFlex.gt-sm="50"  >  </div>
           </div>
         </div>
       `);
       fixture.detectChanges();
-      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
-      let parent  = queryFor(fixture, ".test")[0].nativeElement;
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+      let parent = queryFor(fixture, '.test')[0].nativeElement;
 
       setTimeout(() => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
-        expect(parent).toHaveCssStyle({ 'flex-direction': 'row' });
-        expect(element).toHaveCssStyle({ 'min-width': '40px' });
-        expect(element).not.toHaveCssStyle({ 'min-height': '40px' });
+        expect(parent).toHaveCssStyle({'flex-direction': 'row'});
+        expect(element).toHaveCssStyle({'min-width': '40px'});
+        expect(element).not.toHaveCssStyle({'min-height': '40px'});
       });
 
     }));
@@ -148,12 +150,12 @@ describe('flex directive', () => {
         </div>
       `);
       fixture.detectChanges();
-      let element = queryFor(fixture, "[fxFlex]")[0].nativeElement;
-      let parent  = queryFor(fixture, ".parent")[0].nativeElement;
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+      let parent = queryFor(fixture, '.parent')[0].nativeElement;
 
       // parent flex-direction found with 'column'; set child with height styles
-      expect(element).toHaveCssStyle({ 'min-height': '60px' });
-      expect(parent).toHaveCssStyle({ 'flex-direction': 'column' });
+      expect(element).toHaveCssStyle({'min-height': '60px'});
+      expect(parent).toHaveCssStyle({'flex-direction': 'column'});
     });
 
     it('should work with "1 1 auto" values', () => {
@@ -166,7 +168,7 @@ describe('flex directive', () => {
       `);
       fixture.detectChanges();
 
-      let nodes = queryFor(fixture, "[fxFlex]");
+      let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(3);
       expect(nodes[1].nativeElement).not.toHaveCssStyle({'max-height': '*', 'min-height': '*'});
@@ -472,6 +474,95 @@ describe('flex directive', () => {
 
     });
   });
+
+  describe('with API directive queries', () => {
+    it('should query the ViewChild `fxLayout` directive properly', () => {
+      fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+      fixture.detectChanges();
+
+      const layout: LayoutDirective = fixture.debugElement.componentInstance.layout;
+
+      expect(layout).toBeDefined();
+      expect(layout.activatedValue).toBe('');
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'row'
+      });
+
+      layout.activatedValue = 'column';
+      expect(layout.activatedValue).toBe('column');
+      expectNativeEl(fixture).toHaveCssStyle({
+        'flex-direction': 'column'
+      });
+    });
+
+    it('should query the ViewChild `fxFlex` directive properly', () => {
+      fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+      fixture.detectChanges();
+
+      const flex: FlexDirective = fixture.debugElement.componentInstance.flex;
+
+      // Test for percentage value assignments
+      expect(flex).toBeDefined();
+      expect(flex.activatedValue).toBe('50%');
+
+      let nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '50%'});
+
+      // Test for raw value assignments that are converted to percentages
+      flex.activatedValue = '35';
+      expect(flex.activatedValue).toBe('35');
+
+      nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
+
+      // Test for pixel value assignments
+      flex.activatedValue = '27.5px';
+      expect(flex.activatedValue).toBe('27.5px');
+
+      nodes = queryFor(fixture, "[fxFlex]");
+      expect(nodes.length).toEqual(1);
+      expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '27.5px'});
+
+    });
+
+    it('should restore `fxFlex` value after breakpoint activations', inject([MatchMedia],
+        (_matchMedia: MockMatchMedia) => {
+          fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+          fixture.detectChanges();
+
+          const flex: FlexDirective = fixture.debugElement.componentInstance.flex;
+
+          // Test for raw value assignments that are converted to percentages
+          expect(flex).toBeDefined();
+          flex.activatedValue = '35';
+          expect(flex.activatedValue).toBe('35');
+
+          let nodes = queryFor(fixture, "[fxFlex]");
+          expect(nodes.length).toEqual(1);
+          expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
+
+          _matchMedia.activate('sm');
+          fixture.detectChanges();
+
+          // Test for breakpoint value changes
+          expect(flex.activatedValue).toBe('71%');
+          nodes = queryFor(fixture, "[fxFlex]");
+          expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '71%'});
+
+          _matchMedia.activate('lg');
+          fixture.detectChanges();
+
+          // Confirm activatedValue was restored properly when `sm` deactivated
+          expect(flex.activatedValue).toBe('35');
+          nodes = queryFor(fixture, "[fxFlex]");
+          expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
+
+        })
+    );
+  });
+
 });
 
 
@@ -483,14 +574,20 @@ describe('flex directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestFlexComponent implements OnInit {
+export class TestFlexComponent {
   public direction = "column";
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
 }
 
+@Component({
+  selector: 'test-query-with-flex',
+  template: `
+    <div fxLayout>
+      <div fxFlex="50%" fxFlex.sm="71%"></div>
+    </div>
+  `
+})
+export class TestQueryWithFlexComponent {
+  @ViewChild(FlexDirective) flex: FlexDirective;
+  @ViewChild(LayoutDirective) layout: LayoutDirective;
+}
 

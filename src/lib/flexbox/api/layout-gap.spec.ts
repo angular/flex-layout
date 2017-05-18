@@ -215,8 +215,8 @@ describe('layout-gap directive', () => {
     it('should adjust gaps based on layout-wrap presence', () => {
       let styles = ['.col1 { display:none !important;'];
       let template = `
-            <div class="container" 
-                 [fxLayout]="direction" 
+            <div class="container"
+                 [fxLayout]="direction"
                  [fxLayoutGap]="gap"
                  fxLayoutWrap>
               <div fxFlex class="col1">Div 1</div>

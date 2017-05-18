@@ -75,7 +75,7 @@ function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): 
       .filter(entry => !!entry)
       .map(sanitizeValue)
       .reduce(keyValuesToMap, {});
-};
+}
 
 /**
  * Convert Set<string> or raw Object to an iterable NgStyleMap
@@ -99,7 +99,7 @@ function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
 function stringToKeyValue(it: string): NgStyleKeyValue {
   let [key, val] = it.split(":");
   return val ? new NgStyleKeyValue(key, val) : null;
-};
+}
 
 /**
  * Convert [ [key,value] ] -> { key : value }

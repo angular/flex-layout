@@ -20,6 +20,7 @@ import { DemoComplexColumnOrder } from "./columnOrder.demo";
 import {DemoGridAreaRowSpan} from './gridArea.demo';
 import {DemoGridColumnSpan} from './columnSpan.demo';
 import {DemoMozHolyGrail} from "./mozHolyGrail.demo";
+import {SharedModule} from '../shared/_module';
 
 @NgModule({
   declarations : [
@@ -29,10 +30,6 @@ import {DemoMozHolyGrail} from "./mozHolyGrail.demo";
     DemoGridAreaRowSpan,
     DemoMozHolyGrail
   ],
-  imports : [
-    CommonModule,
-    MaterialModule,
-    FlexLayoutModule
-  ]
+  imports : [ SharedModule ]
 })
 export class DemosStackOverflowModule{  }

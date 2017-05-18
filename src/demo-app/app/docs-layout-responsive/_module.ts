@@ -13,8 +13,9 @@ import { Component } from '@angular/core';
 })
 export class DemosResponsiveLayout { }
 
-import {NgModule}            from '@angular/core';
-import {FormsModule}         from "@angular/forms";
+import {NgModule}     from '@angular/core';
+import {FormsModule}  from "@angular/forms";
+import {SharedModule} from '../shared/_module';
 
 import {DemoResponsiveRows}  from "./responsiveRowColumns.demo";
 import {DemoResponsiveLayoutDirection }  from "./responsiveLayoutDirections.demo";
@@ -22,7 +23,6 @@ import {DemoResponsiveShowHide} from "./responsiveShowHide.demo";
 import {DemoResponsiveFlexDirectives} from "./responsiveFlexDirective.demo";
 import {DemoResponsiveFlexOrder} from "./responsiveFlexOrder.demo";
 import {DemoResponsiveStyle} from "./responsiveStyle.demo";
-import {SharedModule} from '../shared/_module';
 
 @NgModule({
   declarations : [

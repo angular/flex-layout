@@ -93,7 +93,7 @@ export class MediaService implements ObservableMedia {
   isActive(alias): boolean {
     let query = this._toMediaQuery(alias);
     return this.mediaWatcher.isActive(query);
-  };
+  }
 
   /**
    * Proxy to the Observable subscribe method
@@ -102,7 +102,7 @@ export class MediaService implements ObservableMedia {
             error?: (error: any) => void,
             complete?: () => void): Subscription {
     return this.observable$.subscribe(next, error, complete);
-  };
+  }
 
   /**
    * Access to observable for use with operators like
@@ -167,7 +167,7 @@ export class MediaService implements ObservableMedia {
    */
   private _findByQuery(query) {
     return this.breakpoints.findByQuery(query);
-  };
+  }
 
   /**
    * Find associated breakpoint (if any)
@@ -175,7 +175,7 @@ export class MediaService implements ObservableMedia {
   private _toMediaQuery(query) {
     let bp: BreakPoint = this._findByAlias(query) || this._findByQuery(query);
     return bp ? bp.mediaQuery : query;
-  };
+  }
 
   private observable$: Observable<MediaChange>;
 }

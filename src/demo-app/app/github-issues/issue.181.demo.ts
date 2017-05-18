@@ -1,9 +1,6 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from "rxjs/Subscription";
+import {Component} from '@angular/core';
 import 'rxjs/add/operator/filter';
 
-import {MediaChange} from "../../../lib/media-query/media-change";
-import {ObservableMedia} from "../../../lib/media-query/observable-media";
 
 @Component({
   selector: 'demo-issue-181',
