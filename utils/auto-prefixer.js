@@ -134,7 +134,7 @@ export function toBoxDirection(flexDirection) {
 /** Convert flex order to Box ordinal group */
 export function toBoxOrdinal(order) {
     if (order === void 0) { order = '0'; }
-    var value = order ? parseInt(order) + 1 : 1;
+    var value = order ? Number(order) + 1 : 1;
     return isNaN(value) ? "0" : value.toString();
 }
 //# sourceMappingURL=auto-prefixer.js.map
