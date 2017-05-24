@@ -15,8 +15,8 @@ describe('ngStyleUtils', () => {
 
   it('should parse a raw string of key:value pairs', () => {
     let list: NgStyleRawList = _.buildRawList(`
-      color:'red'; 
-      font-size :16px; 
+      color:'red';
+      font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
     `);
 
@@ -27,8 +27,8 @@ describe('ngStyleUtils', () => {
 
   it('should build an iterable map from a raw string of key:value pairs', () => {
     let map: NgStyleMap = _.buildMapFromList(_.buildRawList(`
-      color:'red'; 
-      font-size :16px; 
+      color:'red';
+      font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
     `));
 
@@ -41,8 +41,8 @@ describe('ngStyleUtils', () => {
 
   it('should build an iterable map from an Array of key:value strings', () => {
     let map: NgStyleMap = _.buildMapFromList(_.buildRawList(`
-      color:'red'; 
-      font-size :16px; 
+      color:'red';
+      font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
     `));
 
