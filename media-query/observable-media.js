@@ -80,14 +80,12 @@ var MediaService = (function () {
         var query = this._toMediaQuery(alias);
         return this.mediaWatcher.isActive(query);
     };
-    ;
     /**
      * Proxy to the Observable subscribe method
      */
     MediaService.prototype.subscribe = function (next, error, complete) {
         return this.observable$.subscribe(next, error, complete);
     };
-    ;
     /**
      * Access to observable for use with operators like
      * .filter(), .map(), etc.
@@ -148,7 +146,6 @@ var MediaService = (function () {
     MediaService.prototype._findByQuery = function (query) {
         return this.breakpoints.findByQuery(query);
     };
-    ;
     /**
      * Find associated breakpoint (if any)
      */
@@ -156,7 +153,6 @@ var MediaService = (function () {
         var bp = this._findByAlias(query) || this._findByQuery(query);
         return bp ? bp.mediaQuery : query;
     };
-    ;
     return MediaService;
 }());
 export { MediaService };

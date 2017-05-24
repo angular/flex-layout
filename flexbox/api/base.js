@@ -1,10 +1,18 @@
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+import { SimpleChange } from '@angular/core';
 import { applyCssPrefixes } from '../../utils/auto-prefixer';
 import { buildLayoutCSS } from '../../utils/layout-validator';
 import { ResponsiveActivation, KeyOptions } from '../responsive/responsive-activation';
 /** Abstract base class for the Layout API styling directives. */
 var BaseFxDirective = (function () {
     /**
-     *
+     * Constructor
      */
     function BaseFxDirective(_mediaMonitor, _elementRef, _renderer) {
         this._mediaMonitor = _mediaMonitor;
@@ -23,6 +31,35 @@ var BaseFxDirective = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(BaseFxDirective.prototype, "activatedValue", {
+        /**
+         * Imperatively determine the current activated [input] value;
+         * if called before ngOnInit() this will return `undefined`
+         */
+        get: function () {
+            return this._mqActivation ? this._mqActivation.activatedInput : undefined;
+        },
+        /**
+         * Change the currently activated input value and force-update
+         * the injected CSS (by-passing change detection).
+         *
+         * NOTE: Only the currently activated input value will be modified;
+         *       other input values will NOT be affected.
+         */
+        set: function (value) {
+            var key = 'baseKey', previousVal;
+            if (this._mqActivation) {
+                key = this._mqActivation.activatedInputKey;
+                previousVal = this._inputMap[key];
+                this._inputMap[key] = value;
+            }
+            var change = new SimpleChange(previousVal, value, false);
+            this.ngOnChanges((_a = {}, _a[key] = change, _a));
+            var _a;
+        },
+        enumerable: true,
+        configurable: true
+    });
     // *********************************************
     // Accessor Methods
     // *********************************************
@@ -35,6 +72,9 @@ var BaseFxDirective = (function () {
     // *********************************************
     // Lifecycle Methods
     // *********************************************
+    BaseFxDirective.prototype.ngOnChanges = function (change) {
+        throw new Error('BaseFxDirective::ngOnChanges should be overridden in subclass');
+    };
     BaseFxDirective.prototype.ngOnDestroy = function () {
         if (this._mqActivation) {
             this._mqActivation.destroy();
@@ -65,20 +105,20 @@ var BaseFxDirective = (function () {
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
-        var value = "";
+        var value = '';
         if (target) {
             var directionKeys_1 = Object.keys(applyCssPrefixes({ 'flex-direction': '' }));
             var findDirection = function (styles) { return directionKeys_1.reduce(function (direction, key) {
                 return direction || styles[key];
             }, null); };
-            var immediateValue = findDirection(target['style']);
+            var immediateValue = findDirection(target.style);
             value = immediateValue || findDirection(getComputedStyle(target));
             if (!immediateValue && addIfMissing) {
                 value = value || 'row';
                 this._applyStyleToElements(buildLayoutCSS(value), [target]);
             }
         }
-        return value ? value.trim() : "row";
+        return value ? value.trim() : 'row';
     };
     /**
      * Applies the styles to the element. The styles object map may contain an array of values. Each
