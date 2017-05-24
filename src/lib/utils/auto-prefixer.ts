@@ -143,6 +143,6 @@ export function toBoxDirection(flexDirection = 'row') {
 
 /** Convert flex order to Box ordinal group */
 export function toBoxOrdinal(order = '0') {
-  let value = order ? parseInt(order) + 1 : 1;
+  let value = order ? Number(order) + 1 : 1;
   return isNaN(value) ? "0" : value.toString();
 }
