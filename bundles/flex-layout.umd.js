@@ -1,7 +1,7 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
-  typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
-  (factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.core,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.ng.common,global.ng.platformBrowser));
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('rxjs/BehaviorSubject'), require('@angular/common'), require('@angular/platform-browser')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', 'rxjs/BehaviorSubject', '@angular/common', '@angular/platform-browser'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng.flexLayout = global.ng.flexLayout || {}),global.ng.core,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.Rx,global.ng.common,global.ng.platformBrowser));
 }(this, (function (exports,_angular_core,rxjs_add_operator_map,rxjs_add_operator_filter,rxjs_BehaviorSubject,_angular_common,_angular_platformBrowser) { 'use strict';
 
 /**
@@ -508,7 +508,7 @@ var BaseFxDirective = (function () {
             var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
-                _this._renderer.setStyle(element, key, value);
+                _this._renderer.setElementStyle(element, key, value);
             }
         });
     };
@@ -1339,7 +1339,7 @@ __decorate$4([
 ], exports.LayoutDirective.prototype, "layoutLtXl", null);
 exports.LayoutDirective = __decorate$4([
     _angular_core.Directive({ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" }),
-    __metadata$4("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
+    __metadata$4("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.LayoutDirective);
 
 var __extends$3 = (this && this.__extends) || (function () {
@@ -1619,7 +1619,7 @@ exports.LayoutWrapDirective = __decorate$5([
     __param$2(3, _angular_core.Optional()), __param$2(3, _angular_core.Self()),
     __metadata$5("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer2,
+        _angular_core.Renderer,
         exports.LayoutDirective])
 ], exports.LayoutWrapDirective);
 
@@ -2060,7 +2060,7 @@ exports.FlexDirective = __decorate([
     __param(4, _angular_core.Optional()), __param(4, _angular_core.SkipSelf()),
     __metadata("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer2,
+        _angular_core.Renderer,
         exports.LayoutDirective,
         exports.LayoutWrapDirective])
 ], exports.FlexDirective);
@@ -2311,7 +2311,7 @@ exports.FlexAlignDirective = __decorate$6([
     _angular_core.Directive({
         selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
     }),
-    __metadata$6("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
+    __metadata$6("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.FlexAlignDirective);
 
 var __extends$5 = (this && this.__extends) || (function () {
@@ -2366,7 +2366,7 @@ exports.FlexFillDirective = (function (_super) {
 }(BaseFxDirective));
 exports.FlexFillDirective = __decorate$7([
     _angular_core.Directive({ selector: "\n  [fxFill],\n  [fxFlexFill]\n" }),
-    __metadata$7("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
+    __metadata$7("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.FlexFillDirective);
 
 var __extends$6 = (this && this.__extends) || (function () {
@@ -2601,7 +2601,7 @@ __decorate$8([
 ], exports.FlexOffsetDirective.prototype, "offsetGtLg", null);
 exports.FlexOffsetDirective = __decorate$8([
     _angular_core.Directive({ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" }),
-    __metadata$8("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
+    __metadata$8("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.FlexOffsetDirective);
 
 var __extends$7 = (this && this.__extends) || (function () {
@@ -2834,7 +2834,7 @@ __decorate$9([
 ], exports.FlexOrderDirective.prototype, "orderLtXl", null);
 exports.FlexOrderDirective = __decorate$9([
     _angular_core.Directive({ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" }),
-    __metadata$9("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer2])
+    __metadata$9("design:paramtypes", [exports.MediaMonitor, _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.FlexOrderDirective);
 
 var __extends$8 = (this && this.__extends) || (function () {
@@ -3164,7 +3164,7 @@ exports.LayoutAlignDirective = __decorate$10([
     _angular_core.Directive({ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" }),
     __param$3(3, _angular_core.Optional()), __param$3(3, _angular_core.Self()),
     __metadata$10("design:paramtypes", [exports.MediaMonitor,
-        _angular_core.ElementRef, _angular_core.Renderer2,
+        _angular_core.ElementRef, _angular_core.Renderer,
         exports.LayoutDirective])
 ], exports.LayoutAlignDirective);
 
@@ -3484,7 +3484,7 @@ exports.LayoutGapDirective = __decorate$11([
     __param$4(3, _angular_core.Optional()), __param$4(3, _angular_core.Self()),
     __metadata$11("design:paramtypes", [exports.MediaMonitor,
         _angular_core.ElementRef,
-        _angular_core.Renderer2,
+        _angular_core.Renderer,
         exports.LayoutDirective])
 ], exports.LayoutGapDirective);
 
@@ -3520,10 +3520,8 @@ var __metadata$12 = (this && this.__metadata) || function (k, v) {
 exports.ClassDirective = (function (_super) {
     __extends$10(ClassDirective, _super);
     /* tslint:enable */
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer, _renderer) {
-        var _this = 
-        // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
-        _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer) || this;
+    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
+        var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
@@ -3912,7 +3910,7 @@ exports.ClassDirective = __decorate$12([
     }),
     __metadata$12("design:paramtypes", [exports.MediaMonitor,
         _angular_core.IterableDiffers, _angular_core.KeyValueDiffers,
-        _angular_core.ElementRef, _angular_core.Renderer, _angular_core.Renderer2])
+        _angular_core.ElementRef, _angular_core.Renderer])
 ], exports.ClassDirective);
 
 var __extends$11 = (this && this.__extends) || (function () {
@@ -4355,7 +4353,7 @@ exports.ShowHideDirective = __decorate$13([
     __metadata$13("design:paramtypes", [exports.MediaMonitor,
         exports.LayoutDirective,
         _angular_core.ElementRef,
-        _angular_core.Renderer2])
+        _angular_core.Renderer])
 ], exports.ShowHideDirective);
 
 /**
@@ -4493,12 +4491,11 @@ exports.StyleDirective = (function (_super) {
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _oldRenderer, _renderer) {
+    function StyleDirective(monitor, _sanitizer, _differs, _ngEl, _renderer) {
         var _this = 
-        // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
-        _super.call(this, _differs, _ngEl, _oldRenderer) || this;
+        // TODO: this should use Renderer when the NgStyle signature is switched over to it.
+        _super.call(this, _differs, _ngEl, _renderer) || this;
         _this.monitor = monitor;
-        _this._bpRegistry = _bpRegistry;
         _this._sanitizer = _sanitizer;
         // Build adapter, `cacheInput()` interceptor, and get current inline style if any
         _this._buildAdapter(monitor, _ngEl, _renderer);
@@ -4915,12 +4912,10 @@ exports.StyleDirective = __decorate$14([
         selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],\n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],\n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
     }),
     __metadata$14("design:paramtypes", [exports.MediaMonitor,
-        exports.BreakPointRegistry,
         _angular_platformBrowser.DomSanitizer,
         _angular_core.KeyValueDiffers,
         _angular_core.ElementRef,
-        _angular_core.Renderer,
-        _angular_core.Renderer2])
+        _angular_core.Renderer])
 ], exports.StyleDirective);
 
 var __decorate$17 = (this && this.__decorate) || function (decorators, target, key, desc) {

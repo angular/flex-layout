@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnChanges, Renderer2, SimpleChanges, AfterContentInit, OnDestroy } from '@angular/core';
+import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
@@ -32,7 +32,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     gapLtMd: any;
     gapLtLg: any;
     gapLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
     ngOnChanges(changes: SimpleChanges): void;
     /**
      * After the initial onChanges, build an mqActivation object that bridges

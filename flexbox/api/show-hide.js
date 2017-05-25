@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer2, Self, Optional } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, Self, Optional } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
@@ -293,7 +293,7 @@ ShowHideDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
     { type: ElementRef, },
-    { type: Renderer2, },
+    { type: Renderer, },
 ]; };
 ShowHideDirective.propDecorators = {
     'show': [{ type: Input, args: ['fxShow',] },],

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, Renderer2, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
+import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer } from '@angular/core';
 import { ResponsiveActivation } from '../responsive/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
@@ -20,7 +20,7 @@ export declare type StyleDefinition = string | {
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    protected _renderer: Renderer2;
+    protected _renderer: Renderer;
     readonly hasMediaQueryListener: boolean;
     /**
      * Imperatively determine the current activated [input] value;
@@ -37,7 +37,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     /**
      * Constructor
      */
-    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
+    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer);
     /**
      * Access the current value (if any) of the @Input property.
      */

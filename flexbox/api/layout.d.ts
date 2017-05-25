@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from './base';
@@ -45,7 +45,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     /**
      *
      */
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
     /**
      * On changes to any @Input properties...
      * Default to use the non-responsive Input value ('fxLayout')

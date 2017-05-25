@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Optional, Renderer2, SkipSelf, } from '@angular/core';
+import { Directive, ElementRef, Input, Optional, Renderer, SkipSelf, } from '@angular/core';
 import { extendObject } from '../../utils/object-extend';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -296,7 +296,7 @@ FlexDirective.decorators = [
 FlexDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: ElementRef, },
-    { type: Renderer2, },
+    { type: Renderer, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
     { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
 ]; };

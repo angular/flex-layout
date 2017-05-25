@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { ElementRef, DoCheck, OnDestroy, Renderer, Renderer2, IterableDiffers, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
+import { ElementRef, DoCheck, OnDestroy, Renderer, IterableDiffers, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -63,7 +63,7 @@ export declare class ClassDirective extends NgClass implements DoCheck, OnChange
      * fallback and will be merged with nay `ngClass` values
      */
     readonly initialClasses: string;
-    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _oldRenderer: Renderer, _renderer: Renderer2);
+    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
     /**
      * For @Input changes on the current mq activation property
      */

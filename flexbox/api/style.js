@@ -15,10 +15,9 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, Renderer2, KeyValueDiffers, SecurityContext } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, KeyValueDiffers, SecurityContext } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
-import { BreakPointRegistry } from './../../media-query/breakpoints/break-point-registry';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { extendObject } from '../../utils/object-extend';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -34,12 +33,11 @@ var StyleDirective = (function (_super) {
      *  Constructor for the ngStyle subclass; which adds selectors and
      *  a MediaQuery Activation Adapter
      */
-    function StyleDirective(monitor, _bpRegistry, _sanitizer, _differs, _ngEl, _oldRenderer, _renderer) {
+    function StyleDirective(monitor, _sanitizer, _differs, _ngEl, _renderer) {
         var _this = 
-        // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
-        _super.call(this, _differs, _ngEl, _oldRenderer) || this;
+        // TODO: this should use Renderer when the NgStyle signature is switched over to it.
+        _super.call(this, _differs, _ngEl, _renderer) || this;
         _this.monitor = monitor;
-        _this._bpRegistry = _bpRegistry;
         _this._sanitizer = _sanitizer;
         // Build adapter, `cacheInput()` interceptor, and get current inline style if any
         _this._buildAdapter(monitor, _ngEl, _renderer);
@@ -325,12 +323,10 @@ StyleDirective.decorators = [
 /** @nocollapse */
 StyleDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: BreakPointRegistry, },
     { type: DomSanitizer, },
     { type: KeyValueDiffers, },
     { type: ElementRef, },
     { type: Renderer, },
-    { type: Renderer2, },
 ]; };
 StyleDirective.propDecorators = {
     'styleBase': [{ type: Input, args: ['ngStyle',] },],

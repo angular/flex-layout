@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer2, Self, Optional, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, Self, Optional, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -240,7 +240,7 @@ LayoutGapDirective.decorators = [
 LayoutGapDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: ElementRef, },
-    { type: Renderer2, },
+    { type: Renderer, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ]; };
 LayoutGapDirective.propDecorators = {

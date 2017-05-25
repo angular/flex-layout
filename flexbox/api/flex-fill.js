@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Renderer } from '@angular/core';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { BaseFxDirective } from './base';
 var FLEX_FILL_CSS = {
@@ -50,6 +50,6 @@ FlexFillDirective.decorators = [
 FlexFillDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: ElementRef, },
-    { type: Renderer2, },
+    { type: Renderer, },
 ]; };
 //# sourceMappingURL=flex-fill.js.map

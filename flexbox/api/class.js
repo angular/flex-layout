@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer, Renderer2, IterableDiffers, KeyValueDiffers } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, IterableDiffers, KeyValueDiffers } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -25,10 +25,8 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 var ClassDirective = (function (_super) {
     __extends(ClassDirective, _super);
     /* tslint:enable */
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer, _renderer) {
-        var _this = 
-        // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
-        _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer) || this;
+    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
+        var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
@@ -284,7 +282,6 @@ ClassDirective.ctorParameters = function () { return [
     { type: KeyValueDiffers, },
     { type: ElementRef, },
     { type: Renderer, },
-    { type: Renderer2, },
 ]; };
 ClassDirective.propDecorators = {
     'ngClassBase': [{ type: Input, args: ['ngClass',] },],

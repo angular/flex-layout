@@ -130,7 +130,7 @@ var BaseFxDirective = (function () {
             var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
-                _this._renderer.setStyle(element, key, value);
+                _this._renderer.setElementStyle(element, key, value);
             }
         });
     };

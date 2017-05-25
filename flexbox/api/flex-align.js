@@ -15,7 +15,7 @@ var __extends = (this && this.__extends) || (function () {
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Input, Renderer2, } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer, } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 /**
@@ -174,7 +174,7 @@ FlexAlignDirective.decorators = [
 FlexAlignDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: ElementRef, },
-    { type: Renderer2, },
+    { type: Renderer, },
 ]; };
 FlexAlignDirective.propDecorators = {
     'align': [{ type: Input, args: ['fxFlexAlign',] },],
