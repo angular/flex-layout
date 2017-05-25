@@ -13,7 +13,7 @@
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
+  Renderer,
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
@@ -83,7 +83,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   // parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer2,
+              renderer: Renderer,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
               @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective) {
 

@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer2,
+  Renderer,
   SimpleChanges,
 } from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -71,7 +71,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    *
    */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
     this._announcer = new BehaviorSubject<string>("row");
     this.layout$ = this._announcer.asObservable();

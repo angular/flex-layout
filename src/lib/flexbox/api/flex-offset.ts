@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer2,
+  Renderer,
   SimpleChanges,
 } from '@angular/core';
 
@@ -53,7 +53,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor,  elRef: ElementRef, renderer: Renderer2) {
+  constructor(monitor: MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
   }
 

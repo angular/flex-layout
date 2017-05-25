@@ -12,7 +12,6 @@ import {
   DoCheck,
   OnDestroy,
   Renderer,
-  Renderer2,
   IterableDiffers,
   KeyValueDiffers, SimpleChanges, OnChanges
 } from '@angular/core';
@@ -110,10 +109,9 @@ export class ClassDirective extends NgClass implements DoCheck, OnChanges, OnDes
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
-              _ngEl: ElementRef, _oldRenderer: Renderer, _renderer: Renderer2) {
+              _ngEl: ElementRef, _renderer: Renderer) {
 
-    // TODO: this should use Renderer2 as well, but NgClass hasn't switched over yet.
-    super(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+    super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
 
     this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
     this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
