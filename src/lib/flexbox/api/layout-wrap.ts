@@ -12,7 +12,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  Renderer2,
+  Renderer,
   SimpleChanges, Self, Optional,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
@@ -64,7 +64,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   constructor(
     monitor: MediaMonitor,
     elRef: ElementRef,
-    renderer: Renderer2,
+    renderer: Renderer,
     @Optional() @Self() container: LayoutDirective) {
 
     super(monitor, elRef, renderer);

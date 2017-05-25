@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {
-  ElementRef, Renderer2, OnDestroy, SimpleChanges, OnChanges,
-  SimpleChange
+  ElementRef, OnDestroy, SimpleChanges, OnChanges,
+  SimpleChange, Renderer
 } from '@angular/core';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
@@ -16,6 +16,7 @@ import {buildLayoutCSS} from '../../utils/layout-validator';
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
+
 
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
@@ -64,10 +65,9 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer2) {
+              protected _renderer: Renderer) {
     this._display = this._getDisplayStyle();
   }
-
 
   // *********************************************
   // Accessor Methods
@@ -148,7 +148,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     Object.keys(styles).forEach(key => {
       const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
       for (let value of values) {
-        this._renderer.setStyle(element, key, value);
+        this._renderer.setElementStyle(element, key, value);
       }
     });
   }
@@ -249,4 +249,5 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    *  Dictionary of input keys with associated values
    */
   protected _inputMap = {};
+
 }

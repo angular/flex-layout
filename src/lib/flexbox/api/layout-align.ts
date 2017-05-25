@@ -13,7 +13,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
+  Renderer,
   SimpleChanges, Self,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
@@ -68,7 +68,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /* tslint:enable */
   constructor(
       monitor: MediaMonitor,
-      elRef: ElementRef, renderer: Renderer2,
+      elRef: ElementRef, renderer: Renderer,
       @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 
