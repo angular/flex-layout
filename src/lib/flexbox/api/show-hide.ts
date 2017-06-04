@@ -34,8 +34,8 @@ const FALSY = ['false', false, 0];
  *  - When 'hide' === false or 0... we WILL show the element
  */
 export function negativeOf(hide: any) {
-  return (hide === "") ? false :
-         ((hide === "false") || (hide === 0)) ? true : !hide;
+  return (hide === '') ? false :
+         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
 
 /**
@@ -63,7 +63,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   protected _layoutWatcher: Subscription;
 
   /* tslint:disable */
-  @Input('fxShow')       set show(val) {  this._cacheInput("show", val);  }
+  @Input('fxShow')       set show(val) {  this._cacheInput('show', val);  }
   @Input('fxShow.xs')    set showXs(val) {this._cacheInput('showXs', val);}
   @Input('fxShow.sm')    set showSm(val) {this._cacheInput('showSm', val); };
   @Input('fxShow.md')    set showMd(val) {this._cacheInput('showMd', val); };
@@ -80,8 +80,8 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   @Input('fxShow.gt-md') set showGtMd(val) {this._cacheInput('showGtMd', val); };
   @Input('fxShow.gt-lg') set showGtLg(val) {this._cacheInput('showGtLg', val); };
 
-  @Input('fxHide')       set hide(val) {this._cacheInput("show", negativeOf(val));}
-  @Input('fxHide.xs')    set hideXs(val) {this._cacheInput("showXs", negativeOf(val));}
+  @Input('fxHide')       set hide(val) {this._cacheInput('show', negativeOf(val));}
+  @Input('fxHide.xs')    set hideXs(val) {this._cacheInput('showXs', negativeOf(val));}
   @Input('fxHide.sm')    set hideSm(val) {this._cacheInput('showSm', negativeOf(val)); };
   @Input('fxHide.md')    set hideMd(val) {this._cacheInput('showMd', negativeOf(val)); };
   @Input('fxHide.lg')    set hideLg(val) {this._cacheInput('showLg', negativeOf(val)); };
@@ -128,7 +128,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    * unless it was already explicitly defined.
    */
   protected _getDisplayStyle(): string {
-    return this._layout ? "flex" : super._getDisplayStyle();
+    return this._layout ? 'flex' : super._getDisplayStyle();
   }
 
 
@@ -148,7 +148,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let value = this._getDefaultVal("show", true);
+    let value = this._getDefaultVal('show', true);
 
     // Build _mqActivation controller
     this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
@@ -171,7 +171,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
 
   /** Validate the visibility value and then update the host's inline display style */
   protected _updateWithValue(value?: string|number|boolean) {
-    value = value || this._getDefaultVal("show", true);
+    value = value || this._getDefaultVal('show', true);
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

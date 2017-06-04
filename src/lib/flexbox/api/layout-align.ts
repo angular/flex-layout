@@ -113,13 +113,13 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    *
    */
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput("align") || 'start stretch';
+    value = value || this._queryInput('align') || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
 
     this._applyStyleToElement(this._buildCSS(value));
-    this._allowStretching(value, !this._layout ? "row" : this._layout);
+    this._allowStretching(value, !this._layout ? 'row' : this._layout);
   }
 
   /**
@@ -131,11 +131,11 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
       this._layout = 'row';
     }
 
-    let value = this._queryInput("align") || 'start stretch';
+    let value = this._queryInput('align') || 'start stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-    this._allowStretching(value, this._layout || "row");
+    this._allowStretching(value, this._layout || 'row');
   }
 
   protected _buildCSS(align) {
@@ -187,7 +187,7 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
 
     return extendObject(css, {
       'display' : 'flex',
-      'flex-direction' : this._layout || "row",
+      'flex-direction' : this._layout || 'row',
       'box-sizing' : 'border-box'
     });
   }

@@ -9,7 +9,7 @@
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 
 /**
- * Validate the direction|"direction wrap" value and then update the host's inline flexbox styles
+ * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  */
 export function buildLayoutCSS(value: string) {
   let [direction, wrap] = validateValue(value);
@@ -18,11 +18,11 @@ export function buildLayoutCSS(value: string) {
 
 /**
   * Validate the value to be one of the acceptable value options
-  * Use default fallback of "row"
+  * Use default fallback of 'row'
   */
 function validateValue(value: string) {
   value = value ? value.toLowerCase() : '';
-  let [direction, wrap] = value.split(" ");
+  let [direction, wrap] = value.split(' ');
   if (!LAYOUT_VALUES.find(x => x === direction)) {
     direction = LAYOUT_VALUES[0];
   }
@@ -31,7 +31,7 @@ function validateValue(value: string) {
 
 
 /**
- * Convert layout-wrap="<value>" to expected flex-wrap style
+ * Convert layout-wrap='<value>' to expected flex-wrap style
  */
 export function validateWrapValue(value) {
   if (!!value) {
@@ -48,7 +48,7 @@ export function validateWrapValue(value) {
         value = 'nowrap';
         break;
 
-      // All other values fallback to "wrap"
+      // All other values fallback to 'wrap'
       default:
         value = 'wrap';
         break;

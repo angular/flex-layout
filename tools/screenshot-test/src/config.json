@@ -1,0 +1,10 @@
+{
+  "firebase": {
+    "apiKey": "AIzaSyBekh5ZSi1vEhaE2qetH4RU91gHmUmpqgg",
+    "authDomain": "flex-layout-screenshots.firebaseapp.com",
+    "databaseURL": "https://flex-layout-screenshots.firebaseio.com",
+    "storageBucket": "flex-layout-screenshots.appspot.com",
+    "messagingSenderId": "975527407245"
+  },
+  "repoSlug": "angular/flex-layout"
+}

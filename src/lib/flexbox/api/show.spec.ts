@@ -14,7 +14,7 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 import {MatchMedia} from '../../media-query/match-media';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {ObservableMedia} from '../../media-query/observable-media';
-import {FlexLayoutModule} from '../_module';
+import {FlexLayoutModule} from '../../module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
@@ -200,7 +200,7 @@ export class TestShowComponent implements OnInit {
   isHidden = false;
   menuOpen = true;
 
-  constructor(private media: ObservableMedia) {
+  constructor(public media: ObservableMedia) {
   }
 
   toggleMenu() {

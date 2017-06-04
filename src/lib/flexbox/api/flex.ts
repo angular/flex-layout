@@ -58,10 +58,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   protected _layoutWatcher: Subscription;
 
   /* tslint:disable */
-  @Input('fxShrink')     set shrink(val)    { this._cacheInput("shrink", val); };
-  @Input('fxGrow')       set grow(val)      { this._cacheInput("grow", val); };
+  @Input('fxShrink')     set shrink(val)    { this._cacheInput('shrink', val); };
+  @Input('fxGrow')       set grow(val)      { this._cacheInput('grow', val); };
 
-  @Input('fxFlex')       set flex(val)      { this._cacheInput("flex", val); };
+  @Input('fxFlex')       set flex(val)      { this._cacheInput('flex', val); };
   @Input('fxFlex.xs')    set flexXs(val)    { this._cacheInput('flexXs', val); };
   @Input('fxFlex.sm')    set flexSm(val)    { this._cacheInput('flexSm', val); };
   @Input('fxFlex.md')    set flexMd(val)    { this._cacheInput('flexMd', val); };
@@ -89,9 +89,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     super(monitor, elRef, renderer);
 
-    this._cacheInput("flex", "");
-    this._cacheInput("shrink", 1);
-    this._cacheInput("grow", 1);
+    this._cacheInput('flex', '');
+    this._cacheInput('shrink', 1);
+    this._cacheInput('grow', 1);
 
     if (_container) {
       // If this flex item is inside of a flex container marked with
@@ -136,24 +136,24 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Used as a handler for layout change events from the parent flex container.
    */
   protected _onLayoutChange(direction?: string) {
-    this._layout = direction || this._layout || "row";
+    this._layout = direction || this._layout || 'row';
     this._updateStyle();
   }
 
   protected _updateStyle(value?: string|number) {
-    let flexBasis = value || this._queryInput("flex") || '';
+    let flexBasis = value || this._queryInput('flex') || '';
     if (this._mqActivation) {
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    let basis = String(flexBasis).replace(";", "");
-    let parts = validateBasis(basis, this._queryInput("grow"), this._queryInput("shrink"));
+    let basis = String(flexBasis).replace(';', '');
+    let parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
     this._applyStyleToElement(this._validateValue.apply(this, parts));
   }
 
   /**
    * Validate the value to be one of the acceptable value options
-   * Use default fallback of "row"
+   * Use default fallback of 'row'
    */
   protected _validateValue(grow: number|string,
                            shrink: number|string,
@@ -163,8 +163,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
       let css, isValue;
 
-      grow = (grow == "0") ? 0 : grow;
-      shrink = (shrink == "0") ? 0 : shrink;
+      grow = (grow == '0') ? 0 : grow;
+      shrink = (shrink == '0') ? 0 : shrink;
 
       // flex-basis allows you to specify the initial/starting main-axis size of the element,
       // before anything else is computed. It can either be a percentage or an absolute value.

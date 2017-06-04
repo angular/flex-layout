@@ -2,11 +2,12 @@
   min-height: 384px;
   background: #999999;
 }
+
 article, nav, aside, header, footer {
   margin: 4px;
   padding: 5px;
   border: 1px solid #cccc33;
-  border-radius: 7pt;
+  border-radius: 7px;
 }
 
 #main > article {

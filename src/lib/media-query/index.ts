@@ -8,7 +8,6 @@
 
 export * from './breakpoints/data/break-points';
 export * from './breakpoints/data/orientation-break-points';
-
 export * from './breakpoints/break-point';
 export * from './breakpoints/break-points-token';
 export * from './breakpoints/break-point-registry';

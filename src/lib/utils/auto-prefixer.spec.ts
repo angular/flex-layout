@@ -16,14 +16,14 @@ describe('auto-prefixer for ', () => {
   describe('css `display:<xxx>`', () => {
 
     it('should not apply a prefix', () => {
-      let input = {"display": "block"};
-      let expected = {"display": "block"};
+      let input = {'display': 'block'};
+      let expected = {'display': 'block'};
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("display", actual, expected);
+      checkCssPrefix('display', actual, expected);
     });
 
     it('should apply prefixes for display', () => {
-      let input = {"display": "flex"};
+      let input = {'display': 'flex'};
       let actual = applyCssPrefixes(input);
 
       expect(Array.isArray(actual['display'])).toBeTruthy();
@@ -41,21 +41,21 @@ describe('auto-prefixer for ', () => {
   describe('css `flex:<xxx>`', () => {
 
     it('should apply prefixes for single values', () => {
-      let input = {"flex": "100"};
+      let input = {'flex': '100'};
       let expected = extendObject({}, input, {
-        '-webkit-flex': "100"
+        '-webkit-flex': '100'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex", actual, expected);
+      checkCssPrefix('flex', actual, expected);
     });
 
     it('should apply prefixes for multiple values', () => {
-      let input = {"flex": "2 1 50%"};
+      let input = {'flex': '2 1 50%'};
       let expected = extendObject({}, input, {
-        '-webkit-flex': "2 1 50%"
+        '-webkit-flex': '2 1 50%'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex", actual, expected);
+      checkCssPrefix('flex', actual, expected);
     });
 
   });
@@ -66,39 +66,39 @@ describe('auto-prefixer for ', () => {
   describe('css `flex-direction:<xxx>`', () => {
 
     it('should apply prefixes for value == "row"', () => {
-      let input = {"flex-direction": "row"};
+      let input = {'flex-direction': 'row'};
       let expected = extendObject({}, input, {
-        '-webkit-flex-direction': "row"
+        '-webkit-flex-direction': 'row'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex-direction", actual, expected);
+      checkCssPrefix('flex-direction', actual, expected);
     });
 
     it('should apply prefixes for value == "row-reverse"', () => {
-      let input = {"flex-direction": "row-reverse"};
+      let input = {'flex-direction': 'row-reverse'};
       let expected = extendObject({}, input, {
-        '-webkit-flex-direction': "row-reverse"
+        '-webkit-flex-direction': 'row-reverse'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex-direction", actual, expected);
+      checkCssPrefix('flex-direction', actual, expected);
     });
 
     it('should apply prefixes for value == "column"', () => {
-      let input = {"flex-direction": "column"};
+      let input = {'flex-direction': 'column'};
       let expected = extendObject({}, input, {
-        '-webkit-flex-direction': "column"
+        '-webkit-flex-direction': 'column'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex-direction", actual, expected);
+      checkCssPrefix('flex-direction', actual, expected);
     });
 
     it('should apply prefixes for value == "column-reverse"', () => {
-      let input = {"flex-direction": "column-reverse"};
+      let input = {'flex-direction': 'column-reverse'};
       let expected = extendObject({}, input, {
-        '-webkit-flex-direction': "column-reverse"
+        '-webkit-flex-direction': 'column-reverse'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex-direction", actual, expected);
+      checkCssPrefix('flex-direction', actual, expected);
     });
 
   });
@@ -109,12 +109,12 @@ describe('auto-prefixer for ', () => {
   describe('css `flex-wrap:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"flex-wrap": "nowrap"};
+      let input = {'flex-wrap': 'nowrap'};
       let expected = extendObject({}, input, {
         '-webkit-flex-wrap' : 'nowrap'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("flex-wrap", actual, expected);
+      checkCssPrefix('flex-wrap', actual, expected);
     });
   });
 
@@ -124,22 +124,22 @@ describe('auto-prefixer for ', () => {
   describe('css `order:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"order": "1"};
+      let input = {'order': '1'};
       let expected = extendObject({}, input, {
         '-webkit-order' : '1'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("order", actual, expected);
+      checkCssPrefix('order', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"order": "invalid"};
+      let input = {'order': 'invalid'};
       let expected = extendObject({}, input, {
-        "order": "0",
-        '-webkit-order' : "0"
+        'order': '0',
+        '-webkit-order' : '0'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("order", actual, expected);
+      checkCssPrefix('order', actual, expected);
     });
 
   });
@@ -151,30 +151,30 @@ describe('auto-prefixer for ', () => {
   describe('css `justify-content:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"justify-content": "flex-start"};
+      let input = {'justify-content': 'flex-start'};
       let expected = extendObject({}, input, {
-        "-webkit-justify-content": "flex-start"
+        '-webkit-justify-content': 'flex-start'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("justify-content", actual, expected);
+      checkCssPrefix('justify-content', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"justify-content": "flex-end"};
+      let input = {'justify-content': 'flex-end'};
       let expected = extendObject({}, input, {
-        "-webkit-justify-content": "flex-end"
+        '-webkit-justify-content': 'flex-end'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("justify-content", actual, expected);
+      checkCssPrefix('justify-content', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"justify-content": "center"};
+      let input = {'justify-content': 'center'};
       let expected = extendObject({}, input, {
-        "-webkit-justify-content": "center"
+        '-webkit-justify-content': 'center'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("justify-content", actual, expected);
+      checkCssPrefix('justify-content', actual, expected);
     });
   });
 
@@ -184,30 +184,30 @@ describe('auto-prefixer for ', () => {
   describe('css `align-item:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"align-items": "flex-start"};
+      let input = {'align-items': 'flex-start'};
       let expected = extendObject({}, input, {
-        "-webkit-align-items": "flex-start"
+        '-webkit-align-items': 'flex-start'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-items", actual, expected);
+      checkCssPrefix('align-items', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-items": "flex-end"};
+      let input = {'align-items': 'flex-end'};
       let expected = extendObject({}, input, {
-        "-webkit-align-items": "flex-end"
+        '-webkit-align-items': 'flex-end'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-items", actual, expected);
+      checkCssPrefix('align-items', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-items": "center"};
+      let input = {'align-items': 'center'};
       let expected = extendObject({}, input, {
-        "-webkit-align-items": "center"
+        '-webkit-align-items': 'center'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-items", actual, expected);
+      checkCssPrefix('align-items', actual, expected);
     });
 
 
@@ -220,30 +220,30 @@ describe('auto-prefixer for ', () => {
   describe('css `align-self:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"align-self": "flex-start"};
+      let input = {'align-self': 'flex-start'};
       let expected = extendObject({}, input, {
         '-webkit-align-self' : 'flex-start'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-self", actual, expected);
+      checkCssPrefix('align-self', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-self": "flex-end"};
+      let input = {'align-self': 'flex-end'};
       let expected = extendObject({}, input, {
         '-webkit-align-self' : 'flex-end'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-self", actual, expected);
+      checkCssPrefix('align-self', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-self": "center"};
+      let input = {'align-self': 'center'};
       let expected = extendObject({}, input, {
         '-webkit-align-self' : 'center'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-self", actual, expected);
+      checkCssPrefix('align-self', actual, expected);
     });
 
   });
@@ -254,39 +254,39 @@ describe('auto-prefixer for ', () => {
   describe('css `align-content:<xxx>`', () => {
 
     it('should apply a prefix', () => {
-      let input = {"align-content": "flex-start"};
+      let input = {'align-content': 'flex-start'};
       let expected = extendObject({}, input, {
         '-webkit-align-content': 'flex-start'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-content", actual, expected);
+      checkCssPrefix('align-content', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-content": "flex-end"};
+      let input = {'align-content': 'flex-end'};
       let expected = extendObject({}, input, {
         '-webkit-align-content' : 'flex-end'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-content", actual, expected);
+      checkCssPrefix('align-content', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-content": "center"};
+      let input = {'align-content': 'center'};
       let expected = extendObject({}, input, {
         '-webkit-align-content': 'center'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-content", actual, expected);
+      checkCssPrefix('align-content', actual, expected);
     });
 
     it('should apply a prefix', () => {
-      let input = {"align-content": "stretch"};
+      let input = {'align-content': 'stretch'};
       let expected = extendObject({}, input, {
         '-webkit-align-content': 'stretch'
       });
       let actual = applyCssPrefixes(input);
-      checkCssPrefix("align-content", actual, expected);
+      checkCssPrefix('align-content', actual, expected);
     });
   });
 

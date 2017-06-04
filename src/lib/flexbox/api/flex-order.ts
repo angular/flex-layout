@@ -85,7 +85,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   // *********************************************
 
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput("order") || '0';
+    value = value || this._queryInput('order') || '0';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

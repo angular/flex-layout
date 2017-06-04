@@ -48,7 +48,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   constructor(protected _baseKey: string,   // non-responsive @Input property name
               protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer ) {
+              protected _renderer: Renderer) {
     super(_mediaMonitor, _elementRef, _renderer);
   }
 
@@ -101,14 +101,14 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   /**
    *  Save the property value for Array values.
    */
-  protected _cacheInputArray(key?: string, source?: boolean[]) {
+  protected _cacheInputArray(key = '', source?: boolean[]) {
     this._inputMap[key] = source.join(' ');
   }
 
   /**
    *  Save the property value for key/value pair values.
    */
-  protected _cacheInputObject(key?: string, source?: {[key: string]: boolean}) {
+  protected _cacheInputObject(key = '', source?: { [key: string]: boolean }) {
     let classes = [];
     for (let prop in source) {
       if (!!source[prop]) {
@@ -121,7 +121,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   /**
    *  Save the property value for string values.
    */
-  protected _cacheInputString(key?: string, source?: string) {
+  protected _cacheInputString(key = '', source?: string) {
     this._inputMap[key] = source;
   }
 }

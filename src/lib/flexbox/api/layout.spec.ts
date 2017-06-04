@@ -13,7 +13,7 @@ import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {FlexLayoutModule} from '../_module';
+import {FlexLayoutModule} from '../../module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
@@ -61,7 +61,7 @@ describe('layout directive', () => {
     });
     it('should add correct styles for `fxLayout="row"` usage', () => {
       expectDOMFrom(`
-        <div fxLayout="row"></div>
+        <div fxLayout='row'></div>
       `).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
@@ -70,48 +70,48 @@ describe('layout directive', () => {
     });
     it('should add correct styles for `fxLayout="row wrap"` usage', () => {
       expectDOMFrom(`
-        <div fxLayout="row wrap"></div>
+        <div fxLayout='row wrap'></div>
       `).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'row',
         'box-sizing': 'border-box',
-        'flex-wrap': "wrap"
+        'flex-wrap': 'wrap'
       });
     });
     it('should add correct styles for `fxLayout="column"` usage', () => {
-      expectDOMFrom(`<div fxLayout="column"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxLayout='column'></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
     it('should add correct styles for binding `[fxLayout]="direction"` usage', () => {
-      expectDOMFrom(`<div [fxLayout]="direction"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div [fxLayout]='direction'></div>`).toHaveCssStyle({
         'display': 'flex',
         'flex-direction': 'column',
         'box-sizing': 'border-box'
       });
     });
     it('should use default flex-direction for invalid value `fxLayout="invalid"` usage', () => {
-      expectDOMFrom(`<div fxLayout="invalid"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxLayout='invalid'></div>`).toHaveCssStyle({
         'flex-direction': 'row'
       });
     });
     it('should use default flex-direction for invalid binding value `[fxLayout]="direction"` usage', () => { // tslint:disable-line:max-line-length
-      expectDOMFrom(`<div [fxLayout]="direction"></div>`, "direction", "invalid")
+      expectDOMFrom(`<div [fxLayout]='direction'></div>`, 'direction', 'invalid')
           .toHaveCssStyle({
             'flex-direction': 'row',
           });
     });
     it('should use update style with dynamic value changes `[fxLayout]="direction"` usage', () => {
-      createTestComponent(`<div [fxLayout]="direction"></div>`);
+      createTestComponent(`<div [fxLayout]='direction'></div>`);
 
-      fixture.componentInstance.direction = "invalid";
+      fixture.componentInstance.direction = 'invalid';
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row',
       });
 
-      fixture.componentInstance.direction = "column";
+      fixture.componentInstance.direction = 'column';
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'column'
       });
@@ -120,12 +120,12 @@ describe('layout directive', () => {
 
     it('should set row-reverse direction for nested fxLayout containers', () => {
       let template = `
-        <div [fxLayout]="direction" (click)="toggleDirection()" class="colored box" >
-          <div fxFlex="20">  fxFlex="20"  </div>
-          <div fxFlex="60">  outer fxFlex="60"
-            <div fxLayout="row-reverse" fxLayoutAlign="center center" class="colored box" >
-              <div fxFlex="20">  inner fxFlex="20"  </div>
-              <div fxFlex="60">  inner fxFlex="60"  </div>
+        <div [fxLayout]='direction' (click)='toggleDirection()' class='colored box' >
+          <div fxFlex='20'>  fxFlex='20'  </div>
+          <div fxFlex='60'>  outer fxFlex='60'
+            <div fxLayout='row-reverse' fxLayoutAlign='center center' class='colored box' >
+              <div fxFlex='20'>  inner fxFlex='20'  </div>
+              <div fxFlex='60'>  inner fxFlex='60'  </div>
               <div fxFlex >      inner fxFlex       </div>
             </div>
           </div>
@@ -133,7 +133,7 @@ describe('layout directive', () => {
         </div>
       `;
 
-      expectDomForQuery(template, "[fxLayout='row-reverse']")
+      expectDomForQuery(template, '[fxLayout="row-reverse"]')
           .toHaveCssStyle({
             'flex-direction': 'row-reverse',
           });
@@ -144,7 +144,7 @@ describe('layout directive', () => {
   describe('with responsive features', () => {
 
     it('should ignore responsive changes when not configured', () => {
-      createTestComponent(`<div fxLayout="column"></div>`);
+      createTestComponent(`<div fxLayout='column'></div>`);
       matchMedia.activate('md');
       expectNativeEl(fixture).toHaveCssStyle({
         'display': 'flex',
@@ -153,7 +153,7 @@ describe('layout directive', () => {
       });
     });
     it('should add responsive styles when configured', () => {
-      createTestComponent(`<div fxLayout fxLayout.md="column reverse-wrap"></div>`);
+      createTestComponent(`<div fxLayout fxLayout.md='column reverse-wrap'></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
 
@@ -176,7 +176,7 @@ describe('layout directive', () => {
       });
     });
     it('should update responsive styles when the active mediaQuery changes', () => {
-      createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
+      createTestComponent(`<div fxLayout fxLayout.md='column'></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
@@ -194,8 +194,8 @@ describe('layout directive', () => {
 
     it('should update styles with bindings and the active mediaQuery changes', () => {
       createTestComponent(`
-          <div fxLayout="row"
-               [fxLayout.md]="direction">
+          <div fxLayout='row'
+               [fxLayout.md]='direction'>
           </div>
        `);
       expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'row'});
@@ -203,13 +203,13 @@ describe('layout directive', () => {
       matchMedia.activate('md');
       expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'column'});
 
-      fixture.componentInstance.direction = "row";
+      fixture.componentInstance.direction = 'row';
       expectNativeEl(fixture).toHaveCssStyle({'flex-direction': 'row'});
 
 
     });
     it('should fallback to default styles when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
-      createTestComponent(`<div fxLayout fxLayout.md="column"></div>`);
+      createTestComponent(`<div fxLayout fxLayout.md='column'></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
@@ -226,7 +226,7 @@ describe('layout directive', () => {
 
     });
     it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
-      createTestComponent(`<div fxLayout fxLayout.gt-sm="column" fxLayout.md="row"></div>`);
+      createTestComponent(`<div fxLayout fxLayout.gt-sm='column' fxLayout.md='row'></div>`);
 
       expectNativeEl(fixture).toHaveCssStyle({
         'flex-direction': 'row'
@@ -262,7 +262,7 @@ describe('layout directive', () => {
   template: `<span>PlaceHolder Template HTML</span>`
 })
 export class TestLayoutComponent implements OnInit {
-  direction = "column";
+  direction = 'column';
 
   constructor() {
   }

@@ -1,30 +1,25 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "lib": ["es6", "es2015"],
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "lib": ["es2015", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "../../dist/gulp",
-    "rootDir": ".",
-    "sourceMap": true,
-    "target": "es5",
-
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-
-    "noEmitOnError": true,
+    "outDir": "../../dist/tools/gulp",
+    "strictNullChecks": true,
+    "noEmitOnError": false,
     "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "inlineSources": true,
-    "stripInternal": false,
-
-    "baseUrl": "",
-    "typeRoots": [
-      "../../node_modules/@types"
-    ],
+    "target": "es5",
+    "removeComments": true,
     "types": [
       "node"
-    ]
-  }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "lib-build-tools": ["../package-tools/index"]
+    }
+  },
+  "files": [
+    "gulpfile.ts"
+  ]
 }

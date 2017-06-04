@@ -37,7 +37,7 @@ export class MockMatchMedia extends MatchMedia {
    * Easy method to clear all listeners for all mediaQueries
    */
   clearAll() {
-    this._registry.forEach((mql: MockMediaQueryList, mediaQuery: string) => {
+    this._registry.forEach((mql: MockMediaQueryList, _) => {
       mql.destroy();
     });
     this._registry.clear();
@@ -109,7 +109,7 @@ export class MockMatchMedia extends MatchMedia {
       let bp = this._breakpoints.findByAlias(alias);
       this._activateByQuery(bp ? bp.mediaQuery : alias);
     };
-    aliases.split(",").forEach(alias => activate(alias.trim()));
+    aliases.split(',').forEach(alias => activate(alias.trim()));
   }
 
   /**
@@ -229,7 +229,7 @@ export class MockMediaQueryList implements MediaQueryList {
     }
   }
 
-  removeListener(listener: MediaQueryListListener) {
+  removeListener(_: MediaQueryListListener) {
   }
 }
 

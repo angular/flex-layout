@@ -11,8 +11,8 @@ import {extendObject} from './object-extend';
 
 const ALIAS_DELIMITERS = /(\.|-|_)/g;
 function firstUpperCase(part: string) {
-  let first = part.length > 0 ? part.charAt(0) : "";
-  let remainder = (part.length > 1) ? part.slice(1) : "";
+  let first = part.length > 0 ? part.charAt(0) : '';
+  let remainder = (part.length > 1) ? part.slice(1) : '';
   return first.toUpperCase() + remainder;
 }
 
@@ -22,10 +22,10 @@ function firstUpperCase(part: string) {
  */
 function camelCase(name: string): string {
   return name
-      .replace(ALIAS_DELIMITERS, "|")
-      .split("|")
+      .replace(ALIAS_DELIMITERS, '|')
+      .split('|')
       .map(firstUpperCase)
-      .join("");
+      .join('');
 }
 
 /**
@@ -34,7 +34,7 @@ function camelCase(name: string): string {
  */
 export function validateSuffixes(list: BreakPoint[]): BreakPoint[] {
   list.forEach((bp: BreakPoint) => {
-    if (!bp.suffix || bp.suffix === "") {
+    if (!bp.suffix || bp.suffix === '') {
       bp.suffix = camelCase(bp.alias);          // create Suffix value based on alias
       bp.overlapping = bp.overlapping || false; // ensure default value
     }

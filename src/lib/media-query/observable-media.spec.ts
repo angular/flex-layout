@@ -79,6 +79,7 @@ describe('observable-media', () => {
                     count += 1;
                   });
 
+
           // Activate mediaQuery associated with 'md' alias
           matchMedia.activate('sm');
           expect(count).toEqual(0);
@@ -114,7 +115,7 @@ describe('observable-media', () => {
           // Confirm initial match is for 'all'
           expect(current).toBeDefined();
           expect(current.matches).toBeTruthy();
-          expect(current.mediaQuery).toEqual("all");
+          expect(current.mediaQuery).toEqual('all');
 
           try {
             matchMedia.autoRegisterQueries = false;

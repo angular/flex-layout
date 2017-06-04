@@ -27,8 +27,8 @@ describe('break-point-provider', () => {
         providers: [{provide: BREAKPOINTS, useValue: DEFAULT_BREAKPOINTS}]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (_breakPoints_) => {
-      breakPoints = _breakPoints_;
+    beforeEach(async(inject([BREAKPOINTS], (_) => {
+      breakPoints = _;
     })));
 
     it('has the standard breakpoints', () => {

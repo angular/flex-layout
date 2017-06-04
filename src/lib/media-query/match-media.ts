@@ -147,7 +147,7 @@ const ALL_STYLES = {};
 function prepareQueryCSS(mediaQueries: string[]) {
   let list = mediaQueries.filter(it => !ALL_STYLES[it]);
   if (list.length > 0) {
-    let query = list.join(", ");
+    let query = list.join(', ');
     try {
       let style = document.createElement('style');
 

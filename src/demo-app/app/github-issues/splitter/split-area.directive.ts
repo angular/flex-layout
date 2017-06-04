@@ -1,5 +1,5 @@
 import { Directive, Optional, Self } from '@angular/core';
-import { FlexDirective } from "../../../../lib";
+import { FlexDirective } from '@angular/flex-layout';
 
 @Directive({
   selector: '[ngxSplitArea]',

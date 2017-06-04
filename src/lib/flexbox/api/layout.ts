@@ -45,12 +45,12 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
 
   /**
    * Publish observer to enabled nested, dependent directives to listen
-   * to parent "layout" direction changes
+   * to parent 'layout' direction changes
    */
   public layout$: Observable<string>;
 
   /* tslint:disable */
-  @Input('fxLayout')       set layout(val)     { this._cacheInput("layout", val); };
+  @Input('fxLayout')       set layout(val)     { this._cacheInput('layout', val); };
   @Input('fxLayout.xs')    set layoutXs(val)   { this._cacheInput('layoutXs', val); };
   @Input('fxLayout.sm')    set layoutSm(val)   { this._cacheInput('layoutSm', val); };
   @Input('fxLayout.md')    set layoutMd(val)   { this._cacheInput('layoutMd', val); };
@@ -73,7 +73,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
     super(monitor, elRef, renderer);
-    this._announcer = new BehaviorSubject<string>("row");
+    this._announcer = new BehaviorSubject<string>('row');
     this.layout$ = this._announcer.asObservable();
   }
 
@@ -111,7 +111,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Validate the direction value and then update the host's inline flexbox styles
    */
   protected _updateWithDirection(value?: string) {
-    value = value || this._queryInput("layout") || 'row';
+    value = value || this._queryInput('layout') || 'row';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

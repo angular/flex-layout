@@ -196,7 +196,7 @@ export class TestClassComponent implements OnInit {
   hasXs2: boolean;
   hasXs3: boolean;
 
-  constructor(private media: ObservableMedia) {
+  constructor(private _: ObservableMedia) {
   }
 
   ngOnInit() {

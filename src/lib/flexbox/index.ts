@@ -19,9 +19,9 @@ export * from './api/layout-align';
 export * from './api/layout-gap';
 export * from './api/layout-wrap';
 
-export * from './api/class';
 export * from './api/show-hide';
+
+export * from './api/class';
 export * from './api/style';
 
 export * from './responsive/responsive-activation';
-export * from './_module';

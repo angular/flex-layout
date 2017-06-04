@@ -41,10 +41,10 @@ describe('media-monitor', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
       [MediaMonitor, MatchMedia, BreakPointRegistry],
-      (_mediaMonitor_, _matchMedia_, _breakPoints_) => {
-        monitor = _mediaMonitor_;
-        matchMedia = _matchMedia_;      // Only used to manual/simulate activate a mediaQuery
-        breakPoints = _breakPoints_;    // Only used to look up mediaQuery by aliases
+      (_mediaMonitor, _matchMedia, _breakPoints) => {
+        monitor = _mediaMonitor;
+        matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
+        breakPoints = _breakPoints;    // Only used to look up mediaQuery by aliases
       }
   )));
 
@@ -124,7 +124,7 @@ describe('media-monitor', () => {
               current = change;
             });
     try {
-      expect(current.mediaQuery).toEqual("all");
+      expect(current.mediaQuery).toEqual('all');
 
       matchMedia.activate(queryGtMd);
       expect(current.mediaQuery).toBe(queryGtMd);

@@ -56,23 +56,23 @@ describe('responsive-activation', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(inject(
       [BreakPointRegistry, MatchMedia, MediaMonitor],
-      (_breakPoints_, _matchMedia_, _mediaMonitor_) => {
-        breakPoints = _breakPoints_;    // Only used to look up mediaQuery by aliases
-        matchMedia = _matchMedia_;      // Only used to manual/simulate activate a mediaQuery
-        monitor = _mediaMonitor_;
+      (_breakPoints, _matchMedia, _mediaMonitor) => {
+        breakPoints = _breakPoints;    // Only used to look up mediaQuery by aliases
+        matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
+        monitor = _mediaMonitor;
       }
   ));
 
   it('does not report mediaQuery changes for static usages', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
-    let responder = buildResponder("layout", "row", onMediaChange);
+    let responder = buildResponder('layout', 'row', onMediaChange);
     try {
       // Confirm static values are returned as expected
 
       expect(value).toBeUndefined();
-      expect(responder.activatedInputKey).toEqual("layout");
-      expect(responder.activatedInput).toEqual("row");
+      expect(responder.activatedInputKey).toEqual('layout');
+      expect(responder.activatedInput).toEqual('row');
 
       // No responsive inputs were defined, so any mediaQuery
       // activations should not affect anything and the change handler
@@ -81,14 +81,14 @@ describe('responsive-activation', () => {
       matchMedia.activate('xs');
 
       expect(value).toBeUndefined();
-      expect(responder.activatedInputKey).toEqual("layout");
-      expect(responder.activatedInput).toEqual("row");
+      expect(responder.activatedInputKey).toEqual('layout');
+      expect(responder.activatedInput).toEqual('row');
 
       matchMedia.activate('gt-md');
 
       expect(value).toBeUndefined();
-      expect(responder.activatedInputKey).toEqual("layout");
-      expect(responder.activatedInput).toEqual("row");
+      expect(responder.activatedInputKey).toEqual('layout');
+      expect(responder.activatedInput).toEqual('row');
 
     } finally {
       responder.destroy();
@@ -98,7 +98,7 @@ describe('responsive-activation', () => {
   it('reports mediaQuery changes for responsive usages', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
-    let responder = buildResponder("layout", "row", onMediaChange, {
+    let responder = buildResponder('layout', 'row', onMediaChange, {
           'layout': 'row',
           'layoutXs': 'column',          // define trigger to 'xs' mediaQuery
           'layoutMd': 'column-reverse',  // define trigger to 'md' mediaQuery
@@ -110,13 +110,13 @@ describe('responsive-activation', () => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
-      expect(value).toEqual("column");
+      expect(value).toEqual('column');
 
       matchMedia.activate('md');
-      expect(value).toEqual("column-reverse");
+      expect(value).toEqual('column-reverse');
 
       matchMedia.activate('gt-lg');
-      expect(value).toEqual("row-reverse");
+      expect(value).toEqual('row-reverse');
 
     } finally {
       responder.destroy();
@@ -126,7 +126,7 @@ describe('responsive-activation', () => {
   it('uses fallback to default input if the activated mediaQuery should be ignored', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
-    let responder = buildResponder("layout", "row", onMediaChange, {
+    let responder = buildResponder('layout', 'row', onMediaChange, {
           'layout': 'row',
           'layoutXs': 'column',          // define input value link to 'xs' mediaQuery
         }
@@ -136,13 +136,13 @@ describe('responsive-activation', () => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
-      expect(value).toEqual("column");
+      expect(value).toEqual('column');
 
       // No input 'layoutMd' has been defined, so the fallback
       // to 'layout' input value should be used...
 
       matchMedia.activate('md');
-      expect(value).toEqual("row");
+      expect(value).toEqual('row');
 
     } finally {
       responder.destroy();
@@ -152,7 +152,7 @@ describe('responsive-activation', () => {
   it('uses closest responsive input value if the activated mediaQuery is not linked', () => {
     let value, enableOverlaps = false;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
-    let responder = buildResponder("layout", "row", onMediaChange, {
+    let responder = buildResponder('layout', 'row', onMediaChange, {
           'layout': 'row',
           'layoutXs': 'column',          // define link to 'xs' mediaQuery
           'layoutGtSm': 'row-reverse'      // define link to 'gt-sm' mediaQuery
@@ -163,13 +163,13 @@ describe('responsive-activation', () => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
-      expect(value).toEqual("column");
+      expect(value).toEqual('column');
 
       // No input 'layoutMd' has been defined, so the fallback
       // to 'layoutGtSm' input value should be used...
 
       matchMedia.activate('md', enableOverlaps = true);
-      expect(value).toEqual("row-reverse");
+      expect(value).toEqual('row-reverse');
 
     } finally {
       responder.destroy();

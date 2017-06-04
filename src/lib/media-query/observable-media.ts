@@ -8,7 +8,7 @@
 import {Injectable} from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
-import {Observable, Subscribable} from "rxjs/Observable";
+import {Observable, Subscribable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 
@@ -61,7 +61,7 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  *
  *    constructor(  media:ObservableMedia ) {
  *      let onChange = (change:MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
+ *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators

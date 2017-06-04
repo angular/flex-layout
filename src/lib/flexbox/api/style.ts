@@ -32,6 +32,12 @@ import {
 } from '../../utils/style-transforms';
 
 /**
+ * Explicitly export the NgStyle super class type for ngc/AOT compiles
+ * Workaround for https://github.com/angular/angular/issues/17849
+ */
+export const _StyleDirectiveBaseClass = NgStyle;
+
+/**
  * Directive to add responsive support for ngStyle.
  *
  */
@@ -46,7 +52,7 @@ import {
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
-export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDestroy {
+export class StyleDirective extends _StyleDirectiveBaseClass implements DoCheck, OnChanges, OnDestroy { // tslint:disable-line:max-line-length
 
   /**
    * Intercept ngStyle assignments so we cache the default styles
@@ -107,12 +113,12 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
     super(_differs, _ngEl, _renderer);
 
     // Build adapter, `cacheInput()` interceptor, and get current inline style if any
-    this._buildAdapter(monitor, _ngEl, _renderer);
-    this._base.cacheInput('style', _ngEl.nativeElement.getAttribute("style"), true);
+    this._buildAdapter(this.monitor, _ngEl, _renderer);
+    this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
   }
 
   // ******************************************************************
-  // Lifecycle Hookks
+  // Lifecycle Hooks
   // ******************************************************************
 
   /**
@@ -164,7 +170,7 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
    * `ngStyle` which does the style injections...
    */
   protected _updateStyle(value?: NgStyleType) {
-    let style = value || this._base.queryInput("style") || '';
+    let style = value || this._base.queryInput('style') || '';
     if (this._base.mqActivation) {
       style = this._base.mqActivation.activatedInput;
     }

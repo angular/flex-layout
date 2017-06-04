@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import 'rxjs/add/operator/filter';
 
 @Component({
+  moduleId: module.id,
   selector: 'demo-issue-266',
   styleUrls: [ './issue.266.demo.css' ],
   template: `

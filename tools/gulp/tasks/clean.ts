@@ -1,5 +1,7 @@
 import {task} from 'gulp';
-import {cleanTask} from '../task_helpers';
+import {cleanTask} from '../util/task_helpers';
+import {buildConfig} from 'lib-build-tools';
 
 
-task('clean', cleanTask('dist'));
+/** Deletes the dist/ directory. */
+task('clean', cleanTask(buildConfig.outputDir));

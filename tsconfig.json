@@ -1,37 +1,34 @@
+// TypeScript config file that matches all source files in the project. This file is read by 
+// IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
 {
   "compilerOptions": {
-    "emitDecoratorMetadata": true,
+    "rootDir": ".",
     "experimentalDecorators": true,
-    "pretty": true,
-    "removeComments": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "suppressImplicitAnyIndexErrors": true,
-
-    "skipDefaultLibCheck":true,
-    "sourceMap": true,
-
-    "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
-    "lib": ["es6", "es2015", "dom"],
-
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "types": [
-      "hammerjs", "rx/rx.all"
-    ]
+    "noUnusedParameters": true,
+    "strictNullChecks": false,
+    "skipLibCheck": true,
+    "outDir": "./dist/packages/all",
+    "target": "es2015",
+    "lib": ["es5", "es2015", "dom"],
+    "types": ["jasmine"],
+    "baseUrl": ".",
+    "paths": {
+      "@angular/flex-layout": ["./src/lib/public_api.ts"]
+    }
   },
-  "exclude": [
-    "**/*.spec.*",
-    "node_modules",
-    "dist",
-    "deprecated",
-    "demos",
-    "src/lib/utils/testing"
+  "include": [
+    "src/**/*.ts",
+    "tools/**.ts"
   ],
-  "compileOnSave": false,
-  "buildOnSave": false
+  "exclude": [
+    // Exclude files that depend on Node APIs because those depend on the Node types and therefore
+    // cause ambiguous imports. For example `setTimeout()` will return a Timer instead of a number.
+    "./src/universal-app/prerender.ts",
+
+    // IDEs should not type-check the different node_modules directories of the different packages.
+    // This would cause the IDEs to be slower and also linters would check the node_modules.
+    "**/node_modules"
+  ]
 }

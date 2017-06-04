@@ -1,75 +1,72 @@
-import gulp = require('gulp');
-import path = require('path');
-import gulpMerge = require('merge2');
+import {join} from 'path';
+import {task, watch} from 'gulp';
+import {buildConfig, sequenceTask} from 'lib-build-tools';
 
-import {PROJECT_ROOT} from '../constants';
-import {sequenceTask} from '../task_helpers';
+// There are no type definitions available for these imports.
+const runSequence = require('run-sequence');
 
-const karma = require('karma');
+const {packagesDir, projectDir} = buildConfig;
 
-/** Copies deps for unit tests to the build output. */
-gulp.task(':build:test:vendor', function() {
-  const npmVendorFiles = [
-    '@angular', 'core-js/client', 'rxjs', 'systemjs/dist', 'zone.js/dist'
-  ];
-
-  return gulpMerge(
-    npmVendorFiles.map(function(root) {
-      const glob = path.join(root, '**/*.+(js|js.map)');
-      return gulp.src(path.join('node_modules', glob))
-        .pipe(gulp.dest(path.join('dist/vendor', root)));
-    }));
-});
-
-/** Builds dependencies for unit tests. */
-gulp.task(':test:deps', sequenceTask(
+/** Builds everything that is necessary for karma. */
+task(':test:build', sequenceTask(
   'clean',
-  [
-    ':build:test:vendor',
-    ':build:components:spec'
-  ]
+  // Build ESM output of Flex-Layout that also includes all test files.
+  'flex-layout:build-tests',
 ));
 
 /**
- * [Watch task] Build unit test dependencies, and rebuild whenever sources are changed.
- * This should only be used when running tests locally.
+ * Runs the unit tests. Does not watch for changes.
+ * This task should be used when running tests on the CI server.
  */
-gulp.task(':test:watch', sequenceTask(':test:deps', ':watch:components:spec'));
+task('test:single-run', [':test:build'], (done: () => void) => {
+  // Load karma not outside. Karma pollutes Promise with a different implementation.
+  let karma = require('karma');
 
-/** Build unit test dependencies and then inlines resources (html, css) into the JS output. */
-gulp.task(':test:deps:inline', sequenceTask(':test:deps', ':inline-resources'));
-
+  new karma.Server({
+    configFile: join(projectDir, 'test/karma.conf.js'),
+    singleRun: true
+  }, (exitCode: number) => {
+    // Immediately exit the process if Karma reported errors, because due to
+    // potential still running tunnel-browsers gulp won't exit properly.
+    exitCode === 0 ? done() : process.exit(exitCode);
+  }).start();
+});
 
 /**
  * [Watch task] Runs the unit tests, rebuilding and re-testing when sources change.
- * Does not inline resources.
+ * Does not inline resources. Note that this doesn't use Karma's built-in file
+ * watching. Due to the way our build process is set up, Karma ends up firing
+ * it's change detection for every file that is written to disk, which causes
+ * it to run tests multiple time and makes it hard to follow the console output.
+ * This approach runs the Karma server and then depends on the Gulp API to tell
+ * Karma when to run the tests.
  *
  * This task should be used when running unit tests locally.
  */
-gulp.task('test', [':test:watch'], (done: (error?: Error) => void) => {
-  new karma.Server({
-    configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js')
-  }, onKarmaFinished(done)).start();
-});
+task('test', [':test:build'], () => {
+  let patternRoot = join(packagesDir, '**/*');
+  // Load karma not outside. Karma pollutes Promise with a different implementation.
+  let karma = require('karma');
 
-/**
- * Runs the unit tests once with inlined resources (html, css). Does not watch for changes.
- *
- * This task should be used when running tests on the CI server.
- */
-gulp.task('test:single-run', [':test:deps:inline'], (done: (error?: Error) => void) => {
-  new karma.Server({
-    configFile: path.join(PROJECT_ROOT, 'tools/test/karma.conf.js'),
-    singleRun: true,
+  // Configure the Karma server and override the autoWatch and singleRun just in case.
+  let server = new karma.Server({
+    configFile: join(projectDir, 'test/karma.conf.js'),
     autoWatch: false,
-  }, onKarmaFinished(done)).start();
-});
+    singleRun: false
+  });
 
-/** Function to create a karma callback that properly reports to gulp. */
-function onKarmaFinished(doneFn: (error?: Error) => void) {
-  return (exitCode: number) => {
-    // Immediately exit the process if Karma reported errors, because due to
-    // potential running Saucelabs browsers gulp won't exit properly.
-    exitCode === 0 ? doneFn() : process.exit(exitCode);
+  // Refreshes Karma's file list and schedules a test run.
+  // Tests will only run if TypeScript compilation was successful.
+  let runTests = (err?: Error) => {
+    if (!err) {
+      server.refreshFiles().then(() => server._injector.get('executor').schedule());
+    }
   };
-}
+
+  // Boot up the test server and run the tests whenever a new browser connects.
+  server.start();
+  server.on('browser_register', () => runTests());
+
+  // Whenever a file change has been recognized, rebuild and re-run the tests.
+  watch(patternRoot + '.+(ts|scss|html)', () => runSequence(':test:build', runTests));
+});
