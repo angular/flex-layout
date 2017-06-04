@@ -70,7 +70,6 @@
     "@types/node": "^7.0.21",
     "@types/run-sequence": "^0.0.29",
     "@types/rx": "2.5.33",
-
     "@types/source-map": "^0.1.27",
     "@types/uglify-js": "^2.0.27",
     "@types/webpack": "^2.2.15",
@@ -103,7 +102,6 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-transform": "^2.0.0",
     "gulp-server-livereload": "^1.9.2",
     "gulp-transform": "^2.0.0",
     "gulp-typescript": "^2.13.6",
