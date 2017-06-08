@@ -12,8 +12,8 @@ import {Component} from '@angular/core';
       <md-card-content>
         <div class="containerX">
           <div fxLayout="row" class="colored box nopad" >
-              <div fxFlex="66" fxFlexOffset="15">  [flex="66"] [flex-offset="15"]  </div>
-              <div fxFlex>                           [flex]                          </div>
+              <div fxFlex="66" fxFlexOffset="15">  [fxFlex="66"] [fxFlexOffset="15"]  </div>
+              <div fxFlex>                           [fxFlex]                          </div>
           </div>          
         </div>
       </md-card-content>
