@@ -92,8 +92,7 @@ export class MediaMonitor {
    * and prepare for immediate subscription notifications
    */
   private _registerBreakpoints() {
-    this._breakpoints.items.forEach(bp => {
-      this._matchMedia.registerQuery(bp.mediaQuery);
-    });
+    let queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
+    this._matchMedia.registerQuery(queries);
   }
 }

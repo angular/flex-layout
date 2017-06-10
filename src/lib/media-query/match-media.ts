@@ -76,36 +76,42 @@ export class MatchMedia {
   observe(mediaQuery?: string): Observable<MediaChange> {
     this.registerQuery(mediaQuery);
 
-    return this._observable$.filter((change: MediaChange) => {
-      return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-    });
+    return this._observable$
+        .filter((change: MediaChange) => {
+          return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+        });
   }
 
   /**
    * Based on the BreakPointRegistry provider, register internal listeners for each unique
    * mediaQuery. Each listener emits specific MediaChange data to observers
    */
-  registerQuery(mediaQuery: string) {
-    if (mediaQuery) {
-      let mql = this._registry.get(mediaQuery);
-      let onMQLEvent = (e: MediaQueryList) => {
-        this._zone.run(() => {
-          let change = new MediaChange(e.matches, mediaQuery);
-          this._source.next(change);
-        });
-      };
+  registerQuery(mediaQuery: string | string[]) {
+    let list = normalizeQuery(mediaQuery);
 
-      if (!mql) {
-        mql = this._buildMQL(mediaQuery);
-        mql.addListener(onMQLEvent);
-        this._registry.set(mediaQuery, mql);
-      }
+    if (list.length > 0) {
+      prepareQueryCSS(list);
 
-      if (mql.matches) {
-        onMQLEvent(mql);  // Announce activate range for initial subscribers
-      }
+      list.forEach(query => {
+        let mql = this._registry.get(query);
+        let onMQLEvent = (e: MediaQueryList) => {
+          this._zone.run(() => {
+            let change = new MediaChange(e.matches, query);
+            this._source.next(change);
+          });
+        };
+
+        if (!mql) {
+          mql = this._buildMQL(query);
+          mql.addListener(onMQLEvent);
+          this._registry.set(query, mql);
+        }
+
+        if (mql.matches) {
+          onMQLEvent(mql);  // Announce activate range for initial subscribers
+        }
+      });
     }
-
   }
 
   /**
@@ -113,19 +119,16 @@ export class MatchMedia {
    * supports 0..n listeners for activation/deactivation
    */
   protected  _buildMQL(query: string): MediaQueryList {
-    prepareQueryCSS(query);
-
     let canListen = !!(<any>window).matchMedia('all').addListener;
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
-          matches: query === 'all' || query === '',
-          media: query,
-          addListener: () => {
-          },
-          removeListener: () => {
-          }
-        };
+      matches: query === 'all' || query === '',
+      media: query,
+      addListener: () => {
+      },
+      removeListener: () => {
+      }
+    };
   }
-
 }
 
 /**
@@ -135,31 +138,55 @@ export class MatchMedia {
 const ALL_STYLES = {};
 
 /**
- * For Webkit engines that only trigger the MediaQueryListListener
+ * For Webkit engines that only trigger the MediaQueryList Listener
  * when there is at least one CSS selector for the respective media query.
  *
  * @param query string The mediaQuery used to create a faux CSS selector
  *
  */
-function prepareQueryCSS(query) {
-  if (!ALL_STYLES[query]) {
+function prepareQueryCSS(mediaQueries: string[]) {
+  let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+  if (list.length > 0) {
+    let query = list.join(", ");
     try {
       let style = document.createElement('style');
 
       style.setAttribute('type', 'text/css');
       if (!style['styleSheet']) {
-        let cssText = `@media ${query} {.fx-query-test{ }}`;
+        let cssText = `/*
+  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  see http://bit.ly/2sd4HMP
+*/
+@media ${query} {.fx-query-test{ }}`;
         style.appendChild(document.createTextNode(cssText));
       }
 
       document.getElementsByTagName('head')[0].appendChild(style);
 
       // Store in private global registry
-      ALL_STYLES[query] = style;
+      list.forEach(mq => ALL_STYLES[mq] = style);
 
     } catch (e) {
       console.error(e);
     }
   }
+}
+
+/**
+ * Always convert to unique list of queries; for iteration in ::registerQuery()
+ */
+function normalizeQuery(mediaQuery: string | string[]): string[] {
+  return (typeof mediaQuery === 'undefined') ? [] :
+      (typeof mediaQuery === 'string') ? [mediaQuery] : unique(mediaQuery as string[]);
+}
+
+/**
+ * Filter duplicate mediaQueries in the list
+ */
+function unique(list: string[]): string[] {
+  let seen = {};
+  return list.filter(item => {
+    return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+  });
 }
 
