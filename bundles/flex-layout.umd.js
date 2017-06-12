@@ -479,7 +479,7 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
         var value = element.style['display'] || getComputedStyle(element)['display'];
-        return value.trim();
+        return value ? value.trim() : 'block';
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
