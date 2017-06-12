@@ -118,7 +118,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
     let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
-    return value.trim();
+    return value ? value.trim() : 'block';
   }
 
   protected _getFlowDirection(target: any, addIfMissing = false): string {
