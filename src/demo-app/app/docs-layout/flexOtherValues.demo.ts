@@ -12,14 +12,14 @@ import {Component} from '@angular/core';
       <md-card-content>
         <div class="containerX">
           <div fxLayout="row wrap" class="colored box nopad" >
-            <div fxFlex="none">     [flex="none"]       </div>
-            <div fxFlex>            [flex]              </div>
-            <div fxFlex="nogrow">   [flex="nogrow"]     </div>
-            <div fxFlex="grow">     [flex="grow"]       </div>
-            <div fxFlex="initial">  [flex="initial"]    </div>
-            <div fxFlex="auto">     [flex="auto"]       </div>
-            <div fxFlex="noshrink"> [flex="noshrink"]   </div>
-            <div fxFlex="0">        [flex="0"]          </div>
+            <div fxFlex="none">     [fxFlex="none"]       </div>
+            <div fxFlex>            [fxFlex]              </div>
+            <div fxFlex="nogrow">   [fxFlex="nogrow"]     </div>
+            <div fxFlex="grow">     [fxFlex="grow"]       </div>
+            <div fxFlex="initial">  [fxFlex="initial"]    </div>
+            <div fxFlex="auto">     [fxFlex="auto"]       </div>
+            <div fxFlex="noshrink"> [fxFlex="noshrink"]   </div>
+            <div fxFlex="0">        [fxFlex="0"]          </div>
           </div>          
         </div>
       </md-card-content>
