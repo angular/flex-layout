@@ -56,7 +56,7 @@ export declare class MatchMedia {
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
      * mediaQuery. Each listener emits specific MediaChange data to observers
      */
-    registerQuery(mediaQuery: string): void;
+    registerQuery(mediaQuery: string | string[]): void;
     /**
      * Call window.matchMedia() to build a MediaQueryList; which
      * supports 0..n listeners for activation/deactivation

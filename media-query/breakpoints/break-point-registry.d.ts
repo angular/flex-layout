@@ -12,6 +12,14 @@ export declare class BreakPointRegistry {
      */
     readonly items: BreakPoint[];
     /**
+     * Accessor to sorted list used for registration with matchMedia API
+     *
+     * NOTE: During breakpoint registration, we want to register the overlaps FIRST
+     *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
+     *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
+     */
+    readonly sortedItems: BreakPoint[];
+    /**
      * Search breakpoints by alias (e.g. gt-xs)
      */
     findByAlias(alias: string): BreakPoint;

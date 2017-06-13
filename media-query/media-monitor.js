@@ -93,10 +93,8 @@ var MediaMonitor = (function () {
      * and prepare for immediate subscription notifications
      */
     MediaMonitor.prototype._registerBreakpoints = function () {
-        var _this = this;
-        this._breakpoints.items.forEach(function (bp) {
-            _this._matchMedia.registerQuery(bp.mediaQuery);
-        });
+        var queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this._matchMedia.registerQuery(queries);
     };
     return MediaMonitor;
 }());

@@ -63,15 +63,15 @@ export { ObservableMedia };
  *  }
  */
 var MediaService = (function () {
-    function MediaService(mediaWatcher, breakpoints) {
-        this.mediaWatcher = mediaWatcher;
+    function MediaService(breakpoints, mediaWatcher) {
         this.breakpoints = breakpoints;
+        this.mediaWatcher = mediaWatcher;
         /**
          * Should we announce gt-<xxx> breakpoint activations ?
          */
         this.filterOverlaps = true;
-        this.observable$ = this._buildObservable();
         this._registerBreakPoints();
+        this.observable$ = this._buildObservable();
     }
     /**
      * Test if specified query/alias is active.
@@ -102,23 +102,19 @@ var MediaService = (function () {
      * mediaQuery activations
      */
     MediaService.prototype._registerBreakPoints = function () {
-        var _this = this;
-        this.breakpoints.items.forEach(function (bp) {
-            _this.mediaWatcher.registerQuery(bp.mediaQuery);
-            return bp;
-        });
+        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this.mediaWatcher.registerQuery(queries);
     };
     /**
      * Prepare internal observable
-     * NOTE: the raw MediaChange events [from MatchMedia] do not contain important alias information
-     * these must be injected into the MediaChange
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
      */
     MediaService.prototype._buildObservable = function () {
         var _this = this;
         var self = this;
-        // Only pass/announce activations (not de-activations)
-        // Inject associated (if any) alias information into the MediaChange event
-        // Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
         var activationsOnly = function (change) {
             return change.matches === true;
         };
@@ -129,6 +125,11 @@ var MediaService = (function () {
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
+        /**
+         * Only pass/announce activations (not de-activations)
+         * Inject associated (if any) alias information into the MediaChange event
+         * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+         */
         return this.mediaWatcher.observe()
             .filter(activationsOnly)
             .map(addAliasInformation)
@@ -161,7 +162,7 @@ MediaService.decorators = [
 ];
 /** @nocollapse */
 MediaService.ctorParameters = function () { return [
-    { type: MatchMedia, },
     { type: BreakPointRegistry, },
+    { type: MatchMedia, },
 ]; };
 //# sourceMappingURL=observable-media.js.map

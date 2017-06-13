@@ -45,7 +45,8 @@ var MatchMedia = (function () {
      */
     MatchMedia.prototype.observe = function (mediaQuery) {
         this.registerQuery(mediaQuery);
-        return this._observable$.filter(function (change) {
+        return this._observable$
+            .filter(function (change) {
             return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
         });
     };
@@ -55,22 +56,26 @@ var MatchMedia = (function () {
      */
     MatchMedia.prototype.registerQuery = function (mediaQuery) {
         var _this = this;
-        if (mediaQuery) {
-            var mql = this._registry.get(mediaQuery);
-            var onMQLEvent = function (e) {
-                _this._zone.run(function () {
-                    var change = new MediaChange(e.matches, mediaQuery);
-                    _this._source.next(change);
-                });
-            };
-            if (!mql) {
-                mql = this._buildMQL(mediaQuery);
-                mql.addListener(onMQLEvent);
-                this._registry.set(mediaQuery, mql);
-            }
-            if (mql.matches) {
-                onMQLEvent(mql); // Announce activate range for initial subscribers
-            }
+        var list = normalizeQuery(mediaQuery);
+        if (list.length > 0) {
+            prepareQueryCSS(list);
+            list.forEach(function (query) {
+                var mql = _this._registry.get(query);
+                var onMQLEvent = function (e) {
+                    _this._zone.run(function () {
+                        var change = new MediaChange(e.matches, query);
+                        _this._source.next(change);
+                    });
+                };
+                if (!mql) {
+                    mql = _this._buildMQL(query);
+                    mql.addListener(onMQLEvent);
+                    _this._registry.set(query, mql);
+                }
+                if (mql.matches) {
+                    onMQLEvent(mql); // Announce activate range for initial subscribers
+                }
+            });
         }
     };
     /**
@@ -78,7 +83,6 @@ var MatchMedia = (function () {
      * supports 0..n listeners for activation/deactivation
      */
     MatchMedia.prototype._buildMQL = function (query) {
-        prepareQueryCSS(query);
         var canListen = !!window.matchMedia('all').addListener;
         return canListen ? window.matchMedia(query) : {
             matches: query === 'all' || query === '',
@@ -105,28 +109,46 @@ MatchMedia.ctorParameters = function () { return [
  */
 var ALL_STYLES = {};
 /**
- * For Webkit engines that only trigger the MediaQueryListListener
+ * For Webkit engines that only trigger the MediaQueryList Listener
  * when there is at least one CSS selector for the respective media query.
  *
  * @param query string The mediaQuery used to create a faux CSS selector
  *
  */
-function prepareQueryCSS(query) {
-    if (!ALL_STYLES[query]) {
+function prepareQueryCSS(mediaQueries) {
+    var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+    if (list.length > 0) {
+        var query = list.join(", ");
         try {
-            var style = document.createElement('style');
-            style.setAttribute('type', 'text/css');
-            if (!style['styleSheet']) {
-                var cssText = "@media " + query + " {.fx-query-test{ }}";
-                style.appendChild(document.createTextNode(cssText));
+            var style_1 = document.createElement('style');
+            style_1.setAttribute('type', 'text/css');
+            if (!style_1['styleSheet']) {
+                var cssText = "/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}";
+                style_1.appendChild(document.createTextNode(cssText));
             }
-            document.getElementsByTagName('head')[0].appendChild(style);
+            document.getElementsByTagName('head')[0].appendChild(style_1);
             // Store in private global registry
-            ALL_STYLES[query] = style;
+            list.forEach(function (mq) { return ALL_STYLES[mq] = style_1; });
         }
         catch (e) {
             console.error(e);
         }
     }
+}
+/**
+ * Always convert to unique list of queries; for iteration in ::registerQuery()
+ */
+function normalizeQuery(mediaQuery) {
+    return (typeof mediaQuery === 'undefined') ? [] :
+        (typeof mediaQuery === 'string') ? [mediaQuery] : unique(mediaQuery);
+}
+/**
+ * Filter duplicate mediaQueries in the list
+ */
+function unique(list) {
+    var seen = {};
+    return list.filter(function (item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
 }
 //# sourceMappingURL=match-media.js.map

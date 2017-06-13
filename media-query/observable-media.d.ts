@@ -56,13 +56,13 @@ export declare abstract class ObservableMedia implements Subscribable<MediaChang
  *  }
  */
 export declare class MediaService implements ObservableMedia {
-    private mediaWatcher;
     private breakpoints;
+    private mediaWatcher;
     /**
      * Should we announce gt-<xxx> breakpoint activations ?
      */
     filterOverlaps: boolean;
-    constructor(mediaWatcher: MatchMedia, breakpoints: BreakPointRegistry);
+    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia);
     /**
      * Test if specified query/alias is active.
      */
@@ -84,8 +84,10 @@ export declare class MediaService implements ObservableMedia {
     private _registerBreakPoints();
     /**
      * Prepare internal observable
-     * NOTE: the raw MediaChange events [from MatchMedia] do not contain important alias information
-     * these must be injected into the MediaChange
+     *
+     * NOTE: the raw MediaChange events [from MatchMedia] do not
+     *       contain important alias information; as such this info
+     *       must be injected into the MediaChange
      */
     private _buildObservable();
     /**

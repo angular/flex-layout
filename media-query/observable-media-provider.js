@@ -15,7 +15,7 @@ import { ObservableMedia, MediaService } from './observable-media';
  * Ensure a single global ObservableMedia service provider
  */
 export function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(matchMedia, breakpoints);
+    return parentService || new MediaService(breakpoints, matchMedia);
 }
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
