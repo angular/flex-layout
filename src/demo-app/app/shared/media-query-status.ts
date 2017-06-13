@@ -31,7 +31,9 @@ export class MediaQueryStatus implements OnDestroy {
   private _watcher : Subscription;
   activeMediaQuery : string;
 
-  constructor(media$ : ObservableMedia) { this.watchMediaQueries(media$); }
+  constructor(media$ : ObservableMedia) {
+    this.watchMediaQueries(media$);
+  }
 
   ngOnDestroy() {
     this._watcher.unsubscribe();

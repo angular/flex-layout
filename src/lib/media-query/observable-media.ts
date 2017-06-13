@@ -81,10 +81,10 @@ export class MediaService implements ObservableMedia {
    */
   public filterOverlaps = true;
 
-  constructor(private mediaWatcher: MatchMedia,
-              private breakpoints: BreakPointRegistry) {
-    this.observable$ = this._buildObservable();
+  constructor(private breakpoints: BreakPointRegistry,
+              private mediaWatcher: MatchMedia) {
     this._registerBreakPoints();
+    this.observable$ = this._buildObservable();
   }
 
   /**
@@ -122,22 +122,19 @@ export class MediaService implements ObservableMedia {
    * mediaQuery activations
    */
   private _registerBreakPoints() {
-    this.breakpoints.items.forEach((bp: BreakPoint) => {
-      this.mediaWatcher.registerQuery(bp.mediaQuery);
-      return bp;
-    });
+    let queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+    this.mediaWatcher.registerQuery(queries);
   }
 
   /**
    * Prepare internal observable
-   * NOTE: the raw MediaChange events [from MatchMedia] do not contain important alias information
-   * these must be injected into the MediaChange
+   *
+   * NOTE: the raw MediaChange events [from MatchMedia] do not
+   *       contain important alias information; as such this info
+   *       must be injected into the MediaChange
    */
   private _buildObservable() {
     const self = this;
-    // Only pass/announce activations (not de-activations)
-    // Inject associated (if any) alias information into the MediaChange event
-    // Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
     const activationsOnly = (change: MediaChange) => {
       return change.matches === true;
     };
@@ -149,6 +146,11 @@ export class MediaService implements ObservableMedia {
       return !bp ? true : !(self.filterOverlaps && bp.overlapping);
     };
 
+    /**
+     * Only pass/announce activations (not de-activations)
+     * Inject associated (if any) alias information into the MediaChange event
+     * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     */
     return this.mediaWatcher.observe()
         .filter(activationsOnly)
         .map(addAliasInformation)

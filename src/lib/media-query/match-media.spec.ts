@@ -86,13 +86,12 @@ describe('match-media', () => {
   });
 
 
-  it('can observe only a specific custom mediaQuery ranges', () => {
+  it('can observe an array of custom mediaQuery ranges', () => {
     let current: MediaChange, activated;
     let query1 = "screen and (min-width: 610px) and (max-width: 620px)";
     let query2 = "(min-width: 730px) and (max-width: 950px)";
 
-    matchMedia.registerQuery(query1);
-    matchMedia.registerQuery(query2);
+    matchMedia.registerQuery([query1, query2]);
 
     let subscription = matchMedia.observe(query1).subscribe((change: MediaChange) => {
       current = change;
