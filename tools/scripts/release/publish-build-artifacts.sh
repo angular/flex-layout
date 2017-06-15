@@ -45,7 +45,7 @@ git config credential.helper "store --file=.git/credentials"
 echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
 
 git add -A
-git commit -am "build: $buildVersion-$commitSha"
+git commit --allow-empty -m "build: $buildVersion-$commitSha"
 git tag "$buildVersion-$commitSha"
 git push -q origin master --tags
 
