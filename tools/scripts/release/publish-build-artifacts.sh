@@ -16,38 +16,37 @@ commitAuthorName=$(git --no-pager show -s --format='%an' HEAD)
 commitAuthorEmail=$(git --no-pager show -s --format='%ae' HEAD)
 commitMessage=$(git log --oneline -n 1)
 
-repoName="flex-layout-builds"
-repoUrl="https://github.com/angular/$repoName.git"
-repoDir="tmp/$repoName"
+LOCAL_BUILDS_DIR="tmp/flex-layout-builds"
 
 # Create a release of the current repository.
 $(npm bin)/gulp build:release
 
 # Prepare cloning the builds repository
-rm -rf $repoDir
-mkdir -p $repoDir
+rm -rf $LOCAL_BUILDS_DIR
+mkdir -p $LOCAL_BUILDS_DIR
 
-git config user.name "$commitAuthorName"
-git config user.email "$commitAuthorEmail"
 
 # Clone the repository
-git clone $repoUrl $repoDir
+git clone https://github.com/angular/flex-layout-builds \
+  $LOCAL_BUILDS_DIR --depth=2
 
 # Copy the build files to the repository
-rm -rf $repoDir/*
-cp -r $buildDir/* $repoDir
-cp CHANGELOG.md $repoDir
+rm -rf $LOCAL_BUILDS_DIR/*
+cp -r $buildDir/* $LOCAL_BUILDS_DIR
+cp CHANGELOG.md $LOCAL_BUILDS_DIR
 
 # Create the build commit and push the changes to the repository.
-cd $repoDir
+cd $LOCAL_BUILDS_DIR
 
 # Prepare Git for pushing the artifacts to the repository.
+git config user.name "${commitAuthorName}"
+git config user.email "${commitAuthorEmail}"
 git config credential.helper "store --file=.git/credentials"
 echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
 
 git add -A
-git commit -m "$commitMessage"
+git commit -am "build: $buildVersion-$commitSha"
 git tag "$buildVersion-$commitSha"
-git push origin master --tags
+git push -q origin master --tags
 
-echo "Finished publishing build artifacts"
+echo "Version '$buildVersion-$commitSha' pushed successfully to angular/flex-layout-builds!"
