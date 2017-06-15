@@ -10,7 +10,7 @@ cd $(dirname $0)/../../..
 # confirm all Travis jobs completed successfully see .travis.yml
 
 # If not running as a PR, wait for all other travis modes to finish.
-if [ "$TRAVIS_PULL_REQUEST" = "false" ] && $(npm bin)/travis-after-modes; then
+if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
   echo "All travis modes passed. Publishing the build artifacts..."
   ./tools/scripts/release/publish-build-artifacts.sh
 fi

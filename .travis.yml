@@ -13,34 +13,32 @@ env:
   - LOGS_DIR=/tmp/flex-layout-build/logs
   - SAUCE_USERNAME=angular-ci
   - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
+  - SAUCE_READY_FILE=/tmp/sauce-readyfile
   - BROWSER_STACK_USERNAME=angularteam1
   - BROWSER_STACK_ACCESS_KEY=BWCd4SynLzdDcv8xtzsB
   - BROWSER_PROVIDER_READY_FILE=/tmp/flex-layout-build/readyfile
   - BROWSER_PROVIDER_ERROR_FILE=/tmp/flex-layout-build/errorfile
-  matrix:
-    # Order: a slower build first, so that we don't occupy an idle travis worker waiting for others to complete.
-    - MODE=lint
-    - MODE=saucelabs_required
-    - MODE=browserstack_required
-    - MODE=saucelabs_optional
-    - MODE=browserstack_optional
 
-matrix:
-  fast_finish: true
-  allow_failures:
-  - env: "MODE=saucelabs_optional"
-  - env: "MODE=browserstack_optional"
+cache:
+  yarn: true
+  directories:
+  - node_modules/
+  - tmp/angular.js
+
+jobs:
+  include:
+    # Order: a slower build first, so that we don't occupy an idle travis worker waiting for others to complete.
+    - env: "MODE=lint"
+    - env: "MODE=saucelabs_required"
+    - env: "MODE=browserstack_required"
+    - env: "MODE=saucelabs_optional"
+    - env: "MODE=browserstack_optional"
+    - stage: Deploy
+      script: ./tools/scripts/ci/after-success.sh
+      env: "MODE=release"
 
 before_script:
   - mkdir -p $LOGS_DIR
 
 script:
   - ./tools/scripts/ci/build-and-test.sh
-
-after_success:
-  - ./tools/scripts/ci/after-success.sh
-
-cache:
-  yarn: true
-  directories:
-    - node_modules
