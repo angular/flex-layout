@@ -10,7 +10,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   Self,
   AfterContentInit,
@@ -62,7 +62,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer,
+              renderer: Renderer2,
               @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 

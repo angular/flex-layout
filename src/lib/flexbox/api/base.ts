@@ -7,7 +7,7 @@
  */
 import {
   ElementRef, OnDestroy, SimpleChanges, OnChanges,
-  SimpleChange, Renderer
+  SimpleChange, Renderer2
 } from '@angular/core';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
@@ -65,7 +65,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer) {
+              protected _renderer: Renderer2) {
     this._display = this._getDisplayStyle();
   }
 

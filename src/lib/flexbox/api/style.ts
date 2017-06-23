@@ -11,7 +11,7 @@ import {
   Input,
   OnDestroy,
   DoCheck,
-  Renderer,
+  Renderer2,
   KeyValueDiffers,
   SimpleChanges, OnChanges,
   SecurityContext
@@ -101,9 +101,9 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
               protected _sanitizer: DomSanitizer,
               _differs: KeyValueDiffers,
               _ngEl: ElementRef,
-              _renderer: Renderer) {
+              _renderer: Renderer2) {
 
-    // TODO: this should use Renderer when the NgStyle signature is switched over to it.
+    // TODO: this should use Renderer2 when the NgStyle signature is switched over to it.
     super(_differs, _ngEl, _renderer);
 
     // Build adapter, `cacheInput()` interceptor, and get current inline style if any
@@ -179,7 +179,7 @@ export class StyleDirective extends NgStyle implements DoCheck, OnChanges, OnDes
    * This adapter manages listening to mediaQuery change events and identifying
    * which property value should be used for the style update
    */
-  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer) {
+  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2) {
     this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
     this._buildCacheInterceptor();
   }
