@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer,
+  Renderer2,
   SimpleChanges,
 } from '@angular/core';
 
@@ -52,7 +52,7 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fxFlexOrder.lt-xl') set orderLtXl(val) { this._cacheInput('orderLtXl', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
     super(monitor, elRef, renderer);
   }
 

@@ -11,7 +11,7 @@ import {
   Input,
   DoCheck,
   OnDestroy,
-  Renderer,
+  Renderer2,
   IterableDiffers,
   KeyValueDiffers, SimpleChanges, OnChanges
 } from '@angular/core';
@@ -109,7 +109,7 @@ export class ClassDirective extends NgClass implements DoCheck, OnChanges, OnDes
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
-              _ngEl: ElementRef, _renderer: Renderer) {
+              _ngEl: ElementRef, _renderer: Renderer2) {
 
     super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
 
