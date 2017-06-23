@@ -9,7 +9,7 @@ set -e -o pipefail
 cd $(dirname $0)/../../..
 
 buildDir="dist/@angular/flex-layout"
-buildVersion=$(sed -nE 's/^\s*"version": "(.*?)",$/\1/p' package.json)
+buildVersion=$(node -p -e "require('./package.json').version")
 
 commitSha=$(git rev-parse --short HEAD)
 commitAuthorName=$(git --no-pager show -s --format='%an' HEAD)
@@ -25,14 +25,13 @@ $(npm bin)/gulp build:release
 rm -rf $LOCAL_BUILDS_DIR
 mkdir -p $LOCAL_BUILDS_DIR
 
-BUILD_REPOS = "https://github.com/angular/flex-layout-builds"
-BUILD_EXISTS = $(git ls-remote --tags "$BUILD_REPOS" "$buildVersion-$commitSha")
+buildRepo="https://github.com/angular/flex-layout-builds"
+buildTagExists=$(git ls-remote --tags "$buildRepo" "$buildVersion-$commitSha")
 
-if [ "$BUILD_EXISTS" == "" ]; then
+if [ "$buildTagExists" == "" ]; then
 
   # Clone the repository
-  git clone $BUILD_REPOS \
-    $LOCAL_BUILDS_DIR --depth=2
+  git clone $buildRepo $LOCAL_BUILDS_DIR --depth=2
 
   # Copy the build files to the repository
   rm -rf $LOCAL_BUILDS_DIR/*
@@ -52,7 +51,7 @@ if [ "$BUILD_EXISTS" == "" ]; then
   git commit --allow-empty -m "build: $buildVersion-$commitSha"
   git tag "$buildVersion-$commitSha"
   git push -q origin master --tags
-  echo "Version '$buildVersion-$commitSha' pushed successfully to $BUILD_REPOS!"
+  echo "Version '$buildVersion-$commitSha' pushed successfully to $buildRepo!"
 
 fi
 
