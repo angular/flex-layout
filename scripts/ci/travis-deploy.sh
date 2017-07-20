@@ -24,16 +24,3 @@ echo ""
 if [[ "${DEPLOY_MODE}" == "build-artifacts" ]]; then
   ./scripts/deploy/publish-build-artifacts.sh
 fi
-
-# @TODO - reactivate
-#if [[ "${DEPLOY_MODE}" == "docs-content" ]]; then
-#  ./scripts/deploy/publish-docs-content.sh
-#fi
-#
-#if [[ "${DEPLOY_MODE}" == "screenshot-tool" ]]; then
-#  ./scripts/deploy/deploy-screenshot-functions.sh
-#fi
-#
-#if [[ "${DEPLOY_MODE}" == "dashboard" ]]; then
-#  ./scripts/deploy/deploy-dashboard.sh
-#fi

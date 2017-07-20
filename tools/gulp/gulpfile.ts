@@ -10,7 +10,6 @@ import './tasks/development';
 import './tasks/lint';
 import './tasks/unit-test';
 import './tasks/aot';
-import './tasks/payload';
-//import './tasks/validate-release';
+import './tasks/validate-release';
 import './tasks/build-release';       // release build `github.com/angular/flex-layout-builds`
 import './tasks/publish';             // publish release to npm

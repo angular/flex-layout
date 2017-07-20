@@ -1,9 +1,10 @@
 import {task} from 'gulp';
-import {readFileSync} from 'fs';
+import {readFileSync, existsSync} from 'fs';
 import {join} from 'path';
 import {green, red} from 'chalk';
 import {releasePackages} from './publish';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
+
 
 /** Path to the directory where all releases are created. */
 const releasesDir = join(buildConfig.outputDir, 'releases');
@@ -48,17 +49,8 @@ function checkReleasePackage(packageName: string): string[] {
     failures.push('Bundles are including references to external resources (templates or styles)');
   }
 
-  if (packageName === 'flex-layout') {
-    failures = failures.concat(checkFlexLayoutPackage());
-  }
-
   return failures;
 }
 
-/** Function that includes special checks for the Material package. */
-function checkFlexLayoutPackage(): string[] {
-  const packagePath = join(releasesDir, 'flex-layout');
-  const failures = [];
 
-  return failures;
-}
+

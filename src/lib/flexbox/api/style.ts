@@ -52,7 +52,8 @@ export const _StyleDirectiveBaseClass = NgStyle;
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
-export class StyleDirective extends _StyleDirectiveBaseClass implements DoCheck, OnChanges, OnDestroy { // tslint:disable-line:max-line-length
+export class StyleDirective extends _StyleDirectiveBaseClass
+    implements DoCheck, OnChanges, OnDestroy {
 
   /**
    * Intercept ngStyle assignments so we cache the default styles

@@ -21,17 +21,11 @@ jobs:
     - env: "MODE=lint"
     - env: "MODE=aot"
     - env: "MODE=closure-compiler"
-#    - env: "MODE=payload"
-#    - env: "MODE=prerender"
-#    - env: "MODE=e2e"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
     - stage: Deploy
       env: "DEPLOY_MODE=build-artifacts"
-#    - env: "DEPLOY_MODE=docs-content"
-#    - env: "DEPLOY_MODE=screenshot-tool"
-#    - env: "DEPLOY_MODE=dashboard"
 env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
@@ -44,7 +38,7 @@ env:
 
 before_install:
   - source ./scripts/ci/env.sh
-  - npm i -g npm@^5.0.1
+  - npm i -g npm@^5.3
 
 install:
   - npm install

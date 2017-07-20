@@ -20,9 +20,11 @@ export class SplitHandleDirective {
   constructor(ref: ElementRef) {
     const getMouseEventPosition = (event: MouseEvent) => ({x: event.movementX, y: event.movementY});
 
-    const mousedown$ = Observable.fromEvent(ref.nativeElement, 'mousedown').map(getMouseEventPosition); // tslint:disable-line:max-line-length
-    const mousemove$ = Observable.fromEvent(document, 'mousemove').map(getMouseEventPosition);
     const mouseup$ = Observable.fromEvent(document, 'mouseup');
+    const mousemove$ = Observable.fromEvent(document, 'mousemove')
+            .map(getMouseEventPosition);
+    const mousedown$ = Observable.fromEvent(ref.nativeElement, 'mousedown')
+            .map(getMouseEventPosition);
 
     this.drag = mousedown$.switchMap(_ => mousemove$.takeUntil(mouseup$));
   }

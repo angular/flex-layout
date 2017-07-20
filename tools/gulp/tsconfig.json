@@ -6,7 +6,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../../dist/tools/gulp",
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "noEmitOnError": false,
     "noImplicitAny": false,
     "target": "es5",

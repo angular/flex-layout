@@ -44,7 +44,8 @@ export const _ClassDirectiveBaseClass = NgClass;
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
 })
-export class ClassDirective extends _ClassDirectiveBaseClass implements DoCheck, OnChanges, OnDestroy { // tslint:disable-line:max-line-length
+export class ClassDirective extends _ClassDirectiveBaseClass
+    implements DoCheck, OnChanges, OnDestroy {
 
   /**
    * Intercept ngClass assignments so we cache the default classes

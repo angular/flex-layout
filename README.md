@@ -1,4 +1,4 @@
-# Flex Layout  
+# Angular Flex-Layout  
 
 [![npm version](https://badge.fury.io/js/%40angular%2Fflex-layout.svg)](https://www.npmjs.com/package/%40angular%2Fflex-layout)
 [![Build Status](https://travis-ci.org/angular/flex-layout.svg?branch=master)](https://travis-ci.org/angular/flex-layout)
@@ -18,7 +18,9 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The [R
 
 #### Deprecated support for Angular 2.4.x
 
-Support for recent changes to Angular v4.1 AOT and Renderers means that Angular 2.4.x will not be supported after Angular Flex-Layout v2.0.0-beta.7. 
+With recent changes build and source changes, @angular/flex-layout (Beta.9 or higher)
+will no longer support Angular 2.4.x. These changes were required to support to the revised
+Angular v4.1 AOT and Renderers.
 
 ---
 

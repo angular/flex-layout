@@ -43,7 +43,7 @@ export class DemoComplexColumnOrder {
   direction = 'column';
 
   toggleDirection() {
-    let next = (DIRECTIONS.indexOf(this.direction) + 1 ) % DIRECTIONS.length;
+    let next = (DIRECTIONS.indexOf(this.direction) + 1) % DIRECTIONS.length;
     this.direction = DIRECTIONS[next];
   }
 }

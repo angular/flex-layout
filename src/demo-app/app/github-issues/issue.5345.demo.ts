@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   moduleId: module.id,
   selector: 'demo-issue-5345',
-  styleUrls: [ 'issue.5345.demo.css' ],
+  styleUrls: ['issue.5345.demo.css'],
   template: `
     <md-card class="card-demo" (click)="toggleDirection()" style="cursor: pointer;">
       <md-card-title><a href="https://github.com/angular/material/issues/5345" target="_blank">Issue

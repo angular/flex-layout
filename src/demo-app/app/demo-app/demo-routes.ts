@@ -26,8 +26,3 @@ const DEMO_APP_ROUTES: Routes = [
 })
 export class DemoRoutesModule {
 }
-
-// These components are already exported in their associated Feature modules
-// export const DemoAppRoutingComponents = [
-//    DemosLayoutAPI, DemosResponsiveLayout, DemosGithubIssues, DemosStackOverflow
-// ];

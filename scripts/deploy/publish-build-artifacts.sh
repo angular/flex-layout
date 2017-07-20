@@ -77,7 +77,7 @@ publishPackage() {
   echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
 
   git add -A
-  git commit -m "${commitMessage}"
+  git commit --allow-empty -m "${commitMessage}"
   git tag "${buildVersion}-${commitSha}"
   git push origin master --tags
 
