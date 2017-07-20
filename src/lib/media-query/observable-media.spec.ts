@@ -5,13 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-
-// RxJS Operators used by the classes...
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-
 import {TestBed, inject, async} from '@angular/core/testing';
+
+import {filter} from 'rxjs/operator/filter';
+import {map} from 'rxjs/operator/map';
 
 import {BreakPoint} from './breakpoints/break-point';
 import {BREAKPOINTS} from './breakpoints/break-points-token';
@@ -71,13 +68,15 @@ describe('observable-media', () => {
         [ObservableMedia, MatchMedia],
         (mediaService, matchMedia) => {
           let count = 0,
-              subscription = mediaService
-                  .asObservable()
-                  .filter(change => change.mqAlias == 'md')
-                  .map(change => change.mqAlias)
-                  .subscribe((alias) => {
-                    count += 1;
-                  });
+              subscription = map.call(
+                  filter.call(
+                      mediaService.asObservable(),
+                      change => change.mqAlias == 'md'
+                  ),
+                  change => change.mqAlias
+              ).subscribe(_ => {
+                count += 1;
+              });
 
 
           // Activate mediaQuery associated with 'md' alias
@@ -177,7 +176,7 @@ describe('observable-media', () => {
         providers: [
           BreakPointRegistry,   // Registry of known/used BreakPoint(s)
           MockMatchMediaProvider,
-          CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(CUSTOM_BREAKPOINTS, excludeDefaults),
+          CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(CUSTOM_BREAKPOINTS, {defaults: excludeDefaults} ),
           OBSERVABLE_MEDIA_PROVIDER,
         ]
       });

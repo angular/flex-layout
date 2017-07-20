@@ -15,7 +15,8 @@ import {MediaChange} from './media-change';
 import {mergeAlias} from '../utils/add-alias';
 
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import {filter} from 'rxjs/operator/filter';
+import {map} from 'rxjs/operator/map';
 
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
@@ -81,10 +82,9 @@ export class MediaMonitor {
     let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
     let hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== '' : true);
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
-    return this._matchMedia
-        .observe(bp ? bp.mediaQuery : alias)
-        .map(change => mergeAlias(change, bp))
-        .filter(hasAlias);
+
+    let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+    return filter.call(map.call(media$, change => mergeAlias(change, bp)), hasAlias);
   }
 
   /**

@@ -6,11 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-// RxJS Operators used by the classes...
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {MediaChange} from '../media-change';

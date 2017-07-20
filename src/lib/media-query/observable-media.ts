@@ -9,8 +9,9 @@ import {Injectable} from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
 import {Observable, Subscribable} from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
+
+import {map} from 'rxjs/operator/map';
+import {filter} from 'rxjs/operator/filter';
 
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 
@@ -151,10 +152,14 @@ export class MediaService implements ObservableMedia {
      * Inject associated (if any) alias information into the MediaChange event
      * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
      */
-    return this.mediaWatcher.observe()
-        .filter(activationsOnly)
-        .map(addAliasInformation)
-        .filter(excludeOverlaps);
+    return filter.call(
+        map.call(
+            filter.call(
+                this.mediaWatcher.observe(),
+                activationsOnly
+            ),
+            addAliasInformation),
+        excludeOverlaps);
   }
 
   /**

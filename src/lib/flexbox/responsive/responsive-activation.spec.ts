@@ -8,9 +8,6 @@
 
 // RxJS Operators used by the classes...
 
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-
 import {TestBed, inject} from '@angular/core/testing';
 
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';

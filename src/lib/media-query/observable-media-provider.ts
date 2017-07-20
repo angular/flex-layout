@@ -10,9 +10,6 @@ import {
   SkipSelf
 } from '@angular/core';
 
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 
 import {MatchMedia} from './match-media';

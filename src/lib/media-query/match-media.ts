@@ -9,10 +9,7 @@ import {Injectable, NgZone} from '@angular/core';
 
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-
-// RxJS Operators used by the classes...
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
+import {filter} from 'rxjs/operator/filter';
 
 import {MediaChange} from './media-change';
 
@@ -76,10 +73,9 @@ export class MatchMedia {
   observe(mediaQuery?: string): Observable<MediaChange> {
     this.registerQuery(mediaQuery);
 
-    return this._observable$
-        .filter((change: MediaChange) => {
-          return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        });
+    return filter.call(this._observable$, (change: MediaChange) => {
+      return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+    });
   }
 
   /**
