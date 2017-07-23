@@ -124,8 +124,10 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       }
     };
 
-    this._observer = new MutationObserver(onMutationCallback);
-    this._observer.observe(this._elementRef.nativeElement, {childList: true});
+    this._observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver(onMutationCallback);
+    if (this._observer) {
+      this._observer.observe(this._elementRef.nativeElement, { childList: true });
+    }
   }
 
   /**

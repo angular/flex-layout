@@ -10,6 +10,8 @@ import {
   SimpleChange, Renderer
 } from '@angular/core';
 
+import { ɵgetDOM as getDom } from '@angular/platform-browser';
+
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {buildLayoutCSS} from '../../utils/layout-validator';
 
@@ -117,20 +119,26 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
-    let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
+    let immediateValue = getDom().getStyle(element, 'display');
+    let value = '';
+    try {
+      value = immediateValue || getDom().getComputedStyle(element)['display'];
+    } catch (e) {
+		//TODO: platform-server throws an exception for getComputedStyle
+    }
     return value ? value.trim() : 'block';
   }
 
   protected _getFlowDirection(target: any, addIfMissing = false): string {
     let value = '';
     if (target) {
-      let directionKeys = Object.keys(applyCssPrefixes({'flex-direction': ''}));
-      let findDirection = (styles) => directionKeys.reduce((direction, key) => {
-        return direction || styles[key];
-      }, null);
 
-      let immediateValue = findDirection(target.style);
-      value = immediateValue || findDirection(getComputedStyle(target as Element));
+      let immediateValue = getDom().getStyle(target, 'flex-direction');
+      try {
+        value = immediateValue || getDom().getComputedStyle(target)['flex-direction'];
+      } catch (e) {
+		//TODO: platform-server throws an exception for getComputedStyle
+      }
       if (!immediateValue && addIfMissing) {
         value = value || 'row';
         this._applyStyleToElements(buildLayoutCSS(value), [target]);
@@ -220,7 +228,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
    */
   protected get childrenNodes() {
-    var obj = this._elementRef.nativeElement.childNodes;
+    var obj = this._elementRef.nativeElement.children;
     var buffer = [];
 
     // iterate backwards ensuring that length is an UInt32

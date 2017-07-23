@@ -5,7 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone} from '@angular/core';
+import { ɵgetDOM as getDom, DOCUMENT } from '@angular/platform-browser';
 import {MatchMedia} from '../match-media';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 
@@ -28,8 +29,8 @@ export class MockMatchMedia extends MatchMedia {
    */
   public useOverlaps = false;
 
-  constructor(_zone: NgZone, private _breakpoints: BreakPointRegistry) {
-    super(_zone);
+  constructor(_zone: NgZone, @Inject(DOCUMENT) _document: any, private _breakpoints: BreakPointRegistry) {
+    super(_zone, _document);
     this._actives = [];
   }
 
@@ -83,18 +84,18 @@ export class MockMatchMedia extends MatchMedia {
 
       // Simulate activation of overlapping lt-<XXX> ranges
       switch (alias) {
-        case 'lg'   :   this._activateByAlias('lt-xl'); break;
-        case 'md'   :   this._activateByAlias('lt-xl, lt-lg'); break;
-        case 'sm'   :   this._activateByAlias('lt-xl, lt-lg, lt-md'); break;
-        case 'xs'   :   this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm'); break;
+        case 'lg': this._activateByAlias('lt-xl'); break;
+        case 'md': this._activateByAlias('lt-xl, lt-lg'); break;
+        case 'sm': this._activateByAlias('lt-xl, lt-lg, lt-md'); break;
+        case 'xs': this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm'); break;
       }
 
       // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
       switch (alias) {
-        case 'xl'   : this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs'); break;
-        case 'lg'   : this._activateByAlias('gt-md, gt-sm, gt-xs'); break;
-        case 'md'   : this._activateByAlias('gt-sm, gt-xs'); break;
-        case 'sm'   : this._activateByAlias('gt-xs'); break;
+        case 'xl': this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs'); break;
+        case 'lg': this._activateByAlias('gt-md, gt-sm, gt-xs'); break;
+        case 'md': this._activateByAlias('gt-sm, gt-xs'); break;
+        case 'sm': this._activateByAlias('gt-xs'); break;
       }
     }
     // Activate last since the responsiveActivation is watching *this* mediaQuery
@@ -116,7 +117,7 @@ export class MockMatchMedia extends MatchMedia {
    *
    */
   private _activateByQuery(mediaQuery) {
-    let mql = <MockMediaQueryList> this._registry.get(mediaQuery);
+    let mql = <MockMediaQueryList>this._registry.get(mediaQuery);
     let alreadyAdded = this._actives.reduce((found, it) => {
       return found || (mql && (it.media === mql.media));
     }, false);
@@ -195,7 +196,7 @@ export class MockMediaQueryList implements MediaQueryList {
    * Notify all listeners that 'matches === TRUE'
    */
   activate(): MockMediaQueryList {
-    if ( !this._isActive ) {
+    if (!this._isActive) {
       this._isActive = true;
       this._listeners.forEach((callback) => {
         callback(this);
@@ -240,5 +241,3 @@ export const MockMatchMediaProvider = {  // tslint:disable-line:variable-name
   provide: MatchMedia,
   useClass: MockMatchMedia
 };
-
-
