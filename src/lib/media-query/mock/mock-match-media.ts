@@ -29,7 +29,9 @@ export class MockMatchMedia extends MatchMedia {
    */
   public useOverlaps = false;
 
-  constructor(_zone: NgZone, @Inject(DOCUMENT) _document: any, private _breakpoints: BreakPointRegistry) {
+  constructor(_zone: NgZone,
+    @Inject(DOCUMENT) _document: any,
+    private _breakpoints: BreakPointRegistry) {
     super(_zone, _document);
     this._actives = [];
   }

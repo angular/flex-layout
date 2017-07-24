@@ -31,9 +31,9 @@ export interface MediaQueryListListener {
  */
 export interface MediaQueryList {
   readonly matches: boolean;
-  readonly media: string;
-  addListener(listener: MediaQueryListListener): void;
-  removeListener(listener: MediaQueryListListener): void;
+readonly media: string;
+addListener(listener: MediaQueryListListener): void;
+removeListener(listener: MediaQueryListListener): void;
 }
 
 
@@ -53,7 +53,7 @@ export class MatchMedia {
    * Private global registry for all dynamically-created, injected style tags
    * @see prepare(query)
    */
-  private ALL_STYLES : any = {};
+  private ALL_STYLES: any = {};
 
   constructor(protected _zone: NgZone, @Inject(DOCUMENT) protected _document: any) {
     this._registry = new Map<string, MediaQueryList>();
@@ -84,9 +84,9 @@ export class MatchMedia {
     this.registerQuery(mediaQuery);
 
     return this._observable$
-        .filter((change: MediaChange) => {
-          return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        });
+      .filter((change: MediaChange) => {
+        return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+      });
   }
 
   /**
@@ -125,8 +125,7 @@ export class MatchMedia {
    * Call matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected  _buildMQL(query: string): MediaQueryList {
-	//check if matchMedia is available in global
+  protected _buildMQL(query: string): MediaQueryList {
     let canListen = (typeof matchMedia != 'undefined');
     if (canListen) {
       canListen = !!matchMedia('all').addListener;
@@ -147,55 +146,48 @@ export class MatchMedia {
 	 * @param query string The mediaQuery used to create a faux CSS selector
 	 *
 	 */
-	private prepareQueryCSS(mediaQueries: string[]): void {
-	  let list = mediaQueries.filter(it => !this.ALL_STYLES[it]);
-	  if (list.length > 0) {
-	    let query = list.join(", ");
-	    try {
-	      let style = getDom().createElement('style');
+  private prepareQueryCSS(mediaQueries: string[]): void {
+    let list = mediaQueries.filter(it => !this.ALL_STYLES[it]);
+    if (list.length > 0) {
+      let query = list.join(", ");
+      try {
+        let style = getDom().createElement('style');
 
-	      getDom().setAttribute(style, 'type', 'text/css');
-	      if (!style['styleSheet']) {
-	        let cssText = `/*
+        getDom().setAttribute(style, 'type', 'text/css');
+        if (!style['styleSheet']) {
+          let cssText = `/*
 	  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
 	  see http://bit.ly/2sd4HMP
 	*/
 	@media ${query} {.fx-query-test{ }}`;
-	        getDom().appendChild(style, getDom().createTextNode(cssText));
-	      }
+          getDom().appendChild(style, getDom().createTextNode(cssText));
+        }
 
-	      getDom().appendChild(this._document.head, style);
+        getDom().appendChild(this._document.head, style);
 
-	      // Store in private global registry
-	      list.forEach(mq => this.ALL_STYLES[mq] = style);
+        // Store in private global registry
+        list.forEach(mq => this.ALL_STYLES[mq] = style);
 
-	    } catch (e) {
-	      console.error(e);
-	    }
-	  }
-	}
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 	/**
 	 * Always convert to unique list of queries; for iteration in ::registerQuery()
 	 */
-	private normalizeQuery(mediaQuery: string | string[]): string[] {
-	  return (typeof mediaQuery === 'undefined') ? [] :
-	      (typeof mediaQuery === 'string') ? [mediaQuery] : this.unique(mediaQuery as string[]);
-	}
+  private normalizeQuery(mediaQuery: string | string[]): string[] {
+    return (typeof mediaQuery === 'undefined') ? [] :
+      (typeof mediaQuery === 'string') ? [mediaQuery] : this.unique(mediaQuery as string[]);
+  }
 
 	/**
 	 * Filter duplicate mediaQueries in the list
 	 */
-	private unique(list: string[]): string[] {
-	  let seen = {};
-	  return list.filter(item => {
-	    return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-	  });
-	}
+  private unique(list: string[]): string[] {
+    let seen = {};
+    return list.filter(item => {
+      return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+  }
 }
-
-
-
-
-
-
-

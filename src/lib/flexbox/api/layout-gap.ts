@@ -28,7 +28,8 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-@Directive({selector: `
+@Directive({
+  selector: `
   [fxLayoutGap],
   [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],
   [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],
@@ -36,18 +37,18 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
 `
 })
 export class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges,
-    OnDestroy {
+  OnDestroy {
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;
   protected _observer: MutationObserver;
 
   /* tslint:disable */
-  @Input('fxLayoutGap')       set gap(val) { this._cacheInput('gap', val); }
-  @Input('fxLayoutGap.xs')    set gapXs(val) { this._cacheInput('gapXs', val); }
-  @Input('fxLayoutGap.sm')    set gapSm(val) { this._cacheInput('gapSm', val); };
-  @Input('fxLayoutGap.md')    set gapMd(val) { this._cacheInput('gapMd', val); };
-  @Input('fxLayoutGap.lg')    set gapLg(val) { this._cacheInput('gapLg', val); };
-  @Input('fxLayoutGap.xl')    set gapXl(val) { this._cacheInput('gapXl', val); };
+  @Input('fxLayoutGap') set gap(val) { this._cacheInput('gap', val); }
+  @Input('fxLayoutGap.xs') set gapXs(val) { this._cacheInput('gapXs', val); }
+  @Input('fxLayoutGap.sm') set gapSm(val) { this._cacheInput('gapSm', val); };
+  @Input('fxLayoutGap.md') set gapMd(val) { this._cacheInput('gapMd', val); };
+  @Input('fxLayoutGap.lg') set gapLg(val) { this._cacheInput('gapLg', val); };
+  @Input('fxLayoutGap.xl') set gapXl(val) { this._cacheInput('gapXl', val); };
 
   @Input('fxLayoutGap.gt-xs') set gapGtXs(val) { this._cacheInput('gapGtXs', val); };
   @Input('fxLayoutGap.gt-sm') set gapGtSm(val) { this._cacheInput('gapGtSm', val); };
@@ -61,9 +62,9 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
-              elRef: ElementRef,
-              renderer: Renderer,
-              @Optional() @Self() container: LayoutDirective) {
+    elRef: ElementRef,
+    renderer: Renderer,
+    @Optional() @Self() container: LayoutDirective) {
     super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
@@ -115,7 +116,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
     let onMutationCallback = (mutations) => {
       let validatedChanges = (it: MutationRecord) => {
         return (it.addedNodes && it.addedNodes.length) ||
-            (it.removedNodes && it.removedNodes.length);
+          (it.removedNodes && it.removedNodes.length);
       };
 
       // update gap styles only for child 'added' or 'removed' events
@@ -123,9 +124,8 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
         this._updateWithValue();
       }
     };
-
-    this._observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver(onMutationCallback);
-    if (this._observer) {
+    if (typeof MutationObserver !== 'undefined') {
+      this._observer = new MutationObserver(onMutationCallback);
       this._observer.observe(this._elementRef.nativeElement, { childList: true });
     }
   }
@@ -152,7 +152,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
     // Gather all non-hidden Element nodes
     let items = this.childrenNodes
-        .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != "none");
+      .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != "none");
     let numItems = items.length;
 
     if (numItems > 1) {
@@ -185,9 +185,9 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       case 'column-reverse':
         key = 'margin-bottom';
         break;
-      case "row" :
+      case "row":
       case 'row-reverse':
-      default :
+      default:
         key = 'margin-right';
         break;
     }

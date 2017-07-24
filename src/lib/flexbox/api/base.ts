@@ -58,7 +58,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     }
     let change = new SimpleChange(previousVal, value, false);
 
-    this.ngOnChanges({[key]: change} as SimpleChanges);
+    this.ngOnChanges({ [key]: change } as SimpleChanges);
   }
 
 
@@ -66,8 +66,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Constructor
    */
   constructor(protected _mediaMonitor: MediaMonitor,
-              protected _elementRef: ElementRef,
-              protected _renderer: Renderer) {
+    protected _elementRef: ElementRef,
+    protected _renderer: Renderer) {
     this._display = this._getDisplayStyle();
   }
 
@@ -124,7 +124,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     try {
       value = immediateValue || getDom().getComputedStyle(element)['display'];
     } catch (e) {
-		//TODO: platform-server throws an exception for getComputedStyle
+      // TODO: platform-server throws an exception for getComputedStyle
     }
     return value ? value.trim() : 'block';
   }
@@ -137,7 +137,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
       try {
         value = immediateValue || getDom().getComputedStyle(target)['flex-direction'];
       } catch (e) {
-		//TODO: platform-server throws an exception for getComputedStyle
+        // TODO: platform-server throws an exception for getComputedStyle
       }
       if (!immediateValue && addIfMissing) {
         value = value || 'row';
@@ -165,8 +165,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Applies styles given via string pair or object map to the directive element.
    */
   protected _applyStyleToElement(style: StyleDefinition,
-                                 value?: string | number,
-                                 nativeElement?: any) {
+    value?: string | number,
+    nativeElement?: any) {
     let styles = {};
     let element = nativeElement || this._elementRef.nativeElement;
 
@@ -183,7 +183,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   /**
    * Applies styles given via string pair or object map to the directive element.
    */
-  protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
+  protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]) {
     let styles = applyCssPrefixes(style);
 
     elements.forEach(el => {
@@ -211,14 +211,14 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    *  (or closest match).
    */
   protected _listenForMediaQueryChanges(key: string,
-                                        defaultValue: any,
-                                        onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
+    defaultValue: any,
+    onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
     if (!this._mqActivation) {
       let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
       this._mqActivation = new ResponsiveActivation(
-          keyOptions,
-          this._mediaMonitor,
-          (change) => onMediaQueryChange(change)
+        keyOptions,
+        this._mediaMonitor,
+        (change) => onMediaQueryChange(change)
       );
     }
     return this._mqActivation;
@@ -232,7 +232,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     var buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for ( var i = obj.length; i--; ) {
+    for (var i = obj.length; i--;) {
       buffer[i] = obj[i];
     }
     return buffer;
