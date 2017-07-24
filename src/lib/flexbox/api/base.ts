@@ -10,6 +10,8 @@ import {
   SimpleChange, Renderer
 } from '@angular/core';
 
+import { ɵgetDOM as getDom } from '@angular/platform-browser';
+
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {buildLayoutCSS} from '../../utils/layout-validator';
 
@@ -56,7 +58,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     }
     let change = new SimpleChange(previousVal, value, false);
 
-    this.ngOnChanges({[key]: change} as SimpleChanges);
+    this.ngOnChanges({ [key]: change } as SimpleChanges);
   }
 
 
@@ -64,8 +66,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Constructor
    */
   constructor(protected _mediaMonitor: MediaMonitor,
-              protected _elementRef: ElementRef,
-              protected _renderer: Renderer) {
+    protected _elementRef: ElementRef,
+    protected _renderer: Renderer) {
     this._display = this._getDisplayStyle();
   }
 
@@ -117,20 +119,26 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
-    let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
+    let immediateValue = getDom().getStyle(element, 'display');
+    let value = '';
+    try {
+      value = immediateValue || getDom().getComputedStyle(element)['display'];
+    } catch (e) {
+      // TODO: platform-server throws an exception for getComputedStyle
+    }
     return value ? value.trim() : 'block';
   }
 
   protected _getFlowDirection(target: any, addIfMissing = false): string {
     let value = '';
     if (target) {
-      let directionKeys = Object.keys(applyCssPrefixes({'flex-direction': ''}));
-      let findDirection = (styles) => directionKeys.reduce((direction, key) => {
-        return direction || styles[key];
-      }, null);
 
-      let immediateValue = findDirection(target.style);
-      value = immediateValue || findDirection(getComputedStyle(target as Element));
+      let immediateValue = getDom().getStyle(target, 'flex-direction');
+      try {
+        value = immediateValue || getDom().getComputedStyle(target)['flex-direction'];
+      } catch (e) {
+        // TODO: platform-server throws an exception for getComputedStyle
+      }
       if (!immediateValue && addIfMissing) {
         value = value || 'row';
         this._applyStyleToElements(buildLayoutCSS(value), [target]);
@@ -157,8 +165,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Applies styles given via string pair or object map to the directive element.
    */
   protected _applyStyleToElement(style: StyleDefinition,
-                                 value?: string | number,
-                                 nativeElement?: any) {
+    value?: string | number,
+    nativeElement?: any) {
     let styles = {};
     let element = nativeElement || this._elementRef.nativeElement;
 
@@ -175,7 +183,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   /**
    * Applies styles given via string pair or object map to the directive element.
    */
-  protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
+  protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]) {
     let styles = applyCssPrefixes(style);
 
     elements.forEach(el => {
@@ -203,14 +211,14 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    *  (or closest match).
    */
   protected _listenForMediaQueryChanges(key: string,
-                                        defaultValue: any,
-                                        onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
+    defaultValue: any,
+    onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
     if (!this._mqActivation) {
       let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
       this._mqActivation = new ResponsiveActivation(
-          keyOptions,
-          this._mediaMonitor,
-          (change) => onMediaQueryChange(change)
+        keyOptions,
+        this._mediaMonitor,
+        (change) => onMediaQueryChange(change)
       );
     }
     return this._mqActivation;
@@ -220,11 +228,11 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
    */
   protected get childrenNodes() {
-    var obj = this._elementRef.nativeElement.childNodes;
+    var obj = this._elementRef.nativeElement.children;
     var buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for ( var i = obj.length; i--; ) {
+    for (var i = obj.length; i--;) {
       buffer[i] = obj[i];
     }
     return buffer;
