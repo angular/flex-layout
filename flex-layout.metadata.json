@@ -1,0 +1,6 @@
+{
+    "__symbolic":"module",
+    "version":3,"metadata":{},
+    "exports":[{"from":"./typings/index"}],
+    "flatModuleIndexRedirect": true
+  }

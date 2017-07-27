@@ -1,3 +1,4 @@
+import * as tslib_1 from "tslib";
 /**
  * @license
  * Copyright Google Inc. All Rights Reserved.
@@ -5,39 +6,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/BehaviorSubject'), require('rxjs/operator/filter'), require('rxjs/operator/map'), require('@angular/common'), require('@angular/platform-browser')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/BehaviorSubject', 'rxjs/operator/filter', 'rxjs/operator/map', '@angular/common', '@angular/platform-browser'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}),global.ng.core,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.common,global.ng.platformBrowser));
-}(this, (function (exports,_angular_core,rxjs_BehaviorSubject,rxjs_operator_filter,rxjs_operator_map,_angular_common,_angular_platformBrowser) { 'use strict';
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var MediaChange = (function () {
+import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer, SecurityContext, Self, SimpleChange, SkipSelf } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { filter } from 'rxjs/operator/filter';
+import { map } from 'rxjs/operator/map';
+import { NgClass, NgStyle } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
+var MediaChange = /*@__PURE__*/(function () {
     function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
         if (mediaQuery === void 0) { mediaQuery = 'all'; }
@@ -53,11 +28,11 @@ var MediaChange = (function () {
     };
     return MediaChange;
 }());
-var MatchMedia = (function () {
+var MatchMedia = /*@__PURE__*/(function () {
     function MatchMedia(_zone) {
         this._zone = _zone;
         this._registry = new Map();
-        this._source = new rxjs_BehaviorSubject.BehaviorSubject(new MediaChange(true));
+        this._source = new BehaviorSubject(new MediaChange(true));
         this._observable$ = this._source.asObservable();
     }
     MatchMedia.prototype.isActive = function (mediaQuery) {
@@ -69,7 +44,7 @@ var MatchMedia = (function () {
     };
     MatchMedia.prototype.observe = function (mediaQuery) {
         this.registerQuery(mediaQuery);
-        return rxjs_operator_filter.filter.call(this._observable$, function (change) {
+        return filter.call(this._observable$, function (change) {
             return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
         });
     };
@@ -111,10 +86,10 @@ var MatchMedia = (function () {
     return MatchMedia;
 }());
 MatchMedia.decorators = [
-    { type: _angular_core.Injectable },
+    { type: Injectable },
 ];
 MatchMedia.ctorParameters = function () { return [
-    { type: _angular_core.NgZone, },
+    { type: NgZone, },
 ]; };
 var ALL_STYLES = {};
 function prepareQueryCSS(mediaQueries) {
@@ -146,8 +121,8 @@ function unique(list) {
         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
     });
 }
-var BREAKPOINTS = new _angular_core.InjectionToken('Token (@angular/flex-layout) Breakpoints');
-var BreakPointRegistry = (function () {
+var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+var BreakPointRegistry = /*@__PURE__*/(function () {
     function BreakPointRegistry(_registry) {
         this._registry = _registry;
     }
@@ -197,10 +172,10 @@ var BreakPointRegistry = (function () {
     return BreakPointRegistry;
 }());
 BreakPointRegistry.decorators = [
-    { type: _angular_core.Injectable },
+    { type: Injectable },
 ];
 BreakPointRegistry.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: _angular_core.Inject, args: [BREAKPOINTS,] },] },
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
 ]; };
 function extendObject(dest) {
     var sources = [];
@@ -228,7 +203,7 @@ function mergeAlias(dest, source) {
         suffix: source.suffix
     } : {});
 }
-var MediaMonitor = (function () {
+var MediaMonitor = /*@__PURE__*/(function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
         this._breakpoints = _breakpoints;
         this._matchMedia = _matchMedia;
@@ -277,7 +252,7 @@ var MediaMonitor = (function () {
         var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
         var hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
         var media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return rxjs_operator_filter.filter.call(rxjs_operator_map.map.call(media$, function (change) { return mergeAlias(change, bp); }), hasAlias);
+        return filter.call(map.call(media$, function (change) { return mergeAlias(change, bp); }), hasAlias);
     };
     MediaMonitor.prototype._registerBreakpoints = function () {
         var queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
@@ -286,13 +261,13 @@ var MediaMonitor = (function () {
     return MediaMonitor;
 }());
 MediaMonitor.decorators = [
-    { type: _angular_core.Injectable },
+    { type: Injectable },
 ];
 MediaMonitor.ctorParameters = function () { return [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ]; };
-var ObservableMedia = (function () {
+var ObservableMedia = /*@__PURE__*/(function () {
     function ObservableMedia() {
     }
     ObservableMedia.prototype.isActive = function (query) { };
@@ -300,7 +275,7 @@ var ObservableMedia = (function () {
     ObservableMedia.prototype.subscribe = function (next, error, complete) { };
     return ObservableMedia;
 }());
-var MediaService = (function () {
+var MediaService = /*@__PURE__*/(function () {
     function MediaService(breakpoints, mediaWatcher) {
         this.breakpoints = breakpoints;
         this.mediaWatcher = mediaWatcher;
@@ -335,7 +310,7 @@ var MediaService = (function () {
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
-        return rxjs_operator_filter.filter.call(rxjs_operator_map.map.call(rxjs_operator_filter.filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
     };
     MediaService.prototype._findByAlias = function (alias) {
         return this.breakpoints.findByAlias(alias);
@@ -350,7 +325,7 @@ var MediaService = (function () {
     return MediaService;
 }());
 MediaService.decorators = [
-    { type: _angular_core.Injectable },
+    { type: Injectable },
 ];
 MediaService.ctorParameters = function () { return [
     { type: BreakPointRegistry, },
@@ -362,7 +337,7 @@ function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoint
 var OBSERVABLE_MEDIA_PROVIDER = {
     provide: ObservableMedia,
     deps: [
-        [new _angular_core.Optional(), new _angular_core.SkipSelf(), ObservableMedia],
+        [new Optional(), new SkipSelf(), ObservableMedia],
         MatchMedia,
         BreakPointRegistry
     ],
@@ -524,13 +499,13 @@ function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
         useFactory: buildMergedBreakPoints(_custom, options)
     };
 }
-var MediaQueriesModule = (function () {
+var MediaQueriesModule = /*@__PURE__*/(function () {
     function MediaQueriesModule() {
     }
     return MediaQueriesModule;
 }());
 MediaQueriesModule.decorators = [
-    { type: _angular_core.NgModule, args: [{
+    { type: NgModule, args: [{
                 providers: [
                     DEFAULT_BREAKPOINTS_PROVIDER,
                     BreakPointRegistry,
@@ -547,7 +522,7 @@ function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) 
 var MEDIA_MONITOR_PROVIDER = {
     provide: MediaMonitor,
     deps: [
-        [new _angular_core.Optional(), new _angular_core.SkipSelf(), MediaMonitor],
+        [new Optional(), new SkipSelf(), MediaMonitor],
         BreakPointRegistry,
         MatchMedia,
     ],
@@ -640,7 +615,7 @@ function buildCSS(direction, wrap) {
         'flex-wrap': !!wrap ? wrap : null
     };
 }
-var KeyOptions = (function () {
+var KeyOptions = /*@__PURE__*/(function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
         this.defaultValue = defaultValue;
@@ -648,7 +623,7 @@ var KeyOptions = (function () {
     }
     return KeyOptions;
 }());
-var ResponsiveActivation = (function () {
+var ResponsiveActivation = /*@__PURE__*/(function () {
     function ResponsiveActivation(_options, _mediaMonitor, _onMediaChanges) {
         this._options = _options;
         this._mediaMonitor = _mediaMonitor;
@@ -698,7 +673,7 @@ var ResponsiveActivation = (function () {
                     change.property = _this._options.baseKey;
                     return change;
                 };
-                subscriptions.push(rxjs_operator_map.map.call(_this.mediaMonitor.observe(bp.alias), buildChanges)
+                subscriptions.push(map.call(_this.mediaMonitor.observe(bp.alias), buildChanges)
                     .subscribe(function (change) {
                     _this._onMonitorEvents(change);
                 }));
@@ -754,7 +729,7 @@ var ResponsiveActivation = (function () {
     };
     return ResponsiveActivation;
 }());
-var BaseFxDirective = (function () {
+var BaseFxDirective = /*@__PURE__*/(function () {
     function BaseFxDirective(_mediaMonitor, _elementRef, _renderer) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
@@ -780,7 +755,7 @@ var BaseFxDirective = (function () {
                 previousVal = this._inputMap[key];
                 this._inputMap[key] = value;
             }
-            var change = new _angular_core.SimpleChange(previousVal, value, false);
+            var change = new SimpleChange(previousVal, value, false);
             this.ngOnChanges((_a = {}, _a[key] = change, _a));
             var _a;
         },
@@ -887,11 +862,11 @@ var BaseFxDirective = (function () {
     };
     return BaseFxDirective;
 }());
-var LayoutDirective = (function (_super) {
-    __extends(LayoutDirective, _super);
+var LayoutDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(LayoutDirective, _super);
     function LayoutDirective(monitor, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
-        _this._announcer = new rxjs_BehaviorSubject.BehaviorSubject('row');
+        _this._announcer = new BehaviorSubject('row');
         _this.layout$ = _this._announcer.asObservable();
         return _this;
     }
@@ -900,85 +875,85 @@ var LayoutDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutXs", {
         set: function (val) { this._cacheInput('layoutXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutSm", {
         set: function (val) { this._cacheInput('layoutSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutMd", {
         set: function (val) { this._cacheInput('layoutMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutLg", {
         set: function (val) { this._cacheInput('layoutLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutXl", {
         set: function (val) { this._cacheInput('layoutXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutGtXs", {
         set: function (val) { this._cacheInput('layoutGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutGtSm", {
         set: function (val) { this._cacheInput('layoutGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutGtMd", {
         set: function (val) { this._cacheInput('layoutGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutGtLg", {
         set: function (val) { this._cacheInput('layoutGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutLtSm", {
         set: function (val) { this._cacheInput('layoutLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutLtMd", {
         set: function (val) { this._cacheInput('layoutLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutLtLg", {
         set: function (val) { this._cacheInput('layoutLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutDirective.prototype, "layoutLtXl", {
         set: function (val) { this._cacheInput('layoutLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     LayoutDirective.prototype.ngOnChanges = function (changes) {
         if (changes['layout'] != null || this._mqActivation) {
             this._updateWithDirection();
@@ -1003,31 +978,31 @@ var LayoutDirective = (function (_super) {
     return LayoutDirective;
 }(BaseFxDirective));
 LayoutDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxLayout],\n  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],\n  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],\n  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]\n" },] },
 ];
 LayoutDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 LayoutDirective.propDecorators = {
-    'layout': [{ type: _angular_core.Input, args: ['fxLayout',] },],
-    'layoutXs': [{ type: _angular_core.Input, args: ['fxLayout.xs',] },],
-    'layoutSm': [{ type: _angular_core.Input, args: ['fxLayout.sm',] },],
-    'layoutMd': [{ type: _angular_core.Input, args: ['fxLayout.md',] },],
-    'layoutLg': [{ type: _angular_core.Input, args: ['fxLayout.lg',] },],
-    'layoutXl': [{ type: _angular_core.Input, args: ['fxLayout.xl',] },],
-    'layoutGtXs': [{ type: _angular_core.Input, args: ['fxLayout.gt-xs',] },],
-    'layoutGtSm': [{ type: _angular_core.Input, args: ['fxLayout.gt-sm',] },],
-    'layoutGtMd': [{ type: _angular_core.Input, args: ['fxLayout.gt-md',] },],
-    'layoutGtLg': [{ type: _angular_core.Input, args: ['fxLayout.gt-lg',] },],
-    'layoutLtSm': [{ type: _angular_core.Input, args: ['fxLayout.lt-sm',] },],
-    'layoutLtMd': [{ type: _angular_core.Input, args: ['fxLayout.lt-md',] },],
-    'layoutLtLg': [{ type: _angular_core.Input, args: ['fxLayout.lt-lg',] },],
-    'layoutLtXl': [{ type: _angular_core.Input, args: ['fxLayout.lt-xl',] },],
+    'layout': [{ type: Input, args: ['fxLayout',] },],
+    'layoutXs': [{ type: Input, args: ['fxLayout.xs',] },],
+    'layoutSm': [{ type: Input, args: ['fxLayout.sm',] },],
+    'layoutMd': [{ type: Input, args: ['fxLayout.md',] },],
+    'layoutLg': [{ type: Input, args: ['fxLayout.lg',] },],
+    'layoutXl': [{ type: Input, args: ['fxLayout.xl',] },],
+    'layoutGtXs': [{ type: Input, args: ['fxLayout.gt-xs',] },],
+    'layoutGtSm': [{ type: Input, args: ['fxLayout.gt-sm',] },],
+    'layoutGtMd': [{ type: Input, args: ['fxLayout.gt-md',] },],
+    'layoutGtLg': [{ type: Input, args: ['fxLayout.gt-lg',] },],
+    'layoutLtSm': [{ type: Input, args: ['fxLayout.lt-sm',] },],
+    'layoutLtMd': [{ type: Input, args: ['fxLayout.lt-md',] },],
+    'layoutLtLg': [{ type: Input, args: ['fxLayout.lt-lg',] },],
+    'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
-var LayoutWrapDirective = (function (_super) {
-    __extends(LayoutWrapDirective, _super);
+var LayoutWrapDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(LayoutWrapDirective, _super);
     function LayoutWrapDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = 'row';
@@ -1051,73 +1026,73 @@ var LayoutWrapDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapMd", {
         set: function (val) { this._cacheInput('wrapMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLg", {
         set: function (val) { this._cacheInput('wrapLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapXl", {
         set: function (val) { this._cacheInput('wrapXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtXs", {
         set: function (val) { this._cacheInput('wrapGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtSm", {
         set: function (val) { this._cacheInput('wrapGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtMd", {
         set: function (val) { this._cacheInput('wrapGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapGtLg", {
         set: function (val) { this._cacheInput('wrapGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtSm", {
         set: function (val) { this._cacheInput('wrapLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtMd", {
         set: function (val) { this._cacheInput('wrapLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtLg", {
         set: function (val) { this._cacheInput('wrapLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutWrapDirective.prototype, "wrapLtXl", {
         set: function (val) { this._cacheInput('wrapLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     LayoutWrapDirective.prototype.ngOnChanges = function (changes) {
         if (changes['wrap'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -1171,29 +1146,29 @@ var LayoutWrapDirective = (function (_super) {
     return LayoutWrapDirective;
 }(BaseFxDirective));
 LayoutWrapDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],\n  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxLayoutWrap], [fxLayoutWrap.xs], [fxLayoutWrap.sm], [fxLayoutWrap.lg], [fxLayoutWrap.xl],\n  [fxLayoutWrap.gt-xs], [fxLayoutWrap.gt-sm], [fxLayoutWrap.gt-md], [fxLayoutWrap.gt-lg],\n  [fxLayoutWrap.lt-xs], [fxLayoutWrap.lt-sm], [fxLayoutWrap.lt-md], [fxLayoutWrap.lt-lg]\n" },] },
 ];
 LayoutWrapDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
-    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ]; };
 LayoutWrapDirective.propDecorators = {
-    'wrap': [{ type: _angular_core.Input, args: ['fxLayoutWrap',] },],
-    'wrapXs': [{ type: _angular_core.Input, args: ['fxLayoutWrap.xs',] },],
-    'wrapSm': [{ type: _angular_core.Input, args: ['fxLayoutWrap.sm',] },],
-    'wrapMd': [{ type: _angular_core.Input, args: ['fxLayoutWrap.md',] },],
-    'wrapLg': [{ type: _angular_core.Input, args: ['fxLayoutWrap.lg',] },],
-    'wrapXl': [{ type: _angular_core.Input, args: ['fxLayoutWrap.xl',] },],
-    'wrapGtXs': [{ type: _angular_core.Input, args: ['fxLayoutWrap.gt-xs',] },],
-    'wrapGtSm': [{ type: _angular_core.Input, args: ['fxLayoutWrap.gt-sm',] },],
-    'wrapGtMd': [{ type: _angular_core.Input, args: ['fxLayoutWrap.gt-md',] },],
-    'wrapGtLg': [{ type: _angular_core.Input, args: ['fxLayoutWrap.gt-lg',] },],
-    'wrapLtSm': [{ type: _angular_core.Input, args: ['fxLayoutWrap.lt-sm',] },],
-    'wrapLtMd': [{ type: _angular_core.Input, args: ['fxLayoutWrap.lt-md',] },],
-    'wrapLtLg': [{ type: _angular_core.Input, args: ['fxLayoutWrap.lt-lg',] },],
-    'wrapLtXl': [{ type: _angular_core.Input, args: ['fxLayoutWrap.lt-xl',] },],
+    'wrap': [{ type: Input, args: ['fxLayoutWrap',] },],
+    'wrapXs': [{ type: Input, args: ['fxLayoutWrap.xs',] },],
+    'wrapSm': [{ type: Input, args: ['fxLayoutWrap.sm',] },],
+    'wrapMd': [{ type: Input, args: ['fxLayoutWrap.md',] },],
+    'wrapLg': [{ type: Input, args: ['fxLayoutWrap.lg',] },],
+    'wrapXl': [{ type: Input, args: ['fxLayoutWrap.xl',] },],
+    'wrapGtXs': [{ type: Input, args: ['fxLayoutWrap.gt-xs',] },],
+    'wrapGtSm': [{ type: Input, args: ['fxLayoutWrap.gt-sm',] },],
+    'wrapGtMd': [{ type: Input, args: ['fxLayoutWrap.gt-md',] },],
+    'wrapGtLg': [{ type: Input, args: ['fxLayoutWrap.gt-lg',] },],
+    'wrapLtSm': [{ type: Input, args: ['fxLayoutWrap.lt-sm',] },],
+    'wrapLtMd': [{ type: Input, args: ['fxLayoutWrap.lt-md',] },],
+    'wrapLtLg': [{ type: Input, args: ['fxLayoutWrap.lt-lg',] },],
+    'wrapLtXl': [{ type: Input, args: ['fxLayoutWrap.lt-xl',] },],
 };
 function validateBasis(basis, grow, shrink) {
     if (grow === void 0) { grow = '1'; }
@@ -1222,8 +1197,8 @@ function validateBasis(basis, grow, shrink) {
 function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
 }
-var FlexDirective = (function (_super) {
-    __extends(FlexDirective, _super);
+var FlexDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(FlexDirective, _super);
     function FlexDirective(monitor, elRef, renderer, _container, _wrap) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._container = _container;
@@ -1244,97 +1219,97 @@ var FlexDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "grow", {
         set: function (val) { this._cacheInput('grow', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flex", {
         set: function (val) { this._cacheInput('flex', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexXs", {
         set: function (val) { this._cacheInput('flexXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexSm", {
         set: function (val) { this._cacheInput('flexSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexMd", {
         set: function (val) { this._cacheInput('flexMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexLg", {
         set: function (val) { this._cacheInput('flexLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexXl", {
         set: function (val) { this._cacheInput('flexXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexGtXs", {
         set: function (val) { this._cacheInput('flexGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexGtSm", {
         set: function (val) { this._cacheInput('flexGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexGtMd", {
         set: function (val) { this._cacheInput('flexGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexGtLg", {
         set: function (val) { this._cacheInput('flexGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexLtSm", {
         set: function (val) { this._cacheInput('flexLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexLtMd", {
         set: function (val) { this._cacheInput('flexLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexLtLg", {
         set: function (val) { this._cacheInput('flexLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexDirective.prototype, "flexLtXl", {
         set: function (val) { this._cacheInput('flexLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     FlexDirective.prototype.ngOnChanges = function (changes) {
         if (changes['flex'] != null || this._mqActivation) {
             this._updateStyle();
@@ -1440,41 +1415,41 @@ var FlexDirective = (function (_super) {
     return FlexDirective;
 }(BaseFxDirective));
 FlexDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
+    { type: Directive, args: [{ selector: "\n  [fxFlex],\n  [fxFlex.xs], [fxFlex.sm], [fxFlex.md], [fxFlex.lg], [fxFlex.xl],\n  [fxFlex.lt-sm], [fxFlex.lt-md], [fxFlex.lt-lg], [fxFlex.lt-xl],\n  [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],\n"
             },] },
 ];
 FlexDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
-    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
-    { type: LayoutWrapDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
+    { type: LayoutWrapDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
 ]; };
 FlexDirective.propDecorators = {
-    'shrink': [{ type: _angular_core.Input, args: ['fxShrink',] },],
-    'grow': [{ type: _angular_core.Input, args: ['fxGrow',] },],
-    'flex': [{ type: _angular_core.Input, args: ['fxFlex',] },],
-    'flexXs': [{ type: _angular_core.Input, args: ['fxFlex.xs',] },],
-    'flexSm': [{ type: _angular_core.Input, args: ['fxFlex.sm',] },],
-    'flexMd': [{ type: _angular_core.Input, args: ['fxFlex.md',] },],
-    'flexLg': [{ type: _angular_core.Input, args: ['fxFlex.lg',] },],
-    'flexXl': [{ type: _angular_core.Input, args: ['fxFlex.xl',] },],
-    'flexGtXs': [{ type: _angular_core.Input, args: ['fxFlex.gt-xs',] },],
-    'flexGtSm': [{ type: _angular_core.Input, args: ['fxFlex.gt-sm',] },],
-    'flexGtMd': [{ type: _angular_core.Input, args: ['fxFlex.gt-md',] },],
-    'flexGtLg': [{ type: _angular_core.Input, args: ['fxFlex.gt-lg',] },],
-    'flexLtSm': [{ type: _angular_core.Input, args: ['fxFlex.lt-sm',] },],
-    'flexLtMd': [{ type: _angular_core.Input, args: ['fxFlex.lt-md',] },],
-    'flexLtLg': [{ type: _angular_core.Input, args: ['fxFlex.lt-lg',] },],
-    'flexLtXl': [{ type: _angular_core.Input, args: ['fxFlex.lt-xl',] },],
+    'shrink': [{ type: Input, args: ['fxShrink',] },],
+    'grow': [{ type: Input, args: ['fxGrow',] },],
+    'flex': [{ type: Input, args: ['fxFlex',] },],
+    'flexXs': [{ type: Input, args: ['fxFlex.xs',] },],
+    'flexSm': [{ type: Input, args: ['fxFlex.sm',] },],
+    'flexMd': [{ type: Input, args: ['fxFlex.md',] },],
+    'flexLg': [{ type: Input, args: ['fxFlex.lg',] },],
+    'flexXl': [{ type: Input, args: ['fxFlex.xl',] },],
+    'flexGtXs': [{ type: Input, args: ['fxFlex.gt-xs',] },],
+    'flexGtSm': [{ type: Input, args: ['fxFlex.gt-sm',] },],
+    'flexGtMd': [{ type: Input, args: ['fxFlex.gt-md',] },],
+    'flexGtLg': [{ type: Input, args: ['fxFlex.gt-lg',] },],
+    'flexLtSm': [{ type: Input, args: ['fxFlex.lt-sm',] },],
+    'flexLtMd': [{ type: Input, args: ['fxFlex.lt-md',] },],
+    'flexLtLg': [{ type: Input, args: ['fxFlex.lt-lg',] },],
+    'flexLtXl': [{ type: Input, args: ['fxFlex.lt-xl',] },],
 };
 var FALSY = ['false', false, 0];
 function negativeOf(hide) {
     return (hide === '') ? false :
         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
-var ShowHideDirective = (function (_super) {
-    __extends(ShowHideDirective, _super);
+var ShowHideDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(ShowHideDirective, _super);
     function ShowHideDirective(monitor, _layout, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = _layout;
@@ -1501,73 +1476,73 @@ var ShowHideDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showMd", {
         set: function (val) { this._cacheInput('showMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showLg", {
         set: function (val) { this._cacheInput('showLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showXl", {
         set: function (val) { this._cacheInput('showXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
         set: function (val) { this._cacheInput('showLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
         set: function (val) { this._cacheInput('showLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
         set: function (val) { this._cacheInput('showLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
         set: function (val) { this._cacheInput('showLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
         set: function (val) { this._cacheInput('showGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
         set: function (val) { this._cacheInput('showGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
         set: function (val) { this._cacheInput('showGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
         set: function (val) { this._cacheInput('showGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hide", {
         set: function (val) { this._cacheInput('show', negativeOf(val)); },
         enumerable: true,
@@ -1583,73 +1558,73 @@ var ShowHideDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
         set: function (val) { this._cacheInput('showMd', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
         set: function (val) { this._cacheInput('showLg', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
         set: function (val) { this._cacheInput('showXl', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
         set: function (val) { this._cacheInput('showLtSm', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
         set: function (val) { this._cacheInput('showLtMd', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
         set: function (val) { this._cacheInput('showLtLg', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
         set: function (val) { this._cacheInput('showLtXl', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
         set: function (val) { this._cacheInput('showGtXs', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
         set: function (val) { this._cacheInput('showGtSm', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
         set: function (val) { this._cacheInput('showGtMd', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
         set: function (val) { this._cacheInput('showGtLg', negativeOf(val)); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     ShowHideDirective.prototype._getDisplayStyle = function () {
         return this._layout ? 'flex' : _super.prototype._getDisplayStyle.call(this);
     };
@@ -1689,48 +1664,48 @@ var ShowHideDirective = (function (_super) {
     return ShowHideDirective;
 }(BaseFxDirective));
 ShowHideDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
+    { type: Directive, args: [{
                 selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
             },] },
 ];
 ShowHideDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 ShowHideDirective.propDecorators = {
-    'show': [{ type: _angular_core.Input, args: ['fxShow',] },],
-    'showXs': [{ type: _angular_core.Input, args: ['fxShow.xs',] },],
-    'showSm': [{ type: _angular_core.Input, args: ['fxShow.sm',] },],
-    'showMd': [{ type: _angular_core.Input, args: ['fxShow.md',] },],
-    'showLg': [{ type: _angular_core.Input, args: ['fxShow.lg',] },],
-    'showXl': [{ type: _angular_core.Input, args: ['fxShow.xl',] },],
-    'showLtSm': [{ type: _angular_core.Input, args: ['fxShow.lt-sm',] },],
-    'showLtMd': [{ type: _angular_core.Input, args: ['fxShow.lt-md',] },],
-    'showLtLg': [{ type: _angular_core.Input, args: ['fxShow.lt-lg',] },],
-    'showLtXl': [{ type: _angular_core.Input, args: ['fxShow.lt-xl',] },],
-    'showGtXs': [{ type: _angular_core.Input, args: ['fxShow.gt-xs',] },],
-    'showGtSm': [{ type: _angular_core.Input, args: ['fxShow.gt-sm',] },],
-    'showGtMd': [{ type: _angular_core.Input, args: ['fxShow.gt-md',] },],
-    'showGtLg': [{ type: _angular_core.Input, args: ['fxShow.gt-lg',] },],
-    'hide': [{ type: _angular_core.Input, args: ['fxHide',] },],
-    'hideXs': [{ type: _angular_core.Input, args: ['fxHide.xs',] },],
-    'hideSm': [{ type: _angular_core.Input, args: ['fxHide.sm',] },],
-    'hideMd': [{ type: _angular_core.Input, args: ['fxHide.md',] },],
-    'hideLg': [{ type: _angular_core.Input, args: ['fxHide.lg',] },],
-    'hideXl': [{ type: _angular_core.Input, args: ['fxHide.xl',] },],
-    'hideLtSm': [{ type: _angular_core.Input, args: ['fxHide.lt-sm',] },],
-    'hideLtMd': [{ type: _angular_core.Input, args: ['fxHide.lt-md',] },],
-    'hideLtLg': [{ type: _angular_core.Input, args: ['fxHide.lt-lg',] },],
-    'hideLtXl': [{ type: _angular_core.Input, args: ['fxHide.lt-xl',] },],
-    'hideGtXs': [{ type: _angular_core.Input, args: ['fxHide.gt-xs',] },],
-    'hideGtSm': [{ type: _angular_core.Input, args: ['fxHide.gt-sm',] },],
-    'hideGtMd': [{ type: _angular_core.Input, args: ['fxHide.gt-md',] },],
-    'hideGtLg': [{ type: _angular_core.Input, args: ['fxHide.gt-lg',] },],
+    'show': [{ type: Input, args: ['fxShow',] },],
+    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
+    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
+    'showMd': [{ type: Input, args: ['fxShow.md',] },],
+    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
+    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
+    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
+    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
+    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
+    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
+    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
+    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
+    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
+    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
+    'hide': [{ type: Input, args: ['fxHide',] },],
+    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
+    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
+    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
+    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
+    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
+    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
+    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
+    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
+    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
+    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
+    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
+    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
+    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
-var FlexAlignDirective = (function (_super) {
-    __extends(FlexAlignDirective, _super);
+var FlexAlignDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(FlexAlignDirective, _super);
     function FlexAlignDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
@@ -1739,85 +1714,85 @@ var FlexAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignXs", {
         set: function (val) { this._cacheInput('alignXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignSm", {
         set: function (val) { this._cacheInput('alignSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignMd", {
         set: function (val) { this._cacheInput('alignMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLg", {
         set: function (val) { this._cacheInput('alignLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignXl", {
         set: function (val) { this._cacheInput('alignXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtSm", {
         set: function (val) { this._cacheInput('alignLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtMd", {
         set: function (val) { this._cacheInput('alignLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtLg", {
         set: function (val) { this._cacheInput('alignLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignLtXl", {
         set: function (val) { this._cacheInput('alignLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtXs", {
         set: function (val) { this._cacheInput('alignGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtSm", {
         set: function (val) { this._cacheInput('alignGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtMd", {
         set: function (val) { this._cacheInput('alignGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexAlignDirective.prototype, "alignGtLg", {
         set: function (val) { this._cacheInput('alignGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     FlexAlignDirective.prototype.ngOnChanges = function (changes) {
         if (changes['align'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -1855,30 +1830,30 @@ var FlexAlignDirective = (function (_super) {
     return FlexAlignDirective;
 }(BaseFxDirective));
 FlexAlignDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
+    { type: Directive, args: [{
                 selector: "\n  [fxFlexAlign],\n  [fxFlexAlign.xs], [fxFlexAlign.sm], [fxFlexAlign.md], [fxFlexAlign.lg], [fxFlexAlign.xl],\n  [fxFlexAlign.lt-sm], [fxFlexAlign.lt-md], [fxFlexAlign.lt-lg], [fxFlexAlign.lt-xl],\n  [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]\n"
             },] },
 ];
 FlexAlignDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 FlexAlignDirective.propDecorators = {
-    'align': [{ type: _angular_core.Input, args: ['fxFlexAlign',] },],
-    'alignXs': [{ type: _angular_core.Input, args: ['fxFlexAlign.xs',] },],
-    'alignSm': [{ type: _angular_core.Input, args: ['fxFlexAlign.sm',] },],
-    'alignMd': [{ type: _angular_core.Input, args: ['fxFlexAlign.md',] },],
-    'alignLg': [{ type: _angular_core.Input, args: ['fxFlexAlign.lg',] },],
-    'alignXl': [{ type: _angular_core.Input, args: ['fxFlexAlign.xl',] },],
-    'alignLtSm': [{ type: _angular_core.Input, args: ['fxFlexAlign.lt-sm',] },],
-    'alignLtMd': [{ type: _angular_core.Input, args: ['fxFlexAlign.lt-md',] },],
-    'alignLtLg': [{ type: _angular_core.Input, args: ['fxFlexAlign.lt-lg',] },],
-    'alignLtXl': [{ type: _angular_core.Input, args: ['fxFlexAlign.lt-xl',] },],
-    'alignGtXs': [{ type: _angular_core.Input, args: ['fxFlexAlign.gt-xs',] },],
-    'alignGtSm': [{ type: _angular_core.Input, args: ['fxFlexAlign.gt-sm',] },],
-    'alignGtMd': [{ type: _angular_core.Input, args: ['fxFlexAlign.gt-md',] },],
-    'alignGtLg': [{ type: _angular_core.Input, args: ['fxFlexAlign.gt-lg',] },],
+    'align': [{ type: Input, args: ['fxFlexAlign',] },],
+    'alignXs': [{ type: Input, args: ['fxFlexAlign.xs',] },],
+    'alignSm': [{ type: Input, args: ['fxFlexAlign.sm',] },],
+    'alignMd': [{ type: Input, args: ['fxFlexAlign.md',] },],
+    'alignLg': [{ type: Input, args: ['fxFlexAlign.lg',] },],
+    'alignXl': [{ type: Input, args: ['fxFlexAlign.xl',] },],
+    'alignLtSm': [{ type: Input, args: ['fxFlexAlign.lt-sm',] },],
+    'alignLtMd': [{ type: Input, args: ['fxFlexAlign.lt-md',] },],
+    'alignLtLg': [{ type: Input, args: ['fxFlexAlign.lt-lg',] },],
+    'alignLtXl': [{ type: Input, args: ['fxFlexAlign.lt-xl',] },],
+    'alignGtXs': [{ type: Input, args: ['fxFlexAlign.gt-xs',] },],
+    'alignGtSm': [{ type: Input, args: ['fxFlexAlign.gt-sm',] },],
+    'alignGtMd': [{ type: Input, args: ['fxFlexAlign.gt-md',] },],
+    'alignGtLg': [{ type: Input, args: ['fxFlexAlign.gt-lg',] },],
 };
 var FLEX_FILL_CSS = {
     'margin': 0,
@@ -1887,8 +1862,8 @@ var FLEX_FILL_CSS = {
     'min-width': '100%',
     'min-height': '100%'
 };
-var FlexFillDirective = (function (_super) {
-    __extends(FlexFillDirective, _super);
+var FlexFillDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(FlexFillDirective, _super);
     function FlexFillDirective(monitor, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this.elRef = elRef;
@@ -1899,15 +1874,15 @@ var FlexFillDirective = (function (_super) {
     return FlexFillDirective;
 }(BaseFxDirective));
 FlexFillDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxFill],\n  [fxFlexFill]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxFill],\n  [fxFlexFill]\n" },] },
 ];
 FlexFillDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
-var FlexOffsetDirective = (function (_super) {
-    __extends(FlexOffsetDirective, _super);
+var FlexOffsetDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(FlexOffsetDirective, _super);
     function FlexOffsetDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
@@ -1926,73 +1901,73 @@ var FlexOffsetDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetMd", {
         set: function (val) { this._cacheInput('offsetMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLg", {
         set: function (val) { this._cacheInput('offsetLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetXl", {
         set: function (val) { this._cacheInput('offsetXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtSm", {
         set: function (val) { this._cacheInput('offsetLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtMd", {
         set: function (val) { this._cacheInput('offsetLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtLg", {
         set: function (val) { this._cacheInput('offsetLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetLtXl", {
         set: function (val) { this._cacheInput('offsetLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtXs", {
         set: function (val) { this._cacheInput('offsetGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtSm", {
         set: function (val) { this._cacheInput('offsetGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtMd", {
         set: function (val) { this._cacheInput('offsetGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOffsetDirective.prototype, "offsetGtLg", {
         set: function (val) { this._cacheInput('offsetGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     FlexOffsetDirective.prototype.ngOnChanges = function (changes) {
         if (changes['offset'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -2022,31 +1997,31 @@ var FlexOffsetDirective = (function (_super) {
     return FlexOffsetDirective;
 }(BaseFxDirective));
 FlexOffsetDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxFlexOffset],\n  [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md], [fxFlexOffset.lg], [fxFlexOffset.xl],\n  [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],\n  [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]\n" },] },
 ];
 FlexOffsetDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 FlexOffsetDirective.propDecorators = {
-    'offset': [{ type: _angular_core.Input, args: ['fxFlexOffset',] },],
-    'offsetXs': [{ type: _angular_core.Input, args: ['fxFlexOffset.xs',] },],
-    'offsetSm': [{ type: _angular_core.Input, args: ['fxFlexOffset.sm',] },],
-    'offsetMd': [{ type: _angular_core.Input, args: ['fxFlexOffset.md',] },],
-    'offsetLg': [{ type: _angular_core.Input, args: ['fxFlexOffset.lg',] },],
-    'offsetXl': [{ type: _angular_core.Input, args: ['fxFlexOffset.xl',] },],
-    'offsetLtSm': [{ type: _angular_core.Input, args: ['fxFlexOffset.lt-sm',] },],
-    'offsetLtMd': [{ type: _angular_core.Input, args: ['fxFlexOffset.lt-md',] },],
-    'offsetLtLg': [{ type: _angular_core.Input, args: ['fxFlexOffset.lt-lg',] },],
-    'offsetLtXl': [{ type: _angular_core.Input, args: ['fxFlexOffset.lt-xl',] },],
-    'offsetGtXs': [{ type: _angular_core.Input, args: ['fxFlexOffset.gt-xs',] },],
-    'offsetGtSm': [{ type: _angular_core.Input, args: ['fxFlexOffset.gt-sm',] },],
-    'offsetGtMd': [{ type: _angular_core.Input, args: ['fxFlexOffset.gt-md',] },],
-    'offsetGtLg': [{ type: _angular_core.Input, args: ['fxFlexOffset.gt-lg',] },],
+    'offset': [{ type: Input, args: ['fxFlexOffset',] },],
+    'offsetXs': [{ type: Input, args: ['fxFlexOffset.xs',] },],
+    'offsetSm': [{ type: Input, args: ['fxFlexOffset.sm',] },],
+    'offsetMd': [{ type: Input, args: ['fxFlexOffset.md',] },],
+    'offsetLg': [{ type: Input, args: ['fxFlexOffset.lg',] },],
+    'offsetXl': [{ type: Input, args: ['fxFlexOffset.xl',] },],
+    'offsetLtSm': [{ type: Input, args: ['fxFlexOffset.lt-sm',] },],
+    'offsetLtMd': [{ type: Input, args: ['fxFlexOffset.lt-md',] },],
+    'offsetLtLg': [{ type: Input, args: ['fxFlexOffset.lt-lg',] },],
+    'offsetLtXl': [{ type: Input, args: ['fxFlexOffset.lt-xl',] },],
+    'offsetGtXs': [{ type: Input, args: ['fxFlexOffset.gt-xs',] },],
+    'offsetGtSm': [{ type: Input, args: ['fxFlexOffset.gt-sm',] },],
+    'offsetGtMd': [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
+    'offsetGtLg': [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
 };
-var FlexOrderDirective = (function (_super) {
-    __extends(FlexOrderDirective, _super);
+var FlexOrderDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(FlexOrderDirective, _super);
     function FlexOrderDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
     }
@@ -2065,73 +2040,73 @@ var FlexOrderDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderMd", {
         set: function (val) { this._cacheInput('orderMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderLg", {
         set: function (val) { this._cacheInput('orderLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderXl", {
         set: function (val) { this._cacheInput('orderXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtXs", {
         set: function (val) { this._cacheInput('orderGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtSm", {
         set: function (val) { this._cacheInput('orderGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtMd", {
         set: function (val) { this._cacheInput('orderGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderGtLg", {
         set: function (val) { this._cacheInput('orderGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtSm", {
         set: function (val) { this._cacheInput('orderLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtMd", {
         set: function (val) { this._cacheInput('orderLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtLg", {
         set: function (val) { this._cacheInput('orderLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(FlexOrderDirective.prototype, "orderLtXl", {
         set: function (val) { this._cacheInput('orderLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     FlexOrderDirective.prototype.ngOnChanges = function (changes) {
         if (changes['order'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -2158,31 +2133,31 @@ var FlexOrderDirective = (function (_super) {
     return FlexOrderDirective;
 }(BaseFxDirective));
 FlexOrderDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxFlexOrder],\n  [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md], [fxFlexOrder.lg], [fxFlexOrder.xl],\n  [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],\n  [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]\n" },] },
 ];
 FlexOrderDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 FlexOrderDirective.propDecorators = {
-    'order': [{ type: _angular_core.Input, args: ['fxFlexOrder',] },],
-    'orderXs': [{ type: _angular_core.Input, args: ['fxFlexOrder.xs',] },],
-    'orderSm': [{ type: _angular_core.Input, args: ['fxFlexOrder.sm',] },],
-    'orderMd': [{ type: _angular_core.Input, args: ['fxFlexOrder.md',] },],
-    'orderLg': [{ type: _angular_core.Input, args: ['fxFlexOrder.lg',] },],
-    'orderXl': [{ type: _angular_core.Input, args: ['fxFlexOrder.xl',] },],
-    'orderGtXs': [{ type: _angular_core.Input, args: ['fxFlexOrder.gt-xs',] },],
-    'orderGtSm': [{ type: _angular_core.Input, args: ['fxFlexOrder.gt-sm',] },],
-    'orderGtMd': [{ type: _angular_core.Input, args: ['fxFlexOrder.gt-md',] },],
-    'orderGtLg': [{ type: _angular_core.Input, args: ['fxFlexOrder.gt-lg',] },],
-    'orderLtSm': [{ type: _angular_core.Input, args: ['fxFlexOrder.lt-sm',] },],
-    'orderLtMd': [{ type: _angular_core.Input, args: ['fxFlexOrder.lt-md',] },],
-    'orderLtLg': [{ type: _angular_core.Input, args: ['fxFlexOrder.lt-lg',] },],
-    'orderLtXl': [{ type: _angular_core.Input, args: ['fxFlexOrder.lt-xl',] },],
+    'order': [{ type: Input, args: ['fxFlexOrder',] },],
+    'orderXs': [{ type: Input, args: ['fxFlexOrder.xs',] },],
+    'orderSm': [{ type: Input, args: ['fxFlexOrder.sm',] },],
+    'orderMd': [{ type: Input, args: ['fxFlexOrder.md',] },],
+    'orderLg': [{ type: Input, args: ['fxFlexOrder.lg',] },],
+    'orderXl': [{ type: Input, args: ['fxFlexOrder.xl',] },],
+    'orderGtXs': [{ type: Input, args: ['fxFlexOrder.gt-xs',] },],
+    'orderGtSm': [{ type: Input, args: ['fxFlexOrder.gt-sm',] },],
+    'orderGtMd': [{ type: Input, args: ['fxFlexOrder.gt-md',] },],
+    'orderGtLg': [{ type: Input, args: ['fxFlexOrder.gt-lg',] },],
+    'orderLtSm': [{ type: Input, args: ['fxFlexOrder.lt-sm',] },],
+    'orderLtMd': [{ type: Input, args: ['fxFlexOrder.lt-md',] },],
+    'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
+    'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
-var LayoutAlignDirective = (function (_super) {
-    __extends(LayoutAlignDirective, _super);
+var LayoutAlignDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(LayoutAlignDirective, _super);
     function LayoutAlignDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = 'row';
@@ -2206,73 +2181,73 @@ var LayoutAlignDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
         set: function (val) { this._cacheInput('alignMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
         set: function (val) { this._cacheInput('alignLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
         set: function (val) { this._cacheInput('alignXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
         set: function (val) { this._cacheInput('alignGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
         set: function (val) { this._cacheInput('alignGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
         set: function (val) { this._cacheInput('alignGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
         set: function (val) { this._cacheInput('alignGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
         set: function (val) { this._cacheInput('alignLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
         set: function (val) { this._cacheInput('alignLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
         set: function (val) { this._cacheInput('alignLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
         set: function (val) { this._cacheInput('alignLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     LayoutAlignDirective.prototype.ngOnChanges = function (changes) {
         if (changes['align'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -2372,32 +2347,32 @@ var LayoutAlignDirective = (function (_super) {
     return LayoutAlignDirective;
 }(BaseFxDirective));
 LayoutAlignDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
+    { type: Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
 ];
 LayoutAlignDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
-    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ]; };
 LayoutAlignDirective.propDecorators = {
-    'align': [{ type: _angular_core.Input, args: ['fxLayoutAlign',] },],
-    'alignXs': [{ type: _angular_core.Input, args: ['fxLayoutAlign.xs',] },],
-    'alignSm': [{ type: _angular_core.Input, args: ['fxLayoutAlign.sm',] },],
-    'alignMd': [{ type: _angular_core.Input, args: ['fxLayoutAlign.md',] },],
-    'alignLg': [{ type: _angular_core.Input, args: ['fxLayoutAlign.lg',] },],
-    'alignXl': [{ type: _angular_core.Input, args: ['fxLayoutAlign.xl',] },],
-    'alignGtXs': [{ type: _angular_core.Input, args: ['fxLayoutAlign.gt-xs',] },],
-    'alignGtSm': [{ type: _angular_core.Input, args: ['fxLayoutAlign.gt-sm',] },],
-    'alignGtMd': [{ type: _angular_core.Input, args: ['fxLayoutAlign.gt-md',] },],
-    'alignGtLg': [{ type: _angular_core.Input, args: ['fxLayoutAlign.gt-lg',] },],
-    'alignLtSm': [{ type: _angular_core.Input, args: ['fxLayoutAlign.lt-sm',] },],
-    'alignLtMd': [{ type: _angular_core.Input, args: ['fxLayoutAlign.lt-md',] },],
-    'alignLtLg': [{ type: _angular_core.Input, args: ['fxLayoutAlign.lt-lg',] },],
-    'alignLtXl': [{ type: _angular_core.Input, args: ['fxLayoutAlign.lt-xl',] },],
+    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
+    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
+    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
+    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
+    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
+    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
+    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
+    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
+    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
+    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
+    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
+    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
+    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
+    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
 };
-var LayoutGapDirective = (function (_super) {
-    __extends(LayoutGapDirective, _super);
+var LayoutGapDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(LayoutGapDirective, _super);
     function LayoutGapDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._layout = 'row';
@@ -2421,73 +2396,73 @@ var LayoutGapDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
         set: function (val) { this._cacheInput('gapMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
         set: function (val) { this._cacheInput('gapLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
         set: function (val) { this._cacheInput('gapXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
         set: function (val) { this._cacheInput('gapGtXs', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
         set: function (val) { this._cacheInput('gapGtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
         set: function (val) { this._cacheInput('gapGtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
         set: function (val) { this._cacheInput('gapGtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
         set: function (val) { this._cacheInput('gapLtSm', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
         set: function (val) { this._cacheInput('gapLtMd', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
         set: function (val) { this._cacheInput('gapLtLg', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
         set: function (val) { this._cacheInput('gapLtXl', val); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     LayoutGapDirective.prototype.ngOnChanges = function (changes) {
         if (changes['gap'] != null || this._mqActivation) {
             this._updateWithValue();
@@ -2573,33 +2548,33 @@ var LayoutGapDirective = (function (_super) {
     return LayoutGapDirective;
 }(BaseFxDirective));
 LayoutGapDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
+    { type: Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
             },] },
 ];
 LayoutGapDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
-    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
+    { type: ElementRef, },
+    { type: Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
 ]; };
 LayoutGapDirective.propDecorators = {
-    'gap': [{ type: _angular_core.Input, args: ['fxLayoutGap',] },],
-    'gapXs': [{ type: _angular_core.Input, args: ['fxLayoutGap.xs',] },],
-    'gapSm': [{ type: _angular_core.Input, args: ['fxLayoutGap.sm',] },],
-    'gapMd': [{ type: _angular_core.Input, args: ['fxLayoutGap.md',] },],
-    'gapLg': [{ type: _angular_core.Input, args: ['fxLayoutGap.lg',] },],
-    'gapXl': [{ type: _angular_core.Input, args: ['fxLayoutGap.xl',] },],
-    'gapGtXs': [{ type: _angular_core.Input, args: ['fxLayoutGap.gt-xs',] },],
-    'gapGtSm': [{ type: _angular_core.Input, args: ['fxLayoutGap.gt-sm',] },],
-    'gapGtMd': [{ type: _angular_core.Input, args: ['fxLayoutGap.gt-md',] },],
-    'gapGtLg': [{ type: _angular_core.Input, args: ['fxLayoutGap.gt-lg',] },],
-    'gapLtSm': [{ type: _angular_core.Input, args: ['fxLayoutGap.lt-sm',] },],
-    'gapLtMd': [{ type: _angular_core.Input, args: ['fxLayoutGap.lt-md',] },],
-    'gapLtLg': [{ type: _angular_core.Input, args: ['fxLayoutGap.lt-lg',] },],
-    'gapLtXl': [{ type: _angular_core.Input, args: ['fxLayoutGap.lt-xl',] },],
+    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
+    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
+    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
+    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
+    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
+    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
+    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
+    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
+    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
+    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
 };
-var BaseFxDirectiveAdapter = (function (_super) {
-    __extends(BaseFxDirectiveAdapter, _super);
+var BaseFxDirectiveAdapter = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(BaseFxDirectiveAdapter, _super);
     function BaseFxDirectiveAdapter(_baseKey, _mediaMonitor, _elementRef, _renderer) {
         var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
         _this._baseKey = _baseKey;
@@ -2678,9 +2653,9 @@ var BaseFxDirectiveAdapter = (function (_super) {
     };
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
-var _ClassDirectiveBaseClass = _angular_common.NgClass;
-var ClassDirective = (function (_super) {
-    __extends(ClassDirective, _super);
+var _ClassDirectiveBaseClass = NgClass;
+var ClassDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(ClassDirective, _super);
     function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
         var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
         _this.monitor = monitor;
@@ -2885,48 +2860,48 @@ var ClassDirective = (function (_super) {
     return ClassDirective;
 }(_ClassDirectiveBaseClass));
 ClassDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
+    { type: Directive, args: [{
                 selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
             },] },
 ];
 ClassDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_core.IterableDiffers, },
-    { type: _angular_core.KeyValueDiffers, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: IterableDiffers, },
+    { type: KeyValueDiffers, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 ClassDirective.propDecorators = {
-    'ngClassBase': [{ type: _angular_core.Input, args: ['ngClass',] },],
-    'ngClassXs': [{ type: _angular_core.Input, args: ['ngClass.xs',] },],
-    'ngClassSm': [{ type: _angular_core.Input, args: ['ngClass.sm',] },],
-    'ngClassMd': [{ type: _angular_core.Input, args: ['ngClass.md',] },],
-    'ngClassLg': [{ type: _angular_core.Input, args: ['ngClass.lg',] },],
-    'ngClassXl': [{ type: _angular_core.Input, args: ['ngClass.xl',] },],
-    'ngClassLtSm': [{ type: _angular_core.Input, args: ['ngClass.lt-sm',] },],
-    'ngClassLtMd': [{ type: _angular_core.Input, args: ['ngClass.lt-md',] },],
-    'ngClassLtLg': [{ type: _angular_core.Input, args: ['ngClass.lt-lg',] },],
-    'ngClassLtXl': [{ type: _angular_core.Input, args: ['ngClass.lt-xl',] },],
-    'ngClassGtXs': [{ type: _angular_core.Input, args: ['ngClass.gt-xs',] },],
-    'ngClassGtSm': [{ type: _angular_core.Input, args: ['ngClass.gt-sm',] },],
-    'ngClassGtMd': [{ type: _angular_core.Input, args: ['ngClass.gt-md',] },],
-    'ngClassGtLg': [{ type: _angular_core.Input, args: ['ngClass.gt-lg',] },],
-    'classBase': [{ type: _angular_core.Input, args: ['class',] },],
-    'classXs': [{ type: _angular_core.Input, args: ['class.xs',] },],
-    'classSm': [{ type: _angular_core.Input, args: ['class.sm',] },],
-    'classMd': [{ type: _angular_core.Input, args: ['class.md',] },],
-    'classLg': [{ type: _angular_core.Input, args: ['class.lg',] },],
-    'classXl': [{ type: _angular_core.Input, args: ['class.xl',] },],
-    'classLtSm': [{ type: _angular_core.Input, args: ['class.lt-sm',] },],
-    'classLtMd': [{ type: _angular_core.Input, args: ['class.lt-md',] },],
-    'classLtLg': [{ type: _angular_core.Input, args: ['class.lt-lg',] },],
-    'classLtXl': [{ type: _angular_core.Input, args: ['class.lt-xl',] },],
-    'classGtXs': [{ type: _angular_core.Input, args: ['class.gt-xs',] },],
-    'classGtSm': [{ type: _angular_core.Input, args: ['class.gt-sm',] },],
-    'classGtMd': [{ type: _angular_core.Input, args: ['class.gt-md',] },],
-    'classGtLg': [{ type: _angular_core.Input, args: ['class.gt-lg',] },],
+    'ngClassBase': [{ type: Input, args: ['ngClass',] },],
+    'ngClassXs': [{ type: Input, args: ['ngClass.xs',] },],
+    'ngClassSm': [{ type: Input, args: ['ngClass.sm',] },],
+    'ngClassMd': [{ type: Input, args: ['ngClass.md',] },],
+    'ngClassLg': [{ type: Input, args: ['ngClass.lg',] },],
+    'ngClassXl': [{ type: Input, args: ['ngClass.xl',] },],
+    'ngClassLtSm': [{ type: Input, args: ['ngClass.lt-sm',] },],
+    'ngClassLtMd': [{ type: Input, args: ['ngClass.lt-md',] },],
+    'ngClassLtLg': [{ type: Input, args: ['ngClass.lt-lg',] },],
+    'ngClassLtXl': [{ type: Input, args: ['ngClass.lt-xl',] },],
+    'ngClassGtXs': [{ type: Input, args: ['ngClass.gt-xs',] },],
+    'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
+    'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
+    'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
+    'classBase': [{ type: Input, args: ['class',] },],
+    'classXs': [{ type: Input, args: ['class.xs',] },],
+    'classSm': [{ type: Input, args: ['class.sm',] },],
+    'classMd': [{ type: Input, args: ['class.md',] },],
+    'classLg': [{ type: Input, args: ['class.lg',] },],
+    'classXl': [{ type: Input, args: ['class.xl',] },],
+    'classLtSm': [{ type: Input, args: ['class.lt-sm',] },],
+    'classLtMd': [{ type: Input, args: ['class.lt-md',] },],
+    'classLtLg': [{ type: Input, args: ['class.lt-lg',] },],
+    'classLtXl': [{ type: Input, args: ['class.lt-xl',] },],
+    'classGtXs': [{ type: Input, args: ['class.gt-xs',] },],
+    'classGtSm': [{ type: Input, args: ['class.gt-sm',] },],
+    'classGtMd': [{ type: Input, args: ['class.gt-md',] },],
+    'classGtLg': [{ type: Input, args: ['class.gt-lg',] },],
 };
-var NgStyleKeyValue = (function () {
+var NgStyleKeyValue = /*@__PURE__*/(function () {
     function NgStyleKeyValue(key, value, noQuotes) {
         if (noQuotes === void 0) { noQuotes = true; }
         this.key = key;
@@ -2994,9 +2969,9 @@ function keyValuesToMap(map$$1, entry) {
     }
     return map$$1;
 }
-var _StyleDirectiveBaseClass = _angular_common.NgStyle;
-var StyleDirective = (function (_super) {
-    __extends(StyleDirective, _super);
+var _StyleDirectiveBaseClass = NgStyle;
+var StyleDirective = /*@__PURE__*/(function (_super) {
+    tslib_1.__extends(StyleDirective, _super);
     function StyleDirective(monitor, _sanitizer, _differs, _ngEl, _renderer) {
         var _this = _super.call(this, _differs, _ngEl, _renderer) || this;
         _this.monitor = monitor;
@@ -3023,73 +2998,73 @@ var StyleDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleMd", {
         set: function (val) { this._base.cacheInput('styleMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLg", {
         set: function (val) { this._base.cacheInput('styleLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleXl", {
         set: function (val) { this._base.cacheInput('styleXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtSm", {
         set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtMd", {
         set: function (val) { this._base.cacheInput('styleLtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtLg", {
         set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleLtXl", {
         set: function (val) { this._base.cacheInput('styleLtXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtXs", {
         set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtSm", {
         set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtMd", {
         set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "ngStyleGtLg", {
         set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleXs", {
         set: function (val) { this._base.cacheInput('styleXs', val, true); },
         enumerable: true,
@@ -3100,73 +3075,73 @@ var StyleDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleMd", {
         set: function (val) { this._base.cacheInput('styleMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleLg", {
         set: function (val) { this._base.cacheInput('styleLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleXl", {
         set: function (val) { this._base.cacheInput('styleXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleLtSm", {
         set: function (val) { this._base.cacheInput('styleLtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleLtMd", {
         set: function (val) { this._base.cacheInput('styleLtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleLtLg", {
         set: function (val) { this._base.cacheInput('styleLtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleLtXl", {
         set: function (val) { this._base.cacheInput('styleLtXl', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleGtXs", {
         set: function (val) { this._base.cacheInput('styleGtXs', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleGtSm", {
         set: function (val) { this._base.cacheInput('styleGtSm', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleGtMd", {
         set: function (val) { this._base.cacheInput('styleGtMd', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     Object.defineProperty(StyleDirective.prototype, "styleGtLg", {
         set: function (val) { this._base.cacheInput('styleGtLg', val, true); },
         enumerable: true,
         configurable: true
     });
-    
+    ;
     StyleDirective.prototype.ngOnChanges = function (changes) {
         if (this._base.activeKey in changes) {
             this._updateStyle();
@@ -3215,7 +3190,7 @@ var StyleDirective = (function (_super) {
     StyleDirective.prototype._buildStyleMap = function (styles) {
         var _this = this;
         var sanitizer = function (val) {
-            return _this._sanitizer.sanitize(_angular_core.SecurityContext.STYLE, val);
+            return _this._sanitizer.sanitize(SecurityContext.STYLE, val);
         };
         if (styles) {
             switch (ngStyleUtils.getType(styles)) {
@@ -3230,45 +3205,45 @@ var StyleDirective = (function (_super) {
     return StyleDirective;
 }(_StyleDirectiveBaseClass));
 StyleDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
+    { type: Directive, args: [{
                 selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],\n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],\n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
             },] },
 ];
 StyleDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
-    { type: _angular_platformBrowser.DomSanitizer, },
-    { type: _angular_core.KeyValueDiffers, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: DomSanitizer, },
+    { type: KeyValueDiffers, },
+    { type: ElementRef, },
+    { type: Renderer, },
 ]; };
 StyleDirective.propDecorators = {
-    'styleBase': [{ type: _angular_core.Input, args: ['ngStyle',] },],
-    'ngStyleXs': [{ type: _angular_core.Input, args: ['ngStyle.xs',] },],
-    'ngStyleSm': [{ type: _angular_core.Input, args: ['ngStyle.sm',] },],
-    'ngStyleMd': [{ type: _angular_core.Input, args: ['ngStyle.md',] },],
-    'ngStyleLg': [{ type: _angular_core.Input, args: ['ngStyle.lg',] },],
-    'ngStyleXl': [{ type: _angular_core.Input, args: ['ngStyle.xl',] },],
-    'ngStyleLtSm': [{ type: _angular_core.Input, args: ['ngStyle.lt-sm',] },],
-    'ngStyleLtMd': [{ type: _angular_core.Input, args: ['ngStyle.lt-md',] },],
-    'ngStyleLtLg': [{ type: _angular_core.Input, args: ['ngStyle.lt-lg',] },],
-    'ngStyleLtXl': [{ type: _angular_core.Input, args: ['ngStyle.lt-xl',] },],
-    'ngStyleGtXs': [{ type: _angular_core.Input, args: ['ngStyle.gt-xs',] },],
-    'ngStyleGtSm': [{ type: _angular_core.Input, args: ['ngStyle.gt-sm',] },],
-    'ngStyleGtMd': [{ type: _angular_core.Input, args: ['ngStyle.gt-md',] },],
-    'ngStyleGtLg': [{ type: _angular_core.Input, args: ['ngStyle.gt-lg',] },],
-    'styleXs': [{ type: _angular_core.Input, args: ['style.xs',] },],
-    'styleSm': [{ type: _angular_core.Input, args: ['style.sm',] },],
-    'styleMd': [{ type: _angular_core.Input, args: ['style.md',] },],
-    'styleLg': [{ type: _angular_core.Input, args: ['style.lg',] },],
-    'styleXl': [{ type: _angular_core.Input, args: ['style.xl',] },],
-    'styleLtSm': [{ type: _angular_core.Input, args: ['style.lt-sm',] },],
-    'styleLtMd': [{ type: _angular_core.Input, args: ['style.lt-md',] },],
-    'styleLtLg': [{ type: _angular_core.Input, args: ['style.lt-lg',] },],
-    'styleLtXl': [{ type: _angular_core.Input, args: ['style.lt-xl',] },],
-    'styleGtXs': [{ type: _angular_core.Input, args: ['style.gt-xs',] },],
-    'styleGtSm': [{ type: _angular_core.Input, args: ['style.gt-sm',] },],
-    'styleGtMd': [{ type: _angular_core.Input, args: ['style.gt-md',] },],
-    'styleGtLg': [{ type: _angular_core.Input, args: ['style.gt-lg',] },],
+    'styleBase': [{ type: Input, args: ['ngStyle',] },],
+    'ngStyleXs': [{ type: Input, args: ['ngStyle.xs',] },],
+    'ngStyleSm': [{ type: Input, args: ['ngStyle.sm',] },],
+    'ngStyleMd': [{ type: Input, args: ['ngStyle.md',] },],
+    'ngStyleLg': [{ type: Input, args: ['ngStyle.lg',] },],
+    'ngStyleXl': [{ type: Input, args: ['ngStyle.xl',] },],
+    'ngStyleLtSm': [{ type: Input, args: ['ngStyle.lt-sm',] },],
+    'ngStyleLtMd': [{ type: Input, args: ['ngStyle.lt-md',] },],
+    'ngStyleLtLg': [{ type: Input, args: ['ngStyle.lt-lg',] },],
+    'ngStyleLtXl': [{ type: Input, args: ['ngStyle.lt-xl',] },],
+    'ngStyleGtXs': [{ type: Input, args: ['ngStyle.gt-xs',] },],
+    'ngStyleGtSm': [{ type: Input, args: ['ngStyle.gt-sm',] },],
+    'ngStyleGtMd': [{ type: Input, args: ['ngStyle.gt-md',] },],
+    'ngStyleGtLg': [{ type: Input, args: ['ngStyle.gt-lg',] },],
+    'styleXs': [{ type: Input, args: ['style.xs',] },],
+    'styleSm': [{ type: Input, args: ['style.sm',] },],
+    'styleMd': [{ type: Input, args: ['style.md',] },],
+    'styleLg': [{ type: Input, args: ['style.lg',] },],
+    'styleXl': [{ type: Input, args: ['style.xl',] },],
+    'styleLtSm': [{ type: Input, args: ['style.lt-sm',] },],
+    'styleLtMd': [{ type: Input, args: ['style.lt-md',] },],
+    'styleLtLg': [{ type: Input, args: ['style.lt-lg',] },],
+    'styleLtXl': [{ type: Input, args: ['style.lt-xl',] },],
+    'styleGtXs': [{ type: Input, args: ['style.gt-xs',] },],
+    'styleGtSm': [{ type: Input, args: ['style.gt-sm',] },],
+    'styleGtMd': [{ type: Input, args: ['style.gt-md',] },],
+    'styleGtLg': [{ type: Input, args: ['style.gt-lg',] },],
 };
 var ALL_DIRECTIVES = [
     LayoutDirective,
@@ -3284,7 +3259,7 @@ var ALL_DIRECTIVES = [
     ClassDirective,
     StyleDirective
 ];
-var FlexLayoutModule = (function () {
+var FlexLayoutModule = /*@__PURE__*/(function () {
     function FlexLayoutModule() {
     }
     FlexLayoutModule.provideBreakPoints = function (breakpoints, options) {
@@ -3298,7 +3273,7 @@ var FlexLayoutModule = (function () {
     return FlexLayoutModule;
 }());
 FlexLayoutModule.decorators = [
-    { type: _angular_core.NgModule, args: [{
+    { type: NgModule, args: [{
                 imports: [MediaQueriesModule],
                 exports: [MediaQueriesModule].concat(ALL_DIRECTIVES),
                 declarations: ALL_DIRECTIVES.slice(),
@@ -3310,60 +3285,5 @@ FlexLayoutModule.decorators = [
             },] },
 ];
 FlexLayoutModule.ctorParameters = function () { return []; };
-
-exports.FlexLayoutModule = FlexLayoutModule;
-exports.BaseFxDirective = BaseFxDirective;
-exports.BaseFxDirectiveAdapter = BaseFxDirectiveAdapter;
-exports.FlexDirective = FlexDirective;
-exports.FlexAlignDirective = FlexAlignDirective;
-exports.FlexFillDirective = FlexFillDirective;
-exports.FlexOffsetDirective = FlexOffsetDirective;
-exports.FlexOrderDirective = FlexOrderDirective;
-exports.LayoutDirective = LayoutDirective;
-exports.LayoutAlignDirective = LayoutAlignDirective;
-exports.LayoutGapDirective = LayoutGapDirective;
-exports.LayoutWrapDirective = LayoutWrapDirective;
-exports.negativeOf = negativeOf;
-exports.ShowHideDirective = ShowHideDirective;
-exports._ClassDirectiveBaseClass = _ClassDirectiveBaseClass;
-exports.ClassDirective = ClassDirective;
-exports._StyleDirectiveBaseClass = _StyleDirectiveBaseClass;
-exports.StyleDirective = StyleDirective;
-exports.KeyOptions = KeyOptions;
-exports.ResponsiveActivation = ResponsiveActivation;
-exports.RESPONSIVE_ALIASES = RESPONSIVE_ALIASES;
-exports.DEFAULT_BREAKPOINTS = DEFAULT_BREAKPOINTS;
-exports.ScreenTypes = ScreenTypes;
-exports.ORIENTATION_BREAKPOINTS = ORIENTATION_BREAKPOINTS;
-exports.BREAKPOINTS = BREAKPOINTS;
-exports.BreakPointRegistry = BreakPointRegistry;
-exports.ObservableMedia = ObservableMedia;
-exports.MediaService = MediaService;
-exports.MatchMedia = MatchMedia;
-exports.MediaChange = MediaChange;
-exports.MediaMonitor = MediaMonitor;
-exports.buildMergedBreakPoints = buildMergedBreakPoints;
-exports.DEFAULT_BREAKPOINTS_PROVIDER_FACTORY = DEFAULT_BREAKPOINTS_PROVIDER_FACTORY;
-exports.DEFAULT_BREAKPOINTS_PROVIDER = DEFAULT_BREAKPOINTS_PROVIDER;
-exports.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY = CUSTOM_BREAKPOINTS_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER_FACTORY = OBSERVABLE_MEDIA_PROVIDER_FACTORY;
-exports.OBSERVABLE_MEDIA_PROVIDER = OBSERVABLE_MEDIA_PROVIDER;
-exports.MEDIA_MONITOR_PROVIDER_FACTORY = MEDIA_MONITOR_PROVIDER_FACTORY;
-exports.MEDIA_MONITOR_PROVIDER = MEDIA_MONITOR_PROVIDER;
-exports.MediaQueriesModule = MediaQueriesModule;
-exports.mergeAlias = mergeAlias;
-exports.applyCssPrefixes = applyCssPrefixes;
-exports.validateBasis = validateBasis;
-exports.LAYOUT_VALUES = LAYOUT_VALUES;
-exports.buildLayoutCSS = buildLayoutCSS;
-exports.validateWrapValue = validateWrapValue;
-exports.validateSuffixes = validateSuffixes;
-exports.mergeByAlias = mergeByAlias;
-exports.extendObject = extendObject;
-exports.NgStyleKeyValue = NgStyleKeyValue;
-exports.ngStyleUtils = ngStyleUtils;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-//# sourceMappingURL=flex-layout.umd.js.map
+export { FlexLayoutModule, BaseFxDirective, BaseFxDirectiveAdapter, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, negativeOf, ShowHideDirective, _ClassDirectiveBaseClass, ClassDirective, _StyleDirectiveBaseClass, StyleDirective, KeyOptions, ResponsiveActivation, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils };
+//# sourceMappingURL=flex-layout.es5.js.map

@@ -1,0 +1,31 @@
+import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { BaseFxDirective } from './base';
+import { MediaMonitor } from '../../media-query/media-monitor';
+import { LayoutDirective } from './layout';
+export declare class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+    protected _layout: string;
+    protected _layoutWatcher: Subscription;
+    align: any;
+    alignXs: any;
+    alignSm: any;
+    alignMd: any;
+    alignLg: any;
+    alignXl: any;
+    alignGtXs: any;
+    alignGtSm: any;
+    alignGtMd: any;
+    alignGtLg: any;
+    alignLtSm: any;
+    alignLtMd: any;
+    alignLtLg: any;
+    alignLtXl: any;
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    protected _updateWithValue(value?: string): void;
+    protected _onLayoutChange(direction: any): void;
+    protected _buildCSS(align: any): any;
+    protected _allowStretching(align: any, layout: any): void;
+}
