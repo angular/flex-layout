@@ -88,7 +88,7 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
   // *********************************************
 
   protected _updateWithValue(value?: string|number) {
-    value = value || this._queryInput("align") || 'stretch';
+    value = value || this._queryInput('align') || 'stretch';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

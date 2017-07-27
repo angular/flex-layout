@@ -1,11 +1,8 @@
 import {Component} from '@angular/core';
-import 'rxjs/add/operator/filter';
 
 @Component({
+  moduleId: module.id,
   selector: 'demo-responsive-style',
-  styleUrls: [
-    '../demo-app/material2.css'
-  ],
   template: `
 
     <md-card class="card-demo" >

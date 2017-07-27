@@ -21,10 +21,10 @@ export type NgStyleSanitizer = (val: any) => string;
  */
 export class NgStyleKeyValue {
   constructor(public key: string, public value: string, noQuotes = true) {
-    this.key = noQuotes ? key.replace(/['"]/g, "").trim() : key.trim();
+    this.key = noQuotes ? key.replace(/['"]/g, '').trim() : key.trim();
 
-    this.value = noQuotes ? value.replace(/['"]/g, "").trim() : value.trim();
-    this.value = this.value.replace(/;/, "");
+    this.value = noQuotes ? value.replace(/['"]/g, '').trim() : value.trim();
+    this.value = this.value.replace(/;/, '');
   }
 }
 
@@ -51,12 +51,12 @@ function getType(target: any): string {
  * Split string of key:value pairs into Array of k-v pairs
  * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
  */
-function buildRawList(source: any, delimiter = ";"): NgStyleRawList {
+function buildRawList(source: any, delimiter = ';'): NgStyleRawList {
   return String(source)
       .trim()
       .split(delimiter)
       .map((val: string) => val.trim())
-      .filter(val => val !== "");
+      .filter(val => val !== '');
 }
 
 /**
@@ -94,10 +94,10 @@ function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
 
 
 /**
- * Convert "key:value" -> [key, value]
+ * Convert 'key:value' -> [key, value]
  */
 function stringToKeyValue(it: string): NgStyleKeyValue {
-  let [key, val] = it.split(":");
+  let [key, val] = it.split(':');
   return val ? new NgStyleKeyValue(key, val) : null;
 }
 

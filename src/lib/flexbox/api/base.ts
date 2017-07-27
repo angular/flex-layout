@@ -86,7 +86,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   // *********************************************
 
   ngOnChanges(change: SimpleChanges) {
-    throw new Error('BaseFxDirective::ngOnChanges should be overridden in subclass');
+    throw new Error(`BaseFxDirective::ngOnChanges should be overridden in subclass: ${change}`);
   }
 
   ngOnDestroy() {
@@ -220,11 +220,11 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
    */
   protected get childrenNodes() {
-    var obj = this._elementRef.nativeElement.childNodes;
-    var buffer = [];
+    const obj = this._elementRef.nativeElement.childNodes;
+    const buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for ( var i = obj.length; i--; ) {
+    for ( let i = obj.length; i--; ) {
       buffer[i] = obj[i];
     }
     return buffer;

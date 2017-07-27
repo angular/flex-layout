@@ -6,11 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-// RxJS Operators used by the classes...
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {MediaChange} from '../media-change';
@@ -33,10 +28,10 @@ describe('mock-match-media', () => {
       ]
     });
   });
-  beforeEach(async(inject([MockMatchMedia, BreakPointRegistry], (_matchMedia_, _breakPoints_) => {
+  beforeEach(async(inject([MockMatchMedia, BreakPointRegistry], (_matchMedia, _breakPoints) => {
     // Single async inject to save references; which are used in all tests below
-    matchMedia = _matchMedia_;
-    breakPoints = _breakPoints_;
+    matchMedia = _matchMedia;
+    breakPoints = _breakPoints;
 
     breakPoints.items.forEach((bp: BreakPoint) => {
       matchMedia.observe(bp.mediaQuery);
@@ -48,7 +43,7 @@ describe('mock-match-media', () => {
 
   it('can observe custom mediaQuery ranges', () => {
     let current: MediaChange;
-    let customQuery = "screen and (min-width: 610px) and (max-width: 620px";
+    let customQuery = 'screen and (min-width: 610px) and (max-width: 620px';
     let subscription = matchMedia.observe(customQuery)
         .subscribe((change: MediaChange) => {
           current = change;
@@ -127,7 +122,7 @@ describe('mock-match-media', () => {
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
         bpLg = breakPoints.findByAlias('lg');
 
-    // By default the "all" is initially active.
+    // By default the 'all' is initially active.
 
     let subscription = matchMedia.observe().subscribe((change: MediaChange) => {
       if (change.matches) {

@@ -5,10 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-// RxJS Operators used by the classes...
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
 import {Observable} from 'rxjs/Observable';
 
 import {TestBed, inject, async} from '@angular/core/testing';
@@ -51,15 +47,15 @@ describe('match-media', () => {
         .subscribe((change: MediaChange) => {
           current = change;
         });
-    expect(current.mediaQuery).toEqual("all");
+    expect(current.mediaQuery).toEqual('all');
 
     subscription.unsubscribe();
   });
 
   it('can observe all mediaQuery activations', () => {
     let current: MediaChange;
-    let query1 = "screen and (min-width: 610px) and (max-width: 620px)";
-    let query2 = "(min-width: 730px) and (max-width: 950px)";
+    let query1 = 'screen and (min-width: 610px) and (max-width: 620px)';
+    let query2 = '(min-width: 730px) and (max-width: 950px)';
 
     matchMedia.registerQuery(query1);
     matchMedia.registerQuery(query2);
@@ -69,7 +65,7 @@ describe('match-media', () => {
       current = change;
     });
 
-    expect(current.mediaQuery).toEqual("all");    // default mediaQuery is active
+    expect(current.mediaQuery).toEqual('all');    // default mediaQuery is active
 
     let activated = matchMedia.activate(query1);    // simulate mediaQuery change to Query1
     expect(activated).toEqual(true);
@@ -87,9 +83,9 @@ describe('match-media', () => {
 
 
   it('can observe an array of custom mediaQuery ranges', () => {
-    let current: MediaChange, activated;
-    let query1 = "screen and (min-width: 610px) and (max-width: 620px)";
-    let query2 = "(min-width: 730px) and (max-width: 950px)";
+    let current: MediaChange = undefined, activated;
+    let query1 = 'screen and (min-width: 610px) and (max-width: 620px)';
+    let query2 = '(min-width: 730px) and (max-width: 950px)';
 
     matchMedia.registerQuery([query1, query2]);
 
@@ -138,10 +134,10 @@ describe('match-media-observable', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
       [ObservableMedia, MatchMedia, BreakPointRegistry],
-      (_media$_, _matchMedia_, _breakPoints_) => {
-        matchMedia = _matchMedia_;      // inject only to manually activate mediaQuery ranges
-        breakPoints = _breakPoints_;
-        mediaQuery$ = _media$_;
+      (_media$, _matchMedia, _breakPoints) => {
+        matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
+        breakPoints = _breakPoints;
+        mediaQuery$ = _media$;
 
         // Quick register all breakpoint mediaQueries
         breakPoints.items.forEach((bp: BreakPoint) => {
@@ -153,7 +149,7 @@ describe('match-media-observable', () => {
   });
 
   it('can observe an existing activation', () => {
-    let current: MediaChange;
+    let current: MediaChange = undefined;
     let bp = breakPoints.findByAlias('md');
     matchMedia.activate(bp.mediaQuery);
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
@@ -170,14 +166,14 @@ describe('match-media-observable', () => {
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
       current = change;
     });
-    expect(current.mediaQuery).toEqual("all");
+    expect(current.mediaQuery).toEqual('all');
 
     subscription.unsubscribe();
   });
 
   it('can observe custom mediaQuery ranges', () => {
     let current: MediaChange;
-    let customQuery = "screen and (min-width: 610px) and (max-width: 620px";
+    let customQuery = 'screen and (min-width: 610px) and (max-width: 620px';
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
       current = change;
     });
@@ -221,7 +217,7 @@ describe('match-media-observable', () => {
     matchMedia.activate(breakPoints.findByAlias('md').mediaQuery);
     matchMedia.activate(breakPoints.findByAlias('gt-md').mediaQuery);
 
-    // "all" mediaQuery is already active; total count should be (3)
+    // 'all' mediaQuery is already active; total count should be (3)
 
     expect(activationCount).toEqual(2);
     expect(deactivationCount).toEqual(0);

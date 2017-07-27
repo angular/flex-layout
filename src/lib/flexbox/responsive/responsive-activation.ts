@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Subscription} from 'rxjs/Subscription';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/filter';
-import {extendObject} from '../../utils/object-extend';
+import {map} from 'rxjs/operator/map';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
 import {MediaMonitor} from '../../media-query/media-monitor';
+
+import {extendObject} from '../../utils/object-extend';
 
 export declare type SubscriptionList = Subscription[ ];
 
@@ -118,8 +118,7 @@ export class ResponsiveActivation {
         };
 
         subscriptions.push(
-            this.mediaMonitor.observe(bp.alias)
-                .map(buildChanges)
+            map.call(this.mediaMonitor.observe(bp.alias), buildChanges)
                 .subscribe(change => {
                   this._onMonitorEvents(change);
                 })

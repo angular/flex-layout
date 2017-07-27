@@ -1,30 +1,28 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
-import {DemosLayoutAPI}         from "../docs-layout/_module";
-import {DemosResponsiveLayout}  from "../docs-layout-responsive/_module";
-import {DemosGithubIssues}      from "../github-issues/_module";
-import {DemosStackOverflow}     from "../stack-overflow/_module";
+import {DemosLayoutAPI} from '../docs-layout/_module';
+import {DemosResponsiveLayout} from '../docs-layout-responsive/_module';
+import {DemosGithubIssues} from '../github-issues/_module';
+import {DemosStackOverflow} from '../stack-overflow/_module';
 
-const DemoAppRoutes: Routes = [
-  {path: ''             , redirectTo: 'docs', pathMatch: 'full'},
-  {path: 'docs'         , component: DemosLayoutAPI},
-  {path: 'responsive'   , component: DemosResponsiveLayout},
-  {path: 'issues'       , component: DemosGithubIssues},
+const DEMO_APP_ROUTES: Routes = [
+  {path: '', redirectTo: 'docs', pathMatch: 'full'},
+  {path: 'docs', component: DemosLayoutAPI},
+  {path: 'responsive', component: DemosResponsiveLayout},
+  {path: 'issues', component: DemosGithubIssues},
   {path: 'stackoverflow', component: DemosStackOverflow}
 ];
 
 @NgModule({
   exports: [RouterModule],
   imports: [
-    RouterModule.forRoot(DemoAppRoutes)
+    RouterModule.forRoot(DEMO_APP_ROUTES)
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ]
 })
-export class DemoRoutesModule { }
-
-// These components are already exported in their associated Feature modules
-// export const DemoAppRoutingComponents = [DemosLayoutAPI, DemosResponsiveLayout, DemosGithubIssues, DemosStackOverflow];
+export class DemoRoutesModule {
+}

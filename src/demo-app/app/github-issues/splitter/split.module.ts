@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from "../../../../lib";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { SplitDirective } from './split.directive';
 import { SplitAreaDirective } from './split-area.directive';

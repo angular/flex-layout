@@ -19,7 +19,7 @@
 
     "unit-case": "lower",
     "unit-no-unknown": true,
-    "unit-whitelist": ["px", "%", "deg", "ms", "em", "vh", "vw"],
+    "unit-whitelist": ["px", "%", "deg", "ms", "em", "vh", "vw", "vmin"],
 
     "value-list-comma-space-after": "always-single-line",
     "value-list-comma-space-before": "never",
@@ -31,13 +31,16 @@
     "declaration-block-no-duplicate-properties": [ true, {
       "ignore": ["consecutive-duplicates-with-different-values"]
     }],
-    "declaration-block-no-ignored-properties": true,
     "declaration-block-trailing-semicolon": "always",
     "declaration-block-single-line-max-declarations": 1,
     "declaration-block-semicolon-space-before": "never",
     "declaration-block-semicolon-space-after": "always-single-line",
     "declaration-block-semicolon-newline-before": "never-multi-line",
     "declaration-block-semicolon-newline-after": "always-multi-line",
+    "declaration-property-value-blacklist": [
+        { "/.*/": ["initial"] },
+        { "message": "The `initial` value is not supported in IE."}
+    ],
 
     "block-closing-brace-newline-after": "always",
     "block-closing-brace-newline-before": "always-multi-line",
@@ -54,7 +57,6 @@
     "selector-pseudo-element-case": "lower",
     "selector-pseudo-element-colon-notation": "double",
     "selector-pseudo-element-no-unknown": true,
-    "selector-type-case": "lower",
-    "selector-no-id": true
+    "selector-type-case": "lower"
   }
 }

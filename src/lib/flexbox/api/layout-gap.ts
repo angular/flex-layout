@@ -143,14 +143,14 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    *
    */
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput("gap") || '0';
+    value = value || this._queryInput('gap') || '0';
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
 
     // Gather all non-hidden Element nodes
     let items = this.childrenNodes
-        .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != "none");
+        .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
     let numItems = items.length;
 
     if (numItems > 1) {
@@ -158,7 +158,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
       // For each `element` children EXCEPT the last,
       // set the margin right/bottom styles...
-      items = items.filter((el, j) => j < numItems - 1);
+      items = items.filter((_, j) => j < numItems - 1);
       this._applyStyleToElements(this._buildCSS(value), items);
 
       // Clear all gaps for all visible elements
@@ -183,7 +183,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       case 'column-reverse':
         key = 'margin-bottom';
         break;
-      case "row" :
+      case 'row' :
       case 'row-reverse':
       default :
         key = 'margin-right';

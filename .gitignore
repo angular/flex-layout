@@ -1,62 +1,26 @@
-# Logs
-logs
-*.log
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Runtime data
-pids
-*.pid
-*.seed
-
-# Coverage directory used by tools like istanbul
-coverage
-
-# Webpack Analyzer
-report.html
-
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
-# Users Environment Variables
-.lock-wscript
-yarn.lock
-yarn-error.log
-
-# OS generated files #
-.DS_Store
-ehthumbs.db
-Icon?
-Thumbs.db
-
-# Node Files #
-/node_modules
-/bower_components
-npm-debug.log
-
-# Coverage #
-/coverage/
-
-# Typing #
-/src/typings/tsd/
-/typings/
-/tsd_typings/
-
-# Dist #
+# compiled output
 /dist
-/demos
-/public/__build__/
-/src/*/__build__/
-/__build__/**
-/public/dist/
-/src/*/dist/
-/dist/**
-/.awcache
-.webpack.json
+/tmp
+/deploy
+/screenshots
 
-# Doc #
-/doc/
+# dependencies
+node_modules
+/bower_components
 
-# IDE #
-.idea/
-.vscode/
-*.swp
-!/src/lib/flexbox/media-query/media-query-activation.ts
+# IDEs
+/.idea
+/.vscode
+
+# misc
+.DS_Store
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+/.chrome
+!/test/karma.conf.js

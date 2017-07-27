@@ -36,8 +36,8 @@ describe('hide directive', () => {
 
     return fixture;
   };
-  let makeExpectWithActivation = (_fixture_: ComponentFixture<any>, selector: string) => {
-    fixture = _fixture_;
+  let makeExpectWithActivation = (_fixture: ComponentFixture<any>, selector: string) => {
+    fixture = _fixture;
     return (alias?: string): NgMatchers => {
       if (alias) {
         matchMedia.activate(alias);
@@ -247,7 +247,7 @@ export class TestHideComponent implements OnInit {
   isHidden = true;
   menuHidden = true;
 
-  constructor(private media: ObservableMedia) {
+  constructor(public media: ObservableMedia) {
   }
 
   toggleMenu() {

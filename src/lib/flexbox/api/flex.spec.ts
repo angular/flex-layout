@@ -13,7 +13,7 @@ import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {FlexLayoutModule} from '../_module';
+import {FlexLayoutModule} from '../../module';
 import {FlexDirective} from '../../flexbox/api/flex';
 import {LayoutDirective} from '../../flexbox/api/layout';
 
@@ -75,7 +75,7 @@ describe('flex directive', () => {
     });
 
     it('should add correct styles for `fxFlex="0%"` usage', () => {
-      expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='2%'></div>`).toHaveCssStyle({
         'max-width': '2%',
         'flex': '1 1 100%',
         'box-sizing': 'border-box',
@@ -83,20 +83,20 @@ describe('flex directive', () => {
     });
 
     it('should work with percentage values', () => {
-      expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='37%'></div>`).toHaveCssStyle({
         'flex': '1 1 100%',
         'max-width': '37%',
         'box-sizing': 'border-box',
       });
     });
     it('should work with pixel values', () => {
-      expectDOMFrom(`<div fxFlex="37px"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='37px'></div>`).toHaveCssStyle({
         'flex': '1 1 37px',
         'box-sizing': 'border-box',
       });
     });
     it('should work with "1 0 auto" values', () => {
-      expectDOMFrom(`<div fxFlex="1 0 auto"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='1 0 auto'></div>`).toHaveCssStyle({
         'flex': '1 0 auto',
         'box-sizing': 'border-box',
       });
@@ -104,8 +104,8 @@ describe('flex directive', () => {
 
     it('should work fxLayout parents', () => {
       componentWithTemplate(`
-        <div fxLayout="column" class="test">
-          <div fxFlex="30px" fxFlex.gt-sm="50"  >  </div>
+        <div fxLayout='column' class='test'>
+          <div fxFlex='30px' fxFlex.gt-sm='50'  >  </div>
         </div>
       `);
       fixture.detectChanges();
@@ -121,8 +121,8 @@ describe('flex directive', () => {
     it('should not work with non-direct-parent fxLayouts', async(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
-          <div class="test">
-            <div fxFlex="40px" fxFlex.gt-sm="50"  >  </div>
+          <div class='test'>
+            <div fxFlex='40px' fxFlex.gt-sm='50'  >  </div>
           </div>
         </div>
       `);
@@ -143,9 +143,9 @@ describe('flex directive', () => {
 
     it('should work with styled-parent flex directions', () => {
       componentWithTemplate(`
-        <div fxLayout="row">
-          <div style="flex-direction:column" class="parent">
-            <div fxFlex="60px" >  </div>
+        <div fxLayout='row'>
+          <div style='flex-direction:column' class='parent'>
+            <div fxFlex='60px' >  </div>
           </div>
         </div>
       `);
@@ -160,10 +160,10 @@ describe('flex directive', () => {
 
     it('should work with "1 1 auto" values', () => {
       componentWithTemplate(`
-        <div fxLayout="column">
-          <div fxFlex="auto" fxFlex.gt-sm="50"  >  </div>
-          <div fxFlex="auto" fxFlex.gt-sm="24.4">  </div>
-          <div fxFlex="auto" fxFlex.gt-sm="25.6">  </div>
+        <div fxLayout='column'>
+          <div fxFlex='auto' fxFlex.gt-sm='50'  >  </div>
+          <div fxFlex='auto' fxFlex.gt-sm='24.4'>  </div>
+          <div fxFlex='auto' fxFlex.gt-sm='25.6'>  </div>
         </div>
       `);
       fixture.detectChanges();
@@ -181,7 +181,7 @@ describe('flex directive', () => {
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       if (!isIE) {
-        expectDOMFrom(`<div fxFlex="calc(30vw - 10px)"></div>`).toHaveCssStyle({
+        expectDOMFrom(`<div fxFlex='calc(30vw - 10px)'></div>`).toHaveCssStyle({
           'box-sizing': 'border-box',
           'flex': '1 1 calc(30vw - 10px)'
         });
@@ -204,50 +204,50 @@ describe('flex directive', () => {
     }));
 
     it('should work with "auto" values', () => {
-      expectDOMFrom(`<div fxFlex="auto"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='auto'></div>`).toHaveCssStyle({
         'flex': '1 1 auto'
       });
     });
     it('should work with "nogrow" values', () => {
-      expectDOMFrom(`<div fxFlex="nogrow"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='nogrow'></div>`).toHaveCssStyle({
         'flex': '0 1 auto'
       });
     });
     it('should work with "grow" values', () => {
-      expectDOMFrom(`<div fxFlex="grow"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='grow'></div>`).toHaveCssStyle({
         'flex': '1 1 100%'
       });
     });
     it('should work with "initial" values', () => {
-      expectDOMFrom(`<div fxFlex="initial"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='initial'></div>`).toHaveCssStyle({
         'flex': '0 1 auto'
       });
     });
     it('should work with "noshrink" values', () => {
-      expectDOMFrom(`<div fxFlex="noshrink"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='noshrink'></div>`).toHaveCssStyle({
         'flex': '1 0 auto'
       });
     });
     it('should work with "none" values', () => {
-      expectDOMFrom(`<div fxFlex="none"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='none'></div>`).toHaveCssStyle({
         'flex': '0 0 auto'
       });
     });
 
     it('should work with full-spec values', () => {
-      expectDOMFrom(`<div fxFlex="1 2 0.9em"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='1 2 0.9em'></div>`).toHaveCssStyle({
         'flex': '1 2 0.9em'
       });
     });
     it('should set a min-width when the shrink == 0', () => {
-      expectDOMFrom(`<div fxFlex="1 0 37px"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='1 0 37px'></div>`).toHaveCssStyle({
         'flex': '1 0 37px',
         'min-width': '37px',
         'box-sizing': 'border-box',
       });
     });
     it('should set a min-width and max-width when the grow == 0 and shrink == 0', () => {
-      expectDOMFrom(`<div fxFlex="0 0 375px"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='0 0 375px'></div>`).toHaveCssStyle({
         'flex': '0 0 375px',
         'max-width': '375px',
         'min-width': '375px',
@@ -257,13 +257,13 @@ describe('flex directive', () => {
 
 
     it('should not set max-width to 69px when fxFlex="1 0 69px"', () => {
-      expectDOMFrom(`<div fxFlex="1 0 69px"></div>`).not.toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='1 0 69px'></div>`).not.toHaveCssStyle({
         'max-width': '69px',
       });
     });
 
     it('should not set a max-width when the shrink == 0', () => {
-      componentWithTemplate(`<div fxFlex="1 0 303px"></div>`);
+      componentWithTemplate(`<div fxFlex='1 0 303px'></div>`);
       fixture.detectChanges();
 
       let dom = fixture.debugElement.children[0].nativeElement;
@@ -273,13 +273,13 @@ describe('flex directive', () => {
     });
 
     it('should not set min-width to 96px when fxFlex="0 1 96px"', () => {
-      expectDOMFrom(`<div fxFlex="0 1 96px"></div>`).not.toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='0 1 96px'></div>`).not.toHaveCssStyle({
         'min-width': '96px',
       });
     });
 
     it('should not set a min-width when the grow == 0', () => {
-      componentWithTemplate(`<div fxFlex="0 1 313px"></div>`);
+      componentWithTemplate(`<div fxFlex='0 1 313px'></div>`);
       fixture.detectChanges();
 
       let dom = fixture.debugElement.children[0].nativeElement;
@@ -289,7 +289,7 @@ describe('flex directive', () => {
     });
 
     it('should set a min-width when basis is a Px value', () => {
-      expectDOMFrom(`<div fxFlex="312px"></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlex='312px'></div>`).toHaveCssStyle({
         'flex': '1 1 312px',
         'max-width': '312px',
         'min-width': '312px'
@@ -300,7 +300,7 @@ describe('flex directive', () => {
 
       it('should ignore fxLayout settings on same element', () => {
         expectDOMFrom(`
-          <div fxLayout="column" fxFlex="37%">
+          <div fxLayout='column' fxFlex='37%'>
           </div>
         `)
             .not.toHaveCssStyle({
@@ -312,12 +312,12 @@ describe('flex directive', () => {
 
       it('should set max-height for `fxFlex="<%val>"` with parent using fxLayout="column" ', () => {
         let template = `
-          <div fxLayout="column">
-            <div fxFlex="37%"></div>
+          <div fxLayout='column'>
+            <div fxFlex='37%'></div>
           </div>
         `;
 
-        expectDomForQuery(template, "[fxFlex]")
+        expectDomForQuery(template, '[fxFlex]')
             .toHaveCssStyle({
               'flex': '1 1 100%',
               'max-height': '37%',
@@ -325,14 +325,14 @@ describe('flex directive', () => {
       });
 
       it('should set max-width for `fxFlex="<%val>"`', () => {
-        expectDOMFrom(`<div fxFlex="37%"></div>`).toHaveCssStyle({
+        expectDOMFrom(`<div fxFlex='37%'></div>`).toHaveCssStyle({
           'flex': '1 1 100%',
           'max-width': '37%',
         });
       });
 
       it('should set max-width for `fxFlex="2%"` usage', () => {
-        expectDOMFrom(`<div fxFlex="2%"></div>`).toHaveCssStyle({
+        expectDOMFrom(`<div fxFlex='2%'></div>`).toHaveCssStyle({
           'flex': '1 1 100%',
           'max-width': '2%',
         });
@@ -345,9 +345,9 @@ describe('flex directive', () => {
 
     it('should initialize the component with the largest matching breakpoint', () => {
       componentWithTemplate(`
-        <div  fxFlex="auto"
-              fxFlex.gt-xs="33%"
-              fxFlex.gt-sm="50%" >
+        <div  fxFlex='auto'
+              fxFlex.gt-xs='33%'
+              fxFlex.gt-sm='50%' >
         </div>
       `);
 
@@ -370,10 +370,10 @@ describe('flex directive', () => {
 
     it('should fallback properly to default flex values', () => {
       componentWithTemplate(`
-        <div fxLayout="column">
-          <div fxFlex="auto" fxFlex.gt-sm="50"  >  </div>
-          <div fxFlex="auto" fxFlex.gt-sm="24.4">  </div>
-          <div fxFlex="auto" fxFlex.gt-sm="25.6">  </div>
+        <div fxLayout='column'>
+          <div fxFlex='auto' fxFlex.gt-sm='50'  >  </div>
+          <div fxFlex='auto' fxFlex.gt-sm='24.4'>  </div>
+          <div fxFlex='auto' fxFlex.gt-sm='25.6'>  </div>
         </div>
       `);
 
@@ -381,7 +381,7 @@ describe('flex directive', () => {
       matchMedia.activate('sm');
       fixture.detectChanges();
 
-      let nodes = queryFor(fixture, "[fxFlex]");
+      let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
@@ -390,7 +390,7 @@ describe('flex directive', () => {
       matchMedia.activate('xl');
       fixture.detectChanges();
 
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '50%'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '24.4%'});
       expect(nodes[2].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '25.6%'});
@@ -398,7 +398,7 @@ describe('flex directive', () => {
       matchMedia.activate('sm');
       fixture.detectChanges();
 
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
@@ -414,16 +414,16 @@ describe('flex directive', () => {
 
     it('should fallback to the default layout from gt-md selectors', () => {
       componentWithTemplate(`
-        <div fxLayout="column">
-          <div fxFlex="auto" fxFlex.gt-md="50"  >  </div>
-          <div fxFlex="auto" fxFlex.gt-md="24.4">  </div>
-          <div fxFlex="auto" fxFlex.gt-md="25.6">  </div>
+        <div fxLayout='column'>
+          <div fxFlex='auto' fxFlex.gt-md='50'  >  </div>
+          <div fxFlex='auto' fxFlex.gt-md='24.4'>  </div>
+          <div fxFlex='auto' fxFlex.gt-md='25.6'>  </div>
         </div>
       `);
 
       matchMedia.activate('md');
       fixture.detectChanges();
-      let nodes = queryFor(fixture, "[fxFlex]");
+      let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(3);
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
@@ -432,7 +432,7 @@ describe('flex directive', () => {
 
       matchMedia.activate('sm');
       fixture.detectChanges();
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
@@ -440,7 +440,7 @@ describe('flex directive', () => {
 
       matchMedia.activate('lg', true);
       fixture.detectChanges();
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '50%'});
       expect(nodes[1].nativeElement).toHaveCssStyle({'flex': '1 1 100%', 'max-height': '24.4%'});
@@ -449,21 +449,21 @@ describe('flex directive', () => {
 
     it('should fallback to the default layout from lt-md selectors', () => {
       componentWithTemplate(`
-        <div fxLayout="column">
-          <div fxFlex="auto" fxFlex.lt-md="50"  >  </div>
+        <div fxLayout='column'>
+          <div fxFlex='auto' fxFlex.lt-md='50'  >  </div>
         </div>
       `);
 
       matchMedia.activate('md', true);
       fixture.detectChanges();
-      let nodes = queryFor(fixture, "[fxFlex]");
+      let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(1);
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
 
       matchMedia.activate('sm', true);
       fixture.detectChanges();
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes[0].nativeElement).toHaveCssStyle({
         'flex': '1 1 100%',
@@ -472,7 +472,7 @@ describe('flex directive', () => {
 
       matchMedia.activate('lg', true);
       fixture.detectChanges();
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes[0].nativeElement).toHaveCssStyle({'flex': '1 1 auto'});
 
@@ -509,7 +509,7 @@ describe('flex directive', () => {
       expect(flex).toBeDefined();
       expect(flex.activatedValue).toBe('50%');
 
-      let nodes = queryFor(fixture, "[fxFlex]");
+      let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(1);
       expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '50%'});
 
@@ -517,7 +517,7 @@ describe('flex directive', () => {
       flex.activatedValue = '35';
       expect(flex.activatedValue).toBe('35');
 
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(1);
       expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
 
@@ -525,7 +525,7 @@ describe('flex directive', () => {
       flex.activatedValue = '27.5px';
       expect(flex.activatedValue).toBe('27.5px');
 
-      nodes = queryFor(fixture, "[fxFlex]");
+      nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(1);
       expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '27.5px'});
 
@@ -543,7 +543,7 @@ describe('flex directive', () => {
           flex.activatedValue = '35';
           expect(flex.activatedValue).toBe('35');
 
-          let nodes = queryFor(fixture, "[fxFlex]");
+          let nodes = queryFor(fixture, '[fxFlex]');
           expect(nodes.length).toEqual(1);
           expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
 
@@ -552,7 +552,7 @@ describe('flex directive', () => {
 
           // Test for breakpoint value changes
           expect(flex.activatedValue).toBe('71%');
-          nodes = queryFor(fixture, "[fxFlex]");
+          nodes = queryFor(fixture, '[fxFlex]');
           expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '71%'});
 
           _matchMedia.activate('lg');
@@ -560,7 +560,7 @@ describe('flex directive', () => {
 
           // Confirm activatedValue was restored properly when `sm` deactivated
           expect(flex.activatedValue).toBe('35');
-          nodes = queryFor(fixture, "[fxFlex]");
+          nodes = queryFor(fixture, '[fxFlex]');
           expect(nodes[0].nativeElement).toHaveCssStyle({'max-width': '35%'});
 
         })
@@ -579,14 +579,14 @@ describe('flex directive', () => {
   template: `<span>PlaceHolder Template HTML</span>`
 })
 export class TestFlexComponent {
-  public direction = "column";
+  public direction = 'column';
 }
 
 @Component({
   selector: 'test-query-with-flex',
   template: `
     <div fxLayout>
-      <div fxFlex="50%" fxFlex.sm="71%"></div>
+      <div fxFlex='50%' fxFlex.sm='71%'></div>
     </div>
   `
 })

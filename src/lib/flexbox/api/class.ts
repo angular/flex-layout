@@ -25,6 +25,12 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
 
 /**
+ * Explicitly export the NgStyle super class type for ngc/AOT compiles
+ * Workaround for https://github.com/angular/angular/issues/17849
+ */
+export const _ClassDirectiveBaseClass = NgClass;
+
+/**
  * Directive to add responsive support for ngClass.
  */
 @Directive({
@@ -38,7 +44,8 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
 })
-export class ClassDirective extends NgClass implements DoCheck, OnChanges, OnDestroy {
+export class ClassDirective extends _ClassDirectiveBaseClass
+    implements DoCheck, OnChanges, OnDestroy {
 
   /**
    * Intercept ngClass assignments so we cache the default classes

@@ -43,7 +43,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   protected _layoutWatcher: Subscription;
 
   /* tslint:disable */
-  @Input('fxLayoutWrap')       set wrap(val)     { this._cacheInput("wrap", val); }
+  @Input('fxLayoutWrap')       set wrap(val)     { this._cacheInput('wrap', val); }
   @Input('fxLayoutWrap.xs')    set wrapXs(val)   { this._cacheInput('wrapXs', val); }
   @Input('fxLayoutWrap.sm')    set wrapSm(val)   { this._cacheInput('wrapSm', val); };
   @Input('fxLayoutWrap.md')    set wrapMd(val)   { this._cacheInput('wrapMd', val); };
@@ -119,7 +119,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   }
 
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput("wrap");
+    value = value || this._queryInput('wrap');
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }

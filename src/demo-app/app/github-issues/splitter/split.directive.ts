@@ -5,7 +5,7 @@ import {
 
 import {SplitAreaDirective} from './split-area.directive';
 import {SplitHandleDirective} from './split-handle.directive';
-import {FlexDirective} from "../../../../lib";
+import {FlexDirective} from '@angular/flex-layout';
 import {Subscription} from 'rxjs/Subscription';
 
 @Directive({
@@ -15,7 +15,7 @@ import {Subscription} from 'rxjs/Subscription';
   }
 })
 export class SplitDirective implements AfterContentInit, OnDestroy {
-  watcher : Subscription;
+  watcher: Subscription;
 
   @Input('ngxSplit')
   direction: string = 'row';
@@ -23,7 +23,8 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
   @ContentChild(SplitHandleDirective) handle: SplitHandleDirective;
   @ContentChildren(SplitAreaDirective) areas: QueryList<SplitAreaDirective>;
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef) {
+  }
 
   ngAfterContentInit(): void {
     this.watcher = this.handle.drag.subscribe(pos => this.onDrag(pos));
@@ -53,7 +54,7 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
 
   /**
    * Use the pixel delta change to recalculate the area size (%)
-   * Note: flex value may be "", %, px, or "<grow> <shrink> <basis>"
+   * Note: flex value may be '', %, px, or '<grow> <shrink> <basis>'
    */
   calculateSize(value, delta) {
     const containerSizePx = this.elementRef.nativeElement.clientWidth;
@@ -67,11 +68,11 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
    * Convert the pixel or percentage value to a raw
    * pixel float value.
    */
-  valueToPixel(value:string|number, parentWidth:number):number {
+  valueToPixel(value: string | number, parentWidth: number): number {
     let isPercent = () => String(value).indexOf('px') < 0;
     let size = parseFloat(String(value));
-    if ( isPercent() ) {
-        size = parentWidth * (size/100);  // Convert percentage to actual pixel float value
+    if (isPercent()) {
+      size = parentWidth * (size / 100);  // Convert percentage to actual pixel float value
     }
     return size;
   }

@@ -108,7 +108,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
           get message() {
             return `
               Expected ${actual.outerHTML} ${isNot ? 'not ' : ''}
-              to contain the CSS class "${className}"
+              to contain the CSS class '${className}'
             `;
           }
         };
@@ -130,7 +130,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
           get message() {
             return `
               Expected ${JSON.stringify(actual)} ${!allPassed ? ' ' : 'not '} to contain the
-              "${JSON.stringify(map)}"
+              '${JSON.stringify(map)}'
             `;
           }
         };
@@ -157,7 +157,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
             const expectedValueStr = typeof styles === 'string' ? styles : JSON.stringify(styles);
             return `
               Expected ${actual.outerHTML} ${!allPassed ? ' ' : 'not '} to contain the
-              CSS ${typeof styles === 'string' ? 'property' : 'styles'} "${expectedValueStr}"
+              CSS ${typeof styles === 'string' ? 'property' : 'styles'} '${expectedValueStr}'
             `;
           }
         };
@@ -173,7 +173,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
  * (Safari, IE, etc) will use prefixed style instead of defaults.
  */
 function hasPrefixedStyles(actual, key, value) {
-  value = value !== "*" ? value.trim() : undefined;
+  value = value !== '*' ? value.trim() : undefined;
   let elHasStyle = _.hasStyle(actual, key, value);
   if (!elHasStyle) {
     let prefixedStyles = applyCssPrefixes({[key]: value});
@@ -188,7 +188,7 @@ function hasPrefixedStyles(actual, key, value) {
 function elementText(n: any): string {
   const hasNodes = (m: any) => {
     const children = _.childNodes(m);
-    return children && children["length"];
+    return children && children['length'];
   };
 
   if (n instanceof Array) {

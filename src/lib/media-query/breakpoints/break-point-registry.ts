@@ -8,7 +8,7 @@
 import {Injectable, Inject} from '@angular/core';
 
 import {BreakPoint} from './break-point';
-import {BREAKPOINTS} from "./break-points-token";
+import {BREAKPOINTS} from './break-points-token';
 
 
 /**

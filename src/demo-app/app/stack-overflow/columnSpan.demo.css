@@ -14,11 +14,10 @@
   margin-bottom: 24px;
 }
 
-div.container
-{
-    display:flex;
-    margin-bottom: 10px;
-    color: white;
+div.container {
+  display: flex;
+  margin-bottom: 10px;
+  color: white;
 }
 
 .container div[ng-reflect-flex*=calc] {
@@ -31,23 +30,20 @@ div.container
   color: white;
 }
 
-
-div.container > div
-{
-    flex: 1 1 5em;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    background-color: #03A9F4;
-    margin-left: 10px;
-    height:50px;
-    padding-left: 10px;
-    padding-top:10px;
+div.container > div {
+  flex: 1 1 5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background-color: #03a9f4;
+  margin-left: 10px;
+  height: 50px;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
-div.container > div:first-child
-{
-    margin-left: 0;
+div.container > div:first-child {
+  margin-left: 0;
 }

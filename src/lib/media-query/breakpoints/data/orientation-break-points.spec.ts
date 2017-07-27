@@ -6,11 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-// RxJS Operators used by the classes...
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {BreakPoint} from '../break-point';
@@ -35,8 +30,8 @@ describe('break-point-provider', () => {
         providers: [DEFAULT_BREAKPOINTS_PROVIDER]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (_breakPoints_) => {
-      breakPoints = _breakPoints_;
+    beforeEach(async(inject([BREAKPOINTS], (_) => {
+      breakPoints = _;
     })));
 
     it('has the only standard default breakpoints without internal custom breakpoints', () => {
