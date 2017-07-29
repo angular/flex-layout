@@ -9,17 +9,19 @@
     "url": "git+https://github.com/angular/flex-layout.git"
   },
   "scripts": {
+    "api": "gulp api-docs",
     "build": "gulp :publish:build-releases",
+    "closure": "./scripts/closure-compiler/build-devapp-bundle.sh",
     "demo-app": "gulp serve:devapp",
-    "test": "gulp test",
-    "tslint": "gulp lint",
-    "stylelint": "gulp lint",
-    "e2e": "gulp e2e",
+    "docs": "gulp docs",
     "deploy": "gulp deploy:devapp",
     "stage": "gulp stage-deploy:devapp",
+    "stylelint": "gulp lint",
+    "test": "gulp test",
+    "tslint": "gulp lint",
     "webdriver-manager": "webdriver-manager",
-    "docs": "gulp docs",
-    "api": "gulp api-docs"
+    "universal": "gulp universal:build",
+    "universal:test": "gulp ci:prerender"
   },
   "version": "2.0.0-beta.8",
   "license": "MIT",

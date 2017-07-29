@@ -45,6 +45,7 @@ System.config({
     '@angular/platform-browser-dynamic/testing':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
     '@angular/material': 'node:@angular/material/bundles/material.umd.js',
+    '@angular/material': 'node:@angular/material/bundles/material.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.

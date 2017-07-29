@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable, NgZone} from '@angular/core';
-
+import {Inject, Injectable, NgZone} from '@angular/core';
+import {ɵgetDOM as getDom, DOCUMENT} from '@angular/platform-browser';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {filter} from 'rxjs/operator/filter';
@@ -27,7 +27,9 @@ export interface MediaQueryListListener {
 export interface MediaQueryList {
   readonly matches: boolean;
   readonly media: string;
+
   addListener(listener: MediaQueryListListener): void;
+
   removeListener(listener: MediaQueryListListener): void;
 }
 
@@ -45,7 +47,7 @@ export class MatchMedia {
   protected _source: BehaviorSubject<MediaChange>;
   protected _observable$: Observable<MediaChange>;
 
-  constructor(protected _zone: NgZone) {
+  constructor(protected _zone: NgZone, @Inject(DOCUMENT) protected _document: any) {
     this._registry = new Map<string, MediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
@@ -86,7 +88,7 @@ export class MatchMedia {
     let list = normalizeQuery(mediaQuery);
 
     if (list.length > 0) {
-      prepareQueryCSS(list);
+      prepareQueryCSS(list, this._document);
 
       list.forEach(query => {
         let mql = this._registry.get(query);
@@ -114,8 +116,9 @@ export class MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected  _buildMQL(query: string): MediaQueryList {
-    let canListen = !!(<any>window).matchMedia('all').addListener;
+  protected _buildMQL(query: string): MediaQueryList {
+    let canListen = isBrowser() && !!(<any>window).matchMedia('all').addListener;
+
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
       matches: query === 'all' || query === '',
       media: query,
@@ -125,6 +128,13 @@ export class MatchMedia {
       }
     };
   }
+}
+
+/**
+ * Determine if SSR or Browser rendering.
+ */
+export function isBrowser() {
+  return getDom().supportsDOMEvents();
 }
 
 /**
@@ -140,27 +150,28 @@ const ALL_STYLES = {};
  * @param query string The mediaQuery used to create a faux CSS selector
  *
  */
-function prepareQueryCSS(mediaQueries: string[]) {
+function prepareQueryCSS(mediaQueries: string[], _document: any) {
   let list = mediaQueries.filter(it => !ALL_STYLES[it]);
   if (list.length > 0) {
     let query = list.join(', ');
-    try {
-      let style = document.createElement('style');
 
-      style.setAttribute('type', 'text/css');
-      if (!style['styleSheet']) {
+    try {
+      let styleEl = getDom().createElement('style');
+
+      getDom().setAttribute(styleEl, 'type', 'text/css');
+      if (!styleEl['styleSheet']) {
         let cssText = `/*
   @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
   see http://bit.ly/2sd4HMP
 */
 @media ${query} {.fx-query-test{ }}`;
-        style.appendChild(document.createTextNode(cssText));
+        getDom().appendChild(styleEl, getDom().createTextNode(cssText));
       }
 
-      document.getElementsByTagName('head')[0].appendChild(style);
+      getDom().appendChild(_document.head, styleEl);
 
       // Store in private global registry
-      list.forEach(mq => ALL_STYLES[mq] = style);
+      list.forEach(mq => ALL_STYLES[mq] = styleEl);
 
     } catch (e) {
       console.error(e);
