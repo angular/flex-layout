@@ -13,12 +13,14 @@ export interface MediaQueryList {
 }
 export declare class MatchMedia {
     protected _zone: NgZone;
+    protected _document: any;
     protected _registry: Map<string, MediaQueryList>;
     protected _source: BehaviorSubject<MediaChange>;
     protected _observable$: Observable<MediaChange>;
-    constructor(_zone: NgZone);
+    constructor(_zone: NgZone, _document: any);
     isActive(mediaQuery: string): boolean;
     observe(mediaQuery?: string): Observable<MediaChange>;
     registerQuery(mediaQuery: string | string[]): void;
     protected _buildMQL(query: string): MediaQueryList;
 }
+export declare function isBrowser(): boolean;

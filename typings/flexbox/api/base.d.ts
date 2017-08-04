@@ -18,6 +18,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _getDefaultVal(key: string, fallbackVal: any): string | boolean;
     protected _getDisplayStyle(source?: HTMLElement): string;
     protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
+    protected _lookupStyle(element: HTMLElement, styleName: string): any;
     protected _applyMultiValueStyleToElement(styles: {}, element: any): void;
     protected _applyStyleToElement(style: StyleDefinition, value?: string | number, nativeElement?: any): void;
     protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]): void;

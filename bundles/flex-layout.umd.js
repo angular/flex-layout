@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('rxjs/BehaviorSubject'), require('rxjs/operator/filter'), require('rxjs/operator/map'), require('@angular/common'), require('@angular/platform-browser')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', 'rxjs/BehaviorSubject', 'rxjs/operator/filter', 'rxjs/operator/map', '@angular/common', '@angular/platform-browser'], factory) :
-	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}),global.ng.core,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.common,global.ng.platformBrowser));
-}(this, (function (exports,_angular_core,rxjs_BehaviorSubject,rxjs_operator_filter,rxjs_operator_map,_angular_common,_angular_platformBrowser) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/platform-browser'), require('rxjs/BehaviorSubject'), require('rxjs/operator/filter'), require('rxjs/operator/map'), require('@angular/common')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/platform-browser', 'rxjs/BehaviorSubject', 'rxjs/operator/filter', 'rxjs/operator/map', '@angular/common'], factory) :
+	(factory((global.ng = global.ng || {}, global.ng['flex-layout'] = global.ng['flex-layout'] || {}),global.ng.core,global.ng.platformBrowser,global.Rx,global.Rx.Observable.prototype,global.Rx.Observable.prototype,global.ng.common));
+}(this, (function (exports,_angular_core,_angular_platformBrowser,rxjs_BehaviorSubject,rxjs_operator_filter,rxjs_operator_map,_angular_common) { 'use strict';
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -54,8 +54,9 @@ var MediaChange = (function () {
     return MediaChange;
 }());
 var MatchMedia = (function () {
-    function MatchMedia(_zone) {
+    function MatchMedia(_zone, _document) {
         this._zone = _zone;
+        this._document = _document;
         this._registry = new Map();
         this._source = new rxjs_BehaviorSubject.BehaviorSubject(new MediaChange(true));
         this._observable$ = this._source.asObservable();
@@ -77,7 +78,7 @@ var MatchMedia = (function () {
         var _this = this;
         var list = normalizeQuery(mediaQuery);
         if (list.length > 0) {
-            prepareQueryCSS(list);
+            prepareQueryCSS(list, this._document);
             list.forEach(function (query) {
                 var mql = _this._registry.get(query);
                 var onMQLEvent = function (e) {
@@ -98,7 +99,7 @@ var MatchMedia = (function () {
         }
     };
     MatchMedia.prototype._buildMQL = function (query) {
-        var canListen = !!((window)).matchMedia('all').addListener;
+        var canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
         return canListen ? ((window)).matchMedia(query) : ({
             matches: query === 'all' || query === '',
             media: query,
@@ -115,21 +116,25 @@ MatchMedia.decorators = [
 ];
 MatchMedia.ctorParameters = function () { return [
     { type: _angular_core.NgZone, },
+    { type: undefined, decorators: [{ type: _angular_core.Inject, args: [_angular_platformBrowser.DOCUMENT,] },] },
 ]; };
+function isBrowser() {
+    return _angular_platformBrowser.ɵgetDOM().supportsDOMEvents();
+}
 var ALL_STYLES = {};
-function prepareQueryCSS(mediaQueries) {
+function prepareQueryCSS(mediaQueries, _document) {
     var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
     if (list.length > 0) {
         var query = list.join(', ');
         try {
-            var style_1 = document.createElement('style');
-            style_1.setAttribute('type', 'text/css');
-            if (!style_1['styleSheet']) {
+            var styleEl_1 = _angular_platformBrowser.ɵgetDOM().createElement('style');
+            _angular_platformBrowser.ɵgetDOM().setAttribute(styleEl_1, 'type', 'text/css');
+            if (!styleEl_1['styleSheet']) {
                 var cssText = "/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}";
-                style_1.appendChild(document.createTextNode(cssText));
+                _angular_platformBrowser.ɵgetDOM().appendChild(styleEl_1, _angular_platformBrowser.ɵgetDOM().createTextNode(cssText));
             }
-            document.getElementsByTagName('head')[0].appendChild(style_1);
-            list.forEach(function (mq) { return ALL_STYLES[mq] = style_1; });
+            _angular_platformBrowser.ɵgetDOM().appendChild(_document.head, styleEl_1);
+            list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
         }
         catch (e) {
             console.error(e);
@@ -806,25 +811,32 @@ var BaseFxDirective = (function () {
     };
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
-        var value = ((element.style))['display'] || getComputedStyle(element)['display'];
-        return value ? value.trim() : 'block';
+        var value = this._lookupStyle(element, 'display');
+        return value ? value.trim() : ((element.nodeType === 1) ? 'block' : 'inline-block');
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
-        var value = '';
+        var value = 'row';
         if (target) {
-            var directionKeys_1 = Object.keys(applyCssPrefixes({ 'flex-direction': '' }));
-            var findDirection = function (styles) { return directionKeys_1.reduce(function (direction, key) {
-                return direction || styles[key];
-            }, null); };
-            var immediateValue = findDirection(target.style);
-            value = immediateValue || findDirection(getComputedStyle((target)));
-            if (!immediateValue && addIfMissing) {
-                value = value || 'row';
+            value = this._lookupStyle(target, 'flex-direction') || 'row';
+            var hasInlineValue = _angular_platformBrowser.ɵgetDOM().getStyle(target, 'flex-direction');
+            if (!hasInlineValue && addIfMissing) {
                 this._applyStyleToElements(buildLayoutCSS(value), [target]);
             }
         }
-        return value ? value.trim() : 'row';
+        return value.trim();
+    };
+    BaseFxDirective.prototype._lookupStyle = function (element, styleName) {
+        var value = '';
+        try {
+            if (element) {
+                var immediateValue = _angular_platformBrowser.ɵgetDOM().getStyle(element, styleName);
+                value = immediateValue || _angular_platformBrowser.ɵgetDOM().getComputedStyle(element).display;
+            }
+        }
+        catch (e) {
+        }
+        return value;
     };
     BaseFxDirective.prototype._applyMultiValueStyleToElement = function (styles, element) {
         var _this = this;
@@ -872,7 +884,7 @@ var BaseFxDirective = (function () {
     };
     Object.defineProperty(BaseFxDirective.prototype, "childrenNodes", {
         get: function () {
-            var obj = this._elementRef.nativeElement.childNodes;
+            var obj = this._elementRef.nativeElement.children;
             var buffer = [];
             for (var i = obj.length; i--;) {
                 buffer[i] = obj[i];
@@ -2521,8 +2533,10 @@ var LayoutGapDirective = (function (_super) {
                 _this._updateWithValue();
             }
         };
-        this._observer = new MutationObserver(onMutationCallback);
-        this._observer.observe(this._elementRef.nativeElement, { childList: true });
+        if (typeof MutationObserver !== 'undefined') {
+            this._observer = new MutationObserver(onMutationCallback);
+            this._observer.observe(this._elementRef.nativeElement, { childList: true });
+        }
     };
     LayoutGapDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
@@ -2573,7 +2587,8 @@ var LayoutGapDirective = (function (_super) {
     return LayoutGapDirective;
 }(BaseFxDirective));
 LayoutGapDirective.decorators = [
-    { type: _angular_core.Directive, args: [{ selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
+    { type: _angular_core.Directive, args: [{
+                selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
             },] },
 ];
 LayoutGapDirective.ctorParameters = function () { return [
@@ -3340,6 +3355,7 @@ exports.BreakPointRegistry = BreakPointRegistry;
 exports.ObservableMedia = ObservableMedia;
 exports.MediaService = MediaService;
 exports.MatchMedia = MatchMedia;
+exports.isBrowser = isBrowser;
 exports.MediaChange = MediaChange;
 exports.MediaMonitor = MediaMonitor;
 exports.buildMergedBreakPoints = buildMergedBreakPoints;
