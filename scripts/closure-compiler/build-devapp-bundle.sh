@@ -9,7 +9,7 @@ set -e -o pipefail
 cd $(dirname $0)/../..
 
 
-# Build a release of material and of the CDK package.
+# Build a release of Flex-Layout library
 $(npm bin)/gulp flex-layout:build-release:clean
 
 # Build demo-app with ES2015 modules. Closure compiler is then able to parse imports.

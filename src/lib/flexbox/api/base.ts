@@ -9,6 +9,7 @@ import {
   ElementRef, OnDestroy, SimpleChanges, OnChanges,
   SimpleChange, Renderer
 } from '@angular/core';
+import {ɵgetDOM as getDom} from '@angular/platform-browser';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {buildLayoutCSS} from '../../utils/layout-validator';
@@ -117,27 +118,40 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
-    let value = (element.style as any)['display'] || getComputedStyle(element)['display'];
-    return value ? value.trim() : 'block';
+    let value = this._lookupStyle(element, 'display');
+
+    return value ? value.trim() : ((element.nodeType === 1) ? 'block' : 'inline-block');
   }
 
   protected _getFlowDirection(target: any, addIfMissing = false): string {
-    let value = '';
-    if (target) {
-      let directionKeys = Object.keys(applyCssPrefixes({'flex-direction': ''}));
-      let findDirection = (styles) => directionKeys.reduce((direction, key) => {
-        return direction || styles[key];
-      }, null);
+    let value = 'row';
 
-      let immediateValue = findDirection(target.style);
-      value = immediateValue || findDirection(getComputedStyle(target as Element));
-      if (!immediateValue && addIfMissing) {
-        value = value || 'row';
+    if (target) {
+      value = this._lookupStyle(target, 'flex-direction') || 'row';
+
+      let hasInlineValue = getDom().getStyle(target, 'flex-direction');
+      if (!hasInlineValue && addIfMissing) {
         this._applyStyleToElements(buildLayoutCSS(value), [target]);
       }
     }
 
-    return value ? value.trim() : 'row';
+    return value.trim();
+  }
+
+  /**
+   * Determine the inline or inherited CSS style
+   */
+  protected _lookupStyle(element: HTMLElement, styleName: string): any {
+    let value = '';
+    try {
+      if (element) {
+        let immediateValue = getDom().getStyle(element, styleName);
+        value = immediateValue || getDom().getComputedStyle(element).display;
+      }
+    } catch (e) {
+      // TODO: platform-server throws an exception for getComputedStyle
+    }
+    return value;
   }
 
   /**
@@ -220,11 +234,11 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
    */
   protected get childrenNodes() {
-    const obj = this._elementRef.nativeElement.childNodes;
+    const obj = this._elementRef.nativeElement.children;
     const buffer = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for ( let i = obj.length; i--; ) {
+    for (let i = obj.length; i--; ) {
       buffer[i] = obj[i];
     }
     return buffer;

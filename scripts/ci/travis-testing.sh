@@ -39,6 +39,8 @@ elif is_aot; then
   $(npm bin)/gulp ci:aot
 elif is_unit; then
   $(npm bin)/gulp ci:test
+elif is_prerender; then
+  $(npm bin)/gulp ci:prerender
 elif is_closure_compiler; then
   ./scripts/closure-compiler/build-devapp-bundle.sh
 fi

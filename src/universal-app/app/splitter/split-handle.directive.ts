@@ -1,5 +1,6 @@
 import {Directive, ElementRef, Inject, Output} from '@angular/core';
 import {DOCUMENT} from '@angular/platform-browser';
+import { isBrowser } from '../util/helper';
 
 import {Observable} from 'rxjs/Observable';
 
@@ -20,14 +21,18 @@ export class SplitHandleDirective {
   @Output() drag: Observable<{ x: number, y: number }>;
 
   constructor(ref: ElementRef, @Inject(DOCUMENT) _document: any) {
-    const fromEvent = Observable.fromEvent;
     const getMouseEventPosition = (event: MouseEvent) => ({x: event.movementX, y: event.movementY});
 
-    const mousedown$ = fromEvent(ref.nativeElement, 'mousedown').map(getMouseEventPosition);
-    const mousemove$ = fromEvent(_document, 'mousemove').map(getMouseEventPosition);
-    const mouseup$ = fromEvent(_document, 'mouseup').map(getMouseEventPosition);
+   if ( isBrowser() ) {
+    /* tslint:disable */
+    const mousedown$ = Observable.fromEvent(ref.nativeElement, 'mousedown').map(getMouseEventPosition);
+    const mousemove$ = Observable.fromEvent(_document, 'mousemove').map(getMouseEventPosition);
+    const mouseup$ = Observable.fromEvent(_document, 'mouseup').map(getMouseEventPosition);
 
+    /* tslint:enable*/
     this.drag = mousedown$.switchMap(_ => mousemove$.takeUntil(mouseup$));
+   }
+
   }
 
 }
