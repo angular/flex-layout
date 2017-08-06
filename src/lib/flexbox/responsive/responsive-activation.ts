@@ -43,6 +43,7 @@ export class KeyOptions {
 export class ResponsiveActivation {
   private _subscribers: SubscriptionList = [];
   private _activatedInputKey: string;
+  private _registryMap: BreakPointX[];
 
   /**
    * Constructor
@@ -50,7 +51,18 @@ export class ResponsiveActivation {
   constructor(private _options: KeyOptions,
               private _mediaMonitor: MediaMonitor,
               private _onMediaChanges: MediaQuerySubscriber) {
+    this._registryMap = this._buildRegistryMap();
     this._subscribers = this._configureChangeObservers();
+  }
+
+  /**
+   * Get a readonly sorted list of the breakpoints corresponding to the directive properties
+   * defined in the HTML markup: the sorting is done from largest to smallest. The order is
+   * important when several media queries are 'registered' and from which, the browser uses the
+   * first matching media query.
+   */
+  get registryFromLargest() {
+    return [...this._registryMap].reverse();
   }
 
   /**
@@ -107,7 +119,7 @@ export class ResponsiveActivation {
   private _configureChangeObservers(): SubscriptionList {
     let subscriptions = [];
 
-    this._buildRegistryMap().forEach((bp: BreakPointX) => {
+    this._registryMap.forEach((bp: BreakPointX) => {
       if (this._keyInUse(bp.key)) {
         // Inject directive default property key name: to let onMediaChange() calls
         // know which property is being triggered...

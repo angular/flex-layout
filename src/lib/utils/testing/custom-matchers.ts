@@ -42,6 +42,11 @@ export interface NgMatchers extends jasmine.Matchers {
   toHaveCssClass(expected: string): boolean;
 
   /**
+   * Expect the element to have the given pairs of attribute name and attribute value
+   */
+  toHaveAttributes(expected: {[k: string]: string}): boolean;
+
+  /**
    * Expect the element to have the given CSS styles injected INLINE
    *
    * ## Example
@@ -140,6 +145,29 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
           get message() {
             return `
               Expected ${JSON.stringify(actual)} ${!allPassed ? ' ' : 'not '} to contain the
+              '${JSON.stringify(map)}'
+            `;
+          }
+        };
+      }
+    };
+  },
+
+  toHaveAttributes: function() {
+    return {
+      compare: function (actual: any, map: {[k: string]: string}) {
+        let allPassed: boolean;
+        let attributeNames = Object.keys(map);
+        allPassed = attributeNames.length !== 0;
+        attributeNames.forEach(name => {
+          allPassed = allPassed && _.hasAttribute(actual, name)
+          && _.getAttribute(actual, name) === map[name];
+        });
+        return {
+          pass: allPassed,
+          get message() {
+            return `
+              Expected ${actual.outerHTML} ${allPassed ? 'not ' : ''} attributes to contain
               '${JSON.stringify(map)}'
             `;
           }
@@ -248,4 +276,3 @@ function elementText(n: any): string {
 
   return _.getText(n);
 }
-
