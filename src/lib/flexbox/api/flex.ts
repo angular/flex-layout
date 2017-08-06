@@ -77,10 +77,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   @Input('fxFlex.lt-md') set flexLtMd(val) { this._cacheInput('flexLtMd', val); };
   @Input('fxFlex.lt-lg') set flexLtLg(val) { this._cacheInput('flexLtLg', val); };
   @Input('fxFlex.lt-xl') set flexLtXl(val) { this._cacheInput('flexLtXl', val); };
-
   /* tslint:enable */
-  // Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we want the
-  // parent flex container for this flex item.
+
+  // Note: Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we are looking
+  //       for the parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer,

@@ -18,7 +18,6 @@ import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activat
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 
-
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
  * map of property name and value (e.g. {display: 'none', flex-order: 5}).
@@ -120,9 +119,16 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     let element: HTMLElement = source || this._elementRef.nativeElement;
     let value = this._lookupStyle(element, 'display');
 
-    return value ? value.trim() : ((element.nodeType === 1) ? 'block' : 'inline-block');
+    return value ? value.trim() :
+        ((element.nodeType === 1) ? 'block' : 'inline-block');
   }
 
+  /**
+   * Determine the DOM element's Flexbox flow (flex-direction).
+   *
+   * Check inline style first then check computed (stylesheet) style.
+   * And optionally add the flow value to element's inline style.
+   */
   protected _getFlowDirection(target: any, addIfMissing = false): string {
     let value = 'row';
 
@@ -146,7 +152,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     try {
       if (element) {
         let immediateValue = getDom().getStyle(element, styleName);
-        value = immediateValue || getDom().getComputedStyle(element).display;
+        value = immediateValue || getDom().getComputedStyle(element).getPropertyValue(styleName);
       }
     } catch (e) {
       // TODO: platform-server throws an exception for getComputedStyle
