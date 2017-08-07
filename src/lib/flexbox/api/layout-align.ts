@@ -24,8 +24,7 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
-import {LAYOUT_VALUES} from '../../utils/layout-validator';
-
+import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 
 /**
  * 'layout-align' flexbox styling directive
@@ -204,8 +203,8 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
       // Use `null` values to remove style
       this._applyStyleToElement({
         'box-sizing': 'border-box',
-        'max-width': (layout === 'column') ? '100%' : null,
-        'max-height': (layout === 'row') ? '100%' : null
+        'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+        'max-height': isFlowHorizontal(layout) ? '100%' : null
       });
     }
   }
