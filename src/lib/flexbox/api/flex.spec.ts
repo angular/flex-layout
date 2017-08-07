@@ -118,6 +118,26 @@ describe('flex directive', () => {
       expect(element).not.toHaveCssStyle({'min-width': '30px'});
     });
 
+    it('should CSS stylesheet and not inject flex-direction on parent', () => {
+      componentWithTemplate(`
+        <style>
+          .test { flex-direction:column; display: flex; }
+        </style>
+        <div class='test'>
+          <div fxFlex='30px' fxFlex.gt-sm='50'  >  </div>
+        </div>
+      `);
+
+      fixture.detectChanges();
+      let parent = queryFor(fixture, '.test')[0].nativeElement;
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+
+      // parent flex-direction found with 'column' with child height styles
+      expect(parent).toHaveCssStyle({'flex-direction': 'column', 'display': 'flex'});
+      expect(element).toHaveCssStyle({'min-height': '30px'});
+      expect(element).not.toHaveCssStyle({'min-width': '30px'});
+    });
+
     it('should not work with non-direct-parent fxLayouts', async(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
