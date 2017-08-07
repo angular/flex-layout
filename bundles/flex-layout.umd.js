@@ -812,7 +812,8 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
         var value = this._lookupStyle(element, 'display');
-        return value ? value.trim() : ((element.nodeType === 1) ? 'block' : 'inline-block');
+        return value ? value.trim() :
+            ((element.nodeType === 1) ? 'block' : 'inline-block');
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
@@ -831,7 +832,7 @@ var BaseFxDirective = (function () {
         try {
             if (element) {
                 var immediateValue = _angular_platformBrowser.ɵgetDOM().getStyle(element, styleName);
-                value = immediateValue || _angular_platformBrowser.ɵgetDOM().getComputedStyle(element).display;
+                value = immediateValue || _angular_platformBrowser.ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
             }
         }
         catch (e) {

@@ -725,7 +725,8 @@ class BaseFxDirective {
     _getDisplayStyle(source) {
         let element = source || this._elementRef.nativeElement;
         let value = this._lookupStyle(element, 'display');
-        return value ? value.trim() : ((element.nodeType === 1) ? 'block' : 'inline-block');
+        return value ? value.trim() :
+            ((element.nodeType === 1) ? 'block' : 'inline-block');
     }
     _getFlowDirection(target, addIfMissing = false) {
         let value = 'row';
@@ -743,7 +744,7 @@ class BaseFxDirective {
         try {
             if (element) {
                 let immediateValue = ɵgetDOM().getStyle(element, styleName);
-                value = immediateValue || ɵgetDOM().getComputedStyle(element).display;
+                value = immediateValue || ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
             }
         }
         catch (e) {
