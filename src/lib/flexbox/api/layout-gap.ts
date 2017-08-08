@@ -16,6 +16,7 @@ import {
   AfterContentInit,
   Optional,
   OnDestroy,
+  NgZone,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -65,7 +66,8 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer,
-              @Optional() @Self() container: LayoutDirective) {
+              @Optional() @Self() container: LayoutDirective,
+              private _zone: NgZone) {
     super(monitor, elRef, renderer);
 
     if (container) {  // Subscribe to layout direction changes
@@ -114,22 +116,23 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
    * NOTE: this does NOT! differentiate between viewChildren and contentChildren
    */
   protected _watchContentChanges() {
-    let onMutationCallback = (mutations) => {
-      let validatedChanges = (it: MutationRecord) => {
-        return (it.addedNodes && it.addedNodes.length) ||
-            (it.removedNodes && it.removedNodes.length);
-      };
+    this._zone.runOutsideAngular(() => {
 
-      // update gap styles only for child 'added' or 'removed' events
-      if (mutations.filter(validatedChanges).length) {
-        this._updateWithValue();
+      if (typeof MutationObserver !== 'undefined') {
+        this._observer = new MutationObserver((mutations: MutationRecord[]) => {
+          let validatedChanges = (it: MutationRecord): boolean => {
+            return (it.addedNodes && it.addedNodes.length > 0) ||
+                (it.removedNodes && it.removedNodes.length > 0);
+          };
+
+          // update gap styles only for child 'added' or 'removed' events
+          if (mutations.some(validatedChanges)) {
+            this._updateWithValue();
+          }
+        });
+        this._observer.observe(this._elementRef.nativeElement, {childList: true});
       }
-    };
-
-    if (typeof MutationObserver !== 'undefined') {
-      this._observer = new MutationObserver(onMutationCallback);
-      this._observer.observe(this._elementRef.nativeElement, {childList: true});
-    }
+    });
   }
 
   /**
