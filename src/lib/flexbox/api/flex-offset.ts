@@ -13,7 +13,7 @@ import {
   OnChanges,
   OnDestroy,
   Optional,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
@@ -59,7 +59,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer,
+              renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective ) {
     super(monitor, elRef, renderer);
 

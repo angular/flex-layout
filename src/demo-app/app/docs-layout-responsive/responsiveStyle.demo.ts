@@ -49,13 +49,14 @@ import {Component} from '@angular/core';
 
       <md-card-content>
         <div class="containerX">
-          <div fxLayout="row" fxFlex class="coloredContainerX box">
-            <div
-              fxFlex
+          <div fxLayout="row"
+               fxFlex
+               class="coloredContainerX box">
+            <div fxFlex
               style="font-style: italic"
-              [style.xs]="{'font-size.px': 10, color: 'blue'}"
-              [style.sm]="{'font-size.px': 20, color: 'lightblue'}"
-              [style.md]="{'font-size.px': 30, color: 'orange'}"
+              [style.xs]="{'font-size.px': 10, 'background-color': '#ddd', color: 'blue'}"
+              [style.sm]="{'font-size.px': 20, 'background-color': 'grey', color: '#482b00'}"
+              [style.md]="{'font-size.px': 30, 'background-color': 'black', color: 'orange'}"
               [style.lg]="styleLgExp">
                 Sample Text #2
             </div>

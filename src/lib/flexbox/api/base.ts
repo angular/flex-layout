@@ -7,7 +7,7 @@
  */
 import {
   ElementRef, OnDestroy, SimpleChanges, OnChanges,
-  SimpleChange, Renderer
+  SimpleChange, Renderer2
 } from '@angular/core';
 import {ɵgetDOM as getDom} from '@angular/platform-browser';
 
@@ -65,7 +65,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer) {
+              protected _renderer: Renderer2) {
     this._display = this._getDisplayStyle();
   }
 
@@ -175,7 +175,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     Object.keys(styles).forEach(key => {
       const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
       for (let value of values) {
-        this._renderer.setElementStyle(element, key, value);
+        this._renderer.setStyle(element, key, value);
       }
     });
   }

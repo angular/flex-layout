@@ -7,28 +7,28 @@
  */
 import {
   Directive,
+  DoCheck,
   ElementRef,
   Input,
-  DoCheck,
-  OnDestroy,
-  Renderer,
   IterableDiffers,
-  KeyValueDiffers, SimpleChanges, OnChanges
+  KeyValueDiffers,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  Renderer,
+  Renderer2,
+  SimpleChanges,
+  Self
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 
+import {BaseFxDirective} from './base';
 import {BaseFxDirectiveAdapter} from './base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
 /** NgClass allowed inputs **/
 export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
-
-/**
- * Explicitly export the NgStyle super class type for ngc/AOT compiles
- * Workaround for https://github.com/angular/angular/issues/17849
- */
-export const _ClassDirectiveBaseClass = NgClass;
 
 /**
  * Directive to add responsive support for ngClass.
@@ -44,7 +44,7 @@ export const _ClassDirectiveBaseClass = NgClass;
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
 })
-export class ClassDirective extends _ClassDirectiveBaseClass
+export class ClassDirective extends BaseFxDirective
     implements DoCheck, OnChanges, OnDestroy {
 
   /**
@@ -55,7 +55,7 @@ export class ClassDirective extends _ClassDirectiveBaseClass
   @Input('ngClass')
   set ngClassBase(val: NgClassType) {
     this._ngClassAdapter.cacheInput('ngClass', val, true);
-    this.ngClass = val;
+    this._ngClassInstance.ngClass = val;
   }
 
   /* tslint:disable */
@@ -86,7 +86,7 @@ export class ClassDirective extends _ClassDirectiveBaseClass
   @Input('class')
   set classBase(val: string) {
     this._classAdapter.cacheInput('_rawClass', val, true);
-    this.klass = val;
+    this._ngClassInstance.klass = val;
   }
 
   @Input('class.xs')      set classXs(val:   NgClassType) { this._classAdapter.cacheInput('classXs',   val, true); }
@@ -115,13 +115,20 @@ export class ClassDirective extends _ClassDirectiveBaseClass
 
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
+              _ngEl: ElementRef, _renderer: Renderer2, _oldRenderer: Renderer,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
-              _ngEl: ElementRef, _renderer: Renderer) {
+              @Optional() @Self() private _ngClassInstance: NgClass) {
 
-    super(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
+    super(monitor, _ngEl, _renderer);
 
     this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
     this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
+
+    // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
+    // the same host element; since the responsive variations may be defined...
+    if ( !this._ngClassInstance ) {
+      this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+    }
   }
 
   // ******************************************************************
@@ -147,12 +154,13 @@ export class ClassDirective extends _ClassDirectiveBaseClass
     if (!this._classAdapter.hasMediaQueryListener) {
       this._configureMQListener();
     }
-    super.ngDoCheck();
+    this._ngClassInstance.ngDoCheck();
   }
 
   ngOnDestroy() {
     this._classAdapter.ngOnDestroy();
     this._ngClassAdapter.ngOnDestroy();
+    this._ngClassInstance = null;
   }
 
   // ******************************************************************
@@ -170,7 +178,7 @@ export class ClassDirective extends _ClassDirectiveBaseClass
 
     this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', (changes: MediaChange) => {
       this._updateNgClass(changes.value);
-      super.ngDoCheck();    // trigger NgClass::_applyIterableChanges()
+      this._ngClassInstance.ngDoCheck();    // trigger NgClass::_applyIterableChanges()
     });
   }
 
@@ -183,7 +191,7 @@ export class ClassDirective extends _ClassDirectiveBaseClass
     if (this._classAdapter.mqActivation) {
       klass = this._classAdapter.mqActivation.activatedInput;
     }
-    this.klass = klass || this.initialClasses;
+    this._ngClassInstance.klass = klass || this.initialClasses;
   }
 
   /**
@@ -194,14 +202,16 @@ export class ClassDirective extends _ClassDirectiveBaseClass
     if (this._ngClassAdapter.mqActivation) {
       value = this._ngClassAdapter.mqActivation.activatedInput;
     }
-    this.ngClass = value || '';     // Delegate subsequent activity to the NgClass logic
+
+    // Delegate subsequent activity to the NgClass logic
+    this._ngClassInstance.ngClass = value || '';
   }
 
   /**
    * Special adapter to cross-cut responsive behaviors
-   * into the ClassDirective
+   * into the ClassDirective instance
    */
-  protected _classAdapter: BaseFxDirectiveAdapter;   // used for `class.xxx` selectores
+  protected _classAdapter: BaseFxDirectiveAdapter;   // used for `class.xxx` selectors
   protected _ngClassAdapter: BaseFxDirectiveAdapter;   // used for `ngClass.xxx` selectors
 }
 

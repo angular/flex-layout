@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   Self,
   Optional
@@ -104,7 +104,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
-              protected renderer: Renderer) {
+              protected renderer: Renderer2) {
 
     super(monitor, elRef, renderer);
 
