@@ -1,9 +1,10 @@
-import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy } from '@angular/core';
+import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges, OnDestroy {
+    private _zone;
     protected _layout: string;
     protected _layoutWatcher: Subscription;
     protected _observer: MutationObserver;
@@ -21,7 +22,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     gapLtMd: any;
     gapLtLg: any;
     gapLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective, _zone: NgZone);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;

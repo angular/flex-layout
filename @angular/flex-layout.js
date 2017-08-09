@@ -1840,8 +1840,9 @@ LayoutAlignDirective.propDecorators = {
 };
 
 class LayoutGapDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container) {
+    constructor(monitor, elRef, renderer, container, _zone) {
         super(monitor, elRef, renderer);
+        this._zone = _zone;
         this._layout = 'row';
         if (container) {
             this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -1895,19 +1896,20 @@ class LayoutGapDirective extends BaseFxDirective {
         }
     }
     _watchContentChanges() {
-        let onMutationCallback = (mutations) => {
-            let validatedChanges = (it) => {
-                return (it.addedNodes && it.addedNodes.length) ||
-                    (it.removedNodes && it.removedNodes.length);
-            };
-            if (mutations.filter(validatedChanges).length) {
-                this._updateWithValue();
+        this._zone.runOutsideAngular(() => {
+            if (typeof MutationObserver !== 'undefined') {
+                this._observer = new MutationObserver((mutations) => {
+                    let validatedChanges = (it) => {
+                        return (it.addedNodes && it.addedNodes.length > 0) ||
+                            (it.removedNodes && it.removedNodes.length > 0);
+                    };
+                    if (mutations.some(validatedChanges)) {
+                        this._updateWithValue();
+                    }
+                });
+                this._observer.observe(this._elementRef.nativeElement, { childList: true });
             }
-        };
-        if (typeof MutationObserver !== 'undefined') {
-            this._observer = new MutationObserver(onMutationCallback);
-            this._observer.observe(this._elementRef.nativeElement, { childList: true });
-        }
+        });
     }
     _onLayoutChange(direction) {
         this._layout = (direction || '').toLowerCase();
@@ -1968,6 +1970,7 @@ LayoutGapDirective.ctorParameters = () => [
     { type: ElementRef, },
     { type: Renderer, },
     { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: NgZone, },
 ];
 LayoutGapDirective.propDecorators = {
     'gap': [{ type: Input, args: ['fxLayoutGap',] },],

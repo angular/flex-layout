@@ -2439,8 +2439,9 @@ LayoutAlignDirective.propDecorators = {
 };
 var LayoutGapDirective = (function (_super) {
     __extends(LayoutGapDirective, _super);
-    function LayoutGapDirective(monitor, elRef, renderer, container) {
+    function LayoutGapDirective(monitor, elRef, renderer, container, _zone) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._zone = _zone;
         _this._layout = 'row';
         if (container) {
             _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
@@ -2553,19 +2554,20 @@ var LayoutGapDirective = (function (_super) {
     };
     LayoutGapDirective.prototype._watchContentChanges = function () {
         var _this = this;
-        var onMutationCallback = function (mutations) {
-            var validatedChanges = function (it) {
-                return (it.addedNodes && it.addedNodes.length) ||
-                    (it.removedNodes && it.removedNodes.length);
-            };
-            if (mutations.filter(validatedChanges).length) {
-                _this._updateWithValue();
+        this._zone.runOutsideAngular(function () {
+            if (typeof MutationObserver !== 'undefined') {
+                _this._observer = new MutationObserver(function (mutations) {
+                    var validatedChanges = function (it) {
+                        return (it.addedNodes && it.addedNodes.length > 0) ||
+                            (it.removedNodes && it.removedNodes.length > 0);
+                    };
+                    if (mutations.some(validatedChanges)) {
+                        _this._updateWithValue();
+                    }
+                });
+                _this._observer.observe(_this._elementRef.nativeElement, { childList: true });
             }
-        };
-        if (typeof MutationObserver !== 'undefined') {
-            this._observer = new MutationObserver(onMutationCallback);
-            this._observer.observe(this._elementRef.nativeElement, { childList: true });
-        }
+        });
     };
     LayoutGapDirective.prototype._onLayoutChange = function (direction) {
         var _this = this;
@@ -2625,6 +2627,7 @@ LayoutGapDirective.ctorParameters = function () { return [
     { type: _angular_core.ElementRef, },
     { type: _angular_core.Renderer, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
+    { type: _angular_core.NgZone, },
 ]; };
 LayoutGapDirective.propDecorators = {
     'gap': [{ type: _angular_core.Input, args: ['fxLayoutGap',] },],
