@@ -616,6 +616,10 @@ function validateValue(value) {
     }
     return [direction, validateWrapValue(wrap)];
 }
+function isFlowHorizontal(value) {
+    var _a = validateValue(value), flow = _a[0], _ = _a[1];
+    return flow.indexOf('row') > -1;
+}
 function validateWrapValue(value) {
     if (!!value) {
         switch (value.toLowerCase()) {
@@ -788,6 +792,13 @@ var BaseFxDirective = (function () {
             var change = new _angular_core.SimpleChange(previousVal, value, false);
             this.ngOnChanges((_a = {}, _a[key] = change, _a));
             var _a;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseFxDirective.prototype, "parentElement", {
+        get: function () {
+            return this._elementRef.nativeElement.parentNode;
         },
         enumerable: true,
         configurable: true
@@ -1434,8 +1445,8 @@ var FlexDirective = (function (_super) {
                 });
                 break;
         }
-        var max = (direction === 'row') ? 'max-width' : 'max-height';
-        var min = (direction === 'row') ? 'min-width' : 'min-height';
+        var max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+        var min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
         var usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
         var isPx = String(basis).indexOf('px') > -1 || usingCalc;
         var isFixed = !grow && !shrink;
@@ -1443,13 +1454,6 @@ var FlexDirective = (function (_super) {
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
     };
-    Object.defineProperty(FlexDirective.prototype, "parentElement", {
-        get: function () {
-            return this._elementRef.nativeElement.parentNode;
-        },
-        enumerable: true,
-        configurable: true
-    });
     return FlexDirective;
 }(BaseFxDirective));
 FlexDirective.decorators = [
@@ -1921,8 +1925,12 @@ FlexFillDirective.ctorParameters = function () { return [
 ]; };
 var FlexOffsetDirective = (function (_super) {
     __extends(FlexOffsetDirective, _super);
-    function FlexOffsetDirective(monitor, elRef, renderer) {
-        return _super.call(this, monitor, elRef, renderer) || this;
+    function FlexOffsetDirective(monitor, elRef, renderer, _container) {
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._container = _container;
+        _this._layout = 'row';
+        _this.watchParentFlow();
+        return _this;
     }
     Object.defineProperty(FlexOffsetDirective.prototype, "offset", {
         set: function (val) { this._cacheInput('offset', val); },
@@ -2011,11 +2019,29 @@ var FlexOffsetDirective = (function (_super) {
             this._updateWithValue();
         }
     };
+    FlexOffsetDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
     FlexOffsetDirective.prototype.ngOnInit = function () {
         var _this = this;
         this._listenForMediaQueryChanges('offset', 0, function (changes) {
             _this._updateWithValue(changes.value);
         });
+    };
+    FlexOffsetDirective.prototype.watchParentFlow = function () {
+        var _this = this;
+        if (this._container) {
+            this._layoutWatcher = this._container.layout$.subscribe(function (direction) {
+                _this._onLayoutChange(direction);
+            });
+        }
+    };
+    FlexOffsetDirective.prototype._onLayoutChange = function (direction) {
+        this._layout = direction || this._layout || 'row';
+        this._updateWithValue();
     };
     FlexOffsetDirective.prototype._updateWithValue = function (value) {
         value = value || this._queryInput('offset') || 0;
@@ -2030,7 +2056,8 @@ var FlexOffsetDirective = (function (_super) {
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
-        return { 'margin-left': "" + offset };
+        var layout = this._getFlowDirection(this.parentElement, true);
+        return isFlowHorizontal(layout) ? { 'margin-left': "" + offset } : { 'margin-top': "" + offset };
     };
     return FlexOffsetDirective;
 }(BaseFxDirective));
@@ -2041,6 +2068,7 @@ FlexOffsetDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
     { type: _angular_core.Renderer, },
+    { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
 ]; };
 FlexOffsetDirective.propDecorators = {
     'offset': [{ type: _angular_core.Input, args: ['fxFlexOffset',] },],
@@ -2377,8 +2405,8 @@ var LayoutAlignDirective = (function (_super) {
         if (cross_axis == 'stretch') {
             this._applyStyleToElement({
                 'box-sizing': 'border-box',
-                'max-width': (layout === 'column') ? '100%' : null,
-                'max-height': (layout === 'row') ? '100%' : null
+                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+                'max-height': isFlowHorizontal(layout) ? '100%' : null
             });
         }
     };
@@ -3373,6 +3401,8 @@ exports.applyCssPrefixes = applyCssPrefixes;
 exports.validateBasis = validateBasis;
 exports.LAYOUT_VALUES = LAYOUT_VALUES;
 exports.buildLayoutCSS = buildLayoutCSS;
+exports.validateValue = validateValue;
+exports.isFlowHorizontal = isFlowHorizontal;
 exports.validateWrapValue = validateWrapValue;
 exports.validateSuffixes = validateSuffixes;
 exports.mergeByAlias = mergeByAlias;

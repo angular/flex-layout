@@ -33,5 +33,4 @@ export declare class FlexDirective extends BaseFxDirective implements OnInit, On
     protected _onLayoutChange(direction?: string): void;
     protected _updateStyle(value?: string | number): void;
     protected _validateValue(grow: number | string, shrink: number | string, basis: string | number | FlexBasisAlias): any;
-    protected readonly parentElement: any;
 }

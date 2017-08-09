@@ -554,6 +554,10 @@ function validateValue(value) {
     }
     return [direction, validateWrapValue(wrap)];
 }
+function isFlowHorizontal(value) {
+    let [flow, _] = validateValue(value);
+    return flow.indexOf('row') > -1;
+}
 function validateWrapValue(value) {
     if (!!value) {
         switch (value.toLowerCase()) {
@@ -704,6 +708,9 @@ class BaseFxDirective {
         }
         let change = new SimpleChange(previousVal, value, false);
         this.ngOnChanges(({ [key]: change }));
+    }
+    get parentElement() {
+        return this._elementRef.nativeElement.parentNode;
     }
     _queryInput(key) {
         return this._inputMap[key];
@@ -1156,17 +1163,14 @@ class FlexDirective extends BaseFxDirective {
                 });
                 break;
         }
-        let max = (direction === 'row') ? 'max-width' : 'max-height';
-        let min = (direction === 'row') ? 'min-width' : 'min-height';
+        let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+        let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
         let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
         let isPx = String(basis).indexOf('px') > -1 || usingCalc;
         let isFixed = !grow && !shrink;
         css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
         css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
         return extendObject(css, { 'box-sizing': 'border-box' });
-    }
-    get parentElement() {
-        return this._elementRef.nativeElement.parentNode;
     }
 }
 FlexDirective.decorators = [
@@ -1485,8 +1489,11 @@ FlexFillDirective.ctorParameters = () => [
 ];
 
 class FlexOffsetDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer) {
+    constructor(monitor, elRef, renderer, _container) {
         super(monitor, elRef, renderer);
+        this._container = _container;
+        this._layout = 'row';
+        this.watchParentFlow();
     }
     set offset(val) { this._cacheInput('offset', val); }
     set offsetXs(val) { this._cacheInput('offsetXs', val); }
@@ -1519,10 +1526,27 @@ class FlexOffsetDirective extends BaseFxDirective {
             this._updateWithValue();
         }
     }
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    }
     ngOnInit() {
         this._listenForMediaQueryChanges('offset', 0, (changes) => {
             this._updateWithValue(changes.value);
         });
+    }
+    watchParentFlow() {
+        if (this._container) {
+            this._layoutWatcher = this._container.layout$.subscribe((direction) => {
+                this._onLayoutChange(direction);
+            });
+        }
+    }
+    _onLayoutChange(direction) {
+        this._layout = direction || this._layout || 'row';
+        this._updateWithValue();
     }
     _updateWithValue(value) {
         value = value || this._queryInput('offset') || 0;
@@ -1537,7 +1561,8 @@ class FlexOffsetDirective extends BaseFxDirective {
         if (!isPx && !isPercent && !isNaN(offset)) {
             offset = offset + '%';
         }
-        return { 'margin-left': `${offset}` };
+        let layout = this._getFlowDirection(this.parentElement, true);
+        return isFlowHorizontal(layout) ? { 'margin-left': `${offset}` } : { 'margin-top': `${offset}` };
     }
 }
 FlexOffsetDirective.decorators = [
@@ -1552,6 +1577,7 @@ FlexOffsetDirective.ctorParameters = () => [
     { type: MediaMonitor, },
     { type: ElementRef, },
     { type: Renderer, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: SkipSelf },] },
 ];
 FlexOffsetDirective.propDecorators = {
     'offset': [{ type: Input, args: ['fxFlexOffset',] },],
@@ -1776,8 +1802,8 @@ class LayoutAlignDirective extends BaseFxDirective {
         if (cross_axis == 'stretch') {
             this._applyStyleToElement({
                 'box-sizing': 'border-box',
-                'max-width': (layout === 'column') ? '100%' : null,
-                'max-height': (layout === 'row') ? '100%' : null
+                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+                'max-height': isFlowHorizontal(layout) ? '100%' : null
             });
         }
     }
@@ -2432,5 +2458,5 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = () => [];
 
-export { FlexLayoutModule, BaseFxDirective, BaseFxDirectiveAdapter, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, negativeOf, ShowHideDirective, _ClassDirectiveBaseClass, ClassDirective, _StyleDirectiveBaseClass, StyleDirective, KeyOptions, ResponsiveActivation, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils };
+export { FlexLayoutModule, BaseFxDirective, BaseFxDirectiveAdapter, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, negativeOf, ShowHideDirective, _ClassDirectiveBaseClass, ClassDirective, _StyleDirectiveBaseClass, StyleDirective, KeyOptions, ResponsiveActivation, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils };
 //# sourceMappingURL=flex-layout.js.map

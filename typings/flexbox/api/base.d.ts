@@ -12,6 +12,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     readonly hasMediaQueryListener: boolean;
     activatedValue: string | number;
     constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer);
+    protected readonly parentElement: any;
     protected _queryInput(key: any): any;
     ngOnChanges(change: SimpleChanges): void;
     ngOnDestroy(): void;
