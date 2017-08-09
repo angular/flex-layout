@@ -12,15 +12,19 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
+  Optional,
   Renderer,
   SimpleChanges,
+  SkipSelf
 } from '@angular/core';
 
+import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from './base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-
+import {LayoutDirective} from './layout';
+import {isFlowHorizontal} from '../../utils/layout-validator';
 
 /**
  * 'flex-offset' flexbox styling directive
@@ -53,8 +57,14 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor,  elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer,
+              @Optional() @SkipSelf() protected _container: LayoutDirective ) {
     super(monitor, elRef, renderer);
+
+
+    this.watchParentFlow();
   }
 
   // *********************************************
@@ -67,6 +77,16 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   ngOnChanges(changes: SimpleChanges) {
     if (changes['offset'] != null || this._mqActivation) {
       this._updateWithValue();
+    }
+  }
+
+  /**
+   * Cleanup
+   */
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this._layoutWatcher) {
+      this._layoutWatcher.unsubscribe();
     }
   }
 
@@ -84,7 +104,43 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   // Protected methods
   // *********************************************
 
+  /** The flex-direction of this element's host container. Defaults to 'row'. */
+  protected _layout = 'row';
 
+  /**
+   * Subscription to the parent flex container's layout changes.
+   * Stored so we can unsubscribe when this directive is destroyed.
+   */
+  protected _layoutWatcher: Subscription;
+
+  /**
+   * If parent flow-direction changes, then update the margin property
+   * used to offset
+   */
+  protected watchParentFlow() {
+    if (this._container) {
+      // Subscribe to layout immediate parent direction changes (if any)
+      this._layoutWatcher = this._container.layout$.subscribe((direction) => {
+        // `direction` === null if parent container does not have a `fxLayout`
+        this._onLayoutChange(direction);
+      });
+    }
+  }
+
+  /**
+   * Caches the parent container's 'flex-direction' and updates the element's style.
+   * Used as a handler for layout change events from the parent flex container.
+   */
+  protected _onLayoutChange(direction?: string) {
+    this._layout = direction || this._layout || 'row';
+    this._updateWithValue();
+  }
+
+  /**
+   * Using the current fxFlexOffset value, update the inline CSS
+   * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
+   *       otherwise `margin-top` is used for the offset.
+   */
   protected _updateWithValue(value?: string|number) {
     value = value || this._queryInput('offset') || 0;
     if (this._mqActivation) {
@@ -101,6 +157,8 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
       offset = offset + '%';
     }
 
-    return {'margin-left': `${offset}`};
+    // The flex-direction of this element's flex container. Defaults to 'row'.
+    let layout = this._getFlowDirection(this.parentElement, true);
+    return isFlowHorizontal(layout) ? {'margin-left': `${offset}`} : {'margin-top': `${offset}`};
   }
 }

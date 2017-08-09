@@ -27,6 +27,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
 import {validateBasis} from '../../utils/basis-validator';
+import {isFlowHorizontal} from '../../utils/layout-validator';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -237,8 +238,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
           break;
       }
 
-      let max = (direction === 'row') ? 'max-width' : 'max-height';
-      let min = (direction === 'row') ? 'min-width' : 'min-height';
+      let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+      let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
 
       let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
       let isPx = String(basis).indexOf('px') > -1 || usingCalc;
@@ -254,7 +255,4 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     return extendObject(css, {'box-sizing': 'border-box'});
   }
 
-  protected get parentElement(): any {
-    return this._elementRef.nativeElement.parentNode;
-  }
 }

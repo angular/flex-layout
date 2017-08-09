@@ -74,6 +74,13 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   // *********************************************
 
   /**
+   * Access to host element's parent DOM node
+   */
+  protected get parentElement(): any {
+    return this._elementRef.nativeElement.parentNode;
+  }
+
+  /**
    * Access the current value (if any) of the @Input property.
    */
   protected _queryInput(key) {

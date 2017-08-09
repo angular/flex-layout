@@ -20,7 +20,7 @@ export function buildLayoutCSS(value: string) {
   * Validate the value to be one of the acceptable value options
   * Use default fallback of 'row'
   */
-function validateValue(value: string) {
+export function validateValue(value: string) {
   value = value ? value.toLowerCase() : '';
   let [direction, wrap] = value.split(' ');
   if (!LAYOUT_VALUES.find(x => x === direction)) {
@@ -29,6 +29,14 @@ function validateValue(value: string) {
   return [direction, validateWrapValue(wrap)];
 }
 
+/**
+ * Determine if the validated, flex-direction value specifies
+ * a horizontal/row flow.
+ */
+export function isFlowHorizontal(value: string): boolean {
+  let [flow, _] = validateValue(value);
+  return flow.indexOf('row') > -1;
+}
 
 /**
  * Convert layout-wrap='<value>' to expected flex-wrap style
