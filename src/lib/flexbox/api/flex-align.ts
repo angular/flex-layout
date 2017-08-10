@@ -77,6 +77,8 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('align', 'stretch', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });

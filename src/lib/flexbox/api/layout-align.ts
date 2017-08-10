@@ -91,6 +91,8 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('align', 'start stretch', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });

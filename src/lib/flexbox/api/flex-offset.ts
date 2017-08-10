@@ -95,6 +95,8 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('offset', 0 , (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });

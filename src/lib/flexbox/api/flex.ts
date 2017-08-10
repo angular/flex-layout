@@ -118,6 +118,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) => {
       this._updateStyle(changes.value);
     });

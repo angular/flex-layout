@@ -19,7 +19,7 @@ export type ComponentClazzFn = () => Type<any>;
  *  NOTE: These Generators (aka Partial Functions) are used only in
  *        the Karma/Jasmine testing.
  */
-export function makeExpectDOMFrom(getClass: ComponentClazzFn) {
+export function makeExpectDOMFrom(getClass: ComponentClazzFn, styles?: any) {
   let createTestComponent;
 
   // Return actual `expectTemplate()` function
@@ -28,7 +28,7 @@ export function makeExpectDOMFrom(getClass: ComponentClazzFn) {
       createTestComponent = makeCreateTestComponent(getClass);
     }
 
-    let fixture = createTestComponent(template);
+    let fixture = createTestComponent(template, styles);
     if (key) {
       let instance = fixture.componentInstance;
       instance[key] = value;
