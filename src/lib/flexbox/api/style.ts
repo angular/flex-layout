@@ -7,17 +7,22 @@
  */
 import {
   Directive,
+  DoCheck,
   ElementRef,
   Input,
-  OnDestroy,
-  DoCheck,
-  Renderer,
   KeyValueDiffers,
-  SimpleChanges, OnChanges,
-  SecurityContext
+  OnDestroy,
+  OnChanges,
+  Optional,
+  Renderer,
+  Renderer2,
+  SecurityContext,
+  Self,
+  SimpleChanges,
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 
+import {BaseFxDirective} from './base';
 import {BaseFxDirectiveAdapter} from './base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
@@ -30,12 +35,6 @@ import {
   NgStyleSanitizer,
   ngStyleUtils as _
 } from '../../utils/style-transforms';
-
-/**
- * Explicitly export the NgStyle super class type for ngc/AOT compiles
- * Workaround for https://github.com/angular/angular/issues/17849
- */
-export const _StyleDirectiveBaseClass = NgStyle;
 
 /**
  * Directive to add responsive support for ngStyle.
@@ -52,7 +51,7 @@ export const _StyleDirectiveBaseClass = NgStyle;
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
-export class StyleDirective extends _StyleDirectiveBaseClass
+export class StyleDirective extends BaseFxDirective
     implements DoCheck, OnChanges, OnDestroy {
 
   /**
@@ -62,7 +61,7 @@ export class StyleDirective extends _StyleDirectiveBaseClass
   @Input('ngStyle')
   set styleBase(val: NgStyleType) {
     this._base.cacheInput('style', val, true);
-    this.ngStyle = this._base.inputMap['style'];
+    this._ngStyleInstance.ngStyle = this._base.inputMap['style'];
   }
 
   /* tslint:disable */
@@ -106,16 +105,21 @@ export class StyleDirective extends _StyleDirectiveBaseClass
    */
   constructor(private monitor: MediaMonitor,
               protected _sanitizer: DomSanitizer,
-              _differs: KeyValueDiffers,
-              _ngEl: ElementRef,
-              _renderer: Renderer) {
+              _ngEl: ElementRef, _renderer: Renderer2,
+              _differs: KeyValueDiffers, _oldRenderer: Renderer,
+              @Optional() @Self() private _ngStyleInstance: NgStyle) {
 
-    // TODO: this should use Renderer when the NgStyle signature is switched over to it.
-    super(_differs, _ngEl, _renderer);
+    super(monitor, _ngEl, _renderer);
 
     // Build adapter, `cacheInput()` interceptor, and get current inline style if any
     this._buildAdapter(this.monitor, _ngEl, _renderer);
     this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
+
+    // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been defined on
+    // the same host element; since the responsive versions may be defined...
+    if ( !this._ngStyleInstance ) {
+      this._ngStyleInstance = new NgStyle(_differs, _ngEl, _oldRenderer);
+    }
   }
 
   // ******************************************************************
@@ -138,11 +142,12 @@ export class StyleDirective extends _StyleDirectiveBaseClass
     if (!this._base.hasMediaQueryListener) {
       this._configureMQListener();
     }
-    super.ngDoCheck();
+    this._ngStyleInstance.ngDoCheck();
   }
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
+    this._ngStyleInstance = null;
   }
 
   // ******************************************************************
@@ -158,7 +163,7 @@ export class StyleDirective extends _StyleDirectiveBaseClass
         this._updateStyle(changes.value);
 
         // trigger NgClass::_applyIterableChanges()
-        super.ngDoCheck();
+        this._ngStyleInstance.ngDoCheck();
       });
     }
 
@@ -177,7 +182,7 @@ export class StyleDirective extends _StyleDirectiveBaseClass
     }
 
     // Delegate subsequent activity to the NgStyle logic
-    this.ngStyle = style;
+    this._ngStyleInstance.ngStyle = style;
   }
 
 
@@ -186,7 +191,7 @@ export class StyleDirective extends _StyleDirectiveBaseClass
    * This adapter manages listening to mediaQuery change events and identifying
    * which property value should be used for the style update
    */
-  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer) {
+  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2) {
     this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
     this._buildCacheInterceptor();
   }

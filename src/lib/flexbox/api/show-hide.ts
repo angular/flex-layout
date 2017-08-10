@@ -12,7 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer,
+  Renderer2,
   SimpleChanges,
   Self,
   Optional
@@ -104,7 +104,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
-              protected renderer: Renderer) {
+              protected renderer: Renderer2) {
 
     super(monitor, elRef, renderer);
 
@@ -125,7 +125,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   /**
    * Override accessor to the current HTMLElement's `display` style
    * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
-   * unless it was already explicitly defined.
+   * unless it was already explicitly specified inline or in a CSS stylesheet.
    */
   protected _getDisplayStyle(): string {
     return this._layout ? 'flex' : super._getDisplayStyle();
