@@ -1,4 +1,4 @@
-import { ElementRef, OnChanges, Renderer, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
+import { ElementRef, OnChanges, Renderer2, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
@@ -22,7 +22,7 @@ export declare class LayoutGapDirective extends BaseFxDirective implements After
     gapLtMd: any;
     gapLtLg: any;
     gapLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer, container: LayoutDirective, _zone: NgZone);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2, container: LayoutDirective, _zone: NgZone);
     ngOnChanges(changes: SimpleChanges): void;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;

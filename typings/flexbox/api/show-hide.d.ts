@@ -1,4 +1,4 @@
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
@@ -7,7 +7,7 @@ export declare function negativeOf(hide: any): boolean;
 export declare class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     protected _layout: LayoutDirective;
     protected elRef: ElementRef;
-    protected renderer: Renderer;
+    protected renderer: Renderer2;
     protected _layoutWatcher: Subscription;
     show: any;
     showXs: any;
@@ -37,7 +37,7 @@ export declare class ShowHideDirective extends BaseFxDirective implements OnInit
     hideGtSm: any;
     hideGtMd: any;
     hideGtLg: any;
-    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer);
+    constructor(monitor: MediaMonitor, _layout: LayoutDirective, elRef: ElementRef, renderer: Renderer2);
     protected _getDisplayStyle(): string;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;

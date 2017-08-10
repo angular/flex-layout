@@ -1,4 +1,4 @@
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from './base';
@@ -20,7 +20,7 @@ export declare class LayoutDirective extends BaseFxDirective implements OnInit, 
     layoutLtMd: any;
     layoutLtLg: any;
     layoutLtXl: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     protected _updateWithDirection(value?: string): void;

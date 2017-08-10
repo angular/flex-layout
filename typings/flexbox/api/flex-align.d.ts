@@ -1,4 +1,4 @@
-import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer, SimpleChanges } from '@angular/core';
+import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
@@ -16,7 +16,7 @@ export declare class FlexAlignDirective extends BaseFxDirective implements OnIni
     alignGtSm: any;
     alignGtMd: any;
     alignGtLg: any;
-    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer);
+    constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2);
     ngOnChanges(changes: SimpleChanges): void;
     ngOnInit(): void;
     protected _updateWithValue(value?: string | number): void;

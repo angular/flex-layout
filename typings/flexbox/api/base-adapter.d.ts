@@ -1,4 +1,4 @@
-import { ElementRef, Renderer } from '@angular/core';
+import { ElementRef, Renderer2 } from '@angular/core';
 import { BaseFxDirective } from './base';
 import { ResponsiveActivation } from './../responsive/responsive-activation';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
@@ -7,11 +7,11 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
     protected _baseKey: string;
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    protected _renderer: Renderer;
+    protected _renderer: Renderer2;
     readonly activeKey: string;
     readonly inputMap: {};
     readonly mqActivation: ResponsiveActivation;
-    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer);
+    constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
     queryInput(key: any): any;
     cacheInput(key?: string, source?: any, cacheRaw?: boolean): void;
     listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;

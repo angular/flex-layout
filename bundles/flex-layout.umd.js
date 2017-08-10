@@ -823,8 +823,7 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
         var value = this._lookupStyle(element, 'display');
-        return value ? value.trim() :
-            ((element.nodeType === 1) ? 'block' : 'inline-block');
+        return value ? value.trim() : 'inline';
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
@@ -856,7 +855,7 @@ var BaseFxDirective = (function () {
             var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
             for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
                 var value = values_1[_i];
-                _this._renderer.setElementStyle(element, key, value);
+                _this._renderer.setStyle(element, key, value);
             }
         });
     };
@@ -1032,7 +1031,7 @@ LayoutDirective.decorators = [
 LayoutDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
 ]; };
 LayoutDirective.propDecorators = {
     'layout': [{ type: _angular_core.Input, args: ['fxLayout',] },],
@@ -1200,7 +1199,7 @@ LayoutWrapDirective.decorators = [
 LayoutWrapDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
 ]; };
 LayoutWrapDirective.propDecorators = {
@@ -1463,7 +1462,7 @@ FlexDirective.decorators = [
 FlexDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
     { type: LayoutWrapDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
 ]; };
@@ -1714,7 +1713,7 @@ ShowHideDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
 ]; };
 ShowHideDirective.propDecorators = {
     'show': [{ type: _angular_core.Input, args: ['fxShow',] },],
@@ -1879,7 +1878,7 @@ FlexAlignDirective.decorators = [
 FlexAlignDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
 ]; };
 FlexAlignDirective.propDecorators = {
     'align': [{ type: _angular_core.Input, args: ['fxFlexAlign',] },],
@@ -1921,7 +1920,7 @@ FlexFillDirective.decorators = [
 FlexFillDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
 ]; };
 var FlexOffsetDirective = (function (_super) {
     __extends(FlexOffsetDirective, _super);
@@ -2067,7 +2066,7 @@ FlexOffsetDirective.decorators = [
 FlexOffsetDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.SkipSelf },] },
 ]; };
 FlexOffsetDirective.propDecorators = {
@@ -2204,7 +2203,7 @@ FlexOrderDirective.decorators = [
 FlexOrderDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
 ]; };
 FlexOrderDirective.propDecorators = {
     'order': [{ type: _angular_core.Input, args: ['fxFlexOrder',] },],
@@ -2418,7 +2417,7 @@ LayoutAlignDirective.decorators = [
 LayoutAlignDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
 ]; };
 LayoutAlignDirective.propDecorators = {
@@ -2625,7 +2624,7 @@ LayoutGapDirective.decorators = [
 LayoutGapDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_core.Renderer2, },
     { type: LayoutDirective, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
     { type: _angular_core.NgZone, },
 ]; };
@@ -2725,20 +2724,23 @@ var BaseFxDirectiveAdapter = (function (_super) {
     };
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
-var _ClassDirectiveBaseClass = _angular_common.NgClass;
 var ClassDirective = (function (_super) {
     __extends(ClassDirective, _super);
-    function ClassDirective(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) {
-        var _this = _super.call(this, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer) || this;
+    function ClassDirective(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
+        var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
         _this.monitor = monitor;
+        _this._ngClassInstance = _ngClassInstance;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
+        if (!_this._ngClassInstance) {
+            _this._ngClassInstance = new _angular_common.NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+        }
         return _this;
     }
     Object.defineProperty(ClassDirective.prototype, "ngClassBase", {
         set: function (val) {
             this._ngClassAdapter.cacheInput('ngClass', val, true);
-            this.ngClass = val;
+            this._ngClassInstance.ngClass = val;
         },
         enumerable: true,
         configurable: true
@@ -2811,7 +2813,7 @@ var ClassDirective = (function (_super) {
     Object.defineProperty(ClassDirective.prototype, "classBase", {
         set: function (val) {
             this._classAdapter.cacheInput('_rawClass', val, true);
-            this.klass = val;
+            this._ngClassInstance.klass = val;
         },
         enumerable: true,
         configurable: true
@@ -2900,11 +2902,12 @@ var ClassDirective = (function (_super) {
         if (!this._classAdapter.hasMediaQueryListener) {
             this._configureMQListener();
         }
-        _super.prototype.ngDoCheck.call(this);
+        this._ngClassInstance.ngDoCheck();
     };
     ClassDirective.prototype.ngOnDestroy = function () {
         this._classAdapter.ngOnDestroy();
         this._ngClassAdapter.ngOnDestroy();
+        this._ngClassInstance = null;
     };
     ClassDirective.prototype._configureMQListener = function () {
         var _this = this;
@@ -2913,7 +2916,7 @@ var ClassDirective = (function (_super) {
         });
         this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', function (changes) {
             _this._updateNgClass(changes.value);
-            _super.prototype.ngDoCheck.call(_this);
+            _this._ngClassInstance.ngDoCheck();
         });
     };
     ClassDirective.prototype._updateKlass = function (value) {
@@ -2921,16 +2924,16 @@ var ClassDirective = (function (_super) {
         if (this._classAdapter.mqActivation) {
             klass = this._classAdapter.mqActivation.activatedInput;
         }
-        this.klass = klass || this.initialClasses;
+        this._ngClassInstance.klass = klass || this.initialClasses;
     };
     ClassDirective.prototype._updateNgClass = function (value) {
         if (this._ngClassAdapter.mqActivation) {
             value = this._ngClassAdapter.mqActivation.activatedInput;
         }
-        this.ngClass = value || '';
+        this._ngClassInstance.ngClass = value || '';
     };
     return ClassDirective;
-}(_ClassDirectiveBaseClass));
+}(BaseFxDirective));
 ClassDirective.decorators = [
     { type: _angular_core.Directive, args: [{
                 selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
@@ -2938,10 +2941,12 @@ ClassDirective.decorators = [
 ];
 ClassDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
+    { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer2, },
+    { type: _angular_core.Renderer, },
     { type: _angular_core.IterableDiffers, },
     { type: _angular_core.KeyValueDiffers, },
-    { type: _angular_core.ElementRef, },
-    { type: _angular_core.Renderer, },
+    { type: _angular_common.NgClass, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
 ]; };
 ClassDirective.propDecorators = {
     'ngClassBase': [{ type: _angular_core.Input, args: ['ngClass',] },],
@@ -3041,21 +3046,24 @@ function keyValuesToMap(map$$1, entry) {
     }
     return map$$1;
 }
-var _StyleDirectiveBaseClass = _angular_common.NgStyle;
 var StyleDirective = (function (_super) {
     __extends(StyleDirective, _super);
-    function StyleDirective(monitor, _sanitizer, _differs, _ngEl, _renderer) {
-        var _this = _super.call(this, _differs, _ngEl, _renderer) || this;
+    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _oldRenderer, _ngStyleInstance) {
+        var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._sanitizer = _sanitizer;
+        _this._ngStyleInstance = _ngStyleInstance;
         _this._buildAdapter(_this.monitor, _ngEl, _renderer);
         _this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
+        if (!_this._ngStyleInstance) {
+            _this._ngStyleInstance = new _angular_common.NgStyle(_differs, _ngEl, _oldRenderer);
+        }
         return _this;
     }
     Object.defineProperty(StyleDirective.prototype, "styleBase", {
         set: function (val) {
             this._base.cacheInput('style', val, true);
-            this.ngStyle = this._base.inputMap['style'];
+            this._ngStyleInstance.ngStyle = this._base.inputMap['style'];
         },
         enumerable: true,
         configurable: true
@@ -3223,16 +3231,17 @@ var StyleDirective = (function (_super) {
         if (!this._base.hasMediaQueryListener) {
             this._configureMQListener();
         }
-        _super.prototype.ngDoCheck.call(this);
+        this._ngStyleInstance.ngDoCheck();
     };
     StyleDirective.prototype.ngOnDestroy = function () {
         this._base.ngOnDestroy();
+        this._ngStyleInstance = null;
     };
     StyleDirective.prototype._configureMQListener = function () {
         var _this = this;
         this._base.listenForMediaQueryChanges('style', '', function (changes) {
             _this._updateStyle(changes.value);
-            _super.prototype.ngDoCheck.call(_this);
+            _this._ngStyleInstance.ngDoCheck();
         });
     };
     StyleDirective.prototype._updateStyle = function (value) {
@@ -3240,7 +3249,7 @@ var StyleDirective = (function (_super) {
         if (this._base.mqActivation) {
             style = this._base.mqActivation.activatedInput;
         }
-        this.ngStyle = style;
+        this._ngStyleInstance.ngStyle = style;
     };
     StyleDirective.prototype._buildAdapter = function (monitor, _ngEl, _renderer) {
         this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
@@ -3275,7 +3284,7 @@ var StyleDirective = (function (_super) {
         return styles;
     };
     return StyleDirective;
-}(_StyleDirectiveBaseClass));
+}(BaseFxDirective));
 StyleDirective.decorators = [
     { type: _angular_core.Directive, args: [{
                 selector: "\n    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],\n    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],\n    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
@@ -3284,9 +3293,11 @@ StyleDirective.decorators = [
 StyleDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: _angular_platformBrowser.DomSanitizer, },
-    { type: _angular_core.KeyValueDiffers, },
     { type: _angular_core.ElementRef, },
+    { type: _angular_core.Renderer2, },
+    { type: _angular_core.KeyValueDiffers, },
     { type: _angular_core.Renderer, },
+    { type: _angular_common.NgStyle, decorators: [{ type: _angular_core.Optional }, { type: _angular_core.Self },] },
 ]; };
 StyleDirective.propDecorators = {
     'styleBase': [{ type: _angular_core.Input, args: ['ngStyle',] },],
@@ -3372,9 +3383,7 @@ exports.LayoutGapDirective = LayoutGapDirective;
 exports.LayoutWrapDirective = LayoutWrapDirective;
 exports.negativeOf = negativeOf;
 exports.ShowHideDirective = ShowHideDirective;
-exports._ClassDirectiveBaseClass = _ClassDirectiveBaseClass;
 exports.ClassDirective = ClassDirective;
-exports._StyleDirectiveBaseClass = _StyleDirectiveBaseClass;
 exports.StyleDirective = StyleDirective;
 exports.KeyOptions = KeyOptions;
 exports.ResponsiveActivation = ResponsiveActivation;

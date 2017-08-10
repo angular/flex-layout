@@ -1,4 +1,4 @@
-import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer } from '@angular/core';
+import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer2 } from '@angular/core';
 import { ResponsiveActivation } from '../responsive/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
@@ -8,10 +8,10 @@ export declare type StyleDefinition = string | {
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
-    protected _renderer: Renderer;
+    protected _renderer: Renderer2;
     readonly hasMediaQueryListener: boolean;
     activatedValue: string | number;
-    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer);
+    constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
     protected readonly parentElement: any;
     protected _queryInput(key: any): any;
     ngOnChanges(change: SimpleChanges): void;

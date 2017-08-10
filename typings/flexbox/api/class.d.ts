@@ -1,13 +1,14 @@
-import { ElementRef, DoCheck, OnDestroy, Renderer, IterableDiffers, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
+import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer, Renderer2, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { BaseFxDirective } from './base';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare type NgClassType = string | string[] | Set<string> | {
     [klass: string]: any;
 };
-export declare const _ClassDirectiveBaseClass: typeof NgClass;
-export declare class ClassDirective extends _ClassDirectiveBaseClass implements DoCheck, OnChanges, OnDestroy {
+export declare class ClassDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy {
     protected monitor: MediaMonitor;
+    private _ngClassInstance;
     ngClassBase: NgClassType;
     ngClassXs: NgClassType;
     ngClassSm: NgClassType;
@@ -37,7 +38,7 @@ export declare class ClassDirective extends _ClassDirectiveBaseClass implements 
     classGtMd: NgClassType;
     classGtLg: NgClassType;
     readonly initialClasses: string;
-    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
+    constructor(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2, _oldRenderer: Renderer, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngClassInstance: NgClass);
     ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;

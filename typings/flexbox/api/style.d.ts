@@ -1,13 +1,14 @@
-import { ElementRef, OnDestroy, DoCheck, Renderer, KeyValueDiffers, SimpleChanges, OnChanges } from '@angular/core';
+import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer, Renderer2, SimpleChanges } from '@angular/core';
 import { NgStyle } from '@angular/common';
+import { BaseFxDirective } from './base';
 import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgStyleType } from '../../utils/style-transforms';
-export declare const _StyleDirectiveBaseClass: typeof NgStyle;
-export declare class StyleDirective extends _StyleDirectiveBaseClass implements DoCheck, OnChanges, OnDestroy {
+export declare class StyleDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy {
     private monitor;
     protected _sanitizer: DomSanitizer;
+    private _ngStyleInstance;
     styleBase: NgStyleType;
     ngStyleXs: NgStyleType;
     ngStyleSm: NgStyleType;
@@ -35,13 +36,13 @@ export declare class StyleDirective extends _StyleDirectiveBaseClass implements 
     styleGtSm: NgStyleType;
     styleGtMd: NgStyleType;
     styleGtLg: NgStyleType;
-    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
+    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _oldRenderer: Renderer, _ngStyleInstance: NgStyle);
     ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
     protected _configureMQListener(): void;
     protected _updateStyle(value?: NgStyleType): void;
-    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer): void;
+    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2): void;
     protected _buildCacheInterceptor(): void;
     protected _buildStyleMap(styles: NgStyleType): NgStyleType;
     protected _base: BaseFxDirectiveAdapter;
