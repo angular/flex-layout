@@ -558,51 +558,6 @@ var MEDIA_MONITOR_PROVIDER = {
     ],
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
-function applyCssPrefixes(target) {
-    for (var key in target) {
-        var value = target[key] || '';
-        switch (key) {
-            case 'display':
-                if (value === 'flex') {
-                    target['display'] = [
-                        '-webkit-flex',
-                        'flex'
-                    ];
-                }
-                else if (value === 'inline-flex') {
-                    target['display'] = [
-                        '-webkit-inline-flex',
-                        'inline-flex'
-                    ];
-                }
-                else {
-                    target['display'] = value;
-                }
-                break;
-            case 'align-items':
-            case 'align-self':
-            case 'align-content':
-            case 'flex':
-            case 'flex-basis':
-            case 'flex-flow':
-            case 'flex-grow':
-            case 'flex-shrink':
-            case 'flex-wrap':
-            case 'justify-content':
-                target['-webkit-' + key] = value;
-                break;
-            case 'flex-direction':
-                value = value || 'row';
-                target['-webkit-flex-direction'] = value;
-                target['flex-direction'] = value;
-                break;
-            case 'order':
-                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
-                break;
-        }
-    }
-    return target;
-}
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -648,6 +603,93 @@ function buildCSS(direction, wrap) {
         'flex-direction': direction,
         'flex-wrap': !!wrap ? wrap : null
     };
+}
+function applyCssPrefixes(target) {
+    for (var key in target) {
+        var value = target[key] || '';
+        switch (key) {
+            case 'display':
+                if (value === 'flex') {
+                    target['display'] = [
+                        '-webkit-flex',
+                        'flex'
+                    ];
+                }
+                else if (value === 'inline-flex') {
+                    target['display'] = [
+                        '-webkit-inline-flex',
+                        'inline-flex'
+                    ];
+                }
+                else {
+                    target['display'] = value;
+                }
+                break;
+            case 'align-items':
+            case 'align-self':
+            case 'align-content':
+            case 'flex':
+            case 'flex-basis':
+            case 'flex-flow':
+            case 'flex-grow':
+            case 'flex-shrink':
+            case 'flex-wrap':
+            case 'justify-content':
+                target['-webkit-' + key] = value;
+                break;
+            case 'flex-direction':
+                value = value || 'row';
+                target['-webkit-flex-direction'] = value;
+                target['flex-direction'] = value;
+                break;
+            case 'order':
+                target['order'] = target['-webkit-' + key] = isNaN(value) ? '0' : value;
+                break;
+        }
+    }
+    return target;
+}
+function applyStyleToElement(renderer, element, style, value) {
+    var styles = {};
+    if (typeof style === 'string') {
+        styles[style] = value;
+        style = styles;
+    }
+    styles = applyCssPrefixes(style);
+    applyMultiValueStyleToElement(styles, element, renderer);
+}
+function applyStyleToElements(renderer, style, elements) {
+    var styles = applyCssPrefixes(style);
+    elements.forEach(function (el) {
+        applyMultiValueStyleToElement(styles, el, renderer);
+    });
+}
+function applyMultiValueStyleToElement(styles, element, renderer) {
+    Object.keys(styles).forEach(function (key) {
+        var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+        for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
+            var value = values_1[_i];
+            renderer.setStyle(element, key, value);
+        }
+    });
+}
+function lookupInlineStyle(element, styleName) {
+    return _angular_platformBrowser.ɵgetDOM().getStyle(element, styleName);
+}
+function lookupStyle(element, styleName, inlineOnly) {
+    if (inlineOnly === void 0) { inlineOnly = false; }
+    var value = '';
+    if (element) {
+        try {
+            var immediateValue = value = lookupInlineStyle(element, styleName);
+            if (!inlineOnly) {
+                value = immediateValue || _angular_platformBrowser.ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
+            }
+        }
+        catch (e) {
+        }
+    }
+    return value ? value.trim() : 'block';
 }
 var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
@@ -769,7 +811,7 @@ var BaseFxDirective = (function () {
         this._elementRef = _elementRef;
         this._renderer = _renderer;
         this._inputMap = {};
-        this._display = this._getDisplayStyle();
+        this._hasInitialized = false;
     }
     Object.defineProperty(BaseFxDirective.prototype, "hasMediaQueryListener", {
         get: function () {
@@ -806,6 +848,10 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype._queryInput = function (key) {
         return this._inputMap[key];
     };
+    BaseFxDirective.prototype.ngOnInit = function () {
+        this._display = this._getDisplayStyle();
+        this._hasInitialized = true;
+    };
     BaseFxDirective.prototype.ngOnChanges = function (change) {
         throw new Error("BaseFxDirective::ngOnChanges should be overridden in subclass: " + change);
     };
@@ -822,59 +868,26 @@ var BaseFxDirective = (function () {
     };
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
         var element = source || this._elementRef.nativeElement;
-        var value = this._lookupStyle(element, 'display');
-        return value ? value.trim() : 'inline';
+        return lookupStyle(element, 'display');
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
         var value = 'row';
         if (target) {
-            value = this._lookupStyle(target, 'flex-direction') || 'row';
-            var hasInlineValue = _angular_platformBrowser.ɵgetDOM().getStyle(target, 'flex-direction');
+            value = lookupStyle(target, 'flex-direction') || 'row';
+            var hasInlineValue = lookupInlineStyle(target, 'flex-direction');
             if (!hasInlineValue && addIfMissing) {
-                this._applyStyleToElements(buildLayoutCSS(value), [target]);
+                applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
             }
         }
         return value.trim();
     };
-    BaseFxDirective.prototype._lookupStyle = function (element, styleName) {
-        var value = '';
-        try {
-            if (element) {
-                var immediateValue = _angular_platformBrowser.ɵgetDOM().getStyle(element, styleName);
-                value = immediateValue || _angular_platformBrowser.ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
-            }
-        }
-        catch (e) {
-        }
-        return value;
-    };
-    BaseFxDirective.prototype._applyMultiValueStyleToElement = function (styles, element) {
-        var _this = this;
-        Object.keys(styles).forEach(function (key) {
-            var values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
-            for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
-                var value = values_1[_i];
-                _this._renderer.setStyle(element, key, value);
-            }
-        });
-    };
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
-        var styles = {};
         var element = nativeElement || this._elementRef.nativeElement;
-        if (typeof style === 'string') {
-            styles[style] = value;
-            style = styles;
-        }
-        styles = applyCssPrefixes(style);
-        this._applyMultiValueStyleToElement(styles, element);
+        applyStyleToElement(this._renderer, element, style, value);
     };
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
-        var _this = this;
-        var styles = applyCssPrefixes(style);
-        elements.forEach(function (el) {
-            _this._applyMultiValueStyleToElement(styles, el);
-        });
+        applyStyleToElements(this._renderer, style, elements || []);
     };
     BaseFxDirective.prototype._cacheInput = function (key, source) {
         if (typeof source === 'object') {
@@ -908,6 +921,13 @@ var BaseFxDirective = (function () {
     BaseFxDirective.prototype.hasKeyValue = function (key) {
         return this._mqActivation.hasKeyValue(key);
     };
+    Object.defineProperty(BaseFxDirective.prototype, "hasInitialized", {
+        get: function () {
+            return this._hasInitialized;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return BaseFxDirective;
 }());
 var LayoutDirective = (function (_super) {
@@ -1009,6 +1029,7 @@ var LayoutDirective = (function (_super) {
     };
     LayoutDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('layout', 'row', function (changes) {
             _this._updateWithDirection(changes.value);
         });
@@ -1148,6 +1169,7 @@ var LayoutWrapDirective = (function (_super) {
     };
     LayoutWrapDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('wrap', 'wrap', function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -1365,6 +1387,7 @@ var FlexDirective = (function (_super) {
     };
     FlexDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('flex', '', function (changes) {
             _this._updateStyle(changes.value);
         });
@@ -1496,7 +1519,6 @@ var ShowHideDirective = (function (_super) {
         _this._layout = _layout;
         _this.elRef = elRef;
         _this.renderer = renderer;
-        _this._display = _this._getDisplayStyle();
         if (_layout) {
             _this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
         }
@@ -1670,12 +1692,13 @@ var ShowHideDirective = (function (_super) {
         return this._layout ? 'flex' : _super.prototype._getDisplayStyle.call(this);
     };
     ShowHideDirective.prototype.ngOnChanges = function (changes) {
-        if (changes['show'] != null || this._mqActivation) {
+        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
             this._updateWithValue();
         }
     };
     ShowHideDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         var value = this._getDefaultVal('show', true);
         this._listenForMediaQueryChanges('show', value, function (changes) {
             _this._updateWithValue(changes.value);
@@ -1841,6 +1864,7 @@ var FlexAlignDirective = (function (_super) {
     };
     FlexAlignDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('align', 'stretch', function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -2026,6 +2050,7 @@ var FlexOffsetDirective = (function (_super) {
     };
     FlexOffsetDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('offset', 0, function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -2179,6 +2204,7 @@ var FlexOrderDirective = (function (_super) {
     };
     FlexOrderDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('order', '0', function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -2320,6 +2346,7 @@ var LayoutAlignDirective = (function (_super) {
     };
     LayoutAlignDirective.prototype.ngOnInit = function () {
         var _this = this;
+        _super.prototype.ngOnInit.call(this);
         this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
             _this._updateWithValue(changes.value);
         });
@@ -2891,11 +2918,13 @@ var ClassDirective = (function (_super) {
         configurable: true
     });
     ClassDirective.prototype.ngOnChanges = function (changes) {
-        if (this._classAdapter.activeKey in changes) {
-            this._updateKlass();
-        }
-        if (this._ngClassAdapter.activeKey in changes) {
-            this._updateNgClass();
+        if (this.hasInitialized) {
+            if (this._classAdapter.activeKey in changes) {
+                this._updateKlass();
+            }
+            if (this._ngClassAdapter.activeKey in changes) {
+                this._updateNgClass();
+            }
         }
     };
     ClassDirective.prototype.ngDoCheck = function () {

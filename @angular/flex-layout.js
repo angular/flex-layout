@@ -495,6 +495,52 @@ const MEDIA_MONITOR_PROVIDER = {
     useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
 };
 
+const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
+function buildLayoutCSS(value) {
+    let [direction, wrap] = validateValue(value);
+    return buildCSS(direction, wrap);
+}
+function validateValue(value) {
+    value = value ? value.toLowerCase() : '';
+    let [direction, wrap] = value.split(' ');
+    if (!LAYOUT_VALUES.find(x => x === direction)) {
+        direction = LAYOUT_VALUES[0];
+    }
+    return [direction, validateWrapValue(wrap)];
+}
+function isFlowHorizontal(value) {
+    let [flow, _] = validateValue(value);
+    return flow.indexOf('row') > -1;
+}
+function validateWrapValue(value) {
+    if (!!value) {
+        switch (value.toLowerCase()) {
+            case 'reverse':
+            case 'wrap-reverse':
+            case 'reverse-wrap':
+                value = 'wrap-reverse';
+                break;
+            case 'no':
+            case 'none':
+            case 'nowrap':
+                value = 'nowrap';
+                break;
+            default:
+                value = 'wrap';
+                break;
+        }
+    }
+    return value;
+}
+function buildCSS(direction, wrap = null) {
+    return {
+        'display': 'flex',
+        'box-sizing': 'border-box',
+        'flex-direction': direction,
+        'flex-wrap': !!wrap ? wrap : null
+    };
+}
+
 function applyCssPrefixes(target) {
     for (let key in target) {
         let value = target[key] || '';
@@ -541,50 +587,45 @@ function applyCssPrefixes(target) {
     return target;
 }
 
-const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
-function buildLayoutCSS(value) {
-    let [direction, wrap] = validateValue(value);
-    return buildCSS(direction, wrap);
-}
-function validateValue(value) {
-    value = value ? value.toLowerCase() : '';
-    let [direction, wrap] = value.split(' ');
-    if (!LAYOUT_VALUES.find(x => x === direction)) {
-        direction = LAYOUT_VALUES[0];
+function applyStyleToElement(renderer, element, style, value) {
+    let styles = {};
+    if (typeof style === 'string') {
+        styles[style] = value;
+        style = styles;
     }
-    return [direction, validateWrapValue(wrap)];
+    styles = applyCssPrefixes(style);
+    applyMultiValueStyleToElement(styles, element, renderer);
 }
-function isFlowHorizontal(value) {
-    let [flow, _] = validateValue(value);
-    return flow.indexOf('row') > -1;
+function applyStyleToElements(renderer, style, elements) {
+    let styles = applyCssPrefixes(style);
+    elements.forEach(el => {
+        applyMultiValueStyleToElement(styles, el, renderer);
+    });
 }
-function validateWrapValue(value) {
-    if (!!value) {
-        switch (value.toLowerCase()) {
-            case 'reverse':
-            case 'wrap-reverse':
-            case 'reverse-wrap':
-                value = 'wrap-reverse';
-                break;
-            case 'no':
-            case 'none':
-            case 'nowrap':
-                value = 'nowrap';
-                break;
-            default:
-                value = 'wrap';
-                break;
+function applyMultiValueStyleToElement(styles, element, renderer) {
+    Object.keys(styles).forEach(key => {
+        const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+        for (let value of values) {
+            renderer.setStyle(element, key, value);
+        }
+    });
+}
+function lookupInlineStyle(element, styleName) {
+    return ɵgetDOM().getStyle(element, styleName);
+}
+function lookupStyle(element, styleName, inlineOnly = false) {
+    let value = '';
+    if (element) {
+        try {
+            let immediateValue = value = lookupInlineStyle(element, styleName);
+            if (!inlineOnly) {
+                value = immediateValue || ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
+            }
+        }
+        catch (e) {
         }
     }
-    return value;
-}
-function buildCSS(direction, wrap = null) {
-    return {
-        'display': 'flex',
-        'box-sizing': 'border-box',
-        'flex-direction': direction,
-        'flex-wrap': !!wrap ? wrap : null
-    };
+    return value ? value.trim() : 'block';
 }
 
 class KeyOptions {
@@ -691,7 +732,7 @@ class BaseFxDirective {
         this._elementRef = _elementRef;
         this._renderer = _renderer;
         this._inputMap = {};
-        this._display = this._getDisplayStyle();
+        this._hasInitialized = false;
     }
     get hasMediaQueryListener() {
         return !!this._mqActivation;
@@ -715,6 +756,10 @@ class BaseFxDirective {
     _queryInput(key) {
         return this._inputMap[key];
     }
+    ngOnInit() {
+        this._display = this._getDisplayStyle();
+        this._hasInitialized = true;
+    }
     ngOnChanges(change) {
         throw new Error(`BaseFxDirective::ngOnChanges should be overridden in subclass: ${change}`);
     }
@@ -731,55 +776,25 @@ class BaseFxDirective {
     }
     _getDisplayStyle(source) {
         let element = source || this._elementRef.nativeElement;
-        let value = this._lookupStyle(element, 'display');
-        return value ? value.trim() : 'inline';
+        return lookupStyle(element, 'display');
     }
     _getFlowDirection(target, addIfMissing = false) {
         let value = 'row';
         if (target) {
-            value = this._lookupStyle(target, 'flex-direction') || 'row';
-            let hasInlineValue = ɵgetDOM().getStyle(target, 'flex-direction');
+            value = lookupStyle(target, 'flex-direction') || 'row';
+            let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
             if (!hasInlineValue && addIfMissing) {
-                this._applyStyleToElements(buildLayoutCSS(value), [target]);
+                applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
             }
         }
         return value.trim();
     }
-    _lookupStyle(element, styleName) {
-        let value = '';
-        try {
-            if (element) {
-                let immediateValue = ɵgetDOM().getStyle(element, styleName);
-                value = immediateValue || ɵgetDOM().getComputedStyle(element).getPropertyValue(styleName);
-            }
-        }
-        catch (e) {
-        }
-        return value;
-    }
-    _applyMultiValueStyleToElement(styles, element) {
-        Object.keys(styles).forEach(key => {
-            const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
-            for (let value of values) {
-                this._renderer.setStyle(element, key, value);
-            }
-        });
-    }
     _applyStyleToElement(style, value, nativeElement) {
-        let styles = {};
         let element = nativeElement || this._elementRef.nativeElement;
-        if (typeof style === 'string') {
-            styles[style] = value;
-            style = styles;
-        }
-        styles = applyCssPrefixes(style);
-        this._applyMultiValueStyleToElement(styles, element);
+        applyStyleToElement(this._renderer, element, style, value);
     }
     _applyStyleToElements(style, elements) {
-        let styles = applyCssPrefixes(style);
-        elements.forEach(el => {
-            this._applyMultiValueStyleToElement(styles, el);
-        });
+        applyStyleToElements(this._renderer, style, elements || []);
     }
     _cacheInput(key, source) {
         if (typeof source === 'object') {
@@ -808,6 +823,9 @@ class BaseFxDirective {
     }
     hasKeyValue(key) {
         return this._mqActivation.hasKeyValue(key);
+    }
+    get hasInitialized() {
+        return this._hasInitialized;
     }
 }
 
@@ -851,6 +869,7 @@ class LayoutDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('layout', 'row', (changes) => {
             this._updateWithDirection(changes.value);
         });
@@ -936,6 +955,7 @@ class LayoutWrapDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('wrap', 'wrap', (changes) => {
             this._updateWithValue(changes.value);
         });
@@ -1083,6 +1103,7 @@ class FlexDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('flex', '', (changes) => {
             this._updateStyle(changes.value);
         });
@@ -1218,7 +1239,6 @@ class ShowHideDirective extends BaseFxDirective {
         this._layout = _layout;
         this.elRef = elRef;
         this.renderer = renderer;
-        this._display = this._getDisplayStyle();
         if (_layout) {
             this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
         }
@@ -1279,11 +1299,12 @@ class ShowHideDirective extends BaseFxDirective {
         return this._layout ? 'flex' : super._getDisplayStyle();
     }
     ngOnChanges(changes) {
-        if (changes['show'] != null || this._mqActivation) {
+        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
             this._updateWithValue();
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         let value = this._getDefaultVal('show', true);
         this._listenForMediaQueryChanges('show', value, (changes) => {
             this._updateWithValue(changes.value);
@@ -1400,6 +1421,7 @@ class FlexAlignDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('align', 'stretch', (changes) => {
             this._updateWithValue(changes.value);
         });
@@ -1532,6 +1554,7 @@ class FlexOffsetDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('offset', 0, (changes) => {
             this._updateWithValue(changes.value);
         });
@@ -1631,6 +1654,7 @@ class FlexOrderDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('order', '0', (changes) => {
             this._updateWithValue(changes.value);
         });
@@ -1718,6 +1742,7 @@ class LayoutAlignDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
+        super.ngOnInit();
         this._listenForMediaQueryChanges('align', 'start stretch', (changes) => {
             this._updateWithValue(changes.value);
         });
@@ -2099,11 +2124,13 @@ class ClassDirective extends BaseFxDirective {
         return this._classAdapter.queryInput('_rawClass') || "";
     }
     ngOnChanges(changes) {
-        if (this._classAdapter.activeKey in changes) {
-            this._updateKlass();
-        }
-        if (this._ngClassAdapter.activeKey in changes) {
-            this._updateNgClass();
+        if (this.hasInitialized) {
+            if (this._classAdapter.activeKey in changes) {
+                this._updateKlass();
+            }
+            if (this._ngClassAdapter.activeKey in changes) {
+                this._updateNgClass();
+            }
         }
     }
     ngDoCheck() {

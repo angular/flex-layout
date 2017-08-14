@@ -1,10 +1,8 @@
 import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer2 } from '@angular/core';
+import { StyleDefinition } from '../../utils/style-utils';
 import { ResponsiveActivation } from '../responsive/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
-export declare type StyleDefinition = string | {
-    [property: string]: string | number;
-};
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     protected _mediaMonitor: MediaMonitor;
     protected _elementRef: ElementRef;
@@ -14,20 +12,21 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
     protected readonly parentElement: any;
     protected _queryInput(key: any): any;
+    ngOnInit(): void;
     ngOnChanges(change: SimpleChanges): void;
     ngOnDestroy(): void;
     protected _getDefaultVal(key: string, fallbackVal: any): string | boolean;
     protected _getDisplayStyle(source?: HTMLElement): string;
     protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
-    protected _lookupStyle(element: HTMLElement, styleName: string): any;
-    protected _applyMultiValueStyleToElement(styles: {}, element: any): void;
     protected _applyStyleToElement(style: StyleDefinition, value?: string | number, nativeElement?: any): void;
     protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]): void;
     protected _cacheInput(key?: string, source?: any): void;
     protected _listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
     protected readonly childrenNodes: any[];
     protected hasKeyValue(key: any): boolean;
+    protected readonly hasInitialized: boolean;
     protected _display: any;
     protected _mqActivation: ResponsiveActivation;
     protected _inputMap: {};
+    protected _hasInitialized: boolean;
 }
