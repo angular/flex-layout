@@ -139,11 +139,13 @@ export class ClassDirective extends BaseFxDirective
    * For @Input changes on the current mq activation property
    */
   ngOnChanges(changes: SimpleChanges) {
-    if (this._classAdapter.activeKey in changes) {
-      this._updateKlass();
-    }
-    if (this._ngClassAdapter.activeKey in changes) {
-      this._updateNgClass();
+    if (this.hasInitialized) {
+      if (this._classAdapter.activeKey in changes) {
+        this._updateKlass();
+      }
+      if (this._ngClassAdapter.activeKey in changes) {
+        this._updateNgClass();
+      }
     }
   }
 

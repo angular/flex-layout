@@ -30,7 +30,7 @@ export interface NgMatchers extends jasmine.Matchers {
   /**
    * Compare key:value pairs as matching EXACTLY
    */
-  toHaveMap(expected: {[k: string]: string}): boolean;
+  toHaveMap(expected: { [k: string]: string }): boolean;
 
   /**
    * Expect the element to have the given CSS class.
@@ -42,19 +42,29 @@ export interface NgMatchers extends jasmine.Matchers {
   toHaveCssClass(expected: string): boolean;
 
   /**
-   * Expect the element to have the given CSS styles.
+   * Expect the element to have the given CSS styles injected INLINE
    *
    * ## Example
    *
    * {@example testing/ts/matchers.ts region='toHaveCssStyle'}
    */
-  toHaveCssStyle(expected: {[k: string]: string}|string): boolean;
+  toHaveCssStyle(expected: { [k: string]: string } | string): boolean;
+
+  /**
+   * Expect the element to have the given CSS inline OR computed styles.
+   *
+   * ## Example
+   *
+   * {@example testing/ts/matchers.ts region='toHaveCssStyle'}
+   */
+  toHaveStyle(expected: { [k: string]: string } | string): boolean;
 
   /**
    * Invert the matchers.
    */
   not: NgMatchers;
 }
+
 /**
  * NOTE: These custom JASMINE Matchers are used only
  *       in the Karma/Jasmine testing for the Layout Directives
@@ -116,9 +126,9 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
     }
   },
 
-  toHaveMap : function() {
+  toHaveMap: function () {
     return {
-      compare: function (actual: {[k: string]: string}, map: {[k: string]: string}) {
+      compare: function (actual: { [k: string]: string }, map: { [k: string]: string }) {
         let allPassed: boolean;
         allPassed = Object.keys(map).length !== 0;
         Object.keys(map).forEach(key => {
@@ -138,9 +148,35 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
     };
   },
 
+  toHaveStyle: function () {
+    return {
+      compare: function (actual: any, styles: { [k: string]: string } | string) {
+        let found = { }, computed = getComputedStyle(actual);
+        let allPassed: boolean = Object.keys(styles).length !== 0;
+        Object.keys(styles).forEach(prop => {
+          allPassed = allPassed && _.hasStyle(actual, prop, styles[prop], false);
+          if ( !allPassed ) {
+            found[prop] = computed.getPropertyValue(prop);
+          }
+        });
+
+        return {
+          pass: allPassed,
+          get message() {
+            const expectedValueStr = typeof styles === 'string' ? styles : JSON.stringify(styles);
+            return `
+              Expected ${JSON.stringify(found)} ${!allPassed ? ' ' : 'not '} to contain the
+              CSS ${typeof styles === 'string' ? 'property' : 'styles'} '${expectedValueStr}'
+            `;
+          }
+        };
+      }
+    };
+  },
+
   toHaveCssStyle: function () {
     return {
-      compare: function (actual: any, styles: {[k: string]: string}|string) {
+      compare: function (actual: any, styles: { [k: string]: string } | string) {
         let allPassed: boolean;
         if (typeof styles === 'string') {
           allPassed = _.hasStyle(actual, styles);
@@ -164,7 +200,6 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
       }
     };
   }
-
 };
 
 /**

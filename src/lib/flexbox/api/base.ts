@@ -9,20 +9,19 @@ import {
   ElementRef, OnDestroy, SimpleChanges, OnChanges,
   SimpleChange, Renderer2
 } from '@angular/core';
-import {ɵgetDOM as getDom} from '@angular/platform-browser';
 
-import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {buildLayoutCSS} from '../../utils/layout-validator';
+import {
+  StyleDefinition,
+  lookupStyle,
+  lookupInlineStyle,
+  applyStyleToElement,
+  applyStyleToElements
+} from '../../utils/style-utils';
 
 import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
-
-/**
- * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
- * map of property name and value (e.g. {display: 'none', flex-order: 5}).
- */
-export type StyleDefinition = string | { [property: string]: string | number };
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy, OnChanges {
@@ -66,7 +65,6 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
               protected _renderer: Renderer2) {
-    this._display = this._getDisplayStyle();
   }
 
   // *********************************************
@@ -91,6 +89,15 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   // *********************************************
   // Lifecycle Methods
   // *********************************************
+
+  /**
+   * Use post-component-initialization event to perform extra
+   * querying such as computed Display style
+   */
+  ngOnInit() {
+    this._display = this._getDisplayStyle();
+    this._hasInitialized = true;
+  }
 
   ngOnChanges(change: SimpleChanges) {
     throw new Error(`BaseFxDirective::ngOnChanges should be overridden in subclass: ${change}`);
@@ -124,10 +131,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
     let element: HTMLElement = source || this._elementRef.nativeElement;
-    let value = this._lookupStyle(element, 'display');
-
-    // Note: 'inline' is the default of all elements, unless UA stylesheet overrides
-    return value ? value.trim() : 'inline';
+    return lookupStyle(element, 'display');
   }
 
   /**
@@ -140,44 +144,15 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     let value = 'row';
 
     if (target) {
-      value = this._lookupStyle(target, 'flex-direction') || 'row';
+      value = lookupStyle(target, 'flex-direction') || 'row';
+      let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
 
-      let hasInlineValue = getDom().getStyle(target, 'flex-direction');
       if (!hasInlineValue && addIfMissing) {
-        this._applyStyleToElements(buildLayoutCSS(value), [target]);
+        applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
       }
     }
 
     return value.trim();
-  }
-
-  /**
-   * Determine the inline or inherited CSS style
-   */
-  protected _lookupStyle(element: HTMLElement, styleName: string): any {
-    let value = '';
-    try {
-      if (element) {
-        let immediateValue = getDom().getStyle(element, styleName);
-        value = immediateValue || getDom().getComputedStyle(element).getPropertyValue(styleName);
-      }
-    } catch (e) {
-      // TODO: platform-server throws an exception for getComputedStyle
-    }
-    return value;
-  }
-
-  /**
-   * Applies the styles to the element. The styles object map may contain an array of values. Each
-   * value will be added as element style.
-   */
-  protected _applyMultiValueStyleToElement(styles: {}, element: any) {
-    Object.keys(styles).forEach(key => {
-      const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
-      for (let value of values) {
-        this._renderer.setStyle(element, key, value);
-      }
-    });
   }
 
   /**
@@ -186,28 +161,15 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   protected _applyStyleToElement(style: StyleDefinition,
                                  value?: string | number,
                                  nativeElement?: any) {
-    let styles = {};
     let element = nativeElement || this._elementRef.nativeElement;
-
-    if (typeof style === 'string') {
-      styles[style] = value;
-      style = styles;
-    }
-
-    styles = applyCssPrefixes(style);
-
-    this._applyMultiValueStyleToElement(styles, element);
+    applyStyleToElement(this._renderer, element, style, value);
   }
 
   /**
-   * Applies styles given via string pair or object map to the directive element.
+   * Applies styles given via string pair or object map to the directive's element.
    */
   protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
-    let styles = applyCssPrefixes(style);
-
-    elements.forEach(el => {
-      this._applyMultiValueStyleToElement(styles, el);
-    });
+    applyStyleToElements(this._renderer, style, elements || []);
   }
 
   /**
@@ -264,6 +226,10 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     return this._mqActivation.hasKeyValue(key);
   }
 
+  protected get hasInitialized() {
+    return this._hasInitialized;
+  }
+
   /** Original dom Elements CSS display style */
   protected _display;
 
@@ -277,4 +243,11 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _inputMap = {};
 
+  /**
+   * Has the `ngOnInit()` method fired
+   *
+   * Used to allow *ngFor tasks to finish and support queries like
+   * getComputedStyle() during ngOnInit().
+   */
+  protected _hasInitialized = false;
 }

@@ -36,8 +36,15 @@ function getStyle(element: any, stylename: string): string {
   return element.style[stylename];
 }
 
-function hasStyle(element: any, styleName: string, styleValue: string = null): boolean {
-  const value = this.getStyle(element, styleName) || '';
+function hasStyle(element: any,
+                  styleName: string,
+                  styleValue: string = null,
+                  inlineOnly = true): boolean {
+  let value = getStyle(element, styleName) || '';
+  if ( !value && !inlineOnly ) {
+    // Search stylesheets
+    value = getComputedStyle(element).getPropertyValue(styleName) || '';
+  }
   return styleValue ? value == styleValue : value.length > 0;
 }
 
@@ -89,6 +96,7 @@ function isShadowRoot(node: any): boolean {
 function isPresent(obj: any): boolean {
   return obj != null;
 }
+
 function tagName(element: any): string {
   return element.tagName;
 }

@@ -74,6 +74,8 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('order', '0', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });

@@ -97,6 +97,8 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('layout', 'row', (changes: MediaChange) => {
       this._updateWithDirection(changes.value);
     });

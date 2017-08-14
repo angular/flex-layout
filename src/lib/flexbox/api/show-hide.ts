@@ -108,7 +108,6 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
 
     super(monitor, elRef, renderer);
 
-    this._display = this._getDisplayStyle();  // re-invoke override to use `this._layout`
     if (_layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -138,7 +137,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    * Then conditionally override with the mq-activated Input's current value
    */
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['show'] != null || this._mqActivation) {
+    if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
       this._updateWithValue();
     }
   }
@@ -148,8 +147,9 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
-    let value = this._getDefaultVal('show', true);
+    super.ngOnInit();
 
+    let value = this._getDefaultVal('show', true);
     // Build _mqActivation controller
     this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
       this._updateWithValue(changes.value);

@@ -89,6 +89,8 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
    * mql change events to onMediaQueryChange handlers
    */
   ngOnInit() {
+    super.ngOnInit();
+
     this._listenForMediaQueryChanges('wrap', 'wrap', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
