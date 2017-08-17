@@ -13,7 +13,7 @@
   var fs             = require('fs');
   var prompt         = require('prompt-sync')();
   var child_process  = require('child_process');
-  var releases       = require('./tools/releases.json');
+  var releases       = require('./scripts/release/releases.json');
   var oldVersion     = require('./package.json').version;
 
   var cleanupCmds    = [];
@@ -120,16 +120,15 @@
   function createChangelog () {
     start(`Generating changelog from ${oldVersion.cyan} to ${newVersion.cyan}...`);
 
-    exec(`git fetch --all --tags ${origin}`);
-    // Use the current CHANGELOG.md (that is on #master and now this brank)
-    exec(`gulp changelog --sha=$(git rev-list -n 1 v${lastMajorVer})`);
+    // Use the current CHANGELOG.md (that is on #master and now this branch)
+    exec(`./scripts/release/changelog.js`);
     done();
 
     abortCmds.push('git checkout CHANGELOG.md');
   }
 
   function updateReleasesJson () {
-    const RELEASE_PATH = './tools/releases.json';
+    const RELEASE_PATH = './scripts/release/releases.json';
     var config = require( RELEASE_PATH );
 
         config.versions.unshift(newVersion);
@@ -285,7 +284,7 @@
 
     exec([
       'cp -Rf ../dist/@angular/flex-layout/* ./',                   // local build output dir
-      'cp -f ../tools/scripts/release/npm_assets/package.json ./',  // package for the deployed npm build
+      'cp -f ../scripts/release/package.json ./',  // package for the deployed npm build
       'cp -f ../CHANGELOG.md .',                                    // always over the CHANGELOG
       'git add -A',
       `git commit -m "build(deploy): release version ${newVersion}"`
@@ -320,12 +319,12 @@
    * and also the npm version that is used when deploying the releases to npm.
    * FYI -
    *  ./package.json == package for the source repo
-   *  ./tools/scripts/release/npm_assets/package.json == package for the deployed npm build
+   *  ./scripts/release/package.json == package for the deployed npm build
    */
   function updatePackageVersions () {
     [
       './package.json',
-      './tools/scripts/release/npm_assets/package.json'
+      './scripts/release/package.json'
     ].forEach(filePath => {
       let json = require(filePath);
           json.version = newVersion;
@@ -337,8 +336,8 @@
    *  copies the changelog back over to master branch
    *  FYI -
    *    ./package.json == package for the source repo
-   *    ./tools/scripts/release/npm_assets/package.json == package for the deployed npm build
-   *    ./tools/releases.json == version list used by release script getNewVersion()
+   *    ./scripts/release/package.json == package for the deployed npm build
+   *    ./scripts/release/releases.json == version list used by release script getNewVersion()
    */
   function updateMaster () {
     pushCmds.push(
@@ -347,9 +346,9 @@
         `git checkout release/${newVersion} -- CHANGELOG.md`,
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updatePackageVersions)}"`,
         'git add package.json',
-        'git add tools/scripts/release/npm_assets/package.json',
+        'git add scripts/release/package.json',
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updateReleasesJson)}"`,
-        `git add tools/releases.json`,
+        `git add scripts/release/releases.json`,
         `git commit -m "chore(version): update version number in package.json to ${newVersion}"`,
         dryRun ? `` : `git push ${origin} master`
     );
