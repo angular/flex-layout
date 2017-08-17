@@ -56,8 +56,8 @@ describe('layout-gap directive', () => {
     const nodes = queryFor(fixture1, 'span');
     const styles = {[marginKey]: margin};
 
-    expect(nodes[0].nativeElement).toHaveCssStyle(styles);
-    expect(nodes[1].nativeElement).not.toHaveCssStyle(styles);
+    expect(nodes[0].nativeElement).toHaveStyle(styles);
+    expect(nodes[1].nativeElement).not.toHaveStyle(styles);
   }
 
   describe('with static features', () => {
@@ -68,7 +68,7 @@ describe('layout-gap directive', () => {
                   <div fxFlex></div>
               </div>
           `;
-      expectDomForQuery(template, '[fxFlex]').not.toHaveCssStyle({'margin-right': '13px;'});
+      expectDomForQuery(template, '[fxFlex]').not.toHaveStyle({'margin-right': '13px;'});
     });
 
     it('should add gap styles to all children except the 1st child', () => {
@@ -84,10 +84,10 @@ describe('layout-gap directive', () => {
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
-      expect(nodes[0].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).not.toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).not.toHaveCssStyle({'margin-right': '0px'});
+      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
+      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
+      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '0px'});
     });
 
     it('should add gap styles to dynamics rows EXCEPT first', () => {
@@ -102,11 +102,11 @@ describe('layout-gap directive', () => {
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[3].nativeElement).not.toHaveCssStyle({'margin-right': '13px'});
-      expect(nodes[3].nativeElement).not.toHaveCssStyle({'margin-right': '0px'});
+      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
+      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
+      expect(nodes[2].nativeElement).toHaveStyle({'margin-right': '13px'});
+      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '0px'});
     });
 
     it('should add update gap styles when row items are removed', async(() => {
@@ -133,9 +133,9 @@ describe('layout-gap directive', () => {
         nodes = queryFor(fixture, '[fxFlex]');
         expect(nodes.length).toEqual(3);
 
-        expect(nodes[0].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-        expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '13px'});
-        expect(nodes[2].nativeElement).not.toHaveCssStyle({'margin-right': '13px'});
+        expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
+        expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
+        expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '13px'});
       });
 
     }));
@@ -167,8 +167,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       let nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-right': '8px'});
-      expect(nodes[0].nativeElement).toHaveCssStyle({'margin-bottom': '8px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '8px'});
+      expect(nodes[0].nativeElement).toHaveStyle({'margin-bottom': '8px'});
 
 
       // layout = column-reverse, use margin-bottom
@@ -176,8 +176,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-right': '8px'});
-      expect(nodes[0].nativeElement).toHaveCssStyle({'margin-bottom': '8px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '8px'});
+      expect(nodes[0].nativeElement).toHaveStyle({'margin-bottom': '8px'});
 
 
       // layout = row-reverse, use margin-right
@@ -185,8 +185,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-bottom': '8px'});
-      expect(nodes[0].nativeElement).toHaveCssStyle({'margin-right': '8px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
+      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '8px'});
     });
 
     it('should recognize hidden elements when applying gaps', () => {
@@ -205,10 +205,10 @@ describe('layout-gap directive', () => {
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(3);
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-right': '0px'});
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-right': '16px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '16px'});
-      expect(nodes[2].nativeElement).not.toHaveCssStyle({'margin-right': '16px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '0px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '16px'});
+      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '16px'});
+      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '16px'});
 
     });
 
@@ -233,10 +233,10 @@ describe('layout-gap directive', () => {
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-right': '16px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-right': '16px'});
-      expect(nodes[2].nativeElement).toHaveCssStyle({'margin-right': '16px'});
-      expect(nodes[3].nativeElement).not.toHaveCssStyle({'margin-right': '16px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '16px'});
+      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '16px'});
+      expect(nodes[2].nativeElement).toHaveStyle({'margin-right': '16px'});
+      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '16px'});
 
       fixture.componentInstance.gap = '8px';
       fixture.componentInstance.direction = 'column';
@@ -245,10 +245,10 @@ describe('layout-gap directive', () => {
       nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).not.toHaveCssStyle({'margin-bottom': '8px'});
-      expect(nodes[1].nativeElement).toHaveCssStyle({'margin-bottom': '8px'});
-      expect(nodes[2].nativeElement).toHaveCssStyle({'margin-bottom': '8px'});
-      expect(nodes[3].nativeElement).not.toHaveCssStyle({'margin-bottom': '8px'});
+      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
+      expect(nodes[1].nativeElement).toHaveStyle({'margin-bottom': '8px'});
+      expect(nodes[2].nativeElement).toHaveStyle({'margin-bottom': '8px'});
+      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
     });
   });
 

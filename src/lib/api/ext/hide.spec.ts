@@ -69,38 +69,38 @@ describe('hide directive', () => {
 
     it('should initial with component not visible as default', () => {
       createTestComponent(`<div fxHide></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
     });
 
     it('should initial with component visible when set to `false`', () => {
       createTestComponent(`<div fxHide="false"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
     });
 
     it('should initial with component visible when set to `0`', () => {
       createTestComponent(`<div [fxHide]="isVisible"></div>`);
-      expectNativeEl(fixture, {isVisible: 0}).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture, {isVisible: 0}).toHaveStyle({'display': 'block'});
     });
 
     it('should update styles with binding changes', () => {
       createTestComponent(`<div [fxHide]="menuHidden"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
     });
 
     it('should use "block" display style when not explicitly defined', () => {
       createTestComponent(`<button [fxHide]="isHidden"></button>`);
-      expectNativeEl(fixture, {isHidden: true}).toHaveCssStyle({'display': 'none'});
-      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'inline-block'});
+      expectNativeEl(fixture, {isHidden: true}).toHaveStyle({'display': 'none'});
+      expectNativeEl(fixture, {isHidden: false}).toHaveStyle({'display': 'inline-block'});
     });
 
     it('should use "flex" display style when the element also has an fxLayout', () => {
       createTestComponent(`<div fxLayout [fxHide]="isHidden"></div>`);
-      expectNativeEl(fixture, {isHidden: true}).toHaveCssStyle({'display': 'none'});
-      expectNativeEl(fixture, {isHidden: false}).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture, {isHidden: true}).toHaveStyle({'display': 'none'});
+      expectNativeEl(fixture, {isHidden: false}).toHaveStyle({'display': 'block'});
     });
 
 
@@ -111,73 +111,73 @@ describe('hide directive', () => {
     it('should show on `xs` viewports only when the default is included', () => {
       createTestComponent(`<div fxHide="" fxHide.xs="false"></div>`);
 
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
       matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
     });
 
     it('should preserve display and update only on activated mediaQuery', () => {
       createTestComponent(`<div [fxHide.xs]="isHidden" style="display:inline-block"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
 
       // should hide with this activation
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
 
       // should reset to original display style
       matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
     });
 
     it('should restore original display when disabled', () => {
       createTestComponent(`<div [fxHide.xs]="isHidden" style="display:inline-block"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
 
       // should hide with this activation
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
 
       // should reset to original display style
       fixture.componentInstance.isHidden = false;
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
     });
 
     it('should restore original display when the mediaQuery deactivates', () => {
       let originalDisplay = {'display': 'table'};
       createTestComponent(`<div [fxHide.xs]="isHidden" style="display:table"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      expectNativeEl(fixture).toHaveStyle(originalDisplay);
 
       // should hide with this activation
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
 
       // should reset to original display style
       matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveCssStyle(originalDisplay);
+      expectNativeEl(fixture).toHaveStyle(originalDisplay);
     });
 
     it('should support use of the `media` observable in templates ', () => {
       createTestComponent(`<div [fxHide]="media.isActive('xs')"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
 
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'});
 
       matchMedia.activate('lg');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
     });
 
     it('should support use of the `media` observable in adaptive templates ', () => {
       createTestComponent(`<div fxHide="false" [fxHide.md]="media.isActive('xs')"></div>`);
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
 
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
 
       matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveCssStyle({'display': 'block'});
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'});
     });
 
     it('should hide when used with fxLayout and the ".md" breakpoint activates', () => {
@@ -198,8 +198,8 @@ describe('hide directive', () => {
         `;
       let expectActivation = makeExpectWithActivation(createTestComponent(template), '.hideOnMd');
 
-      expectActivation().toHaveCssStyle({'display': 'block'});
-      expectActivation('md').toHaveCssStyle({'display': 'none'});
+      expectActivation().toHaveStyle({'display': 'block'});
+      expectActivation('md').toHaveStyle({'display': 'none'});
     });
 
     it('should restore proper display mode when not hiding', () => {
@@ -210,9 +210,9 @@ describe('hide directive', () => {
            `;
       let expectActivation = makeExpectWithActivation(createTestComponent(template), '.hideOnXs');
 
-      expectActivation().toHaveCssStyle({'display': 'inline'});
-      expectActivation('xs').toHaveCssStyle({'display': 'none'});
-      expectActivation('md').toHaveCssStyle({'display': 'inline'});
+      expectActivation().toHaveStyle({'display': 'inline'});
+      expectActivation('xs').toHaveStyle({'display': 'none'});
+      expectActivation('md').toHaveStyle({'display': 'inline'});
     });
   });
 
@@ -222,13 +222,13 @@ describe('hide directive', () => {
         This content to be shown ONLY when gt-sm
       </div>
     `);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+    expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
 
     matchMedia.activate('md', true);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'none'});
+    expectNativeEl(fixture).toHaveStyle({'display': 'none'});
 
     matchMedia.activate('xs', true);
-    expectNativeEl(fixture).toHaveCssStyle({'display': 'inline-block'});
+    expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'});
   });
 
 });
