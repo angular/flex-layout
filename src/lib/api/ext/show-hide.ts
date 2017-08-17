@@ -20,10 +20,10 @@ import {
 
 import {Subscription} from 'rxjs/Subscription';
 
-import {BaseFxDirective} from './base';
+import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {LayoutDirective} from './layout';
+import {LayoutDirective} from '../flexbox/layout';
 
 const FALSY = ['false', false, 0];
 

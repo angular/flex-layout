@@ -18,7 +18,7 @@ import {
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
-import {BaseFxDirective} from './base';
+import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {buildLayoutCSS} from '../../utils/layout-validator';

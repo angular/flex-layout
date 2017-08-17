@@ -16,7 +16,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 
-import {BaseFxDirective} from './base';
+import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 

@@ -8,7 +8,7 @@
 import {ElementRef, Renderer2} from '@angular/core';
 
 import {BaseFxDirective} from './base';
-import {ResponsiveActivation} from './../responsive/responsive-activation';
+import {ResponsiveActivation} from './responsive-activation';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
