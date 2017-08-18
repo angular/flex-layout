@@ -1,5 +1,5 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
-import { BaseFxDirective } from './base';
+import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     order: any;

@@ -7,495 +7,12 @@
  */
 import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { DOCUMENT, DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
+import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
-import { map } from 'rxjs/operator/map';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.8-d6b45a6');
-
-class MediaChange {
-    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
-        this.matches = matches;
-        this.mediaQuery = mediaQuery;
-        this.mqAlias = mqAlias;
-        this.suffix = suffix;
-    }
-    clone() {
-        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
-    }
-}
-
-class MatchMedia {
-    constructor(_zone, _document) {
-        this._zone = _zone;
-        this._document = _document;
-        this._registry = new Map();
-        this._source = new BehaviorSubject(new MediaChange(true));
-        this._observable$ = this._source.asObservable();
-    }
-    isActive(mediaQuery) {
-        if (this._registry.has(mediaQuery)) {
-            let mql = this._registry.get(mediaQuery);
-            return mql.matches;
-        }
-        return false;
-    }
-    observe(mediaQuery) {
-        this.registerQuery(mediaQuery);
-        return filter.call(this._observable$, (change) => {
-            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        });
-    }
-    registerQuery(mediaQuery) {
-        let list = normalizeQuery(mediaQuery);
-        if (list.length > 0) {
-            prepareQueryCSS(list, this._document);
-            list.forEach(query => {
-                let mql = this._registry.get(query);
-                let onMQLEvent = (e) => {
-                    this._zone.run(() => {
-                        let change = new MediaChange(e.matches, query);
-                        this._source.next(change);
-                    });
-                };
-                if (!mql) {
-                    mql = this._buildMQL(query);
-                    mql.addListener(onMQLEvent);
-                    this._registry.set(query, mql);
-                }
-                if (mql.matches) {
-                    onMQLEvent(mql);
-                }
-            });
-        }
-    }
-    _buildMQL(query) {
-        let canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
-        return canListen ? ((window)).matchMedia(query) : ({
-            matches: query === 'all' || query === '',
-            media: query,
-            addListener: () => {
-            },
-            removeListener: () => {
-            }
-        });
-    }
-}
-MatchMedia.decorators = [
-    { type: Injectable },
-];
-MatchMedia.ctorParameters = () => [
-    { type: NgZone, },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
-];
-function isBrowser() {
-    return ɵgetDOM().supportsDOMEvents();
-}
-const ALL_STYLES = {};
-function prepareQueryCSS(mediaQueries, _document) {
-    let list = mediaQueries.filter(it => !ALL_STYLES[it]);
-    if (list.length > 0) {
-        let query = list.join(', ');
-        try {
-            let styleEl = ɵgetDOM().createElement('style');
-            ɵgetDOM().setAttribute(styleEl, 'type', 'text/css');
-            if (!styleEl['styleSheet']) {
-                let cssText = `/*
-  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
-  see http://bit.ly/2sd4HMP
-*/
-@media ${query} {.fx-query-test{ }}`;
-                ɵgetDOM().appendChild(styleEl, ɵgetDOM().createTextNode(cssText));
-            }
-            ɵgetDOM().appendChild(_document.head, styleEl);
-            list.forEach(mq => ALL_STYLES[mq] = styleEl);
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-}
-function normalizeQuery(mediaQuery) {
-    return (typeof mediaQuery === 'undefined') ? [] :
-        (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
-}
-function unique(list) {
-    let seen = {};
-    return list.filter(item => {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-    });
-}
-
-const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
-
-class BreakPointRegistry {
-    constructor(_registry) {
-        this._registry = _registry;
-    }
-    get items() {
-        return [...this._registry];
-    }
-    get sortedItems() {
-        let overlaps = this._registry.filter(it => it.overlapping === true);
-        let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
-        return [...overlaps, ...nonOverlaps];
-    }
-    findByAlias(alias) {
-        return this._registry.find(bp => bp.alias == alias);
-    }
-    findByQuery(query) {
-        return this._registry.find(bp => bp.mediaQuery == query);
-    }
-    get overlappings() {
-        return this._registry.filter(it => it.overlapping == true);
-    }
-    get aliases() {
-        return this._registry.map(it => it.alias);
-    }
-    get suffixes() {
-        return this._registry.map(it => it.suffix);
-    }
-}
-BreakPointRegistry.decorators = [
-    { type: Injectable },
-];
-BreakPointRegistry.ctorParameters = () => [
-    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
-];
-
-function extendObject(dest, ...sources) {
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (let source of sources) {
-        if (source != null) {
-            for (let key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
-}
-
-function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
-}
-
-class MediaMonitor {
-    constructor(_breakpoints, _matchMedia) {
-        this._breakpoints = _breakpoints;
-        this._matchMedia = _matchMedia;
-        this._registerBreakpoints();
-    }
-    get breakpoints() {
-        return [...this._breakpoints.items];
-    }
-    get activeOverlaps() {
-        let items = this._breakpoints.overlappings.reverse();
-        return items.filter((bp) => {
-            return this._matchMedia.isActive(bp.mediaQuery);
-        });
-    }
-    get active() {
-        let found = null, items = this.breakpoints.reverse();
-        items.forEach(bp => {
-            if (bp.alias !== '') {
-                if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
-                    found = bp;
-                }
-            }
-        });
-        let first = this.breakpoints[0];
-        return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
-    }
-    isActive(alias) {
-        let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-    }
-    observe(alias) {
-        let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        let hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
-        let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return filter.call(map.call(media$, change => mergeAlias(change, bp)), hasAlias);
-    }
-    _registerBreakpoints() {
-        let queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this._matchMedia.registerQuery(queries);
-    }
-}
-MediaMonitor.decorators = [
-    { type: Injectable },
-];
-MediaMonitor.ctorParameters = () => [
-    { type: BreakPointRegistry, },
-    { type: MatchMedia, },
-];
-
-class ObservableMedia {
-    isActive(query) { }
-    asObservable() { }
-    subscribe(next, error, complete) { }
-}
-class MediaService {
-    constructor(breakpoints, mediaWatcher) {
-        this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
-        this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.observable$ = this._buildObservable();
-    }
-    isActive(alias) {
-        let query = this._toMediaQuery(alias);
-        return this.mediaWatcher.isActive(query);
-    }
-    subscribe(next, error, complete) {
-        return this.observable$.subscribe(next, error, complete);
-    }
-    asObservable() {
-        return this.observable$;
-    }
-    _registerBreakPoints() {
-        let queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-        this.mediaWatcher.registerQuery(queries);
-    }
-    _buildObservable() {
-        const self = this;
-        const activationsOnly = (change) => {
-            return change.matches === true;
-        };
-        const addAliasInformation = (change) => {
-            return mergeAlias(change, this._findByQuery(change.mediaQuery));
-        };
-        const excludeOverlaps = (change) => {
-            let bp = this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
-        };
-        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
-    }
-    _findByAlias(alias) {
-        return this.breakpoints.findByAlias(alias);
-    }
-    _findByQuery(query) {
-        return this.breakpoints.findByQuery(query);
-    }
-    _toMediaQuery(query) {
-        let bp = this._findByAlias(query) || this._findByQuery(query);
-        return bp ? bp.mediaQuery : query;
-    }
-}
-MediaService.decorators = [
-    { type: Injectable },
-];
-MediaService.ctorParameters = () => [
-    { type: BreakPointRegistry, },
-    { type: MatchMedia, },
-];
-
-function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(breakpoints, matchMedia);
-}
-const OBSERVABLE_MEDIA_PROVIDER = {
-    provide: ObservableMedia,
-    deps: [
-        [new Optional(), new SkipSelf(), ObservableMedia],
-        MatchMedia,
-        BreakPointRegistry
-    ],
-    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
-};
-
-const RESPONSIVE_ALIASES = [
-    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
-];
-const DEFAULT_BREAKPOINTS = [
-    {
-        alias: 'xs',
-        mediaQuery: '(max-width: 599px)'
-    },
-    {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: '(min-width: 600px)'
-    },
-    {
-        alias: 'lt-sm',
-        overlapping: true,
-        mediaQuery: '(max-width: 599px)'
-    },
-    {
-        alias: 'sm',
-        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: '(min-width: 960px)'
-    },
-    {
-        alias: 'lt-md',
-        overlapping: true,
-        mediaQuery: '(max-width: 959px)'
-    },
-    {
-        alias: 'md',
-        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
-    },
-    {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: '(min-width: 1280px)'
-    },
-    {
-        alias: 'lt-lg',
-        overlapping: true,
-        mediaQuery: '(max-width: 1279px)'
-    },
-    {
-        alias: 'lg',
-        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: '(min-width: 1920px)'
-    },
-    {
-        alias: 'lt-xl',
-        overlapping: true,
-        mediaQuery: '(max-width: 1920px)'
-    },
-    {
-        alias: 'xl',
-        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
-    }
-];
-
-const HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-const TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-const TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-const WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-const WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
-const ScreenTypes = {
-    'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
-    'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
-    'WEB': `${WEB_PORTRAIT}, ${WEB_LANDSCAPE} `,
-    'HANDSET_PORTRAIT': `${HANDSET_PORTRAIT}`,
-    'TABLET_PORTRAIT': `${TABLET_PORTRAIT} `,
-    'WEB_PORTRAIT': `${WEB_PORTRAIT}`,
-    'HANDSET_LANDSCAPE': `${HANDSET_LANDSCAPE}]`,
-    'TABLET_LANDSCAPE': `${TABLET_LANDSCAPE}`,
-    'WEB_LANDSCAPE': `${WEB_LANDSCAPE}`
-};
-const ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
-];
-
-const ALIAS_DELIMITERS = /(\.|-|_)/g;
-function firstUpperCase(part) {
-    let first = part.length > 0 ? part.charAt(0) : '';
-    let remainder = (part.length > 1) ? part.slice(1) : '';
-    return first.toUpperCase() + remainder;
-}
-function camelCase(name) {
-    return name
-        .replace(ALIAS_DELIMITERS, '|')
-        .split('|')
-        .map(firstUpperCase)
-        .join('');
-}
-function validateSuffixes(list) {
-    list.forEach((bp) => {
-        if (!bp.suffix || bp.suffix === '') {
-            bp.suffix = camelCase(bp.alias);
-            bp.overlapping = bp.overlapping || false;
-        }
-    });
-    return list;
-}
-function mergeByAlias(defaults, custom = []) {
-    const merged = defaults.map((bp) => extendObject({}, bp));
-    const findByAlias = (alias) => merged.reduce((result, bp) => {
-        return result || ((bp.alias === alias) ? bp : null);
-    }, null);
-    custom.forEach((bp) => {
-        let target = findByAlias(bp.alias);
-        if (target) {
-            extendObject(target, bp);
-        }
-        else {
-            merged.push(bp);
-        }
-    });
-    return validateSuffixes(merged);
-}
-
-function buildMergedBreakPoints(_custom, options) {
-    options = extendObject({}, {
-        defaults: true,
-        orientation: false
-    }, options || {});
-    return () => {
-        let defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
-            DEFAULT_BREAKPOINTS;
-        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
-    };
-}
-function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
-    return validateSuffixes(DEFAULT_BREAKPOINTS);
-}
-const DEFAULT_BREAKPOINTS_PROVIDER = {
-    provide: BREAKPOINTS,
-    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
-};
-function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
-    return {
-        provide: BREAKPOINTS,
-        useFactory: buildMergedBreakPoints(_custom, options)
-    };
-}
-
-class MediaQueriesModule {
-}
-MediaQueriesModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [
-                    DEFAULT_BREAKPOINTS_PROVIDER,
-                    BreakPointRegistry,
-                    MatchMedia,
-                    MediaMonitor,
-                    OBSERVABLE_MEDIA_PROVIDER
-                ]
-            },] },
-];
-MediaQueriesModule.ctorParameters = () => [];
-
-function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
-}
-const MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
-    deps: [
-        [new Optional(), new SkipSelf(), MediaMonitor],
-        BreakPointRegistry,
-        MatchMedia,
-    ],
-    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
-};
+const VERSION = new Version('2.0.0-beta.8-45cfd2e');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -630,6 +147,22 @@ function lookupStyle(element, styleName, inlineOnly = false) {
     return value ? value.trim() : 'block';
 }
 
+function extendObject(dest, ...sources) {
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (let source of sources) {
+        if (source != null) {
+            for (let key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
+
 class KeyOptions {
     constructor(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
@@ -643,7 +176,11 @@ class ResponsiveActivation {
         this._mediaMonitor = _mediaMonitor;
         this._onMediaChanges = _onMediaChanges;
         this._subscribers = [];
+        this._registryMap = this._buildRegistryMap();
         this._subscribers = this._configureChangeObservers();
+    }
+    get registryFromLargest() {
+        return [...this._registryMap].reverse();
     }
     get mediaMonitor() {
         return this._mediaMonitor;
@@ -667,7 +204,7 @@ class ResponsiveActivation {
     }
     _configureChangeObservers() {
         let subscriptions = [];
-        this._buildRegistryMap().forEach((bp) => {
+        this._registryMap.forEach((bp) => {
             if (this._keyInUse(bp.key)) {
                 let buildChanges = (change) => {
                     change = change.clone();
@@ -755,6 +292,9 @@ class BaseFxDirective {
     get parentElement() {
         return this._elementRef.nativeElement.parentNode;
     }
+    get nativeElement() {
+        return this._elementRef.nativeElement;
+    }
     _queryInput(key) {
         return this._inputMap[key];
     }
@@ -777,7 +317,7 @@ class BaseFxDirective {
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     }
     _getDisplayStyle(source) {
-        let element = source || this._elementRef.nativeElement;
+        let element = source || this.nativeElement;
         return lookupStyle(element, 'display');
     }
     _getFlowDirection(target, addIfMissing = false) {
@@ -792,7 +332,7 @@ class BaseFxDirective {
         return value.trim();
     }
     _applyStyleToElement(style, value, nativeElement) {
-        let element = nativeElement || this._elementRef.nativeElement;
+        let element = nativeElement || this.nativeElement;
         applyStyleToElement(this._renderer, element, style, value);
     }
     _applyStyleToElements(style, elements) {
@@ -816,7 +356,7 @@ class BaseFxDirective {
         return this._mqActivation;
     }
     get childrenNodes() {
-        const obj = this._elementRef.nativeElement.children;
+        const obj = this.nativeElement.children;
         const buffer = [];
         for (let i = obj.length; i--;) {
             buffer[i] = obj[i];
@@ -830,6 +370,275 @@ class BaseFxDirective {
         return this._hasInitialized;
     }
 }
+
+class BaseFxDirectiveAdapter extends BaseFxDirective {
+    constructor(_baseKey, _mediaMonitor, _elementRef, _renderer) {
+        super(_mediaMonitor, _elementRef, _renderer);
+        this._baseKey = _baseKey;
+        this._mediaMonitor = _mediaMonitor;
+        this._elementRef = _elementRef;
+        this._renderer = _renderer;
+    }
+    get activeKey() {
+        let mqa = this._mqActivation;
+        let key = mqa ? mqa.activatedInputKey : this._baseKey;
+        return (key === 'class') ? 'klazz' : key;
+    }
+    get inputMap() {
+        return this._inputMap;
+    }
+    get mqActivation() {
+        return this._mqActivation;
+    }
+    queryInput(key) {
+        return key ? this._queryInput(key) : undefined;
+    }
+    cacheInput(key, source, cacheRaw = false) {
+        if (cacheRaw) {
+            this._cacheInputRaw(key, source);
+        }
+        else if (Array.isArray(source)) {
+            this._cacheInputArray(key, source);
+        }
+        else if (typeof source === 'object') {
+            this._cacheInputObject(key, source);
+        }
+        else if (typeof source === 'string') {
+            this._cacheInputString(key, source);
+        }
+        else {
+            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
+        }
+    }
+    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    }
+    _cacheInputRaw(key, source) {
+        this._inputMap[key] = source;
+    }
+    _cacheInputArray(key = '', source) {
+        this._inputMap[key] = source.join(' ');
+    }
+    _cacheInputObject(key = '', source) {
+        let classes = [];
+        for (let prop in source) {
+            if (!!source[prop]) {
+                classes.push(prop);
+            }
+        }
+        this._inputMap[key] = classes.join(' ');
+    }
+    _cacheInputString(key = '', source) {
+        this._inputMap[key] = source;
+    }
+}
+
+const BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+
+class BreakPointRegistry {
+    constructor(_registry) {
+        this._registry = _registry;
+    }
+    get items() {
+        return [...this._registry];
+    }
+    get sortedItems() {
+        let overlaps = this._registry.filter(it => it.overlapping === true);
+        let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
+        return [...overlaps, ...nonOverlaps];
+    }
+    findByAlias(alias) {
+        return this._registry.find(bp => bp.alias == alias);
+    }
+    findByQuery(query) {
+        return this._registry.find(bp => bp.mediaQuery == query);
+    }
+    get overlappings() {
+        return this._registry.filter(it => it.overlapping == true);
+    }
+    get aliases() {
+        return this._registry.map(it => it.alias);
+    }
+    get suffixes() {
+        return this._registry.map(it => it.suffix);
+    }
+}
+BreakPointRegistry.decorators = [
+    { type: Injectable },
+];
+BreakPointRegistry.ctorParameters = () => [
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
+];
+
+class MediaChange {
+    constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {
+        this.matches = matches;
+        this.mediaQuery = mediaQuery;
+        this.mqAlias = mqAlias;
+        this.suffix = suffix;
+    }
+    clone() {
+        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+    }
+}
+
+class MatchMedia {
+    constructor(_zone, _document) {
+        this._zone = _zone;
+        this._document = _document;
+        this._registry = new Map();
+        this._source = new BehaviorSubject(new MediaChange(true));
+        this._observable$ = this._source.asObservable();
+    }
+    isActive(mediaQuery) {
+        if (this._registry.has(mediaQuery)) {
+            let mql = this._registry.get(mediaQuery);
+            return mql.matches;
+        }
+        return false;
+    }
+    observe(mediaQuery) {
+        this.registerQuery(mediaQuery);
+        return filter.call(this._observable$, (change) => {
+            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+        });
+    }
+    registerQuery(mediaQuery) {
+        let list = normalizeQuery(mediaQuery);
+        if (list.length > 0) {
+            prepareQueryCSS(list, this._document);
+            list.forEach(query => {
+                let mql = this._registry.get(query);
+                let onMQLEvent = (e) => {
+                    this._zone.run(() => {
+                        let change = new MediaChange(e.matches, query);
+                        this._source.next(change);
+                    });
+                };
+                if (!mql) {
+                    mql = this._buildMQL(query);
+                    mql.addListener(onMQLEvent);
+                    this._registry.set(query, mql);
+                }
+                if (mql.matches) {
+                    onMQLEvent(mql);
+                }
+            });
+        }
+    }
+    _buildMQL(query) {
+        let canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
+        return canListen ? ((window)).matchMedia(query) : ({
+            matches: query === 'all' || query === '',
+            media: query,
+            addListener: () => {
+            },
+            removeListener: () => {
+            }
+        });
+    }
+}
+MatchMedia.decorators = [
+    { type: Injectable },
+];
+MatchMedia.ctorParameters = () => [
+    { type: NgZone, },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+];
+function isBrowser() {
+    return ɵgetDOM().supportsDOMEvents();
+}
+const ALL_STYLES = {};
+function prepareQueryCSS(mediaQueries, _document) {
+    let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+    if (list.length > 0) {
+        let query = list.join(', ');
+        try {
+            let styleEl = ɵgetDOM().createElement('style');
+            ɵgetDOM().setAttribute(styleEl, 'type', 'text/css');
+            if (!styleEl['styleSheet']) {
+                let cssText = `/*
+  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  see http://bit.ly/2sd4HMP
+*/
+@media ${query} {.fx-query-test{ }}`;
+                ɵgetDOM().appendChild(styleEl, ɵgetDOM().createTextNode(cssText));
+            }
+            ɵgetDOM().appendChild(_document.head, styleEl);
+            list.forEach(mq => ALL_STYLES[mq] = styleEl);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+}
+function normalizeQuery(mediaQuery) {
+    return (typeof mediaQuery === 'undefined') ? [] :
+        (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
+}
+function unique(list) {
+    let seen = {};
+    return list.filter(item => {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+
+function mergeAlias(dest, source) {
+    return extendObject(dest, source ? {
+        mqAlias: source.alias,
+        suffix: source.suffix
+    } : {});
+}
+
+class MediaMonitor {
+    constructor(_breakpoints, _matchMedia) {
+        this._breakpoints = _breakpoints;
+        this._matchMedia = _matchMedia;
+        this._registerBreakpoints();
+    }
+    get breakpoints() {
+        return [...this._breakpoints.items];
+    }
+    get activeOverlaps() {
+        let items = this._breakpoints.overlappings.reverse();
+        return items.filter((bp) => {
+            return this._matchMedia.isActive(bp.mediaQuery);
+        });
+    }
+    get active() {
+        let found = null, items = this.breakpoints.reverse();
+        items.forEach(bp => {
+            if (bp.alias !== '') {
+                if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
+                    found = bp;
+                }
+            }
+        });
+        let first = this.breakpoints[0];
+        return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
+    }
+    isActive(alias) {
+        let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
+    }
+    observe(alias) {
+        let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        let hasAlias = (change) => (bp ? change.mqAlias !== '' : true);
+        let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+        return filter.call(map.call(media$, change => mergeAlias(change, bp)), hasAlias);
+    }
+    _registerBreakpoints() {
+        let queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        this._matchMedia.registerQuery(queries);
+    }
+}
+MediaMonitor.decorators = [
+    { type: Injectable },
+];
+MediaMonitor.ctorParameters = () => [
+    { type: BreakPointRegistry, },
+    { type: MatchMedia, },
+];
 
 class LayoutDirective extends BaseFxDirective {
     constructor(monitor, elRef, renderer) {
@@ -917,6 +726,317 @@ LayoutDirective.propDecorators = {
     'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
 
+class LayoutAlignDirective extends BaseFxDirective {
+    constructor(monitor, elRef, renderer, container) {
+        super(monitor, elRef, renderer);
+        this._layout = 'row';
+        if (container) {
+            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
+        }
+    }
+    set align(val) { this._cacheInput('align', val); }
+    set alignXs(val) { this._cacheInput('alignXs', val); }
+    set alignSm(val) { this._cacheInput('alignSm', val); }
+    ;
+    set alignMd(val) { this._cacheInput('alignMd', val); }
+    ;
+    set alignLg(val) { this._cacheInput('alignLg', val); }
+    ;
+    set alignXl(val) { this._cacheInput('alignXl', val); }
+    ;
+    set alignGtXs(val) { this._cacheInput('alignGtXs', val); }
+    ;
+    set alignGtSm(val) { this._cacheInput('alignGtSm', val); }
+    ;
+    set alignGtMd(val) { this._cacheInput('alignGtMd', val); }
+    ;
+    set alignGtLg(val) { this._cacheInput('alignGtLg', val); }
+    ;
+    set alignLtSm(val) { this._cacheInput('alignLtSm', val); }
+    ;
+    set alignLtMd(val) { this._cacheInput('alignLtMd', val); }
+    ;
+    set alignLtLg(val) { this._cacheInput('alignLtLg', val); }
+    ;
+    set alignLtXl(val) { this._cacheInput('alignLtXl', val); }
+    ;
+    ngOnChanges(changes) {
+        if (changes['align'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    }
+    ngOnInit() {
+        super.ngOnInit();
+        this._listenForMediaQueryChanges('align', 'start stretch', (changes) => {
+            this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    }
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    }
+    _updateWithValue(value) {
+        value = value || this._queryInput('align') || 'start stretch';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._applyStyleToElement(this._buildCSS(value));
+        this._allowStretching(value, !this._layout ? 'row' : this._layout);
+    }
+    _onLayoutChange(direction) {
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES.find(x => x === this._layout)) {
+            this._layout = 'row';
+        }
+        let value = this._queryInput('align') || 'start stretch';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._allowStretching(value, this._layout || 'row');
+    }
+    _buildCSS(align) {
+        let css = {}, [main_axis, cross_axis] = align.split(' ');
+        switch (main_axis) {
+            case 'center':
+                css['justify-content'] = 'center';
+                break;
+            case 'space-around':
+                css['justify-content'] = 'space-around';
+                break;
+            case 'space-between':
+                css['justify-content'] = 'space-between';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['justify-content'] = 'flex-end';
+                break;
+            case 'start':
+            case 'flex-start':
+            default:
+                css['justify-content'] = 'flex-start';
+                break;
+        }
+        switch (cross_axis) {
+            case 'start':
+            case 'flex-start':
+                css['align-items'] = css['align-content'] = 'flex-start';
+                break;
+            case 'baseline':
+                css['align-items'] = 'baseline';
+                break;
+            case 'center':
+                css['align-items'] = css['align-content'] = 'center';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['align-items'] = css['align-content'] = 'flex-end';
+                break;
+            case 'stretch':
+            default:
+                css['align-items'] = css['align-content'] = 'stretch';
+                break;
+        }
+        return extendObject(css, {
+            'display': 'flex',
+            'flex-direction': this._layout || 'row',
+            'box-sizing': 'border-box'
+        });
+    }
+    _allowStretching(align, layout) {
+        let [, cross_axis] = align.split(' ');
+        if (cross_axis == 'stretch') {
+            this._applyStyleToElement({
+                'box-sizing': 'border-box',
+                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+                'max-height': isFlowHorizontal(layout) ? '100%' : null
+            });
+        }
+    }
+}
+LayoutAlignDirective.decorators = [
+    { type: Directive, args: [{ selector: `
+  [fxLayoutAlign],
+  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],
+  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],
+  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]
+` },] },
+];
+LayoutAlignDirective.ctorParameters = () => [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+];
+LayoutAlignDirective.propDecorators = {
+    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
+    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
+    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
+    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
+    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
+    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
+    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
+    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
+    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
+    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
+    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
+    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
+    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
+    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
+};
+
+class LayoutGapDirective extends BaseFxDirective {
+    constructor(monitor, elRef, renderer, container, _zone) {
+        super(monitor, elRef, renderer);
+        this._zone = _zone;
+        this._layout = 'row';
+        if (container) {
+            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
+        }
+    }
+    set gap(val) { this._cacheInput('gap', val); }
+    set gapXs(val) { this._cacheInput('gapXs', val); }
+    set gapSm(val) { this._cacheInput('gapSm', val); }
+    ;
+    set gapMd(val) { this._cacheInput('gapMd', val); }
+    ;
+    set gapLg(val) { this._cacheInput('gapLg', val); }
+    ;
+    set gapXl(val) { this._cacheInput('gapXl', val); }
+    ;
+    set gapGtXs(val) { this._cacheInput('gapGtXs', val); }
+    ;
+    set gapGtSm(val) { this._cacheInput('gapGtSm', val); }
+    ;
+    set gapGtMd(val) { this._cacheInput('gapGtMd', val); }
+    ;
+    set gapGtLg(val) { this._cacheInput('gapGtLg', val); }
+    ;
+    set gapLtSm(val) { this._cacheInput('gapLtSm', val); }
+    ;
+    set gapLtMd(val) { this._cacheInput('gapLtMd', val); }
+    ;
+    set gapLtLg(val) { this._cacheInput('gapLtLg', val); }
+    ;
+    set gapLtXl(val) { this._cacheInput('gapLtXl', val); }
+    ;
+    ngOnChanges(changes) {
+        if (changes['gap'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    }
+    ngAfterContentInit() {
+        this._watchContentChanges();
+        this._listenForMediaQueryChanges('gap', '0', (changes) => {
+            this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    }
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+        if (this._observer) {
+            this._observer.disconnect();
+        }
+    }
+    _watchContentChanges() {
+        this._zone.runOutsideAngular(() => {
+            if (typeof MutationObserver !== 'undefined') {
+                this._observer = new MutationObserver((mutations) => {
+                    let validatedChanges = (it) => {
+                        return (it.addedNodes && it.addedNodes.length > 0) ||
+                            (it.removedNodes && it.removedNodes.length > 0);
+                    };
+                    if (mutations.some(validatedChanges)) {
+                        this._updateWithValue();
+                    }
+                });
+                this._observer.observe(this.nativeElement, { childList: true });
+            }
+        });
+    }
+    _onLayoutChange(direction) {
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES.find(x => x === this._layout)) {
+            this._layout = 'row';
+        }
+        this._updateWithValue();
+    }
+    _updateWithValue(value) {
+        value = value || this._queryInput('gap') || '0';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        let items = this.childrenNodes
+            .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
+        let numItems = items.length;
+        if (numItems > 1) {
+            let lastItem = items[numItems - 1];
+            items = items.filter((_, j) => j < numItems - 1);
+            this._applyStyleToElements(this._buildCSS(value), items);
+            this._applyStyleToElements(this._buildCSS(), [lastItem]);
+        }
+    }
+    _buildCSS(value = null) {
+        let key, margins = {
+            'margin-left': null,
+            'margin-right': null,
+            'margin-top': null,
+            'margin-bottom': null
+        };
+        switch (this._layout) {
+            case 'column':
+            case 'column-reverse':
+                key = 'margin-bottom';
+                break;
+            case 'row':
+            case 'row-reverse':
+            default:
+                key = 'margin-right';
+                break;
+        }
+        margins[key] = value;
+        return margins;
+    }
+}
+LayoutGapDirective.decorators = [
+    { type: Directive, args: [{
+                selector: `
+  [fxLayoutGap],
+  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],
+  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],
+  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
+`
+            },] },
+];
+LayoutGapDirective.ctorParameters = () => [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: NgZone, },
+];
+LayoutGapDirective.propDecorators = {
+    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
+    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
+    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
+    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
+    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
+    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
+    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
+    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
+    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
+    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
+};
+
 class LayoutWrapDirective extends BaseFxDirective {
     constructor(monitor, elRef, renderer, container) {
         super(monitor, elRef, renderer);
@@ -992,7 +1112,7 @@ class LayoutWrapDirective extends BaseFxDirective {
         };
     }
     get flowDirection() {
-        let computeFlowDirection = () => this._getFlowDirection(this._elementRef.nativeElement);
+        let computeFlowDirection = () => this._getFlowDirection(this.nativeElement);
         return this._layoutWatcher ? this._layout : computeFlowDirection();
     }
 }
@@ -1228,161 +1348,6 @@ FlexDirective.propDecorators = {
     'flexLtMd': [{ type: Input, args: ['fxFlex.lt-md',] },],
     'flexLtLg': [{ type: Input, args: ['fxFlex.lt-lg',] },],
     'flexLtXl': [{ type: Input, args: ['fxFlex.lt-xl',] },],
-};
-
-const FALSY = ['false', false, 0];
-function negativeOf(hide) {
-    return (hide === '') ? false :
-        ((hide === 'false') || (hide === 0)) ? true : !hide;
-}
-class ShowHideDirective extends BaseFxDirective {
-    constructor(monitor, _layout, elRef, renderer) {
-        super(monitor, elRef, renderer);
-        this._layout = _layout;
-        this.elRef = elRef;
-        this.renderer = renderer;
-        if (_layout) {
-            this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
-        }
-    }
-    set show(val) { this._cacheInput('show', val); }
-    set showXs(val) { this._cacheInput('showXs', val); }
-    set showSm(val) { this._cacheInput('showSm', val); }
-    ;
-    set showMd(val) { this._cacheInput('showMd', val); }
-    ;
-    set showLg(val) { this._cacheInput('showLg', val); }
-    ;
-    set showXl(val) { this._cacheInput('showXl', val); }
-    ;
-    set showLtSm(val) { this._cacheInput('showLtSm', val); }
-    ;
-    set showLtMd(val) { this._cacheInput('showLtMd', val); }
-    ;
-    set showLtLg(val) { this._cacheInput('showLtLg', val); }
-    ;
-    set showLtXl(val) { this._cacheInput('showLtXl', val); }
-    ;
-    set showGtXs(val) { this._cacheInput('showGtXs', val); }
-    ;
-    set showGtSm(val) { this._cacheInput('showGtSm', val); }
-    ;
-    set showGtMd(val) { this._cacheInput('showGtMd', val); }
-    ;
-    set showGtLg(val) { this._cacheInput('showGtLg', val); }
-    ;
-    set hide(val) { this._cacheInput('show', negativeOf(val)); }
-    set hideXs(val) { this._cacheInput('showXs', negativeOf(val)); }
-    set hideSm(val) { this._cacheInput('showSm', negativeOf(val)); }
-    ;
-    set hideMd(val) { this._cacheInput('showMd', negativeOf(val)); }
-    ;
-    set hideLg(val) { this._cacheInput('showLg', negativeOf(val)); }
-    ;
-    set hideXl(val) { this._cacheInput('showXl', negativeOf(val)); }
-    ;
-    set hideLtSm(val) { this._cacheInput('showLtSm', negativeOf(val)); }
-    ;
-    set hideLtMd(val) { this._cacheInput('showLtMd', negativeOf(val)); }
-    ;
-    set hideLtLg(val) { this._cacheInput('showLtLg', negativeOf(val)); }
-    ;
-    set hideLtXl(val) { this._cacheInput('showLtXl', negativeOf(val)); }
-    ;
-    set hideGtXs(val) { this._cacheInput('showGtXs', negativeOf(val)); }
-    ;
-    set hideGtSm(val) { this._cacheInput('showGtSm', negativeOf(val)); }
-    ;
-    set hideGtMd(val) { this._cacheInput('showGtMd', negativeOf(val)); }
-    ;
-    set hideGtLg(val) { this._cacheInput('showGtLg', negativeOf(val)); }
-    ;
-    _getDisplayStyle() {
-        return this._layout ? 'flex' : super._getDisplayStyle();
-    }
-    ngOnChanges(changes) {
-        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
-            this._updateWithValue();
-        }
-    }
-    ngOnInit() {
-        super.ngOnInit();
-        let value = this._getDefaultVal('show', true);
-        this._listenForMediaQueryChanges('show', value, (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    }
-    _updateWithValue(value) {
-        value = value || this._getDefaultVal('show', true);
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        let shouldShow = this._validateTruthy(value);
-        this._applyStyleToElement(this._buildCSS(shouldShow));
-    }
-    _buildCSS(show) {
-        return { 'display': show ? this._display : 'none' };
-    }
-    _validateTruthy(show) {
-        return (FALSY.indexOf(show) == -1);
-    }
-}
-ShowHideDirective.decorators = [
-    { type: Directive, args: [{
-                selector: `
-  [fxShow],
-  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
-  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
-  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],
-  [fxHide],
-  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
-  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
-  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
-`
-            },] },
-];
-ShowHideDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: ElementRef, },
-    { type: Renderer2, },
-];
-ShowHideDirective.propDecorators = {
-    'show': [{ type: Input, args: ['fxShow',] },],
-    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
-    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
-    'showMd': [{ type: Input, args: ['fxShow.md',] },],
-    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
-    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
-    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
-    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
-    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
-    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
-    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
-    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
-    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
-    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
-    'hide': [{ type: Input, args: ['fxHide',] },],
-    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
-    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
-    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
-    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
-    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
-    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
-    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
-    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
-    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
-    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
-    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
-    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
-    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
 
 class FlexAlignDirective extends BaseFxDirective {
@@ -1703,379 +1668,6 @@ FlexOrderDirective.propDecorators = {
     'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
     'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
-
-class LayoutAlignDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container) {
-        super(monitor, elRef, renderer);
-        this._layout = 'row';
-        if (container) {
-            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
-        }
-    }
-    set align(val) { this._cacheInput('align', val); }
-    set alignXs(val) { this._cacheInput('alignXs', val); }
-    set alignSm(val) { this._cacheInput('alignSm', val); }
-    ;
-    set alignMd(val) { this._cacheInput('alignMd', val); }
-    ;
-    set alignLg(val) { this._cacheInput('alignLg', val); }
-    ;
-    set alignXl(val) { this._cacheInput('alignXl', val); }
-    ;
-    set alignGtXs(val) { this._cacheInput('alignGtXs', val); }
-    ;
-    set alignGtSm(val) { this._cacheInput('alignGtSm', val); }
-    ;
-    set alignGtMd(val) { this._cacheInput('alignGtMd', val); }
-    ;
-    set alignGtLg(val) { this._cacheInput('alignGtLg', val); }
-    ;
-    set alignLtSm(val) { this._cacheInput('alignLtSm', val); }
-    ;
-    set alignLtMd(val) { this._cacheInput('alignLtMd', val); }
-    ;
-    set alignLtLg(val) { this._cacheInput('alignLtLg', val); }
-    ;
-    set alignLtXl(val) { this._cacheInput('alignLtXl', val); }
-    ;
-    ngOnChanges(changes) {
-        if (changes['align'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    ngOnInit() {
-        super.ngOnInit();
-        this._listenForMediaQueryChanges('align', 'start stretch', (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    }
-    _updateWithValue(value) {
-        value = value || this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-        this._allowStretching(value, !this._layout ? 'row' : this._layout);
-    }
-    _onLayoutChange(direction) {
-        this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(x => x === this._layout)) {
-            this._layout = 'row';
-        }
-        let value = this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._allowStretching(value, this._layout || 'row');
-    }
-    _buildCSS(align) {
-        let css = {}, [main_axis, cross_axis] = align.split(' ');
-        switch (main_axis) {
-            case 'center':
-                css['justify-content'] = 'center';
-                break;
-            case 'space-around':
-                css['justify-content'] = 'space-around';
-                break;
-            case 'space-between':
-                css['justify-content'] = 'space-between';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['justify-content'] = 'flex-end';
-                break;
-            case 'start':
-            case 'flex-start':
-            default:
-                css['justify-content'] = 'flex-start';
-                break;
-        }
-        switch (cross_axis) {
-            case 'start':
-            case 'flex-start':
-                css['align-items'] = css['align-content'] = 'flex-start';
-                break;
-            case 'baseline':
-                css['align-items'] = 'baseline';
-                break;
-            case 'center':
-                css['align-items'] = css['align-content'] = 'center';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['align-items'] = css['align-content'] = 'flex-end';
-                break;
-            case 'stretch':
-            default:
-                css['align-items'] = css['align-content'] = 'stretch';
-                break;
-        }
-        return extendObject(css, {
-            'display': 'flex',
-            'flex-direction': this._layout || 'row',
-            'box-sizing': 'border-box'
-        });
-    }
-    _allowStretching(align, layout) {
-        let [, cross_axis] = align.split(' ');
-        if (cross_axis == 'stretch') {
-            this._applyStyleToElement({
-                'box-sizing': 'border-box',
-                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
-                'max-height': isFlowHorizontal(layout) ? '100%' : null
-            });
-        }
-    }
-}
-LayoutAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: `
-  [fxLayoutAlign],
-  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],
-  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],
-  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]
-` },] },
-];
-LayoutAlignDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-];
-LayoutAlignDirective.propDecorators = {
-    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
-    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
-    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
-    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
-    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
-    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
-    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
-    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
-    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
-    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
-    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
-    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
-    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
-    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
-};
-
-class LayoutGapDirective extends BaseFxDirective {
-    constructor(monitor, elRef, renderer, container, _zone) {
-        super(monitor, elRef, renderer);
-        this._zone = _zone;
-        this._layout = 'row';
-        if (container) {
-            this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
-        }
-    }
-    set gap(val) { this._cacheInput('gap', val); }
-    set gapXs(val) { this._cacheInput('gapXs', val); }
-    set gapSm(val) { this._cacheInput('gapSm', val); }
-    ;
-    set gapMd(val) { this._cacheInput('gapMd', val); }
-    ;
-    set gapLg(val) { this._cacheInput('gapLg', val); }
-    ;
-    set gapXl(val) { this._cacheInput('gapXl', val); }
-    ;
-    set gapGtXs(val) { this._cacheInput('gapGtXs', val); }
-    ;
-    set gapGtSm(val) { this._cacheInput('gapGtSm', val); }
-    ;
-    set gapGtMd(val) { this._cacheInput('gapGtMd', val); }
-    ;
-    set gapGtLg(val) { this._cacheInput('gapGtLg', val); }
-    ;
-    set gapLtSm(val) { this._cacheInput('gapLtSm', val); }
-    ;
-    set gapLtMd(val) { this._cacheInput('gapLtMd', val); }
-    ;
-    set gapLtLg(val) { this._cacheInput('gapLtLg', val); }
-    ;
-    set gapLtXl(val) { this._cacheInput('gapLtXl', val); }
-    ;
-    ngOnChanges(changes) {
-        if (changes['gap'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    }
-    ngAfterContentInit() {
-        this._watchContentChanges();
-        this._listenForMediaQueryChanges('gap', '0', (changes) => {
-            this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    }
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-        if (this._observer) {
-            this._observer.disconnect();
-        }
-    }
-    _watchContentChanges() {
-        this._zone.runOutsideAngular(() => {
-            if (typeof MutationObserver !== 'undefined') {
-                this._observer = new MutationObserver((mutations) => {
-                    let validatedChanges = (it) => {
-                        return (it.addedNodes && it.addedNodes.length > 0) ||
-                            (it.removedNodes && it.removedNodes.length > 0);
-                    };
-                    if (mutations.some(validatedChanges)) {
-                        this._updateWithValue();
-                    }
-                });
-                this._observer.observe(this._elementRef.nativeElement, { childList: true });
-            }
-        });
-    }
-    _onLayoutChange(direction) {
-        this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(x => x === this._layout)) {
-            this._layout = 'row';
-        }
-        this._updateWithValue();
-    }
-    _updateWithValue(value) {
-        value = value || this._queryInput('gap') || '0';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        let items = this.childrenNodes
-            .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
-        let numItems = items.length;
-        if (numItems > 1) {
-            let lastItem = items[numItems - 1];
-            items = items.filter((_, j) => j < numItems - 1);
-            this._applyStyleToElements(this._buildCSS(value), items);
-            this._applyStyleToElements(this._buildCSS(), [lastItem]);
-        }
-    }
-    _buildCSS(value = null) {
-        let key, margins = {
-            'margin-left': null,
-            'margin-right': null,
-            'margin-top': null,
-            'margin-bottom': null
-        };
-        switch (this._layout) {
-            case 'column':
-            case 'column-reverse':
-                key = 'margin-bottom';
-                break;
-            case 'row':
-            case 'row-reverse':
-            default:
-                key = 'margin-right';
-                break;
-        }
-        margins[key] = value;
-        return margins;
-    }
-}
-LayoutGapDirective.decorators = [
-    { type: Directive, args: [{
-                selector: `
-  [fxLayoutGap],
-  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],
-  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],
-  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
-`
-            },] },
-];
-LayoutGapDirective.ctorParameters = () => [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: NgZone, },
-];
-LayoutGapDirective.propDecorators = {
-    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
-    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
-    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
-    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
-    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
-    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
-    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
-    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
-    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
-    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
-    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
-    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
-    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
-    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
-};
-
-class BaseFxDirectiveAdapter extends BaseFxDirective {
-    constructor(_baseKey, _mediaMonitor, _elementRef, _renderer) {
-        super(_mediaMonitor, _elementRef, _renderer);
-        this._baseKey = _baseKey;
-        this._mediaMonitor = _mediaMonitor;
-        this._elementRef = _elementRef;
-        this._renderer = _renderer;
-    }
-    get activeKey() {
-        let mqa = this._mqActivation;
-        let key = mqa ? mqa.activatedInputKey : this._baseKey;
-        return (key === 'class') ? 'klazz' : key;
-    }
-    get inputMap() {
-        return this._inputMap;
-    }
-    get mqActivation() {
-        return this._mqActivation;
-    }
-    queryInput(key) {
-        return key ? this._queryInput(key) : undefined;
-    }
-    cacheInput(key, source, cacheRaw = false) {
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
-        }
-    }
-    listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    }
-    _cacheInputRaw(key, source) {
-        this._inputMap[key] = source;
-    }
-    _cacheInputArray(key = '', source) {
-        this._inputMap[key] = source.join(' ');
-    }
-    _cacheInputObject(key = '', source) {
-        let classes = [];
-        for (let prop in source) {
-            if (!!source[prop]) {
-                classes.push(prop);
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    }
-    _cacheInputString(key = '', source) {
-        this._inputMap[key] = source;
-    }
-}
 
 class ClassDirective extends BaseFxDirective {
     constructor(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
@@ -2463,6 +2055,504 @@ StyleDirective.propDecorators = {
     'styleGtLg': [{ type: Input, args: ['style.gt-lg',] },],
 };
 
+const FALSY = ['false', false, 0];
+function negativeOf(hide) {
+    return (hide === '') ? false :
+        ((hide === 'false') || (hide === 0)) ? true : !hide;
+}
+class ShowHideDirective extends BaseFxDirective {
+    constructor(monitor, _layout, elRef, renderer) {
+        super(monitor, elRef, renderer);
+        this._layout = _layout;
+        this.elRef = elRef;
+        this.renderer = renderer;
+        if (_layout) {
+            this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
+        }
+    }
+    set show(val) { this._cacheInput('show', val); }
+    set showXs(val) { this._cacheInput('showXs', val); }
+    set showSm(val) { this._cacheInput('showSm', val); }
+    ;
+    set showMd(val) { this._cacheInput('showMd', val); }
+    ;
+    set showLg(val) { this._cacheInput('showLg', val); }
+    ;
+    set showXl(val) { this._cacheInput('showXl', val); }
+    ;
+    set showLtSm(val) { this._cacheInput('showLtSm', val); }
+    ;
+    set showLtMd(val) { this._cacheInput('showLtMd', val); }
+    ;
+    set showLtLg(val) { this._cacheInput('showLtLg', val); }
+    ;
+    set showLtXl(val) { this._cacheInput('showLtXl', val); }
+    ;
+    set showGtXs(val) { this._cacheInput('showGtXs', val); }
+    ;
+    set showGtSm(val) { this._cacheInput('showGtSm', val); }
+    ;
+    set showGtMd(val) { this._cacheInput('showGtMd', val); }
+    ;
+    set showGtLg(val) { this._cacheInput('showGtLg', val); }
+    ;
+    set hide(val) { this._cacheInput('show', negativeOf(val)); }
+    set hideXs(val) { this._cacheInput('showXs', negativeOf(val)); }
+    set hideSm(val) { this._cacheInput('showSm', negativeOf(val)); }
+    ;
+    set hideMd(val) { this._cacheInput('showMd', negativeOf(val)); }
+    ;
+    set hideLg(val) { this._cacheInput('showLg', negativeOf(val)); }
+    ;
+    set hideXl(val) { this._cacheInput('showXl', negativeOf(val)); }
+    ;
+    set hideLtSm(val) { this._cacheInput('showLtSm', negativeOf(val)); }
+    ;
+    set hideLtMd(val) { this._cacheInput('showLtMd', negativeOf(val)); }
+    ;
+    set hideLtLg(val) { this._cacheInput('showLtLg', negativeOf(val)); }
+    ;
+    set hideLtXl(val) { this._cacheInput('showLtXl', negativeOf(val)); }
+    ;
+    set hideGtXs(val) { this._cacheInput('showGtXs', negativeOf(val)); }
+    ;
+    set hideGtSm(val) { this._cacheInput('showGtSm', negativeOf(val)); }
+    ;
+    set hideGtMd(val) { this._cacheInput('showGtMd', negativeOf(val)); }
+    ;
+    set hideGtLg(val) { this._cacheInput('showGtLg', negativeOf(val)); }
+    ;
+    _getDisplayStyle() {
+        return this._layout ? 'flex' : super._getDisplayStyle();
+    }
+    ngOnChanges(changes) {
+        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
+            this._updateWithValue();
+        }
+    }
+    ngOnInit() {
+        super.ngOnInit();
+        let value = this._getDefaultVal('show', true);
+        this._listenForMediaQueryChanges('show', value, (changes) => {
+            this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    }
+    ngOnDestroy() {
+        super.ngOnDestroy();
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    }
+    _updateWithValue(value) {
+        value = value || this._getDefaultVal('show', true);
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        let shouldShow = this._validateTruthy(value);
+        this._applyStyleToElement(this._buildCSS(shouldShow));
+    }
+    _buildCSS(show) {
+        return { 'display': show ? this._display : 'none' };
+    }
+    _validateTruthy(show) {
+        return (FALSY.indexOf(show) == -1);
+    }
+}
+ShowHideDirective.decorators = [
+    { type: Directive, args: [{
+                selector: `
+  [fxShow],
+  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
+  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
+  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],
+  [fxHide],
+  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
+  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
+  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
+`
+            },] },
+];
+ShowHideDirective.ctorParameters = () => [
+    { type: MediaMonitor, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: ElementRef, },
+    { type: Renderer2, },
+];
+ShowHideDirective.propDecorators = {
+    'show': [{ type: Input, args: ['fxShow',] },],
+    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
+    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
+    'showMd': [{ type: Input, args: ['fxShow.md',] },],
+    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
+    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
+    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
+    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
+    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
+    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
+    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
+    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
+    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
+    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
+    'hide': [{ type: Input, args: ['fxHide',] },],
+    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
+    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
+    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
+    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
+    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
+    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
+    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
+    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
+    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
+    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
+    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
+    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
+    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
+};
+
+class ImgSrcDirective extends BaseFxDirective {
+    constructor(elRef, renderer, monitor) {
+        super(monitor, elRef, renderer);
+    }
+    set srcBase(val) { this.cacheDefaultSrc(val); }
+    set srcXs(val) { this._cacheInput('srcXs', val); }
+    set srcSm(val) { this._cacheInput('srcSm', val); }
+    set srcMd(val) { this._cacheInput('srcMd', val); }
+    set srcLg(val) { this._cacheInput('srcLg', val); }
+    set srcXl(val) { this._cacheInput('srcXl', val); }
+    set srcLtSm(val) { this._cacheInput('srcLtSm', val); }
+    set srcLtMd(val) { this._cacheInput('srcLtMd', val); }
+    set srcLtLg(val) { this._cacheInput('srcLtLg', val); }
+    set srcLtXl(val) { this._cacheInput('srcLtXl', val); }
+    set srcGtXs(val) { this._cacheInput('srcGtXs', val); }
+    set srcGtSm(val) { this._cacheInput('srcGtSm', val); }
+    set srcGtMd(val) { this._cacheInput('srcGtMd', val); }
+    set srcGtLg(val) { this._cacheInput('srcGtLg', val); }
+    ngOnInit() {
+        super.ngOnInit();
+        this.cacheDefaultSrc(this.defaultSrc);
+        if (this.hasResponsiveKeys) {
+            this._listenForMediaQueryChanges('src', this.defaultSrc, () => {
+                this._updateSrcFor();
+            });
+        }
+        this._updateSrcFor();
+    }
+    ngOnChanges() {
+        if (this.hasInitialized) {
+            this._updateSrcFor();
+        }
+    }
+    _updateSrcFor() {
+        let url = this._mqActivation ? this._mqActivation.activatedInput || '' : this.defaultSrc;
+        this._renderer.setAttribute(this.nativeElement, 'src', url);
+    }
+    cacheDefaultSrc(value) {
+        const currentVal = this._queryInput('src');
+        if (typeof currentVal === 'undefined') {
+            this._cacheInput('src', value || '');
+        }
+    }
+    get defaultSrc() {
+        return this._queryInput('src') ||
+            ɵgetDOM().getAttribute(this.nativeElement, 'src') || '';
+    }
+    get hasResponsiveKeys() {
+        return Object.keys(this._inputMap).length > 1;
+    }
+}
+ImgSrcDirective.decorators = [
+    { type: Directive, args: [{
+                selector: `
+  img[src],
+  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],
+  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],
+  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]
+`
+            },] },
+];
+ImgSrcDirective.ctorParameters = () => [
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: MediaMonitor, },
+];
+ImgSrcDirective.propDecorators = {
+    'srcBase': [{ type: Input, args: ['src',] },],
+    'srcXs': [{ type: Input, args: ['src.xs',] },],
+    'srcSm': [{ type: Input, args: ['src.sm',] },],
+    'srcMd': [{ type: Input, args: ['src.md',] },],
+    'srcLg': [{ type: Input, args: ['src.lg',] },],
+    'srcXl': [{ type: Input, args: ['src.xl',] },],
+    'srcLtSm': [{ type: Input, args: ['src.lt-sm',] },],
+    'srcLtMd': [{ type: Input, args: ['src.lt-md',] },],
+    'srcLtLg': [{ type: Input, args: ['src.lt-lg',] },],
+    'srcLtXl': [{ type: Input, args: ['src.lt-xl',] },],
+    'srcGtXs': [{ type: Input, args: ['src.gt-xs',] },],
+    'srcGtSm': [{ type: Input, args: ['src.gt-sm',] },],
+    'srcGtMd': [{ type: Input, args: ['src.gt-md',] },],
+    'srcGtLg': [{ type: Input, args: ['src.gt-lg',] },],
+};
+
+const RESPONSIVE_ALIASES = [
+    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+];
+const DEFAULT_BREAKPOINTS = [
+    {
+        alias: 'xs',
+        mediaQuery: '(max-width: 599px)'
+    },
+    {
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: '(min-width: 600px)'
+    },
+    {
+        alias: 'lt-sm',
+        overlapping: true,
+        mediaQuery: '(max-width: 599px)'
+    },
+    {
+        alias: 'sm',
+        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: '(min-width: 960px)'
+    },
+    {
+        alias: 'lt-md',
+        overlapping: true,
+        mediaQuery: '(max-width: 959px)'
+    },
+    {
+        alias: 'md',
+        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
+    },
+    {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: '(min-width: 1280px)'
+    },
+    {
+        alias: 'lt-lg',
+        overlapping: true,
+        mediaQuery: '(max-width: 1279px)'
+    },
+    {
+        alias: 'lg',
+        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: '(min-width: 1920px)'
+    },
+    {
+        alias: 'lt-xl',
+        overlapping: true,
+        mediaQuery: '(max-width: 1920px)'
+    },
+    {
+        alias: 'xl',
+        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
+    }
+];
+
+const HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
+const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+const TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
+const TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+const WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
+const WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+const ScreenTypes = {
+    'HANDSET': `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
+    'TABLET': `${TABLET_PORTRAIT} , ${TABLET_LANDSCAPE}`,
+    'WEB': `${WEB_PORTRAIT}, ${WEB_LANDSCAPE} `,
+    'HANDSET_PORTRAIT': `${HANDSET_PORTRAIT}`,
+    'TABLET_PORTRAIT': `${TABLET_PORTRAIT} `,
+    'WEB_PORTRAIT': `${WEB_PORTRAIT}`,
+    'HANDSET_LANDSCAPE': `${HANDSET_LANDSCAPE}]`,
+    'TABLET_LANDSCAPE': `${TABLET_LANDSCAPE}`,
+    'WEB_LANDSCAPE': `${WEB_LANDSCAPE}`
+};
+const ORIENTATION_BREAKPOINTS = [
+    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+];
+
+class ObservableMedia {
+    isActive(query) { }
+    asObservable() { }
+    subscribe(next, error, complete) { }
+}
+class MediaService {
+    constructor(breakpoints, mediaWatcher) {
+        this.breakpoints = breakpoints;
+        this.mediaWatcher = mediaWatcher;
+        this.filterOverlaps = true;
+        this._registerBreakPoints();
+        this.observable$ = this._buildObservable();
+    }
+    isActive(alias) {
+        let query = this._toMediaQuery(alias);
+        return this.mediaWatcher.isActive(query);
+    }
+    subscribe(next, error, complete) {
+        return this.observable$.subscribe(next, error, complete);
+    }
+    asObservable() {
+        return this.observable$;
+    }
+    _registerBreakPoints() {
+        let queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+        this.mediaWatcher.registerQuery(queries);
+    }
+    _buildObservable() {
+        const self = this;
+        const activationsOnly = (change) => {
+            return change.matches === true;
+        };
+        const addAliasInformation = (change) => {
+            return mergeAlias(change, this._findByQuery(change.mediaQuery));
+        };
+        const excludeOverlaps = (change) => {
+            let bp = this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
+        };
+        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+    }
+    _findByAlias(alias) {
+        return this.breakpoints.findByAlias(alias);
+    }
+    _findByQuery(query) {
+        return this.breakpoints.findByQuery(query);
+    }
+    _toMediaQuery(query) {
+        let bp = this._findByAlias(query) || this._findByQuery(query);
+        return bp ? bp.mediaQuery : query;
+    }
+}
+MediaService.decorators = [
+    { type: Injectable },
+];
+MediaService.ctorParameters = () => [
+    { type: BreakPointRegistry, },
+    { type: MatchMedia, },
+];
+
+const ALIAS_DELIMITERS = /(\.|-|_)/g;
+function firstUpperCase(part) {
+    let first = part.length > 0 ? part.charAt(0) : '';
+    let remainder = (part.length > 1) ? part.slice(1) : '';
+    return first.toUpperCase() + remainder;
+}
+function camelCase(name) {
+    return name
+        .replace(ALIAS_DELIMITERS, '|')
+        .split('|')
+        .map(firstUpperCase)
+        .join('');
+}
+function validateSuffixes(list) {
+    list.forEach((bp) => {
+        if (!bp.suffix || bp.suffix === '') {
+            bp.suffix = camelCase(bp.alias);
+            bp.overlapping = bp.overlapping || false;
+        }
+    });
+    return list;
+}
+function mergeByAlias(defaults, custom = []) {
+    const merged = defaults.map((bp) => extendObject({}, bp));
+    const findByAlias = (alias) => merged.reduce((result, bp) => {
+        return result || ((bp.alias === alias) ? bp : null);
+    }, null);
+    custom.forEach((bp) => {
+        let target = findByAlias(bp.alias);
+        if (target) {
+            extendObject(target, bp);
+        }
+        else {
+            merged.push(bp);
+        }
+    });
+    return validateSuffixes(merged);
+}
+
+function buildMergedBreakPoints(_custom, options) {
+    options = extendObject({}, {
+        defaults: true,
+        orientation: false
+    }, options || {});
+    return () => {
+        let defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
+            DEFAULT_BREAKPOINTS;
+        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
+    };
+}
+function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
+    return validateSuffixes(DEFAULT_BREAKPOINTS);
+}
+const DEFAULT_BREAKPOINTS_PROVIDER = {
+    provide: BREAKPOINTS,
+    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
+};
+function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
+    return {
+        provide: BREAKPOINTS,
+        useFactory: buildMergedBreakPoints(_custom, options)
+    };
+}
+
+function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
+    return parentService || new MediaService(breakpoints, matchMedia);
+}
+const OBSERVABLE_MEDIA_PROVIDER = {
+    provide: ObservableMedia,
+    deps: [
+        [new Optional(), new SkipSelf(), ObservableMedia],
+        MatchMedia,
+        BreakPointRegistry
+    ],
+    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
+};
+
+function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
+    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
+}
+const MEDIA_MONITOR_PROVIDER = {
+    provide: MediaMonitor,
+    deps: [
+        [new Optional(), new SkipSelf(), MediaMonitor],
+        BreakPointRegistry,
+        MatchMedia,
+    ],
+    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
+};
+
+class MediaQueriesModule {
+}
+MediaQueriesModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [
+                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    BreakPointRegistry,
+                    MatchMedia,
+                    MediaMonitor,
+                    OBSERVABLE_MEDIA_PROVIDER
+                ]
+            },] },
+];
+MediaQueriesModule.ctorParameters = () => [];
+
 const ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutWrapDirective,
@@ -2475,7 +2565,8 @@ const ALL_DIRECTIVES = [
     FlexAlignDirective,
     ShowHideDirective,
     ClassDirective,
-    StyleDirective
+    StyleDirective,
+    ImgSrcDirective
 ];
 class FlexLayoutModule {
     static provideBreakPoints(breakpoints, options) {
@@ -2501,5 +2592,5 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = () => [];
 
-export { VERSION, FlexLayoutModule, BaseFxDirective, BaseFxDirectiveAdapter, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, negativeOf, ShowHideDirective, ClassDirective, StyleDirective, KeyOptions, ResponsiveActivation, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.js.map

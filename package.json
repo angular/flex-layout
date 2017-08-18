@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "2.0.0-beta.8-d6b45a6",
+  "version": "2.0.0-beta.8-45cfd2e",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
   "module": "./@angular/flex-layout.es5.js",
@@ -15,7 +15,8 @@
     "flex-layout",
     "flexbox css",
     "media query",
-    "breakpoints"
+    "breakpoints",
+    "responsive"
   ],
   "license": "MIT",
   "bugs": {

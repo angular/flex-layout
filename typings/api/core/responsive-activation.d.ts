@@ -23,7 +23,9 @@ export declare class ResponsiveActivation {
     private _onMediaChanges;
     private _subscribers;
     private _activatedInputKey;
+    private _registryMap;
     constructor(_options: KeyOptions, _mediaMonitor: MediaMonitor, _onMediaChanges: MediaQuerySubscriber);
+    readonly registryFromLargest: BreakPointX[];
     readonly mediaMonitor: MediaMonitor;
     readonly activatedInputKey: string;
     readonly activatedInput: any;

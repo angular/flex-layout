@@ -1,6 +1,6 @@
 import { ElementRef, OnDestroy, SimpleChanges, OnChanges, Renderer2 } from '@angular/core';
 import { StyleDefinition } from '../../utils/style-utils';
-import { ResponsiveActivation } from '../responsive/responsive-activation';
+import { ResponsiveActivation } from '../core/responsive-activation';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { MediaQuerySubscriber } from '../../media-query/media-change';
 export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
@@ -11,6 +11,7 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     activatedValue: string | number;
     constructor(_mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
     protected readonly parentElement: any;
+    protected readonly nativeElement: any;
     protected _queryInput(key: any): any;
     ngOnInit(): void;
     ngOnChanges(change: SimpleChanges): void;

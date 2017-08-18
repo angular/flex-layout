@@ -1,6 +1,6 @@
 import { ElementRef, OnChanges, Renderer2, SimpleChanges, AfterContentInit, OnDestroy, NgZone } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { BaseFxDirective } from './base';
+import { BaseFxDirective } from '../core/base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges, OnDestroy {
