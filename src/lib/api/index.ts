@@ -24,4 +24,5 @@ export * from './ext/class';
 export * from './ext/style';
 export * from './ext/show-hide';
 export * from './ext/img-src';
+export * from './ext/img-srcset';
 

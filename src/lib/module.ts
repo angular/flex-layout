@@ -32,6 +32,7 @@ import {ShowHideDirective} from './api/ext/show-hide';
 import {ClassDirective} from './api/ext/class';
 import {StyleDirective} from './api/ext/style';
 import {ImgSrcDirective} from './api/ext/img-src';
+import {ImgSrcsetDirective} from './api/ext/img-srcset';
 
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
@@ -54,7 +55,8 @@ const ALL_DIRECTIVES = [
   ShowHideDirective,
   ClassDirective,
   StyleDirective,
-  ImgSrcDirective
+  ImgSrcDirective,
+  ImgSrcsetDirective
 ];
 
 /**
