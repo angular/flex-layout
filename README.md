@@ -5,22 +5,25 @@
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout))
 
 Angular Flex Layout provides a sophisticated layout API using FlexBox CSS + mediaQuery. 
-This module provides Angular (v4.1 and higher) developers with component layout features using a 
-custom Layout API, mediaQuery observables,and injected DOM flexbox-2016 css stylings.  
+This module provides Angular (v4.x and higher) developers with component layout features using a 
+custom Layout API, mediaQuery observables,and DOM flexbox-2016 css.  
 
 The Layout engine intelligently automates the process of applying appropriate FlexBox CSS to 
 browser view hierarchies. This automation also addresses many of the complexities and workarounds 
 encountered with the traditional, manual, CSS-only application of Flexbox CSS. 
 
-The **real** power of Flex Layout, however, is its **responsive** engine. The [Responsive API](https://github.com/angular/flex-layout/wiki/API-Overview#responsive-features) 
+##### Responsive API
+The **real** power of Flex Layout, however, is its **responsive** engine. 
+
+The [Responsive API](https://github.com/angular/flex-layout/wiki/API-Overview#responsive-features) 
 enables developers to easily specify different layouts, sizing, visibilities for different 
 viewport sizes and display devices.
 
 ---
 
-#### Deprecated support for Angular 2.4.x
+#### Deprecated support 
 
-Support for recent changes to Angular v4.1 AOT and Renderers means that Angular 2.4.x will not be supported after Angular Flex-Layout v2.0.0-beta.7. 
+Beta.9 provides support for Angular 4.x, AOT, Universal builds. This also means that Beta.9 (or higher) will not support Angular 2.x.
 
 ----
 
@@ -54,37 +57,18 @@ Angular Flex Layout - in contrast - is a pure-Typescript UI Layout engine with a
 <br/>
   
 
+### NPM Installs
 
-### NPM Install (example)
+Playing with the nightly changes in [master](https://github.com/angular/flex-layout/tree/master) is also possible
 
-Playing with the latest changes from [master](https://github.com/angular/flex-layout/tree/master) is also possible
+```bash
+npm install https://github.com/angular/flex-layout-builds.git
+````
 
-`npm install https://github.com/angular/flex-layout-builds.git`
+Or you can easily install the latest release from NPM using:
 
-You can easily install from NPM using:
-
-```terminal
-npm install @angular/flex-layout -saveDev
-```
-
-Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
-
-```js
-import { NgModule }         from '@angular/core';
-import { BrowserModule }    from '@angular/platform-browser';
-import { FlexLayoutModule } from "@angular/flex-layout";
-
-import { DemoApp }          from './demo-app/demo-app';
-
-@NgModule({
-  declarations    : [ DemoApp ],
-  bootstrap       : [ DemoApp ],
-  imports         : [
-    BrowserModule,
-    FlexLayoutModule
-  ]
-})
-export class DemoAppModule { }
+```bash
+npm install @angular/flex-layout@latest --save
 ```
 
 
@@ -93,22 +77,35 @@ export class DemoAppModule { }
 *  [Wiki Docs](https://github.com/angular/flex-layout/wiki)
 *  [License: MIT](https://raw.githubusercontent.com/angular/flex-layout-builds/master/LICENSE)
 
-Developers
+Developer Guides
 
-*  [API Overview](https://github.com/angular/flex-layout/wiki/API-Overview)
-*  [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
-*  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts)
-*  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
+* [NPM Installs](https://github.com/angular/flex-layout/wiki/NPM-Installs)
+* [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
+* [Builds + Fast Starts](https://github.com/angular/flex-layout/wiki/Fast-Starts)
+* [Using Angular CLI](https://github.com/angular/flex-layout/wiki/Using-Angular-CLI)
+* [WebPack Configuration](https://github.com/angular/flex-layout/wiki/Webpack-Configuration)
+
+Documentation
+
+*  [Static API](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview)
+*  [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API)
+*  [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
+*  [Custom Breakpoints](https://github.com/angular/flex-layout/wiki/Custom-Breakpoints)
+*  [Best Performance](https://github.com/angular/flex-layout/wiki/Best-Performance)
 
 Demos 
 
-*  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
+*  [Live Online](https://tburleson-layouts-demos.firebaseapp.com/)
 *  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
 
 Templates
 
 *  [Plunkr Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview)
 
+Quick Links
+
+*  [Gitter Chat](https://gitter.im/angular/flex-layout)
+*  [Discussion Forum](https://groups.google.com/forum/#!forum/angular-flex-layout)
 
 ### License
 
