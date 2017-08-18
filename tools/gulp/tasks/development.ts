@@ -1,8 +1,8 @@
-import {task, watch} from 'gulp';
+import {task} from 'gulp';
 import {tsBuildTask, copyTask, buildAppTask, serverTask} from '../util/task_helpers';
 import {join} from 'path';
 import {
-  buildConfig, copyFiles, buildScssTask, triggerLivereload, sequenceTask
+  buildConfig, copyFiles, buildScssTask, triggerLivereload, sequenceTask,  watchFiles
 } from 'lib-build-tools';
 
 // These imports don't have any typings provided.
@@ -27,12 +27,12 @@ const appVendors = [
 const vendorGlob = `+(${appVendors.join('|')})/**/*.+(html|css|js|map)`;
 
 task(':watch:devapp', () => {
-  watch(join(appDir, '**/*.ts'), [':build:devapp:ts', triggerLivereload]);
-  watch(join(appDir, '**/*.scss'), [':build:devapp:scss', triggerLivereload]);
-  watch(join(appDir, '**/*.html'), [':build:devapp:assets', triggerLivereload]);
-  watch(join(appDir, '**/*.css'), [':build:devapp:assets', triggerLivereload]);
+   watchFiles(join(appDir, '**/*.ts'), [':build:devapp:ts']);
+   watchFiles(join(appDir, '**/*.scss'), [':build:devapp:scss']);
+   watchFiles(join(appDir, '**/*.html'), [':build:devapp:assets']);
+   watchFiles(join(appDir, '**/*.css'), [':build:devapp:assets']);
 
-  watch(join(libOutPath, '**/*.css'), [':build:devapp:scss', triggerLivereload]);
+   watchFiles(join(libOutPath, '**/*.css'), [':build:devapp:scss']);
 });
 
 /** Path to the demo-app tsconfig file. */
