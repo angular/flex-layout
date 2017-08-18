@@ -37,6 +37,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
+var VERSION = new _angular_core.Version('0.0.0-PLACEHOLDER');
 var MediaChange = (function () {
     function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
@@ -3398,6 +3399,7 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = function () { return []; };
 
+exports.VERSION = VERSION;
 exports.FlexLayoutModule = FlexLayoutModule;
 exports.BaseFxDirective = BaseFxDirective;
 exports.BaseFxDirectiveAdapter = BaseFxDirectiveAdapter;
