@@ -12,7 +12,7 @@ import { filter } from 'rxjs/operator/filter';
 import { map } from 'rxjs/operator/map';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('0.0.0-PLACEHOLDER');
+const VERSION = new Version('2.0.0-beta.8-d6b45a6');
 
 class MediaChange {
     constructor(matches = false, mediaQuery = 'all', mqAlias = '', suffix = '') {

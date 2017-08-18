@@ -12,8 +12,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { map } from 'rxjs/operator/map';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('0.0.0-PLACEHOLDER');
-var MediaChange = /*@__PURE__*/(function () {
+var VERSION = new Version('2.0.0-beta.8-d6b45a6');
+var MediaChange = (function () {
     function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
         if (mediaQuery === void 0) { mediaQuery = 'all'; }
@@ -29,7 +29,7 @@ var MediaChange = /*@__PURE__*/(function () {
     };
     return MediaChange;
 }());
-var MatchMedia = /*@__PURE__*/(function () {
+var MatchMedia = (function () {
     function MatchMedia(_zone, _document) {
         this._zone = _zone;
         this._document = _document;
@@ -128,7 +128,7 @@ function unique(list) {
     });
 }
 var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
-var BreakPointRegistry = /*@__PURE__*/(function () {
+var BreakPointRegistry = (function () {
     function BreakPointRegistry(_registry) {
         this._registry = _registry;
     }
@@ -209,7 +209,7 @@ function mergeAlias(dest, source) {
         suffix: source.suffix
     } : {});
 }
-var MediaMonitor = /*@__PURE__*/(function () {
+var MediaMonitor = (function () {
     function MediaMonitor(_breakpoints, _matchMedia) {
         this._breakpoints = _breakpoints;
         this._matchMedia = _matchMedia;
@@ -273,7 +273,7 @@ MediaMonitor.ctorParameters = function () { return [
     { type: BreakPointRegistry, },
     { type: MatchMedia, },
 ]; };
-var ObservableMedia = /*@__PURE__*/(function () {
+var ObservableMedia = (function () {
     function ObservableMedia() {
     }
     ObservableMedia.prototype.isActive = function (query) { };
@@ -281,7 +281,7 @@ var ObservableMedia = /*@__PURE__*/(function () {
     ObservableMedia.prototype.subscribe = function (next, error, complete) { };
     return ObservableMedia;
 }());
-var MediaService = /*@__PURE__*/(function () {
+var MediaService = (function () {
     function MediaService(breakpoints, mediaWatcher) {
         this.breakpoints = breakpoints;
         this.mediaWatcher = mediaWatcher;
@@ -505,7 +505,7 @@ function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
         useFactory: buildMergedBreakPoints(_custom, options)
     };
 }
-var MediaQueriesModule = /*@__PURE__*/(function () {
+var MediaQueriesModule = (function () {
     function MediaQueriesModule() {
     }
     return MediaQueriesModule;
@@ -667,7 +667,7 @@ function lookupStyle(element, styleName, inlineOnly) {
     }
     return value ? value.trim() : 'block';
 }
-var KeyOptions = /*@__PURE__*/(function () {
+var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
         this.defaultValue = defaultValue;
@@ -675,7 +675,7 @@ var KeyOptions = /*@__PURE__*/(function () {
     }
     return KeyOptions;
 }());
-var ResponsiveActivation = /*@__PURE__*/(function () {
+var ResponsiveActivation = (function () {
     function ResponsiveActivation(_options, _mediaMonitor, _onMediaChanges) {
         this._options = _options;
         this._mediaMonitor = _mediaMonitor;
@@ -781,7 +781,7 @@ var ResponsiveActivation = /*@__PURE__*/(function () {
     };
     return ResponsiveActivation;
 }());
-var BaseFxDirective = /*@__PURE__*/(function () {
+var BaseFxDirective = (function () {
     function BaseFxDirective(_mediaMonitor, _elementRef, _renderer) {
         this._mediaMonitor = _mediaMonitor;
         this._elementRef = _elementRef;
@@ -906,7 +906,7 @@ var BaseFxDirective = /*@__PURE__*/(function () {
     });
     return BaseFxDirective;
 }());
-var LayoutDirective = /*@__PURE__*/(function (_super) {
+var LayoutDirective = (function (_super) {
     tslib_1.__extends(LayoutDirective, _super);
     function LayoutDirective(monitor, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -1046,7 +1046,7 @@ LayoutDirective.propDecorators = {
     'layoutLtLg': [{ type: Input, args: ['fxLayout.lt-lg',] },],
     'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
-var LayoutWrapDirective = /*@__PURE__*/(function (_super) {
+var LayoutWrapDirective = (function (_super) {
     tslib_1.__extends(LayoutWrapDirective, _super);
     function LayoutWrapDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -1243,7 +1243,7 @@ function validateBasis(basis, grow, shrink) {
 function _validateCalcValue(calc) {
     return calc.replace(/[\s]/g, '').replace(/[\/\*\+\-]/g, ' $& ');
 }
-var FlexDirective = /*@__PURE__*/(function (_super) {
+var FlexDirective = (function (_super) {
     tslib_1.__extends(FlexDirective, _super);
     function FlexDirective(monitor, elRef, renderer, _container, _wrap) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -1488,7 +1488,7 @@ function negativeOf(hide) {
     return (hide === '') ? false :
         ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
-var ShowHideDirective = /*@__PURE__*/(function (_super) {
+var ShowHideDirective = (function (_super) {
     tslib_1.__extends(ShowHideDirective, _super);
     function ShowHideDirective(monitor, _layout, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -1744,7 +1744,7 @@ ShowHideDirective.propDecorators = {
     'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
     'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
-var FlexAlignDirective = /*@__PURE__*/(function (_super) {
+var FlexAlignDirective = (function (_super) {
     tslib_1.__extends(FlexAlignDirective, _super);
     function FlexAlignDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
@@ -1903,7 +1903,7 @@ var FLEX_FILL_CSS = {
     'min-width': '100%',
     'min-height': '100%'
 };
-var FlexFillDirective = /*@__PURE__*/(function (_super) {
+var FlexFillDirective = (function (_super) {
     tslib_1.__extends(FlexFillDirective, _super);
     function FlexFillDirective(monitor, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -1922,7 +1922,7 @@ FlexFillDirective.ctorParameters = function () { return [
     { type: ElementRef, },
     { type: Renderer2, },
 ]; };
-var FlexOffsetDirective = /*@__PURE__*/(function (_super) {
+var FlexOffsetDirective = (function (_super) {
     tslib_1.__extends(FlexOffsetDirective, _super);
     function FlexOffsetDirective(monitor, elRef, renderer, _container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -2086,7 +2086,7 @@ FlexOffsetDirective.propDecorators = {
     'offsetGtMd': [{ type: Input, args: ['fxFlexOffset.gt-md',] },],
     'offsetGtLg': [{ type: Input, args: ['fxFlexOffset.gt-lg',] },],
 };
-var FlexOrderDirective = /*@__PURE__*/(function (_super) {
+var FlexOrderDirective = (function (_super) {
     tslib_1.__extends(FlexOrderDirective, _super);
     function FlexOrderDirective(monitor, elRef, renderer) {
         return _super.call(this, monitor, elRef, renderer) || this;
@@ -2223,7 +2223,7 @@ FlexOrderDirective.propDecorators = {
     'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
     'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
-var LayoutAlignDirective = /*@__PURE__*/(function (_super) {
+var LayoutAlignDirective = (function (_super) {
     tslib_1.__extends(LayoutAlignDirective, _super);
     function LayoutAlignDirective(monitor, elRef, renderer, container) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -2439,7 +2439,7 @@ LayoutAlignDirective.propDecorators = {
     'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
     'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
 };
-var LayoutGapDirective = /*@__PURE__*/(function (_super) {
+var LayoutGapDirective = (function (_super) {
     tslib_1.__extends(LayoutGapDirective, _super);
     function LayoutGapDirective(monitor, elRef, renderer, container, _zone) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
@@ -2647,7 +2647,7 @@ LayoutGapDirective.propDecorators = {
     'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
     'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
 };
-var BaseFxDirectiveAdapter = /*@__PURE__*/(function (_super) {
+var BaseFxDirectiveAdapter = (function (_super) {
     tslib_1.__extends(BaseFxDirectiveAdapter, _super);
     function BaseFxDirectiveAdapter(_baseKey, _mediaMonitor, _elementRef, _renderer) {
         var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
@@ -2727,7 +2727,7 @@ var BaseFxDirectiveAdapter = /*@__PURE__*/(function (_super) {
     };
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
-var ClassDirective = /*@__PURE__*/(function (_super) {
+var ClassDirective = (function (_super) {
     tslib_1.__extends(ClassDirective, _super);
     function ClassDirective(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
         var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
@@ -2983,7 +2983,7 @@ ClassDirective.propDecorators = {
     'classGtMd': [{ type: Input, args: ['class.gt-md',] },],
     'classGtLg': [{ type: Input, args: ['class.gt-lg',] },],
 };
-var NgStyleKeyValue = /*@__PURE__*/(function () {
+var NgStyleKeyValue = (function () {
     function NgStyleKeyValue(key, value, noQuotes) {
         if (noQuotes === void 0) { noQuotes = true; }
         this.key = key;
@@ -3051,7 +3051,7 @@ function keyValuesToMap(map$$1, entry) {
     }
     return map$$1;
 }
-var StyleDirective = /*@__PURE__*/(function (_super) {
+var StyleDirective = (function (_super) {
     tslib_1.__extends(StyleDirective, _super);
     function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _oldRenderer, _ngStyleInstance) {
         var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
@@ -3347,7 +3347,7 @@ var ALL_DIRECTIVES = [
     ClassDirective,
     StyleDirective
 ];
-var FlexLayoutModule = /*@__PURE__*/(function () {
+var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
     }
     FlexLayoutModule.provideBreakPoints = function (breakpoints, options) {
