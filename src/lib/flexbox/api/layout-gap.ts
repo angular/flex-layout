@@ -130,7 +130,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
             this._updateWithValue();
           }
         });
-        this._observer.observe(this._elementRef.nativeElement, {childList: true});
+        this._observer.observe(this.nativeElement, {childList: true});
       }
     });
   }

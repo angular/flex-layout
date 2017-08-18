@@ -142,7 +142,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   }
 
   protected get flowDirection(): string {
-    let computeFlowDirection = () => this._getFlowDirection(this._elementRef.nativeElement);
+    let computeFlowDirection = () => this._getFlowDirection(this.nativeElement);
     return this._layoutWatcher ? this._layout : computeFlowDirection();
   }
 
