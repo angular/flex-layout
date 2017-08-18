@@ -15,7 +15,8 @@
     "flex-layout",
     "flexbox css",
     "media query",
-    "breakpoints"
+    "breakpoints",
+    "responsive"
   ],
   "license": "MIT",
   "bugs": {

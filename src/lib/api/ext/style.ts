@@ -22,8 +22,8 @@ import {
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 
-import {BaseFxDirective} from './base';
-import {BaseFxDirectiveAdapter} from './base-adapter';
+import {BaseFxDirective} from '../core/base';
+import {BaseFxDirectiveAdapter} from '../core/base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {extendObject} from '../../utils/object-extend';

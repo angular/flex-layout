@@ -69,7 +69,7 @@ describe('flex directive', () => {
 
 
     it('should work with percentage values', () => {
-      expectDOMFrom(`<div fxFlexOffset='17' fxFlex='37'></div>`).toHaveCssStyle({
+      expectDOMFrom(`<div fxFlexOffset='17' fxFlex='37'></div>`).toHaveStyle({
         'flex': '1 1 100%',
         'box-sizing': 'border-box',
         'margin-left': '17%'
@@ -87,8 +87,8 @@ describe('flex directive', () => {
       let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
 
       // parent flex-direction found with 'column' with child height styles
-      expect(parent).toHaveCssStyle({'flex-direction': 'column', 'display': 'flex'});
-      expect(element).toHaveCssStyle({'margin-top': '17px'});
+      expect(parent).toHaveStyle({'flex-direction': 'column', 'display': 'flex'});
+      expect(element).toHaveStyle({'margin-top': '17px'});
     });
 
     it('should CSS stylesheet and not inject flex-direction on parent', () => {
@@ -106,8 +106,8 @@ describe('flex directive', () => {
       let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
 
       // parent flex-direction found with 'column' with child height styles
-      expect(parent).toHaveCssStyle({'flex-direction': 'column', 'display': 'flex'});
-      expect(element).toHaveCssStyle({'margin-top': '41px'});
+      expect(parent).toHaveStyle({'flex-direction': 'column', 'display': 'flex'});
+      expect(element).toHaveStyle({'margin-top': '41px'});
     });
 
     it('should work with styled-parent flex directions', () => {
@@ -123,8 +123,8 @@ describe('flex directive', () => {
       let parent = queryFor(fixture, '.parent')[0].nativeElement;
 
       // parent flex-direction found with 'column'; set child with height styles
-      expect(element).toHaveCssStyle({'margin-top': '21%'});
-      expect(parent).toHaveCssStyle({'flex-direction': 'column'});
+      expect(element).toHaveStyle({'margin-top': '21%'});
+      expect(parent).toHaveStyle({'flex-direction': 'column'});
     });
 
     it('should ignore fxLayout settings on same element', () => {
@@ -132,7 +132,7 @@ describe('flex directive', () => {
           <div fxLayout='column' fxFlex='37%' fxFlexOffset='52px' >
           </div>
         `)
-          .not.toHaveCssStyle({
+          .not.toHaveStyle({
         'flex-direction': 'row',
         'flex': '1 1 100%',
         'margin-left': '52px',
