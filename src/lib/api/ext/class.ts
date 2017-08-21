@@ -115,7 +115,7 @@ export class ClassDirective extends BaseFxDirective
 
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
-              _ngEl: ElementRef, _renderer: Renderer2, _oldRenderer: Renderer,
+              _ngEl: ElementRef, _renderer: Renderer2,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
               @Optional() @Self() private _ngClassInstance: NgClass) {
 
@@ -127,7 +127,7 @@ export class ClassDirective extends BaseFxDirective
     // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
     // the same host element; since the responsive variations may be defined...
     if ( !this._ngClassInstance ) {
-      this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+      this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _renderer);
     }
   }
 
