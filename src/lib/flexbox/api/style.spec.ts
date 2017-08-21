@@ -14,7 +14,7 @@ import {MatchMedia} from '../../media-query/match-media';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
-import {LayoutDirective} from '../flexbox/layout';
+import {LayoutDirective} from './layout';
 import {StyleDirective} from './style';
 import {MediaQueriesModule} from '../../media-query/_module';
 
@@ -61,7 +61,7 @@ describe('style directive', () => {
         </div>
     `);
       matchMedia.activate(testData.mq);
-      expectNativeEl(fixture).toHaveStyle(testData.styleObj);
+      expectNativeEl(fixture).toHaveCssStyle(testData.styleObj);
     });
   });
 
@@ -70,9 +70,9 @@ describe('style directive', () => {
         <div style="color: blue" [ngStyle.xs]="{'font-size.px': '15'}">
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({color: 'blue'});
+    expectNativeEl(fixture).toHaveCssStyle({color: 'blue'});
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({color: 'blue', 'font-size': '15px'});
+    expectNativeEl(fixture).toHaveCssStyle({color: 'blue', 'font-size': '15px'});
   });
 
   it('should support raw-string notations', () => {
@@ -82,9 +82,9 @@ describe('style directive', () => {
             ngStyle.xs="font-size: 15px; background-color:#fc2929;" >
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({color: 'blue'});
+    expectNativeEl(fixture).toHaveCssStyle({color: 'blue'});
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({
+    expectNativeEl(fixture).toHaveCssStyle({
       'color': 'blue',
       'font-size': '15px',
       'background-color': 'rgb(252, 41, 41)'
@@ -103,19 +103,19 @@ describe('style directive', () => {
     fixture.detectChanges();
 
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({'display': 'flex'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'});
+    expectNativeEl(fixture).toHaveCssStyle({'display': 'flex'});
+    expectNativeEl(fixture).toHaveCssStyle({'font-size': '16px'});
+    expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '12px'});
 
     matchMedia.activate('md');
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '12px'});
+    expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '16px'});
+    expectNativeEl(fixture).toHaveCssStyle({'font-size': '12px'});
 
     matchMedia.activate('lg');
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'});
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '10px'});  // original is gone
-    expectNativeEl(fixture).toHaveStyle({'margin-left': '13px'});   // portion remains
+    expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '12px'});
+    expectNativeEl(fixture).not.toHaveCssStyle({'font-size': '16px'});
+    expectNativeEl(fixture).toHaveCssStyle({'font-size': '10px'});  // original is gone
+    expectNativeEl(fixture).toHaveCssStyle({'margin-left': '13px'});   // portion remains
 
   });
 
@@ -125,7 +125,7 @@ describe('style directive', () => {
         </div>
     `);
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({'font-size': '15px'});
+    expectNativeEl(fixture).toHaveCssStyle({'font-size': '15px'});
   });
 
   it('should work with bound values', () => {
@@ -134,7 +134,7 @@ describe('style directive', () => {
         </div>
     `);
     matchMedia.activate('xs');
-    expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'});
+    expectNativeEl(fixture, {fontSize: 19}).toHaveCssStyle({'font-size': '19px'});
   });
 });
 

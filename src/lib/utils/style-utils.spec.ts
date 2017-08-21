@@ -30,13 +30,13 @@ describe('style-utils directive', () => {
     it('should default to "display:block" for <div></div>', () => {
       expectDOMFrom(`
         <div></div>
-      `).toHaveCSS({'display': 'block'});
+      `).toHaveStyle({'display': 'block'});
     });
 
     it('should find to "display" for inline style <div></div>', () => {
       expectDOMFrom(`
         <div style="display: flex;"></div>
-      `).toHaveCSS({'display': 'flex'});
+      `).toHaveStyle({'display': 'flex'});
     });
 
     it('should find `display` from html style element', () => {
@@ -45,7 +45,7 @@ describe('style-utils directive', () => {
           div.special { display: inline-block; }
         </style>
         <div class="special"></div>
-      `).toHaveCSS({'display': 'inline-block'});
+      `).toHaveStyle({'display': 'inline-block'});
     });
 
     it('should find `display` from component styles', () => {
@@ -54,7 +54,7 @@ describe('style-utils directive', () => {
       ]);
       expectStyledDOM(`
         <div class="extra"></div>
-      `).toHaveCSS({'display': 'table'});
+      `).toHaveStyle({'display': 'table'});
     });
 
   });

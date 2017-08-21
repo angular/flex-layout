@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
-import {BaseFxDirective} from '../core/base';
+import {BaseFxDirective} from './base';
 import {LayoutDirective} from './layout';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
@@ -130,7 +130,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
             this._updateWithValue();
           }
         });
-        this._observer.observe(this.nativeElement, {childList: true});
+        this._observer.observe(this._elementRef.nativeElement, {childList: true});
       }
     });
   }
