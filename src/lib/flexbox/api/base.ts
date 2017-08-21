@@ -19,7 +19,7 @@ import {
   applyStyleToElements
 } from '../../utils/style-utils';
 
-import {ResponsiveActivation, KeyOptions} from '../core/responsive-activation';
+import {ResponsiveActivation, KeyOptions} from '../responsive/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 
@@ -78,10 +78,6 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     return this._elementRef.nativeElement.parentNode;
   }
 
-  protected get nativeElement(): any {
-    return this._elementRef.nativeElement;
-  }
-
   /**
    * Access the current value (if any) of the @Input property.
    */
@@ -134,7 +130,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * and optional restore it when the mediaQueries deactivate
    */
   protected _getDisplayStyle(source?: HTMLElement): string {
-    let element: HTMLElement = source || this.nativeElement;
+    let element: HTMLElement = source || this._elementRef.nativeElement;
     return lookupStyle(element, 'display');
   }
 
@@ -165,7 +161,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   protected _applyStyleToElement(style: StyleDefinition,
                                  value?: string | number,
                                  nativeElement?: any) {
-    let element = nativeElement || this.nativeElement;
+    let element = nativeElement || this._elementRef.nativeElement;
     applyStyleToElement(this._renderer, element, style, value);
   }
 
@@ -213,7 +209,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
    */
   protected get childrenNodes() {
-    const obj = this.nativeElement.children;
+    const obj = this._elementRef.nativeElement.children;
     const buffer = [];
 
     // iterate backwards ensuring that length is an UInt32

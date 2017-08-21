@@ -13,9 +13,7 @@
  */
 export * from './version';
 
-export * from './api/index';
+export * from './module';
+export * from './flexbox/index';
 export * from './media-query/index';
 export * from './utils/index';
-
-// Flex-Layout Module
-export * from './module';

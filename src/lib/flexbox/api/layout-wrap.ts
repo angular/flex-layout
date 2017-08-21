@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
-import {BaseFxDirective} from '../core/base';
+import {BaseFxDirective} from './base';
 import {LayoutDirective} from './layout';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
@@ -142,7 +142,7 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   }
 
   protected get flowDirection(): string {
-    let computeFlowDirection = () => this._getFlowDirection(this.nativeElement);
+    let computeFlowDirection = () => this._getFlowDirection(this._elementRef.nativeElement);
     return this._layoutWatcher ? this._layout : computeFlowDirection();
   }
 
