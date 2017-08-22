@@ -1,6 +1,6 @@
 import { ElementRef, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { BaseFxDirective } from '../core/base';
+import { BaseFxDirective } from './base';
 import { LayoutDirective } from './layout';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {

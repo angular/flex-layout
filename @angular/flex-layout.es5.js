@@ -8,11 +8,532 @@ import * as tslib_1 from "tslib";
  */
 import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { DOCUMENT, DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
-import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
+import { map } from 'rxjs/operator/map';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.8-45cfd2e');
+var VERSION = new Version('2.0.0-beta.8-d171c33');
+var MediaChange = (function () {
+    function MediaChange(matches, mediaQuery, mqAlias, suffix) {
+        if (matches === void 0) { matches = false; }
+        if (mediaQuery === void 0) { mediaQuery = 'all'; }
+        if (mqAlias === void 0) { mqAlias = ''; }
+        if (suffix === void 0) { suffix = ''; }
+        this.matches = matches;
+        this.mediaQuery = mediaQuery;
+        this.mqAlias = mqAlias;
+        this.suffix = suffix;
+    }
+    MediaChange.prototype.clone = function () {
+        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
+    };
+    return MediaChange;
+}());
+var MatchMedia = (function () {
+    function MatchMedia(_zone, _document) {
+        this._zone = _zone;
+        this._document = _document;
+        this._registry = new Map();
+        this._source = new BehaviorSubject(new MediaChange(true));
+        this._observable$ = this._source.asObservable();
+    }
+    MatchMedia.prototype.isActive = function (mediaQuery) {
+        if (this._registry.has(mediaQuery)) {
+            var mql = this._registry.get(mediaQuery);
+            return mql.matches;
+        }
+        return false;
+    };
+    MatchMedia.prototype.observe = function (mediaQuery) {
+        this.registerQuery(mediaQuery);
+        return filter.call(this._observable$, function (change) {
+            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+        });
+    };
+    MatchMedia.prototype.registerQuery = function (mediaQuery) {
+        var _this = this;
+        var list = normalizeQuery(mediaQuery);
+        if (list.length > 0) {
+            prepareQueryCSS(list, this._document);
+            list.forEach(function (query) {
+                var mql = _this._registry.get(query);
+                var onMQLEvent = function (e) {
+                    _this._zone.run(function () {
+                        var change = new MediaChange(e.matches, query);
+                        _this._source.next(change);
+                    });
+                };
+                if (!mql) {
+                    mql = _this._buildMQL(query);
+                    mql.addListener(onMQLEvent);
+                    _this._registry.set(query, mql);
+                }
+                if (mql.matches) {
+                    onMQLEvent(mql);
+                }
+            });
+        }
+    };
+    MatchMedia.prototype._buildMQL = function (query) {
+        var canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
+        return canListen ? ((window)).matchMedia(query) : ({
+            matches: query === 'all' || query === '',
+            media: query,
+            addListener: function () {
+            },
+            removeListener: function () {
+            }
+        });
+    };
+    return MatchMedia;
+}());
+MatchMedia.decorators = [
+    { type: Injectable },
+];
+MatchMedia.ctorParameters = function () { return [
+    { type: NgZone, },
+    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
+]; };
+function isBrowser() {
+    return ɵgetDOM().supportsDOMEvents();
+}
+var ALL_STYLES = {};
+function prepareQueryCSS(mediaQueries, _document) {
+    var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
+    if (list.length > 0) {
+        var query = list.join(', ');
+        try {
+            var styleEl_1 = ɵgetDOM().createElement('style');
+            ɵgetDOM().setAttribute(styleEl_1, 'type', 'text/css');
+            if (!styleEl_1['styleSheet']) {
+                var cssText = "/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}";
+                ɵgetDOM().appendChild(styleEl_1, ɵgetDOM().createTextNode(cssText));
+            }
+            ɵgetDOM().appendChild(_document.head, styleEl_1);
+            list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }
+}
+function normalizeQuery(mediaQuery) {
+    return (typeof mediaQuery === 'undefined') ? [] :
+        (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
+}
+function unique(list) {
+    var seen = {};
+    return list.filter(function (item) {
+        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+    });
+}
+var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
+var BreakPointRegistry = (function () {
+    function BreakPointRegistry(_registry) {
+        this._registry = _registry;
+    }
+    Object.defineProperty(BreakPointRegistry.prototype, "items", {
+        get: function () {
+            return this._registry.slice();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "sortedItems", {
+        get: function () {
+            var overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
+            var nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
+            return overlaps.concat(nonOverlaps);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BreakPointRegistry.prototype.findByAlias = function (alias) {
+        return this._registry.find(function (bp) { return bp.alias == alias; });
+    };
+    BreakPointRegistry.prototype.findByQuery = function (query) {
+        return this._registry.find(function (bp) { return bp.mediaQuery == query; });
+    };
+    Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
+        get: function () {
+            return this._registry.filter(function (it) { return it.overlapping == true; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
+        get: function () {
+            return this._registry.map(function (it) { return it.alias; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
+        get: function () {
+            return this._registry.map(function (it) { return it.suffix; });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return BreakPointRegistry;
+}());
+BreakPointRegistry.decorators = [
+    { type: Injectable },
+];
+BreakPointRegistry.ctorParameters = function () { return [
+    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
+]; };
+function extendObject(dest) {
+    var sources = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        sources[_i - 1] = arguments[_i];
+    }
+    if (dest == null) {
+        throw TypeError('Cannot convert undefined or null to object');
+    }
+    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
+        var source = sources_1[_a];
+        if (source != null) {
+            for (var key in source) {
+                if (source.hasOwnProperty(key)) {
+                    dest[key] = source[key];
+                }
+            }
+        }
+    }
+    return dest;
+}
+function mergeAlias(dest, source) {
+    return extendObject(dest, source ? {
+        mqAlias: source.alias,
+        suffix: source.suffix
+    } : {});
+}
+var MediaMonitor = (function () {
+    function MediaMonitor(_breakpoints, _matchMedia) {
+        this._breakpoints = _breakpoints;
+        this._matchMedia = _matchMedia;
+        this._registerBreakpoints();
+    }
+    Object.defineProperty(MediaMonitor.prototype, "breakpoints", {
+        get: function () {
+            return this._breakpoints.items.slice();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MediaMonitor.prototype, "activeOverlaps", {
+        get: function () {
+            var _this = this;
+            var items = this._breakpoints.overlappings.reverse();
+            return items.filter(function (bp) {
+                return _this._matchMedia.isActive(bp.mediaQuery);
+            });
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(MediaMonitor.prototype, "active", {
+        get: function () {
+            var _this = this;
+            var found = null, items = this.breakpoints.reverse();
+            items.forEach(function (bp) {
+                if (bp.alias !== '') {
+                    if (!found && _this._matchMedia.isActive(bp.mediaQuery)) {
+                        found = bp;
+                    }
+                }
+            });
+            var first = this.breakpoints[0];
+            return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MediaMonitor.prototype.isActive = function (alias) {
+        var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
+    };
+    MediaMonitor.prototype.observe = function (alias) {
+        var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        var hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
+        var media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+        return filter.call(map.call(media$, function (change) { return mergeAlias(change, bp); }), hasAlias);
+    };
+    MediaMonitor.prototype._registerBreakpoints = function () {
+        var queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this._matchMedia.registerQuery(queries);
+    };
+    return MediaMonitor;
+}());
+MediaMonitor.decorators = [
+    { type: Injectable },
+];
+MediaMonitor.ctorParameters = function () { return [
+    { type: BreakPointRegistry, },
+    { type: MatchMedia, },
+]; };
+var ObservableMedia = (function () {
+    function ObservableMedia() {
+    }
+    ObservableMedia.prototype.isActive = function (query) { };
+    ObservableMedia.prototype.asObservable = function () { };
+    ObservableMedia.prototype.subscribe = function (next, error, complete) { };
+    return ObservableMedia;
+}());
+var MediaService = (function () {
+    function MediaService(breakpoints, mediaWatcher) {
+        this.breakpoints = breakpoints;
+        this.mediaWatcher = mediaWatcher;
+        this.filterOverlaps = true;
+        this._registerBreakPoints();
+        this.observable$ = this._buildObservable();
+    }
+    MediaService.prototype.isActive = function (alias) {
+        var query = this._toMediaQuery(alias);
+        return this.mediaWatcher.isActive(query);
+    };
+    MediaService.prototype.subscribe = function (next, error, complete) {
+        return this.observable$.subscribe(next, error, complete);
+    };
+    MediaService.prototype.asObservable = function () {
+        return this.observable$;
+    };
+    MediaService.prototype._registerBreakPoints = function () {
+        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
+        this.mediaWatcher.registerQuery(queries);
+    };
+    MediaService.prototype._buildObservable = function () {
+        var _this = this;
+        var self = this;
+        var activationsOnly = function (change) {
+            return change.matches === true;
+        };
+        var addAliasInformation = function (change) {
+            return mergeAlias(change, _this._findByQuery(change.mediaQuery));
+        };
+        var excludeOverlaps = function (change) {
+            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
+            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
+        };
+        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+    };
+    MediaService.prototype._findByAlias = function (alias) {
+        return this.breakpoints.findByAlias(alias);
+    };
+    MediaService.prototype._findByQuery = function (query) {
+        return this.breakpoints.findByQuery(query);
+    };
+    MediaService.prototype._toMediaQuery = function (query) {
+        var bp = this._findByAlias(query) || this._findByQuery(query);
+        return bp ? bp.mediaQuery : query;
+    };
+    return MediaService;
+}());
+MediaService.decorators = [
+    { type: Injectable },
+];
+MediaService.ctorParameters = function () { return [
+    { type: BreakPointRegistry, },
+    { type: MatchMedia, },
+]; };
+function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
+    return parentService || new MediaService(breakpoints, matchMedia);
+}
+var OBSERVABLE_MEDIA_PROVIDER = {
+    provide: ObservableMedia,
+    deps: [
+        [new Optional(), new SkipSelf(), ObservableMedia],
+        MatchMedia,
+        BreakPointRegistry
+    ],
+    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
+};
+var RESPONSIVE_ALIASES = [
+    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
+];
+var DEFAULT_BREAKPOINTS = [
+    {
+        alias: 'xs',
+        mediaQuery: '(max-width: 599px)'
+    },
+    {
+        alias: 'gt-xs',
+        overlapping: true,
+        mediaQuery: '(min-width: 600px)'
+    },
+    {
+        alias: 'lt-sm',
+        overlapping: true,
+        mediaQuery: '(max-width: 599px)'
+    },
+    {
+        alias: 'sm',
+        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
+    },
+    {
+        alias: 'gt-sm',
+        overlapping: true,
+        mediaQuery: '(min-width: 960px)'
+    },
+    {
+        alias: 'lt-md',
+        overlapping: true,
+        mediaQuery: '(max-width: 959px)'
+    },
+    {
+        alias: 'md',
+        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
+    },
+    {
+        alias: 'gt-md',
+        overlapping: true,
+        mediaQuery: '(min-width: 1280px)'
+    },
+    {
+        alias: 'lt-lg',
+        overlapping: true,
+        mediaQuery: '(max-width: 1279px)'
+    },
+    {
+        alias: 'lg',
+        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
+    },
+    {
+        alias: 'gt-lg',
+        overlapping: true,
+        mediaQuery: '(min-width: 1920px)'
+    },
+    {
+        alias: 'lt-xl',
+        overlapping: true,
+        mediaQuery: '(max-width: 1920px)'
+    },
+    {
+        alias: 'xl',
+        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
+    }
+];
+var HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
+var HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+var TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
+var TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+var WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
+var WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
+var ScreenTypes = {
+    'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
+    'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
+    'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
+    'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
+    'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
+    'WEB_PORTRAIT': "" + WEB_PORTRAIT,
+    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
+    'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
+    'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
+};
+var ORIENTATION_BREAKPOINTS = [
+    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
+    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
+    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
+    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
+    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
+    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
+    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
+    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
+];
+var ALIAS_DELIMITERS = /(\.|-|_)/g;
+function firstUpperCase(part) {
+    var first = part.length > 0 ? part.charAt(0) : '';
+    var remainder = (part.length > 1) ? part.slice(1) : '';
+    return first.toUpperCase() + remainder;
+}
+function camelCase(name) {
+    return name
+        .replace(ALIAS_DELIMITERS, '|')
+        .split('|')
+        .map(firstUpperCase)
+        .join('');
+}
+function validateSuffixes(list) {
+    list.forEach(function (bp) {
+        if (!bp.suffix || bp.suffix === '') {
+            bp.suffix = camelCase(bp.alias);
+            bp.overlapping = bp.overlapping || false;
+        }
+    });
+    return list;
+}
+function mergeByAlias(defaults, custom) {
+    if (custom === void 0) { custom = []; }
+    var merged = defaults.map(function (bp) { return extendObject({}, bp); });
+    var findByAlias = function (alias) { return merged.reduce(function (result, bp) {
+        return result || ((bp.alias === alias) ? bp : null);
+    }, null); };
+    custom.forEach(function (bp) {
+        var target = findByAlias(bp.alias);
+        if (target) {
+            extendObject(target, bp);
+        }
+        else {
+            merged.push(bp);
+        }
+    });
+    return validateSuffixes(merged);
+}
+function buildMergedBreakPoints(_custom, options) {
+    options = extendObject({}, {
+        defaults: true,
+        orientation: false
+    }, options || {});
+    return function () {
+        var defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
+            DEFAULT_BREAKPOINTS;
+        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
+    };
+}
+function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
+    return validateSuffixes(DEFAULT_BREAKPOINTS);
+}
+var DEFAULT_BREAKPOINTS_PROVIDER = {
+    provide: BREAKPOINTS,
+    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
+};
+function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
+    return {
+        provide: BREAKPOINTS,
+        useFactory: buildMergedBreakPoints(_custom, options)
+    };
+}
+var MediaQueriesModule = (function () {
+    function MediaQueriesModule() {
+    }
+    return MediaQueriesModule;
+}());
+MediaQueriesModule.decorators = [
+    { type: NgModule, args: [{
+                providers: [
+                    DEFAULT_BREAKPOINTS_PROVIDER,
+                    BreakPointRegistry,
+                    MatchMedia,
+                    MediaMonitor,
+                    OBSERVABLE_MEDIA_PROVIDER
+                ]
+            },] },
+];
+MediaQueriesModule.ctorParameters = function () { return []; };
+function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
+    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
+}
+var MEDIA_MONITOR_PROVIDER = {
+    provide: MediaMonitor,
+    deps: [
+        [new Optional(), new SkipSelf(), MediaMonitor],
+        BreakPointRegistry,
+        MatchMedia,
+    ],
+    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
+};
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -146,26 +667,6 @@ function lookupStyle(element, styleName, inlineOnly) {
     }
     return value ? value.trim() : 'block';
 }
-function extendObject(dest) {
-    var sources = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        sources[_i - 1] = arguments[_i];
-    }
-    if (dest == null) {
-        throw TypeError('Cannot convert undefined or null to object');
-    }
-    for (var _a = 0, sources_1 = sources; _a < sources_1.length; _a++) {
-        var source = sources_1[_a];
-        if (source != null) {
-            for (var key in source) {
-                if (source.hasOwnProperty(key)) {
-                    dest[key] = source[key];
-                }
-            }
-        }
-    }
-    return dest;
-}
 var KeyOptions = (function () {
     function KeyOptions(baseKey, defaultValue, inputKeys) {
         this.baseKey = baseKey;
@@ -180,16 +681,8 @@ var ResponsiveActivation = (function () {
         this._mediaMonitor = _mediaMonitor;
         this._onMediaChanges = _onMediaChanges;
         this._subscribers = [];
-        this._registryMap = this._buildRegistryMap();
         this._subscribers = this._configureChangeObservers();
     }
-    Object.defineProperty(ResponsiveActivation.prototype, "registryFromLargest", {
-        get: function () {
-            return this._registryMap.slice().reverse();
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ResponsiveActivation.prototype, "mediaMonitor", {
         get: function () {
             return this._mediaMonitor;
@@ -225,7 +718,7 @@ var ResponsiveActivation = (function () {
     ResponsiveActivation.prototype._configureChangeObservers = function () {
         var _this = this;
         var subscriptions = [];
-        this._registryMap.forEach(function (bp) {
+        this._buildRegistryMap().forEach(function (bp) {
             if (_this._keyInUse(bp.key)) {
                 var buildChanges = function (change) {
                     change = change.clone();
@@ -328,13 +821,6 @@ var BaseFxDirective = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(BaseFxDirective.prototype, "nativeElement", {
-        get: function () {
-            return this._elementRef.nativeElement;
-        },
-        enumerable: true,
-        configurable: true
-    });
     BaseFxDirective.prototype._queryInput = function (key) {
         return this._inputMap[key];
     };
@@ -357,7 +843,7 @@ var BaseFxDirective = (function () {
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     };
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
-        var element = source || this.nativeElement;
+        var element = source || this._elementRef.nativeElement;
         return lookupStyle(element, 'display');
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
@@ -373,7 +859,7 @@ var BaseFxDirective = (function () {
         return value.trim();
     };
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
-        var element = nativeElement || this.nativeElement;
+        var element = nativeElement || this._elementRef.nativeElement;
         applyStyleToElement(this._renderer, element, style, value);
     };
     BaseFxDirective.prototype._applyStyleToElements = function (style, elements) {
@@ -398,7 +884,7 @@ var BaseFxDirective = (function () {
     };
     Object.defineProperty(BaseFxDirective.prototype, "childrenNodes", {
         get: function () {
-            var obj = this.nativeElement.children;
+            var obj = this._elementRef.nativeElement.children;
             var buffer = [];
             for (var i = obj.length; i--;) {
                 buffer[i] = obj[i];
@@ -420,326 +906,6 @@ var BaseFxDirective = (function () {
     });
     return BaseFxDirective;
 }());
-var BaseFxDirectiveAdapter = (function (_super) {
-    tslib_1.__extends(BaseFxDirectiveAdapter, _super);
-    function BaseFxDirectiveAdapter(_baseKey, _mediaMonitor, _elementRef, _renderer) {
-        var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
-        _this._baseKey = _baseKey;
-        _this._mediaMonitor = _mediaMonitor;
-        _this._elementRef = _elementRef;
-        _this._renderer = _renderer;
-        return _this;
-    }
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "activeKey", {
-        get: function () {
-            var mqa = this._mqActivation;
-            var key = mqa ? mqa.activatedInputKey : this._baseKey;
-            return (key === 'class') ? 'klazz' : key;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
-        get: function () {
-            return this._inputMap;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
-        get: function () {
-            return this._mqActivation;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
-        return key ? this._queryInput(key) : undefined;
-    };
-    BaseFxDirectiveAdapter.prototype.cacheInput = function (key, source, cacheRaw) {
-        if (cacheRaw === void 0) { cacheRaw = false; }
-        if (cacheRaw) {
-            this._cacheInputRaw(key, source);
-        }
-        else if (Array.isArray(source)) {
-            this._cacheInputArray(key, source);
-        }
-        else if (typeof source === 'object') {
-            this._cacheInputObject(key, source);
-        }
-        else if (typeof source === 'string') {
-            this._cacheInputString(key, source);
-        }
-        else {
-            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
-        }
-    };
-    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
-        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
-    };
-    BaseFxDirectiveAdapter.prototype._cacheInputRaw = function (key, source) {
-        this._inputMap[key] = source;
-    };
-    BaseFxDirectiveAdapter.prototype._cacheInputArray = function (key, source) {
-        if (key === void 0) { key = ''; }
-        this._inputMap[key] = source.join(' ');
-    };
-    BaseFxDirectiveAdapter.prototype._cacheInputObject = function (key, source) {
-        if (key === void 0) { key = ''; }
-        var classes = [];
-        for (var prop in source) {
-            if (!!source[prop]) {
-                classes.push(prop);
-            }
-        }
-        this._inputMap[key] = classes.join(' ');
-    };
-    BaseFxDirectiveAdapter.prototype._cacheInputString = function (key, source) {
-        if (key === void 0) { key = ''; }
-        this._inputMap[key] = source;
-    };
-    return BaseFxDirectiveAdapter;
-}(BaseFxDirective));
-var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
-var BreakPointRegistry = (function () {
-    function BreakPointRegistry(_registry) {
-        this._registry = _registry;
-    }
-    Object.defineProperty(BreakPointRegistry.prototype, "items", {
-        get: function () {
-            return this._registry.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "sortedItems", {
-        get: function () {
-            var overlaps = this._registry.filter(function (it) { return it.overlapping === true; });
-            var nonOverlaps = this._registry.filter(function (it) { return it.overlapping !== true; });
-            return overlaps.concat(nonOverlaps);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    BreakPointRegistry.prototype.findByAlias = function (alias) {
-        return this._registry.find(function (bp) { return bp.alias == alias; });
-    };
-    BreakPointRegistry.prototype.findByQuery = function (query) {
-        return this._registry.find(function (bp) { return bp.mediaQuery == query; });
-    };
-    Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
-        get: function () {
-            return this._registry.filter(function (it) { return it.overlapping == true; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "aliases", {
-        get: function () {
-            return this._registry.map(function (it) { return it.alias; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(BreakPointRegistry.prototype, "suffixes", {
-        get: function () {
-            return this._registry.map(function (it) { return it.suffix; });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return BreakPointRegistry;
-}());
-BreakPointRegistry.decorators = [
-    { type: Injectable },
-];
-BreakPointRegistry.ctorParameters = function () { return [
-    { type: Array, decorators: [{ type: Inject, args: [BREAKPOINTS,] },] },
-]; };
-var MediaChange = (function () {
-    function MediaChange(matches, mediaQuery, mqAlias, suffix) {
-        if (matches === void 0) { matches = false; }
-        if (mediaQuery === void 0) { mediaQuery = 'all'; }
-        if (mqAlias === void 0) { mqAlias = ''; }
-        if (suffix === void 0) { suffix = ''; }
-        this.matches = matches;
-        this.mediaQuery = mediaQuery;
-        this.mqAlias = mqAlias;
-        this.suffix = suffix;
-    }
-    MediaChange.prototype.clone = function () {
-        return new MediaChange(this.matches, this.mediaQuery, this.mqAlias, this.suffix);
-    };
-    return MediaChange;
-}());
-var MatchMedia = (function () {
-    function MatchMedia(_zone, _document) {
-        this._zone = _zone;
-        this._document = _document;
-        this._registry = new Map();
-        this._source = new BehaviorSubject(new MediaChange(true));
-        this._observable$ = this._source.asObservable();
-    }
-    MatchMedia.prototype.isActive = function (mediaQuery) {
-        if (this._registry.has(mediaQuery)) {
-            var mql = this._registry.get(mediaQuery);
-            return mql.matches;
-        }
-        return false;
-    };
-    MatchMedia.prototype.observe = function (mediaQuery) {
-        this.registerQuery(mediaQuery);
-        return filter.call(this._observable$, function (change) {
-            return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        });
-    };
-    MatchMedia.prototype.registerQuery = function (mediaQuery) {
-        var _this = this;
-        var list = normalizeQuery(mediaQuery);
-        if (list.length > 0) {
-            prepareQueryCSS(list, this._document);
-            list.forEach(function (query) {
-                var mql = _this._registry.get(query);
-                var onMQLEvent = function (e) {
-                    _this._zone.run(function () {
-                        var change = new MediaChange(e.matches, query);
-                        _this._source.next(change);
-                    });
-                };
-                if (!mql) {
-                    mql = _this._buildMQL(query);
-                    mql.addListener(onMQLEvent);
-                    _this._registry.set(query, mql);
-                }
-                if (mql.matches) {
-                    onMQLEvent(mql);
-                }
-            });
-        }
-    };
-    MatchMedia.prototype._buildMQL = function (query) {
-        var canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
-        return canListen ? ((window)).matchMedia(query) : ({
-            matches: query === 'all' || query === '',
-            media: query,
-            addListener: function () {
-            },
-            removeListener: function () {
-            }
-        });
-    };
-    return MatchMedia;
-}());
-MatchMedia.decorators = [
-    { type: Injectable },
-];
-MatchMedia.ctorParameters = function () { return [
-    { type: NgZone, },
-    { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
-]; };
-function isBrowser() {
-    return ɵgetDOM().supportsDOMEvents();
-}
-var ALL_STYLES = {};
-function prepareQueryCSS(mediaQueries, _document) {
-    var list = mediaQueries.filter(function (it) { return !ALL_STYLES[it]; });
-    if (list.length > 0) {
-        var query = list.join(', ');
-        try {
-            var styleEl_1 = ɵgetDOM().createElement('style');
-            ɵgetDOM().setAttribute(styleEl_1, 'type', 'text/css');
-            if (!styleEl_1['styleSheet']) {
-                var cssText = "/*\n  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners\n  see http://bit.ly/2sd4HMP\n*/\n@media " + query + " {.fx-query-test{ }}";
-                ɵgetDOM().appendChild(styleEl_1, ɵgetDOM().createTextNode(cssText));
-            }
-            ɵgetDOM().appendChild(_document.head, styleEl_1);
-            list.forEach(function (mq) { return ALL_STYLES[mq] = styleEl_1; });
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-}
-function normalizeQuery(mediaQuery) {
-    return (typeof mediaQuery === 'undefined') ? [] :
-        (typeof mediaQuery === 'string') ? [mediaQuery] : unique((mediaQuery));
-}
-function unique(list) {
-    var seen = {};
-    return list.filter(function (item) {
-        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-    });
-}
-function mergeAlias(dest, source) {
-    return extendObject(dest, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-    } : {});
-}
-var MediaMonitor = (function () {
-    function MediaMonitor(_breakpoints, _matchMedia) {
-        this._breakpoints = _breakpoints;
-        this._matchMedia = _matchMedia;
-        this._registerBreakpoints();
-    }
-    Object.defineProperty(MediaMonitor.prototype, "breakpoints", {
-        get: function () {
-            return this._breakpoints.items.slice();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MediaMonitor.prototype, "activeOverlaps", {
-        get: function () {
-            var _this = this;
-            var items = this._breakpoints.overlappings.reverse();
-            return items.filter(function (bp) {
-                return _this._matchMedia.isActive(bp.mediaQuery);
-            });
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(MediaMonitor.prototype, "active", {
-        get: function () {
-            var _this = this;
-            var found = null, items = this.breakpoints.reverse();
-            items.forEach(function (bp) {
-                if (bp.alias !== '') {
-                    if (!found && _this._matchMedia.isActive(bp.mediaQuery)) {
-                        found = bp;
-                    }
-                }
-            });
-            var first = this.breakpoints[0];
-            return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    MediaMonitor.prototype.isActive = function (alias) {
-        var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
-    };
-    MediaMonitor.prototype.observe = function (alias) {
-        var bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
-        var hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
-        var media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return filter.call(map.call(media$, function (change) { return mergeAlias(change, bp); }), hasAlias);
-    };
-    MediaMonitor.prototype._registerBreakpoints = function () {
-        var queries = this._breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
-        this._matchMedia.registerQuery(queries);
-    };
-    return MediaMonitor;
-}());
-MediaMonitor.decorators = [
-    { type: Injectable },
-];
-MediaMonitor.ctorParameters = function () { return [
-    { type: BreakPointRegistry, },
-    { type: MatchMedia, },
-]; };
 var LayoutDirective = (function (_super) {
     tslib_1.__extends(LayoutDirective, _super);
     function LayoutDirective(monitor, elRef, renderer) {
@@ -880,430 +1046,6 @@ LayoutDirective.propDecorators = {
     'layoutLtLg': [{ type: Input, args: ['fxLayout.lt-lg',] },],
     'layoutLtXl': [{ type: Input, args: ['fxLayout.lt-xl',] },],
 };
-var LayoutAlignDirective = (function (_super) {
-    tslib_1.__extends(LayoutAlignDirective, _super);
-    function LayoutAlignDirective(monitor, elRef, renderer, container) {
-        var _this = _super.call(this, monitor, elRef, renderer) || this;
-        _this._layout = 'row';
-        if (container) {
-            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
-        }
-        return _this;
-    }
-    Object.defineProperty(LayoutAlignDirective.prototype, "align", {
-        set: function (val) { this._cacheInput('align', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXs", {
-        set: function (val) { this._cacheInput('alignXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
-        set: function (val) { this._cacheInput('alignSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
-        set: function (val) { this._cacheInput('alignMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
-        set: function (val) { this._cacheInput('alignLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
-        set: function (val) { this._cacheInput('alignXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
-        set: function (val) { this._cacheInput('alignGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
-        set: function (val) { this._cacheInput('alignGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
-        set: function (val) { this._cacheInput('alignGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
-        set: function (val) { this._cacheInput('alignGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
-        set: function (val) { this._cacheInput('alignLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
-        set: function (val) { this._cacheInput('alignLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
-        set: function (val) { this._cacheInput('alignLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
-        set: function (val) { this._cacheInput('alignLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    LayoutAlignDirective.prototype.ngOnChanges = function (changes) {
-        if (changes['align'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    LayoutAlignDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    };
-    LayoutAlignDirective.prototype.ngOnDestroy = function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
-    LayoutAlignDirective.prototype._updateWithValue = function (value) {
-        value = value || this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._applyStyleToElement(this._buildCSS(value));
-        this._allowStretching(value, !this._layout ? 'row' : this._layout);
-    };
-    LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
-        var _this = this;
-        this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
-            this._layout = 'row';
-        }
-        var value = this._queryInput('align') || 'start stretch';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        this._allowStretching(value, this._layout || 'row');
-    };
-    LayoutAlignDirective.prototype._buildCSS = function (align) {
-        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1];
-        switch (main_axis) {
-            case 'center':
-                css['justify-content'] = 'center';
-                break;
-            case 'space-around':
-                css['justify-content'] = 'space-around';
-                break;
-            case 'space-between':
-                css['justify-content'] = 'space-between';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['justify-content'] = 'flex-end';
-                break;
-            case 'start':
-            case 'flex-start':
-            default:
-                css['justify-content'] = 'flex-start';
-                break;
-        }
-        switch (cross_axis) {
-            case 'start':
-            case 'flex-start':
-                css['align-items'] = css['align-content'] = 'flex-start';
-                break;
-            case 'baseline':
-                css['align-items'] = 'baseline';
-                break;
-            case 'center':
-                css['align-items'] = css['align-content'] = 'center';
-                break;
-            case 'end':
-            case 'flex-end':
-                css['align-items'] = css['align-content'] = 'flex-end';
-                break;
-            case 'stretch':
-            default:
-                css['align-items'] = css['align-content'] = 'stretch';
-                break;
-        }
-        return extendObject(css, {
-            'display': 'flex',
-            'flex-direction': this._layout || 'row',
-            'box-sizing': 'border-box'
-        });
-    };
-    LayoutAlignDirective.prototype._allowStretching = function (align, layout) {
-        var _a = align.split(' '), cross_axis = _a[1];
-        if (cross_axis == 'stretch') {
-            this._applyStyleToElement({
-                'box-sizing': 'border-box',
-                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
-                'max-height': isFlowHorizontal(layout) ? '100%' : null
-            });
-        }
-    };
-    return LayoutAlignDirective;
-}(BaseFxDirective));
-LayoutAlignDirective.decorators = [
-    { type: Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
-];
-LayoutAlignDirective.ctorParameters = function () { return [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-]; };
-LayoutAlignDirective.propDecorators = {
-    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
-    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
-    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
-    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
-    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
-    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
-    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
-    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
-    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
-    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
-    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
-    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
-    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
-    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
-};
-var LayoutGapDirective = (function (_super) {
-    tslib_1.__extends(LayoutGapDirective, _super);
-    function LayoutGapDirective(monitor, elRef, renderer, container, _zone) {
-        var _this = _super.call(this, monitor, elRef, renderer) || this;
-        _this._zone = _zone;
-        _this._layout = 'row';
-        if (container) {
-            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
-        }
-        return _this;
-    }
-    Object.defineProperty(LayoutGapDirective.prototype, "gap", {
-        set: function (val) { this._cacheInput('gap', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapXs", {
-        set: function (val) { this._cacheInput('gapXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
-        set: function (val) { this._cacheInput('gapSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
-        set: function (val) { this._cacheInput('gapMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
-        set: function (val) { this._cacheInput('gapLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
-        set: function (val) { this._cacheInput('gapXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
-        set: function (val) { this._cacheInput('gapGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
-        set: function (val) { this._cacheInput('gapGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
-        set: function (val) { this._cacheInput('gapGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
-        set: function (val) { this._cacheInput('gapGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
-        set: function (val) { this._cacheInput('gapLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
-        set: function (val) { this._cacheInput('gapLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
-        set: function (val) { this._cacheInput('gapLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
-        set: function (val) { this._cacheInput('gapLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    LayoutGapDirective.prototype.ngOnChanges = function (changes) {
-        if (changes['gap'] != null || this._mqActivation) {
-            this._updateWithValue();
-        }
-    };
-    LayoutGapDirective.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this._watchContentChanges();
-        this._listenForMediaQueryChanges('gap', '0', function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    };
-    LayoutGapDirective.prototype.ngOnDestroy = function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-        if (this._observer) {
-            this._observer.disconnect();
-        }
-    };
-    LayoutGapDirective.prototype._watchContentChanges = function () {
-        var _this = this;
-        this._zone.runOutsideAngular(function () {
-            if (typeof MutationObserver !== 'undefined') {
-                _this._observer = new MutationObserver(function (mutations) {
-                    var validatedChanges = function (it) {
-                        return (it.addedNodes && it.addedNodes.length > 0) ||
-                            (it.removedNodes && it.removedNodes.length > 0);
-                    };
-                    if (mutations.some(validatedChanges)) {
-                        _this._updateWithValue();
-                    }
-                });
-                _this._observer.observe(_this.nativeElement, { childList: true });
-            }
-        });
-    };
-    LayoutGapDirective.prototype._onLayoutChange = function (direction) {
-        var _this = this;
-        this._layout = (direction || '').toLowerCase();
-        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
-            this._layout = 'row';
-        }
-        this._updateWithValue();
-    };
-    LayoutGapDirective.prototype._updateWithValue = function (value) {
-        var _this = this;
-        value = value || this._queryInput('gap') || '0';
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        var items = this.childrenNodes
-            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; });
-        var numItems = items.length;
-        if (numItems > 1) {
-            var lastItem = items[numItems - 1];
-            items = items.filter(function (_, j) { return j < numItems - 1; });
-            this._applyStyleToElements(this._buildCSS(value), items);
-            this._applyStyleToElements(this._buildCSS(), [lastItem]);
-        }
-    };
-    LayoutGapDirective.prototype._buildCSS = function (value) {
-        if (value === void 0) { value = null; }
-        var key, margins = {
-            'margin-left': null,
-            'margin-right': null,
-            'margin-top': null,
-            'margin-bottom': null
-        };
-        switch (this._layout) {
-            case 'column':
-            case 'column-reverse':
-                key = 'margin-bottom';
-                break;
-            case 'row':
-            case 'row-reverse':
-            default:
-                key = 'margin-right';
-                break;
-        }
-        margins[key] = value;
-        return margins;
-    };
-    return LayoutGapDirective;
-}(BaseFxDirective));
-LayoutGapDirective.decorators = [
-    { type: Directive, args: [{
-                selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
-            },] },
-];
-LayoutGapDirective.ctorParameters = function () { return [
-    { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: NgZone, },
-]; };
-LayoutGapDirective.propDecorators = {
-    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
-    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
-    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
-    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
-    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
-    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
-    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
-    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
-    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
-    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
-    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
-    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
-    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
-    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
-};
 var LayoutWrapDirective = (function (_super) {
     tslib_1.__extends(LayoutWrapDirective, _super);
     function LayoutWrapDirective(monitor, elRef, renderer, container) {
@@ -1441,7 +1183,7 @@ var LayoutWrapDirective = (function (_super) {
     Object.defineProperty(LayoutWrapDirective.prototype, "flowDirection", {
         get: function () {
             var _this = this;
-            var computeFlowDirection = function () { return _this._getFlowDirection(_this.nativeElement); };
+            var computeFlowDirection = function () { return _this._getFlowDirection(_this._elementRef.nativeElement); };
             return this._layoutWatcher ? this._layout : computeFlowDirection();
         },
         enumerable: true,
@@ -1740,6 +1482,267 @@ FlexDirective.propDecorators = {
     'flexLtMd': [{ type: Input, args: ['fxFlex.lt-md',] },],
     'flexLtLg': [{ type: Input, args: ['fxFlex.lt-lg',] },],
     'flexLtXl': [{ type: Input, args: ['fxFlex.lt-xl',] },],
+};
+var FALSY = ['false', false, 0];
+function negativeOf(hide) {
+    return (hide === '') ? false :
+        ((hide === 'false') || (hide === 0)) ? true : !hide;
+}
+var ShowHideDirective = (function (_super) {
+    tslib_1.__extends(ShowHideDirective, _super);
+    function ShowHideDirective(monitor, _layout, elRef, renderer) {
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._layout = _layout;
+        _this.elRef = elRef;
+        _this.renderer = renderer;
+        if (_layout) {
+            _this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
+        }
+        return _this;
+    }
+    Object.defineProperty(ShowHideDirective.prototype, "show", {
+        set: function (val) { this._cacheInput('show', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "showXs", {
+        set: function (val) { this._cacheInput('showXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "showSm", {
+        set: function (val) { this._cacheInput('showSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showMd", {
+        set: function (val) { this._cacheInput('showMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLg", {
+        set: function (val) { this._cacheInput('showLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showXl", {
+        set: function (val) { this._cacheInput('showXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
+        set: function (val) { this._cacheInput('showLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
+        set: function (val) { this._cacheInput('showLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
+        set: function (val) { this._cacheInput('showLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
+        set: function (val) { this._cacheInput('showLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
+        set: function (val) { this._cacheInput('showGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
+        set: function (val) { this._cacheInput('showGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
+        set: function (val) { this._cacheInput('showGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
+        set: function (val) { this._cacheInput('showGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hide", {
+        set: function (val) { this._cacheInput('show', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "hideXs", {
+        set: function (val) { this._cacheInput('showXs', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ShowHideDirective.prototype, "hideSm", {
+        set: function (val) { this._cacheInput('showSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
+        set: function (val) { this._cacheInput('showMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
+        set: function (val) { this._cacheInput('showLg', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
+        set: function (val) { this._cacheInput('showXl', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
+        set: function (val) { this._cacheInput('showLtSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
+        set: function (val) { this._cacheInput('showLtMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
+        set: function (val) { this._cacheInput('showLtLg', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
+        set: function (val) { this._cacheInput('showLtXl', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
+        set: function (val) { this._cacheInput('showGtXs', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
+        set: function (val) { this._cacheInput('showGtSm', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
+        set: function (val) { this._cacheInput('showGtMd', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
+        set: function (val) { this._cacheInput('showGtLg', negativeOf(val)); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    ShowHideDirective.prototype._getDisplayStyle = function () {
+        return this._layout ? 'flex' : _super.prototype._getDisplayStyle.call(this);
+    };
+    ShowHideDirective.prototype.ngOnChanges = function (changes) {
+        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
+            this._updateWithValue();
+        }
+    };
+    ShowHideDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        var value = this._getDefaultVal('show', true);
+        this._listenForMediaQueryChanges('show', value, function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    ShowHideDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
+    ShowHideDirective.prototype._updateWithValue = function (value) {
+        value = value || this._getDefaultVal('show', true);
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        var shouldShow = this._validateTruthy(value);
+        this._applyStyleToElement(this._buildCSS(shouldShow));
+    };
+    ShowHideDirective.prototype._buildCSS = function (show) {
+        return { 'display': show ? this._display : 'none' };
+    };
+    ShowHideDirective.prototype._validateTruthy = function (show) {
+        return (FALSY.indexOf(show) == -1);
+    };
+    return ShowHideDirective;
+}(BaseFxDirective));
+ShowHideDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
+            },] },
+];
+ShowHideDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: ElementRef, },
+    { type: Renderer2, },
+]; };
+ShowHideDirective.propDecorators = {
+    'show': [{ type: Input, args: ['fxShow',] },],
+    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
+    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
+    'showMd': [{ type: Input, args: ['fxShow.md',] },],
+    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
+    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
+    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
+    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
+    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
+    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
+    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
+    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
+    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
+    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
+    'hide': [{ type: Input, args: ['fxHide',] },],
+    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
+    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
+    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
+    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
+    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
+    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
+    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
+    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
+    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
+    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
+    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
+    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
+    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
 var FlexAlignDirective = (function (_super) {
     tslib_1.__extends(FlexAlignDirective, _super);
@@ -2220,6 +2223,510 @@ FlexOrderDirective.propDecorators = {
     'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
     'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
+var LayoutAlignDirective = (function (_super) {
+    tslib_1.__extends(LayoutAlignDirective, _super);
+    function LayoutAlignDirective(monitor, elRef, renderer, container) {
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._layout = 'row';
+        if (container) {
+            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
+        }
+        return _this;
+    }
+    Object.defineProperty(LayoutAlignDirective.prototype, "align", {
+        set: function (val) { this._cacheInput('align', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignXs", {
+        set: function (val) { this._cacheInput('alignXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignSm", {
+        set: function (val) { this._cacheInput('alignSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignMd", {
+        set: function (val) { this._cacheInput('alignMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLg", {
+        set: function (val) { this._cacheInput('alignLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignXl", {
+        set: function (val) { this._cacheInput('alignXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtXs", {
+        set: function (val) { this._cacheInput('alignGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtSm", {
+        set: function (val) { this._cacheInput('alignGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtMd", {
+        set: function (val) { this._cacheInput('alignGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignGtLg", {
+        set: function (val) { this._cacheInput('alignGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtSm", {
+        set: function (val) { this._cacheInput('alignLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtMd", {
+        set: function (val) { this._cacheInput('alignLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtLg", {
+        set: function (val) { this._cacheInput('alignLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutAlignDirective.prototype, "alignLtXl", {
+        set: function (val) { this._cacheInput('alignLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    LayoutAlignDirective.prototype.ngOnChanges = function (changes) {
+        if (changes['align'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    };
+    LayoutAlignDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        this._listenForMediaQueryChanges('align', 'start stretch', function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    LayoutAlignDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+    };
+    LayoutAlignDirective.prototype._updateWithValue = function (value) {
+        value = value || this._queryInput('align') || 'start stretch';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._applyStyleToElement(this._buildCSS(value));
+        this._allowStretching(value, !this._layout ? 'row' : this._layout);
+    };
+    LayoutAlignDirective.prototype._onLayoutChange = function (direction) {
+        var _this = this;
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+            this._layout = 'row';
+        }
+        var value = this._queryInput('align') || 'start stretch';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        this._allowStretching(value, this._layout || 'row');
+    };
+    LayoutAlignDirective.prototype._buildCSS = function (align) {
+        var css = {}, _a = align.split(' '), main_axis = _a[0], cross_axis = _a[1];
+        switch (main_axis) {
+            case 'center':
+                css['justify-content'] = 'center';
+                break;
+            case 'space-around':
+                css['justify-content'] = 'space-around';
+                break;
+            case 'space-between':
+                css['justify-content'] = 'space-between';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['justify-content'] = 'flex-end';
+                break;
+            case 'start':
+            case 'flex-start':
+            default:
+                css['justify-content'] = 'flex-start';
+                break;
+        }
+        switch (cross_axis) {
+            case 'start':
+            case 'flex-start':
+                css['align-items'] = css['align-content'] = 'flex-start';
+                break;
+            case 'baseline':
+                css['align-items'] = 'baseline';
+                break;
+            case 'center':
+                css['align-items'] = css['align-content'] = 'center';
+                break;
+            case 'end':
+            case 'flex-end':
+                css['align-items'] = css['align-content'] = 'flex-end';
+                break;
+            case 'stretch':
+            default:
+                css['align-items'] = css['align-content'] = 'stretch';
+                break;
+        }
+        return extendObject(css, {
+            'display': 'flex',
+            'flex-direction': this._layout || 'row',
+            'box-sizing': 'border-box'
+        });
+    };
+    LayoutAlignDirective.prototype._allowStretching = function (align, layout) {
+        var _a = align.split(' '), cross_axis = _a[1];
+        if (cross_axis == 'stretch') {
+            this._applyStyleToElement({
+                'box-sizing': 'border-box',
+                'max-width': !isFlowHorizontal(layout) ? '100%' : null,
+                'max-height': isFlowHorizontal(layout) ? '100%' : null
+            });
+        }
+    };
+    return LayoutAlignDirective;
+}(BaseFxDirective));
+LayoutAlignDirective.decorators = [
+    { type: Directive, args: [{ selector: "\n  [fxLayoutAlign],\n  [fxLayoutAlign.xs], [fxLayoutAlign.sm], [fxLayoutAlign.md], [fxLayoutAlign.lg],[fxLayoutAlign.xl],\n  [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],\n  [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]\n" },] },
+];
+LayoutAlignDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+]; };
+LayoutAlignDirective.propDecorators = {
+    'align': [{ type: Input, args: ['fxLayoutAlign',] },],
+    'alignXs': [{ type: Input, args: ['fxLayoutAlign.xs',] },],
+    'alignSm': [{ type: Input, args: ['fxLayoutAlign.sm',] },],
+    'alignMd': [{ type: Input, args: ['fxLayoutAlign.md',] },],
+    'alignLg': [{ type: Input, args: ['fxLayoutAlign.lg',] },],
+    'alignXl': [{ type: Input, args: ['fxLayoutAlign.xl',] },],
+    'alignGtXs': [{ type: Input, args: ['fxLayoutAlign.gt-xs',] },],
+    'alignGtSm': [{ type: Input, args: ['fxLayoutAlign.gt-sm',] },],
+    'alignGtMd': [{ type: Input, args: ['fxLayoutAlign.gt-md',] },],
+    'alignGtLg': [{ type: Input, args: ['fxLayoutAlign.gt-lg',] },],
+    'alignLtSm': [{ type: Input, args: ['fxLayoutAlign.lt-sm',] },],
+    'alignLtMd': [{ type: Input, args: ['fxLayoutAlign.lt-md',] },],
+    'alignLtLg': [{ type: Input, args: ['fxLayoutAlign.lt-lg',] },],
+    'alignLtXl': [{ type: Input, args: ['fxLayoutAlign.lt-xl',] },],
+};
+var LayoutGapDirective = (function (_super) {
+    tslib_1.__extends(LayoutGapDirective, _super);
+    function LayoutGapDirective(monitor, elRef, renderer, container, _zone) {
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._zone = _zone;
+        _this._layout = 'row';
+        if (container) {
+            _this._layoutWatcher = container.layout$.subscribe(_this._onLayoutChange.bind(_this));
+        }
+        return _this;
+    }
+    Object.defineProperty(LayoutGapDirective.prototype, "gap", {
+        set: function (val) { this._cacheInput('gap', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LayoutGapDirective.prototype, "gapXs", {
+        set: function (val) { this._cacheInput('gapXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(LayoutGapDirective.prototype, "gapSm", {
+        set: function (val) { this._cacheInput('gapSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapMd", {
+        set: function (val) { this._cacheInput('gapMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLg", {
+        set: function (val) { this._cacheInput('gapLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapXl", {
+        set: function (val) { this._cacheInput('gapXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtXs", {
+        set: function (val) { this._cacheInput('gapGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtSm", {
+        set: function (val) { this._cacheInput('gapGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtMd", {
+        set: function (val) { this._cacheInput('gapGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapGtLg", {
+        set: function (val) { this._cacheInput('gapGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtSm", {
+        set: function (val) { this._cacheInput('gapLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtMd", {
+        set: function (val) { this._cacheInput('gapLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtLg", {
+        set: function (val) { this._cacheInput('gapLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    Object.defineProperty(LayoutGapDirective.prototype, "gapLtXl", {
+        set: function (val) { this._cacheInput('gapLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    LayoutGapDirective.prototype.ngOnChanges = function (changes) {
+        if (changes['gap'] != null || this._mqActivation) {
+            this._updateWithValue();
+        }
+    };
+    LayoutGapDirective.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this._watchContentChanges();
+        this._listenForMediaQueryChanges('gap', '0', function (changes) {
+            _this._updateWithValue(changes.value);
+        });
+        this._updateWithValue();
+    };
+    LayoutGapDirective.prototype.ngOnDestroy = function () {
+        _super.prototype.ngOnDestroy.call(this);
+        if (this._layoutWatcher) {
+            this._layoutWatcher.unsubscribe();
+        }
+        if (this._observer) {
+            this._observer.disconnect();
+        }
+    };
+    LayoutGapDirective.prototype._watchContentChanges = function () {
+        var _this = this;
+        this._zone.runOutsideAngular(function () {
+            if (typeof MutationObserver !== 'undefined') {
+                _this._observer = new MutationObserver(function (mutations) {
+                    var validatedChanges = function (it) {
+                        return (it.addedNodes && it.addedNodes.length > 0) ||
+                            (it.removedNodes && it.removedNodes.length > 0);
+                    };
+                    if (mutations.some(validatedChanges)) {
+                        _this._updateWithValue();
+                    }
+                });
+                _this._observer.observe(_this._elementRef.nativeElement, { childList: true });
+            }
+        });
+    };
+    LayoutGapDirective.prototype._onLayoutChange = function (direction) {
+        var _this = this;
+        this._layout = (direction || '').toLowerCase();
+        if (!LAYOUT_VALUES.find(function (x) { return x === _this._layout; })) {
+            this._layout = 'row';
+        }
+        this._updateWithValue();
+    };
+    LayoutGapDirective.prototype._updateWithValue = function (value) {
+        var _this = this;
+        value = value || this._queryInput('gap') || '0';
+        if (this._mqActivation) {
+            value = this._mqActivation.activatedInput;
+        }
+        var items = this.childrenNodes
+            .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; });
+        var numItems = items.length;
+        if (numItems > 1) {
+            var lastItem = items[numItems - 1];
+            items = items.filter(function (_, j) { return j < numItems - 1; });
+            this._applyStyleToElements(this._buildCSS(value), items);
+            this._applyStyleToElements(this._buildCSS(), [lastItem]);
+        }
+    };
+    LayoutGapDirective.prototype._buildCSS = function (value) {
+        if (value === void 0) { value = null; }
+        var key, margins = {
+            'margin-left': null,
+            'margin-right': null,
+            'margin-top': null,
+            'margin-bottom': null
+        };
+        switch (this._layout) {
+            case 'column':
+            case 'column-reverse':
+                key = 'margin-bottom';
+                break;
+            case 'row':
+            case 'row-reverse':
+            default:
+                key = 'margin-right';
+                break;
+        }
+        margins[key] = value;
+        return margins;
+    };
+    return LayoutGapDirective;
+}(BaseFxDirective));
+LayoutGapDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n  [fxLayoutGap],\n  [fxLayoutGap.xs], [fxLayoutGap.sm], [fxLayoutGap.md], [fxLayoutGap.lg], [fxLayoutGap.xl],\n  [fxLayoutGap.lt-sm], [fxLayoutGap.lt-md], [fxLayoutGap.lt-lg], [fxLayoutGap.lt-xl],\n  [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]\n"
+            },] },
+];
+LayoutGapDirective.ctorParameters = function () { return [
+    { type: MediaMonitor, },
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
+    { type: NgZone, },
+]; };
+LayoutGapDirective.propDecorators = {
+    'gap': [{ type: Input, args: ['fxLayoutGap',] },],
+    'gapXs': [{ type: Input, args: ['fxLayoutGap.xs',] },],
+    'gapSm': [{ type: Input, args: ['fxLayoutGap.sm',] },],
+    'gapMd': [{ type: Input, args: ['fxLayoutGap.md',] },],
+    'gapLg': [{ type: Input, args: ['fxLayoutGap.lg',] },],
+    'gapXl': [{ type: Input, args: ['fxLayoutGap.xl',] },],
+    'gapGtXs': [{ type: Input, args: ['fxLayoutGap.gt-xs',] },],
+    'gapGtSm': [{ type: Input, args: ['fxLayoutGap.gt-sm',] },],
+    'gapGtMd': [{ type: Input, args: ['fxLayoutGap.gt-md',] },],
+    'gapGtLg': [{ type: Input, args: ['fxLayoutGap.gt-lg',] },],
+    'gapLtSm': [{ type: Input, args: ['fxLayoutGap.lt-sm',] },],
+    'gapLtMd': [{ type: Input, args: ['fxLayoutGap.lt-md',] },],
+    'gapLtLg': [{ type: Input, args: ['fxLayoutGap.lt-lg',] },],
+    'gapLtXl': [{ type: Input, args: ['fxLayoutGap.lt-xl',] },],
+};
+var BaseFxDirectiveAdapter = (function (_super) {
+    tslib_1.__extends(BaseFxDirectiveAdapter, _super);
+    function BaseFxDirectiveAdapter(_baseKey, _mediaMonitor, _elementRef, _renderer) {
+        var _this = _super.call(this, _mediaMonitor, _elementRef, _renderer) || this;
+        _this._baseKey = _baseKey;
+        _this._mediaMonitor = _mediaMonitor;
+        _this._elementRef = _elementRef;
+        _this._renderer = _renderer;
+        return _this;
+    }
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "activeKey", {
+        get: function () {
+            var mqa = this._mqActivation;
+            var key = mqa ? mqa.activatedInputKey : this._baseKey;
+            return (key === 'class') ? 'klazz' : key;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "inputMap", {
+        get: function () {
+            return this._inputMap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "mqActivation", {
+        get: function () {
+            return this._mqActivation;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BaseFxDirectiveAdapter.prototype.queryInput = function (key) {
+        return key ? this._queryInput(key) : undefined;
+    };
+    BaseFxDirectiveAdapter.prototype.cacheInput = function (key, source, cacheRaw) {
+        if (cacheRaw === void 0) { cacheRaw = false; }
+        if (cacheRaw) {
+            this._cacheInputRaw(key, source);
+        }
+        else if (Array.isArray(source)) {
+            this._cacheInputArray(key, source);
+        }
+        else if (typeof source === 'object') {
+            this._cacheInputObject(key, source);
+        }
+        else if (typeof source === 'string') {
+            this._cacheInputString(key, source);
+        }
+        else {
+            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
+        }
+    };
+    BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
+        return this._listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange);
+    };
+    BaseFxDirectiveAdapter.prototype._cacheInputRaw = function (key, source) {
+        this._inputMap[key] = source;
+    };
+    BaseFxDirectiveAdapter.prototype._cacheInputArray = function (key, source) {
+        if (key === void 0) { key = ''; }
+        this._inputMap[key] = source.join(' ');
+    };
+    BaseFxDirectiveAdapter.prototype._cacheInputObject = function (key, source) {
+        if (key === void 0) { key = ''; }
+        var classes = [];
+        for (var prop in source) {
+            if (!!source[prop]) {
+                classes.push(prop);
+            }
+        }
+        this._inputMap[key] = classes.join(' ');
+    };
+    BaseFxDirectiveAdapter.prototype._cacheInputString = function (key, source) {
+        if (key === void 0) { key = ''; }
+        this._inputMap[key] = source;
+    };
+    return BaseFxDirectiveAdapter;
+}(BaseFxDirective));
 var ClassDirective = (function (_super) {
     tslib_1.__extends(ClassDirective, _super);
     function ClassDirective(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
@@ -2826,672 +3333,6 @@ StyleDirective.propDecorators = {
     'styleGtMd': [{ type: Input, args: ['style.gt-md',] },],
     'styleGtLg': [{ type: Input, args: ['style.gt-lg',] },],
 };
-var FALSY = ['false', false, 0];
-function negativeOf(hide) {
-    return (hide === '') ? false :
-        ((hide === 'false') || (hide === 0)) ? true : !hide;
-}
-var ShowHideDirective = (function (_super) {
-    tslib_1.__extends(ShowHideDirective, _super);
-    function ShowHideDirective(monitor, _layout, elRef, renderer) {
-        var _this = _super.call(this, monitor, elRef, renderer) || this;
-        _this._layout = _layout;
-        _this.elRef = elRef;
-        _this.renderer = renderer;
-        if (_layout) {
-            _this._layoutWatcher = _layout.layout$.subscribe(function () { return _this._updateWithValue(); });
-        }
-        return _this;
-    }
-    Object.defineProperty(ShowHideDirective.prototype, "show", {
-        set: function (val) { this._cacheInput('show', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showXs", {
-        set: function (val) { this._cacheInput('showXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "showSm", {
-        set: function (val) { this._cacheInput('showSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showMd", {
-        set: function (val) { this._cacheInput('showMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showLg", {
-        set: function (val) { this._cacheInput('showLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showXl", {
-        set: function (val) { this._cacheInput('showXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showLtSm", {
-        set: function (val) { this._cacheInput('showLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showLtMd", {
-        set: function (val) { this._cacheInput('showLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showLtLg", {
-        set: function (val) { this._cacheInput('showLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showLtXl", {
-        set: function (val) { this._cacheInput('showLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtXs", {
-        set: function (val) { this._cacheInput('showGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtSm", {
-        set: function (val) { this._cacheInput('showGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtMd", {
-        set: function (val) { this._cacheInput('showGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "showGtLg", {
-        set: function (val) { this._cacheInput('showGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hide", {
-        set: function (val) { this._cacheInput('show', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideXs", {
-        set: function (val) { this._cacheInput('showXs', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ShowHideDirective.prototype, "hideSm", {
-        set: function (val) { this._cacheInput('showSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideMd", {
-        set: function (val) { this._cacheInput('showMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLg", {
-        set: function (val) { this._cacheInput('showLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideXl", {
-        set: function (val) { this._cacheInput('showXl', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtSm", {
-        set: function (val) { this._cacheInput('showLtSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtMd", {
-        set: function (val) { this._cacheInput('showLtMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtLg", {
-        set: function (val) { this._cacheInput('showLtLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideLtXl", {
-        set: function (val) { this._cacheInput('showLtXl', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtXs", {
-        set: function (val) { this._cacheInput('showGtXs', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtSm", {
-        set: function (val) { this._cacheInput('showGtSm', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtMd", {
-        set: function (val) { this._cacheInput('showGtMd', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    Object.defineProperty(ShowHideDirective.prototype, "hideGtLg", {
-        set: function (val) { this._cacheInput('showGtLg', negativeOf(val)); },
-        enumerable: true,
-        configurable: true
-    });
-    ;
-    ShowHideDirective.prototype._getDisplayStyle = function () {
-        return this._layout ? 'flex' : _super.prototype._getDisplayStyle.call(this);
-    };
-    ShowHideDirective.prototype.ngOnChanges = function (changes) {
-        if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
-            this._updateWithValue();
-        }
-    };
-    ShowHideDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        var value = this._getDefaultVal('show', true);
-        this._listenForMediaQueryChanges('show', value, function (changes) {
-            _this._updateWithValue(changes.value);
-        });
-        this._updateWithValue();
-    };
-    ShowHideDirective.prototype.ngOnDestroy = function () {
-        _super.prototype.ngOnDestroy.call(this);
-        if (this._layoutWatcher) {
-            this._layoutWatcher.unsubscribe();
-        }
-    };
-    ShowHideDirective.prototype._updateWithValue = function (value) {
-        value = value || this._getDefaultVal('show', true);
-        if (this._mqActivation) {
-            value = this._mqActivation.activatedInput;
-        }
-        var shouldShow = this._validateTruthy(value);
-        this._applyStyleToElement(this._buildCSS(shouldShow));
-    };
-    ShowHideDirective.prototype._buildCSS = function (show) {
-        return { 'display': show ? this._display : 'none' };
-    };
-    ShowHideDirective.prototype._validateTruthy = function (show) {
-        return (FALSY.indexOf(show) == -1);
-    };
-    return ShowHideDirective;
-}(BaseFxDirective));
-ShowHideDirective.decorators = [
-    { type: Directive, args: [{
-                selector: "\n  [fxShow],\n  [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],\n  [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],\n  [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],\n  [fxHide],\n  [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],\n  [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],\n  [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]\n"
-            },] },
-];
-ShowHideDirective.ctorParameters = function () { return [
-    { type: MediaMonitor, },
-    { type: LayoutDirective, decorators: [{ type: Optional }, { type: Self },] },
-    { type: ElementRef, },
-    { type: Renderer2, },
-]; };
-ShowHideDirective.propDecorators = {
-    'show': [{ type: Input, args: ['fxShow',] },],
-    'showXs': [{ type: Input, args: ['fxShow.xs',] },],
-    'showSm': [{ type: Input, args: ['fxShow.sm',] },],
-    'showMd': [{ type: Input, args: ['fxShow.md',] },],
-    'showLg': [{ type: Input, args: ['fxShow.lg',] },],
-    'showXl': [{ type: Input, args: ['fxShow.xl',] },],
-    'showLtSm': [{ type: Input, args: ['fxShow.lt-sm',] },],
-    'showLtMd': [{ type: Input, args: ['fxShow.lt-md',] },],
-    'showLtLg': [{ type: Input, args: ['fxShow.lt-lg',] },],
-    'showLtXl': [{ type: Input, args: ['fxShow.lt-xl',] },],
-    'showGtXs': [{ type: Input, args: ['fxShow.gt-xs',] },],
-    'showGtSm': [{ type: Input, args: ['fxShow.gt-sm',] },],
-    'showGtMd': [{ type: Input, args: ['fxShow.gt-md',] },],
-    'showGtLg': [{ type: Input, args: ['fxShow.gt-lg',] },],
-    'hide': [{ type: Input, args: ['fxHide',] },],
-    'hideXs': [{ type: Input, args: ['fxHide.xs',] },],
-    'hideSm': [{ type: Input, args: ['fxHide.sm',] },],
-    'hideMd': [{ type: Input, args: ['fxHide.md',] },],
-    'hideLg': [{ type: Input, args: ['fxHide.lg',] },],
-    'hideXl': [{ type: Input, args: ['fxHide.xl',] },],
-    'hideLtSm': [{ type: Input, args: ['fxHide.lt-sm',] },],
-    'hideLtMd': [{ type: Input, args: ['fxHide.lt-md',] },],
-    'hideLtLg': [{ type: Input, args: ['fxHide.lt-lg',] },],
-    'hideLtXl': [{ type: Input, args: ['fxHide.lt-xl',] },],
-    'hideGtXs': [{ type: Input, args: ['fxHide.gt-xs',] },],
-    'hideGtSm': [{ type: Input, args: ['fxHide.gt-sm',] },],
-    'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
-    'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
-};
-var ImgSrcDirective = (function (_super) {
-    tslib_1.__extends(ImgSrcDirective, _super);
-    function ImgSrcDirective(elRef, renderer, monitor) {
-        return _super.call(this, monitor, elRef, renderer) || this;
-    }
-    Object.defineProperty(ImgSrcDirective.prototype, "srcBase", {
-        set: function (val) { this.cacheDefaultSrc(val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXs", {
-        set: function (val) { this._cacheInput('srcXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcSm", {
-        set: function (val) { this._cacheInput('srcSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcMd", {
-        set: function (val) { this._cacheInput('srcMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLg", {
-        set: function (val) { this._cacheInput('srcLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcXl", {
-        set: function (val) { this._cacheInput('srcXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtSm", {
-        set: function (val) { this._cacheInput('srcLtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtMd", {
-        set: function (val) { this._cacheInput('srcLtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtLg", {
-        set: function (val) { this._cacheInput('srcLtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcLtXl", {
-        set: function (val) { this._cacheInput('srcLtXl', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtXs", {
-        set: function (val) { this._cacheInput('srcGtXs', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtSm", {
-        set: function (val) { this._cacheInput('srcGtSm', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtMd", {
-        set: function (val) { this._cacheInput('srcGtMd', val); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "srcGtLg", {
-        set: function (val) { this._cacheInput('srcGtLg', val); },
-        enumerable: true,
-        configurable: true
-    });
-    ImgSrcDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        _super.prototype.ngOnInit.call(this);
-        this.cacheDefaultSrc(this.defaultSrc);
-        if (this.hasResponsiveKeys) {
-            this._listenForMediaQueryChanges('src', this.defaultSrc, function () {
-                _this._updateSrcFor();
-            });
-        }
-        this._updateSrcFor();
-    };
-    ImgSrcDirective.prototype.ngOnChanges = function () {
-        if (this.hasInitialized) {
-            this._updateSrcFor();
-        }
-    };
-    ImgSrcDirective.prototype._updateSrcFor = function () {
-        var url = this._mqActivation ? this._mqActivation.activatedInput || '' : this.defaultSrc;
-        this._renderer.setAttribute(this.nativeElement, 'src', url);
-    };
-    ImgSrcDirective.prototype.cacheDefaultSrc = function (value) {
-        var currentVal = this._queryInput('src');
-        if (typeof currentVal === 'undefined') {
-            this._cacheInput('src', value || '');
-        }
-    };
-    Object.defineProperty(ImgSrcDirective.prototype, "defaultSrc", {
-        get: function () {
-            return this._queryInput('src') ||
-                ɵgetDOM().getAttribute(this.nativeElement, 'src') || '';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ImgSrcDirective.prototype, "hasResponsiveKeys", {
-        get: function () {
-            return Object.keys(this._inputMap).length > 1;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ImgSrcDirective;
-}(BaseFxDirective));
-ImgSrcDirective.decorators = [
-    { type: Directive, args: [{
-                selector: "\n  img[src],\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n"
-            },] },
-];
-ImgSrcDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-    { type: Renderer2, },
-    { type: MediaMonitor, },
-]; };
-ImgSrcDirective.propDecorators = {
-    'srcBase': [{ type: Input, args: ['src',] },],
-    'srcXs': [{ type: Input, args: ['src.xs',] },],
-    'srcSm': [{ type: Input, args: ['src.sm',] },],
-    'srcMd': [{ type: Input, args: ['src.md',] },],
-    'srcLg': [{ type: Input, args: ['src.lg',] },],
-    'srcXl': [{ type: Input, args: ['src.xl',] },],
-    'srcLtSm': [{ type: Input, args: ['src.lt-sm',] },],
-    'srcLtMd': [{ type: Input, args: ['src.lt-md',] },],
-    'srcLtLg': [{ type: Input, args: ['src.lt-lg',] },],
-    'srcLtXl': [{ type: Input, args: ['src.lt-xl',] },],
-    'srcGtXs': [{ type: Input, args: ['src.gt-xs',] },],
-    'srcGtSm': [{ type: Input, args: ['src.gt-sm',] },],
-    'srcGtMd': [{ type: Input, args: ['src.gt-md',] },],
-    'srcGtLg': [{ type: Input, args: ['src.gt-lg',] },],
-};
-var RESPONSIVE_ALIASES = [
-    'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
-];
-var DEFAULT_BREAKPOINTS = [
-    {
-        alias: 'xs',
-        mediaQuery: '(max-width: 599px)'
-    },
-    {
-        alias: 'gt-xs',
-        overlapping: true,
-        mediaQuery: '(min-width: 600px)'
-    },
-    {
-        alias: 'lt-sm',
-        overlapping: true,
-        mediaQuery: '(max-width: 599px)'
-    },
-    {
-        alias: 'sm',
-        mediaQuery: '(min-width: 600px) and (max-width: 959px)'
-    },
-    {
-        alias: 'gt-sm',
-        overlapping: true,
-        mediaQuery: '(min-width: 960px)'
-    },
-    {
-        alias: 'lt-md',
-        overlapping: true,
-        mediaQuery: '(max-width: 959px)'
-    },
-    {
-        alias: 'md',
-        mediaQuery: '(min-width: 960px) and (max-width: 1279px)'
-    },
-    {
-        alias: 'gt-md',
-        overlapping: true,
-        mediaQuery: '(min-width: 1280px)'
-    },
-    {
-        alias: 'lt-lg',
-        overlapping: true,
-        mediaQuery: '(max-width: 1279px)'
-    },
-    {
-        alias: 'lg',
-        mediaQuery: '(min-width: 1280px) and (max-width: 1919px)'
-    },
-    {
-        alias: 'gt-lg',
-        overlapping: true,
-        mediaQuery: '(min-width: 1920px)'
-    },
-    {
-        alias: 'lt-xl',
-        overlapping: true,
-        mediaQuery: '(max-width: 1920px)'
-    },
-    {
-        alias: 'xl',
-        mediaQuery: '(min-width: 1920px) and (max-width: 5000px)'
-    }
-];
-var HANDSET_PORTRAIT = '(orientations: portrait) and (max-width: 599px)';
-var HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
-var TABLET_LANDSCAPE = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-var TABLET_PORTRAIT = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
-var WEB_PORTRAIT = '(orientations: portrait) and (min-width: 840px)';
-var WEB_LANDSCAPE = '(orientations: landscape) and (min-width: 1280px)';
-var ScreenTypes = {
-    'HANDSET': HANDSET_PORTRAIT + ", " + HANDSET_LANDSCAPE,
-    'TABLET': TABLET_PORTRAIT + " , " + TABLET_LANDSCAPE,
-    'WEB': WEB_PORTRAIT + ", " + WEB_LANDSCAPE + " ",
-    'HANDSET_PORTRAIT': "" + HANDSET_PORTRAIT,
-    'TABLET_PORTRAIT': TABLET_PORTRAIT + " ",
-    'WEB_PORTRAIT': "" + WEB_PORTRAIT,
-    'HANDSET_LANDSCAPE': HANDSET_LANDSCAPE + "]",
-    'TABLET_LANDSCAPE': "" + TABLET_LANDSCAPE,
-    'WEB_LANDSCAPE': "" + WEB_LANDSCAPE
-};
-var ORIENTATION_BREAKPOINTS = [
-    { 'alias': 'handset', 'mediaQuery': ScreenTypes.HANDSET },
-    { 'alias': 'handset.landscape', 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE },
-    { 'alias': 'handset.portrait', 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT },
-    { 'alias': 'tablet', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.landscape', 'mediaQuery': ScreenTypes.TABLET },
-    { 'alias': 'tablet.portrait', 'mediaQuery': ScreenTypes.TABLET_PORTRAIT },
-    { 'alias': 'web', 'mediaQuery': ScreenTypes.WEB, overlapping: true },
-    { 'alias': 'web.landscape', 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping: true },
-    { 'alias': 'web.portrait', 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping: true }
-];
-var ObservableMedia = (function () {
-    function ObservableMedia() {
-    }
-    ObservableMedia.prototype.isActive = function (query) { };
-    ObservableMedia.prototype.asObservable = function () { };
-    ObservableMedia.prototype.subscribe = function (next, error, complete) { };
-    return ObservableMedia;
-}());
-var MediaService = (function () {
-    function MediaService(breakpoints, mediaWatcher) {
-        this.breakpoints = breakpoints;
-        this.mediaWatcher = mediaWatcher;
-        this.filterOverlaps = true;
-        this._registerBreakPoints();
-        this.observable$ = this._buildObservable();
-    }
-    MediaService.prototype.isActive = function (alias) {
-        var query = this._toMediaQuery(alias);
-        return this.mediaWatcher.isActive(query);
-    };
-    MediaService.prototype.subscribe = function (next, error, complete) {
-        return this.observable$.subscribe(next, error, complete);
-    };
-    MediaService.prototype.asObservable = function () {
-        return this.observable$;
-    };
-    MediaService.prototype._registerBreakPoints = function () {
-        var queries = this.breakpoints.sortedItems.map(function (bp) { return bp.mediaQuery; });
-        this.mediaWatcher.registerQuery(queries);
-    };
-    MediaService.prototype._buildObservable = function () {
-        var _this = this;
-        var self = this;
-        var activationsOnly = function (change) {
-            return change.matches === true;
-        };
-        var addAliasInformation = function (change) {
-            return mergeAlias(change, _this._findByQuery(change.mediaQuery));
-        };
-        var excludeOverlaps = function (change) {
-            var bp = _this.breakpoints.findByQuery(change.mediaQuery);
-            return !bp ? true : !(self.filterOverlaps && bp.overlapping);
-        };
-        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
-    };
-    MediaService.prototype._findByAlias = function (alias) {
-        return this.breakpoints.findByAlias(alias);
-    };
-    MediaService.prototype._findByQuery = function (query) {
-        return this.breakpoints.findByQuery(query);
-    };
-    MediaService.prototype._toMediaQuery = function (query) {
-        var bp = this._findByAlias(query) || this._findByQuery(query);
-        return bp ? bp.mediaQuery : query;
-    };
-    return MediaService;
-}());
-MediaService.decorators = [
-    { type: Injectable },
-];
-MediaService.ctorParameters = function () { return [
-    { type: BreakPointRegistry, },
-    { type: MatchMedia, },
-]; };
-var ALIAS_DELIMITERS = /(\.|-|_)/g;
-function firstUpperCase(part) {
-    var first = part.length > 0 ? part.charAt(0) : '';
-    var remainder = (part.length > 1) ? part.slice(1) : '';
-    return first.toUpperCase() + remainder;
-}
-function camelCase(name) {
-    return name
-        .replace(ALIAS_DELIMITERS, '|')
-        .split('|')
-        .map(firstUpperCase)
-        .join('');
-}
-function validateSuffixes(list) {
-    list.forEach(function (bp) {
-        if (!bp.suffix || bp.suffix === '') {
-            bp.suffix = camelCase(bp.alias);
-            bp.overlapping = bp.overlapping || false;
-        }
-    });
-    return list;
-}
-function mergeByAlias(defaults, custom) {
-    if (custom === void 0) { custom = []; }
-    var merged = defaults.map(function (bp) { return extendObject({}, bp); });
-    var findByAlias = function (alias) { return merged.reduce(function (result, bp) {
-        return result || ((bp.alias === alias) ? bp : null);
-    }, null); };
-    custom.forEach(function (bp) {
-        var target = findByAlias(bp.alias);
-        if (target) {
-            extendObject(target, bp);
-        }
-        else {
-            merged.push(bp);
-        }
-    });
-    return validateSuffixes(merged);
-}
-function buildMergedBreakPoints(_custom, options) {
-    options = extendObject({}, {
-        defaults: true,
-        orientation: false
-    }, options || {});
-    return function () {
-        var defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
-            DEFAULT_BREAKPOINTS;
-        return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
-    };
-}
-function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
-    return validateSuffixes(DEFAULT_BREAKPOINTS);
-}
-var DEFAULT_BREAKPOINTS_PROVIDER = {
-    provide: BREAKPOINTS,
-    useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
-};
-function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom, options) {
-    return {
-        provide: BREAKPOINTS,
-        useFactory: buildMergedBreakPoints(_custom, options)
-    };
-}
-function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService, matchMedia, breakpoints) {
-    return parentService || new MediaService(breakpoints, matchMedia);
-}
-var OBSERVABLE_MEDIA_PROVIDER = {
-    provide: ObservableMedia,
-    deps: [
-        [new Optional(), new SkipSelf(), ObservableMedia],
-        MatchMedia,
-        BreakPointRegistry
-    ],
-    useFactory: OBSERVABLE_MEDIA_PROVIDER_FACTORY
-};
-function MEDIA_MONITOR_PROVIDER_FACTORY(parentMonitor, breakpoints, matchMedia) {
-    return parentMonitor || new MediaMonitor(breakpoints, matchMedia);
-}
-var MEDIA_MONITOR_PROVIDER = {
-    provide: MediaMonitor,
-    deps: [
-        [new Optional(), new SkipSelf(), MediaMonitor],
-        BreakPointRegistry,
-        MatchMedia,
-    ],
-    useFactory: MEDIA_MONITOR_PROVIDER_FACTORY
-};
-var MediaQueriesModule = (function () {
-    function MediaQueriesModule() {
-    }
-    return MediaQueriesModule;
-}());
-MediaQueriesModule.decorators = [
-    { type: NgModule, args: [{
-                providers: [
-                    DEFAULT_BREAKPOINTS_PROVIDER,
-                    BreakPointRegistry,
-                    MatchMedia,
-                    MediaMonitor,
-                    OBSERVABLE_MEDIA_PROVIDER
-                ]
-            },] },
-];
-MediaQueriesModule.ctorParameters = function () { return []; };
 var ALL_DIRECTIVES = [
     LayoutDirective,
     LayoutWrapDirective,
@@ -3504,8 +3345,7 @@ var ALL_DIRECTIVES = [
     FlexAlignDirective,
     ShowHideDirective,
     ClassDirective,
-    StyleDirective,
-    ImgSrcDirective
+    StyleDirective
 ];
 var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
@@ -3533,5 +3373,5 @@ FlexLayoutModule.decorators = [
             },] },
 ];
 FlexLayoutModule.ctorParameters = function () { return []; };
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, FlexLayoutModule, BaseFxDirective, BaseFxDirectiveAdapter, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, negativeOf, ShowHideDirective, ClassDirective, StyleDirective, KeyOptions, ResponsiveActivation, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils };
 //# sourceMappingURL=flex-layout.es5.js.map

@@ -1,5 +1,5 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
-import { BaseFxDirective } from '../core/base';
+import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     align: any;

@@ -1,7 +1,7 @@
 import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer, Renderer2, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
-import { BaseFxDirective } from '../core/base';
-import { BaseFxDirectiveAdapter } from '../core/base-adapter';
+import { BaseFxDirective } from './base';
+import { BaseFxDirectiveAdapter } from './base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
 export declare type NgClassType = string | string[] | Set<string> | {
     [klass: string]: any;

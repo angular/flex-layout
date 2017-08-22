@@ -1,6 +1,6 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { BaseFxDirective } from '../core/base';
+import { BaseFxDirective } from './base';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { LayoutDirective } from './layout';
 export declare class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
