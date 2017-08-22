@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { map } from 'rxjs/operator/map';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.8-d171c33');
+var VERSION = new Version('2.0.0-beta.9-ea26752');
 var MediaChange = (function () {
     function MediaChange(matches, mediaQuery, mqAlias, suffix) {
         if (matches === void 0) { matches = false; }
