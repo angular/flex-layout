@@ -82,7 +82,7 @@ import {ObservableMedia, MediaChange} from '@angular/flex-layout';
 @Component({ ... })
 export class MyComponent {
   
-  constructor( @Inject(ObservableMedia) media) {
+  constructor(media:ObservableMedia) {
     
     media.asObservable()
       .map( (change:MediaChange) => change.mqAlias == 'md' )
