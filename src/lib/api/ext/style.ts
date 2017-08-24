@@ -14,7 +14,6 @@ import {
   OnDestroy,
   OnChanges,
   Optional,
-  Renderer,
   Renderer2,
   SecurityContext,
   Self,
@@ -35,6 +34,7 @@ import {
   NgStyleSanitizer,
   ngStyleUtils as _
 } from '../../utils/style-transforms';
+import {RendererAdapter} from '../core/renderer-adapter';
 
 /**
  * Directive to add responsive support for ngStyle.
@@ -106,7 +106,7 @@ export class StyleDirective extends BaseFxDirective
   constructor(private monitor: MediaMonitor,
               protected _sanitizer: DomSanitizer,
               _ngEl: ElementRef, _renderer: Renderer2,
-              _differs: KeyValueDiffers, _oldRenderer: Renderer,
+              _differs: KeyValueDiffers,
               @Optional() @Self() private _ngStyleInstance: NgStyle) {
 
     super(monitor, _ngEl, _renderer);
@@ -118,7 +118,8 @@ export class StyleDirective extends BaseFxDirective
     // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been defined on
     // the same host element; since the responsive versions may be defined...
     if ( !this._ngStyleInstance ) {
-      this._ngStyleInstance = new NgStyle(_differs, _ngEl, _oldRenderer);
+      let adapter = new RendererAdapter(_renderer);
+      this._ngStyleInstance = new NgStyle(_differs, _ngEl, <any> adapter);
     }
   }
 
