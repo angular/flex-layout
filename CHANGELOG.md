@@ -21,10 +21,6 @@ This **@angular/flex-layout** release provides full support for Angular 4.x; alo
 
 ### BREAKING CHANGES
 
-* revised source package structure for API: @see
-  * `/src/lib/api/flexbox`,
-  * `/src/lib/api/ext`,
-  * `/src/lib/api/core`
 * **ngStyle, ngClass:** * `[style.<alias>]` selectors are deprecated in favor of `[ngStyle.<alias>]` selectors
 * `[class.<alias>]` selectors are deprecated in favor of `[ngClass.<alias>]` selectors
 * default styles are merged with activated styles
