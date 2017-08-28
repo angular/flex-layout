@@ -35,7 +35,7 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
  */
 @Directive({
   selector: `
-    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
+    [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
     [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],
     [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],
 
@@ -77,41 +77,21 @@ export class ClassDirective extends BaseFxDirective
 
   /** Deprecated selectors */
 
-  /**
-   * Base class selector values get applied immediately and are considered destructive overwrites to
-   * all previous class assignments
-   *
-   * Delegate to NgClass:klass setter and cache value for base fallback from responsive APIs.
-   */
-  @Input('class')
-  set classBase(val: string) {
-    this._classAdapter.cacheInput('_rawClass', val, true);
-    this._ngClassInstance.klass = val;
-  }
+  @Input('class.xs')      set classXs(val:   NgClassType) { this._classAdapter.cacheInput('classXs',   val); }
+  @Input('class.sm')      set classSm(val:   NgClassType) { this._classAdapter.cacheInput('classSm',   val); }
+  @Input('class.md')      set classMd(val:   NgClassType) { this._classAdapter.cacheInput('classMd',   val); }
+  @Input('class.lg')      set classLg(val:   NgClassType) { this._classAdapter.cacheInput('classLg',   val); }
+  @Input('class.xl')      set classXl(val:   NgClassType) { this._classAdapter.cacheInput('classXl',   val); }
 
-  @Input('class.xs')      set classXs(val:   NgClassType) { this._classAdapter.cacheInput('classXs',   val, true); }
-  @Input('class.sm')      set classSm(val:   NgClassType) { this._classAdapter.cacheInput('classSm',   val, true); }
-  @Input('class.md')      set classMd(val:   NgClassType) { this._classAdapter.cacheInput('classMd',   val, true); }
-  @Input('class.lg')      set classLg(val:   NgClassType) { this._classAdapter.cacheInput('classLg',   val, true); }
-  @Input('class.xl')      set classXl(val:   NgClassType) { this._classAdapter.cacheInput('classXl',   val, true); }
+  @Input('class.lt-sm')   set classLtSm(val: NgClassType) { this._classAdapter.cacheInput('classLtSm', val); }
+  @Input('class.lt-md')   set classLtMd(val: NgClassType) { this._classAdapter.cacheInput('classLtMd', val); }
+  @Input('class.lt-lg')   set classLtLg(val: NgClassType) { this._classAdapter.cacheInput('classLtLg', val); }
+  @Input('class.lt-xl')   set classLtXl(val: NgClassType) { this._classAdapter.cacheInput('classLtXl', val); }
 
-  @Input('class.lt-sm')   set classLtSm(val: NgClassType) { this._classAdapter.cacheInput('classLtSm', val, true); }
-  @Input('class.lt-md')   set classLtMd(val: NgClassType) { this._classAdapter.cacheInput('classLtMd', val, true); }
-  @Input('class.lt-lg')   set classLtLg(val: NgClassType) { this._classAdapter.cacheInput('classLtLg', val, true); }
-  @Input('class.lt-xl')   set classLtXl(val: NgClassType) { this._classAdapter.cacheInput('classLtXl', val, true); }
-
-  @Input('class.gt-xs')   set classGtXs(val: NgClassType) { this._classAdapter.cacheInput('classGtXs', val, true); }
-  @Input('class.gt-sm')   set classGtSm(val: NgClassType) { this._classAdapter.cacheInput('classGtSm', val, true); }
-  @Input('class.gt-md')   set classGtMd(val: NgClassType) { this._classAdapter.cacheInput('classGtMd', val, true); }
-  @Input('class.gt-lg')   set classGtLg(val: NgClassType) { this._classAdapter.cacheInput('classGtLg', val, true); }
-
-  /**
-   * Initial value of the `class` attribute; used as
-   * fallback and will be merged with nay `ngClass` values
-   */
-  get initialClasses() : string {
-    return  this._classAdapter.queryInput('_rawClass') || "";
-  }
+  @Input('class.gt-xs')   set classGtXs(val: NgClassType) { this._classAdapter.cacheInput('classGtXs', val); }
+  @Input('class.gt-sm')   set classGtSm(val: NgClassType) { this._classAdapter.cacheInput('classGtSm', val); }
+  @Input('class.gt-md')   set classGtMd(val: NgClassType) { this._classAdapter.cacheInput('classGtMd', val); }
+  @Input('class.gt-lg')   set classGtLg(val: NgClassType) { this._classAdapter.cacheInput('classGtLg', val); }
 
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
@@ -121,8 +101,9 @@ export class ClassDirective extends BaseFxDirective
 
     super(monitor, _ngEl, _renderer);
 
-    this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
     this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
+    this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
+    this._classAdapter.cacheInput('class', _ngEl.nativeElement.getAttribute('class') || '');
 
     // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
     // the same host element; since the responsive variations may be defined...
@@ -156,7 +137,9 @@ export class ClassDirective extends BaseFxDirective
     if (!this._classAdapter.hasMediaQueryListener) {
       this._configureMQListener();
     }
-    this._ngClassInstance.ngDoCheck();
+    if ( this._ngClassInstance) {
+      this._ngClassInstance.ngDoCheck();
+    }
   }
 
   ngOnDestroy() {
@@ -174,11 +157,12 @@ export class ClassDirective extends BaseFxDirective
    * mql change events to onMediaQueryChange handlers
    */
   protected _configureMQListener() {
-    this._classAdapter.listenForMediaQueryChanges('class', '', (changes: MediaChange) => {
+    const value = this._classAdapter.queryInput('class');
+    this._classAdapter.listenForMediaQueryChanges('class', value, (changes: MediaChange) => {
       this._updateKlass(changes.value);
     });
 
-    this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', (changes: MediaChange) => {
+    this._ngClassAdapter.listenForMediaQueryChanges('ngClass', value, (changes: MediaChange) => {
       this._updateNgClass(changes.value);
       this._ngClassInstance.ngDoCheck();    // trigger NgClass::_applyIterableChanges()
     });
@@ -189,11 +173,11 @@ export class ClassDirective extends BaseFxDirective
    *  ::ngDoCheck() is not needed
    */
   protected _updateKlass(value?: NgClassType) {
-    let klass = value || this._classAdapter.queryInput('class') || '';
+    let klass = value || this._classAdapter.queryInput('class');
     if (this._classAdapter.mqActivation) {
       klass = this._classAdapter.mqActivation.activatedInput;
     }
-    this._ngClassInstance.klass = klass || this.initialClasses;
+    this._ngClassInstance.klass = klass;
   }
 
   /**
