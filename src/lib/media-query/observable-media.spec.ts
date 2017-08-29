@@ -139,26 +139,46 @@ describe('observable-media', () => {
         }));
 
     it('can `.unsubscribe()` properly', async(inject(
-      [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
-        let current: MediaChange;
-        let subscription = media.subscribe((change: MediaChange) => {
-          current = change;
-        });
+        [ObservableMedia, MatchMedia],
+        (media, matchMedia) => {
+          let current: MediaChange;
+          let subscription = media.subscribe((change: MediaChange) => {
+            current = change;
+          });
 
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('md');
-        expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+          // Activate mediaQuery associated with 'md' alias
+          matchMedia.activate('md');
+          expect(current.mediaQuery).toEqual(findMediaQuery('md'));
 
-        // Un-subscribe
-        subscription.unsubscribe();
+          // Un-subscribe
+          subscription.unsubscribe();
 
-        matchMedia.activate('lg');
-        expect(current.mqAlias).toBe('md');
+          matchMedia.activate('lg');
+          expect(current.mqAlias).toBe('md');
 
-        matchMedia.activate('xs');
-        expect(current.mqAlias).toBe('md');
-      })));
+          matchMedia.activate('xs');
+          expect(current.mqAlias).toBe('md');
+        })));
+
+    it('can observe a startup activation of XS', async(inject(
+        [ObservableMedia, MatchMedia],
+        (media, matchMedia) => {
+          let current: MediaChange;
+          let subscription = media.subscribe((change: MediaChange) => {
+            current = change;
+          });
+
+          // Activate mediaQuery associated with 'md' alias
+          matchMedia.activate('xs');
+          expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
+
+          // Un-subscribe
+          subscription.unsubscribe();
+
+          matchMedia.activate('lg');
+          expect(current.mqAlias).toBe('xs');
+
+        })));
   });
 
   describe('with custom BreakPoints', () => {
@@ -176,30 +196,30 @@ describe('observable-media', () => {
         providers: [
           BreakPointRegistry,   // Registry of known/used BreakPoint(s)
           MockMatchMediaProvider,
-          CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(CUSTOM_BREAKPOINTS, {defaults: excludeDefaults} ),
+          CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(CUSTOM_BREAKPOINTS, {defaults: excludeDefaults}),
           OBSERVABLE_MEDIA_PROVIDER,
         ]
       });
     });
 
     it('can activate custom alias with custom mediaQueries', async(inject(
-      [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
-        let current: MediaChange;
-        let subscription = media.subscribe((change: MediaChange) => {
-          current = change;
-        });
+        [ObservableMedia, MatchMedia],
+        (media, matchMedia) => {
+          let current: MediaChange;
+          let subscription = media.subscribe((change: MediaChange) => {
+            current = change;
+          });
 
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('print.md');
-        expect(current.mediaQuery).toEqual(mdMediaQuery);
+          // Activate mediaQuery associated with 'md' alias
+          matchMedia.activate('print.md');
+          expect(current.mediaQuery).toEqual(mdMediaQuery);
 
-        matchMedia.activate('tablet-gt-xs');
-        expect(current.mqAlias).toBe('tablet-gt-xs');
-        expect(current.mediaQuery).toBe(gtXsMediaQuery);
+          matchMedia.activate('tablet-gt-xs');
+          expect(current.mqAlias).toBe('tablet-gt-xs');
+          expect(current.mediaQuery).toBe(gtXsMediaQuery);
 
-        subscription.unsubscribe();
-      })));
+          subscription.unsubscribe();
+        })));
 
   });
 

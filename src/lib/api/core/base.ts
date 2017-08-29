@@ -133,9 +133,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Note: this allows use to preserve the original style
    * and optional restore it when the mediaQueries deactivate
    */
-  protected _getDisplayStyle(source?: HTMLElement): string {
-    let element: HTMLElement = source || this.nativeElement;
-    return lookupStyle(element, 'display');
+  protected _getDisplayStyle(source: HTMLElement = this.nativeElement): string {
+    return lookupStyle(source || this.nativeElement, 'display');
   }
 
   /**
@@ -164,7 +163,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _applyStyleToElement(style: StyleDefinition,
                                  value?: string | number,
-                                 nativeElement?: any) {
+                                 nativeElement: any = this.nativeElement) {
     let element = nativeElement || this.nativeElement;
     applyStyleToElement(this._renderer, element, style, value);
   }
