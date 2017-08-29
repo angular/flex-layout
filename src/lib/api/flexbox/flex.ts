@@ -20,7 +20,7 @@
 import {Subscription} from 'rxjs/Subscription';
 import {extendObject} from '../../utils/object-extend';
 
-import {BaseFxDirective} from './base';
+import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 

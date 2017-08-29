@@ -14,7 +14,7 @@ export const RESPONSIVE_ALIASES = [
 export const DEFAULT_BREAKPOINTS: BreakPoint[] = [
   {
     alias: 'xs',
-    mediaQuery: '(max-width: 599px)'
+    mediaQuery: '(min-width: 0px) and (max-width: 599px)'
   },
   {
     alias: 'gt-xs',
