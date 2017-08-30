@@ -8,7 +8,7 @@
 import {Directive, ElementRef, Renderer2} from '@angular/core';
 
 import {MediaMonitor} from '../../media-query/media-monitor';
-import {BaseFxDirective} from './base';
+import {BaseFxDirective} from '../core/base';
 
 const FLEX_FILL_CSS = {
   'margin': 0,

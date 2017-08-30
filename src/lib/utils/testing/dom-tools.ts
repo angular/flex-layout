@@ -18,12 +18,15 @@ export const _dom = {
   childNodes,
   childNodesAsList,
   hasClass,
+  hasAttribute,
+  getAttribute,
   hasShadowRoot,
   isCommentNode,
   isElementNode,
   isPresent,
   isShadowRoot,
-  tagName
+  tagName,
+  lastElementChild
 };
 
 // ******************************************************************************************
@@ -73,6 +76,14 @@ function hasClass(element: any, className: string): boolean {
   return element.classList.contains(className);
 }
 
+function hasAttribute(element: any, attributeName: string): boolean {
+  return element.hasAttribute(attributeName);
+}
+
+function getAttribute(element: any, attributeName: string): string {
+  return element.getAttribute(attributeName);
+}
+
 function childNodes(el: any): Node[] {
   return el.childNodes;
 }
@@ -100,3 +111,13 @@ function isPresent(obj: any): boolean {
 function tagName(element: any): string {
   return element.tagName;
 }
+
+// ******************************************************************************************
+// These functions are part of the DOM API
+// and are to be used ONLY internally in custom-matchers.ts and Unit Tests
+// ******************************************************************************************
+
+function lastElementChild(element: any): Node|null {
+  return element.lastElementChild;
+}
+
