@@ -1,8 +1,8 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { BaseFxDirective } from './base';
+import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
-import { LayoutDirective } from './layout';
+import { LayoutDirective } from '../flexbox/layout';
 export declare function negativeOf(hide: any): boolean;
 export declare class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
     protected _layout: LayoutDirective;
