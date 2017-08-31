@@ -28,18 +28,19 @@
           <md-radio-button value="column">column</md-radio-button>
         </md-radio-group>
         </div>
-        <div>
-          <div>Alignment in Layout Direction
-            ({{options.direction == 'row' ? 'horizontal' : 'vertical'}})
-          </div>
-          <md-radio-group [(ngModel)]="options.mainAxis" name="mainAxis" fxLayout="column">
-            <md-radio-button value="">none</md-radio-button>
-            <md-radio-button value="start">start (default)</md-radio-button>
-            <md-radio-button value="center">center</md-radio-button>
-            <md-radio-button value="end">end</md-radio-button>
-            <md-radio-button value="space-around">space-around</md-radio-button>
-            <md-radio-button value="space-between">space-between</md-radio-button>
-          </md-radio-group>
+        <md-radio-group name="mainAxisOptions" [(ngModel)]="mainAxis" fxLayout="column">
+          <md-radio-button value="">none</md-radio-button>
+          <md-radio-button value="start">start (default)</md-radio-button>
+          <md-radio-button value="center">center</md-radio-button>
+          <md-radio-button value="end">end</md-radio-button>
+          <md-radio-button value="space-around">space-around</md-radio-button>
+          <md-radio-button value="space-between">space-between</md-radio-button>
+          <md-radio-button value="space-evenly">space-evenly</md-radio-button>
+        </md-radio-group>
+      </div>
+      <div>
+        <div>Alignment in Perpendicular Direction
+          ({{direction == 'column' ? 'horizontal' : 'vertical'}})
         </div>
         <div>
           <div>Alignment in Perpendicular Direction
