@@ -23,9 +23,27 @@ System.config({
     '@angular/platform-browser/animations': 'node:@angular/platform-browser/bundles/platform-browser-animations.umd.js',    // tslint:disable-line:max-line-length
     '@angular/platform-browser-dynamic': 'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',  // tslint:disable-line:max-line-length
 
+    '@angular/flex-layout': 'dist/bundles/flex-layout.umd.js',
+
     '@angular/material': 'node:@angular/material/bundles/material.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
-    '@angular/flex-layout': 'dist/bundles/flex-layout.umd.js'
+
+    // CDK Secondary entry points
+    '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
+    '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
+    '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
+    '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
+    '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
+    '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
+    '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
+    '@angular/cdk/portal': 'node:@angular/cdk/bundles/cdk-portal.umd.js',
+    '@angular/cdk/rxjs': 'node:@angular/cdk/bundles/cdk-rxjs.umd.js',
+    '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
+    '@angular/cdk/table': 'node:@angular/cdk/bundles/cdk-table.umd.js',
+    '@angular/cdk/testing': 'node:@angular/cdk/bundles/cdk-testing.umd.js'
+
+
   },
   packages: {
     // 3rd-Party barrels.

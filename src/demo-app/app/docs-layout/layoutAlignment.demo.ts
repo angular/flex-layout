@@ -7,11 +7,13 @@ import {Component} from '@angular/core';
   templateUrl: 'layoutAlignment.demo.html'
 })
 export class DemoLayoutAlignment {
-  public direction = 'row';
-  public mainAxis = 'space-around';
-  public crossAxis = 'center';
+  public options = {
+    direction :  'row',
+    mainAxis  : 'space-around',
+    crossAxis :  'center'
+  };
 
   layoutAlign() {
-    return `${this.mainAxis} ${this.crossAxis}`;
+    return `${this.options.mainAxis} ${this.options.crossAxis}`;
   }
 }

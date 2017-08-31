@@ -64,10 +64,10 @@ function getText(el: Node): string {
 }
 
 function childNodesAsList(el: Node): any[] {
-  const childNodes = el.childNodes;
-  const res = new Array(childNodes.length);
-  for (let i = 0; i < childNodes.length; i++) {
-    res[i] = childNodes[i];
+  const list = el.childNodes;
+  const res = new Array(list.length);
+  for (let i = 0; i < list.length; i++) {
+    res[i] = list[i];
   }
   return res;
 }

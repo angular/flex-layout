@@ -20,13 +20,10 @@ $(npm bin)/tsc -p src/demo-app/tsconfig-build.json --target ES2015 --module ES20
 $(npm bin)/ngc -p scripts/closure-compiler/tsconfig-rxjs.json
 
 # Create a list of all RxJS source files.
-rxjsSourceFiles=$(find dist/packages/rxjs -name '*.js');
+rxjsSourceFiles=$(find node_modules/rxjs/ -name '*.js');
 
-# Due a Closure Compiler issue https://github.com/google/closure-compiler/issues/2247
-# we need to add exports to the different RxJS ES2015 files.
-for i in $rxjsSourceFiles; do
-    echo "export var __CLOSURE_WORKAROUND__" >> $i
-done
+# List of entry points in the CDK package. Exclude "testing" since it's not an entry point.
+cdkEntryPoints=($(find node_modules/@angular/cdk -maxdepth 1 -mindepth 1 -type d -not -name testing -not -name bundles -not -name typings -not -name @angular -exec basename {} \;))
 
 OPTS=(
   "--language_in=ES6_STRICT"
@@ -37,6 +34,8 @@ OPTS=(
   "--property_renaming_report=dist/closure/property_renaming_report"
   "--warning_level=QUIET"
   "--rewrite_polyfills=false"
+  "--module_resolution=node"
+  "--process_common_js_modules"
 
   # List of path prefixes to be removed from ES6 & CommonJS modules.
   "--js_module_root=dist/packages"
@@ -88,6 +87,12 @@ OPTS=(
   "--dependency_mode=STRICT"
 )
 
+# Walk through every entry-point of the CDK and add it to closure options.
+for i in "${cdkEntryPoints[@]}"; do
+  OPTS+=("--js_module_root=node_modules/@angular/cdk/@angular/cdk/${i}")
+  OPTS+=("node_modules/@angular/cdk/@angular/cdk/${i}.js")
+done
+
 # Write closure flags to a closure flagfile.
 closureFlags=$(mktemp)
 echo ${OPTS[*]} > $closureFlags
@@ -95,4 +100,4 @@ echo ${OPTS[*]} > $closureFlags
 # Run the Google Closure compiler java runnable.
 java -jar node_modules/google-closure-compiler/compiler.jar --flagfile $closureFlags
 
-echo "Finished bundling the dev-app using google closure compiler.."
+echo "Finished bundling the dev-app using Google Closure Compiler."

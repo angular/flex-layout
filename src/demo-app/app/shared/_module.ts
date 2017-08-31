@@ -1,28 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
-
-import {
-  MdButtonModule,
-  MdCardModule,
-  MdCheckboxModule,
-  MdRadioModule
-} from '@angular/material';
+import {DemoMaterialModule} from './demo-material-module';
 
 import {MediaQueryStatus} from './media-query-status';
-
-/**
- * NgModule that includes all Material modules that are required to serve the demo-app.
- */
-@NgModule({
-  exports: [
-    MdButtonModule,
-    MdCardModule,
-    MdCheckboxModule,
-    MdRadioModule
-  ]
-})
-export class MaterialDemosModule {}
 
 /**
  * Shared ngModule used by all route-modules
@@ -30,13 +11,13 @@ export class MaterialDemosModule {}
 @NgModule({
   imports: [
     CommonModule,
-    MaterialDemosModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    DemoMaterialModule
   ],
   exports: [
     CommonModule,
-    MaterialDemosModule,
     FlexLayoutModule,
+    DemoMaterialModule,
     MediaQueryStatus
   ],
   declarations: [
