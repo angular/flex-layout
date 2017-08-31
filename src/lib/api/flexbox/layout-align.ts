@@ -153,6 +153,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
       case 'space-between':
         css['justify-content'] = 'space-between';
         break;
+      case 'space-evenly':
+        css['justify-content'] = 'space-evenly';
+        break;
       case 'end':
       case 'flex-end':
         css['justify-content'] = 'flex-end';
