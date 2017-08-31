@@ -28,6 +28,9 @@
           <md-radio-button value="column">column</md-radio-button>
         </md-radio-group>
         </div>
+        <div>Alignment in Layout Direction
+          ({{options.direction == 'row' ? 'horizontal' : 'vertical'}})
+        </div>
         <md-radio-group name="mainAxisOptions" [(ngModel)]="mainAxis" fxLayout="column">
           <md-radio-button value="">none</md-radio-button>
           <md-radio-button value="start">start (default)</md-radio-button>
@@ -39,10 +42,7 @@
         </md-radio-group>
       </div>
       <div>
-        <div>Alignment in Perpendicular Direction
-          ({{direction == 'column' ? 'horizontal' : 'vertical'}})
-        </div>
-        <div>
+         <div>
           <div>Alignment in Perpendicular Direction
             ({{options.direction == 'column' ? 'horizontal' : 'vertical'}})
           </div>
