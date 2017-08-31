@@ -98,6 +98,15 @@ describe('layout-align directive', () => {
             extendObject({'justify-content': 'space-around'}, CROSSAXIS_DEFAULTS)
         );
       });
+      it('should add correct styles for `fxLayoutAlign="space-evenly"` usage', () => {
+        // Safari does not appear to support this property
+        const isSafari = /safari/i.test(navigator.userAgent);
+        if ( !isSafari ) {
+          expectDOMFrom(`<div fxLayoutAlign='space-evenly'></div>`).toHaveStyle(
+              extendObject({'justify-content': 'space-evenly'}, CROSSAXIS_DEFAULTS)
+          );
+        }
+      });
       it('should add correct styles for `fxLayoutAlign="space-between"` usage', () => {
         expectDOMFrom(`<div fxLayoutAlign='space-between'></div>`).toHaveStyle(
             extendObject({'justify-content': 'space-between'}, CROSSAXIS_DEFAULTS)
@@ -131,10 +140,10 @@ describe('layout-align directive', () => {
       });
       it('should add correct styles for `fxLayoutAlign="start baseline"` usage', () => {
         expectDOMFrom(`<div fxLayoutAlign='start baseline'></div>`)
-          .toHaveStyle({
-            'justify-content' : 'flex-start',
-            'align-items': 'baseline'
-          });
+            .toHaveStyle({
+              'justify-content': 'flex-start',
+              'align-items': 'baseline'
+            });
       });
       it('should add correct styles for `fxLayoutAlign="start center"` usage', () => {
         expectDOMFrom(`<div fxLayoutAlign='start center'></div>`).toHaveStyle(
