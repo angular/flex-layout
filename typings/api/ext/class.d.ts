@@ -1,4 +1,4 @@
-import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer, Renderer2, SimpleChanges } from '@angular/core';
+import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
@@ -38,7 +38,7 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     classGtMd: NgClassType;
     classGtLg: NgClassType;
     readonly initialClasses: string;
-    constructor(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2, _oldRenderer: Renderer, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngClassInstance: NgClass);
+    constructor(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngClassInstance: NgClass);
     ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;

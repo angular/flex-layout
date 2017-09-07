@@ -1,4 +1,4 @@
-import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer, Renderer2, SimpleChanges } from '@angular/core';
+import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
@@ -36,7 +36,7 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
     styleGtSm: NgStyleType;
     styleGtMd: NgStyleType;
     styleGtLg: NgStyleType;
-    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _oldRenderer: Renderer, _ngStyleInstance: NgStyle);
+    constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle);
     ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;

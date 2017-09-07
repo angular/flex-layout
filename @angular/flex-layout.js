@@ -5,14 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
+import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { DOCUMENT, DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
 import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-6b457dc');
+const VERSION = new Version('2.0.0-beta.9-816d85a');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -1669,15 +1669,70 @@ FlexOrderDirective.propDecorators = {
     'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
 
+class RendererAdapter {
+    constructor(_renderer) {
+        this._renderer = _renderer;
+    }
+    setElementClass(el, className, isAdd) {
+        if (isAdd) {
+            this._renderer.addClass(el, className);
+        }
+        else {
+            this._renderer.removeClass(el, className);
+        }
+    }
+    setElementStyle(el, styleName, styleValue) {
+        if (styleValue) {
+            this._renderer.setStyle(el, styleName, styleValue);
+        }
+        else {
+            this._renderer.removeStyle(el, styleName);
+        }
+    }
+    addClass(el, name) {
+        this._renderer.addClass(el, name);
+    }
+    removeClass(el, name) {
+        this._renderer.removeClass(el, name);
+    }
+    setStyle(el, style, value, flags) {
+        this._renderer.setStyle(el, style, value, flags);
+    }
+    removeStyle(el, style, flags) {
+        this._renderer.removeStyle(el, style, flags);
+    }
+    animate() { throw _notImplemented('animate'); }
+    attachViewAfter() { throw _notImplemented('attachViewAfter'); }
+    detachView() { throw _notImplemented('detachView'); }
+    destroyView() { throw _notImplemented('destroyView'); }
+    createElement() { throw _notImplemented('createElement'); }
+    createViewRoot() { throw _notImplemented('createViewRoot'); }
+    createTemplateAnchor() { throw _notImplemented('createTemplateAnchor'); }
+    createText() { throw _notImplemented('createText'); }
+    invokeElementMethod() { throw _notImplemented('invokeElementMethod'); }
+    projectNodes() { throw _notImplemented('projectNodes'); }
+    selectRootElement() { throw _notImplemented('selectRootElement'); }
+    setBindingDebugInfo() { throw _notImplemented('setBindingDebugInfo'); }
+    setElementProperty() { throw _notImplemented('setElementProperty'); }
+    setElementAttribute() { throw _notImplemented('setElementAttribute'); }
+    setText() { throw _notImplemented('setText'); }
+    listen() { throw _notImplemented('listen'); }
+    listenGlobal() { throw _notImplemented('listenGlobal'); }
+}
+function _notImplemented(methodName) {
+    return new Error(`The method RendererAdapter::${methodName}() has not been implemented`);
+}
+
 class ClassDirective extends BaseFxDirective {
-    constructor(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
+    constructor(monitor, _ngEl, _renderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
         super(monitor, _ngEl, _renderer);
         this.monitor = monitor;
         this._ngClassInstance = _ngClassInstance;
         this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
         if (!this._ngClassInstance) {
-            this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+            let adapter = new RendererAdapter(_renderer);
+            this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, adapter);
         }
     }
     set ngClassBase(val) {
@@ -1778,7 +1833,6 @@ ClassDirective.ctorParameters = () => [
     { type: MediaMonitor, },
     { type: ElementRef, },
     { type: Renderer2, },
-    { type: Renderer, },
     { type: IterableDiffers, },
     { type: KeyValueDiffers, },
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
@@ -1881,7 +1935,7 @@ function keyValuesToMap(map$$1, entry) {
 }
 
 class StyleDirective extends BaseFxDirective {
-    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _oldRenderer, _ngStyleInstance) {
+    constructor(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance) {
         super(monitor, _ngEl, _renderer);
         this.monitor = monitor;
         this._sanitizer = _sanitizer;
@@ -1889,7 +1943,8 @@ class StyleDirective extends BaseFxDirective {
         this._buildAdapter(this.monitor, _ngEl, _renderer);
         this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
         if (!this._ngStyleInstance) {
-            this._ngStyleInstance = new NgStyle(_differs, _ngEl, _oldRenderer);
+            let adapter = new RendererAdapter(_renderer);
+            this._ngStyleInstance = new NgStyle(_differs, _ngEl, adapter);
         }
     }
     set styleBase(val) {
@@ -2022,7 +2077,6 @@ StyleDirective.ctorParameters = () => [
     { type: ElementRef, },
     { type: Renderer2, },
     { type: KeyValueDiffers, },
-    { type: Renderer, },
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
 ];
 StyleDirective.propDecorators = {

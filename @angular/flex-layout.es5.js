@@ -6,13 +6,13 @@ import * as tslib_1 from "tslib";
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
+import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
 import { DOCUMENT, DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
 import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-6b457dc');
+var VERSION = new Version('2.0.0-beta.9-816d85a');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -2220,16 +2220,71 @@ FlexOrderDirective.propDecorators = {
     'orderLtLg': [{ type: Input, args: ['fxFlexOrder.lt-lg',] },],
     'orderLtXl': [{ type: Input, args: ['fxFlexOrder.lt-xl',] },],
 };
+var RendererAdapter = (function () {
+    function RendererAdapter(_renderer) {
+        this._renderer = _renderer;
+    }
+    RendererAdapter.prototype.setElementClass = function (el, className, isAdd) {
+        if (isAdd) {
+            this._renderer.addClass(el, className);
+        }
+        else {
+            this._renderer.removeClass(el, className);
+        }
+    };
+    RendererAdapter.prototype.setElementStyle = function (el, styleName, styleValue) {
+        if (styleValue) {
+            this._renderer.setStyle(el, styleName, styleValue);
+        }
+        else {
+            this._renderer.removeStyle(el, styleName);
+        }
+    };
+    RendererAdapter.prototype.addClass = function (el, name) {
+        this._renderer.addClass(el, name);
+    };
+    RendererAdapter.prototype.removeClass = function (el, name) {
+        this._renderer.removeClass(el, name);
+    };
+    RendererAdapter.prototype.setStyle = function (el, style, value, flags) {
+        this._renderer.setStyle(el, style, value, flags);
+    };
+    RendererAdapter.prototype.removeStyle = function (el, style, flags) {
+        this._renderer.removeStyle(el, style, flags);
+    };
+    RendererAdapter.prototype.animate = function () { throw _notImplemented('animate'); };
+    RendererAdapter.prototype.attachViewAfter = function () { throw _notImplemented('attachViewAfter'); };
+    RendererAdapter.prototype.detachView = function () { throw _notImplemented('detachView'); };
+    RendererAdapter.prototype.destroyView = function () { throw _notImplemented('destroyView'); };
+    RendererAdapter.prototype.createElement = function () { throw _notImplemented('createElement'); };
+    RendererAdapter.prototype.createViewRoot = function () { throw _notImplemented('createViewRoot'); };
+    RendererAdapter.prototype.createTemplateAnchor = function () { throw _notImplemented('createTemplateAnchor'); };
+    RendererAdapter.prototype.createText = function () { throw _notImplemented('createText'); };
+    RendererAdapter.prototype.invokeElementMethod = function () { throw _notImplemented('invokeElementMethod'); };
+    RendererAdapter.prototype.projectNodes = function () { throw _notImplemented('projectNodes'); };
+    RendererAdapter.prototype.selectRootElement = function () { throw _notImplemented('selectRootElement'); };
+    RendererAdapter.prototype.setBindingDebugInfo = function () { throw _notImplemented('setBindingDebugInfo'); };
+    RendererAdapter.prototype.setElementProperty = function () { throw _notImplemented('setElementProperty'); };
+    RendererAdapter.prototype.setElementAttribute = function () { throw _notImplemented('setElementAttribute'); };
+    RendererAdapter.prototype.setText = function () { throw _notImplemented('setText'); };
+    RendererAdapter.prototype.listen = function () { throw _notImplemented('listen'); };
+    RendererAdapter.prototype.listenGlobal = function () { throw _notImplemented('listenGlobal'); };
+    return RendererAdapter;
+}());
+function _notImplemented(methodName) {
+    return new Error("The method RendererAdapter::" + methodName + "() has not been implemented");
+}
 var ClassDirective = (function (_super) {
     tslib_1.__extends(ClassDirective, _super);
-    function ClassDirective(monitor, _ngEl, _renderer, _oldRenderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
+    function ClassDirective(monitor, _ngEl, _renderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
         var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._ngClassInstance = _ngClassInstance;
         _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
         if (!_this._ngClassInstance) {
-            _this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+            var adapter = new RendererAdapter(_renderer);
+            _this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, adapter);
         }
         return _this;
     }
@@ -2441,7 +2496,6 @@ ClassDirective.ctorParameters = function () { return [
     { type: MediaMonitor, },
     { type: ElementRef, },
     { type: Renderer2, },
-    { type: Renderer, },
     { type: IterableDiffers, },
     { type: KeyValueDiffers, },
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
@@ -2546,7 +2600,7 @@ function keyValuesToMap(map$$1, entry) {
 }
 var StyleDirective = (function (_super) {
     tslib_1.__extends(StyleDirective, _super);
-    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _oldRenderer, _ngStyleInstance) {
+    function StyleDirective(monitor, _sanitizer, _ngEl, _renderer, _differs, _ngStyleInstance) {
         var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._sanitizer = _sanitizer;
@@ -2554,7 +2608,8 @@ var StyleDirective = (function (_super) {
         _this._buildAdapter(_this.monitor, _ngEl, _renderer);
         _this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
         if (!_this._ngStyleInstance) {
-            _this._ngStyleInstance = new NgStyle(_differs, _ngEl, _oldRenderer);
+            var adapter = new RendererAdapter(_renderer);
+            _this._ngStyleInstance = new NgStyle(_differs, _ngEl, adapter);
         }
         return _this;
     }
@@ -2794,7 +2849,6 @@ StyleDirective.ctorParameters = function () { return [
     { type: ElementRef, },
     { type: Renderer2, },
     { type: KeyValueDiffers, },
-    { type: Renderer, },
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
 ]; };
 StyleDirective.propDecorators = {
