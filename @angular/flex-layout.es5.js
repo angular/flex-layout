@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-df46d7a');
+var VERSION = new Version('2.0.0-beta.9-f978b94');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -1032,9 +1032,6 @@ var LayoutAlignDirective = (function (_super) {
                 break;
             case 'space-between':
                 css['justify-content'] = 'space-between';
-                break;
-            case 'space-evenly':
-                css['justify-content'] = 'space-evenly';
                 break;
             case 'end':
             case 'flex-end':

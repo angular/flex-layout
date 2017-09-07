@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-df46d7a');
+const VERSION = new Version('2.0.0-beta.9-f978b94');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -812,9 +812,6 @@ class LayoutAlignDirective extends BaseFxDirective {
                 break;
             case 'space-between':
                 css['justify-content'] = 'space-between';
-                break;
-            case 'space-evenly':
-                css['justify-content'] = 'space-evenly';
                 break;
             case 'end':
             case 'flex-end':
