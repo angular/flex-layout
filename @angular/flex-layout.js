@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-66f3717');
+const VERSION = new Version('2.0.0-beta.9-df46d7a');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -812,6 +812,9 @@ class LayoutAlignDirective extends BaseFxDirective {
                 break;
             case 'space-between':
                 css['justify-content'] = 'space-between';
+                break;
+            case 'space-evenly':
+                css['justify-content'] = 'space-evenly';
                 break;
             case 'end':
             case 'flex-end':
@@ -2264,6 +2267,86 @@ ShowHideDirective.propDecorators = {
     'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
 
+class ImgSrcDirective extends BaseFxDirective {
+    constructor(elRef, renderer, monitor) {
+        super(monitor, elRef, renderer);
+        this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
+    }
+    set srcBase(val) { this.cacheDefaultSrc(val); }
+    set srcXs(val) { this._cacheInput('srcXs', val); }
+    set srcSm(val) { this._cacheInput('srcSm', val); }
+    set srcMd(val) { this._cacheInput('srcMd', val); }
+    set srcLg(val) { this._cacheInput('srcLg', val); }
+    set srcXl(val) { this._cacheInput('srcXl', val); }
+    set srcLtSm(val) { this._cacheInput('srcLtSm', val); }
+    set srcLtMd(val) { this._cacheInput('srcLtMd', val); }
+    set srcLtLg(val) { this._cacheInput('srcLtLg', val); }
+    set srcLtXl(val) { this._cacheInput('srcLtXl', val); }
+    set srcGtXs(val) { this._cacheInput('srcGtXs', val); }
+    set srcGtSm(val) { this._cacheInput('srcGtSm', val); }
+    set srcGtMd(val) { this._cacheInput('srcGtMd', val); }
+    set srcGtLg(val) { this._cacheInput('srcGtLg', val); }
+    ngOnInit() {
+        super.ngOnInit();
+        if (this.hasResponsiveKeys) {
+            this._listenForMediaQueryChanges('src', this.defaultSrc, () => {
+                this._updateSrcFor();
+            });
+        }
+        this._updateSrcFor();
+    }
+    ngOnChanges() {
+        if (this.hasInitialized) {
+            this._updateSrcFor();
+        }
+    }
+    _updateSrcFor() {
+        if (this.hasResponsiveKeys) {
+            let url = this.activatedValue || this.defaultSrc;
+            this._renderer.setAttribute(this.nativeElement, 'src', String(url));
+        }
+    }
+    cacheDefaultSrc(value) {
+        this._cacheInput('src', value || '');
+    }
+    get defaultSrc() {
+        return this._queryInput('src') || '';
+    }
+    get hasResponsiveKeys() {
+        return Object.keys(this._inputMap).length > 1;
+    }
+}
+ImgSrcDirective.decorators = [
+    { type: Directive, args: [{
+                selector: `
+  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],
+  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],
+  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]
+`
+            },] },
+];
+ImgSrcDirective.ctorParameters = () => [
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: MediaMonitor, },
+];
+ImgSrcDirective.propDecorators = {
+    'srcBase': [{ type: Input, args: ['src',] },],
+    'srcXs': [{ type: Input, args: ['src.xs',] },],
+    'srcSm': [{ type: Input, args: ['src.sm',] },],
+    'srcMd': [{ type: Input, args: ['src.md',] },],
+    'srcLg': [{ type: Input, args: ['src.lg',] },],
+    'srcXl': [{ type: Input, args: ['src.xl',] },],
+    'srcLtSm': [{ type: Input, args: ['src.lt-sm',] },],
+    'srcLtMd': [{ type: Input, args: ['src.lt-md',] },],
+    'srcLtLg': [{ type: Input, args: ['src.lt-lg',] },],
+    'srcLtXl': [{ type: Input, args: ['src.lt-xl',] },],
+    'srcGtXs': [{ type: Input, args: ['src.gt-xs',] },],
+    'srcGtSm': [{ type: Input, args: ['src.gt-sm',] },],
+    'srcGtMd': [{ type: Input, args: ['src.gt-md',] },],
+    'srcGtLg': [{ type: Input, args: ['src.gt-lg',] },],
+};
+
 const RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
@@ -2536,7 +2619,8 @@ const ALL_DIRECTIVES = [
     FlexAlignDirective,
     ShowHideDirective,
     ClassDirective,
-    StyleDirective
+    StyleDirective,
+    ImgSrcDirective
 ];
 class FlexLayoutModule {
     static provideBreakPoints(breakpoints, options) {
@@ -2562,5 +2646,5 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = () => [];
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.js.map
