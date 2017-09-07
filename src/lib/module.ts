@@ -31,6 +31,7 @@ import {LayoutGapDirective} from './api/flexbox/layout-gap';
 import {ShowHideDirective} from './api/ext/show-hide';
 import {ClassDirective} from './api/ext/class';
 import {StyleDirective} from './api/ext/style';
+import {ImgSrcDirective} from './api/ext/img-src';
 
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
@@ -52,7 +53,8 @@ const ALL_DIRECTIVES = [
   FlexAlignDirective,
   ShowHideDirective,
   ClassDirective,
-  StyleDirective
+  StyleDirective,
+  ImgSrcDirective
 ];
 
 /**
