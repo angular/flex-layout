@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
   template: `
     <md-card class="card-demo">
       <md-card-title>
-        <a href="https://github.com/angular/flex-layout/issues/181" target="_blank">Issue #266</a>
+        <a href="https://github.com/angular/flex-layout/issues/266" target="_blank">Issue #266</a>
       </md-card-title>
       <md-card-subtitle>Using ngxSplit with Flex-Layout:</md-card-subtitle>
       <md-card-content>
