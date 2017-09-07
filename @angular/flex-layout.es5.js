@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-816d85a');
+var VERSION = new Version('2.0.0-beta.9-7a48c25');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -471,7 +471,7 @@ var BaseFxDirectiveAdapter = (function (_super) {
             this._cacheInputString(key, source);
         }
         else {
-            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
+            throw new Error("Invalid class value '" + key + "' provided. Did you want to cache the raw value?");
         }
     };
     BaseFxDirectiveAdapter.prototype.listenForMediaQueryChanges = function (key, defaultValue, onMediaQueryChange) {
@@ -498,6 +498,15 @@ var BaseFxDirectiveAdapter = (function (_super) {
         if (key === void 0) { key = ''; }
         this._inputMap[key] = source;
     };
+    Object.defineProperty(BaseFxDirectiveAdapter.prototype, "usesResponsiveAPI", {
+        get: function () {
+            var totalKeys = Object.keys(this._inputMap).length;
+            var baseValue = this._inputMap[this._baseKey];
+            return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return BaseFxDirectiveAdapter;
 }(BaseFxDirective));
 var BREAKPOINTS = new InjectionToken('Token (@angular/flex-layout) Breakpoints');
@@ -2280,8 +2289,9 @@ var ClassDirective = (function (_super) {
         var _this = _super.call(this, monitor, _ngEl, _renderer) || this;
         _this.monitor = monitor;
         _this._ngClassInstance = _ngClassInstance;
-        _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         _this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
+        _this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
+        _this._classAdapter.cacheInput('class', _ngEl.nativeElement.getAttribute('class') || '');
         if (!_this._ngClassInstance) {
             var adapter = new RendererAdapter(_renderer);
             _this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, adapter);
@@ -2361,83 +2371,68 @@ var ClassDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(ClassDirective.prototype, "classBase", {
-        set: function (val) {
-            this._classAdapter.cacheInput('_rawClass', val, true);
-            this._ngClassInstance.klass = val;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(ClassDirective.prototype, "classXs", {
-        set: function (val) { this._classAdapter.cacheInput('classXs', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classXs', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classSm", {
-        set: function (val) { this._classAdapter.cacheInput('classSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classSm', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classMd", {
-        set: function (val) { this._classAdapter.cacheInput('classMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classMd', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classLg", {
-        set: function (val) { this._classAdapter.cacheInput('classLg', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLg', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classXl", {
-        set: function (val) { this._classAdapter.cacheInput('classXl', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classXl', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classLtSm", {
-        set: function (val) { this._classAdapter.cacheInput('classLtSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtSm', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classLtMd", {
-        set: function (val) { this._classAdapter.cacheInput('classLtMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtMd', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classLtLg", {
-        set: function (val) { this._classAdapter.cacheInput('classLtLg', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtLg', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classLtXl", {
-        set: function (val) { this._classAdapter.cacheInput('classLtXl', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classLtXl', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classGtXs", {
-        set: function (val) { this._classAdapter.cacheInput('classGtXs', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtXs', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classGtSm", {
-        set: function (val) { this._classAdapter.cacheInput('classGtSm', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtSm', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classGtMd", {
-        set: function (val) { this._classAdapter.cacheInput('classGtMd', val, true); },
+        set: function (val) { this._classAdapter.cacheInput('classGtMd', val); },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(ClassDirective.prototype, "classGtLg", {
-        set: function (val) { this._classAdapter.cacheInput('classGtLg', val, true); },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClassDirective.prototype, "initialClasses", {
-        get: function () {
-            return this._classAdapter.queryInput('_rawClass') || "";
-        },
+        set: function (val) { this._classAdapter.cacheInput('classGtLg', val); },
         enumerable: true,
         configurable: true
     });
@@ -2455,7 +2450,9 @@ var ClassDirective = (function (_super) {
         if (!this._classAdapter.hasMediaQueryListener) {
             this._configureMQListener();
         }
-        this._ngClassInstance.ngDoCheck();
+        if (this._ngClassInstance) {
+            this._ngClassInstance.ngDoCheck();
+        }
     };
     ClassDirective.prototype.ngOnDestroy = function () {
         this._classAdapter.ngOnDestroy();
@@ -2464,20 +2461,21 @@ var ClassDirective = (function (_super) {
     };
     ClassDirective.prototype._configureMQListener = function () {
         var _this = this;
-        this._classAdapter.listenForMediaQueryChanges('class', '', function (changes) {
+        var value = this._classAdapter.queryInput('class');
+        this._classAdapter.listenForMediaQueryChanges('class', value, function (changes) {
             _this._updateKlass(changes.value);
         });
-        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', function (changes) {
+        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', value, function (changes) {
             _this._updateNgClass(changes.value);
             _this._ngClassInstance.ngDoCheck();
         });
     };
     ClassDirective.prototype._updateKlass = function (value) {
-        var klass = value || this._classAdapter.queryInput('class') || '';
+        var klass = value || this._classAdapter.queryInput('class');
         if (this._classAdapter.mqActivation) {
             klass = this._classAdapter.mqActivation.activatedInput;
         }
-        this._ngClassInstance.klass = klass || this.initialClasses;
+        this._ngClassInstance.klass = klass;
     };
     ClassDirective.prototype._updateNgClass = function (value) {
         if (this._ngClassAdapter.mqActivation) {
@@ -2489,7 +2487,7 @@ var ClassDirective = (function (_super) {
 }(BaseFxDirective));
 ClassDirective.decorators = [
     { type: Directive, args: [{
-                selector: "\n    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
+                selector: "\n    [class.xs], [class.sm], [class.md], [class.lg], [class.xl],\n    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],\n    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],\n\n    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
             },] },
 ];
 ClassDirective.ctorParameters = function () { return [
@@ -2515,7 +2513,6 @@ ClassDirective.propDecorators = {
     'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
     'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
     'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
-    'classBase': [{ type: Input, args: ['class',] },],
     'classXs': [{ type: Input, args: ['class.xs',] },],
     'classSm': [{ type: Input, args: ['class.sm',] },],
     'classMd': [{ type: Input, args: ['class.md',] },],

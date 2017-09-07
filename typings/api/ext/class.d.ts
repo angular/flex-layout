@@ -23,7 +23,6 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     ngClassGtSm: NgClassType;
     ngClassGtMd: NgClassType;
     ngClassGtLg: NgClassType;
-    classBase: string;
     classXs: NgClassType;
     classSm: NgClassType;
     classMd: NgClassType;
@@ -37,7 +36,6 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     classGtSm: NgClassType;
     classGtMd: NgClassType;
     classGtLg: NgClassType;
-    readonly initialClasses: string;
     constructor(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngClassInstance: NgClass);
     ngOnChanges(changes: SimpleChanges): void;
     ngDoCheck(): void;

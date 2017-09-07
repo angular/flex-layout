@@ -21,4 +21,5 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
         [key: string]: boolean;
     }): void;
     protected _cacheInputString(key?: string, source?: string): void;
+    readonly usesResponsiveAPI: boolean;
 }

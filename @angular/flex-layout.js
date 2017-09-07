@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-816d85a');
+const VERSION = new Version('2.0.0-beta.9-7a48c25');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -407,7 +407,7 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
             this._cacheInputString(key, source);
         }
         else {
-            throw new Error('Invalid class value provided. Did you want to cache the raw value?');
+            throw new Error(`Invalid class value '${key}' provided. Did you want to cache the raw value?`);
         }
     }
     listenForMediaQueryChanges(key, defaultValue, onMediaQueryChange) {
@@ -430,6 +430,11 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
     }
     _cacheInputString(key = '', source) {
         this._inputMap[key] = source;
+    }
+    get usesResponsiveAPI() {
+        const totalKeys = Object.keys(this._inputMap).length;
+        const baseValue = this._inputMap[this._baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     }
 }
 
@@ -1728,8 +1733,9 @@ class ClassDirective extends BaseFxDirective {
         super(monitor, _ngEl, _renderer);
         this.monitor = monitor;
         this._ngClassInstance = _ngClassInstance;
-        this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
         this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
+        this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
+        this._classAdapter.cacheInput('class', _ngEl.nativeElement.getAttribute('class') || '');
         if (!this._ngClassInstance) {
             let adapter = new RendererAdapter(_renderer);
             this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, adapter);
@@ -1752,26 +1758,19 @@ class ClassDirective extends BaseFxDirective {
     set ngClassGtSm(val) { this._ngClassAdapter.cacheInput('ngClassGtSm', val, true); }
     set ngClassGtMd(val) { this._ngClassAdapter.cacheInput('ngClassGtMd', val, true); }
     set ngClassGtLg(val) { this._ngClassAdapter.cacheInput('ngClassGtLg', val, true); }
-    set classBase(val) {
-        this._classAdapter.cacheInput('_rawClass', val, true);
-        this._ngClassInstance.klass = val;
-    }
-    set classXs(val) { this._classAdapter.cacheInput('classXs', val, true); }
-    set classSm(val) { this._classAdapter.cacheInput('classSm', val, true); }
-    set classMd(val) { this._classAdapter.cacheInput('classMd', val, true); }
-    set classLg(val) { this._classAdapter.cacheInput('classLg', val, true); }
-    set classXl(val) { this._classAdapter.cacheInput('classXl', val, true); }
-    set classLtSm(val) { this._classAdapter.cacheInput('classLtSm', val, true); }
-    set classLtMd(val) { this._classAdapter.cacheInput('classLtMd', val, true); }
-    set classLtLg(val) { this._classAdapter.cacheInput('classLtLg', val, true); }
-    set classLtXl(val) { this._classAdapter.cacheInput('classLtXl', val, true); }
-    set classGtXs(val) { this._classAdapter.cacheInput('classGtXs', val, true); }
-    set classGtSm(val) { this._classAdapter.cacheInput('classGtSm', val, true); }
-    set classGtMd(val) { this._classAdapter.cacheInput('classGtMd', val, true); }
-    set classGtLg(val) { this._classAdapter.cacheInput('classGtLg', val, true); }
-    get initialClasses() {
-        return this._classAdapter.queryInput('_rawClass') || "";
-    }
+    set classXs(val) { this._classAdapter.cacheInput('classXs', val); }
+    set classSm(val) { this._classAdapter.cacheInput('classSm', val); }
+    set classMd(val) { this._classAdapter.cacheInput('classMd', val); }
+    set classLg(val) { this._classAdapter.cacheInput('classLg', val); }
+    set classXl(val) { this._classAdapter.cacheInput('classXl', val); }
+    set classLtSm(val) { this._classAdapter.cacheInput('classLtSm', val); }
+    set classLtMd(val) { this._classAdapter.cacheInput('classLtMd', val); }
+    set classLtLg(val) { this._classAdapter.cacheInput('classLtLg', val); }
+    set classLtXl(val) { this._classAdapter.cacheInput('classLtXl', val); }
+    set classGtXs(val) { this._classAdapter.cacheInput('classGtXs', val); }
+    set classGtSm(val) { this._classAdapter.cacheInput('classGtSm', val); }
+    set classGtMd(val) { this._classAdapter.cacheInput('classGtMd', val); }
+    set classGtLg(val) { this._classAdapter.cacheInput('classGtLg', val); }
     ngOnChanges(changes) {
         if (this.hasInitialized) {
             if (this._classAdapter.activeKey in changes) {
@@ -1786,7 +1785,9 @@ class ClassDirective extends BaseFxDirective {
         if (!this._classAdapter.hasMediaQueryListener) {
             this._configureMQListener();
         }
-        this._ngClassInstance.ngDoCheck();
+        if (this._ngClassInstance) {
+            this._ngClassInstance.ngDoCheck();
+        }
     }
     ngOnDestroy() {
         this._classAdapter.ngOnDestroy();
@@ -1794,20 +1795,21 @@ class ClassDirective extends BaseFxDirective {
         this._ngClassInstance = null;
     }
     _configureMQListener() {
-        this._classAdapter.listenForMediaQueryChanges('class', '', (changes) => {
+        const value = this._classAdapter.queryInput('class');
+        this._classAdapter.listenForMediaQueryChanges('class', value, (changes) => {
             this._updateKlass(changes.value);
         });
-        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', '', (changes) => {
+        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', value, (changes) => {
             this._updateNgClass(changes.value);
             this._ngClassInstance.ngDoCheck();
         });
     }
     _updateKlass(value) {
-        let klass = value || this._classAdapter.queryInput('class') || '';
+        let klass = value || this._classAdapter.queryInput('class');
         if (this._classAdapter.mqActivation) {
             klass = this._classAdapter.mqActivation.activatedInput;
         }
-        this._ngClassInstance.klass = klass || this.initialClasses;
+        this._ngClassInstance.klass = klass;
     }
     _updateNgClass(value) {
         if (this._ngClassAdapter.mqActivation) {
@@ -1819,7 +1821,7 @@ class ClassDirective extends BaseFxDirective {
 ClassDirective.decorators = [
     { type: Directive, args: [{
                 selector: `
-    [class], [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
+    [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
     [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],
     [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],
 
@@ -1852,7 +1854,6 @@ ClassDirective.propDecorators = {
     'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
     'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
     'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
-    'classBase': [{ type: Input, args: ['class',] },],
     'classXs': [{ type: Input, args: ['class.xs',] },],
     'classSm': [{ type: Input, args: ['class.sm',] },],
     'classMd': [{ type: Input, args: ['class.md',] },],
