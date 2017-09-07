@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-7a48c25');
+var VERSION = new Version('2.0.0-beta.9-354f54f');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -357,8 +357,8 @@ var BaseFxDirective = (function () {
         return (hasDefaultVal && val !== '') ? val : fallbackVal;
     };
     BaseFxDirective.prototype._getDisplayStyle = function (source) {
-        var element = source || this.nativeElement;
-        return lookupStyle(element, 'display');
+        if (source === void 0) { source = this.nativeElement; }
+        return lookupStyle(source || this.nativeElement, 'display');
     };
     BaseFxDirective.prototype._getFlowDirection = function (target, addIfMissing) {
         if (addIfMissing === void 0) { addIfMissing = false; }
@@ -373,6 +373,7 @@ var BaseFxDirective = (function () {
         return value.trim();
     };
     BaseFxDirective.prototype._applyStyleToElement = function (style, value, nativeElement) {
+        if (nativeElement === void 0) { nativeElement = this.nativeElement; }
         var element = nativeElement || this.nativeElement;
         applyStyleToElement(this._renderer, element, style, value);
     };
@@ -3138,13 +3139,156 @@ ShowHideDirective.propDecorators = {
     'hideGtMd': [{ type: Input, args: ['fxHide.gt-md',] },],
     'hideGtLg': [{ type: Input, args: ['fxHide.gt-lg',] },],
 };
+var ImgSrcDirective = (function (_super) {
+    tslib_1.__extends(ImgSrcDirective, _super);
+    function ImgSrcDirective(elRef, renderer, monitor) {
+        var _this = _super.call(this, monitor, elRef, renderer) || this;
+        _this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
+        return _this;
+    }
+    Object.defineProperty(ImgSrcDirective.prototype, "srcBase", {
+        set: function (val) { this.cacheDefaultSrc(val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcXs", {
+        set: function (val) { this._cacheInput('srcXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcSm", {
+        set: function (val) { this._cacheInput('srcSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcMd", {
+        set: function (val) { this._cacheInput('srcMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLg", {
+        set: function (val) { this._cacheInput('srcLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcXl", {
+        set: function (val) { this._cacheInput('srcXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtSm", {
+        set: function (val) { this._cacheInput('srcLtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtMd", {
+        set: function (val) { this._cacheInput('srcLtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtLg", {
+        set: function (val) { this._cacheInput('srcLtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcLtXl", {
+        set: function (val) { this._cacheInput('srcLtXl', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtXs", {
+        set: function (val) { this._cacheInput('srcGtXs', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtSm", {
+        set: function (val) { this._cacheInput('srcGtSm', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtMd", {
+        set: function (val) { this._cacheInput('srcGtMd', val); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "srcGtLg", {
+        set: function (val) { this._cacheInput('srcGtLg', val); },
+        enumerable: true,
+        configurable: true
+    });
+    ImgSrcDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        _super.prototype.ngOnInit.call(this);
+        if (this.hasResponsiveKeys) {
+            this._listenForMediaQueryChanges('src', this.defaultSrc, function () {
+                _this._updateSrcFor();
+            });
+        }
+        this._updateSrcFor();
+    };
+    ImgSrcDirective.prototype.ngOnChanges = function () {
+        if (this.hasInitialized) {
+            this._updateSrcFor();
+        }
+    };
+    ImgSrcDirective.prototype._updateSrcFor = function () {
+        if (this.hasResponsiveKeys) {
+            var url = this.activatedValue || this.defaultSrc;
+            this._renderer.setAttribute(this.nativeElement, 'src', String(url));
+        }
+    };
+    ImgSrcDirective.prototype.cacheDefaultSrc = function (value) {
+        this._cacheInput('src', value || '');
+    };
+    Object.defineProperty(ImgSrcDirective.prototype, "defaultSrc", {
+        get: function () {
+            return this._queryInput('src') || '';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ImgSrcDirective.prototype, "hasResponsiveKeys", {
+        get: function () {
+            return Object.keys(this._inputMap).length > 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ImgSrcDirective;
+}(BaseFxDirective));
+ImgSrcDirective.decorators = [
+    { type: Directive, args: [{
+                selector: "\n  img[src.xs],    img[src.sm],    img[src.md],    img[src.lg],   img[src.xl],\n  img[src.lt-sm], img[src.lt-md], img[src.lt-lg], img[src.lt-xl],\n  img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]\n"
+            },] },
+];
+ImgSrcDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+    { type: Renderer2, },
+    { type: MediaMonitor, },
+]; };
+ImgSrcDirective.propDecorators = {
+    'srcBase': [{ type: Input, args: ['src',] },],
+    'srcXs': [{ type: Input, args: ['src.xs',] },],
+    'srcSm': [{ type: Input, args: ['src.sm',] },],
+    'srcMd': [{ type: Input, args: ['src.md',] },],
+    'srcLg': [{ type: Input, args: ['src.lg',] },],
+    'srcXl': [{ type: Input, args: ['src.xl',] },],
+    'srcLtSm': [{ type: Input, args: ['src.lt-sm',] },],
+    'srcLtMd': [{ type: Input, args: ['src.lt-md',] },],
+    'srcLtLg': [{ type: Input, args: ['src.lt-lg',] },],
+    'srcLtXl': [{ type: Input, args: ['src.lt-xl',] },],
+    'srcGtXs': [{ type: Input, args: ['src.gt-xs',] },],
+    'srcGtSm': [{ type: Input, args: ['src.gt-sm',] },],
+    'srcGtMd': [{ type: Input, args: ['src.gt-md',] },],
+    'srcGtLg': [{ type: Input, args: ['src.gt-lg',] },],
+};
 var RESPONSIVE_ALIASES = [
     'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
 ];
 var DEFAULT_BREAKPOINTS = [
     {
         alias: 'xs',
-        mediaQuery: '(max-width: 599px)'
+        mediaQuery: '(min-width: 0px) and (max-width: 599px)'
     },
     {
         alias: 'gt-xs',
@@ -3411,7 +3555,8 @@ var ALL_DIRECTIVES = [
     FlexAlignDirective,
     ShowHideDirective,
     ClassDirective,
-    StyleDirective
+    StyleDirective,
+    ImgSrcDirective
 ];
 var FlexLayoutModule = (function () {
     function FlexLayoutModule() {
@@ -3439,5 +3584,5 @@ FlexLayoutModule.decorators = [
             },] },
 ];
 FlexLayoutModule.ctorParameters = function () { return []; };
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.es5.js.map
