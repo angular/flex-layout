@@ -65,21 +65,44 @@ describe('class directive', () => {
   });
 
   it('should override base `class` values with responsive values', () => {
-      createTestComponent(`<div class="class0" class.xs="class1 class2" ngClass.xs="what"></div>`);
+      createTestComponent(`<div class="class0" ngClass.xs="what class2"></div>`);
 
       expectNativeEl(fixture).toHaveCssClass('class0');
-      expectNativeEl(fixture).not.toHaveCssClass('class1');
+      expectNativeEl(fixture).not.toHaveCssClass('what');
       expectNativeEl(fixture).not.toHaveCssClass('class2');
 
+      // the CSS classes listed in the string (space delimited) are added,
       matchMedia.activate('xs');
-      expectNativeEl(fixture).not.toHaveCssClass('class0');
-      expectNativeEl(fixture).toHaveCssClass('class1');
+      expectNativeEl(fixture).toHaveCssClass('class0');
+      expectNativeEl(fixture).toHaveCssClass('what');
       expectNativeEl(fixture).toHaveCssClass('class2');
 
-      // matchMedia.activate('lg');
-      //       expectNativeEl(fixture).toHaveCssClass('class0');
-      //       expectNativeEl(fixture).not.toHaveCssClass('class1');
-      //       expectNativeEl(fixture).not.toHaveCssClass('class2');
+      matchMedia.activate('lg');
+      expectNativeEl(fixture).toHaveCssClass('class0');
+      expectNativeEl(fixture).not.toHaveCssClass('what');
+      expectNativeEl(fixture).not.toHaveCssClass('class2');
+    });
+
+  it('should override base `class` values with responsive values', () => {
+      createTestComponent(`
+        <div class="class0" [ngClass.xs]="{'what':true, 'class2':true, 'class0':false}"></div>
+      `);
+
+      expectNativeEl(fixture).toHaveCssClass('class0');
+      expectNativeEl(fixture).not.toHaveCssClass('what');
+      expectNativeEl(fixture).not.toHaveCssClass('class2');
+
+      // Object keys are CSS classes that get added when the expression given in
+      // the value evaluates to a truthy value, otherwise they are removed.
+      matchMedia.activate('xs');
+      expectNativeEl(fixture).not.toHaveCssClass('class0');
+      expectNativeEl(fixture).toHaveCssClass('what');
+      expectNativeEl(fixture).toHaveCssClass('class2');
+
+      matchMedia.activate('lg');
+      expectNativeEl(fixture).toHaveCssClass('class0');
+      expectNativeEl(fixture).not.toHaveCssClass('what');
+      expectNativeEl(fixture).not.toHaveCssClass('class2');
     });
 
   it('should keep the raw existing `class` with responsive updates', () => {
