@@ -15,7 +15,6 @@ import {
   OnChanges,
   OnDestroy,
   Optional,
-  Renderer,
   Renderer2,
   SimpleChanges,
   Self
@@ -26,6 +25,7 @@ import {BaseFxDirective} from '../core/base';
 import {BaseFxDirectiveAdapter} from '../core/base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {RendererAdapter} from '../core/renderer-adapter';
 
 /** NgClass allowed inputs **/
 export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
@@ -115,7 +115,7 @@ export class ClassDirective extends BaseFxDirective
 
   /* tslint:enable */
   constructor(protected monitor: MediaMonitor,
-              _ngEl: ElementRef, _renderer: Renderer2, _oldRenderer: Renderer,
+              _ngEl: ElementRef, _renderer: Renderer2,
               _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers,
               @Optional() @Self() private _ngClassInstance: NgClass) {
 
@@ -127,7 +127,8 @@ export class ClassDirective extends BaseFxDirective
     // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
     // the same host element; since the responsive variations may be defined...
     if ( !this._ngClassInstance ) {
-      this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, _oldRenderer);
+      let adapter = new RendererAdapter(_renderer);
+      this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, <any> adapter);
     }
   }
 
