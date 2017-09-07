@@ -237,4 +237,21 @@ describe('mock-match-media', () => {
 
     subscription.unsubscribe();
   });
+
+  it('can observe a startup activation of XS', () => {
+    let current: MediaChange,
+        bpXS = breakPoints.findByAlias('xs');
+
+    matchMedia.activate(bpXS.mediaQuery);
+    let subscription = matchMedia.observe(bpXS.mediaQuery)
+          .subscribe((change: MediaChange) => {
+            current = change;
+          });
+
+    expect(current).toBeTruthy();
+    expect(current.mediaQuery).toEqual(bpXS.mediaQuery);
+    expect(matchMedia.isActive(bpXS.mediaQuery)).toBeTruthy();
+
+    subscription.unsubscribe();
+  });
 });

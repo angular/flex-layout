@@ -224,12 +224,13 @@ function buildCompareStyleFunction(inlineOnly = true) {
     return {
       pass: allPassed,
       get message() {
-        const expectedValueStr = (typeof styles === 'string') ? styles : JSON.stringify(styles);
+        const expectedValueStr = (typeof styles === 'string') ? styles :
+            JSON.stringify(styles, null, 2);
         const foundValueStr = inlineOnly ? actual.outerHTML : JSON.stringify(found);
         return `
-                Expected ${foundValueStr} ${!allPassed ? ' ' : 'not '} to contain the
-                CSS ${typeof styles === 'string' ? 'property' : 'styles'} '${expectedValueStr}'
-              `;
+          Expected ${foundValueStr} ${!allPassed ? ' ' : 'not '} to contain the
+          CSS ${typeof styles === 'string' ? 'property' : 'styles'} '${expectedValueStr}'
+        `;
       }
     };
   };
