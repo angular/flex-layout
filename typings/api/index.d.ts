@@ -13,4 +13,3 @@ export * from './flexbox/flex-order';
 export * from './ext/class';
 export * from './ext/style';
 export * from './ext/show-hide';
-export * from './ext/img-src';
