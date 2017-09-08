@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {
   MdButtonModule,
   MdCardModule,
+  MdCheckboxModule,
   MdRadioModule,
   MdRippleModule,
   StyleModule
@@ -18,6 +19,7 @@ import {ObserversModule} from '@angular/cdk/observers';
   exports: [
     MdButtonModule,
     MdCardModule,
+    MdCheckboxModule,
     MdRadioModule,
     MdRippleModule,
     StyleModule,
