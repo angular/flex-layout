@@ -52,6 +52,13 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
     super(_mediaMonitor, _elementRef, _renderer);
   }
 
+  /**
+    * Does this directive have 1 or more responsive keys defined
+    * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+    */
+  public hasResponsiveAPI() {
+   return super.hasResponsiveAPI(this._baseKey);
+  }
 
   /**
    * @see BaseFxDirective._queryInput
@@ -127,13 +134,4 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
     this._inputMap[key] = source;
   }
 
-  /**
-   * Does this directive have 1 or more responsive keys defined
-   * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-   */
-  public get usesResponsiveAPI() {
-    const totalKeys = Object.keys(this._inputMap).length;
-    const baseValue = this._inputMap[this._baseKey];
-    return  (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-  }
 }

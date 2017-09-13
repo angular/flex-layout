@@ -57,7 +57,7 @@ describe('style directive', () => {
   .forEach(testData => {
     it(`should apply '${testData.styleStr}' with '${testData.mq}' media query`, () => {
       createTestComponent(`
-        <div [style.${testData.mq}]="${testData.styleStr}">
+        <div [ngStyle.${testData.mq}]="${testData.styleStr}">
         </div>
     `);
       matchMedia.activate(testData.mq);

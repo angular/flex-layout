@@ -18,11 +18,11 @@ import {Component} from '@angular/core';
             <div class="box1"
                  fxFlexFill
                  style="font-size:12px; color:black; text-align:left;"
-                 [style.sm]="{'font-size': '16px', color: '#a63db8', 'text-align': 'center'}"
+                 [ngStyle.sm]="{'font-size': '16px', color: '#a63db8', 'text-align': 'center'}"
                  ngStyle.md="font-size: 24px; color : #0000ff; text-align: right;">
               &lt;div fxFlexFill <br/>
               &nbsp;&nbsp;&nbsp;&nbsp;style="font-size:10px; color:black; text-align:'left';"<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;[style.sm]="&#123;'font-size':'16px', color:#a63db8,
+              &nbsp;&nbsp;&nbsp;&nbsp;[ngStyle.sm]="&#123;'font-size':'16px', color:#a63db8,
               text-align:'center' &#125;"<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;ngStyle.md="font-size:24px; color:#00f;"
               text-align:'right'&gt;<br/>

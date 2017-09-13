@@ -17,10 +17,10 @@ import {Component} from '@angular/core';
             <div
               fxFlex
               class="fxClass-all"
-              class.xs="fxClass-xs"
-              [class.sm]="{'fxClass-sm': hasStyle}"
-              [class.md]="{'fxClass-md': hasStyle, 'fxClass-md2': hasStyle}"
-              [class.lg]="['fxClass-lg', 'fxClass-lg2']">
+              ngClass.xs="fxClass-xs"
+              [ngClass.sm]="{'fxClass-sm': hasStyle}"
+              [ngClass.md]="{'fxClass-md': hasStyle, 'fxClass-md2': hasStyle}"
+              [ngClass.lg]="['fxClass-lg', 'fxClass-lg2']">
               Sample Text #1
               <br/>
               <md-checkbox
@@ -39,10 +39,10 @@ import {Component} from '@angular/core';
         &lt;div
           fxFlex
           class="fxClass-all"
-          class.xs="fxClass-xs"
-          [class.sm]="&#123;'fxClass-sm': hasStyle&#125;"
-          [class.md]="&#123;'fxClass-md': hasStyle, 'fxClass-md2': hasStyle&#125;"
-          [class.lg]="['fxClass-lg', 'fxClass-lg2']"&gt;
+          ngClass.xs="fxClass-xs"
+          [ngClass.sm]="&#123;'fxClass-sm': hasStyle&#125;"
+          [ngClass.md]="&#123;'fxClass-md': hasStyle, 'fxClass-md2': hasStyle&#125;"
+          [ngClass.lg]="['fxClass-lg', 'fxClass-lg2']"&gt;
         &lt;/div&gt;
         </pre>
       </md-card-content>
@@ -54,10 +54,10 @@ import {Component} from '@angular/core';
                class="coloredContainerX box">
             <div fxFlex
               style="font-style: italic"
-              [style.xs]="{'font-size.px': 10, 'background-color': '#ddd', color: 'blue'}"
-              [style.sm]="{'font-size.px': 20, 'background-color': 'grey', color: '#482b00'}"
-              [style.md]="{'font-size.px': 30, 'background-color': 'black', color: 'orange'}"
-              [style.lg]="styleLgExp">
+              [ngStyle.xs]="{'font-size.px': 10, 'background-color': '#ddd', color: 'blue'}"
+              [ngStyle.sm]="{'font-size.px': 20, 'background-color': 'grey', color: '#482b00'}"
+              [ngStyle.md]="{'font-size.px': 30, 'background-color': 'black', color: 'orange'}"
+              [ngStyle.lg]="styleLgExp">
                 Sample Text #2
             </div>
           </div>
@@ -67,10 +67,10 @@ import {Component} from '@angular/core';
         <pre>
         &lt;div
           style="font-style: italic"
-          [style.xs]="&#123;'font-size.px': 10, color: 'blue'&#125;"
-          [style.sm]="&#123;'font-size.px': 20, color: 'lightblue'&#125;"
-          [style.md]="&#123;'font-size.px': 30, color: 'orange'&#125;"
-          [style.lg]="styleLgExp"&gt;
+          [ngStyle.xs]="&#123;'font-size.px': 10, color: 'blue'&#125;"
+          [ngStyle.sm]="&#123;'font-size.px': 20, color: 'lightblue'&#125;"
+          [ngStyle.md]="&#123;'font-size.px': 30, color: 'orange'&#125;"
+          [ngStyle.lg]="styleLgExp"&gt;
         &lt;/div&gt;
         </pre>
       </md-card-content>

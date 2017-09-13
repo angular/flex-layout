@@ -15,6 +15,13 @@ import {applyCssPrefixes} from './auto-prefixer';
  */
 export type StyleDefinition = string | { [property: string]: string | number };
 
+/**
+ * Is this a SSR process ?
+ */
+export function isBrowser(): boolean {
+  return getDom().supportsDOMEvents();
+}
+
 
 /**
  * Applies styles given via string pair or object map to the directive element.
@@ -61,10 +68,16 @@ export function applyMultiValueStyleToElement(styles: {}, element: any, renderer
 }
 
 /**
+ * Find the DOM element's raw attribute value (if any)
+ */
+export function lookupAttributeValue(element: HTMLElement, attribute: string): string {
+  return isBrowser() ? getDom().getAttribute(element, attribute) : '';
+}
+/**
  * Find the DOM element's inline style value (if any)
  */
 export function lookupInlineStyle(element: HTMLElement, styleName: string): string {
-  return getDom().getStyle(element, styleName);
+  return isBrowser() ? getDom().getStyle(element, styleName) : '';
 }
 
 /**
@@ -72,7 +85,7 @@ export function lookupInlineStyle(element: HTMLElement, styleName: string): stri
  */
 export function lookupStyle(element: HTMLElement, styleName: string, inlineOnly = false): string {
   let value = '';
-  if (element) {
+  if (element && isBrowser()) {
     try {
       let immediateValue = value = lookupInlineStyle(element, styleName);
       if ( !inlineOnly ) {
@@ -87,3 +100,4 @@ export function lookupStyle(element: HTMLElement, styleName: string, inlineOnly 
   //       in which case getComputedStyle() should determine a valid value.
   return value ? value.trim() : 'block';
 }
+
