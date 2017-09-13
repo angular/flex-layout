@@ -16,6 +16,7 @@ import {
 
 import {BaseFxDirective} from '../core/base';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {isBrowser} from '../../media-query/match-media';
 
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
@@ -57,7 +58,8 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
 
   constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor) {
     super(monitor, elRef, renderer);
-    this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
+    const srcValue = isBrowser() ? elRef.nativeElement.getAttribute('src') || '' : '';
+    this._cacheInput('src',  srcValue);
   }
 
   /**
