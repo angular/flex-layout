@@ -104,7 +104,8 @@ export class ClassDirective extends BaseFxDirective
 
     this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
     this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
-    this._classAdapter.cacheInput('class', isBrowser() ? _ngEl.nativeElement.getAttribute('class') || '' : '');
+    const classValue = isBrowser() ? _ngEl.nativeElement.getAttribute('class') || '' : '';
+    this._classAdapter.cacheInput('class', classValue);
 
     // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
     // the same host element; since the responsive variations may be defined...

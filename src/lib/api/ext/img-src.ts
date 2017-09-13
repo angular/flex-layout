@@ -58,7 +58,8 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
 
   constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor) {
     super(monitor, elRef, renderer);
-    this._cacheInput('src', isBrowser() ? elRef.nativeElement.getAttribute('src') || '' : '');
+    const srcValue = isBrowser() ? elRef.nativeElement.getAttribute('src') || '' : '';
+    this._cacheInput('src',  srcValue);
   }
 
   /**
