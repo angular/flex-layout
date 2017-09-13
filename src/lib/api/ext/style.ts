@@ -25,6 +25,7 @@ import {BaseFxDirective} from '../core/base';
 import {BaseFxDirectiveAdapter} from '../core/base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {isBrowser} from '../../media-query/match-media';
 import {extendObject} from '../../utils/object-extend';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -113,7 +114,7 @@ export class StyleDirective extends BaseFxDirective
 
     // Build adapter, `cacheInput()` interceptor, and get current inline style if any
     this._buildAdapter(this.monitor, _ngEl, _renderer);
-    this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
+    this._base.cacheInput('style', isBrowser() ? _ngEl.nativeElement.getAttribute('style') || '' : '', true);
 
     // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been defined on
     // the same host element; since the responsive versions may be defined...
