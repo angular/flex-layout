@@ -18,12 +18,14 @@ export declare abstract class BaseFxDirective implements OnDestroy, OnChanges {
     ngOnDestroy(): void;
     protected _getDefaultVal(key: string, fallbackVal: any): string | boolean;
     protected _getDisplayStyle(source?: HTMLElement): string;
+    protected _getAttributeValue(attribute: string, source?: HTMLElement): string;
     protected _getFlowDirection(target: any, addIfMissing?: boolean): string;
     protected _applyStyleToElement(style: StyleDefinition, value?: string | number, nativeElement?: any): void;
     protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]): void;
     protected _cacheInput(key?: string, source?: any): void;
     protected _listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
     protected readonly childrenNodes: any[];
+    hasResponsiveAPI(baseKey: string): boolean;
     protected hasKeyValue(key: any): boolean;
     protected readonly hasInitialized: boolean;
     protected _display: any;

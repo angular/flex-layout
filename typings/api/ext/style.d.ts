@@ -1,15 +1,18 @@
-import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { DoCheck, ElementRef, KeyValueDiffers, OnDestroy, OnChanges, Renderer2, SimpleChanges, OnInit } from '@angular/core';
 import { NgStyle } from '@angular/common';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
 import { MediaMonitor } from '../../media-query/media-monitor';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgStyleType } from '../../utils/style-transforms';
-export declare class StyleDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy {
+export declare class StyleDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
     private monitor;
     protected _sanitizer: DomSanitizer;
+    protected _ngEl: ElementRef;
+    protected _renderer: Renderer2;
+    protected _differs: KeyValueDiffers;
     private _ngStyleInstance;
-    styleBase: NgStyleType;
+    ngStyleBase: NgStyleType;
     ngStyleXs: NgStyleType;
     ngStyleSm: NgStyleType;
     ngStyleMd: NgStyleType;
@@ -23,27 +26,15 @@ export declare class StyleDirective extends BaseFxDirective implements DoCheck, 
     ngStyleGtSm: NgStyleType;
     ngStyleGtMd: NgStyleType;
     ngStyleGtLg: NgStyleType;
-    styleXs: NgStyleType;
-    styleSm: NgStyleType;
-    styleMd: NgStyleType;
-    styleLg: NgStyleType;
-    styleXl: NgStyleType;
-    styleLtSm: NgStyleType;
-    styleLtMd: NgStyleType;
-    styleLtLg: NgStyleType;
-    styleLtXl: NgStyleType;
-    styleGtXs: NgStyleType;
-    styleGtSm: NgStyleType;
-    styleGtMd: NgStyleType;
-    styleGtLg: NgStyleType;
     constructor(monitor: MediaMonitor, _sanitizer: DomSanitizer, _ngEl: ElementRef, _renderer: Renderer2, _differs: KeyValueDiffers, _ngStyleInstance: NgStyle);
     ngOnChanges(changes: SimpleChanges): void;
+    ngOnInit(): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
-    protected _configureMQListener(): void;
-    protected _updateStyle(value?: NgStyleType): void;
-    protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2): void;
+    protected _configureAdapters(): void;
+    protected _configureMQListener(baseKey?: string): void;
     protected _buildCacheInterceptor(): void;
     protected _buildStyleMap(styles: NgStyleType): NgStyleType;
+    protected _fallbackToStyle(): void;
     protected _base: BaseFxDirectiveAdapter;
 }

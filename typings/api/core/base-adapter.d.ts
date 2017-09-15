@@ -12,6 +12,7 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
     readonly inputMap: {};
     readonly mqActivation: ResponsiveActivation;
     constructor(_baseKey: string, _mediaMonitor: MediaMonitor, _elementRef: ElementRef, _renderer: Renderer2);
+    hasResponsiveAPI(): boolean;
     queryInput(key: any): any;
     cacheInput(key?: string, source?: any, cacheRaw?: boolean): void;
     listenForMediaQueryChanges(key: string, defaultValue: any, onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation;
@@ -21,5 +22,4 @@ export declare class BaseFxDirectiveAdapter extends BaseFxDirective {
         [key: string]: boolean;
     }): void;
     protected _cacheInputString(key?: string, source?: string): void;
-    readonly usesResponsiveAPI: boolean;
 }

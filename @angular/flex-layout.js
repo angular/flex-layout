@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-5f198a3');
+const VERSION = new Version('2.0.0-beta.9-e461d17');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -106,6 +106,9 @@ function applyCssPrefixes(target) {
     return target;
 }
 
+function isBrowser() {
+    return ɵgetDOM().supportsDOMEvents();
+}
 function applyStyleToElement(renderer, element, style, value) {
     let styles = {};
     if (typeof style === 'string') {
@@ -129,12 +132,15 @@ function applyMultiValueStyleToElement(styles, element, renderer) {
         }
     });
 }
+function lookupAttributeValue(element, attribute) {
+    return isBrowser() ? ɵgetDOM().getAttribute(element, attribute) : '';
+}
 function lookupInlineStyle(element, styleName) {
-    return ɵgetDOM().getStyle(element, styleName);
+    return isBrowser() ? ɵgetDOM().getStyle(element, styleName) : '';
 }
 function lookupStyle(element, styleName, inlineOnly = false) {
     let value = '';
-    if (element) {
+    if (element && isBrowser()) {
         try {
             let immediateValue = value = lookupInlineStyle(element, styleName);
             if (!inlineOnly) {
@@ -319,6 +325,9 @@ class BaseFxDirective {
     _getDisplayStyle(source = this.nativeElement) {
         return lookupStyle(source || this.nativeElement, 'display');
     }
+    _getAttributeValue(attribute, source = this.nativeElement) {
+        return lookupAttributeValue(source || this.nativeElement, attribute);
+    }
     _getFlowDirection(target, addIfMissing = false) {
         let value = 'row';
         if (target) {
@@ -362,6 +371,11 @@ class BaseFxDirective {
         }
         return buffer;
     }
+    hasResponsiveAPI(baseKey) {
+        const totalKeys = Object.keys(this._inputMap).length;
+        const baseValue = this._inputMap[baseKey];
+        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
+    }
     hasKeyValue(key) {
         return this._mqActivation.hasKeyValue(key);
     }
@@ -388,6 +402,9 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
     }
     get mqActivation() {
         return this._mqActivation;
+    }
+    hasResponsiveAPI() {
+        return super.hasResponsiveAPI(this._baseKey);
     }
     queryInput(key) {
         return key ? this._queryInput(key) : undefined;
@@ -429,11 +446,6 @@ class BaseFxDirectiveAdapter extends BaseFxDirective {
     }
     _cacheInputString(key = '', source) {
         this._inputMap[key] = source;
-    }
-    get usesResponsiveAPI() {
-        const totalKeys = Object.keys(this._inputMap).length;
-        const baseValue = this._inputMap[this._baseKey];
-        return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
     }
 }
 
@@ -531,7 +543,7 @@ class MatchMedia {
         }
     }
     _buildMQL(query) {
-        let canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
+        let canListen = isBrowser$1() && !!((window)).matchMedia('all').addListener;
         return canListen ? ((window)).matchMedia(query) : ({
             matches: query === 'all' || query === '',
             media: query,
@@ -549,7 +561,7 @@ MatchMedia.ctorParameters = () => [
     { type: NgZone, },
     { type: undefined, decorators: [{ type: Inject, args: [DOCUMENT,] },] },
 ];
-function isBrowser() {
+function isBrowser$1() {
     return ɵgetDOM().supportsDOMEvents();
 }
 const ALL_STYLES = {};
@@ -1731,103 +1743,77 @@ function _notImplemented(methodName) {
 }
 
 class ClassDirective extends BaseFxDirective {
-    constructor(monitor, _ngEl, _renderer, _iterableDiffers, _keyValueDiffers, _ngClassInstance) {
+    constructor(monitor, _iterableDiffers, _keyValueDiffers, _ngEl, _renderer, _ngClassInstance) {
         super(monitor, _ngEl, _renderer);
         this.monitor = monitor;
+        this._iterableDiffers = _iterableDiffers;
+        this._keyValueDiffers = _keyValueDiffers;
+        this._ngEl = _ngEl;
+        this._renderer = _renderer;
         this._ngClassInstance = _ngClassInstance;
-        this._ngClassAdapter = new BaseFxDirectiveAdapter('ngClass', monitor, _ngEl, _renderer);
-        this._classAdapter = new BaseFxDirectiveAdapter('class', monitor, _ngEl, _renderer);
-        this._classAdapter.cacheInput('class', _ngEl.nativeElement.getAttribute('class') || '');
-        if (!this._ngClassInstance) {
-            let adapter = new RendererAdapter(_renderer);
-            this._ngClassInstance = new NgClass(_iterableDiffers, _keyValueDiffers, _ngEl, adapter);
-        }
+        this._configureAdapters();
     }
     set ngClassBase(val) {
-        this._ngClassAdapter.cacheInput('ngClass', val, true);
-        this._ngClassInstance.ngClass = val;
+        const key = 'ngClass';
+        this._base.cacheInput(key, val, true);
+        this._ngClassInstance.ngClass = this._base.queryInput(key);
     }
-    set ngClassXs(val) { this._ngClassAdapter.cacheInput('ngClassXs', val, true); }
-    set ngClassSm(val) { this._ngClassAdapter.cacheInput('ngClassSm', val, true); }
-    set ngClassMd(val) { this._ngClassAdapter.cacheInput('ngClassMd', val, true); }
-    set ngClassLg(val) { this._ngClassAdapter.cacheInput('ngClassLg', val, true); }
-    set ngClassXl(val) { this._ngClassAdapter.cacheInput('ngClassXl', val, true); }
-    set ngClassLtSm(val) { this._ngClassAdapter.cacheInput('ngClassLtSm', val, true); }
-    set ngClassLtMd(val) { this._ngClassAdapter.cacheInput('ngClassLtMd', val, true); }
-    set ngClassLtLg(val) { this._ngClassAdapter.cacheInput('ngClassLtLg', val, true); }
-    set ngClassLtXl(val) { this._ngClassAdapter.cacheInput('ngClassLtXl', val, true); }
-    set ngClassGtXs(val) { this._ngClassAdapter.cacheInput('ngClassGtXs', val, true); }
-    set ngClassGtSm(val) { this._ngClassAdapter.cacheInput('ngClassGtSm', val, true); }
-    set ngClassGtMd(val) { this._ngClassAdapter.cacheInput('ngClassGtMd', val, true); }
-    set ngClassGtLg(val) { this._ngClassAdapter.cacheInput('ngClassGtLg', val, true); }
-    set classXs(val) { this._classAdapter.cacheInput('classXs', val); }
-    set classSm(val) { this._classAdapter.cacheInput('classSm', val); }
-    set classMd(val) { this._classAdapter.cacheInput('classMd', val); }
-    set classLg(val) { this._classAdapter.cacheInput('classLg', val); }
-    set classXl(val) { this._classAdapter.cacheInput('classXl', val); }
-    set classLtSm(val) { this._classAdapter.cacheInput('classLtSm', val); }
-    set classLtMd(val) { this._classAdapter.cacheInput('classLtMd', val); }
-    set classLtLg(val) { this._classAdapter.cacheInput('classLtLg', val); }
-    set classLtXl(val) { this._classAdapter.cacheInput('classLtXl', val); }
-    set classGtXs(val) { this._classAdapter.cacheInput('classGtXs', val); }
-    set classGtSm(val) { this._classAdapter.cacheInput('classGtSm', val); }
-    set classGtMd(val) { this._classAdapter.cacheInput('classGtMd', val); }
-    set classGtLg(val) { this._classAdapter.cacheInput('classGtLg', val); }
+    set ngClassXs(val) { this._base.cacheInput('ngClassXs', val, true); }
+    set ngClassSm(val) { this._base.cacheInput('ngClassSm', val, true); }
+    set ngClassMd(val) { this._base.cacheInput('ngClassMd', val, true); }
+    set ngClassLg(val) { this._base.cacheInput('ngClassLg', val, true); }
+    set ngClassXl(val) { this._base.cacheInput('ngClassXl', val, true); }
+    set ngClassLtSm(val) { this._base.cacheInput('ngClassLtSm', val, true); }
+    set ngClassLtMd(val) { this._base.cacheInput('ngClassLtMd', val, true); }
+    set ngClassLtLg(val) { this._base.cacheInput('ngClassLtLg', val, true); }
+    set ngClassLtXl(val) { this._base.cacheInput('ngClassLtXl', val, true); }
+    set ngClassGtXs(val) { this._base.cacheInput('ngClassGtXs', val, true); }
+    set ngClassGtSm(val) { this._base.cacheInput('ngClassGtSm', val, true); }
+    set ngClassGtMd(val) { this._base.cacheInput('ngClassGtMd', val, true); }
+    set ngClassGtLg(val) { this._base.cacheInput('ngClassGtLg', val, true); }
     ngOnChanges(changes) {
-        if (this.hasInitialized) {
-            if (this._classAdapter.activeKey in changes) {
-                this._updateKlass();
-            }
-            if (this._ngClassAdapter.activeKey in changes) {
-                this._updateNgClass();
-            }
+        if (this._base.activeKey in changes) {
+            this._ngClassInstance.ngClass = this._base.mqActivation.activatedInput || '';
+        }
+    }
+    ngOnInit() {
+        if (this._base.hasResponsiveAPI()) {
+            this._configureMQListener();
         }
     }
     ngDoCheck() {
-        if (!this._classAdapter.hasMediaQueryListener) {
-            this._configureMQListener();
-        }
-        if (this._ngClassInstance) {
-            this._ngClassInstance.ngDoCheck();
-        }
+        this._ngClassInstance.ngDoCheck();
     }
     ngOnDestroy() {
-        this._classAdapter.ngOnDestroy();
-        this._ngClassAdapter.ngOnDestroy();
+        this._base.ngOnDestroy();
         this._ngClassInstance = null;
     }
-    _configureMQListener() {
-        const value = this._classAdapter.queryInput('class');
-        this._classAdapter.listenForMediaQueryChanges('class', value, (changes) => {
-            this._updateKlass(changes.value);
-        });
-        this._ngClassAdapter.listenForMediaQueryChanges('ngClass', value, (changes) => {
-            this._updateNgClass(changes.value);
+    _configureAdapters() {
+        this._base = new BaseFxDirectiveAdapter('ngClass', this.monitor, this._ngEl, this._renderer);
+        if (!this._ngClassInstance) {
+            let adapter = new RendererAdapter(this._renderer);
+            this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, (adapter));
+        }
+        this._fallbackToKlass();
+    }
+    _configureMQListener(baseKey = 'ngClass') {
+        const fallbackValue = this._base.queryInput(baseKey);
+        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
+            this._ngClassInstance.ngClass = changes.value || '';
             this._ngClassInstance.ngDoCheck();
         });
     }
-    _updateKlass(value) {
-        let klass = value || this._classAdapter.queryInput('class');
-        if (this._classAdapter.mqActivation) {
-            klass = this._classAdapter.mqActivation.activatedInput;
+    _fallbackToKlass() {
+        if (!this._base.queryInput('ngClass')) {
+            this.ngClassBase = this._getAttributeValue('class') || '';
         }
-        this._ngClassInstance.klass = klass;
-    }
-    _updateNgClass(value) {
-        if (this._ngClassAdapter.mqActivation) {
-            value = this._ngClassAdapter.mqActivation.activatedInput;
-        }
-        this._ngClassInstance.ngClass = value || '';
     }
 }
 ClassDirective.decorators = [
     { type: Directive, args: [{
                 selector: `
-    [class.xs], [class.sm], [class.md], [class.lg], [class.xl],
-    [class.lt-sm], [class.lt-md], [class.lt-lg], [class.lt-xl],
-    [class.gt-xs], [class.gt-sm], [class.gt-md], [class.gt-lg],
-
-    [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
+    [ngClass],
+    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
     [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
@@ -1835,10 +1821,10 @@ ClassDirective.decorators = [
 ];
 ClassDirective.ctorParameters = () => [
     { type: MediaMonitor, },
-    { type: ElementRef, },
-    { type: Renderer2, },
     { type: IterableDiffers, },
     { type: KeyValueDiffers, },
+    { type: ElementRef, },
+    { type: Renderer2, },
     { type: NgClass, decorators: [{ type: Optional }, { type: Self },] },
 ];
 ClassDirective.propDecorators = {
@@ -1856,19 +1842,6 @@ ClassDirective.propDecorators = {
     'ngClassGtSm': [{ type: Input, args: ['ngClass.gt-sm',] },],
     'ngClassGtMd': [{ type: Input, args: ['ngClass.gt-md',] },],
     'ngClassGtLg': [{ type: Input, args: ['ngClass.gt-lg',] },],
-    'classXs': [{ type: Input, args: ['class.xs',] },],
-    'classSm': [{ type: Input, args: ['class.sm',] },],
-    'classMd': [{ type: Input, args: ['class.md',] },],
-    'classLg': [{ type: Input, args: ['class.lg',] },],
-    'classXl': [{ type: Input, args: ['class.xl',] },],
-    'classLtSm': [{ type: Input, args: ['class.lt-sm',] },],
-    'classLtMd': [{ type: Input, args: ['class.lt-md',] },],
-    'classLtLg': [{ type: Input, args: ['class.lt-lg',] },],
-    'classLtXl': [{ type: Input, args: ['class.lt-xl',] },],
-    'classGtXs': [{ type: Input, args: ['class.gt-xs',] },],
-    'classGtSm': [{ type: Input, args: ['class.gt-sm',] },],
-    'classGtMd': [{ type: Input, args: ['class.gt-md',] },],
-    'classGtLg': [{ type: Input, args: ['class.gt-lg',] },],
 };
 
 class NgStyleKeyValue {
@@ -1942,106 +1915,81 @@ class StyleDirective extends BaseFxDirective {
         super(monitor, _ngEl, _renderer);
         this.monitor = monitor;
         this._sanitizer = _sanitizer;
+        this._ngEl = _ngEl;
+        this._renderer = _renderer;
+        this._differs = _differs;
         this._ngStyleInstance = _ngStyleInstance;
-        this._buildAdapter(this.monitor, _ngEl, _renderer);
-        this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
-        if (!this._ngStyleInstance) {
-            let adapter = new RendererAdapter(_renderer);
-            this._ngStyleInstance = new NgStyle(_differs, _ngEl, adapter);
-        }
+        this._configureAdapters();
     }
-    set styleBase(val) {
-        this._base.cacheInput('style', val, true);
-        this._ngStyleInstance.ngStyle = this._base.inputMap['style'];
+    set ngStyleBase(val) {
+        const key = 'ngStyle';
+        this._base.cacheInput(key, val, true);
+        this._ngStyleInstance.ngStyle = this._base.queryInput(key);
     }
-    set ngStyleXs(val) { this._base.cacheInput('styleXs', val, true); }
-    set ngStyleSm(val) { this._base.cacheInput('styleSm', val, true); }
+    set ngStyleXs(val) { this._base.cacheInput('ngStyleXs', val, true); }
+    set ngStyleSm(val) { this._base.cacheInput('ngStyleSm', val, true); }
     ;
-    set ngStyleMd(val) { this._base.cacheInput('styleMd', val, true); }
+    set ngStyleMd(val) { this._base.cacheInput('ngStyleMd', val, true); }
     ;
-    set ngStyleLg(val) { this._base.cacheInput('styleLg', val, true); }
+    set ngStyleLg(val) { this._base.cacheInput('ngStyleLg', val, true); }
     ;
-    set ngStyleXl(val) { this._base.cacheInput('styleXl', val, true); }
+    set ngStyleXl(val) { this._base.cacheInput('ngStyleXl', val, true); }
     ;
-    set ngStyleLtSm(val) { this._base.cacheInput('styleLtSm', val, true); }
+    set ngStyleLtSm(val) { this._base.cacheInput('ngStyleLtSm', val, true); }
     ;
-    set ngStyleLtMd(val) { this._base.cacheInput('styleLtMd', val, true); }
+    set ngStyleLtMd(val) { this._base.cacheInput('ngStyleLtMd', val, true); }
     ;
-    set ngStyleLtLg(val) { this._base.cacheInput('styleLtLg', val, true); }
+    set ngStyleLtLg(val) { this._base.cacheInput('ngStyleLtLg', val, true); }
     ;
-    set ngStyleLtXl(val) { this._base.cacheInput('styleLtXl', val, true); }
+    set ngStyleLtXl(val) { this._base.cacheInput('ngStyleLtXl', val, true); }
     ;
-    set ngStyleGtXs(val) { this._base.cacheInput('styleGtXs', val, true); }
+    set ngStyleGtXs(val) { this._base.cacheInput('ngStyleGtXs', val, true); }
     ;
-    set ngStyleGtSm(val) { this._base.cacheInput('styleGtSm', val, true); }
+    set ngStyleGtSm(val) { this._base.cacheInput('ngStyleGtSm', val, true); }
     ;
-    set ngStyleGtMd(val) { this._base.cacheInput('styleGtMd', val, true); }
+    set ngStyleGtMd(val) { this._base.cacheInput('ngStyleGtMd', val, true); }
     ;
-    set ngStyleGtLg(val) { this._base.cacheInput('styleGtLg', val, true); }
-    ;
-    set styleXs(val) { this._base.cacheInput('styleXs', val, true); }
-    set styleSm(val) { this._base.cacheInput('styleSm', val, true); }
-    ;
-    set styleMd(val) { this._base.cacheInput('styleMd', val, true); }
-    ;
-    set styleLg(val) { this._base.cacheInput('styleLg', val, true); }
-    ;
-    set styleXl(val) { this._base.cacheInput('styleXl', val, true); }
-    ;
-    set styleLtSm(val) { this._base.cacheInput('styleLtSm', val, true); }
-    ;
-    set styleLtMd(val) { this._base.cacheInput('styleLtMd', val, true); }
-    ;
-    set styleLtLg(val) { this._base.cacheInput('styleLtLg', val, true); }
-    ;
-    set styleLtXl(val) { this._base.cacheInput('styleLtXl', val, true); }
-    ;
-    set styleGtXs(val) { this._base.cacheInput('styleGtXs', val, true); }
-    ;
-    set styleGtSm(val) { this._base.cacheInput('styleGtSm', val, true); }
-    ;
-    set styleGtMd(val) { this._base.cacheInput('styleGtMd', val, true); }
-    ;
-    set styleGtLg(val) { this._base.cacheInput('styleGtLg', val, true); }
+    set ngStyleGtLg(val) { this._base.cacheInput('ngStyleGtLg', val, true); }
     ;
     ngOnChanges(changes) {
         if (this._base.activeKey in changes) {
-            this._updateStyle();
+            this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
+        }
+    }
+    ngOnInit() {
+        if (this._base.hasResponsiveAPI()) {
+            this._configureMQListener();
         }
     }
     ngDoCheck() {
-        if (!this._base.hasMediaQueryListener) {
-            this._configureMQListener();
-        }
         this._ngStyleInstance.ngDoCheck();
     }
     ngOnDestroy() {
         this._base.ngOnDestroy();
         this._ngStyleInstance = null;
     }
-    _configureMQListener() {
-        this._base.listenForMediaQueryChanges('style', '', (changes) => {
-            this._updateStyle(changes.value);
+    _configureAdapters() {
+        this._base = new BaseFxDirectiveAdapter('ngStyle', this.monitor, this._ngEl, this._renderer);
+        if (!this._ngStyleInstance) {
+            let adapter = new RendererAdapter(this._renderer);
+            this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, (adapter));
+        }
+        this._buildCacheInterceptor();
+        this._fallbackToStyle();
+    }
+    _configureMQListener(baseKey = 'ngStyle') {
+        const fallbackValue = this._base.queryInput(baseKey);
+        this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes) => {
+            this._ngStyleInstance.ngStyle = changes.value || '';
             this._ngStyleInstance.ngDoCheck();
         });
-    }
-    _updateStyle(value) {
-        let style = value || this._base.queryInput('style') || '';
-        if (this._base.mqActivation) {
-            style = this._base.mqActivation.activatedInput;
-        }
-        this._ngStyleInstance.ngStyle = style;
-    }
-    _buildAdapter(monitor, _ngEl, _renderer) {
-        this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
-        this._buildCacheInterceptor();
     }
     _buildCacheInterceptor() {
         let cacheInput = this._base.cacheInput.bind(this._base);
         this._base.cacheInput = (key, source, cacheRaw = false, merge = true) => {
             let styles = this._buildStyleMap(source);
             if (merge) {
-                styles = extendObject({}, this._base.inputMap['style'], styles);
+                styles = extendObject({}, this._base.inputMap['ngStyle'], styles);
             }
             cacheInput(key, styles, cacheRaw);
         };
@@ -2060,15 +2008,17 @@ class StyleDirective extends BaseFxDirective {
         }
         return styles;
     }
+    _fallbackToStyle() {
+        if (!this._base.queryInput('ngStyle')) {
+            this.ngStyleBase = this._getAttributeValue('style') || '';
+        }
+    }
 }
 StyleDirective.decorators = [
     { type: Directive, args: [{
                 selector: `
-    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],
-    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],
-    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],
     [ngStyle],
-    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],
+    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
     [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
@@ -2083,7 +2033,7 @@ StyleDirective.ctorParameters = () => [
     { type: NgStyle, decorators: [{ type: Optional }, { type: Self },] },
 ];
 StyleDirective.propDecorators = {
-    'styleBase': [{ type: Input, args: ['ngStyle',] },],
+    'ngStyleBase': [{ type: Input, args: ['ngStyle',] },],
     'ngStyleXs': [{ type: Input, args: ['ngStyle.xs',] },],
     'ngStyleSm': [{ type: Input, args: ['ngStyle.sm',] },],
     'ngStyleMd': [{ type: Input, args: ['ngStyle.md',] },],
@@ -2097,19 +2047,6 @@ StyleDirective.propDecorators = {
     'ngStyleGtSm': [{ type: Input, args: ['ngStyle.gt-sm',] },],
     'ngStyleGtMd': [{ type: Input, args: ['ngStyle.gt-md',] },],
     'ngStyleGtLg': [{ type: Input, args: ['ngStyle.gt-lg',] },],
-    'styleXs': [{ type: Input, args: ['style.xs',] },],
-    'styleSm': [{ type: Input, args: ['style.sm',] },],
-    'styleMd': [{ type: Input, args: ['style.md',] },],
-    'styleLg': [{ type: Input, args: ['style.lg',] },],
-    'styleXl': [{ type: Input, args: ['style.xl',] },],
-    'styleLtSm': [{ type: Input, args: ['style.lt-sm',] },],
-    'styleLtMd': [{ type: Input, args: ['style.lt-md',] },],
-    'styleLtLg': [{ type: Input, args: ['style.lt-lg',] },],
-    'styleLtXl': [{ type: Input, args: ['style.lt-xl',] },],
-    'styleGtXs': [{ type: Input, args: ['style.gt-xs',] },],
-    'styleGtSm': [{ type: Input, args: ['style.gt-sm',] },],
-    'styleGtMd': [{ type: Input, args: ['style.gt-md',] },],
-    'styleGtLg': [{ type: Input, args: ['style.gt-lg',] },],
 };
 
 const FALSY = ['false', false, 0];
@@ -2646,5 +2583,5 @@ FlexLayoutModule.decorators = [
 ];
 FlexLayoutModule.ctorParameters = () => [];
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser$1 as isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.js.map

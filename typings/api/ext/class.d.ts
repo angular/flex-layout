@@ -1,4 +1,4 @@
-import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, OnChanges, OnDestroy, Renderer2, SimpleChanges, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { BaseFxDirective } from '../core/base';
 import { BaseFxDirectiveAdapter } from '../core/base-adapter';
@@ -6,8 +6,12 @@ import { MediaMonitor } from '../../media-query/media-monitor';
 export declare type NgClassType = string | string[] | Set<string> | {
     [klass: string]: any;
 };
-export declare class ClassDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy {
+export declare class ClassDirective extends BaseFxDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
     protected monitor: MediaMonitor;
+    protected _iterableDiffers: IterableDiffers;
+    protected _keyValueDiffers: KeyValueDiffers;
+    protected _ngEl: ElementRef;
+    protected _renderer: Renderer2;
     private _ngClassInstance;
     ngClassBase: NgClassType;
     ngClassXs: NgClassType;
@@ -23,26 +27,13 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     ngClassGtSm: NgClassType;
     ngClassGtMd: NgClassType;
     ngClassGtLg: NgClassType;
-    classXs: NgClassType;
-    classSm: NgClassType;
-    classMd: NgClassType;
-    classLg: NgClassType;
-    classXl: NgClassType;
-    classLtSm: NgClassType;
-    classLtMd: NgClassType;
-    classLtLg: NgClassType;
-    classLtXl: NgClassType;
-    classGtXs: NgClassType;
-    classGtSm: NgClassType;
-    classGtMd: NgClassType;
-    classGtLg: NgClassType;
-    constructor(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngClassInstance: NgClass);
+    constructor(monitor: MediaMonitor, _iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer2, _ngClassInstance: NgClass);
     ngOnChanges(changes: SimpleChanges): void;
+    ngOnInit(): void;
     ngDoCheck(): void;
     ngOnDestroy(): void;
-    protected _configureMQListener(): void;
-    protected _updateKlass(value?: NgClassType): void;
-    protected _updateNgClass(value?: NgClassType): void;
-    protected _classAdapter: BaseFxDirectiveAdapter;
-    protected _ngClassAdapter: BaseFxDirectiveAdapter;
+    protected _configureAdapters(): void;
+    protected _configureMQListener(baseKey?: string): void;
+    protected _fallbackToKlass(): void;
+    protected _base: BaseFxDirectiveAdapter;
 }
