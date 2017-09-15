@@ -17,7 +17,7 @@ import {
   Renderer2,
   SecurityContext,
   Self,
-  SimpleChanges,
+  SimpleChanges, OnInit,
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 
@@ -36,91 +36,64 @@ import {
 } from '../../utils/style-transforms';
 import {RendererAdapter} from '../core/renderer-adapter';
 
+
 /**
  * Directive to add responsive support for ngStyle.
  *
  */
 @Directive({
   selector: `
-    [style.xs], [style.sm], [style.md], [style.lg], [style.xl],
-    [style.lt-sm], [style.lt-md], [style.lt-lg], [style.lt-xl],
-    [style.gt-xs], [style.gt-sm], [style.gt-md], [style.gt-lg],
     [ngStyle],
-    [ngStyle.xs], [ngStyle.sm], [ngStyle.lg], [ngStyle.xl],
+    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
     [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
 export class StyleDirective extends BaseFxDirective
-    implements DoCheck, OnChanges, OnDestroy {
+    implements DoCheck, OnChanges, OnDestroy, OnInit {
 
   /**
    * Intercept ngStyle assignments so we cache the default styles
    * which are merged with activated styles or used as fallbacks.
    */
   @Input('ngStyle')
-  set styleBase(val: NgStyleType) {
-    this._base.cacheInput('style', val, true);
-    this._ngStyleInstance.ngStyle = this._base.inputMap['style'];
+  set ngStyleBase(val: NgStyleType) {
+    const key = 'ngStyle';
+    this._base.cacheInput(key, val, true);  // convert val to hashmap
+    this._ngStyleInstance.ngStyle = this._base.queryInput(key);
   }
 
   /* tslint:disable */
-  @Input('ngStyle.xs')    set ngStyleXs(val: NgStyleType) { this._base.cacheInput('styleXs', val, true); }
-  @Input('ngStyle.sm')    set ngStyleSm(val: NgStyleType) {  this._base.cacheInput('styleSm', val, true); };
-  @Input('ngStyle.md')    set ngStyleMd(val: NgStyleType) { this._base.cacheInput('styleMd', val, true); };
-  @Input('ngStyle.lg')    set ngStyleLg(val: NgStyleType) { this._base.cacheInput('styleLg', val, true);};
-  @Input('ngStyle.xl')    set ngStyleXl(val: NgStyleType) { this._base.cacheInput('styleXl', val, true); };
+  @Input('ngStyle.xs')    set ngStyleXs(val: NgStyleType) { this._base.cacheInput('ngStyleXs', val, true); }
+  @Input('ngStyle.sm')    set ngStyleSm(val: NgStyleType) { this._base.cacheInput('ngStyleSm', val, true); };
+  @Input('ngStyle.md')    set ngStyleMd(val: NgStyleType) { this._base.cacheInput('ngStyleMd', val, true); };
+  @Input('ngStyle.lg')    set ngStyleLg(val: NgStyleType) { this._base.cacheInput('ngStyleLg', val, true); };
+  @Input('ngStyle.xl')    set ngStyleXl(val: NgStyleType) { this._base.cacheInput('ngStyleXl', val, true); };
 
-  @Input('ngStyle.lt-sm') set ngStyleLtSm(val: NgStyleType) { this._base.cacheInput('styleLtSm', val, true); };
-  @Input('ngStyle.lt-md') set ngStyleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true); };
-  @Input('ngStyle.lt-lg') set ngStyleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true); };
-  @Input('ngStyle.lt-xl') set ngStyleLtXl(val: NgStyleType) { this._base.cacheInput('styleLtXl', val, true); };
+  @Input('ngStyle.lt-sm') set ngStyleLtSm(val: NgStyleType) { this._base.cacheInput('ngStyleLtSm', val, true); };
+  @Input('ngStyle.lt-md') set ngStyleLtMd(val: NgStyleType) { this._base.cacheInput('ngStyleLtMd', val, true); };
+  @Input('ngStyle.lt-lg') set ngStyleLtLg(val: NgStyleType) { this._base.cacheInput('ngStyleLtLg', val, true); };
+  @Input('ngStyle.lt-xl') set ngStyleLtXl(val: NgStyleType) { this._base.cacheInput('ngStyleLtXl', val, true); };
 
-  @Input('ngStyle.gt-xs') set ngStyleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
-  @Input('ngStyle.gt-sm') set ngStyleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true);} ;
-  @Input('ngStyle.gt-md') set ngStyleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
-  @Input('ngStyle.gt-lg') set ngStyleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
-
-  /** Deprecated selectors */
-  @Input('style.xs')      set styleXs(val: NgStyleType) { this._base.cacheInput('styleXs', val, true); }
-  @Input('style.sm')      set styleSm(val: NgStyleType) { this._base.cacheInput('styleSm', val, true); };
-  @Input('style.md')      set styleMd(val: NgStyleType) { this._base.cacheInput('styleMd', val, true);};
-  @Input('style.lg')      set styleLg(val: NgStyleType) { this._base.cacheInput('styleLg', val, true); };
-  @Input('style.xl')      set styleXl(val: NgStyleType) { this._base.cacheInput('styleXl', val, true); };
-
-  @Input('style.lt-sm')   set styleLtSm(val: NgStyleType) { this._base.cacheInput('styleLtSm', val, true); };
-  @Input('style.lt-md')   set styleLtMd(val: NgStyleType) { this._base.cacheInput('styleLtMd', val, true); };
-  @Input('style.lt-lg')   set styleLtLg(val: NgStyleType) { this._base.cacheInput('styleLtLg', val, true);};
-  @Input('style.lt-xl')   set styleLtXl(val: NgStyleType) { this._base.cacheInput('styleLtXl', val, true); };
-
-  @Input('style.gt-xs')   set styleGtXs(val: NgStyleType) { this._base.cacheInput('styleGtXs', val, true); };
-  @Input('style.gt-sm')   set styleGtSm(val: NgStyleType) { this._base.cacheInput('styleGtSm', val, true); };
-  @Input('style.gt-md')   set styleGtMd(val: NgStyleType) { this._base.cacheInput('styleGtMd', val, true);};
-  @Input('style.gt-lg')   set styleGtLg(val: NgStyleType) { this._base.cacheInput('styleGtLg', val, true); };
-
+  @Input('ngStyle.gt-xs') set ngStyleGtXs(val: NgStyleType) { this._base.cacheInput('ngStyleGtXs', val, true); };
+  @Input('ngStyle.gt-sm') set ngStyleGtSm(val: NgStyleType) { this._base.cacheInput('ngStyleGtSm', val, true); } ;
+  @Input('ngStyle.gt-md') set ngStyleGtMd(val: NgStyleType) { this._base.cacheInput('ngStyleGtMd', val, true); };
+  @Input('ngStyle.gt-lg') set ngStyleGtLg(val: NgStyleType) { this._base.cacheInput('ngStyleGtLg', val, true); };
   /* tslint:enable */
+
   /**
    *  Constructor for the ngStyle subclass; which adds selectors and
    *  a MediaQuery Activation Adapter
    */
   constructor(private monitor: MediaMonitor,
               protected _sanitizer: DomSanitizer,
-              _ngEl: ElementRef, _renderer: Renderer2,
-              _differs: KeyValueDiffers,
+              protected _ngEl: ElementRef,
+              protected _renderer: Renderer2,
+              protected _differs: KeyValueDiffers,
               @Optional() @Self() private _ngStyleInstance: NgStyle) {
 
     super(monitor, _ngEl, _renderer);
-
-    // Build adapter, `cacheInput()` interceptor, and get current inline style if any
-    this._buildAdapter(this.monitor, _ngEl, _renderer);
-    this._base.cacheInput('style', _ngEl.nativeElement.getAttribute('style'), true);
-
-    // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been defined on
-    // the same host element; since the responsive versions may be defined...
-    if ( !this._ngStyleInstance ) {
-      let adapter = new RendererAdapter(_renderer);
-      this._ngStyleInstance = new NgStyle(_differs, _ngEl, <any> adapter);
-    }
+    this._configureAdapters();
   }
 
   // ******************************************************************
@@ -132,17 +105,20 @@ export class StyleDirective extends BaseFxDirective
    */
   ngOnChanges(changes: SimpleChanges) {
     if (this._base.activeKey in changes) {
-      this._updateStyle();
+      this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
     }
   }
 
+
+  ngOnInit() {
+    if ( this._base.hasResponsiveAPI() ) {
+      this._configureMQListener();
+    }
+  }
   /**
    * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
    */
   ngDoCheck() {
-    if (!this._base.hasMediaQueryListener) {
-      this._configureMQListener();
-    }
     this._ngStyleInstance.ngDoCheck();
   }
 
@@ -156,14 +132,32 @@ export class StyleDirective extends BaseFxDirective
   // ******************************************************************
 
   /**
+     * Configure adapters (that delegate to an internal ngClass instance) if responsive
+     * keys have been defined.
+     */
+    protected _configureAdapters() {
+        this._base = new BaseFxDirectiveAdapter(
+            'ngStyle', this.monitor, this._ngEl, this._renderer
+        );
+        if ( !this._ngStyleInstance ) {
+          // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+          // defined on the same host element; since the responsive variations may be defined...
+          let adapter = new RendererAdapter(this._renderer);
+          this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, <any> adapter);
+        }
+
+        this._buildCacheInterceptor();
+        this._fallbackToStyle();
+    }
+
+    /**
      * Build an mqActivation object that bridges
      * mql change events to onMediaQueryChange handlers
      */
-    protected _configureMQListener() {
-      this._base.listenForMediaQueryChanges('style', '', (changes: MediaChange) => {
-        this._updateStyle(changes.value);
-
-        // trigger NgClass::_applyIterableChanges()
+    protected _configureMQListener(baseKey = 'ngStyle') {
+      const fallbackValue = this._base.queryInput(baseKey);
+      this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
+        this._ngStyleInstance.ngStyle = changes.value || '';
         this._ngStyleInstance.ngDoCheck();
       });
     }
@@ -173,31 +167,6 @@ export class StyleDirective extends BaseFxDirective
   // ************************************************************************
 
   /**
-   * Use the currently activated input property and assign to
-   * `ngStyle` which does the style injections...
-   */
-  protected _updateStyle(value?: NgStyleType) {
-    let style = value || this._base.queryInput('style') || '';
-    if (this._base.mqActivation) {
-      style = this._base.mqActivation.activatedInput;
-    }
-
-    // Delegate subsequent activity to the NgStyle logic
-    this._ngStyleInstance.ngStyle = style;
-  }
-
-
-  /**
-   * Build MediaQuery Activation Adapter
-   * This adapter manages listening to mediaQuery change events and identifying
-   * which property value should be used for the style update
-   */
-  protected _buildAdapter(monitor: MediaMonitor, _ngEl: ElementRef, _renderer: Renderer2) {
-    this._base = new BaseFxDirectiveAdapter('style', monitor, _ngEl, _renderer);
-    this._buildCacheInterceptor();
-  }
-
-  /**
    * Build intercept to convert raw strings to ngStyleMap
    */
   protected _buildCacheInterceptor() {
@@ -205,7 +174,7 @@ export class StyleDirective extends BaseFxDirective
     this._base.cacheInput = (key?: string, source?: any, cacheRaw = false, merge = true) => {
       let styles = this._buildStyleMap(source);
       if (merge) {
-        styles = extendObject({}, this._base.inputMap['style'], styles);
+        styles = extendObject({}, this._base.inputMap['ngStyle'], styles);
       }
       cacheInput(key, styles, cacheRaw);
     };
@@ -230,6 +199,15 @@ export class StyleDirective extends BaseFxDirective
       }
     }
     return styles;
+  }
+
+  /**
+   * Initial lookup of raw 'class' value (if any)
+   */
+  protected _fallbackToStyle() {
+    if (!this._base.queryInput('ngStyle')) {
+      this.ngStyleBase = this._getAttributeValue('style') || '';
+    }
   }
 
   /**

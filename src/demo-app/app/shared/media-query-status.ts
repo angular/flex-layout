@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {MediaChange} from '@angular/flex-layout';
@@ -28,20 +28,24 @@ import {ObservableMedia} from '@angular/flex-layout';
     }`
   ]
 })
-export class MediaQueryStatus implements OnDestroy {
+export class MediaQueryStatus implements OnDestroy, OnInit {
   private _watcher: Subscription;
   activeMediaQuery: string;
 
-  constructor(media$: ObservableMedia) {
-    this.watchMediaQueries(media$);
+  constructor(private media$: ObservableMedia) {
+
+  }
+
+  ngOnInit() {
+    this.watchMediaQueries();
   }
 
   ngOnDestroy() {
     this._watcher.unsubscribe();
   }
 
-  private watchMediaQueries(media$: ObservableMedia) {
-    this._watcher = media$.subscribe((change: MediaChange) => {
+  private watchMediaQueries() {
+    this._watcher = this.media$.subscribe((change: MediaChange) => {
       if (change.mediaQuery.indexOf('orientation') > -1) { return; }
       let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
       this.activeMediaQuery = value;

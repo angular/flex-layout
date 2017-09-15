@@ -16,7 +16,7 @@ import {
   lookupStyle,
   lookupInlineStyle,
   applyStyleToElement,
-  applyStyleToElements
+  applyStyleToElements, lookupAttributeValue
 } from '../../utils/style-utils';
 
 import {ResponsiveActivation, KeyOptions} from '../core/responsive-activation';
@@ -25,7 +25,6 @@ import {MediaQuerySubscriber} from '../../media-query/media-change';
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy, OnChanges {
-
   get hasMediaQueryListener() {
     return !!this._mqActivation;
   }
@@ -138,6 +137,14 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   }
 
   /**
+   * Quick accessor to raw attribute value on the target DOM element
+   */
+  protected _getAttributeValue(attribute: string,
+                               source: HTMLElement = this.nativeElement): string {
+    return lookupAttributeValue(source || this.nativeElement, attribute);
+  }
+
+  /**
    * Determine the DOM element's Flexbox flow (flex-direction).
    *
    * Check inline style first then check computed (stylesheet) style.
@@ -221,6 +228,17 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     }
     return buffer;
   }
+
+  /**
+   * Does this directive have 1 or more responsive keys defined
+   * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
+   */
+  public hasResponsiveAPI(baseKey: string) {
+    const totalKeys = Object.keys(this._inputMap).length;
+    const baseValue = this._inputMap[baseKey];
+    return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
+  }
+
 
   /**
    * Fast validator for presence of attribute on the host element

@@ -47,7 +47,7 @@ describe('class directive', () => {
   });
 
   ['xs', 'sm', 'md', 'lg'].forEach(mq => {
-    const selector = `class-${mq}`;
+    const selector = `ngClass-${mq}`;
 
     it(`should apply '${selector}' with '${mq}' media query`, () => {
       createTestComponent(`<div ngClass.${mq}="${selector}"></div>`);
@@ -64,7 +64,7 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('class2');
   });
 
-  it('should override base `class` values with responsive values', () => {
+  it('should override base `class` values with responsive ngClass string', () => {
       createTestComponent(`<div class="class0" ngClass.xs="what class2"></div>`);
 
       expectNativeEl(fixture).toHaveCssClass('class0');
@@ -73,7 +73,7 @@ describe('class directive', () => {
 
       // the CSS classes listed in the string (space delimited) are added,
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveCssClass('class0');
+      expectNativeEl(fixture).not.toHaveCssClass('class0');
       expectNativeEl(fixture).toHaveCssClass('what');
       expectNativeEl(fixture).toHaveCssClass('class2');
 
@@ -83,7 +83,7 @@ describe('class directive', () => {
       expectNativeEl(fixture).not.toHaveCssClass('class2');
     });
 
-  it('should override base `class` values with responsive values', () => {
+  it('should override base `class` values with responsive ngClass map', () => {
       createTestComponent(`
         <div class="class0" [ngClass.xs]="{'what':true, 'class2':true, 'class0':false}"></div>
       `);
@@ -527,7 +527,7 @@ describe('binding to CSS class list', () => {
           detectChangesAndExpectClassName(`init foo`);
         }));
 
-     it('should co-operate with the class attribute and class.name binding', async(() => {
+     it('should co-operate with the class attribute and ngClass.name binding', async(() => {
           const template =
               '<div class="init foo" [ngClass]="objExpr" [class.baz]="condition"></div>';
           fixture = createTestComponent(template);
