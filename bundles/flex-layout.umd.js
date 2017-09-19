@@ -37,7 +37,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var VERSION = new _angular_core.Version('2.0.0-beta.9-e461d17');
+var VERSION = new _angular_core.Version('2.0.0-beta.9-0e7d2e0');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
