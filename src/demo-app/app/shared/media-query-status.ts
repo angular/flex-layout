@@ -1,15 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Component} from '@angular/core';
 
 import {MediaChange} from '@angular/flex-layout';
 import {ObservableMedia} from '@angular/flex-layout';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   moduleId: module.id,
   selector : 'media-query-status',
   template : `
-    <div class="mqInfo" >
-      <span title="Active MediaQuery">{{  activeMediaQuery }}</span>
+    <div class="mqInfo" *ngIf="change$ | async as change">
+      <span title="Active MediaQuery">{{  buildMQInfo(change) }}</span>
     </div>
   `,
   styles: [
@@ -28,27 +28,16 @@ import {ObservableMedia} from '@angular/flex-layout';
     }`
   ]
 })
-export class MediaQueryStatus implements OnDestroy, OnInit {
-  private _watcher: Subscription;
-  activeMediaQuery: string;
+export class MediaQueryStatus {
+  public change$: Observable<MediaChange> = this.media$.asObservable();
 
   constructor(private media$: ObservableMedia) {
-
   }
 
-  ngOnInit() {
-    this.watchMediaQueries();
-  }
-
-  ngOnDestroy() {
-    this._watcher.unsubscribe();
-  }
-
-  private watchMediaQueries() {
-    this._watcher = this.media$.subscribe((change: MediaChange) => {
-      if (change.mediaQuery.indexOf('orientation') > -1) { return; }
-      let value = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
-      this.activeMediaQuery = value;
-    });
+  public buildMQInfo(change: MediaChange): string {
+    if (change.mediaQuery.indexOf('orientation') > -1) {
+      return '';
+    }
+    return change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
   }
 }
