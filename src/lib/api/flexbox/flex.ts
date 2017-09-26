@@ -232,10 +232,12 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
           // Set max-width = basis if using layout-wrap
           // tslint:disable-next-line:max-line-length
-          // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrappifl-flex-items
+          // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrapping-flex-items
 
           css = extendObject(clearStyles, { // fix issue #5345
-            'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,
+            'flex-grow' : `${grow}`,
+            'flex-shrink' : `${shrink}`,
+            'flex-basis' : (isValue || this._wrap) ? `${basis}` : '100%'
           });
           break;
       }

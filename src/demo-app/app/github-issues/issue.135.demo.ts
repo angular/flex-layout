@@ -13,7 +13,7 @@ import {Component} from '@angular/core';
         <div class="containerX">
           <div fxLayout="column" class="coloredContainerX box">
             <div fxFlex="auto" fxFlex.gt-sm="70"> &lt;div fxFlex="auto" fxFlex.gt-sm="70" &gt;</div>
-            <div fxFlex="auto" fxFlex.gt-sm="14.6"> &lt;div fxFlex="auto" fxFlex.gt-sm="14.6"&gt;
+            <div fxFlex fxFlex.gt-sm="14.6"> &lt;div fxFlex fxFlex.gt-sm="14.6"&gt;
             </div>
             <div fxFlex="auto" fxFlex.gt-sm="15.4"> &lt;div fxFlex="auto" fxFlex.gt-sm="15.4"&gt;
             </div>

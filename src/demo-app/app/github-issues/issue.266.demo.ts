@@ -25,7 +25,7 @@ import {Component} from '@angular/core';
                 <i class="material-icons">&#xE25D;</i>
             </div>
             <div fxFlex="70%" ngxSplitArea>
-              <div fxLayout="column" fxFlexFill ngxSplit="column">
+              <div fxLayout="column" ngxSplit="column" fxFlexFill>
                 <div fxFlex="50%" ngxSplitArea class="c2r1_body" >
                   <div class="c2r1_header" >Column #2 - Row #1</div>
                   <h1>Layout Dashboard</h1>
