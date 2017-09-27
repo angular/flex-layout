@@ -32,10 +32,11 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
 
 /**
  * Directive to add responsive support for ngClass.
+ * This maintains the core functionality of 'ngClass' and adds responsive API
+ *
  */
 @Directive({
   selector: `
-    [ngClass],
     [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
     [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
@@ -54,6 +55,17 @@ export class ClassDirective extends BaseFxDirective
     const key = 'ngClass';
     this._base.cacheInput(key, val, true);
     this._ngClassInstance.ngClass = this._base.queryInput(key);
+  }
+
+  /**
+   * Capture class assignments so we cache the default classes
+   * which are merged with activated styles and used as fallbacks.
+   */
+  @Input('class')
+  set klazz(val: string) {
+    const key = 'class';
+    this._base.cacheInput(key, val);
+    this._ngClassInstance.klass = val;
   }
 
   /* tslint:disable */
@@ -98,9 +110,7 @@ export class ClassDirective extends BaseFxDirective
   }
 
   ngOnInit() {
-    if ( this._base.hasResponsiveAPI() ) {
-      this._configureMQListener();
-    }
+    this._configureMQListener();
   }
 
   /**
@@ -135,7 +145,6 @@ export class ClassDirective extends BaseFxDirective
           this._iterableDiffers, this._keyValueDiffers, this._ngEl, <any> adapter
       );
     }
-    this._fallbackToKlass();
   }
 
   /**
@@ -150,15 +159,6 @@ export class ClassDirective extends BaseFxDirective
       this._ngClassInstance.ngClass = changes.value || '';
       this._ngClassInstance.ngDoCheck();
     });
-  }
-
-  /**
-   * Initial lookup of raw 'class' value (if any)
-   */
-  protected _fallbackToKlass() {
-    if (!this._base.queryInput('ngClass')) {
-      this.ngClassBase = this._getAttributeValue('class') || '';
-    }
   }
 
   /**

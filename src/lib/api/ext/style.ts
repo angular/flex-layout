@@ -43,7 +43,6 @@ import {RendererAdapter} from '../core/renderer-adapter';
  */
 @Directive({
   selector: `
-    [ngStyle],
     [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
     [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
@@ -111,9 +110,7 @@ export class StyleDirective extends BaseFxDirective
 
 
   ngOnInit() {
-    if ( this._base.hasResponsiveAPI() ) {
-      this._configureMQListener();
-    }
+    this._configureMQListener();
   }
   /**
    * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
