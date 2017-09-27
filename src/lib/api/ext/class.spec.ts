@@ -9,8 +9,10 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../utils/testing/helpers';
+
+import {MdButtonModule} from '@angular/material';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -37,7 +39,11 @@ describe('class directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, MediaQueriesModule],
+      imports: [
+        MdButtonModule,
+        CommonModule,
+        MediaQueriesModule
+      ],
       declarations: [TestClassComponent, ClassDirective],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
@@ -72,8 +78,9 @@ describe('class directive', () => {
       expectNativeEl(fixture).not.toHaveCssClass('class2');
 
       // the CSS classes listed in the string (space delimited) are added,
+      // See https://angular.io/api/common/NgClass
       matchMedia.activate('xs');
-      expectNativeEl(fixture).not.toHaveCssClass('class0');
+      expectNativeEl(fixture).toHaveCssClass('class0');
       expectNativeEl(fixture).toHaveCssClass('what');
       expectNativeEl(fixture).toHaveCssClass('class2');
 
@@ -140,8 +147,8 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('xs-class');
 
     matchMedia.activate('lg');
-    expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
+    expectNativeEl(fixture).toHaveCssClass('existing-class');
   });
 
   it('should keep existing ngClass selector', () => {
@@ -204,6 +211,32 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('xs-1');
     expectNativeEl(fixture).toHaveCssClass('xs-2');
   });
+
+  it('should work with material buttons', () => {
+    createTestComponent(`
+          <button md-raised-button
+                  color="primary"
+                  type="submit"
+                  [ngClass]="{'btn-xs':formButtonXs}">
+              Save
+          </button>
+      `);
+
+    fixture.detectChanges();
+    let button = queryFor(fixture, '[md-raised-button]')[0].nativeElement;
+
+    expect(button).toHaveCssClass('mat-raised-button');
+    expect(button).toHaveCssClass('btn-xs');
+    expect(button).toHaveCssClass('mat-primary');
+
+    fixture.componentInstance.formButtonXs = false;
+    fixture.detectChanges();
+    button = queryFor(fixture, '[md-raised-button]')[0].nativeElement;
+
+    expect(button).toHaveCssClass('mat-raised-button');
+    expect(button).not.toHaveCssClass('btn-xs');
+    expect(button).toHaveCssClass('mat-primary');
+  });
 });
 
 // *****************************************************************
@@ -218,6 +251,7 @@ export class TestClassComponent implements OnInit {
   hasXs1: boolean;
   hasXs2: boolean;
   hasXs3: boolean;
+  formButtonXs = true;
 
   constructor(private _: ObservableMedia) {
   }
