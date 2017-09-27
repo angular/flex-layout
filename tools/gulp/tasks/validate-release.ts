@@ -1,5 +1,5 @@
 import {task} from 'gulp';
-import {readFileSync, existsSync} from 'fs';
+import {readFileSync} from 'fs';
 import {join} from 'path';
 import {green, red} from 'chalk';
 import {releasePackages} from './publish';

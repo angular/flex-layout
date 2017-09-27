@@ -38,7 +38,7 @@ import {Component} from '@angular/core';
   `
 })
 export class DemoFlexAlignSelf {
-  public alignTo = 'center';
+  alignTo = 'center';
 
   toggleAlignment() {
     let j = ALIGN_OPTIONS.indexOf(this.alignTo);

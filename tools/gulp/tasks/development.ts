@@ -2,7 +2,7 @@ import {task} from 'gulp';
 import {tsBuildTask, copyTask, buildAppTask, serverTask} from '../util/task_helpers';
 import {join} from 'path';
 import {
-  buildConfig, copyFiles, buildScssTask, triggerLivereload, sequenceTask,  watchFiles
+  buildConfig, copyFiles, buildScssTask, sequenceTask,  watchFiles
 } from 'lib-build-tools';
 
 // These imports don't have any typings provided.

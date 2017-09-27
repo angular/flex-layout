@@ -50,15 +50,18 @@ div.coloredContainerX > div:nth-child(2), div.colorNested > div > div:nth-child(
   background-color: #3949ab;
 }
 
-div.coloredContainerX > div:nth-child(3), div.coloredChildren > div:nth-child(3), div.colorNested > div > div:nth-child(3), div.box3 {
+div.coloredContainerX > div:nth-child(3), div.coloredChildren > div:nth-child(3),
+div.colorNested > div > div:nth-child(3), div.box3 {
   background-color: #9c27b0;
 }
 
-div.coloredContainerX > div:nth-child(4), div.coloredChildren > div:nth-child(4), div.colorNested > div > div:nth-child(4) {
+div.coloredContainerX > div:nth-child(4), div.coloredChildren > div:nth-child(4),
+div.colorNested > div > div:nth-child(4) {
   background-color: #b08752;
 }
 
-div.coloredContainerX > div:nth-child(5), div.coloredChildren > div:nth-child(5), div.colorNested > div > div:nth-child(5) {
+div.coloredContainerX > div:nth-child(5), div.coloredChildren > div:nth-child(5),
+div.colorNested > div > div:nth-child(5) {
   background-color: #5ca6b0;
 }
 

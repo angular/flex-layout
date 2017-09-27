@@ -80,7 +80,7 @@ export class MediaService implements ObservableMedia {
   /**
    * Should we announce gt-<xxx> breakpoint activations ?
    */
-  public filterOverlaps = true;
+  filterOverlaps = true;
 
   constructor(private breakpoints: BreakPointRegistry,
               private mediaWatcher: MatchMedia) {

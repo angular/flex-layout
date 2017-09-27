@@ -233,7 +233,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Does this directive have 1 or more responsive keys defined
    * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
    */
-  public hasResponsiveAPI(baseKey: string) {
+  hasResponsiveAPI(baseKey: string) {
     const totalKeys = Object.keys(this._inputMap).length;
     const baseValue = this._inputMap[baseKey];
     return (totalKeys - (!!baseValue ? 1 : 0)) > 0;

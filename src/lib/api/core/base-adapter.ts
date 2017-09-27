@@ -56,7 +56,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
     * Does this directive have 1 or more responsive keys defined
     * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
     */
-  public hasResponsiveAPI() {
+  hasResponsiveAPI() {
    return super.hasResponsiveAPI(this._baseKey);
   }
 

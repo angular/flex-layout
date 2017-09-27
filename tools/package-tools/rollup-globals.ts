@@ -1,9 +1,3 @@
-import {join} from 'path';
-import {getSubdirectoryNames} from './secondary-entry-points';
-import {buildConfig} from './build-config';
-
-/** Method that converts dash-case strings to a camel-based string. */
-const dashCaseToCamelCase = (str: string) => str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 
 /** Map of globals that are used inside of the different packages. */
 export const rollupGlobals = {
@@ -22,6 +16,8 @@ export const rollupGlobals = {
   '@angular/core/testing': 'ng.core.testing',
   '@angular/common/testing': 'ng.common.testing',
   '@angular/http/testing': 'ng.http.testing',
+  '@angular/material': 'ng.material',
+  '@angular/cdk': 'ng.cdk',
 
   '@angular/flex-layout': 'ng.flex-layout',
 

@@ -153,7 +153,7 @@ describe('flex directive', () => {
   template: `<span>PlaceHolder Template HTML</span>`
 })
 export class TestFlexComponent {
-  public direction = 'column';
+  direction = 'column';
 }
 
 
