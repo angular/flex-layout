@@ -7,7 +7,7 @@ import {Component} from '@angular/core';
   templateUrl: 'layoutAlignment.demo.html'
 })
 export class DemoLayoutAlignment {
-  public options = {
+  options = {
     direction :  'row',
     mainAxis  : 'space-around',
     crossAxis :  'center'

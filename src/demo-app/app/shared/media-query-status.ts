@@ -29,12 +29,12 @@ import {Observable} from 'rxjs/Observable';
   ]
 })
 export class MediaQueryStatus {
-  public change$: Observable<MediaChange> = this.media$.asObservable();
+  change$: Observable<MediaChange> = this.media$.asObservable();
 
   constructor(private media$: ObservableMedia) {
   }
 
-  public buildMQInfo(change: MediaChange): string {
+  buildMQInfo(change: MediaChange): string {
     if (change.mediaQuery.indexOf('orientation') > -1) {
       return '';
     }

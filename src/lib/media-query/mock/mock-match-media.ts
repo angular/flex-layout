@@ -22,13 +22,13 @@ export class MockMatchMedia extends MatchMedia {
   /**
    * Special flag used to test BreakPoint registrations with MatchMedia
    */
-  public autoRegisterQueries = true;
+  autoRegisterQueries = true;
 
   /**
    * Allow fallback to overlapping mediaQueries to determine
    * activatedInput(s).
    */
-  public useOverlaps = false;
+  useOverlaps = false;
 
   constructor(_zone: NgZone,
               @Inject(DOCUMENT) _document: any,

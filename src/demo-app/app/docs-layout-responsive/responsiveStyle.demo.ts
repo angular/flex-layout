@@ -83,8 +83,8 @@ import {Component} from '@angular/core';
   `
 })
 export class DemoResponsiveStyle  {
-  public hasStyle: boolean = false;
-  public styleLgExp = {
+  hasStyle: boolean = false;
+  styleLgExp = {
     'font-size': '40px',
     color: 'lightgreen'
   };

@@ -9,16 +9,17 @@
     "url": "git+https://github.com/angular/flex-layout.git"
   },
   "scripts": {
-    "demo:bundle": "./scripts/closure-compiler/build-devapp-bundle.sh",
+    "demo:bundle:closure": "./scripts/closure-compiler/build-devapp-bundle.sh",
     "demo:serve": "gulp serve:devapp",
     "demo:stage": "gulp stage-deploy:devapp",
     "docs:build": "gulp docs",
     "docs:build:api": "gulp api-docs",
     "lib:build": "gulp :publish:build-releases",
+    "lib:build:aot": "gulp ci:aot",
     "lib:lint": "gulp lint",
     "lib:test": "gulp test",
     "universal:build": "gulp universal:build",
-    "universal:prerender": "gulp ci:prerender"
+    "universal:ci:prerender": "gulp ci:prerender"
   },
   "version": "2.0.0-beta.9",
   "license": "MIT",
@@ -39,11 +40,11 @@
   },
   "devDependencies": {
     "@angular/animations": "^4.4.3",
-    "@angular/cdk": "^2.0.0-beta.11",
     "@angular/compiler-cli": "^4.4.3",
     "@angular/forms": "^4.4.3",
     "@angular/http": "^4.4.3",
     "@angular/material": "^2.0.0-beta.11",
+    "@angular/cdk": "^2.0.0-beta.11",
     "@angular/platform-browser-dynamic": "^4.4.3",
     "@angular/platform-server": "^4.4.3",
     "@angular/router": "^4.4.3",
@@ -80,7 +81,7 @@
     "gulp-conventional-changelog": "^1.1.3",
     "gulp-dom": "^0.9.17",
     "gulp-flatten": "^0.3.1",
-    "gulp-highlight-files": "^0.0.4",
+    "gulp-highlight-files": "^0.0.5",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
     "gulp-markdown": "^1.2.0",
@@ -103,13 +104,14 @@
     "karma-sourcemap-loader": "^0.3.7",
     "madge": "^1.6.0",
     "magic-string": "^0.21.3",
-    "merge2": "^1.0.3",
+    "minimatch": "^3.0.4",
     "minimist": "^1.2.0",
     "prompt-sync": "^4.1.5",
     "protractor": "^5.1.2",
     "request": "^2.81.0",
     "resolve-bin": "^0.4.0",
     "rollup": "^0.41.6",
+    "rollup-plugin-alias": "^1.3.1",
     "rollup-plugin-node-resolve": "^3.0.0",
     "run-sequence": "^1.2.2",
     "selenium-webdriver": "^3.4.0",
@@ -119,7 +121,7 @@
     "tsconfig-paths": "^2.2.0",
     "tslint": "^5.7.0",
     "tsutils": "^2.6.0",
-    "typescript": "~2.2.1",
+    "typescript": "~2.4.2",
     "uglify-js": "^2.8.14"
   }
 }

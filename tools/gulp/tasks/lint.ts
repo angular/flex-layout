@@ -16,9 +16,6 @@ const tsLintBaseFlags = ['-c', 'tslint.json', '--project', './tsconfig.json'];
 /** Path to the output of the Flex-Layout package. */
 const libOutPath = join(buildConfig.outputDir, 'packages', 'flex-layout');
 
-/** Path to the output of the CDK package. */
-const cdkOutPath = join(buildConfig.outputDir, 'packages', 'cdk');
-
 task('lint', ['tslint', 'stylelint', 'madge']);
 
 

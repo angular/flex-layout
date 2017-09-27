@@ -31,7 +31,7 @@ import {Component} from '@angular/core';
   `
 })
 export class DemoIssue181 {
-  public direction = 'column';
+  direction = 'column';
 
   pivot() {
     this.direction = (this.direction === 'row') ? 'column' : 'row';

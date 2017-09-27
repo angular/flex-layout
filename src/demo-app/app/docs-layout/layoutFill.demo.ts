@@ -26,9 +26,9 @@ import {Component} from '@angular/core';
   `
 })
 export class DemoLayoutFill {
-  public direction = 'row';
-  public mainAxis = 'space-around';
-  public crossAxis = 'center';
+  direction = 'row';
+  mainAxis = 'space-around';
+  crossAxis = 'center';
 
   layoutAlign() {
     return `${this.mainAxis} ${this.crossAxis}`;

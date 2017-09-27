@@ -47,7 +47,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Publish observer to enabled nested, dependent directives to listen
    * to parent 'layout' direction changes
    */
-  public layout$: Observable<string>;
+  layout$: Observable<string>;
 
   /* tslint:disable */
   @Input('fxLayout')       set layout(val)     { this._cacheInput('layout', val); };
