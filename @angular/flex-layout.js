@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-0e7d2e0');
+const VERSION = new Version('2.0.0-beta.9-0da1f88');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -1758,6 +1758,11 @@ class ClassDirective extends BaseFxDirective {
         this._base.cacheInput(key, val, true);
         this._ngClassInstance.ngClass = this._base.queryInput(key);
     }
+    set klazz(val) {
+        const key = 'class';
+        this._base.cacheInput(key, val);
+        this._ngClassInstance.klass = val;
+    }
     set ngClassXs(val) { this._base.cacheInput('ngClassXs', val, true); }
     set ngClassSm(val) { this._base.cacheInput('ngClassSm', val, true); }
     set ngClassMd(val) { this._base.cacheInput('ngClassMd', val, true); }
@@ -1777,9 +1782,7 @@ class ClassDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
-        if (this._base.hasResponsiveAPI()) {
-            this._configureMQListener();
-        }
+        this._configureMQListener();
     }
     ngDoCheck() {
         this._ngClassInstance.ngDoCheck();
@@ -1794,7 +1797,6 @@ class ClassDirective extends BaseFxDirective {
             let adapter = new RendererAdapter(this._renderer);
             this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, (adapter));
         }
-        this._fallbackToKlass();
     }
     _configureMQListener(baseKey = 'ngClass') {
         const fallbackValue = this._base.queryInput(baseKey);
@@ -1803,16 +1805,10 @@ class ClassDirective extends BaseFxDirective {
             this._ngClassInstance.ngDoCheck();
         });
     }
-    _fallbackToKlass() {
-        if (!this._base.queryInput('ngClass')) {
-            this.ngClassBase = this._getAttributeValue('class') || '';
-        }
-    }
 }
 ClassDirective.decorators = [
     { type: Directive, args: [{
                 selector: `
-    [ngClass],
     [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
     [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
@@ -1829,6 +1825,7 @@ ClassDirective.ctorParameters = () => [
 ];
 ClassDirective.propDecorators = {
     'ngClassBase': [{ type: Input, args: ['ngClass',] },],
+    'klazz': [{ type: Input, args: ['class',] },],
     'ngClassXs': [{ type: Input, args: ['ngClass.xs',] },],
     'ngClassSm': [{ type: Input, args: ['ngClass.sm',] },],
     'ngClassMd': [{ type: Input, args: ['ngClass.md',] },],
@@ -1957,9 +1954,7 @@ class StyleDirective extends BaseFxDirective {
         }
     }
     ngOnInit() {
-        if (this._base.hasResponsiveAPI()) {
-            this._configureMQListener();
-        }
+        this._configureMQListener();
     }
     ngDoCheck() {
         this._ngStyleInstance.ngDoCheck();
@@ -2017,7 +2012,6 @@ class StyleDirective extends BaseFxDirective {
 StyleDirective.decorators = [
     { type: Directive, args: [{
                 selector: `
-    [ngStyle],
     [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
     [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]

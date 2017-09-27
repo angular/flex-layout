@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-0e7d2e0');
+var VERSION = new Version('2.0.0-beta.9-0da1f88');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -2318,6 +2318,15 @@ var ClassDirective = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ClassDirective.prototype, "klazz", {
+        set: function (val) {
+            var key = 'class';
+            this._base.cacheInput(key, val);
+            this._ngClassInstance.klass = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ClassDirective.prototype, "ngClassXs", {
         set: function (val) { this._base.cacheInput('ngClassXs', val, true); },
         enumerable: true,
@@ -2389,9 +2398,7 @@ var ClassDirective = (function (_super) {
         }
     };
     ClassDirective.prototype.ngOnInit = function () {
-        if (this._base.hasResponsiveAPI()) {
-            this._configureMQListener();
-        }
+        this._configureMQListener();
     };
     ClassDirective.prototype.ngDoCheck = function () {
         this._ngClassInstance.ngDoCheck();
@@ -2406,7 +2413,6 @@ var ClassDirective = (function (_super) {
             var adapter = new RendererAdapter(this._renderer);
             this._ngClassInstance = new NgClass(this._iterableDiffers, this._keyValueDiffers, this._ngEl, (adapter));
         }
-        this._fallbackToKlass();
     };
     ClassDirective.prototype._configureMQListener = function (baseKey) {
         var _this = this;
@@ -2417,16 +2423,11 @@ var ClassDirective = (function (_super) {
             _this._ngClassInstance.ngDoCheck();
         });
     };
-    ClassDirective.prototype._fallbackToKlass = function () {
-        if (!this._base.queryInput('ngClass')) {
-            this.ngClassBase = this._getAttributeValue('class') || '';
-        }
-    };
     return ClassDirective;
 }(BaseFxDirective));
 ClassDirective.decorators = [
     { type: Directive, args: [{
-                selector: "\n    [ngClass],\n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
+                selector: "\n    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],\n    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],\n    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]\n  "
             },] },
 ];
 ClassDirective.ctorParameters = function () { return [
@@ -2439,6 +2440,7 @@ ClassDirective.ctorParameters = function () { return [
 ]; };
 ClassDirective.propDecorators = {
     'ngClassBase': [{ type: Input, args: ['ngClass',] },],
+    'klazz': [{ type: Input, args: ['class',] },],
     'ngClassXs': [{ type: Input, args: ['ngClass.xs',] },],
     'ngClassSm': [{ type: Input, args: ['ngClass.sm',] },],
     'ngClassMd': [{ type: Input, args: ['ngClass.md',] },],
@@ -2626,9 +2628,7 @@ var StyleDirective = (function (_super) {
         }
     };
     StyleDirective.prototype.ngOnInit = function () {
-        if (this._base.hasResponsiveAPI()) {
-            this._configureMQListener();
-        }
+        this._configureMQListener();
     };
     StyleDirective.prototype.ngDoCheck = function () {
         this._ngStyleInstance.ngDoCheck();
@@ -2692,7 +2692,7 @@ var StyleDirective = (function (_super) {
 }(BaseFxDirective));
 StyleDirective.decorators = [
     { type: Directive, args: [{
-                selector: "\n    [ngStyle],\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
+                selector: "\n    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],\n    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],\n    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]\n  "
             },] },
 ];
 StyleDirective.ctorParameters = function () { return [

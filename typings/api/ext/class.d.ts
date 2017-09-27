@@ -14,6 +14,7 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     protected _renderer: Renderer2;
     private _ngClassInstance;
     ngClassBase: NgClassType;
+    klazz: string;
     ngClassXs: NgClassType;
     ngClassSm: NgClassType;
     ngClassMd: NgClassType;
@@ -34,6 +35,5 @@ export declare class ClassDirective extends BaseFxDirective implements DoCheck, 
     ngOnDestroy(): void;
     protected _configureAdapters(): void;
     protected _configureMQListener(baseKey?: string): void;
-    protected _fallbackToKlass(): void;
     protected _base: BaseFxDirectiveAdapter;
 }
