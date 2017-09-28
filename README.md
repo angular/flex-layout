@@ -36,7 +36,7 @@ Developers
 *  [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
 *  [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
 *  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts)
-*  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Integration-with-Angular-CLI)
+*  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Using-Angular-CLI)
 
 Demos 
 
