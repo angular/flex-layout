@@ -41,7 +41,7 @@ Developers
 Demos 
 
 *  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/demo-app-module.ts)
+*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/demo-app-module.ts)
 
 Templates
 
