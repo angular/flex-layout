@@ -160,7 +160,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
         .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
     let numItems = items.length;
 
-    if (numItems > 1) {
+    if (numItems > 0) {
       let lastItem = items[numItems - 1];
 
       // For each `element` children EXCEPT the last,
