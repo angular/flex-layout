@@ -189,7 +189,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       };
       switch (basis || '') {
         case '':
-          css = extendObject(clearStyles, {'flex': '1 1 0.000000001px'});
+          css = extendObject(clearStyles, {'flex': `${grow} ${shrink} 0.000000001px`});
           break;
         case 'initial':   // default
         case 'nogrow':
