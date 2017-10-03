@@ -74,6 +74,51 @@ describe('flex directive', () => {
       expect(hasFlex).toBeTruthy();
     });
 
+    it('should apply `fxGrow` value to flex-grow when used default `fxFlex`', () => {
+      componentWithTemplate(`<div fxFlex fxGrow="10"></div>`);
+      fixture.detectChanges();
+
+      let dom = fixture.debugElement.children[0].nativeElement;
+      let isBox = _.hasStyle(dom, 'box-sizing', 'border-box');
+      let hasFlex = _.hasStyle(dom, 'flex', '10 1 1e-09px') ||         // IE
+          _.hasStyle(dom, 'flex', '10 1 1e-9px') ||          // Chrome
+          _.hasStyle(dom, 'flex', '10 1 0.000000001px') ||   // Safari
+          _.hasStyle(dom, 'flex', '10 1 0px');
+
+      expect(isBox).toBeTruthy();
+      expect(hasFlex).toBeTruthy();
+    });
+
+    it('should apply `fxShrink` value to flex-shrink when used default `fxFlex`', () => {
+      componentWithTemplate(`<div fxFlex fxShrink="10"></div>`);
+      fixture.detectChanges();
+
+      let dom = fixture.debugElement.children[0].nativeElement;
+      let isBox = _.hasStyle(dom, 'box-sizing', 'border-box');
+      let hasFlex = _.hasStyle(dom, 'flex', '1 10 1e-09px') ||         // IE
+          _.hasStyle(dom, 'flex', '1 10 1e-9px') ||          // Chrome
+          _.hasStyle(dom, 'flex', '1 10 0.000000001px') ||   // Safari
+          _.hasStyle(dom, 'flex', '1 10 0px');
+
+      expect(isBox).toBeTruthy();
+      expect(hasFlex).toBeTruthy();
+    });
+
+    it('should apply both `fxGrow` and `fxShrink` when used with default fxFlex', () => {
+      componentWithTemplate(`<div fxFlex fxGrow="4" fxShrink="5"></div>`);
+      fixture.detectChanges();
+
+      let dom = fixture.debugElement.children[0].nativeElement;
+      let isBox = _.hasStyle(dom, 'box-sizing', 'border-box');
+      let hasFlex = _.hasStyle(dom, 'flex', '4 5 1e-09px') ||         // IE
+          _.hasStyle(dom, 'flex', '4 5 1e-9px') ||          // Chrome
+          _.hasStyle(dom, 'flex', '4 5 0.000000001px') ||   // Safari
+          _.hasStyle(dom, 'flex', '4 5 0px');
+
+      expect(isBox).toBeTruthy();
+      expect(hasFlex).toBeTruthy();
+    });
+
     it('should add correct styles for `fxFlex="0%"` usage', () => {
       expectDOMFrom(`<div fxFlex='2%'></div>`).toHaveStyle({
         'max-width': '2%',
@@ -614,4 +659,3 @@ export class TestQueryWithFlexComponent {
   @ViewChild(FlexDirective) flex: FlexDirective;
   @ViewChild(LayoutDirective) layout: LayoutDirective;
 }
-
