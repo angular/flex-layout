@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 
 import {
-  MdButtonModule,
-  MdCardModule,
-  MdCheckboxModule,
-  MdRadioModule,
-  MdRippleModule,
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatRadioModule,
+  MatRippleModule,
   StyleModule
 } from '@angular/material';
 
@@ -17,11 +17,11 @@ import {ObserversModule} from '@angular/cdk/observers';
  */
 @NgModule({
   exports: [
-    MdButtonModule,
-    MdCardModule,
-    MdCheckboxModule,
-    MdRadioModule,
-    MdRippleModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatRippleModule,
     StyleModule,
 
     ObserversModule,
