@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-c3c7151');
+const VERSION = new Version('2.0.0-beta.9-481c2d1');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -1283,7 +1283,7 @@ class FlexDirective extends BaseFxDirective {
         };
         switch (basis || '') {
             case '':
-                css = extendObject(clearStyles, { 'flex': '1 1 0.000000001px' });
+                css = extendObject(clearStyles, { 'flex': `${grow} ${shrink} 0.000000001px` });
                 break;
             case 'initial':
             case 'nogrow':

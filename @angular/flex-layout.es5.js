@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-c3c7151');
+var VERSION = new Version('2.0.0-beta.9-481c2d1');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -1682,7 +1682,7 @@ var FlexDirective = (function (_super) {
         };
         switch (basis || '') {
             case '':
-                css = extendObject(clearStyles, { 'flex': '1 1 0.000000001px' });
+                css = extendObject(clearStyles, { 'flex': grow + " " + shrink + " 0.000000001px" });
                 break;
             case 'initial':
             case 'nogrow':

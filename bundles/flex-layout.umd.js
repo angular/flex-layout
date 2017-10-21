@@ -37,7 +37,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var VERSION = new _angular_core.Version('2.0.0-beta.9-c3c7151');
+var VERSION = new _angular_core.Version('2.0.0-beta.9-481c2d1');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -1707,7 +1707,7 @@ var FlexDirective = (function (_super) {
         };
         switch (basis || '') {
             case '':
-                css = extendObject(clearStyles, { 'flex': '1 1 0.000000001px' });
+                css = extendObject(clearStyles, { 'flex': grow + " " + shrink + " 0.000000001px" });
                 break;
             case 'initial':
             case 'nogrow':
