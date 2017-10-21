@@ -12,7 +12,7 @@ import { map } from 'rxjs/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
-var VERSION = new Version('2.0.0-beta.9-9133b18');
+var VERSION = new Version('2.0.0-beta.9-f19bff2');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -1719,7 +1719,9 @@ var FlexDirective = (function (_super) {
                     basis = '0%';
                 }
                 css = extendObject(clearStyles, {
-                    'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
+                    'flex-grow': "" + grow,
+                    'flex-shrink': "" + shrink,
+                    'flex-basis': (isValue || this._wrap) ? "" + basis : '100%'
                 });
                 break;
         }
@@ -3249,6 +3251,7 @@ var MediaService = (function () {
     MediaService.prototype._buildObservable = function () {
         var _this = this;
         var self = this;
+        var media$ = this.mediaWatcher.observe();
         var activationsOnly = function (change) {
             return change.matches === true;
         };
@@ -3259,7 +3262,7 @@ var MediaService = (function () {
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
-        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+        return map.call(filter.call(filter.call(media$, activationsOnly), excludeOverlaps), addAliasInformation);
     };
     MediaService.prototype._findByAlias = function (alias) {
         return this.breakpoints.findByAlias(alias);

@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { filter } from 'rxjs/operator/filter';
 import { NgClass, NgStyle } from '@angular/common';
 
-const VERSION = new Version('2.0.0-beta.9-9133b18');
+const VERSION = new Version('2.0.0-beta.9-f19bff2');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -1320,7 +1320,9 @@ class FlexDirective extends BaseFxDirective {
                     basis = '0%';
                 }
                 css = extendObject(clearStyles, {
-                    'flex': `${grow} ${shrink} ${(isValue || this._wrap) ? basis : '100%'}`,
+                    'flex-grow': `${grow}`,
+                    'flex-shrink': `${shrink}`,
+                    'flex-basis': (isValue || this._wrap) ? `${basis}` : '100%'
                 });
                 break;
         }
@@ -2402,6 +2404,7 @@ class MediaService {
     }
     _buildObservable() {
         const self = this;
+        const media$ = this.mediaWatcher.observe();
         const activationsOnly = (change) => {
             return change.matches === true;
         };
@@ -2412,7 +2415,7 @@ class MediaService {
             let bp = this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
-        return filter.call(map.call(filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+        return map.call(filter.call(filter.call(media$, activationsOnly), excludeOverlaps), addAliasInformation);
     }
     _findByAlias(alias) {
         return this.breakpoints.findByAlias(alias);

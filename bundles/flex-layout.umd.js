@@ -37,7 +37,7 @@ function __extends(d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
 
-var VERSION = new _angular_core.Version('2.0.0-beta.9-9133b18');
+var VERSION = new _angular_core.Version('2.0.0-beta.9-f19bff2');
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
     var _a = validateValue(value), direction = _a[0], wrap = _a[1];
@@ -1744,7 +1744,9 @@ var FlexDirective = (function (_super) {
                     basis = '0%';
                 }
                 css = extendObject(clearStyles, {
-                    'flex': grow + " " + shrink + " " + ((isValue || this._wrap) ? basis : '100%'),
+                    'flex-grow': "" + grow,
+                    'flex-shrink': "" + shrink,
+                    'flex-basis': (isValue || this._wrap) ? "" + basis : '100%'
                 });
                 break;
         }
@@ -3274,6 +3276,7 @@ var MediaService = (function () {
     MediaService.prototype._buildObservable = function () {
         var _this = this;
         var self = this;
+        var media$ = this.mediaWatcher.observe();
         var activationsOnly = function (change) {
             return change.matches === true;
         };
@@ -3284,7 +3287,7 @@ var MediaService = (function () {
             var bp = _this.breakpoints.findByQuery(change.mediaQuery);
             return !bp ? true : !(self.filterOverlaps && bp.overlapping);
         };
-        return rxjs_operator_filter.filter.call(rxjs_operator_map.map.call(rxjs_operator_filter.filter.call(this.mediaWatcher.observe(), activationsOnly), addAliasInformation), excludeOverlaps);
+        return rxjs_operator_map.map.call(rxjs_operator_filter.filter.call(rxjs_operator_filter.filter.call(media$, activationsOnly), excludeOverlaps), addAliasInformation);
     };
     MediaService.prototype._findByAlias = function (alias) {
         return this.breakpoints.findByAlias(alias);
