@@ -8,8 +8,9 @@
 
 
 #### What are the steps to reproduce?
-Providing a StackBlitz (or similar) is the *best* way to get the team to see your issue. <br/>
-*  StackBlitz starter (using latest `npm` release): https://goo.gl/y38GUZ<br/>
+Providing a StackBlitz (or similar) is the *best* way to get the team to see your issue.
+
+*  [StackBlitz starter](https://goo.gl/y38GUZ) using latest `npm` nightly release: 
 
 
 #### What is the use-case or motivation for changing an existing behavior?
