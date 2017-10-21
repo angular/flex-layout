@@ -12,7 +12,7 @@ import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../utils/testing/helpers';
 
-import {MdButtonModule} from '@angular/material';
+import {MatButtonModule} from '@angular/material';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
@@ -40,7 +40,7 @@ describe('class directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [
-        MdButtonModule,
+        MatButtonModule,
         CommonModule,
         MediaQueriesModule
       ],
@@ -175,13 +175,13 @@ describe('class directive', () => {
   });
 
   it('should support more than one responsive breakpoint on one element', () => {
-    createTestComponent(`<div ngClass.xs="xs-class" ngClass.md="md-class"></div>`);
+    createTestComponent(`<div ngClass.xs="xs-class" ngClass.md="mat-class"></div>`);
     matchMedia.activate('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
-    expectNativeEl(fixture).not.toHaveCssClass('md-class');
+    expectNativeEl(fixture).not.toHaveCssClass('mat-class');
     matchMedia.activate('md');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
-    expectNativeEl(fixture).toHaveCssClass('md-class');
+    expectNativeEl(fixture).toHaveCssClass('mat-class');
   });
 
   it('should work with ngClass object notation', () => {
@@ -214,7 +214,7 @@ describe('class directive', () => {
 
   it('should work with material buttons', () => {
     createTestComponent(`
-          <button md-raised-button
+          <button mat-raised-button
                   color="primary"
                   type="submit"
                   [ngClass]="{'btn-xs':formButtonXs}">
@@ -223,7 +223,7 @@ describe('class directive', () => {
       `);
 
     fixture.detectChanges();
-    let button = queryFor(fixture, '[md-raised-button]')[0].nativeElement;
+    let button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
     expect(button).toHaveCssClass('mat-raised-button');
     expect(button).toHaveCssClass('btn-xs');
@@ -231,7 +231,7 @@ describe('class directive', () => {
 
     fixture.componentInstance.formButtonXs = false;
     fixture.detectChanges();
-    button = queryFor(fixture, '[md-raised-button]')[0].nativeElement;
+    button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
     expect(button).toHaveCssClass('mat-raised-button');
     expect(button).not.toHaveCssClass('btn-xs');

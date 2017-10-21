@@ -7,13 +7,13 @@ import {Component} from '@angular/core';
     'columnOrder.demo.css',
   ],
   template: `
-    <md-card class="card-demo">
-      <md-card-title><a
+    <mat-card class="card-demo">
+      <mat-card-title><a
           href="http://stackoverflow.com/questions/36988183/flex-box-out-of-borders?rq=1"
-          target="_blank">StackOverflow</a></md-card-title>
-      <md-card-subtitle>Complex column ordering to wrap items to align to items above
-      </md-card-subtitle>
-      <md-card-content>
+          target="_blank">StackOverflow</a></mat-card-title>
+      <mat-card-subtitle>Complex column ordering to wrap items to align to items above
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX" (click)="toggleDirection()" [fxLayout]="direction" fxLayoutWrap
              style="cursor: pointer;">
           <div class="one   flexitem "> 1
@@ -32,11 +32,11 @@ import {Component} from '@angular/core';
             <div class="markup">&lt;div fxFlexOrder="4"&gt;</div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer class="bottomPad">
+      </mat-card-content>
+      <mat-card-footer class="bottomPad">
         <div class="hint">&lt;fxLayout="{{ direction }}"&gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoComplexColumnOrder {

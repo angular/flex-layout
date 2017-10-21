@@ -8,12 +8,12 @@ import {Component} from '@angular/core';
     'layoutAlignment.demo.css',
   ],
   template: `
-    <md-card class="card-demo">
-      <md-card-title>Flex with Align-Self</md-card-title>
-      <md-card-subtitle>Click on 'target' to explore how 'flex-align' can change the alignment for a
-        single element only.
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title>Flex with Align-Self</mat-card-title>
+      <mat-card-subtitle>Click on 'target' to explore how 'flex-align' can change the alignment
+        for a single element only.
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div class="box" style="height:200px;">
             <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px"
@@ -28,13 +28,13 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%;">
+      </mat-card-content>
+      <mat-card-footer style="width:95%;">
         <div class="hint">
           &lt;div fxFlexAlign="{{ alignTo }}"&gt;
         </div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoFlexAlignSelf {

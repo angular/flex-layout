@@ -4,12 +4,12 @@
   box-sizing: content-box !important;
 }
 
-.card-demo md-card,
-.card-demo md-card-content {
+.card-demo mat-card,
+.card-demo mat-card-content {
   margin-bottom: 24px;
 }
 
-.card-demo md-card-footer {
+.card-demo mat-card-footer {
   left: 24px;
   margin-bottom: 24px;
 }

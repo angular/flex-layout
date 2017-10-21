@@ -7,13 +7,13 @@ import {Component} from '@angular/core';
     'gridArea.demo.css',
   ],
   template: `
-    <md-card class="card-demo">
-      <md-card-title><a
+    <mat-card class="card-demo">
+      <mat-card-title><a
           href="http://stackoverflow.com/questions/37039029/flex-css-rowspan-2-and-colspan-2"
-          target="_blank">StackOverflow</a></md-card-title>
-      <md-card-subtitle>Grid Area with Column and Row Span... [Click to change direction!]
-      </md-card-subtitle>
-      <md-card-content>
+          target="_blank">StackOverflow</a></mat-card-title>
+      <mat-card-subtitle>Grid Area with Column and Row Span... [Click to change direction!]
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX" [fxLayout]="'row'+direction" (click)="toggleDirection()"
              style="cursor: pointer;">
           <div fxFlex [fxLayout]="'column'">
@@ -29,11 +29,11 @@ import {Component} from '@angular/core';
             <div class="four  flexitem " fxFlex> D</div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer class="bottomPad">
+      </mat-card-content>
+      <mat-card-footer class="bottomPad">
         <div class="hint">Current direction: &lt;fxLayout="row{{ direction }}"&gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoGridAreaRowSpan {

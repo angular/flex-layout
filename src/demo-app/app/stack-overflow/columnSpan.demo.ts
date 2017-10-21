@@ -7,15 +7,15 @@ import {Component} from '@angular/core';
     'columnSpan.demo.css',
   ],
   template: `
-    <md-card class="card-demo">
-      <md-card-title><a href="http://jsfiddle.net/tndgvkfq/" target="_blank">JsFiddle</a>
-      </md-card-title>
-      <md-card-subtitle>
+    <mat-card class="card-demo">
+      <mat-card-title><a href="http://jsfiddle.net/tndgvkfq/" target="_blank">JsFiddle</a>
+      </mat-card-title>
+      <mat-card-subtitle>
         Grid with column spans calculated using
         '<span style="color: #333333">flex: &lt;grow&gt; &lt;shrink&gt; calc(&lt;...&gt;);</span>'
         expressions.
-      </md-card-subtitle>
-      <md-card-content>
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div class="container">
             <div>flex: 1 1 5em;</div>
@@ -47,13 +47,13 @@ import {Component} from '@angular/core';
             <div [fxFlex]="calc3Cols" class="col3"> flex: 3 3 calc(15em + 20px);</div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer class="bottomPad">
+      </mat-card-content>
+      <mat-card-footer class="bottomPad">
         <div class="hint">Note: each cell has 'margin-left:10px' so the 'calc( )' expressions must
           account for those.
         </div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoGridColumnSpan {

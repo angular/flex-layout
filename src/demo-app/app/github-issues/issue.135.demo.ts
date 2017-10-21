@@ -4,12 +4,12 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-issue-135',
   template: `
-    <md-card class="card-demo">
-      <md-card-title><a href="https://github.com/angular/flex-layout/issues/135" target="_blank">
-        Issue #135</a></md-card-title>
-      <md-card-subtitle>Layout with fxFlex="auto" not restoring max-height values properly:
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title><a href="https://github.com/angular/flex-layout/issues/135" target="_blank">
+        Issue #135</a></mat-card-title>
+      <mat-card-subtitle>Layout with fxFlex="auto" not restoring max-height values properly:
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="column" class="coloredContainerX box">
             <div fxFlex="auto" fxFlex.gt-sm="70"> &lt;div fxFlex="auto" fxFlex.gt-sm="70" &gt;</div>
@@ -19,11 +19,11 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%">
+      </mat-card-content>
+      <mat-card-footer style="width:95%">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoIssue135 {

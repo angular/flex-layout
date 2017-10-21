@@ -4,11 +4,11 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-responsive-show-hide',
   template: `
-    <md-card class="card-demo">
-      <md-card-title>Show & Hide Directives</md-card-title>
-      <md-card-subtitle>Use the show hide APIs to responsively show or hide elements:
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title>Show & Hide Directives</mat-card-title>
+      <mat-card-subtitle>Use the show hide APIs to responsively show or hide elements:
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row" class="coloredContainerX box">
             <div fxFlex fxHide="false" fxHide.gt-sm> Shown on small device size.<br> Hidden on gt-sm
@@ -24,11 +24,11 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%">
+      </mat-card-content>
+      <mat-card-footer style="width:95%">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoResponsiveShowHide {

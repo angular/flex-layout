@@ -12,19 +12,19 @@ import {Component} from '@angular/core';
     './mozHolyGrail.demo.css'
   ],
   template: `
-    <md-card class='card-demo'>
-      <md-card-title>
+    <mat-card class='card-demo'>
+      <mat-card-title>
         <a href='https://mzl.la/2vvxj25'
            target='_blank'>
           Mozilla Holy-Grail Layout
         </a>
-      </md-card-title>
-      <md-card-subtitle>
+      </mat-card-title>
+      <mat-card-subtitle>
         Illustrated here is the case where the page layout suited to a browser window must be
         optimized for a smart phone window. Not only must the elements reduce in size, but the order
         in which they are presented must change. Flexbox makes this very simple
-      </md-card-subtitle>
-      <md-card-content>
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div class="colorNested box" fxLayout="column">
             <header>header</header>
@@ -37,11 +37,11 @@ import {Component} from '@angular/core';
             <footer>footer</footer>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer class="bottomPad">
+      </mat-card-content>
+      <mat-card-footer class="bottomPad">
         <div class="hint">&lt;div fxLayout="{{ direction }}" fxLayout.xs="column" &gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoMozHolyGrail {

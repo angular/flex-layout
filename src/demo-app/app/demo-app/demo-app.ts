@@ -10,13 +10,13 @@ import {Component, ViewEncapsulation} from '@angular/core';
            fxLayoutGap="20px"
            style="height:40px; min-height:40px;">
         <h2>Layout Demos: </h2>
-        <button md-raised-button color="primary" [routerLink]="['']">
+        <button mat-raised-button color="primary" [routerLink]="['']">
           Static
         </button>
-        <button md-raised-button color="primary" [routerLink]="['responsive']"> Responsive
+        <button mat-raised-button color="primary" [routerLink]="['responsive']"> Responsive
         </button>
-        <button md-raised-button color="primary" [routerLink]="['issues']"> Github</button>
-        <button md-raised-button color="primary" [routerLink]="['stackoverflow']"> StackOverflow
+        <button mat-raised-button color="primary" [routerLink]="['issues']"> Github</button>
+        <button mat-raised-button color="primary" [routerLink]="['stackoverflow']"> StackOverflow
         </button>
       </div>
       <div fxFlex fxLayout="column"

@@ -4,12 +4,12 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-responsive-flex-order',
   template: `
-    <md-card class="card-demo">
-      <md-card-title>Responsive Flex Ordering</md-card-title>
-      <md-card-subtitle>Add the flex-order directive to a layout child to set its order position
+    <mat-card class="card-demo">
+      <mat-card-title>Responsive Flex Ordering</mat-card-title>
+      <mat-card-subtitle>Add the flex-order directive to a layout child to set its order position
         within the layout container:
-      </md-card-subtitle>
-      <md-card-content>
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row" class="coloredContainerX box">
             <div fxFlex fxFlexOrder="-1">
@@ -28,11 +28,11 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%">
+      </mat-card-content>
+      <mat-card-footer style="width:95%">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoResponsiveFlexOrder {

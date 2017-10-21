@@ -4,11 +4,11 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-flex-attribute-values',
   template: `
-    <md-card class="card-demo">
-      <md-card-title>Flex Attribute Values</md-card-title>
-      <md-card-subtitle>Explore impact of non-numerical values for the 'fxFlex' API:
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title>Flex Attribute Values</mat-card-title>
+      <mat-card-subtitle>Explore impact of non-numerical values for the 'fxFlex' API:
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row wrap" class="colored box nopad">
             <div fxFlex="none"> [fxFlex="none"]</div>
@@ -21,11 +21,11 @@ import {Component} from '@angular/core';
             <div fxFlex="0"> [fxFlex="0"]</div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer>
+      </mat-card-content>
+      <mat-card-footer>
         <div class="hint">&lt;div fxLayout="row" fxLayoutWrap &gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoFlexAttributeValues {

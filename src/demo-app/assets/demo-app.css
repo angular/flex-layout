@@ -30,7 +30,7 @@ div {
   height: 300px;
 }
 
-md-card {
+mat-card {
   background-color: white;
 }
 
@@ -126,7 +126,7 @@ button.mat-primary {
   background-color: ghostwhite;
 }
 
-md-toolbar-row button {
+mat-toolbar-row button {
   min-width: 150px;
 }
 
@@ -184,7 +184,7 @@ div.colored.box.nopad > div {
   padding-bottom: 30px;
 }
 
-md-toolbar .mat-toolbar-layout md-toolbar-row {
+mat-toolbar .mat-toolbar-layout mat-toolbar-row {
   flex-direction: column;
   align-content: flex-start;
   align-items: flex-start;
@@ -195,7 +195,7 @@ md-toolbar .mat-toolbar-layout md-toolbar-row {
   margin-top: 40px;
 }
 
-md-card-content pre {
+mat-card-content pre {
   font-size: 12px;
   white-space: pre-wrap;
 }
@@ -266,12 +266,12 @@ md-card-content pre {
   padding: 0;
 }
 
-.card-demo md-card,
-.card-demo md-card-content {
+.card-demo mat-card,
+.card-demo mat-card-content {
   margin-bottom: 24px;
 }
 
-.card-demo md-card-footer {
+.card-demo mat-card-footer {
   left: 24px;
   margin-bottom: 24px;
 }

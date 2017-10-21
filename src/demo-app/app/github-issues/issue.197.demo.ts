@@ -7,12 +7,12 @@ import {Component} from '@angular/core';
   selector: 'demo-issue-197',
   template: `
 
-    <md-card class="card-demo">
-      <md-card-title><a href="https://github.com/angular/flex-layout/issues/197" target="_blank">
-        Issue #197</a></md-card-title>
-      <md-card-subtitle>Responsive Style directive should merge with default inline style:
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title><a href="https://github.com/angular/flex-layout/issues/197" target="_blank">
+        Issue #197</a></mat-card-title>
+      <mat-card-subtitle>Responsive Style directive should merge with default inline style:
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div class="coloredContainerX box fixed">
             <div class="box1"
@@ -30,11 +30,11 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
+      </mat-card-content>
+      <mat-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoIssue197 {
