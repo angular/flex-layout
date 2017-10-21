@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 import {MediaChange} from '@angular/flex-layout';
 import {ObservableMedia} from '@angular/flex-layout';
@@ -8,13 +8,13 @@ import {Observable} from 'rxjs/Observable';
   moduleId: module.id,
   selector : 'media-query-status',
   template : `
-    <div class="mqInfo" *ngIf="change$ | async as change">
-      <span title="Active MediaQuery">{{  buildMQInfo(change) }}</span>
+    <div class="mqInfo" *ngIf="media$ | async as event">
+      <span title="Active MediaQuery">{{  extractQuery(event) }}</span>
     </div>
   `,
   styles: [
       ` .mqInfo {
-      padding-left: 5px;
+      padding-left: 25px;
       margin-bottom: 5px;
       margin-top: 10px;
     }`,
@@ -26,18 +26,16 @@ import {Observable} from 'rxjs/Observable';
       ` .mqInfo > span:before {
       content: attr(title) ': ';
     }`
-  ]
+  ],
+  changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class MediaQueryStatus {
-  change$: Observable<MediaChange> = this.media$.asObservable();
+  media$: Observable<MediaChange> = this.mediaService.asObservable();
 
-  constructor(private media$: ObservableMedia) {
+  constructor(private mediaService: ObservableMedia) {
   }
 
-  buildMQInfo(change: MediaChange): string {
-    if (change.mediaQuery.indexOf('orientation') > -1) {
-      return '';
-    }
+  extractQuery(change: MediaChange): string {
     return change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
   }
 }

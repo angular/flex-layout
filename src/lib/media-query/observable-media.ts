@@ -136,6 +136,7 @@ export class MediaService implements ObservableMedia {
    */
   private _buildObservable() {
     const self = this;
+    const media$ = this.mediaWatcher.observe();
     const activationsOnly = (change: MediaChange) => {
       return change.matches === true;
     };
@@ -152,14 +153,16 @@ export class MediaService implements ObservableMedia {
      * Inject associated (if any) alias information into the MediaChange event
      * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
      */
-    return filter.call(
-        map.call(
+    return map.call(
+        filter.call(
             filter.call(
-                this.mediaWatcher.observe(),
+                media$,
                 activationsOnly
             ),
-            addAliasInformation),
-        excludeOverlaps);
+            excludeOverlaps
+        ),
+        addAliasInformation
+    );
   }
 
   /**

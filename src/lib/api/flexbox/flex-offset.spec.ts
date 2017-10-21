@@ -58,7 +58,10 @@ describe('flex directive', () => {
 
       let dom = fixture.debugElement.children[0].nativeElement;
       let isBox = _.hasStyle(dom, 'margin-left', '32px');
-      let hasFlex = _.hasStyle(dom, 'flex', '1 1 auto');
+      let hasFlex = _.hasStyle(dom, 'flex', '1 1 1e-09px') ||         // IE
+                _.hasStyle(dom, 'flex', '1 1 1e-9px') ||          // Chrome
+                _.hasStyle(dom, 'flex', '1 1 0.000000001px') ||   // Safari
+                _.hasStyle(dom, 'flex', '1 1 0px');
 
       expect(isBox).toBeTruthy();
       expect(hasFlex).toBe(true);

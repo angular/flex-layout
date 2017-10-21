@@ -37,7 +37,7 @@ import {ObservableMedia} from '@angular/flex-layout';
           </div>
         </div>
       </mat-card-content>
-      <mat-card-footer style="width:95%">
+      <mat-card-footer style="width:95%; font-size: 0.9em; padding-left: 25px;">
         <div fxLayout="row" class="hint" fxLayoutAlign="space-around">
           <div>&lt;div fxLayout="{{ firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxHide.md &gt;
           </div>
