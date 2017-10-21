@@ -15,6 +15,7 @@ addons:
 branches:
   only:
   - master
+  - next
 
 jobs:
   include:
