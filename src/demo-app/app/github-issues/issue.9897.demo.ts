@@ -7,11 +7,12 @@ import {Component} from '@angular/core';
     'issue.5345.demo.css',
   ],
   template: `
-    <md-card class="card-demo" (click)="toggleDirection()" style="cursor: pointer;">
-      <md-card-title><a href="https://github.com/angular/material/issues/9897" target="_blank">Issue
-        #9897</a></md-card-title>
-      <md-card-subtitle>Safari bug with layout-wrap and flex % values</md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo" (click)="toggleDirection()" style="cursor: pointer;">
+      <mat-card-title><a href="https://github.com/angular/material/issues/9897" target="_blank">
+        Issue #9897
+      </a></mat-card-title>
+      <mat-card-subtitle>Safari bug with layout-wrap and flex % values</mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row" [fxLayoutWrap]="wrapDirection" class="colored wrapped box">
 
@@ -25,11 +26,11 @@ import {Component} from '@angular/core';
 
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer>
+      </mat-card-content>
+      <mat-card-footer>
         <div class="hint">&lt;div fxLayout="row" fxLayoutWrap="{{ wrapDirection }}" &gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoIssue9897 {

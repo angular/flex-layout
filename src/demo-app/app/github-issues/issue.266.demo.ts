@@ -5,12 +5,12 @@ import {Component} from '@angular/core';
   selector: 'demo-issue-266',
   styleUrls: [ './issue.266.demo.css' ],
   template: `
-    <md-card class="card-demo">
-      <md-card-title>
+    <mat-card class="card-demo">
+      <mat-card-title>
         <a href="https://github.com/angular/flex-layout/issues/266" target="_blank">Issue #266</a>
-      </md-card-title>
-      <md-card-subtitle>Using ngxSplit with Flex-Layout:</md-card-subtitle>
-      <md-card-content>
+      </mat-card-title>
+      <mat-card-subtitle>Using ngxSplit with Flex-Layout:</mat-card-subtitle>
+      <mat-card-content>
         <div class="night-theme">
           <div fxLayout="row" style="height:500px" ngxSplit="row">
             <div fxFlex="30%" ngxSplitArea class="c1r1" >
@@ -55,8 +55,8 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   `
 })
 export class DemoIssue266 {

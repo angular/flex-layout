@@ -5,8 +5,7 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatRadioModule,
-  MatRippleModule,
-  StyleModule
+  MatRippleModule
 } from '@angular/material';
 
 import {PlatformModule} from '@angular/cdk/platform';
@@ -22,7 +21,6 @@ import {ObserversModule} from '@angular/cdk/observers';
     MatCheckboxModule,
     MatRadioModule,
     MatRippleModule,
-    StyleModule,
 
     ObserversModule,
     PlatformModule

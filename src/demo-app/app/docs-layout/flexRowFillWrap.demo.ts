@@ -4,11 +4,11 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-flex-row-fill-wrap',
   template: `
-    <md-card class="card-demo" (click)="toggleDirection()">
-      <md-card-title>'Flex' with Layout-Wrap</md-card-title>
-      <md-card-subtitle>Using "layout-wrap" to wrap positioned items within a layout container
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo" (click)="toggleDirection()">
+      <mat-card-title>'Flex' with Layout-Wrap</mat-card-title>
+      <mat-card-subtitle>Using "layout-wrap" to wrap positioned items within a layout container
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div [fxLayout]="direction" fxLayoutWrap class="colored wrapped box"
                (click)="toggleDirection()" style="cursor: pointer;">
@@ -23,11 +23,11 @@ import {Component} from '@angular/core';
 
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer>
+      </mat-card-content>
+      <mat-card-footer>
         <div class="hint">&lt;div fxLayout="{{ direction }}" &gt;</div>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoFlexRowFillWrap {

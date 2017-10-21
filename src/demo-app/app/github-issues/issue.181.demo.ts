@@ -4,12 +4,12 @@ import {Component} from '@angular/core';
   moduleId: module.id,
   selector: 'demo-issue-181',
   template: `
-    <md-card class="card-demo">
-      <md-card-title><a href="https://github.com/angular/flex-layout/issues/181" target="_blank">
-        Issue #181</a></md-card-title>
-      <md-card-subtitle>Wrong layout when fxHide + fxShow usages do not cooperate properly:
-      </md-card-subtitle>
-      <md-card-content>
+    <mat-card class="card-demo">
+      <mat-card-title><a href="https://github.com/angular/flex-layout/issues/181" target="_blank">
+        Issue #181</a></mat-card-title>
+      <mat-card-subtitle>Wrong layout when fxHide + fxShow usages do not cooperate properly:
+      </mat-card-subtitle>
+      <mat-card-content>
         <div class="containerX">
           <div class="coloredContainerX box fixed"
                [fxLayout]="direction"
@@ -23,11 +23,11 @@ import {Component} from '@angular/core';
             <div fxShow fxHide.md class="box3"> Type 2, row c, fxShow fxHide.md</div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
+      </mat-card-content>
+      <mat-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoIssue181 {

@@ -26,10 +26,10 @@ header, footer {
   background: #ffeebb;
 }
 
-md-card > md-card-actions:last-child {
+mat-card > mat-card-actions:last-child {
   padding-bottom: 16px;
 }
 
-md-card > md-card-actions > button {
+mat-card > mat-card-actions > button {
   margin-left: 10px;
 }

@@ -5,13 +5,13 @@ import {Component} from '@angular/core';
   selector: 'demo-responsive-style',
   template: `
 
-    <md-card class="card-demo" >
-      <md-card-title>Responsive Style</md-card-title>
-      <md-card-subtitle>
+    <mat-card class="card-demo" >
+      <mat-card-title>Responsive Style</mat-card-title>
+      <mat-card-subtitle>
         Use the fxClass and fxStyle APIs to responsively apply styles to elements:
-      </md-card-subtitle>
+      </mat-card-subtitle>
 
-      <md-card-content>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row" fxFlex class="coloredContainerX box">
             <div
@@ -23,18 +23,18 @@ import {Component} from '@angular/core';
               [ngClass.lg]="['fxClass-lg', 'fxClass-lg2']">
               Sample Text #1
               <br/>
-              <md-checkbox
+              <mat-checkbox
                 [(ngModel)]="hasStyle"
                 fxShow="false"
                 [fxShow.sm]="true"
                 [fxShow.md]="true">
                 Use Responsive Styles
-              </md-checkbox>
+              </mat-checkbox>
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-content>
+      </mat-card-content>
+      <mat-card-content>
         <pre>
         &lt;div
           fxFlex
@@ -45,9 +45,9 @@ import {Component} from '@angular/core';
           [ngClass.lg]="['fxClass-lg', 'fxClass-lg2']"&gt;
         &lt;/div&gt;
         </pre>
-      </md-card-content>
+      </mat-card-content>
 
-      <md-card-content>
+      <mat-card-content>
         <div class="containerX">
           <div fxLayout="row"
                fxFlex
@@ -62,8 +62,8 @@ import {Component} from '@angular/core';
             </div>
           </div>
         </div>
-      </md-card-content>
-      <md-card-content>
+      </mat-card-content>
+      <mat-card-content>
         <pre>
         &lt;div
           style="font-style: italic"
@@ -73,13 +73,13 @@ import {Component} from '@angular/core';
           [ngStyle.lg]="styleLgExp"&gt;
         &lt;/div&gt;
         </pre>
-      </md-card-content>
+      </mat-card-content>
 
 
-      <md-card-footer style="width:95%">
+      <mat-card-footer style="width:95%">
         <media-query-status></media-query-status>
-      </md-card-footer>
-    </md-card>
+      </mat-card-footer>
+    </mat-card>
   `
 })
 export class DemoResponsiveStyle  {

@@ -1,7 +1,7 @@
-<md-card class="card-demo">
-  <md-card-title>Layout Children with 'layout-align'</md-card-title>
-  <md-card-subtitle></md-card-subtitle>
-  <md-card-content>
+<mat-card class="card-demo">
+  <mat-card-title>Layout Children with 'layout-align'</mat-card-title>
+  <mat-card-subtitle></mat-card-subtitle>
+  <mat-card-content>
     <div class="containerX">
       <div class="colorNested box" [class.taller]="options.direction != 'row'">
         <div [fxLayout]="options.direction" [fxLayoutAlign]="layoutAlign()" style="height: 100%;">
@@ -17,50 +17,50 @@
         </div>
       </div>
     </div>
-  </md-card-content>
-  <md-card-actions fxLayout="row" fxLayoutAlign="center" fxHide fxHide.gt-sm="false">
+  </mat-card-content>
+  <mat-card-actions fxLayout="row" fxLayoutAlign="center" fxHide fxHide.gt-sm="false">
     <form fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around stretch"
          class="demo_controls">
         <div>
         <div>Layout Direction</div>
-        <md-radio-group [(ngModel)]="options.direction" name="direction" fxLayout="column">
-          <md-radio-button value="row">row</md-radio-button>
-          <md-radio-button value="column">column</md-radio-button>
-        </md-radio-group>
+        <mat-radio-group [(ngModel)]="options.direction" name="direction" fxLayout="column">
+          <mat-radio-button value="row">row</mat-radio-button>
+          <mat-radio-button value="column">column</mat-radio-button>
+        </mat-radio-group>
         </div>
         <div>
           <div>Alignment in Layout Direction
             ({{options.direction == 'row' ? 'horizontal' : 'vertical'}})
           </div>
-          <md-radio-group [(ngModel)]="options.mainAxis" name="mainAxis" fxLayout="column">
-            <md-radio-button value="">none</md-radio-button>
-            <md-radio-button value="start">start (default)</md-radio-button>
-            <md-radio-button value="center">center</md-radio-button>
-            <md-radio-button value="end">end</md-radio-button>
-            <md-radio-button value="space-around">space-around</md-radio-button>
-            <md-radio-button value="space-between">space-between</md-radio-button>
-            <md-radio-button value="space-evenly">space-evenly</md-radio-button>
-          </md-radio-group>
+          <mat-radio-group [(ngModel)]="options.mainAxis" name="mainAxis" fxLayout="column">
+            <mat-radio-button value="">none</mat-radio-button>
+            <mat-radio-button value="start">start (default)</mat-radio-button>
+            <mat-radio-button value="center">center</mat-radio-button>
+            <mat-radio-button value="end">end</mat-radio-button>
+            <mat-radio-button value="space-around">space-around</mat-radio-button>
+            <mat-radio-button value="space-between">space-between</mat-radio-button>
+            <mat-radio-button value="space-evenly">space-evenly</mat-radio-button>
+          </mat-radio-group>
         </div>
         <div>
           <div>Alignment in Perpendicular Direction
             ({{options.direction == 'column' ? 'horizontal' : 'vertical'}})
           </div>
-          <md-radio-group [(ngModel)]="options.crossAxis" name="crossAxis" fxLayout="column">
-            <md-radio-button value="none"><em>none</em></md-radio-button>
-            <md-radio-button value="start">start</md-radio-button>
-            <md-radio-button value="center">center</md-radio-button>
-            <md-radio-button value="end">end</md-radio-button>
-            <md-radio-button value="stretch">stretch (default)</md-radio-button>
-          </md-radio-group>
+          <mat-radio-group [(ngModel)]="options.crossAxis" name="crossAxis" fxLayout="column">
+            <mat-radio-button value="none"><em>none</em></mat-radio-button>
+            <mat-radio-button value="start">start</mat-radio-button>
+            <mat-radio-button value="center">center</mat-radio-button>
+            <mat-radio-button value="end">end</mat-radio-button>
+            <mat-radio-button value="stretch">stretch (default)</mat-radio-button>
+          </mat-radio-group>
         </div>
     </form>
-  </md-card-actions>
-  <md-card-footer style="width:95%;">
+  </mat-card-actions>
+  <mat-card-footer style="width:95%;">
     <div class="hint forceAbove" style="padding-left:50px;">
       &lt;div fxLayout="{{ options.direction }}"
       <span style="padding-left: 30px">fxLayoutAlign="{{ layoutAlign() }}"</span>
       &gt;
     </div>
-  </md-card-footer>
-</md-card>
+  </mat-card-footer>
+</mat-card>
