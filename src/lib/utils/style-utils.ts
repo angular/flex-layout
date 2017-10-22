@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -13,14 +13,7 @@ import {applyCssPrefixes} from './auto-prefixer';
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
  * map of property name and value (e.g. {display: 'none', flex-order: 5}).
  */
-export type StyleDefinition = string | { [property: string]: string | number };
-
-/**
- * Is this a SSR process ?
- */
-export function isBrowser(): boolean {
-  return getDom().supportsDOMEvents();
-}
+export type StyleDefinition = string | { [property: string]: string | number | null };
 
 
 /**
@@ -71,13 +64,13 @@ export function applyMultiValueStyleToElement(styles: {}, element: any, renderer
  * Find the DOM element's raw attribute value (if any)
  */
 export function lookupAttributeValue(element: HTMLElement, attribute: string): string {
-  return isBrowser() ? getDom().getAttribute(element, attribute) : '';
+  return getDom().getAttribute(element, attribute) || '';
 }
 /**
  * Find the DOM element's inline style value (if any)
  */
 export function lookupInlineStyle(element: HTMLElement, styleName: string): string {
-  return isBrowser() ? getDom().getStyle(element, styleName) : '';
+  return getDom().getStyle(element, styleName);
 }
 
 /**
@@ -85,14 +78,14 @@ export function lookupInlineStyle(element: HTMLElement, styleName: string): stri
  */
 export function lookupStyle(element: HTMLElement, styleName: string, inlineOnly = false): string {
   let value = '';
-  if (element && isBrowser()) {
+  if (element) {
     try {
       let immediateValue = value = lookupInlineStyle(element, styleName);
       if ( !inlineOnly ) {
         value = immediateValue || getDom().getComputedStyle(element).getPropertyValue(styleName);
       }
     } catch (e) {
-      // TODO: platform-server throws an exception for getComputedStyle
+      // TODO: platform-server throws an exception for getComputedStyle, will be fixed by PR 18362
     }
   }
 

@@ -44,7 +44,7 @@ System.config({
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
     '@angular/platform-browser-dynamic/testing':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
-    
+
     '@angular/material': 'node:@angular/material/bundles/material.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
     '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
@@ -67,6 +67,7 @@ System.config({
   packages: {
     // Thirdparty barrels.
     'rxjs': {main: 'index'},
+    'rxjs/operators': {main: 'index'},
 
     // Set the default extension for the root package, because otherwise the demo-app can't
     // be built within the production mode. Due to missing file extensions.

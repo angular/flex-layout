@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -10,8 +10,7 @@ import {Injectable} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable, Subscribable} from 'rxjs/Observable';
 
-import {map} from 'rxjs/operator/map';
-import {filter} from 'rxjs/operator/filter';
+import {map, filter} from 'rxjs/operators';
 
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 
@@ -153,15 +152,10 @@ export class MediaService implements ObservableMedia {
      * Inject associated (if any) alias information into the MediaChange event
      * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
      */
-    return map.call(
-        filter.call(
-            filter.call(
-                media$,
-                activationsOnly
-            ),
-            excludeOverlaps
-        ),
-        addAliasInformation
+    return media$.pipe(
+      filter(activationsOnly),
+      filter(excludeOverlaps),
+      map(addAliasInformation)
     );
   }
 
@@ -183,7 +177,7 @@ export class MediaService implements ObservableMedia {
    * Find associated breakpoint (if any)
    */
   private _toMediaQuery(query) {
-    let bp: BreakPoint = this._findByAlias(query) || this._findByQuery(query);
+    let bp: BreakPoint | null = this._findByAlias(query) || this._findByQuery(query);
     return bp ? bp.mediaQuery : query;
   }
 

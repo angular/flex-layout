@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -15,13 +15,13 @@ import {
   Renderer2,
   SimpleChanges,
 } from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 
 import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {buildLayoutCSS} from '../../utils/layout-validator';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -41,7 +41,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Create Observable for nested/child 'flex' directives. This allows
    * child flex directives to subscribe/listen for flexbox direction changes.
    */
-  protected _announcer: BehaviorSubject<string>;
+  protected _announcer: ReplaySubject<string>;
 
   /**
    * Publish observer to enabled nested, dependent directives to listen
@@ -73,7 +73,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
     super(monitor, elRef, renderer);
-    this._announcer = new BehaviorSubject<string>('row');
+    this._announcer = new ReplaySubject<string>(1);
     this.layout$ = this._announcer.asObservable();
   }
 
@@ -119,15 +119,10 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
     }
 
     // Update styles and announce to subscribers the *new* direction
-    let css = buildLayoutCSS(value);
+    let css = buildLayoutCSS(!!value ? value : '');
 
     this._applyStyleToElement(css);
     this._announcer.next(css['flex-direction']);
   }
-
-
-
-
-
 
 }

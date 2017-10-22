@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -19,7 +19,7 @@ import {BREAKPOINTS} from './break-points-token';
 @Injectable()
 export class BreakPointRegistry {
 
-  constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[ ]) {
+  constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[]) {
   }
 
   /**
@@ -46,12 +46,12 @@ export class BreakPointRegistry {
   /**
    * Search breakpoints by alias (e.g. gt-xs)
    */
-  findByAlias(alias: string): BreakPoint {
-    return this._registry.find(bp => bp.alias == alias);
+  findByAlias(alias: string): BreakPoint | null {
+    return this._registry.find(bp => bp.alias == alias) || null;
   }
 
-  findByQuery(query: string): BreakPoint {
-    return this._registry.find(bp => bp.mediaQuery == query);
+  findByQuery(query: string): BreakPoint | null {
+    return this._registry.find(bp => bp.mediaQuery == query) || null;
   }
 
   /**
@@ -75,6 +75,6 @@ export class BreakPointRegistry {
    * for property layoutGtSM.
    */
   get suffixes(): string[] {
-    return this._registry.map(it => it.suffix);
+    return this._registry.map(it => !!it.suffix ? it.suffix : '');
   }
 }
