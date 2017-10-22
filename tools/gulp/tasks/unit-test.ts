@@ -11,7 +11,7 @@ const {packagesDir, projectDir} = buildConfig;
 task(':test:build', sequenceTask(
   'clean',
   // Build ESM output of Flex-Layout that also includes all test files.
-  'flex-layout:build-tests',
+  'flex-layout:build-no-bundles',
 ));
 
 /**

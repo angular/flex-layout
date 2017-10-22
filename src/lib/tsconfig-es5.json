@@ -1,8 +1,8 @@
-// TypeScript config file that is used to compile the library. Target environment needs to be
-// ES2015 since the build process will create FESM bundles using rollup.
+// TypeScript config file that is used to compile the library into ES5.
+// TODO: Remove this file in favor of overrides when we update to ngc 5.x
 {
   "compilerOptions": {
-    "declaration": true,
+    "declaration": false,
     "stripInternal": false,
     "experimentalDecorators": true,
     "noUnusedParameters": true,
@@ -11,17 +11,17 @@
     "newLine": "lf",
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "../../dist/packages/flex-layout",
+    "outDir": "../../dist/packages/flex-layout/esm5",
     "rootDir": ".",
     "sourceMap": true,
-    "removeComments": true,
-    "target": "es2015",
+    "inlineSources": true,
+    "target": "es5",
     "lib": ["es2015", "dom"],
     "skipLibCheck": true,
     "types": [],
     "baseUrl": ".",
     "paths": {
-      "@angular/material/*": ["../../dist/packages/flex-layout/*/public-api"]
+      "@angular/flex-layout/*": ["../../dist/packages/flex-layout/*/public-api"]
     }
   },
   "files": [

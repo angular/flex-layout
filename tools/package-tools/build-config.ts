@@ -3,6 +3,8 @@ import {findBuildConfig} from './find-build-config';
 export interface BuildConfig {
   /** Current version of the project. */
   projectVersion: string;
+  /** Required Angular version for the project. */
+  angularVersion: string;
   /** Path to the root of the project. */
   projectDir: string;
   /** Path to the directory where all packages are living. */
@@ -17,7 +19,7 @@ export interface BuildConfig {
 const buildConfigPath = findBuildConfig();
 
 if (!buildConfigPath) {
-  throw 'Library Build tools were not able to find a build config. ' +
+  throw 'Material2 Build tools were not able to find a build config. ' +
   'Please create a "build-config.js" file in your project.';
 }
 

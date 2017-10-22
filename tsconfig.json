@@ -15,7 +15,7 @@
     "types": ["jasmine"],
     "baseUrl": ".",
     "paths": {
-      "@angular/flex-layout": ["./src/lib/public_api.ts"]
+      "@angular/flex-layout": ["./src/lib/public-api.ts"]
     }
   },
   "include": [

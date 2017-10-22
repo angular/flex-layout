@@ -21,7 +21,6 @@ jobs:
     - env: "MODE=lint"
     - env: "MODE=aot"
     - env: "MODE=prerender"
-    - env: "MODE=closure-compiler"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
