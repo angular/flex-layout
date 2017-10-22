@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -192,7 +192,9 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
         this._inputMap[prop] = source[prop];
       }
     } else {
-      this._inputMap[key] = source;
+      if (!!key) {
+        this._inputMap[key] = source;
+      }
     }
   }
 
@@ -220,7 +222,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected get childrenNodes() {
     const obj = this.nativeElement.children;
-    const buffer = [];
+    const buffer: any[] = [];
 
     // iterate backwards ensuring that length is an UInt32
     for (let i = obj.length; i--; ) {

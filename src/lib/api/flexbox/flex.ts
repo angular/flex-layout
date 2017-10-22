@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -50,7 +50,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
-  protected _layout = 'row';
+  protected _layout: string;
 
   /**
    * Subscription to the parent flex container's layout changes.

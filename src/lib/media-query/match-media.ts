@@ -1,15 +1,16 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {ɵgetDOM as getDom, DOCUMENT} from '@angular/platform-browser';
+import {ɵgetDOM as getDom} from '@angular/platform-browser';
+import {DOCUMENT} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operator/filter';
+import {filter} from 'rxjs/operators';
 
 import {MediaChange} from './media-change';
 
@@ -57,11 +58,8 @@ export class MatchMedia {
    * For the specified mediaQuery?
    */
   isActive(mediaQuery: string): boolean {
-    if (this._registry.has(mediaQuery)) {
-      let mql = this._registry.get(mediaQuery);
-      return mql.matches;
-    }
-    return false;
+    let mql = this._registry.get(mediaQuery);
+    return !!mql ? mql.matches : false;
   }
 
   /**
@@ -73,11 +71,15 @@ export class MatchMedia {
    *       be announced.
    */
   observe(mediaQuery?: string): Observable<MediaChange> {
-    this.registerQuery(mediaQuery);
+    if (mediaQuery) {
+      this.registerQuery(mediaQuery);
+    }
 
-    return filter.call(this._observable$, (change: MediaChange) => {
-      return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-    });
+    return this._observable$.pipe(
+      filter((change: MediaChange) => {
+        return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
+      })
+    );
   }
 
   /**

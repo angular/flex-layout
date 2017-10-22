@@ -1,12 +1,12 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
 import {Subscription} from 'rxjs/Subscription';
-import {map} from 'rxjs/operator/map';
+import {map} from 'rxjs/operators';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
@@ -117,7 +117,7 @@ export class ResponsiveActivation {
    * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
    */
   private _configureChangeObservers(): SubscriptionList {
-    let subscriptions = [];
+    let subscriptions: Subscription[] = [];
 
     this._registryMap.forEach((bp: BreakPointX) => {
       if (this._keyInUse(bp.key)) {
@@ -130,10 +130,10 @@ export class ResponsiveActivation {
         };
 
         subscriptions.push(
-            map.call(this.mediaMonitor.observe(bp.alias), buildChanges)
-                .subscribe(change => {
-                  this._onMonitorEvents(change);
-                })
+          this.mediaMonitor.observe(bp.alias).pipe(map(buildChanges))
+            .subscribe(change => {
+              this._onMonitorEvents(change);
+            })
         );
       }
     });
@@ -188,7 +188,7 @@ export class ResponsiveActivation {
     const currentKey = this._options.baseKey + current.suffix;  // e.g. suffix == 'GtSm',
     let newKey = this._activatedInputKey;                     // e.g. newKey == hideGtSm
 
-    newKey = current.matches ? currentKey : ((newKey == currentKey) ? null : newKey);
+    newKey = current.matches ? currentKey : ((newKey == currentKey) ? '' : newKey);
 
     this._activatedInputKey = this._validateInputKey(newKey);
     return this.activatedInput;
@@ -201,11 +201,10 @@ export class ResponsiveActivation {
    * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
    */
   private _validateInputKey(inputKey) {
-    let items: BreakPoint[] = this.mediaMonitor.activeOverlaps;
     let isMissingKey = (key) => !this._keyInUse(key);
 
     if (isMissingKey(inputKey)) {
-      items.some(bp => {
+      this.mediaMonitor.activeOverlaps.some(bp => {
         let key = this._options.baseKey + bp.suffix;
         if (!isMissingKey(key)) {
           inputKey = key;

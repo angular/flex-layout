@@ -1,14 +1,13 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {filter} from 'rxjs/operator/filter';
-import {map} from 'rxjs/operator/map';
+import {filter, map} from 'rxjs/operators';
 
 import {BreakPoint} from './breakpoints/break-point';
 import {BREAKPOINTS} from './breakpoints/break-points-token';
@@ -68,15 +67,12 @@ describe('observable-media', () => {
         [ObservableMedia, MatchMedia],
         (mediaService, matchMedia) => {
           let count = 0,
-              subscription = map.call(
-                  filter.call(
-                      mediaService.asObservable(),
-                      change => change.mqAlias == 'md'
-                  ),
-                  change => change.mqAlias
-              ).subscribe(_ => {
-                count += 1;
-              });
+            subscription = mediaService.asObservable().pipe(
+              filter((change: MediaChange) => change.mqAlias == 'md'),
+              map((change: MediaChange) => change.mqAlias)
+            ).subscribe(_ => {
+              count += 1;
+            });
 
 
           // Activate mediaQuery associated with 'md' alias
