@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -15,8 +15,7 @@ import {MediaChange} from './media-change';
 import {mergeAlias} from '../utils/add-alias';
 
 import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operator/filter';
-import {map} from 'rxjs/operator/map';
+import {filter, map} from 'rxjs/operators';
 
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
@@ -51,8 +50,8 @@ export class MediaMonitor {
     });
   }
 
-  get active(): BreakPoint {
-    let found = null, items = this.breakpoints.reverse();
+  get active(): BreakPoint | null {
+    let found: BreakPoint | null = null, items = this.breakpoints.reverse();
     items.forEach(bp => {
       if (bp.alias !== '') {
         if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
@@ -79,12 +78,16 @@ export class MediaMonitor {
    * otherwise return all events for BOTH activated + deactivated changes.
    */
   observe(alias?: string): Observable<MediaChange> {
-    let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+    let bp = this._breakpoints.findByAlias(alias || '') ||
+      this._breakpoints.findByQuery(alias || '');
     let hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== '' : true);
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
 
     let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-    return filter.call(map.call(media$, change => mergeAlias(change, bp)), hasAlias);
+    return media$.pipe(
+      map(change => mergeAlias(change, bp)),
+      filter(hasAlias)
+    );
   }
 
   /**
