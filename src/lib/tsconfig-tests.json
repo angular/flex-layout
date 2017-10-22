@@ -8,6 +8,9 @@
     "module": "commonjs",
     "target": "es5",
     "types": ["jasmine"],
+    "paths": {
+      "@angular/flex-layout/*": ["./*"]
+    },
     "experimentalDecorators": true,
     "strictNullChecks": false
   },

@@ -1,3 +1,22 @@
+import {join} from 'path';
+import {getSubdirectoryNames} from './secondary-entry-points';
+import {buildConfig} from './build-config';
+
+/** Method that converts dash-case strings to a camel-based string. */
+const dashCaseToCamelCase = (str: string) => str.replace(
+    /-([a-z])/g,
+    (g) => g[1].toUpperCase());
+
+/** List of potential secondary entry-points for the material package. */
+const flexLayoutSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.packagesDir, 'lib'));
+
+/** Object with all material entry points in the format of Rollup globals. */
+const rollupFlexLayoutEntryPoints = flexLayoutSecondaryEntryPoints
+    .reduce((globals: any, entryPoint: string) => {
+      const val = `ng.flex-layout.${dashCaseToCamelCase(entryPoint)}`;
+      globals[`@angular/flex-layout/${entryPoint}`] = val;
+      return globals;
+    }, {});
 
 /** Map of globals that are used inside of the different packages. */
 export const rollupGlobals = {
@@ -23,12 +42,14 @@ export const rollupGlobals = {
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
   // TODO(devversion): remove by adding minimatch and better globbing to rules
+   ...rollupFlexLayoutEntryPoints,
 
   'rxjs/BehaviorSubject': 'Rx',
   'rxjs/Observable': 'Rx',
   'rxjs/Subject': 'Rx',
   'rxjs/Subscription': 'Rx',
   'rxjs/Observer': 'Rx',
+  'rxjs/Subscriber': 'Rx',
   'rxjs/Scheduler': 'Rx',
   'rxjs/observable/combineLatest': 'Rx.Observable',
   'rxjs/observable/forkJoin': 'Rx.Observable',

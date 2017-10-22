@@ -3,8 +3,8 @@
   "version": "2.0.0-beta.9",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
-  "module": "./@angular/flex-layout.es5.js",
-  "es2015": "./@angular/flex-layout.js",
+  "module": "./esm5/flex-layout.es5.js",
+  "es2015": "./esm2015/flex-layout.js",
   "typings": "./flex-layout.d.ts",
   "repository": {
     "type": "git",
