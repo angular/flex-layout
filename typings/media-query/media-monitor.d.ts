@@ -9,7 +9,7 @@ export declare class MediaMonitor {
     constructor(_breakpoints: BreakPointRegistry, _matchMedia: MatchMedia);
     readonly breakpoints: BreakPoint[];
     readonly activeOverlaps: BreakPoint[];
-    readonly active: BreakPoint;
+    readonly active: BreakPoint | null;
     isActive(alias: string): boolean;
     observe(alias?: string): Observable<MediaChange>;
     private _registerBreakpoints();

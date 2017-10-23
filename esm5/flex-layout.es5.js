@@ -1,23 +1,23 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
 import { Directive, ElementRef, Inject, Injectable, InjectionToken, Input, IterableDiffers, KeyValueDiffers, NgModule, NgZone, Optional, Renderer2, SecurityContext, Self, SimpleChange, SkipSelf, Version } from '@angular/core';
-import { DOCUMENT, DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
-import { map } from 'rxjs/operator/map';
+import { DomSanitizer, ɵgetDOM } from '@angular/platform-browser';
+import { filter, map } from 'rxjs/operators';
 import { __extends } from 'tslib';
 import * as tslib_1 from 'tslib';
+import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { filter } from 'rxjs/operator/filter';
-import { NgClass, NgStyle } from '@angular/common';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.9-cc12733');
+var VERSION = new Version('2.0.0-beta.9-7dcd97b');
 
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
@@ -162,13 +162,6 @@ function applyCssPrefixes(target) {
 }
 
 /**
- * Is this a SSR process ?
- * @return {?}
- */
-function isBrowser() {
-    return ɵgetDOM().supportsDOMEvents();
-}
-/**
  * Applies styles given via string pair or object map to the directive element.
  * @param {?} renderer
  * @param {?} element
@@ -222,7 +215,7 @@ function applyMultiValueStyleToElement(styles, element, renderer) {
  * @return {?}
  */
 function lookupAttributeValue(element, attribute) {
-    return isBrowser() ? ɵgetDOM().getAttribute(element, attribute) : '';
+    return ɵgetDOM().getAttribute(element, attribute) || '';
 }
 /**
  * Find the DOM element's inline style value (if any)
@@ -231,7 +224,7 @@ function lookupAttributeValue(element, attribute) {
  * @return {?}
  */
 function lookupInlineStyle(element, styleName) {
-    return isBrowser() ? ɵgetDOM().getStyle(element, styleName) : '';
+    return ɵgetDOM().getStyle(element, styleName);
 }
 /**
  * Determine the inline or inherited CSS style
@@ -243,7 +236,7 @@ function lookupInlineStyle(element, styleName) {
 function lookupStyle(element, styleName, inlineOnly) {
     if (inlineOnly === void 0) { inlineOnly = false; }
     var /** @type {?} */ value = '';
-    if (element && isBrowser()) {
+    if (element) {
         try {
             var /** @type {?} */ immediateValue = value = lookupInlineStyle(element, styleName);
             if (!inlineOnly) {
@@ -251,7 +244,7 @@ function lookupStyle(element, styleName, inlineOnly) {
             }
         }
         catch (e) {
-            // TODO: platform-server throws an exception for getComputedStyle
+            // TODO: platform-server throws an exception for getComputedStyle, will be fixed by PR 18362
         }
     }
     // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
@@ -419,7 +412,7 @@ var ResponsiveActivation = (function () {
                     change.property = _this._options.baseKey;
                     return change;
                 };
-                subscriptions.push(map.call(_this.mediaMonitor.observe(bp.alias), buildChanges)
+                subscriptions.push(_this.mediaMonitor.observe(bp.alias).pipe(map(buildChanges))
                     .subscribe(function (change) {
                     _this._onMonitorEvents(change);
                 }));
@@ -477,7 +470,7 @@ var ResponsiveActivation = (function () {
     ResponsiveActivation.prototype._calculateActivatedValue = function (current) {
         var /** @type {?} */ currentKey = this._options.baseKey + current.suffix; // e.g. suffix == 'GtSm',
         var /** @type {?} */ newKey = this._activatedInputKey; // e.g. newKey == hideGtSm
-        newKey = current.matches ? currentKey : ((newKey == currentKey) ? null : newKey);
+        newKey = current.matches ? currentKey : ((newKey == currentKey) ? '' : newKey);
         this._activatedInputKey = this._validateInputKey(newKey);
         return this.activatedInput;
     };
@@ -491,10 +484,9 @@ var ResponsiveActivation = (function () {
      */
     ResponsiveActivation.prototype._validateInputKey = function (inputKey) {
         var _this = this;
-        var /** @type {?} */ items = this.mediaMonitor.activeOverlaps;
         var /** @type {?} */ isMissingKey = function (key) { return !_this._keyInUse(key); };
         if (isMissingKey(inputKey)) {
-            items.some(function (bp) {
+            this.mediaMonitor.activeOverlaps.some(function (bp) {
                 var /** @type {?} */ key = _this._options.baseKey + bp.suffix;
                 if (!isMissingKey(key)) {
                     inputKey = key;
@@ -728,7 +720,9 @@ var BaseFxDirective = (function () {
             }
         }
         else {
-            this._inputMap[key] = source;
+            if (!!key) {
+                this._inputMap[key] = source;
+            }
         }
     };
     /**
@@ -1009,14 +1003,14 @@ var BreakPointRegistry = (function () {
      * @return {?}
      */
     BreakPointRegistry.prototype.findByAlias = function (alias) {
-        return this._registry.find(function (bp) { return bp.alias == alias; });
+        return this._registry.find(function (bp) { return bp.alias == alias; }) || null;
     };
     /**
      * @param {?} query
      * @return {?}
      */
     BreakPointRegistry.prototype.findByQuery = function (query) {
-        return this._registry.find(function (bp) { return bp.mediaQuery == query; });
+        return this._registry.find(function (bp) { return bp.mediaQuery == query; }) || null;
     };
     Object.defineProperty(BreakPointRegistry.prototype, "overlappings", {
         /**
@@ -1049,7 +1043,7 @@ var BreakPointRegistry = (function () {
          * @return {?}
          */
         get: function () {
-            return this._registry.map(function (it) { return it.suffix; });
+            return this._registry.map(function (it) { return !!it.suffix ? it.suffix : ''; });
         },
         enumerable: true,
         configurable: true
@@ -1121,11 +1115,8 @@ var MatchMedia = (function () {
      * @return {?}
      */
     MatchMedia.prototype.isActive = function (mediaQuery) {
-        if (this._registry.has(mediaQuery)) {
-            var /** @type {?} */ mql = this._registry.get(mediaQuery);
-            return mql.matches;
-        }
-        return false;
+        var /** @type {?} */ mql = this._registry.get(mediaQuery);
+        return !!mql ? mql.matches : false;
     };
     /**
      * External observers can watch for all (or a specific) mql changes.
@@ -1138,10 +1129,12 @@ var MatchMedia = (function () {
      * @return {?}
      */
     MatchMedia.prototype.observe = function (mediaQuery) {
-        this.registerQuery(mediaQuery);
-        return filter.call(this._observable$, function (change) {
+        if (mediaQuery) {
+            this.registerQuery(mediaQuery);
+        }
+        return this._observable$.pipe(filter(function (change) {
             return mediaQuery ? (change.mediaQuery === mediaQuery) : true;
-        });
+        }));
     };
     /**
      * Based on the BreakPointRegistry provider, register internal listeners for each unique
@@ -1180,7 +1173,7 @@ var MatchMedia = (function () {
      * @return {?}
      */
     MatchMedia.prototype._buildMQL = function (query) {
-        var /** @type {?} */ canListen = isBrowser$1() && !!((window)).matchMedia('all').addListener;
+        var /** @type {?} */ canListen = isBrowser() && !!((window)).matchMedia('all').addListener;
         return canListen ? ((window)).matchMedia(query) : ({
             matches: query === 'all' || query === '',
             media: query,
@@ -1206,7 +1199,7 @@ var MatchMedia = (function () {
  * Determine if SSR or Browser rendering.
  * @return {?}
  */
-function isBrowser$1() {
+function isBrowser() {
     return ɵgetDOM().supportsDOMEvents();
 }
 /**
@@ -1362,11 +1355,12 @@ var MediaMonitor = (function () {
      * @return {?}
      */
     MediaMonitor.prototype.observe = function (alias) {
-        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+        var /** @type {?} */ bp = this._breakpoints.findByAlias(alias || '') ||
+            this._breakpoints.findByQuery(alias || '');
         var /** @type {?} */ hasAlias = function (change) { return (bp ? change.mqAlias !== '' : true); };
         // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
         var /** @type {?} */ media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
-        return filter.call(map.call(media$, function (change) { return mergeAlias(change, bp); }), hasAlias);
+        return media$.pipe(map(function (change) { return mergeAlias(change, bp); }), filter(hasAlias));
     };
     /**
      * Immediate calls to matchMedia() to establish listeners
@@ -1407,7 +1401,7 @@ var LayoutDirective = (function (_super) {
      */
     function LayoutDirective(monitor, elRef, renderer) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
-        _this._announcer = new BehaviorSubject('row');
+        _this._announcer = new ReplaySubject(1);
         _this.layout$ = _this._announcer.asObservable();
         return _this;
     }
@@ -1587,7 +1581,7 @@ var LayoutDirective = (function (_super) {
             value = this._mqActivation.activatedInput;
         }
         // Update styles and announce to subscribers the *new* direction
-        var /** @type {?} */ css = buildLayoutCSS(value);
+        var /** @type {?} */ css = buildLayoutCSS(!!value ? value : '');
         this._applyStyleToElement(css);
         this._announcer.next(css['flex-direction']);
     };
@@ -2612,10 +2606,6 @@ var FlexDirective = (function (_super) {
         var _this = _super.call(this, monitor, elRef, renderer) || this;
         _this._container = _container;
         _this._wrap = _wrap;
-        /**
-         * The flex-direction of this element's flex container. Defaults to 'row'.
-         */
-        _this._layout = 'row';
         _this._cacheInput('flex', '');
         _this._cacheInput('shrink', 1);
         _this._cacheInput('grow', 1);
@@ -5546,7 +5536,7 @@ var MediaService = (function () {
          * Inject associated (if any) alias information into the MediaChange event
          * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
          */
-        return map.call(filter.call(filter.call(media$, activationsOnly), excludeOverlaps), addAliasInformation);
+        return media$.pipe(filter(activationsOnly), filter(excludeOverlaps), map(addAliasInformation));
     };
     /**
      * Breakpoint locator by alias
@@ -5842,5 +5832,5 @@ var FlexLayoutModule = (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser$1 as isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
+export { VERSION, BaseFxDirective, BaseFxDirectiveAdapter, KeyOptions, ResponsiveActivation, LayoutDirective, LayoutAlignDirective, LayoutGapDirective, LayoutWrapDirective, FlexDirective, FlexAlignDirective, FlexFillDirective, FlexOffsetDirective, FlexOrderDirective, ClassDirective, StyleDirective, negativeOf, ShowHideDirective, ImgSrcDirective, RESPONSIVE_ALIASES, DEFAULT_BREAKPOINTS, ScreenTypes, ORIENTATION_BREAKPOINTS, BREAKPOINTS, BreakPointRegistry, ObservableMedia, MediaService, MatchMedia, isBrowser, MediaChange, MediaMonitor, buildMergedBreakPoints, DEFAULT_BREAKPOINTS_PROVIDER_FACTORY, DEFAULT_BREAKPOINTS_PROVIDER, CUSTOM_BREAKPOINTS_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER_FACTORY, OBSERVABLE_MEDIA_PROVIDER, MEDIA_MONITOR_PROVIDER_FACTORY, MEDIA_MONITOR_PROVIDER, MediaQueriesModule, mergeAlias, applyCssPrefixes, validateBasis, LAYOUT_VALUES, buildLayoutCSS, validateValue, isFlowHorizontal, validateWrapValue, validateSuffixes, mergeByAlias, extendObject, NgStyleKeyValue, ngStyleUtils, FlexLayoutModule };
 //# sourceMappingURL=flex-layout.es5.js.map

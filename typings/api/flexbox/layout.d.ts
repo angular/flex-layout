@@ -1,10 +1,10 @@
 import { ElementRef, OnInit, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { BaseFxDirective } from '../core/base';
 import { MediaMonitor } from '../../media-query/media-monitor';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 export declare class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
-    protected _announcer: BehaviorSubject<string>;
+    protected _announcer: ReplaySubject<string>;
     layout$: Observable<string>;
     layout: any;
     layoutXs: any;

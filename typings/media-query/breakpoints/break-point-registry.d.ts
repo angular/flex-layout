@@ -4,8 +4,8 @@ export declare class BreakPointRegistry {
     constructor(_registry: BreakPoint[]);
     readonly items: BreakPoint[];
     readonly sortedItems: BreakPoint[];
-    findByAlias(alias: string): BreakPoint;
-    findByQuery(query: string): BreakPoint;
+    findByAlias(alias: string): BreakPoint | null;
+    findByQuery(query: string): BreakPoint | null;
     readonly overlappings: BreakPoint[];
     readonly aliases: string[];
     readonly suffixes: string[];
