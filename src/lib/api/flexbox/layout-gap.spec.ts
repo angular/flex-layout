@@ -140,7 +140,7 @@ describe('layout-gap directive', () => {
 
     }));
 
-    fit('should add update gap styles when only 1 row is remaining', async(() => {
+    it('should add update gap styles when only 1 row is remaining', async(() => {
       let template = `
               <div fxLayoutAlign='center center' fxLayoutGap='13px'>
                   <div fxFlex *ngFor='let row of rows'></div>
