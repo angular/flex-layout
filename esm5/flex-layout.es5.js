@@ -17,7 +17,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.9-7dcd97b');
+var VERSION = new Version('2.0.0-beta.9-99e7450');
 
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
@@ -2190,7 +2190,7 @@ var LayoutGapDirective = (function (_super) {
         var /** @type {?} */ items = this.childrenNodes
             .filter(function (el) { return el.nodeType === 1 && _this._getDisplayStyle(el) != 'none'; });
         var /** @type {?} */ numItems = items.length;
-        if (numItems > 1) {
+        if (numItems > 0) {
             var /** @type {?} */ lastItem = items[numItems - 1];
             // For each `element` children EXCEPT the last,
             // set the margin right/bottom styles...

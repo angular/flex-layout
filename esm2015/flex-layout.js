@@ -12,7 +12,7 @@ import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-const VERSION = new Version('2.0.0-beta.9-7dcd97b');
+const VERSION = new Version('2.0.0-beta.9-99e7450');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -991,7 +991,7 @@ class LayoutGapDirective extends BaseFxDirective {
         let items = this.childrenNodes
             .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
         let numItems = items.length;
-        if (numItems > 1) {
+        if (numItems > 0) {
             let lastItem = items[numItems - 1];
             items = items.filter((_, j) => j < numItems - 1);
             this._applyStyleToElements(this._buildCSS(value), items);
