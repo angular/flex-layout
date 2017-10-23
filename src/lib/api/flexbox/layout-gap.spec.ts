@@ -140,6 +140,35 @@ describe('layout-gap directive', () => {
 
     }));
 
+    it('should add update gap styles when only 1 row is remaining', async(() => {
+      let template = `
+              <div fxLayoutAlign='center center' fxLayoutGap='13px'>
+                  <div fxFlex *ngFor='let row of rows'></div>
+              </div>
+          `;
+      fixture = createTestComponent(template);
+      fixture.componentInstance.direction = 'row';
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(4);
+
+      fixture.componentInstance.rows = new Array(1);
+      fixture.detectChanges();
+
+      setTimeout(() => {
+        // Since the layoutGap directive detects the *ngFor changes by using a MutationObserver, the
+        // browser will take up some time, to actually announce the changes to the directive.
+        // (Kudos to @DevVersion)
+
+        nodes = queryFor(fixture, '[fxFlex]');
+        expect(nodes.length).toEqual(1);
+
+        expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+      });
+
+    }));
+
     it('should apply margin-top for column layouts', () => {
       verifyCorrectMargin('column', 'margin-bottom');
     });
