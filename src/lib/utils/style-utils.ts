@@ -50,9 +50,10 @@ export function applyStyleToElements(renderer: Renderer2,
 /**
  * Applies the styles to the element. The styles object map may contain an array of values.
  * Each value will be added as element style.
+ * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones.
  */
 export function applyMultiValueStyleToElement(styles: {}, element: any, renderer: Renderer2) {
-  Object.keys(styles).forEach(key => {
+  Object.keys(styles).sort().forEach(key => {
     const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
     for (let value of values) {
       renderer.setStyle(element, key, value);
