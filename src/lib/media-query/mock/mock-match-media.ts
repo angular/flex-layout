@@ -153,7 +153,9 @@ export class MockMatchMedia extends MatchMedia {
   private _deactivateAll() {
     if (this._actives.length) {
       // Deactivate all current MQLs and reset the buffer
-      this._actives.map(it => it.deactivate());
+      for (const it of this._actives) {
+        it.deactivate();
+      }
       this._actives = [];
     }
     return this;
