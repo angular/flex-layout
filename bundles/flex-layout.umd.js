@@ -40,7 +40,7 @@ function __extends(d, b) {
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new _angular_core.Version('2.0.0-beta.9-99eabfb');
+var VERSION = new _angular_core.Version('2.0.0-beta.9-5823f4a');
 
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
