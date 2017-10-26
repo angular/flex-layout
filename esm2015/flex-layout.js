@@ -12,7 +12,7 @@ import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-const VERSION = new Version('2.0.0-beta.9-99e7450');
+const VERSION = new Version('2.0.0-beta.9-99eabfb');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {
@@ -122,7 +122,7 @@ function applyStyleToElements(renderer, style, elements) {
     });
 }
 function applyMultiValueStyleToElement(styles, element, renderer) {
-    Object.keys(styles).forEach(key => {
+    Object.keys(styles).sort().forEach(key => {
         const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
         for (let value of values) {
             renderer.setStyle(element, key, value);

@@ -17,7 +17,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.9-99e7450');
+var VERSION = new Version('2.0.0-beta.9-99eabfb');
 
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
@@ -194,13 +194,14 @@ function applyStyleToElements(renderer, style, elements) {
 /**
  * Applies the styles to the element. The styles object map may contain an array of values.
  * Each value will be added as element style.
+ * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones.
  * @param {?} styles
  * @param {?} element
  * @param {?} renderer
  * @return {?}
  */
 function applyMultiValueStyleToElement(styles, element, renderer) {
-    Object.keys(styles).forEach(function (key) {
+    Object.keys(styles).sort().forEach(function (key) {
         var /** @type {?} */ values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
         for (var _i = 0, values_1 = values; _i < values_1.length; _i++) {
             var value = values_1[_i];
