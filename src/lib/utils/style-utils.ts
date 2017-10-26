@@ -55,6 +55,7 @@ export function applyStyleToElements(renderer: Renderer2,
 export function applyMultiValueStyleToElement(styles: {}, element: any, renderer: Renderer2) {
   Object.keys(styles).sort().forEach(key => {
     const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+    values.sort();
     for (let value of values) {
       renderer.setStyle(element, key, value);
     }
