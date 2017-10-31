@@ -7,7 +7,8 @@
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators/filter';
+import {map} from 'rxjs/operators/map';
 
 import {BreakPoint} from './breakpoints/break-point';
 import {BREAKPOINTS} from './breakpoints/break-points-token';
