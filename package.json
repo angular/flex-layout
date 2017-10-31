@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "2.0.0-beta.9-e3b7fde",
+  "version": "2.0.0-beta.10",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
   "module": "./esm5/flex-layout.es5.js",
@@ -15,7 +15,8 @@
     "flex-layout",
     "flexbox css",
     "media query",
-    "breakpoints"
+    "breakpoints",
+    "responsive"
   ],
   "license": "MIT",
   "bugs": {
@@ -23,8 +24,8 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
-    "@angular/core": "~4.4.4",
-    "@angular/common": "~4.4.4"
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG"
   },
   "dependencies": {
     "tslib": "^1.7.1"
