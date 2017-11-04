@@ -12,7 +12,7 @@ import { DOCUMENT, NgClass, NgStyle } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
-const VERSION = new Version('2.0.0-beta.10-dc23b6d');
+const VERSION = new Version('2.0.0-beta.10-4905443');
 
 const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 function buildLayoutCSS(value) {

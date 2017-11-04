@@ -17,7 +17,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 /**
  * Current version of Angular Flex-Layout.
  */
-var VERSION = new Version('2.0.0-beta.10-dc23b6d');
+var VERSION = new Version('2.0.0-beta.10-4905443');
 
 var LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 /**
