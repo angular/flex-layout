@@ -273,7 +273,7 @@
     start('Building deployed files...');
     exec([
       'rm -rf dist',
-      'gulp build:release'
+      'gulp flex-layout:build-release:clean'
      ]);
     done();
 
@@ -284,7 +284,6 @@
 
     exec([
       'cp -Rf ../dist/@angular/flex-layout/* ./',                   // local build output dir
-      'cp -f ../scripts/release/package.json ./',  // package for the deployed npm build
       'cp -f ../CHANGELOG.md .',                                    // always over the CHANGELOG
       'git add -A',
       `git commit -m "build(deploy): release version ${newVersion}"`
