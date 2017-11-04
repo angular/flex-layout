@@ -24,7 +24,8 @@
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
     "@angular/core": "0.0.0-NG",
-    "@angular/common": "0.0.0-NG"
+    "@angular/common": "0.0.0-NG",
+    "rxjs": "^5.5.0"
   },
   "dependencies": {
     "tslib": "^1.7.1"
