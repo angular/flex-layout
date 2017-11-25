@@ -10,7 +10,8 @@ import {Injectable} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable, Subscribable} from 'rxjs/Observable';
 
-import {map, filter} from 'rxjs/operators';
+import {map} from 'rxjs/operators/map';
+import {filter} from 'rxjs/operators/filter';
 
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
 
@@ -52,7 +53,7 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  *  @usage
  *
  *  // RxJS
- *  import 'rxjs/add/operator/filter';
+ *  import {filter} from 'rxjs/operators/filter';
  *  import { ObservableMedia } from '@angular/flex-layout';
  *
  *  @Component({ ... })
@@ -69,8 +70,9 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  *      //      media.subscribe(onChange);
  *
  *      media.asObservable()
- *        .filter((change:MediaChange) => true)   // silly noop filter
- *        .subscribe(onChange);
+ *        .pipe(
+ *          filter((change:MediaChange) => true)   // silly noop filter
+ *        ).subscribe(onChange);
  *    }
  *  }
  */

@@ -52,6 +52,7 @@ export const rollupGlobals = {
   'rxjs/Subscriber': 'Rx',
   'rxjs/Scheduler': 'Rx',
   'rxjs/ReplaySubject': 'Rx',
+
   'rxjs/observable/combineLatest': 'Rx.Observable',
   'rxjs/observable/forkJoin': 'Rx.Observable',
   'rxjs/observable/fromEvent': 'Rx.Observable',
@@ -59,18 +60,7 @@ export const rollupGlobals = {
   'rxjs/observable/of': 'Rx.Observable',
   'rxjs/observable/throw': 'Rx.Observable',
   'rxjs/observable/defer': 'Rx.Observable',
-  'rxjs/operators': 'Rx.Observable',
-  'rxjs/operators/index': 'Rx.Observable',
 
-  'rxjs/add/observable/merge': 'Rx.Observable',
-  'rxjs/add/observable/fromEvent': 'Rx.Observable',
-  'rxjs/add/observable/of': 'Rx.Observable',
-  'rxjs/add/observable/interval': 'Rx.Observable',
-  'rxjs/add/operator/startWith': 'Rx.Observable.prototype',
-  'rxjs/add/operator/map': 'Rx.Observable.prototype',
-  'rxjs/add/operator/debounceTime': 'Rx.Observable.prototype',
-  'rxjs/add/operator/distinctUntilChanged': 'Rx.Observable.prototype',
-  'rxjs/add/operator/first': 'Rx.Observable.prototype',
-  'rxjs/add/operator/catch': 'Rx.Observable.prototype',
-  'rxjs/add/operator/switchMap': 'Rx.Observable.prototype'
+  'rxjs/operators/filter': 'Rx.operators',
+  'rxjs/operators/map': 'Rx.operators',
 };

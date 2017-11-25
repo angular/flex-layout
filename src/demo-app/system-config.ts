@@ -49,7 +49,6 @@ System.config({
   packages: {
     // 3rd-Party barrels.
     'rxjs': { main: 'index' },
-    'rxjs/operators': {main: 'index'},
     // Set the default extension for the root package, because otherwise the demo-app can't
     // be built within the production mode. Due to missing file extensions.
     '.': {

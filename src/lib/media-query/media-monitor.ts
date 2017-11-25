@@ -15,7 +15,8 @@ import {MediaChange} from './media-change';
 import {mergeAlias} from '../utils/add-alias';
 
 import {Observable} from 'rxjs/Observable';
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators/filter';
+import {map} from 'rxjs/operators/map';
 
 /**
  * MediaMonitor uses the MatchMedia service to observe mediaQuery changes (both activations and
