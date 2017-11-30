@@ -14,7 +14,7 @@ import {Component} from '@angular/core';
       <mat-card-subtitle>Safari bug with layout-wrap and flex % values</mat-card-subtitle>
       <mat-card-content>
         <div class="containerX">
-          <div fxLayout="row" [fxLayoutWrap]="wrapDirection" class="colored wrapped box">
+          <div [fxLayout]="'row ' + wrapDirection" class="colored wrapped box">
 
             <div fxFlex="30"> fxFlex="30"</div>
             <div fxFlex="45"> fxFlex="45"</div>
@@ -28,7 +28,7 @@ import {Component} from '@angular/core';
         </div>
       </mat-card-content>
       <mat-card-footer>
-        <div class="hint">&lt;div fxLayout="row" fxLayoutWrap="{{ wrapDirection }}" &gt;</div>
+        <div class="hint">&lt;div [fxLayout]="'row ' + wrapDirection" &gt;</div>
       </mat-card-footer>
     </mat-card>
   `

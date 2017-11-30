@@ -25,7 +25,6 @@ import {FlexFillDirective} from './api/flexbox/flex-fill';
 import {FlexOffsetDirective} from './api/flexbox/flex-offset';
 import {FlexOrderDirective} from './api/flexbox/flex-order';
 import {LayoutAlignDirective} from './api/flexbox/layout-align';
-import {LayoutWrapDirective} from './api/flexbox/layout-wrap';
 import {LayoutGapDirective} from './api/flexbox/layout-gap';
 
 import {ShowHideDirective} from './api/ext/show-hide';
@@ -43,7 +42,6 @@ import {ImgSrcDirective} from './api/ext/img-src';
 
 const ALL_DIRECTIVES = [
   LayoutDirective,
-  LayoutWrapDirective,
   LayoutGapDirective,
   LayoutAlignDirective,
   FlexDirective,

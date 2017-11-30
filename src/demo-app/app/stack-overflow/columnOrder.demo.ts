@@ -14,7 +14,7 @@ import {Component} from '@angular/core';
       <mat-card-subtitle>Complex column ordering to wrap items to align to items above
       </mat-card-subtitle>
       <mat-card-content>
-        <div class="containerX" (click)="toggleDirection()" [fxLayout]="direction" fxLayoutWrap
+        <div class="containerX" (click)="toggleDirection()" [fxLayout]="direction + ' wrap'"
              style="cursor: pointer;">
           <div class="one   flexitem "> 1
             <div class="markup">&lt;div fxFlexOrder="1"&gt;</div>
