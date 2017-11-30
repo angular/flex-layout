@@ -10,7 +10,7 @@ import {Component} from '@angular/core';
       </mat-card-subtitle>
       <mat-card-content>
         <div class="containerX">
-          <div [fxLayout]="direction" fxLayoutWrap class="colored wrapped box"
+          <div [fxLayout]="direction + ' wrap'" class="colored wrapped box"
                (click)="toggleDirection()" style="cursor: pointer;">
 
             <div fxFlex="30"> fxFlex="30"</div>

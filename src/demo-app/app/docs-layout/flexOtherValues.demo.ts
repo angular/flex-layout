@@ -23,7 +23,7 @@ import {Component} from '@angular/core';
         </div>
       </mat-card-content>
       <mat-card-footer>
-        <div class="hint">&lt;div fxLayout="row" fxLayoutWrap &gt;</div>
+        <div class="hint">&lt;div fxLayout="row wrap" &gt;</div>
       </mat-card-footer>
     </mat-card>
   `
