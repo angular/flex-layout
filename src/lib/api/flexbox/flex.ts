@@ -25,7 +25,6 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
-import {LayoutWrapDirective} from './layout-wrap';
 import {validateBasis} from '../../utils/basis-validator';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
@@ -80,13 +79,12 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   @Input('fxFlex.lt-xl') set flexLtXl(val) { this._cacheInput('flexLtXl', val); };
   /* tslint:enable */
 
-  // Note: Explicitly @SkipSelf on LayoutDirective and LayoutWrapDirective because we are looking
+  // Note: Explicitly @SkipSelf on LayoutDirective because we are looking
   //       for the parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer2,
-              @Optional() @SkipSelf() protected _container: LayoutDirective,
-              @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective) {
+              @Optional() @SkipSelf() protected _container: LayoutDirective) {
 
     super(monitor, elRef, renderer);
 
@@ -230,14 +228,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
             basis = '0%';
           }
 
-          // Set max-width = basis if using layout-wrap
-          // tslint:disable-next-line:max-line-length
-          // @see https://github.com/philipwalton/flexbugs#11-min-and-max-size-declarations-are-ignored-when-wrapping-flex-items
-
           css = extendObject(clearStyles, { // fix issue #5345
             'flex-grow' : `${grow}`,
             'flex-shrink' : `${shrink}`,
-            'flex-basis' : (isValue || this._wrap) ? `${basis}` : '100%'
+            'flex-basis' : isValue ? `${basis}` : '100%'
           });
           break;
       }

@@ -247,9 +247,8 @@ describe('layout-gap directive', () => {
       let styles = ['.col1 { display:none !important;'];
       let template = `
             <div class='container'
-                 [fxLayout]='direction'
-                 [fxLayoutGap]='gap'
-                 fxLayoutWrap>
+                 [fxLayout]='direction + " wrap"'
+                 [fxLayoutGap]='gap'>
               <div fxFlex class='col1'>Div 1</div>
               <div fxFlex class='col2'>Div 2</div>
               <div fxFlex class='col3'>Div 2</div>
