@@ -1,13 +1,12 @@
-import {Directive, ElementRef, Inject, Output} from '@angular/core';
-import {DOCUMENT} from '@angular/platform-browser';
-import { isBrowser } from '../util/helper';
+import {Directive, ElementRef, Inject, Output, PLATFORM_ID} from '@angular/core';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 
 import {Observable} from 'rxjs/Observable';
+import {fromEvent} from 'rxjs/observable/fromEvent';
+import {switchMap} from 'rxjs/operators/switchMap';
+import {map} from 'rxjs/operators/map';
+import {takeUntil} from 'rxjs/operators/takeUntil';
 
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/map';
 
 @Directive({
   selector: '[ngxSplitHandle]',
@@ -20,17 +19,21 @@ export class SplitHandleDirective {
 
   @Output() drag: Observable<{ x: number, y: number }>;
 
-  constructor(ref: ElementRef, @Inject(DOCUMENT) _document: any) {
+  constructor(
+    ref: ElementRef,
+    @Inject(DOCUMENT) _document: any,
+    @Inject(PLATFORM_ID) private _platformId: Object
+  ) {
     const getMouseEventPosition = (event: MouseEvent) => ({x: event.movementX, y: event.movementY});
 
-   if ( isBrowser() ) {
+   if ( isPlatformBrowser(PLATFORM_ID) ) {
     /* tslint:disable */
-    const mousedown$ = Observable.fromEvent(ref.nativeElement, 'mousedown').map(getMouseEventPosition);
-    const mousemove$ = Observable.fromEvent(_document, 'mousemove').map(getMouseEventPosition);
-    const mouseup$ = Observable.fromEvent(_document, 'mouseup').map(getMouseEventPosition);
+    const mousedown$ = fromEvent(ref.nativeElement, 'mousedown').pipe(map(getMouseEventPosition));
+    const mousemove$ = fromEvent(_document, 'mousemove').pipe(map(getMouseEventPosition));
+    const mouseup$ = fromEvent(_document, 'mouseup').pipe(map(getMouseEventPosition));
 
     /* tslint:enable*/
-    this.drag = mousedown$.switchMap(_ => mousemove$.takeUntil(mouseup$));
+    this.drag = mousedown$.pipe(switchMap(_ => mousemove$.pipe(takeUntil(mouseup$))));
    }
 
   }

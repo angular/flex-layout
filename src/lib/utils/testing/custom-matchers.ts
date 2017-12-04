@@ -19,7 +19,7 @@ export const expect: (actual: any) => NgMatchers = <any> _global.expect;
 /**
  * Jasmine matchers that check Angular specific conditions.
  */
-export interface NgMatchers extends jasmine.Matchers {
+export interface NgMatchers extends jasmine.Matchers<any> {
   /**
    * Expect the element to have exactly the given text.
    *
@@ -209,7 +209,7 @@ function buildCompareStyleFunction(inlineOnly = true) {
 
     let allPassed: boolean;
     if (typeof styles === 'string') {
-      styles = {[styles]: null};
+      styles = {[styles]: ''};
     }
 
     allPassed = Object.keys(styles).length !== 0;
