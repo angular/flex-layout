@@ -20,12 +20,15 @@ System.config({
   map: {
     'rxjs': 'node:rxjs',
     'main': 'main.js',
+    'tslib': 'node:tslib/tslib.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
     '@angular/core/testing': 'node:@angular/core/bundles/core-testing.umd.js',
     '@angular/common': 'node:@angular/common/bundles/common.umd.js',
     '@angular/common/testing': 'node:@angular/common/bundles/common-testing.umd.js',
+    '@angular/common/http': 'node:@angular/common/bundles/common-http.umd.js',
+    '@angular/common/http/testing': 'node:@angular/common/bundles/common-http-testing.umd.js',
     '@angular/compiler': 'node:@angular/compiler/bundles/compiler.umd.js',
     '@angular/compiler/testing': 'node:@angular/compiler/bundles/compiler-testing.umd.js',
     '@angular/http': 'node:@angular/http/bundles/http.umd.js',
@@ -48,10 +51,12 @@ System.config({
     '@angular/material': 'node:@angular/material/bundles/material.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
     '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
+    '@angular/cdk/accordion': 'node:@angular/cdk/bundles/cdk-accordion.umd.js',
     '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
     '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
     '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
     '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/layout': 'node:@angular/cdk/bundles/cdk-layout.umd.js',
     '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
     '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
     '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',

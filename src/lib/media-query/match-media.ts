@@ -10,7 +10,7 @@ import {ɵgetDOM as getDom} from '@angular/platform-browser';
 import {DOCUMENT} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operators';
+import {filter} from 'rxjs/operators/filter';
 
 import {MediaChange} from './media-change';
 

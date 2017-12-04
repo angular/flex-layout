@@ -5,9 +5,10 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ElementRef} from '@angular/core';
+import {ElementRef, Renderer2} from '@angular/core';
 import {BaseFxDirectiveAdapter} from './base-adapter';
 import {expect} from '../../utils/testing/custom-matchers';
+import {MediaMonitor} from '@angular/flex-layout/media-query';
 
 export class MockElementRef extends ElementRef {
   constructor() {
@@ -20,7 +21,7 @@ export class MockElementRef extends ElementRef {
 describe('BaseFxDirectiveAdapter class', () => {
   let component;
   beforeEach(() => {
-    component = new BaseFxDirectiveAdapter(null, null, new MockElementRef(), null);
+    component = new BaseFxDirectiveAdapter('', {} as MediaMonitor, new MockElementRef(), {} as Renderer2); // tslint:disable-line:max-line-length
   });
   describe('cacheInput', () => {
     it('should call _cacheInputArray when source is an array', () => {

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Subscription} from 'rxjs/Subscription';
-import {map} from 'rxjs/operators';
+import {map} from 'rxjs/operators/map';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
@@ -130,10 +130,12 @@ export class ResponsiveActivation {
         };
 
         subscriptions.push(
-          this.mediaMonitor.observe(bp.alias).pipe(map(buildChanges))
-            .subscribe(change => {
-              this._onMonitorEvents(change);
-            })
+          this.mediaMonitor
+              .observe(bp.alias)
+              .pipe(map(buildChanges))
+              .subscribe(change => {
+                this._onMonitorEvents(change);
+              })
         );
       }
     });

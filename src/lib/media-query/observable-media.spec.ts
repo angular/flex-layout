@@ -7,7 +7,8 @@
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {filter, map} from 'rxjs/operators';
+import {filter} from 'rxjs/operators/filter';
+import {map} from 'rxjs/operators/map';
 
 import {BreakPoint} from './breakpoints/break-point';
 import {BREAKPOINTS} from './breakpoints/break-points-token';
@@ -24,13 +25,14 @@ import {OBSERVABLE_MEDIA_PROVIDER} from './observable-media-provider';
 import {MockMatchMediaProvider} from './mock/mock-match-media';
 
 describe('observable-media', () => {
+
   describe('with default BreakPoints', () => {
     let knownBreakPoints: BreakPoint[] = [];
-    let findMediaQuery = (alias) => {
+    let findMediaQuery: (alias: string) => string = (alias) => {
       const NOT_FOUND = `${alias} not found`;
       return knownBreakPoints.reduce((mediaQuery, bp) => {
         return mediaQuery || ((bp.alias === alias) ? bp.mediaQuery : null);
-      }, null) || NOT_FOUND;
+      }, null) as string || NOT_FOUND;
     };
     beforeEach(() => {
       // Configure testbed to prepare services
@@ -107,34 +109,60 @@ describe('observable-media', () => {
             current = change;
           });
 
-          // Confirm initial match is for 'all'
-          expect(current).toBeDefined();
-          expect(current.matches).toBeTruthy();
-          expect(current.mediaQuery).toEqual('all');
+          async(() => {
+            // Confirm initial match is for 'all'
+            expect(current).toBeDefined();
+            expect(current.matches).toBeTruthy();
+            expect(current.mediaQuery).toEqual('all');
 
-          try {
-            matchMedia.autoRegisterQueries = false;
+            try {
+              matchMedia.autoRegisterQueries = false;
 
+              // Activate mediaQuery associated with 'md' alias
+              matchMedia.activate('md');
+              expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+
+              // Allow overlapping activations to be announced to observers
+              media$.filterOverlaps = false;
+
+              matchMedia.activate('gt-lg');
+              expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+              matchMedia.activate('unknown');
+              expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+            } finally {
+              matchMedia.autoRegisterQueries = true;
+              subscription.unsubscribe();
+            }
+          });
+        }));
+
+    it('can `.unsubscribe()` properly', inject(
+        [ObservableMedia, MatchMedia],
+        (media, matchMedia) => {
+          let current: MediaChange;
+          let subscription = media.subscribe((change: MediaChange) => {
+            current = change;
+          });
+
+          async(() => {
             // Activate mediaQuery associated with 'md' alias
             matchMedia.activate('md');
             expect(current.mediaQuery).toEqual(findMediaQuery('md'));
 
-            // Allow overlapping activations to be announced to observers
-            media$.filterOverlaps = false;
-
-            matchMedia.activate('gt-lg');
-            expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
-            matchMedia.activate('unknown');
-            expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
-          } finally {
-            matchMedia.autoRegisterQueries = true;
+            // Un-subscribe
             subscription.unsubscribe();
-          }
+
+            matchMedia.activate('lg');
+            expect(current.mqAlias).toBe('md');
+
+            matchMedia.activate('xs');
+            expect(current.mqAlias).toBe('md');
+          });
         }));
 
-    it('can `.unsubscribe()` properly', async(inject(
+    it('can observe a startup activation of XS', inject(
         [ObservableMedia, MatchMedia],
         (media, matchMedia) => {
           let current: MediaChange;
@@ -142,39 +170,18 @@ describe('observable-media', () => {
             current = change;
           });
 
-          // Activate mediaQuery associated with 'md' alias
-          matchMedia.activate('md');
-          expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+          async(() => {
+            // Activate mediaQuery associated with 'md' alias
+            matchMedia.activate('xs');
+            expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
 
-          // Un-subscribe
-          subscription.unsubscribe();
+            // Un-subscribe
+            subscription.unsubscribe();
 
-          matchMedia.activate('lg');
-          expect(current.mqAlias).toBe('md');
-
-          matchMedia.activate('xs');
-          expect(current.mqAlias).toBe('md');
-        })));
-
-    it('can observe a startup activation of XS', async(inject(
-        [ObservableMedia, MatchMedia],
-        (media, matchMedia) => {
-          let current: MediaChange;
-          let subscription = media.subscribe((change: MediaChange) => {
-            current = change;
+            matchMedia.activate('lg');
+            expect(current.mqAlias).toBe('xs');
           });
-
-          // Activate mediaQuery associated with 'md' alias
-          matchMedia.activate('xs');
-          expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
-
-          // Un-subscribe
-          subscription.unsubscribe();
-
-          matchMedia.activate('lg');
-          expect(current.mqAlias).toBe('xs');
-
-        })));
+        }));
   });
 
   describe('with custom BreakPoints', () => {
@@ -198,7 +205,7 @@ describe('observable-media', () => {
       });
     });
 
-    it('can activate custom alias with custom mediaQueries', async(inject(
+    it('can activate custom alias with custom mediaQueries', inject(
         [ObservableMedia, MatchMedia],
         (media, matchMedia) => {
           let current: MediaChange;
@@ -206,18 +213,18 @@ describe('observable-media', () => {
             current = change;
           });
 
-          // Activate mediaQuery associated with 'md' alias
-          matchMedia.activate('print.md');
-          expect(current.mediaQuery).toEqual(mdMediaQuery);
+          async(() => {
+            // Activate mediaQuery associated with 'md' alias
+            matchMedia.activate('print.md');
+            expect(current.mediaQuery).toEqual(mdMediaQuery);
 
-          matchMedia.activate('tablet-gt-xs');
-          expect(current.mqAlias).toBe('tablet-gt-xs');
-          expect(current.mediaQuery).toBe(gtXsMediaQuery);
+            matchMedia.activate('tablet-gt-xs');
+            expect(current.mqAlias).toBe('tablet-gt-xs');
+            expect(current.mediaQuery).toBe(gtXsMediaQuery);
 
-          subscription.unsubscribe();
-        })));
-
+            subscription.unsubscribe();
+          });
+        }));
   });
-
 });
 
