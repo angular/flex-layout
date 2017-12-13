@@ -1,6 +1,6 @@
 {
   "name": "@angular/flex-layout",
-  "version": "2.0.0-beta.11-b01c2d7",
+  "version": "2.0.0-beta.11-b8a652d",
   "description": "Angular Flex-Layout",
   "main": "./bundles/flex-layout.umd.js",
   "module": "./esm5/flex-layout.es5.js",
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
-    "@angular/core": "~5.1.0",
-    "@angular/common": "~5.1.0",
+    "@angular/core": "~4.4.4",
+    "@angular/common": "~4.4.4",
     "rxjs": "^5.5.0"
   },
   "dependencies": {
