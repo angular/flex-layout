@@ -28,7 +28,7 @@ import {
   queryFor
 } from '../../utils/testing/helpers';
 
-const isIE = !!document['documentMode'];
+
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
@@ -243,6 +243,8 @@ describe('flex directive', () => {
       });
     });
 
+    // const isIE = !!document['documentMode'];
+    //
     // it('should work with calc values', () => {
     //   // @see http://caniuse.com/#feat=calc for IE issues with calc()
     //   if (!isIE ) {
