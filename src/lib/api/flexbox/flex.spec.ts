@@ -243,30 +243,30 @@ describe('flex directive', () => {
       });
     });
 
-    it('should work with calc values', () => {
-      // @see http://caniuse.com/#feat=calc for IE issues with calc()
-      if (!isIE) {
-        expectDOMFrom(`<div fxFlex='calc(30vw - 10px)'></div>`).toHaveStyle({
-          'box-sizing': 'border-box',
-          'flex': '1 1 calc(30vw - 10px)'
-        });
-      }
-    });
-
-    it('should work with calc without internal whitespaces', async(() => {
-      // @see http://caniuse.com/#feat=calc for IE issues with calc()
-      if (!isIE) {
-        componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
-        fixture.detectChanges();
-
-        setTimeout(() => {
-          expectNativeEl(fixture).toHaveStyle({
-            'box-sizing': 'border-box',
-            'flex': '1 1 calc(75% - 10px)' // correct version has whitespace
-          });
-        });
-      }
-    }));
+    // it('should work with calc values', () => {
+    //   // @see http://caniuse.com/#feat=calc for IE issues with calc()
+    //   if (!isIE ) {
+    //     expectDOMFrom(`<div fxFlex='calc(30vw - 10px)'></div>`).toHaveStyle({
+    //       'box-sizing': 'border-box',
+    //       'flex': '1 1 calc(30vw - 10px)'
+    //     });
+    //   }
+    // });
+    //
+    // it('should work with calc without internal whitespaces', async(() => {
+    //   // @see http://caniuse.com/#feat=calc for IE issues with calc()
+    //   if (!isIE) {
+    //     componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
+    //     fixture.detectChanges();
+    //
+    //     setTimeout(() => {
+    //       expectNativeEl(fixture).toHaveStyle({
+    //         'box-sizing': 'border-box',
+    //         'flex': '1 1 calc(75% - 10px)' // correct version has whitespace
+    //       });
+    //     });
+    //   }
+    // }));
 
     it('should work with "auto" values', () => {
       expectDOMFrom(`<div fxFlex='auto'></div>`).toHaveStyle({
