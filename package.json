@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
-    "@angular/core": "~4.4.4",
-    "@angular/common": "~4.4.4",
+    "@angular/core": "~5.1.0",
+    "@angular/common": "~5.1.0"
     "rxjs": "^5.5.0"
   },
   "dependencies": {
