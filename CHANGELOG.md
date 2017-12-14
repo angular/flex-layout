@@ -1,3 +1,16 @@
+<a name="2.0.0-beta.12"></a>
+# [2.0.0-beta.12](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12) (2017-12-14)
+
+The 2.0.0-beta.10 and beta.11 releases on npm accidentally glitched-out midway, so we resolved some release scripting issues and cut 2.0.0-beta.12 instead. oops :-)
+
+### Build Changes
+
+Similar to those used in **@angular/material**, this release also upgrades the package dependencies to Angular ~5.1.0 and the RxJS 5.5.x. 
+>  [Lettable RxJS operators](https://github.com/ReactiveX/rxjs/blob/master/doc/lettable-operators.md) are now used instead of prototype-patching *add* operators. 
+
+* **packages:** update deps to Angular v5 and RxJs 5.5 ([#523](https://github.com/angular/flex-layout/523)) ([62457a5972](https://github.com/angular/flex-layout/commit/62457a5972)), closes [#519](https://github.com/angular/flex-layout/issue/519)
+
+
 <a name="2.0.0-beta.11"></a>
 # [2.0.0-beta.11](https://github.com/angular/flex-layout/compare/v2.0.0-beta.9...2.0.0-beta.11) (2017-11-05)
 
