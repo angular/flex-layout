@@ -20,7 +20,7 @@
     "universal:build": "gulp universal:build",
     "universal:ci:prerender": "gulp ci:prerender"
   },
-  "version": "2.0.0-beta.11",
+  "version": "2.0.0-beta.12",
   "license": "MIT",
   "engines": {
     "node": ">= 5.4.1"
