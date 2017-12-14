@@ -58,7 +58,6 @@ publishPackage() {
 
   # Copy the npm README.md to the flex-layout-builds dir...
   cp -f "scripts/release/README.md" ${repoDir}
-  cp -f "./CHANGELOG.md" ${repoDir}
 
   # Create the build commit and push the changes to the repository.
   cd ${repoDir}
@@ -67,6 +66,8 @@ publishPackage() {
   # the SHA of the current build job. Normally this "sed" call would just replace the version
   # placeholder, but the version placeholders have been replaced by the release task already.
   sed -i "s/${buildVersion}/${buildVersion}-${commitSha}/g" $(find . -type f)
+
+  cp -f "../CHANGELOG.md" ./
 
   # Prepare Git for pushing the artifacts to the repository.
   git config user.name "${commitAuthorName}"
