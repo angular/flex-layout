@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Subscription} from 'rxjs/Subscription';
-import {map} from 'rxjs/operators';
+import {map} from 'rxjs/operators/map';
 
 import {MediaChange, MediaQuerySubscriber} from '../../media-query/media-change';
 import {BreakPoint} from '../../media-query/breakpoints/break-point';
