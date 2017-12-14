@@ -58,6 +58,7 @@ publishPackage() {
 
   # Copy the npm README.md to the flex-layout-builds dir...
   cp -f "scripts/release/README.md" ${repoDir}
+  cp -f "./CHANGELOG.md" ${repoDir}
 
   # Create the build commit and push the changes to the repository.
   cd ${repoDir}
