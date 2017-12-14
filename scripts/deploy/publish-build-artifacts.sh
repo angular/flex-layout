@@ -15,7 +15,7 @@ if [ -z ${FLEX_LAYOUT_BUILDS_TOKEN} ]; then
   exit 1
 fi
 
-# Material packages that need to published.
+# Flex-Layout packages that need to published.
 PACKAGES=(flex-layout)
 REPOSITORIES=(flex-layout-builds)
 
@@ -29,6 +29,7 @@ publishPackage() {
   packageName=${1}
   packageRepo=${2}
 
+  srcDir=$(pwd)
   buildDir="dist/releases/${packageName}"
   buildVersion=$(node -pe "require('./package.json').version")
 
@@ -67,7 +68,7 @@ publishPackage() {
   # placeholder, but the version placeholders have been replaced by the release task already.
   sed -i "s/${buildVersion}/${buildVersion}-${commitSha}/g" $(find . -type f)
 
-  cp -f "../CHANGELOG.md" ./
+  cp -f "${srcDir}/CHANGELOG.md" ./
 
   # Prepare Git for pushing the artifacts to the repository.
   git config user.name "${commitAuthorName}"
