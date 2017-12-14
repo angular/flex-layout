@@ -307,8 +307,10 @@
       'git pull --rebase --strategy=ours',
       `${skipOnDryRun} git push`,
       `${skipOnDryRun} git push --tags`,
+      comment(!isDryRun ? '' : `Publishing @angular/flex-layout ${newVersion} to npm`),
+      `${skipOnDryRun} npm publish`,
       'cd ../',
-       comment(!isDryRun ? '' : `publish @angular/flex-layout v${newVersion} to npm`)
+
     );
 
     function stringifyFunction (method) {
