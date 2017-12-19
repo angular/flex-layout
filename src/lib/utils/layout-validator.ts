@@ -5,15 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-
+export const INLINE = 'inline';
 export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 
 /**
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  */
 export function buildLayoutCSS(value: string) {
-  let [direction, wrap] = validateValue(value);
-  return buildCSS(direction, wrap);
+  let [direction, wrap, isInline] = validateValue(value);
+  return buildCSS(direction, wrap, isInline);
  }
 
 /**
@@ -22,11 +22,19 @@ export function buildLayoutCSS(value: string) {
   */
 export function validateValue(value: string) {
   value = value ? value.toLowerCase() : '';
-  let [direction, wrap] = value.split(' ');
+  let [direction, wrap, inline ] = value.split(' ');
+
+  // First value must be the `flex-direction`
   if (!LAYOUT_VALUES.find(x => x === direction)) {
     direction = LAYOUT_VALUES[0];
   }
-  return [direction, validateWrapValue(wrap)];
+
+  if ( wrap  == INLINE ) {
+    wrap = ( inline != INLINE ) ? inline : null;
+    inline = INLINE;
+  }
+
+  return [direction, validateWrapValue(wrap), !!inline];
 }
 
 /**
@@ -65,8 +73,6 @@ export function validateWrapValue(value) {
   return value;
 }
 
-
-
 /**
  * Build the CSS that should be assigned to the element instance
  * BUG:
@@ -76,9 +82,9 @@ export function validateWrapValue(value) {
  *  This way any padding or border specified on the child elements are
  *  laid out and drawn inside that element's specified width and height.
  */
-function buildCSS(direction, wrap = null) {
+function buildCSS(direction, wrap = null, inline = false) {
   return {
-    'display': 'flex',
+    'display': inline ? 'inline-flex' : 'flex',
     'box-sizing': 'border-box',
     'flex-direction': direction,
     'flex-wrap': !!wrap ? wrap : null
