@@ -141,6 +141,71 @@ describe('layout directive', () => {
 
   });
 
+  describe('with wrap options', () => {
+
+    it('should recognize valid `wrap` option', () => {
+       createTestComponent(`<div fxLayout='row wrap'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'display': 'flex',
+         'flex-direction': 'row',
+         'box-sizing': 'border-box',
+         'flex-wrap': 'wrap'
+       });
+    });
+
+    it('should fallback to `wrap` for invalid options', () => {
+       createTestComponent(`<div fxLayout='row warpped'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'flex-wrap': 'wrap'
+       });
+    });
+
+    it('should fallback to `wrap` for invalid options', () => {
+       createTestComponent(`<div fxLayout='row wrap-rev'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'flex-wrap': 'wrap'
+       });
+    });
+
+  });
+
+  describe('with inline options', () => {
+
+    it('should recognize valid `inline` option', () => {
+       createTestComponent(`<div fxLayout='row inline'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'display': 'inline-flex',
+         'flex-direction': 'row'
+       });
+    });
+
+    it('should recognize `line` used with `wrap`', () => {
+       createTestComponent(`<div fxLayout='row inline wrap'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'display': 'inline-flex',
+         'flex-wrap': 'wrap'
+       });
+    });
+
+    it('should recognize `inline` used with `wrap`', () => {
+       createTestComponent(`<div fxLayout='row wrap inline'></div>`);
+       expectNativeEl(fixture).toHaveStyle({
+         'display': 'inline-flex',
+         'flex-wrap': 'wrap'
+       });
+    });
+
+    it('should fallback to `wrap` for invalid options', () => {
+          createTestComponent(`<div fxLayout='row inline wrap-rev'></div>`);
+          expectNativeEl(fixture).toHaveStyle({
+            'display': 'inline-flex',
+            'flex-wrap': 'wrap'
+          });
+       });
+
+  });
+
+
   describe('with responsive features', () => {
 
     it('should ignore responsive changes when not configured', () => {
