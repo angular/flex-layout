@@ -16,11 +16,10 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The [R
 
 ---
 
-#### Deprecated support for Angular 2.4.x
+#### Support for Angular 5.x
 
-With recent changes build and source changes, @angular/flex-layout (Beta.9 or higher)
-will no longer support Angular 2.4.x. These changes were required to support to the revised
-Angular v4.1 AOT and Renderers.
+Current builds only support Angular 5.x or higher. These changes were required to support to the revised
+Angular build structures, AOT, and View Renderers.
 
 ---
 
