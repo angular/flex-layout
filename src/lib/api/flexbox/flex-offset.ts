@@ -15,7 +15,9 @@ import {
   Optional,
   Renderer2,
   SimpleChanges,
-  SkipSelf
+  SkipSelf,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
@@ -60,8 +62,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer2,
-              @Optional() @SkipSelf() protected _container: LayoutDirective ) {
-    super(monitor, elRef, renderer);
+              @Optional() @SkipSelf() protected _container: LayoutDirective,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
 
 
     this.watchParentFlow();

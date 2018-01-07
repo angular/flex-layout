@@ -36,6 +36,7 @@ System.config({
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
     '@angular/platform-browser-dynamic/testing':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
+    '@angular/router': 'node:@angular/router/bundles/router.umd.js',
 
     '@angular/material': 'node:@angular/material/bundles/material.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',

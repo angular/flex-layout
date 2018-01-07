@@ -5,9 +5,16 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone} from '@angular/core';
-import {ɵgetDOM as getDom} from '@angular/platform-browser';
-import {DOCUMENT} from '@angular/common';
+import {
+  Inject,
+  Injectable,
+  NgZone,
+  PLATFORM_ID,
+  RendererFactory2,
+  RendererType2,
+  ViewEncapsulation,
+} from '@angular/core';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {filter} from 'rxjs/operators/filter';
@@ -48,7 +55,10 @@ export class MatchMedia {
   protected _source: BehaviorSubject<MediaChange>;
   protected _observable$: Observable<MediaChange>;
 
-  constructor(protected _zone: NgZone, @Inject(DOCUMENT) protected _document: any) {
+  constructor(protected _zone: NgZone,
+              protected _rendererFactory: RendererFactory2,
+              @Inject(DOCUMENT) protected _document: any,
+              @Inject(PLATFORM_ID) protected _platformId: Object) {
     this._registry = new Map<string, MediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
@@ -90,7 +100,7 @@ export class MatchMedia {
     let list = normalizeQuery(mediaQuery);
 
     if (list.length > 0) {
-      prepareQueryCSS(list, this._document);
+      this._prepareQueryCSS(list, this._document);
 
       list.forEach(query => {
         let mql = this._registry.get(query);
@@ -119,7 +129,8 @@ export class MatchMedia {
    * supports 0..n listeners for activation/deactivation
    */
   protected _buildMQL(query: string): MediaQueryList {
-    let canListen = isBrowser() && !!(<any>window).matchMedia('all').addListener;
+    let canListen = isPlatformBrowser(this._platformId) &&
+      !!(<any>window).matchMedia('all').addListener;
 
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
       matches: query === 'all' || query === '',
@@ -130,56 +141,65 @@ export class MatchMedia {
       }
     };
   }
+
+  /**
+   * For Webkit engines that only trigger the MediaQueryList Listener
+   * when there is at least one CSS selector for the respective media query.
+   *
+   * @param query string The mediaQuery used to create a faux CSS selector
+   *
+   */
+  protected _prepareQueryCSS(mediaQueries: string[], _document: any) {
+    let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+    if (list.length > 0) {
+      let query = list.join(', ');
+
+      try {
+        const renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
+        let styleEl = renderer.createElement('style');
+
+        renderer.setAttribute(styleEl, 'type', 'text/css');
+        if (!styleEl['styleSheet']) {
+          let cssText = `
+/*
+  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  see http://bit.ly/2sd4HMP
+*/
+@media ${query} {.fx-query-test{ }}
+` ;
+          renderer.appendChild(styleEl, renderer.createText(cssText));
+        }
+
+        renderer.appendChild(_document.head, styleEl);
+
+        // Store in private global registry
+        list.forEach(mq => ALL_STYLES[mq] = styleEl);
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
 }
 
 /**
- * Determine if SSR or Browser rendering.
+ * Since `getDom()` is no longer supported,
+ * we will use a RendererFactory build and instance
+ * of a renderer for an element. Then the renderer will
+ * build the stylesheet(s)
  */
-export function isBrowser() {
-  return getDom().supportsDOMEvents();
-}
+const RENDERER_TYPE: RendererType2 = {
+  id: '-1',
+  styles: [ ],
+  data: { },
+  encapsulation: ViewEncapsulation.None
+};
 
 /**
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
 const ALL_STYLES = {};
-
-/**
- * For Webkit engines that only trigger the MediaQueryList Listener
- * when there is at least one CSS selector for the respective media query.
- *
- * @param query string The mediaQuery used to create a faux CSS selector
- *
- */
-function prepareQueryCSS(mediaQueries: string[], _document: any) {
-  let list = mediaQueries.filter(it => !ALL_STYLES[it]);
-  if (list.length > 0) {
-    let query = list.join(', ');
-
-    try {
-      let styleEl = getDom().createElement('style');
-
-      getDom().setAttribute(styleEl, 'type', 'text/css');
-      if (!styleEl['styleSheet']) {
-        let cssText = `/*
-  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
-  see http://bit.ly/2sd4HMP
-*/
-@media ${query} {.fx-query-test{ }}`;
-        getDom().appendChild(styleEl, getDom().createTextNode(cssText));
-      }
-
-      getDom().appendChild(_document.head, styleEl);
-
-      // Store in private global registry
-      list.forEach(mq => ALL_STYLES[mq] = styleEl);
-
-    } catch (e) {
-      console.error(e);
-    }
-  }
-}
 
 /**
  * Always convert to unique list of queries; for iteration in ::registerQuery()

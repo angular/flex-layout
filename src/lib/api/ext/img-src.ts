@@ -11,7 +11,9 @@ import {
   Input,
   OnInit,
   OnChanges,
-  Renderer2
+  Renderer2,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {BaseFxDirective} from '../core/base';
@@ -55,8 +57,11 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
   @Input('src.gt-lg')  set srcGtLg(val) { this._cacheInput('srcGtLg', val);  }
   /* tslint:enable */
 
-  constructor(elRef: ElementRef, renderer: Renderer2, monitor: MediaMonitor) {
-    super(monitor, elRef, renderer);
+  constructor(elRef: ElementRef,
+              renderer: Renderer2,
+              monitor: MediaMonitor,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
     this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
   }
 
