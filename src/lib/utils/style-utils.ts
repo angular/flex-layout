@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Renderer2} from '@angular/core';
-import {ɵgetDOM as getDom} from '@angular/platform-browser';
 import {applyCssPrefixes} from './auto-prefixer';
+import {isPlatformBrowser} from '@angular/common';
 
 /**
  * Definition of a css style. Either a property name (e.g. "flex-basis") or an object
@@ -66,28 +66,29 @@ export function applyMultiValueStyleToElement(styles: {}, element: any, renderer
  * Find the DOM element's raw attribute value (if any)
  */
 export function lookupAttributeValue(element: HTMLElement, attribute: string): string {
-  return getDom().getAttribute(element, attribute) || '';
+  return element.getAttribute(attribute) || '';
 }
 /**
  * Find the DOM element's inline style value (if any)
  */
 export function lookupInlineStyle(element: HTMLElement, styleName: string): string {
-  return getDom().getStyle(element, styleName);
+  return element.style[styleName];
 }
 
 /**
  * Determine the inline or inherited CSS style
  */
-export function lookupStyle(element: HTMLElement, styleName: string, inlineOnly = false): string {
+export function lookupStyle(_platformId: Object,
+                            element: HTMLElement,
+                            styleName: string,
+                            inlineOnly = false): string {
   let value = '';
   if (element) {
-    try {
-      let immediateValue = value = lookupInlineStyle(element, styleName);
-      if ( !inlineOnly ) {
-        value = immediateValue || getDom().getComputedStyle(element).getPropertyValue(styleName);
-      }
-    } catch (e) {
-      // TODO: platform-server throws an exception for getComputedStyle, will be fixed by PR 18362
+    let immediateValue = value = lookupInlineStyle(element, styleName);
+    if (!inlineOnly) {
+      // TODO(CaerusKaru): platform-server has no implementation for getComputedStyle
+      value = immediateValue || (isPlatformBrowser(_platformId) &&
+        getComputedStyle(element).getPropertyValue(styleName)) || '';
     }
   }
 

@@ -17,7 +17,10 @@ import {
   Renderer2,
   SecurityContext,
   Self,
-  SimpleChanges, OnInit,
+  SimpleChanges,
+  OnInit,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 
@@ -89,9 +92,10 @@ export class StyleDirective extends BaseFxDirective
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
               protected _differs: KeyValueDiffers,
-              @Optional() @Self() private _ngStyleInstance: NgStyle) {
+              @Optional() @Self() private _ngStyleInstance: NgStyle,
+              @Inject(PLATFORM_ID) protected _platformId: Object) {
 
-    super(monitor, _ngEl, _renderer);
+    super(monitor, _ngEl, _renderer, _platformId);
     this._configureAdapters();
   }
 
@@ -134,7 +138,7 @@ export class StyleDirective extends BaseFxDirective
      */
     protected _configureAdapters() {
         this._base = new BaseFxDirectiveAdapter(
-            'ngStyle', this.monitor, this._ngEl, this._renderer
+            'ngStyle', this.monitor, this._ngEl, this._renderer, this._platformId
         );
         if ( !this._ngStyleInstance ) {
           // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been

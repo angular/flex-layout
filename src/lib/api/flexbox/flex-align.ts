@@ -14,6 +14,8 @@ import {
   OnDestroy,
   Renderer2,
   SimpleChanges,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {BaseFxDirective} from '../core/base';
@@ -54,8 +56,11 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fxFlexAlign.gt-lg') set alignGtLg(val)  { this._cacheInput('alignGtLg', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
-    super(monitor, elRef, renderer);
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer2,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
   }
 
 

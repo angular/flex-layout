@@ -14,6 +14,8 @@ import {
   OnDestroy,
   Renderer2,
   SimpleChanges,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {BaseFxDirective} from '../core/base';
@@ -52,8 +54,11 @@ export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnCha
   @Input('fxFlexOrder.lt-xl') set orderLtXl(val) { this._cacheInput('orderLtXl', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
-    super(monitor, elRef, renderer);
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer2,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
   }
 
   // *********************************************

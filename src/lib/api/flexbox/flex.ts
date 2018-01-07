@@ -5,14 +5,16 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
- import {
+import {
   Directive,
   ElementRef,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
+  PLATFORM_ID,
   Renderer2,
   SimpleChanges,
   SkipSelf,
@@ -86,9 +88,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
               elRef: ElementRef,
               renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
-              @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective) {
+              @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective,
+              @Inject(PLATFORM_ID) platformId: Object) {
 
-    super(monitor, elRef, renderer);
+    super(monitor, elRef, renderer, platformId);
 
     this._cacheInput('flex', '');
     this._cacheInput('shrink', 1);

@@ -14,6 +14,8 @@ import {
   OnDestroy,
   Renderer2,
   SimpleChanges,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
@@ -71,8 +73,11 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   /**
    *
    */
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
-    super(monitor, elRef, renderer);
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer2,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
     this._announcer = new ReplaySubject<string>(1);
     this.layout$ = this._announcer.asObservable();
   }

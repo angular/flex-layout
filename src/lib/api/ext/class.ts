@@ -17,7 +17,10 @@ import {
   Optional,
   Renderer2,
   SimpleChanges,
-  Self, OnInit
+  Self,
+  OnInit,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 
@@ -91,8 +94,9 @@ export class ClassDirective extends BaseFxDirective
               protected _keyValueDiffers: KeyValueDiffers,
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
-              @Optional() @Self() private _ngClassInstance: NgClass ) {
-    super(monitor, _ngEl, _renderer);
+              @Optional() @Self() private _ngClassInstance: NgClass,
+              @Inject(PLATFORM_ID) protected _platformId: Object) {
+    super(monitor, _ngEl, _renderer, _platformId);
     this._configureAdapters();
   }
 
@@ -135,7 +139,7 @@ export class ClassDirective extends BaseFxDirective
    */
   protected _configureAdapters() {
     this._base = new BaseFxDirectiveAdapter(
-        'ngClass', this.monitor, this._ngEl, this._renderer
+        'ngClass', this.monitor, this._ngEl, this._renderer, this._platformId
     );
     if (!this._ngClassInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
