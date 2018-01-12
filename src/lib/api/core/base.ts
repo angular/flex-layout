@@ -118,7 +118,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     if (this._mqActivation) {
       this._mqActivation.destroy();
     }
-    this._mediaMonitor = null;
+    delete this._mediaMonitor;
   }
 
   // *********************************************

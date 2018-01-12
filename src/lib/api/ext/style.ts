@@ -125,7 +125,7 @@ export class StyleDirective extends BaseFxDirective
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
-    this._ngStyleInstance = null;
+    delete this._ngStyleInstance;
   }
 
   // ******************************************************************
@@ -189,7 +189,7 @@ export class StyleDirective extends BaseFxDirective
   protected _buildStyleMap(styles: NgStyleType) {
     let sanitizer: NgStyleSanitizer = (val: any) => {
       // Always safe-guard (aka sanitize) style property values
-      return this._sanitizer.sanitize(SecurityContext.STYLE, val);
+      return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
     };
     if (styles) {
       switch ( _.getType(styles) ) {

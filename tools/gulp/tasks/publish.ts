@@ -15,6 +15,14 @@ export const releasePackages = [
 /** Parse command-line arguments for release task. */
 const argv = minimist(process.argv.slice(3));
 
+task('publish', sequenceTask(
+  ':publish:whoami',
+  ':publish:build-releases',
+  'validate-release:check-bundles',
+  ':publish',
+  ':publish:logout',
+));
+
 /** Task that builds all releases that will be published. */
 task(':publish:build-releases', sequenceTask(
   'clean',
@@ -29,6 +37,36 @@ task(':publish:whoami', execTask('npm', ['whoami'], {
 
 task(':publish:logout', execTask('npm', ['logout']));
 
+task(':publish', async () => {
+  const label = argv['tag'];
+  const version = buildConfig.projectVersion;
+  const currentDir = process.cwd();
+
+  console.log('');
+  if (!label) {
+    console.log(yellow('You can use a label with --tag=labelName.'));
+    console.log(yellow(`Publishing version ${version} using the latest tag.`));
+  } else {
+    console.log(yellow(`Publishing ${version} using the ${label} tag.`));
+  }
+  console.log('');
+
+  if (releasePackages.length > 1) {
+    console.warn(red('Warning: Multiple packages will be released if proceeding.'));
+    console.warn(red('Warning: Packages to be released: ', releasePackages.join(', ')));
+  }
+
+  console.log(yellow('> Make sure to check the "angularVersion" in the build config.'));
+  console.log(yellow('> The version in the config defines the peer dependency of Angular.'));
+  console.log();
+
+  // Iterate over every declared release package and publish it on NPM.
+  for (const packageName of releasePackages) {
+    await _execNpmPublish(label, packageName);
+  }
+
+  process.chdir(currentDir);
+});
 
 function _execNpmPublish(label: string, packageName: string): Promise<{}> | undefined {
   const packageDir = join(buildConfig.outputDir, 'releases', packageName);
@@ -79,36 +117,3 @@ function _execNpmPublish(label: string, packageName: string): Promise<{}> | unde
     });
   });
 }
-
-task(':publish', async () => {
-  const label = argv['tag'];
-  const currentDir = process.cwd();
-
-  console.log('');
-  if (!label) {
-    console.log(yellow('You can use a label with --tag=labelName.'));
-    console.log(yellow('Publishing using the latest tag.'));
-  } else {
-    console.log(yellow(`Publishing using the ${label} tag.`));
-  }
-  console.log('');
-
-  if (releasePackages.length > 1) {
-    console.warn(red('Warning: Multiple packages will be released if proceeding.'));
-  }
-
-  // Iterate over every declared release package and publish it on NPM.
-  for (const packageName of releasePackages) {
-    await _execNpmPublish(label, packageName);
-  }
-
-  process.chdir(currentDir);
-});
-
-task('publish', sequenceTask(
-  ':publish:whoami',
-  ':publish:build-releases',
-  'validate-release:check-bundles',
-  ':publish',
-  ':publish:logout',
-));

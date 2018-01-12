@@ -26,11 +26,13 @@ jobs:
     - env: "MODE=lint"
     - env: "MODE=aot"
     - env: "MODE=prerender"
+    # Closure Compiler CI check is temporarily disabled until a new version of
+    # the tool is released with https://github.com/google/closure-compiler/pull/2600
+    # - env: "MODE=closure-compiler"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
-    - stage: Deploy
-      env: "DEPLOY_MODE=build-artifacts"
+    - env: "DEPLOY_MODE=build-artifacts"
 env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
@@ -43,7 +45,6 @@ env:
 
 before_install:
   - source ./scripts/ci/env.sh
-  - npm i -g npm@^5.3
 
 install:
   - npm install
@@ -56,4 +57,4 @@ script:
 
 cache:
   directories:
-    - $HOME/.npm
+    - ./node_modules/

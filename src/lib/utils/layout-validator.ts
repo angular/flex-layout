@@ -22,15 +22,15 @@ export function buildLayoutCSS(value: string) {
   */
 export function validateValue(value: string) {
   value = value ? value.toLowerCase() : '';
-  let [direction, wrap, inline ] = value.split(' ');
+  let [direction, wrap, inline] = value.split(' ');
 
   // First value must be the `flex-direction`
   if (!LAYOUT_VALUES.find(x => x === direction)) {
     direction = LAYOUT_VALUES[0];
   }
 
-  if ( wrap  == INLINE ) {
-    wrap = ( inline != INLINE ) ? inline : null;
+  if (wrap === INLINE) {
+    wrap = (inline !== INLINE) ? inline : '';
     inline = INLINE;
   }
 
@@ -42,7 +42,7 @@ export function validateValue(value: string) {
  * a horizontal/row flow.
  */
 export function isFlowHorizontal(value: string): boolean {
-  let [flow, _] = validateValue(value);
+  let [flow, ] = validateValue(value);
   return flow.indexOf('row') > -1;
 }
 

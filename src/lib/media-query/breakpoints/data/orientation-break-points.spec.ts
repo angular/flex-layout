@@ -18,8 +18,8 @@ import {
 } from '../break-points-provider';
 
 describe('break-point-provider', () => {
-  let breakPoints: BreakPoint[ ];
-  let findByAlias = (alias): BreakPoint => breakPoints.reduce((pos, it) => {
+  let breakPoints: BreakPoint[];
+  let findByAlias = (alias): BreakPoint|null => breakPoints.reduce((pos, it) => {
     return pos || ((it.alias == alias) ? it : null);
   }, null);
 
