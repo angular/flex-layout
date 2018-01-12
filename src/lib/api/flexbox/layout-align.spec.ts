@@ -353,7 +353,7 @@ describe('layout-align directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutAlignComponent implements OnInit {
+class TestLayoutAlignComponent implements OnInit {
   direction = 'column';
   mainAxis = 'start';
   crossAxis = 'end';

@@ -40,17 +40,18 @@ export interface BreakPointProviderOptions {
  */
 export function buildMergedBreakPoints(_custom?: BreakPoint[],
                                        options?: BreakPointProviderOptions) {
-  options = extendObject({ }, {
+  options = extendObject({}, {
         defaults: true,       // exclude pre-configured, internal default breakpoints
         orientation: false      // exclude pre-configured, internal orientations breakpoints
-  }, options || { });
+  }, options || {});
 
   return () => {
     // Order so the defaults are loaded last; so ObservableMedia will report these last!
-    let defaults = options.orientations ? ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) :
-        DEFAULT_BREAKPOINTS;
+    let defaults = (options && options.orientations) ?
+      ORIENTATION_BREAKPOINTS.concat(DEFAULT_BREAKPOINTS) : DEFAULT_BREAKPOINTS;
 
-    return options.defaults ? mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom);
+    return (options && options.defaults) ?
+      mergeByAlias(defaults, _custom || []) : mergeByAlias(_custom || []);
   };
 }
 

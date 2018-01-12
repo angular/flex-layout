@@ -5,11 +5,16 @@
   "extends": "./tsconfig-build",
   "compilerOptions": {
     "experimentalDecorators": true,
-    "noUnusedParameters": false,
-    "strictNullChecks": false,
-    "outDir": ".",
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "outDir": "../../dist/packages/demo-app",
+    "rootDirs": [
+      ".",
+      "../../dist/packages/demo-app"
+    ],
     "paths": {
-      "@angular/flex-layout": ["./flex-layout"]
+      "@angular/flex-layout/*": ["../../dist/releases/flex-layout/*"],
+      "@angular/flex-layout": ["../../dist/releases/flex-layout"]
     }
   },
   "files": [
@@ -18,6 +23,8 @@
     "./main-aot.ts"
   ],
   "angularCompilerOptions": {
-    "skipTemplateCodegen": false
+    "skipTemplateCodegen": false,
+    // TODO: disabled for now due to @angular/forms
+    "fullTemplateTypeCheck": false
   }
 }

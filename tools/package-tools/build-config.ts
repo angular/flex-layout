@@ -19,7 +19,7 @@ export interface BuildConfig {
 const buildConfigPath = findBuildConfig();
 
 if (!buildConfigPath) {
-  throw 'Material2 Build tools were not able to find a build config. ' +
+  throw 'Flex Layout Build tools were not able to find a build config. ' +
   'Please create a "build-config.js" file in your project.';
 }
 

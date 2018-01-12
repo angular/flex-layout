@@ -242,7 +242,7 @@ describe('hide directive', () => {
   selector: 'test-hide-api',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestHideComponent implements OnInit {
+class TestHideComponent implements OnInit {
   isVisible = 0;
   isHidden = true;
   menuHidden = true;

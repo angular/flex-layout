@@ -10,9 +10,13 @@
     "types": ["jasmine"],
     "paths": {
       "@angular/flex-layout/*": ["./*"]
-    },
-    "experimentalDecorators": true,
-    "strictNullChecks": false
+    }
+  },
+  "angularCompilerOptions": {
+    "strictMetadataEmit": true,
+    "skipTemplateCodegen": true,
+    "emitDecoratorMetadata": true,
+    "fullTemplateTypeCheck": true
   },
   "include": [
     "**/*.spec.ts",

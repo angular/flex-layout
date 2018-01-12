@@ -104,24 +104,28 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
    * Required when caching values expected later for KeyValueDiffers
    */
   protected _cacheInputRaw(key?: string, source?: any) {
-    this._inputMap[key] = source;
+    if (key) {
+      this._inputMap[key] = source;
+    }
   }
 
   /**
    *  Save the property value for Array values.
    */
   protected _cacheInputArray(key = '', source?: boolean[]) {
-    this._inputMap[key] = source.join(' ');
+    this._inputMap[key] = source ? source.join(' ') : '';
   }
 
   /**
    *  Save the property value for key/value pair values.
    */
   protected _cacheInputObject(key = '', source?: { [key: string]: boolean }) {
-    let classes = [];
-    for (let prop in source) {
-      if (!!source[prop]) {
-        classes.push(prop);
+    let classes: string[] = [];
+    if (source) {
+      for (let prop in source) {
+        if (!!source[prop]) {
+          classes.push(prop);
+        }
       }
     }
     this._inputMap[key] = classes.join(' ');

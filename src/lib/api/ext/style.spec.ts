@@ -146,7 +146,7 @@ describe('style directive', () => {
   selector: 'test-style-api',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestStyleComponent {
+class TestStyleComponent {
   fontSize: number;
 }
 

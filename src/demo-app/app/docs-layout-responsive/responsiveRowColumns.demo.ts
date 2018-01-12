@@ -17,11 +17,11 @@ import {ObservableMedia} from '@angular/flex-layout';
         <div class="containerX">
 
           <div class="colorNested box" fxLayout="row" *ngIf="isVisible">
-            <div [fxLayout]="firstCol"
-                 [fxLayout.xs]="firstColXs"
-                 [fxLayout.md]="firstColMd"
-                 [fxLayout.lg]="firstColLg"
-                 [fxLayout.gt-lg]="firstColGtLg"
+            <div [fxLayout]="cols.firstCol"
+                 [fxLayout.xs]="cols.firstColXs"
+                 [fxLayout.md]="cols.firstColMd"
+                 [fxLayout.lg]="cols.firstColLg"
+                 [fxLayout.gt-lg]="cols.firstColGtLg"
                  fxFlex="50%"
                  fxFlex.gt-sm="25"
                  fxHide.md
@@ -29,7 +29,7 @@ import {ObservableMedia} from '@angular/flex-layout';
               <div fxFlex>Col #1: First item in row</div>
               <div fxFlex>Col #1: Second item in row</div>
             </div>
-            <div [fxLayout]="secondCol" fxFlex (click)="toggleLayoutFor(2)"
+            <div [fxLayout]="cols.secondCol" fxFlex (click)="toggleLayoutFor(2)"
                  style="cursor: pointer;">
               <div fxFlex>Col #2: First item in column</div>
               <div fxFlex>Col #2: Second item in column</div>
@@ -39,10 +39,10 @@ import {ObservableMedia} from '@angular/flex-layout';
       </mat-card-content>
       <mat-card-footer style="width:95%; font-size: 0.9em; padding-left: 25px;">
         <div fxLayout="row" class="hint" fxLayoutAlign="space-around">
-          <div>&lt;div fxLayout="{{ firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxHide.md &gt;
+          <div>&lt;div fxLayout="{{ cols.firstCol }}" fxFlex="50%" fxFlex.gt-sm="25%" fxHide.md &gt;
           </div>
           <div fxFlex></div>
-          <div>&lt;div fxLayout="{{ secondCol }}" fxFlex &gt;</div>
+          <div>&lt;div fxLayout="{{ cols.secondCol }}" fxFlex &gt;</div>
         </div>
       </mat-card-footer>
     </mat-card>
@@ -52,13 +52,14 @@ export class DemoResponsiveRows implements OnDestroy {
   private _activeMQC: MediaChange;
   private _watcher: Subscription;
 
-  firstCol = 'row';
-  firstColXs = 'column';
-  firstColMd = 'column';
-  firstColLg = 'invalid';
-  firstColGtLg = 'column';
-
-  secondCol = 'column';
+  cols: {[key: string]: string} = {
+    firstCol: 'row',
+    firstColXs: 'column',
+    firstColMd: 'column',
+    firstColLg: 'invalid',
+    firstColGtLg: 'column',
+    secondCol: 'column'
+  };
 
   isVisible = true;
 
@@ -73,17 +74,17 @@ export class DemoResponsiveRows implements OnDestroy {
     this._watcher.unsubscribe();
   }
 
-  toggleLayoutFor(col) {
+  toggleLayoutFor(col: number) {
     switch (col) {
       case 1:
 
-        col = `firstCol${this._activeMQC ? this._activeMQC.suffix : ''}`;
-        this[col] = (this[col] === 'column') ? 'row' : 'column';
+        const set1 = `firstCol${this._activeMQC ? this._activeMQC.suffix : ''}`;
+        this.cols[set1] = (this.cols[set1] === 'column') ? 'row' : 'column';
         break;
 
       case 2:
-        col = 'secondCol';
-        this[col] = (this[col] == 'row') ? 'column' : 'row';
+        const set2 = 'secondCol';
+        this.cols[set2] = (this.cols[set2] == 'row') ? 'column' : 'row';
         break;
     }
   }

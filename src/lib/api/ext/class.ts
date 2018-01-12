@@ -17,7 +17,8 @@ import {
   Optional,
   Renderer2,
   SimpleChanges,
-  Self, OnInit
+  Self,
+  OnInit,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 
@@ -122,7 +123,7 @@ export class ClassDirective extends BaseFxDirective
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
-    this._ngClassInstance = null;
+    delete this._ngClassInstance;
   }
 
   // ******************************************************************

@@ -51,9 +51,12 @@ describe('mock-match-media', () => {
 
     let activated = matchMedia.activate(customQuery);
     expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(customQuery);
 
-    subscription.unsubscribe();
+    async(() => {
+      expect(current.mediaQuery).toEqual(customQuery);
+
+      subscription.unsubscribe();
+    });
   });
 
 
@@ -82,19 +85,22 @@ describe('mock-match-media', () => {
       current = change;
     });
 
-    matchMedia.activate(bpGtSM.mediaQuery);
-    expect(current).not.toBeFalsy();
-    expect(current.mediaQuery).toEqual(bpGtSM.mediaQuery);
-    expect(matchMedia.isActive(bpGtSM.mediaQuery)).toBeTruthy();
+    matchMedia.activate(bpGtSM!.mediaQuery);
 
-    mqcGtSM = current;
+    async(() => {
+      expect(current).not.toBeFalsy();
+      expect(current.mediaQuery).toEqual(bpGtSM!.mediaQuery);
+      expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeTruthy();
 
-    matchMedia.activate(bpLg.mediaQuery);
-    expect(current.mediaQuery).not.toEqual(mqcGtSM.mediaQuery);
-    expect(matchMedia.isActive(bpLg.mediaQuery)).toBeTruthy();
-    expect(matchMedia.isActive(bpGtSM.mediaQuery)).toBeFalsy();
+      mqcGtSM = current;
 
-    subscription.unsubscribe();
+      matchMedia.activate(bpLg!.mediaQuery);
+      expect(current.mediaQuery).not.toEqual(mqcGtSM.mediaQuery);
+      expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
+      expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeFalsy();
+
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe only a specific media query changes', () => {
@@ -102,19 +108,22 @@ describe('mock-match-media', () => {
         bpGtSM = breakPoints.findByAlias('gt-sm'),
         bpLg = breakPoints.findByAlias('lg');
 
-    let subscription = matchMedia.observe(bpLg.mediaQuery).subscribe((change: MediaChange) => {
+    let subscription = matchMedia.observe(bpLg!.mediaQuery).subscribe((change: MediaChange) => {
       current = change;
     });
 
-    matchMedia.activate(bpGtSM.mediaQuery);
-    expect(current).toBeFalsy();
+    matchMedia.activate(bpGtSM!.mediaQuery);
 
-    matchMedia.activate(bpLg.mediaQuery);
-    expect(current).toBeTruthy();
-    expect(current.mediaQuery).toEqual(bpLg.mediaQuery);
-    expect(matchMedia.isActive(bpLg.mediaQuery)).toBeTruthy();
+    async(() => {
+      expect(current).toBeFalsy();
 
-    subscription.unsubscribe();
+      matchMedia.activate(bpLg!.mediaQuery);
+      expect(current).toBeTruthy();
+      expect(current.mediaQuery).toEqual(bpLg!.mediaQuery);
+      expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
+
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe both activation and deactivation changes', () => {
@@ -134,15 +143,15 @@ describe('mock-match-media', () => {
 
     expect(activates).toEqual(1);
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(2);
     expect(deactivates).toEqual(0);
 
-    matchMedia.activate(bpLg.mediaQuery);
+    matchMedia.activate(bpLg!.mediaQuery);
     expect(activates).toEqual(3);
     expect(deactivates).toEqual(1);
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(4);
     expect(deactivates).toEqual(2);
 
@@ -154,7 +163,7 @@ describe('mock-match-media', () => {
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
         bpLg = breakPoints.findByAlias('lg');
 
-    let subscription = matchMedia.observe(bpGtSM.mediaQuery).subscribe((change: MediaChange) => {
+    let subscription = matchMedia.observe(bpGtSM!.mediaQuery).subscribe((change: MediaChange) => {
       if (change.matches) {
         ++activates;
       } else {
@@ -164,15 +173,15 @@ describe('mock-match-media', () => {
 
     expect(activates).toEqual(0);   // from alias == '' == 'all'
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(1);
     expect(deactivates).toEqual(0);
 
-    matchMedia.activate(bpLg.mediaQuery);
+    matchMedia.activate(bpLg!.mediaQuery);
     expect(activates).toEqual(1);
     expect(deactivates).toEqual(1);
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(2);
     expect(deactivates).toEqual(1);
 
@@ -192,16 +201,16 @@ describe('mock-match-media', () => {
 
     expect(activates).toEqual(1);   // from alias == '' == 'all'
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(2);
 
-    matchMedia.activate(bpLg.mediaQuery);
+    matchMedia.activate(bpLg!.mediaQuery);
     expect(activates).toEqual(3);
 
-    matchMedia.activate(bpGtSM.mediaQuery);
+    matchMedia.activate(bpGtSM!.mediaQuery);
     expect(activates).toEqual(4);
 
-    matchMedia.activate(bpLg.mediaQuery);
+    matchMedia.activate(bpLg!.mediaQuery);
     expect(activates).toEqual(5);
 
     subscription.unsubscribe();
@@ -218,22 +227,22 @@ describe('mock-match-media', () => {
     let subscription = matchMedia.observe().subscribe(() => {
     });
 
-    matchMedia.activate(bpGtSm.mediaQuery);
-    expect(matchMedia.isActive(bpGtSm.mediaQuery)).toBeTruthy();
-    expect(matchMedia.isActive(bpLg.mediaQuery)).toBeFalsy();
+    matchMedia.activate(bpGtSm!.mediaQuery);
+    expect(matchMedia.isActive(bpGtSm!.mediaQuery)).toBeTruthy();
+    expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeFalsy();
 
-    matchMedia.activate(bpLg.mediaQuery);
-    expect(matchMedia.isActive(bpGtSm.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpLg.mediaQuery)).toBeTruthy();
+    matchMedia.activate(bpLg!.mediaQuery);
+    expect(matchMedia.isActive(bpGtSm!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
 
-    matchMedia.activate(bpGtSm.mediaQuery);
-    expect(matchMedia.isActive(bpXs.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpGtXs.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpSm.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpGtSm.mediaQuery)).toBeTruthy();
-    expect(matchMedia.isActive(bpMd.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpGtMd.mediaQuery)).toBeFalsy();
-    expect(matchMedia.isActive(bpLg.mediaQuery)).toBeFalsy();
+    matchMedia.activate(bpGtSm!.mediaQuery);
+    expect(matchMedia.isActive(bpXs!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpGtXs!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpSm!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpGtSm!.mediaQuery)).toBeTruthy();
+    expect(matchMedia.isActive(bpMd!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpGtMd!.mediaQuery)).toBeFalsy();
+    expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeFalsy();
 
     subscription.unsubscribe();
   });
@@ -242,16 +251,18 @@ describe('mock-match-media', () => {
     let current: MediaChange,
         bpXS = breakPoints.findByAlias('xs');
 
-    matchMedia.activate(bpXS.mediaQuery);
-    let subscription = matchMedia.observe(bpXS.mediaQuery)
+    matchMedia.activate(bpXS!.mediaQuery);
+    let subscription = matchMedia.observe(bpXS!.mediaQuery)
           .subscribe((change: MediaChange) => {
             current = change;
           });
 
-    expect(current).toBeTruthy();
-    expect(current.mediaQuery).toEqual(bpXS.mediaQuery);
-    expect(matchMedia.isActive(bpXS.mediaQuery)).toBeTruthy();
+    async(() => {
+      expect(current).toBeTruthy();
+      expect(current.mediaQuery).toEqual(bpXS!.mediaQuery);
+      expect(matchMedia.isActive(bpXS!.mediaQuery)).toBeTruthy();
 
-    subscription.unsubscribe();
+      subscription.unsubscribe();
+    });
   });
 });

@@ -19,7 +19,7 @@ describe('media-monitor', () => {
   let monitor: MediaMonitor;
   let matchMedia: MockMatchMedia;
   let breakPoints: BreakPointRegistry;
-  let findQuery = (alias) => breakPoints.findByAlias(alias).mediaQuery;
+  let findQuery = (alias) => breakPoints.findByAlias(alias)!.mediaQuery;
 
   beforeEach(() => {
     // Configure testbed to prepare services
@@ -70,7 +70,7 @@ describe('media-monitor', () => {
         .subscribe((change: MediaChange) => {
           current = change;
         });
-    try {
+    async(() => {
       expect(current).toBeUndefined();
 
       matchMedia.activate(queryGtMd);
@@ -80,9 +80,8 @@ describe('media-monitor', () => {
       matchMedia.activate(queryXs);
       expect(current.mediaQuery).toBe(queryGtMd);
       expect(current.matches).toBeFalsy();
-    } finally {
       subscription.unsubscribe();
-    }
+    });
   });
 
   it('can observe all de-activations', () => {
@@ -118,7 +117,7 @@ describe('media-monitor', () => {
             .subscribe((change: MediaChange) => {
               current = change;
             });
-    try {
+    async(() => {
       expect(current.mediaQuery).toEqual('all');
 
       matchMedia.activate(queryGtMd);
@@ -128,9 +127,8 @@ describe('media-monitor', () => {
       matchMedia.activate(queryXs);
       expect(current.mediaQuery).toBe(queryXs);
       expect(current.matches).toBeTruthy();
-    } finally {
       subscription.unsubscribe();
-    }
+    });
   });
 
   it('can observe all de-activations', () => {
