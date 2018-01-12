@@ -298,7 +298,7 @@ describe('layout-gap directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutGapComponent implements OnInit {
+class TestLayoutGapComponent implements OnInit {
   direction = 'column';
   gap = '8px';
   rows = new Array(4);

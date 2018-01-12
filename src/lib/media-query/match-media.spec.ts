@@ -47,9 +47,11 @@ describe('match-media', () => {
         .subscribe((change: MediaChange) => {
           current = change;
         });
-    expect(current.mediaQuery).toEqual('all');
 
-    subscription.unsubscribe();
+    async(() => {
+      expect(current.mediaQuery).toEqual('all');
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe all mediaQuery activations', () => {
@@ -65,25 +67,27 @@ describe('match-media', () => {
       current = change;
     });
 
-    expect(current.mediaQuery).toEqual('all');    // default mediaQuery is active
+    async(() => {
+      expect(current.mediaQuery).toEqual('all');    // default mediaQuery is active
 
-    let activated = matchMedia.activate(query1);    // simulate mediaQuery change to Query1
-    expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(query1);
-    expect(matchMedia.isActive(query1)).toBeTruthy();
+      let activated = matchMedia.activate(query1);    // simulate mediaQuery change to Query1
+      expect(activated).toEqual(true);
+      expect(current.mediaQuery).toEqual(query1);
+      expect(matchMedia.isActive(query1)).toBeTruthy();
 
-    activated = matchMedia.activate(query2);        // simulate mediaQuery change to Query2
+      activated = matchMedia.activate(query2);        // simulate mediaQuery change to Query2
 
-    expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(query2);   // confirm no notification
-    expect(matchMedia.isActive(query2)).toBeTruthy();
+      expect(activated).toEqual(true);
+      expect(current.mediaQuery).toEqual(query2);   // confirm no notification
+      expect(matchMedia.isActive(query2)).toBeTruthy();
 
-    subscription.unsubscribe();
+      subscription.unsubscribe();
+    });
   });
 
 
   it('can observe an array of custom mediaQuery ranges', () => {
-    let current: MediaChange = undefined, activated;
+    let current: MediaChange, activated;
     let query1 = 'screen and (min-width: 610px) and (max-width: 620px)';
     let query2 = '(min-width: 730px) and (max-width: 950px)';
 
@@ -92,23 +96,26 @@ describe('match-media', () => {
     let subscription = matchMedia.observe(query1).subscribe((change: MediaChange) => {
       current = change;
     });
-    expect(current).toBeUndefined();   // no notification for the default, active mediaQuery
 
-    activated = matchMedia.activate(query1);   // simulate mediaQuery change
+    async(() => {
+      expect(current).toBeUndefined();   // no notification for the default, active mediaQuery
 
-    expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(query1);
-    expect(matchMedia.isActive(query1)).toBeTruthy();
+      activated = matchMedia.activate(query1);   // simulate mediaQuery change
 
-    activated = matchMedia.activate(query2);   // simulate mediaQuery change
+      expect(activated).toEqual(true);
+      expect(current.mediaQuery).toEqual(query1);
+      expect(matchMedia.isActive(query1)).toBeTruthy();
 
-    expect(activated).toEqual(true);
-    expect(matchMedia.isActive(query2)).toBeTruthy();
+      activated = matchMedia.activate(query2);   // simulate mediaQuery change
 
-    expect(current.mediaQuery).not.toEqual(query2);   // confirm no notification
-    expect(current.mediaQuery).toEqual(query1);
+      expect(activated).toEqual(true);
+      expect(matchMedia.isActive(query2)).toBeTruthy();
 
-    subscription.unsubscribe();
+      expect(current.mediaQuery).not.toEqual(query2);   // confirm no notification
+      expect(current.mediaQuery).toEqual(query1);
+
+      subscription.unsubscribe();
+    });
   });
 
 });
@@ -149,16 +156,18 @@ describe('match-media-observable', () => {
   });
 
   it('can observe an existing activation', () => {
-    let current: MediaChange = undefined;
-    let bp = breakPoints.findByAlias('md');
+    let current: MediaChange;
+    let bp = breakPoints.findByAlias('md') !;
     matchMedia.activate(bp.mediaQuery);
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
       current = change;
     });
 
-    expect(current.mediaQuery).toEqual(bp.mediaQuery);
+    async(() => {
+      expect(current.mediaQuery).toEqual(bp.mediaQuery);
 
-    subscription.unsubscribe();
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe the initial, default activation for mediaQuery == "all". ', () => {
@@ -166,9 +175,12 @@ describe('match-media-observable', () => {
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
       current = change;
     });
-    expect(current.mediaQuery).toEqual('all');
 
-    subscription.unsubscribe();
+    async(() => {
+      expect(current.mediaQuery).toEqual('all');
+
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe custom mediaQuery ranges', () => {
@@ -180,23 +192,28 @@ describe('match-media-observable', () => {
 
     let activated = matchMedia.activate(customQuery);
     expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(customQuery);
+    async(() => {
+      expect(current.mediaQuery).toEqual(customQuery);
 
-    subscription.unsubscribe();
+      subscription.unsubscribe();
+    });
   });
 
   it('can observe registered breakpoint activations', () => {
     let current: MediaChange;
-    let bp = breakPoints.findByAlias('md');
+    let bp = breakPoints.findByAlias('md') !;
     let subscription = mediaQuery$.subscribe((change: MediaChange) => {
       current = change;
     });
 
     let activated = matchMedia.activate(bp.mediaQuery);
     expect(activated).toEqual(true);
-    expect(current.mediaQuery).toEqual(bp.mediaQuery);
 
-    subscription.unsubscribe();
+    async(() => {
+      expect(current.mediaQuery).toEqual(bp.mediaQuery);
+
+      subscription.unsubscribe();
+    });
   });
 
   /**
@@ -214,8 +231,8 @@ describe('match-media-observable', () => {
       }
     });
 
-    matchMedia.activate(breakPoints.findByAlias('md').mediaQuery);
-    matchMedia.activate(breakPoints.findByAlias('gt-md').mediaQuery);
+    matchMedia.activate(breakPoints.findByAlias('md')!.mediaQuery);
+    matchMedia.activate(breakPoints.findByAlias('gt-md')!.mediaQuery);
 
     // 'all' mediaQuery is already active; total count should be (3)
 

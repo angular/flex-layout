@@ -96,7 +96,7 @@ function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
 /**
  * Convert 'key:value' -> [key, value]
  */
-function stringToKeyValue(it: string): NgStyleKeyValue {
+function stringToKeyValue(it: string): NgStyleKeyValue|null {
   let [key, val] = it.split(':');
   return val ? new NgStyleKeyValue(key, val) : null;
 }

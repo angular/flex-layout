@@ -645,7 +645,7 @@ describe('flex directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestFlexComponent {
+class TestFlexComponent {
   direction = 'column';
 }
 
@@ -657,7 +657,7 @@ export class TestFlexComponent {
     </div>
   `
 })
-export class TestQueryWithFlexComponent {
+class TestQueryWithFlexComponent {
   @ViewChild(FlexDirective) flex: FlexDirective;
   @ViewChild(LayoutDirective) layout: LayoutDirective;
 }

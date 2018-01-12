@@ -71,5 +71,5 @@ describe('style-utils directive', () => {
   selector: 'test-style-utils',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutComponent {
+class TestLayoutComponent {
 }

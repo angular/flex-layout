@@ -25,8 +25,8 @@ else
 fi
 
 # Check if tests can be skipped
-if [[ ${fileDiff} =~ ^(.*\.md\s*)*$ ]] && (is_e2e || is_unit); then
-  echo "Skipping e2e and unit tests since only markdown files changed"
+if [[ ${fileDiff} =~ ^(.*\.md\s*)*$ ]]; then
+  echo "Skipping tests since only markdown files changed."
   exit 0
 fi
 
@@ -41,9 +41,8 @@ elif is_unit; then
   $(npm bin)/gulp ci:test
 elif is_prerender; then
   $(npm bin)/gulp ci:prerender
-# Temporarily disabled due to Material Beta.11 package restructures
-#elif is_closure_compiler; then
-#  ./scripts/closure-compiler/build-devapp-bundle.sh
+elif is_closure_compiler; then
+  ./scripts/closure-compiler/build-devapp-bundle.sh
 fi
 
 teardown_tunnel

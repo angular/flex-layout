@@ -195,7 +195,7 @@ describe('show directive', () => {
   selector: 'test-show-api',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestShowComponent implements OnInit {
+class TestShowComponent implements OnInit {
   isVisible = 0;
   isHidden = false;
   menuOpen = true;
