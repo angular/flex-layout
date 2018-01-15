@@ -4,8 +4,9 @@
 
   const REPO_TITLE   = 'Angular Flex-Layout';
   const SOURCE_REPO  = 'flex-layout';         // Source repository with Demo-app and wiki docs
-  const BUILD_REPO   = 'flex-layout-builds';  // Build repository used for npm publish and travis CI
+  const BUILD_REPO   = `${SOURCE_REPO}-builds`;  // Build repository used for npm publish and travis CI
   const NPM_RELEASES = 'scripts/release/releases.json';
+  const documentationPath = 'docs/documentation';
 
   var lineWidth      = 80;
   var defaultOptions = { encoding: 'utf-8' };
@@ -16,12 +17,16 @@
   var child_process  = require('child_process');
   var releases       = require(`./${NPM_RELEASES}`);
   var oldVersion     = require('./package.json').version;
+  var path         = require('path');
+  var temp         = require('temp');
+
+  const outputPath = temp.mkdirSync(`${SOURCE_REPO}-docs`);
 
   var cleanupCmds    = [];
   var pushCmds       = [ 'rm ./abort ./push' ];
   var abortCmds      = [ 'rm ./abort ./push', 'git reset --hard', 'git checkout master' ];
 
-  var origin         = 'git@github.com:angular/flex-layout.git';
+  var origin         = `git@github.com:angular/${SOURCE_REPO}.git`;
   var newVersion     = "";
   var lastMajorVer   = releases.latest;
   var isYes          = matches.bind(this, "yes");
@@ -56,6 +61,7 @@
     cloneDeployRepo();
     generateLatestBuild();
     updateMaster();
+    addDocs();
     writeScript('abort', abortCmds.concat(cleanupCmds));
     writeScript('push', pushCmds.concat(cleanupCmds));
 
@@ -252,15 +258,15 @@
 
   /** utility method for cloning github repos */
   function cloneDeployRepo () {
-    let path = "./"+BUILD_REPO;
-    start(`Cloning ${path.cyan} from Github...`);
-    exec(`rm -Rf ${path}`);
+    let deployPath = "./"+BUILD_REPO;
+    start(`Cloning ${deployPath.cyan} from Github...`);
+    exec(`rm -Rf ${deployPath}`);
     exec(`git clone git@github.com:angular/${BUILD_REPO}.git --depth=1`);
     done();
 
     cleanupCmds.push(
       'rm -rf dist',
-      `${skipOnDryRun} rm -Rf ${path}`,
+      `${skipOnDryRun} rm -Rf ${deployPath}`,
       `${skipOnDryRun} git branch -D release/${newVersion}`
     );
 
@@ -272,7 +278,7 @@
     exec('chmod +x ' + name);
   }
 
-  /** updates the version for flex-layout-builds in package.json  */
+  /** updates the version for nightly builds in package.json  */
   function generateLatestBuild () {
     start('Building deployed files...');
     exec([
@@ -281,13 +287,13 @@
      ]);
     done();
 
-    // Execute the next commands relative to the flex-layout-builds repo
+    // Execute the next commands relative to the nightly builds repo
     let options = {cwd: "./"+BUILD_REPO};
 
     start(`Copy files into ${options.cwd.cyan} repo...`);
 
     exec([
-      'cp -Rf ../dist/@angular/flex-layout/* ./',                   // local build output dir
+      `cp -Rf ../dist/@angular/${SOURCE_REPO}/* ./`,                   // local build output dir
       'cp -f ../CHANGELOG.md .',                                    // always over the CHANGELOG
       'git add -A',
       `git commit -m "build(deploy): release version ${newVersion}"`
@@ -303,11 +309,11 @@
       'cp -f ../CHANGELOG.md .',                  // Copy Changelog from root (if changed)
       'git add CHANGELOG.md',                     // re-add to the commit
       'git commit --amend --no-edit',
-      `git tag -f v${newVersion}`,            // Tag and update @angular/flex-layout-builds
+      `git tag -f v${newVersion}`,            // Tag and update nightly builds
       'git pull --rebase --strategy=ours',
       `${skipOnDryRun} git push`,
       `${skipOnDryRun} git push --tags`,
-      comment(!isDryRun ? '' : `Publishing @angular/flex-layout ${newVersion} to npm`),
+      comment(!isDryRun ? '' : `Publishing @angular/${SOURCE_REPO} ${newVersion} to npm`),
       `${skipOnDryRun} npm publish`,
       'cd ../',
 
@@ -368,6 +374,98 @@
           .join(' ')
           .replace(/"/g, '\\"');
     }
+  }
+
+  /**
+   * adds the documentation stored in the repo to the GitHub wiki
+   */
+  function addDocs () {
+    createDocFiles();
+    pushCmds.push(
+      comment('push docs to Wiki'),
+      `cd ${outputPath}`,
+      'git add .',
+      `git commit -m "${newVersion}"`,
+      `${skipOnDryRun} git push`,
+    )
+  }
+
+  /**
+   * reads the list of files in the documentation path to
+   * be copied
+   */
+  function readDocFiles(directory, filelist) {
+    if(directory[directory.length - 1] != `${path.sep}`) {
+      directory = directory.concat(`${path.sep}`);
+    }
+
+    const files = fs.readdirSync(directory);
+    filelist = filelist || [];
+    files.forEach((file) => {
+      if (fs.statSync(directory + file).isDirectory()) {
+        filelist = readDocFiles(directory + file + `${path.sep}`, filelist);
+      } else {
+        const originalPath = directory + file;
+        const newPath = path.join(outputPath, originalPath
+          .replace(documentationPath + `${path.sep}`, '')
+          .replace(`${path.sep}`, '-'));
+
+        filelist.push({ originalPath, newPath });
+      }
+    });
+    return filelist;
+  }
+
+  function createDocFiles() {
+    exec(`git clone "https://github.com/angular/${SOURCE_REPO}.wiki" "${outputPath}"`);
+    const files = readDocFiles(documentationPath) || [];
+    const linksToReplace = checkNameLinks(files);
+    const copies = files.map(({ originalPath, newPath }) => {
+      return copyDocFile(originalPath, newPath, linksToReplace)
+    });
+    return Promise.all(copies);
+  }
+
+  function checkNameLinks(files) {
+    return files.reduce((pValue, cValue) => {
+      const oldName = cValue.originalPath
+        .replace(documentationPath + `${path.sep}`, '')
+        .replace('.md', '')
+        .replace(`${path.sep}`, '/');
+      const newName = '(' + cValue.newPath.split(`${path.sep}`).slice(-1).pop().replace('.md', '') + ')';
+      if (oldName !== newName) {
+        pValue.push({
+          oldName,
+          newName
+        });
+      }
+      return pValue;
+    }, []);
+  }
+
+  function copyDocFile(from, to, linksToReplace) {
+    from = path.relative(process.cwd(), from);
+    to = path.relative(process.cwd(), to);
+    const replaceHyphen = new RegExp('-', 'gi');
+    return new Promise((resolve, reject) => {
+      fs.readFile(from, (error, data) => {
+        if (error) {
+          reject(error);
+        }
+        let fileData = data.toString();
+        linksToReplace.forEach((link) => {
+          const str = '\\(' + link.oldName.replace(replaceHyphen, '\\-') + '\\)';
+          const r = new RegExp(str, 'gi');
+          fileData = fileData.replace(r, link.newName);
+        });
+        fs.writeFile(to, fileData, (error2) => {
+          if (error2) {
+            reject(error2);
+          }
+          resolve();
+        })
+      })
+    });
   }
 
   /** utility method to output header */
