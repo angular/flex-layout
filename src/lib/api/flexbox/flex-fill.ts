@@ -9,6 +9,7 @@ import {Directive, ElementRef, Inject, PLATFORM_ID, Renderer2} from '@angular/co
 
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {BaseFxDirective} from '../core/base';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 const FLEX_FILL_CSS = {
   'margin': 0,
@@ -32,8 +33,9 @@ export class FlexFillDirective extends BaseFxDirective {
   constructor(monitor: MediaMonitor,
               public elRef: ElementRef,
               public renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
     this._applyStyleToElement(FLEX_FILL_CSS);
   }
 }

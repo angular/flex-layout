@@ -21,6 +21,7 @@ import {
 import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 /**
  * 'flex-align' flexbox styling directive
@@ -59,8 +60,9 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
   }
 
 

@@ -23,6 +23,7 @@ import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {buildLayoutCSS} from '../../utils/layout-validator';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 /**
  * 'layout' flexbox styling directive
@@ -76,8 +77,9 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
     this._announcer = new ReplaySubject<string>(1);
     this.layout$ = this._announcer.asObservable();
   }

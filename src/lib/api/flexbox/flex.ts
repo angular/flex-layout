@@ -30,6 +30,7 @@ import {LayoutDirective} from './layout';
 import {LayoutWrapDirective} from './layout-wrap';
 import {validateBasis} from '../../utils/basis-validator';
 import {isFlowHorizontal} from '../../utils/layout-validator';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -89,9 +90,10 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
               renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
               @Optional() @SkipSelf() protected _wrap: LayoutWrapDirective,
-              @Inject(PLATFORM_ID) platformId: Object) {
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
 
-    super(monitor, elRef, renderer, platformId);
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
 
     this._cacheInput('flex', '');
     this._cacheInput('shrink', 1);

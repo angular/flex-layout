@@ -11,6 +11,7 @@ import {BaseFxDirective} from './base';
 import {ResponsiveActivation} from './responsive-activation';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 
 /**
@@ -49,8 +50,9 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
               protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
               protected _renderer: Renderer2,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
-    super(_mediaMonitor, _elementRef, _renderer, _platformId);
+              @Inject(PLATFORM_ID) protected _platformId: Object,
+              protected _serverStylesheet: ServerStylesheet) {
+    super(_mediaMonitor, _elementRef, _renderer, _platformId, _serverStylesheet);
   }
 
   /**

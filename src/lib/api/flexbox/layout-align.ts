@@ -28,6 +28,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
 import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 /**
  * 'layout-align' flexbox styling directive
@@ -72,8 +73,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
       monitor: MediaMonitor,
       elRef: ElementRef, renderer: Renderer2,
       @Optional() @Self() container: LayoutDirective,
-      @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+      @Inject(PLATFORM_ID) platformId: Object,
+      serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

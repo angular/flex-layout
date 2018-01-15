@@ -26,6 +26,7 @@ import {LayoutDirective} from './layout';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {validateWrapValue, LAYOUT_VALUES} from '../../utils/layout-validator';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 /**
  * @deprecated
  * This functionality is now part of the `fxLayout` API
@@ -65,14 +66,14 @@ export class LayoutWrapDirective extends BaseFxDirective implements OnInit, OnCh
   @Input('fxLayoutWrap.lt-xl') set wrapLtXl(val) { this._cacheInput('wrapLtXl', val); };
 
   /* tslint:enable */
-  constructor(
-    monitor: MediaMonitor,
-    elRef: ElementRef,
-    renderer: Renderer2,
-    @Optional() @Self() container: LayoutDirective,
-    @Inject(PLATFORM_ID) platformId: Object) {
+  constructor(monitor: MediaMonitor,
+              elRef: ElementRef,
+              renderer: Renderer2,
+              @Optional() @Self() container: LayoutDirective,
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
 
-    super(monitor, elRef, renderer, platformId);
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

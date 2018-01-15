@@ -29,6 +29,7 @@ import {BaseFxDirectiveAdapter} from '../core/base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {RendererAdapter} from '../core/renderer-adapter';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 /** NgClass allowed inputs **/
 export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
@@ -95,8 +96,9 @@ export class ClassDirective extends BaseFxDirective
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
               @Optional() @Self() private _ngClassInstance: NgClass,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
-    super(monitor, _ngEl, _renderer, _platformId);
+              @Inject(PLATFORM_ID) protected _platformId: Object,
+              protected _serverStylesheet: ServerStylesheet) {
+    super(monitor, _ngEl, _renderer, _platformId, _serverStylesheet);
     this._configureAdapters();
   }
 
@@ -139,7 +141,12 @@ export class ClassDirective extends BaseFxDirective
    */
   protected _configureAdapters() {
     this._base = new BaseFxDirectiveAdapter(
-        'ngClass', this.monitor, this._ngEl, this._renderer, this._platformId
+      'ngClass',
+      this.monitor,
+      this._ngEl,
+      this._renderer,
+      this._platformId,
+      this._serverStylesheet,
     );
     if (!this._ngClassInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on

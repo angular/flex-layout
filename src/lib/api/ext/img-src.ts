@@ -18,6 +18,7 @@ import {
 
 import {BaseFxDirective} from '../core/base';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
@@ -60,8 +61,9 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
   constructor(elRef: ElementRef,
               renderer: Renderer2,
               monitor: MediaMonitor,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
     this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
   }
 

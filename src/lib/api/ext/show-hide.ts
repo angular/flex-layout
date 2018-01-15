@@ -26,6 +26,7 @@ import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from '../flexbox/layout';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 const FALSY = ['false', false, 0];
 
@@ -107,9 +108,10 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
               @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
               protected renderer: Renderer2,
-              @Inject(PLATFORM_ID) protected platformId: Object) {
+              @Inject(PLATFORM_ID) protected platformId: Object,
+              protected serverStylesheet: ServerStylesheet) {
 
-    super(monitor, elRef, renderer, platformId);
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
 
     if (_layout) {
       /**

@@ -39,8 +39,8 @@ export function applyStyleToElement(renderer: Renderer2,
  */
 export function applyStyleToElements(renderer: Renderer2,
                               style: StyleDefinition,
-                              elements: HTMLElement[ ]) {
-  let styles = applyCssPrefixes(style);
+                              elements: HTMLElement[]) {
+  const styles = applyCssPrefixes(style);
 
   elements.forEach(el => {
     applyMultiValueStyleToElement(styles, el, renderer);

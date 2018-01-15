@@ -20,27 +20,76 @@ import {Observable} from 'rxjs/Observable';
 import {filter} from 'rxjs/operators/filter';
 
 import {MediaChange} from './media-change';
+import {BreakPoint} from '../media-query/breakpoints/break-point';
 
 /**
- * EventHandler callback with the mediaQuery [range] activates or deactivates
+ * Special server-only class to simulate a MediaQueryList and
+ * - supports manual activation to simulate mediaQuery matching
+ * - manages listeners
  */
-export interface MediaQueryListListener {
-  // Function with Window's MediaQueryList argument
-  (mql: MediaQueryList): void;
+export class ServerMediaQueryList implements MediaQueryList {
+  private _isActive = false;
+  private _listeners: Array<MediaQueryListListener> = [];
+
+  get matches(): boolean {
+    return this._isActive;
+  }
+
+  get media(): string {
+    return this._mediaQuery;
+  }
+
+  constructor(private _mediaQuery: string) { }
+
+  /**
+   *
+   */
+  destroy() {
+    this.deactivate();
+    this._listeners = [];
+  }
+
+  /**
+   * Notify all listeners that 'matches === TRUE'
+   */
+  activate(): ServerMediaQueryList {
+    if (!this._isActive) {
+      this._isActive = true;
+      this._listeners.forEach((callback) => {
+        callback(this);
+      });
+    }
+    return this;
+  }
+
+  /**
+   * Notify all listeners that 'matches === false'
+   */
+  deactivate(): ServerMediaQueryList {
+    if (this._isActive) {
+      this._isActive = false;
+      this._listeners.forEach((callback) => {
+        callback(this);
+      });
+    }
+    return this;
+  }
+
+  /**
+   *
+   */
+  addListener(listener: MediaQueryListListener) {
+    if (this._listeners.indexOf(listener) === -1) {
+      this._listeners.push(listener);
+    }
+    if (this._isActive) {
+      listener(this);
+    }
+  }
+
+  removeListener(_: MediaQueryListListener) {
+  }
 }
-
-/**
- * EventDispatcher for a specific mediaQuery [range]
- */
-export interface MediaQueryList {
-  readonly matches: boolean;
-  readonly media: string;
-
-  addListener(listener: MediaQueryListListener): void;
-
-  removeListener(listener: MediaQueryListListener): void;
-}
-
 
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -51,7 +100,7 @@ export interface MediaQueryList {
  */
 @Injectable()
 export class MatchMedia {
-  protected _registry: Map<string, MediaQueryList>;
+  protected _registry: Map<string, MediaQueryList|ServerMediaQueryList>;
   protected _source: BehaviorSubject<MediaChange>;
   protected _observable$: Observable<MediaChange>;
 
@@ -59,9 +108,27 @@ export class MatchMedia {
               protected _rendererFactory: RendererFactory2,
               @Inject(DOCUMENT) protected _document: any,
               @Inject(PLATFORM_ID) protected _platformId: Object) {
-    this._registry = new Map<string, MediaQueryList>();
+    this._registry = new Map<string, MediaQueryList|ServerMediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
+  }
+
+  /**
+   * Activate the specified breakpoint if we're on the server, no-op otherwise
+   */
+  activateBreakpoint(bp: BreakPoint) {
+    if (!isPlatformBrowser(this._platformId)) {
+      (this._registry.get(bp.mediaQuery) as ServerMediaQueryList).activate();
+    }
+  }
+
+  /**
+   * Deactivate the specified breakpoint if we're on the server, no-op otherwise
+   */
+  deactivateBreakpoint(bp: BreakPoint) {
+    if (!isPlatformBrowser(this._platformId)) {
+      (this._registry.get(bp.mediaQuery) as ServerMediaQueryList).deactivate();
+    }
   }
 
   /**
@@ -104,7 +171,7 @@ export class MatchMedia {
 
       list.forEach(query => {
         let mql = this._registry.get(query);
-        let onMQLEvent = (e: MediaQueryList) => {
+        let onMQLEvent = (e: MediaQueryList|ServerMediaQueryList) => {
           this._zone.run(() => {
             let change = new MediaChange(e.matches, query);
             this._source.next(change);
@@ -128,18 +195,11 @@ export class MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected _buildMQL(query: string): MediaQueryList {
+  protected _buildMQL(query: string): MediaQueryList|ServerMediaQueryList {
     let canListen = isPlatformBrowser(this._platformId) &&
       !!(<any>window).matchMedia('all').addListener;
 
-    return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
-      matches: query === 'all' || query === '',
-      media: query,
-      addListener: () => {
-      },
-      removeListener: () => {
-      }
-    };
+    return canListen ? (<any>window).matchMedia(query) : new ServerMediaQueryList(query);
   }
 
   /**

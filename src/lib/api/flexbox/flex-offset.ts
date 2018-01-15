@@ -27,6 +27,7 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from './layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
 
 /**
  * 'flex-offset' flexbox styling directive
@@ -63,8 +64,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
               elRef: ElementRef,
               renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              @Inject(PLATFORM_ID) platformId: Object,
+              serverStylesheet: ServerStylesheet) {
+    super(monitor, elRef, renderer, platformId, serverStylesheet);
 
 
     this.watchParentFlow();

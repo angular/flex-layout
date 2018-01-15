@@ -29,6 +29,8 @@ import {
 import {ResponsiveActivation, KeyOptions} from '../core/responsive-activation';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
+import {ServerStylesheet} from '../../utils/server-stylesheet';
+import {isPlatformBrowser} from '@angular/common';
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseFxDirective implements OnDestroy, OnChanges {
@@ -71,7 +73,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
               protected _renderer: Renderer2,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
+              @Inject(PLATFORM_ID) protected _platformId: Object,
+              protected _serverStylesheet: ServerStylesheet) {
   }
 
   // *********************************************
@@ -137,11 +140,16 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
 
   /**
    * Quick accessor to the current HTMLElement's `display` style
-   * Note: this allows use to preserve the original style
+   * Note: this allows us to preserve the original style
    * and optional restore it when the mediaQueries deactivate
    */
   protected _getDisplayStyle(source: HTMLElement = this.nativeElement): string {
-    return lookupStyle(this._platformId, source || this.nativeElement, 'display');
+    const query = 'display';
+    if (isPlatformBrowser(this._platformId)) {
+      return lookupStyle(this._platformId, source || this.nativeElement, query);
+    } else {
+      return this._serverStylesheet.getStyleForElement(source, query);
+    }
   }
 
   /**
@@ -160,13 +168,26 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   protected _getFlowDirection(target: any, addIfMissing = false): string {
     let value = 'row';
+    let hasInlineValue = '';
+    const query = 'flex-direction';
 
     if (target) {
-      value = lookupStyle(this._platformId, target, 'flex-direction') || 'row';
-      let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
+      if (isPlatformBrowser(this._platformId)) {
+        value = lookupStyle(this._platformId, target, query) || 'row';
+        hasInlineValue = lookupInlineStyle(target, query);
+      } else {
+        // TODO(CaerusKaru): platform-server has no implementation for getComputedStyle
+        value = this._serverStylesheet.getStyleForElement(target, query) || 'row';
+      }
 
       if (!hasInlineValue && addIfMissing) {
-        applyStyleToElements(this._renderer, buildLayoutCSS(value), [target]);
+        const style = buildLayoutCSS(value);
+        const elements = [target];
+        if (isPlatformBrowser(this._platformId)) {
+          applyStyleToElements(this._renderer, style, elements);
+        } else {
+          this._serverStylesheet.addStyleToElements(style, elements);
+        }
       }
     }
 
@@ -180,14 +201,22 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
                                  value?: string | number,
                                  nativeElement: any = this.nativeElement) {
     let element = nativeElement || this.nativeElement;
-    applyStyleToElement(this._renderer, element, style, value);
+    if (isPlatformBrowser(this._platformId)) {
+      applyStyleToElement(this._renderer, element, style, value);
+    } else {
+      this._serverStylesheet.addStyleToElement(element, style, value);
+    }
   }
 
   /**
    * Applies styles given via string pair or object map to the directive's element.
    */
   protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[ ]) {
-    applyStyleToElements(this._renderer, style, elements || []);
+    if (isPlatformBrowser(this._platformId)) {
+      applyStyleToElements(this._renderer, style, elements || []);
+    } else {
+      this._serverStylesheet.addStyleToElements(style, elements || []);
+    }
   }
 
   /**
