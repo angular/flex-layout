@@ -13,11 +13,8 @@ import {
   OnDestroy,
   OnInit,
   Optional,
-  Renderer2,
   SimpleChanges,
   Self,
-  Inject,
-  PLATFORM_ID,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {extendObject} from '../../utils/object-extend';
@@ -28,6 +25,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 
 import {LayoutDirective} from './layout';
 import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 /**
  * 'layout-align' flexbox styling directive
@@ -70,10 +68,10 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /* tslint:enable */
   constructor(
       monitor: MediaMonitor,
-      elRef: ElementRef, renderer: Renderer2,
+      elRef: ElementRef,
       @Optional() @Self() container: LayoutDirective,
-      @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+      styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

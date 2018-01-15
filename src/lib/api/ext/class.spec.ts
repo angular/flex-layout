@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, PLATFORM_ID} from '@angular/core';
+import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
@@ -21,15 +21,19 @@ import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-regi
 
 import {ClassDirective} from './class';
 import {MediaQueriesModule} from '../../media-query/_module';
+import {ServerStylesheet} from '../../utils/styling/server-stylesheet';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 describe('class directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
+  let platformId: Object;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestClassComponent)(template);
 
-    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
+    inject([MatchMedia, PLATFORM_ID], (_matchMedia: MockMatchMedia, _platformId: Object) => {
       matchMedia = _matchMedia;
+      platformId = _platformId;
     })();
   };
 
@@ -46,7 +50,9 @@ describe('class directive', () => {
       declarations: [TestClassComponent, ClassDirective],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        ServerStylesheet,
+        StyleUtils,
       ]
     });
   });
@@ -224,7 +230,10 @@ describe('class directive', () => {
     fixture.detectChanges();
     let button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
-    expect(button).toHaveCssClass('mat-raised-button');
+    // TODO(CaerusKaru): MatButton doesn't apply host attributes on the server
+    if (!isPlatformServer(platformId)) {
+      expect(button).toHaveCssClass('mat-raised-button');
+    }
     expect(button).toHaveCssClass('btn-xs');
     expect(button).toHaveCssClass('mat-primary');
 
@@ -232,7 +241,10 @@ describe('class directive', () => {
     fixture.detectChanges();
     button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
-    expect(button).toHaveCssClass('mat-raised-button');
+    // TODO(CaerusKaru): MatButton doesn't apply host attributes on the server
+    if (!isPlatformServer(platformId)) {
+      expect(button).toHaveCssClass('mat-raised-button');
+    }
     expect(button).not.toHaveCssClass('btn-xs');
     expect(button).toHaveCssClass('mat-primary');
   });

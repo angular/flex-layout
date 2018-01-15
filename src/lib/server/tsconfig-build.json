@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig-build",
+  "files": [
+    "../typings.d.ts",
+    "public-api.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@angular/flex-layout": ["../../../dist/packages/flex-layout"],
+      "@angular/flex-layout/*": ["../../../dist/packages/flex-layout/*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "annotateForClosureCompiler": true,
+    "strictMetadataEmit": true,
+    "flatModuleOutFile": "index.js",
+    "flatModuleId": "@angular/flex-layout/server",
+    "skipTemplateCodegen": true,
+    "fullTemplateTypeCheck": true
+  }
+}

@@ -5,9 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  InjectionToken,    // tslint:disable-line:no-unused-variable
-} from '@angular/core';
+import {InjectionToken} from '@angular/core';
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from './break-points-token';
@@ -80,7 +78,7 @@ export const DEFAULT_BREAKPOINTS_PROVIDER = { // tslint:disable-line:variable-na
 export function CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(_custom?: BreakPoint[],
                                                     options?: BreakPointProviderOptions) {
   return {
-    provide: BREAKPOINTS,
+    provide: <InjectionToken<BreakPoint[]>>BREAKPOINTS,
     useFactory: buildMergedBreakPoints(_custom, options)
   };
 }

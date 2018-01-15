@@ -17,11 +17,12 @@
     "skipLibCheck": true,
     "types": [],
     "typeRoots": [
-          "../../node_modules/@types/!(node)"
-        ],
+      "../../node_modules/@types/!(node)"
+    ],
     "baseUrl": ".",
     "paths": {
-      "@angular/flex-layout": ["./flex-layout"]
+      "@angular/flex-layout": ["./flex-layout"],
+      "@angular/flex-layout/*": ["./flex-layout/*"]
     }
   },
   "files": [

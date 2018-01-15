@@ -12,20 +12,21 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer2,
   SimpleChanges,
   Self,
   Optional,
   Inject,
   PLATFORM_ID,
 } from '@angular/core';
-
+import {isPlatformServer} from '@angular/common';
 import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from '../flexbox/layout';
+import {StyleUtils} from '../../utils/styling/style-utils';
+import {SERVER_TOKEN} from '../../utils/styling/server-token';
 
 const FALSY = ['false', false, 0];
 
@@ -104,19 +105,20 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    *
    */
   constructor(monitor: MediaMonitor,
-              @Optional() @Self() protected _layout: LayoutDirective,
+              @Optional() @Self() protected layout: LayoutDirective,
               protected elRef: ElementRef,
-              protected renderer: Renderer2,
-              @Inject(PLATFORM_ID) protected platformId: Object) {
+              protected styleUtils: StyleUtils,
+              @Inject(PLATFORM_ID) protected platformId: Object,
+              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
 
-    super(monitor, elRef, renderer, platformId);
+    super(monitor, elRef, styleUtils);
 
-    if (_layout) {
+    if (layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
        * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
        */
-      this._layoutWatcher = _layout.layout$.subscribe(() => this._updateWithValue());
+      this._layoutWatcher = layout.layout$.subscribe(() => this._updateWithValue());
     }
   }
 
@@ -130,7 +132,7 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
    * unless it was already explicitly specified inline or in a CSS stylesheet.
    */
   protected _getDisplayStyle(): string {
-    return this._layout ? 'flex' : super._getDisplayStyle();
+    return this.layout ? 'flex' : super._getDisplayStyle();
   }
 
 
@@ -181,6 +183,9 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
 
     let shouldShow = this._validateTruthy(value);
     this._applyStyleToElement(this._buildCSS(shouldShow));
+    if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+      this.nativeElement.style.setProperty('display', '');
+    }
   }
 
 

@@ -5,42 +5,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  Inject,
-  Injectable,
-  NgZone,
-  PLATFORM_ID,
-  RendererFactory2,
-  RendererType2,
-  ViewEncapsulation,
-} from '@angular/core';
-import {DOCUMENT, isPlatformBrowser} from '@angular/common';
+import {Inject, Injectable, NgZone} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {filter} from 'rxjs/operators/filter';
 
 import {MediaChange} from './media-change';
-
-/**
- * EventHandler callback with the mediaQuery [range] activates or deactivates
- */
-export interface MediaQueryListListener {
-  // Function with Window's MediaQueryList argument
-  (mql: MediaQueryList): void;
-}
-
-/**
- * EventDispatcher for a specific mediaQuery [range]
- */
-export interface MediaQueryList {
-  readonly matches: boolean;
-  readonly media: string;
-
-  addListener(listener: MediaQueryListListener): void;
-
-  removeListener(listener: MediaQueryListListener): void;
-}
-
 
 /**
  * MediaMonitor configures listeners to mediaQuery changes and publishes an Observable facade to
@@ -56,9 +27,7 @@ export class MatchMedia {
   protected _observable$: Observable<MediaChange>;
 
   constructor(protected _zone: NgZone,
-              protected _rendererFactory: RendererFactory2,
-              @Inject(DOCUMENT) protected _document: any,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
+              @Inject(DOCUMENT) protected _document: any) {
     this._registry = new Map<string, MediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
@@ -129,8 +98,7 @@ export class MatchMedia {
    * supports 0..n listeners for activation/deactivation
    */
   protected _buildMQL(query: string): MediaQueryList {
-    let canListen = isPlatformBrowser(this._platformId) &&
-      !!(<any>window).matchMedia('all').addListener;
+    let canListen = !!(<any>window).matchMedia('all').addListener;
 
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
       matches: query === 'all' || query === '',
@@ -149,16 +117,15 @@ export class MatchMedia {
    * @param query string The mediaQuery used to create a faux CSS selector
    *
    */
-  protected _prepareQueryCSS(mediaQueries: string[], _document: any) {
+  protected _prepareQueryCSS(mediaQueries: string[], _document: Document) {
     let list = mediaQueries.filter(it => !ALL_STYLES[it]);
     if (list.length > 0) {
       let query = list.join(', ');
 
       try {
-        const renderer = this._rendererFactory.createRenderer(_document, RENDERER_TYPE);
-        let styleEl = renderer.createElement('style');
+        let styleEl = _document.createElement('style');
 
-        renderer.setAttribute(styleEl, 'type', 'text/css');
+        styleEl.setAttribute('type', 'text/css');
         if (!styleEl['styleSheet']) {
           let cssText = `
 /*
@@ -167,10 +134,10 @@ export class MatchMedia {
 */
 @media ${query} {.fx-query-test{ }}
 ` ;
-          renderer.appendChild(styleEl, renderer.createText(cssText));
+          styleEl.appendChild(_document.createTextNode(cssText));
         }
 
-        renderer.appendChild(_document.head, styleEl);
+        _document.head.appendChild(styleEl);
 
         // Store in private global registry
         list.forEach(mq => ALL_STYLES[mq] = styleEl);
@@ -181,19 +148,6 @@ export class MatchMedia {
     }
   }
 }
-
-/**
- * Since `getDom()` is no longer supported,
- * we will use a RendererFactory build and instance
- * of a renderer for an element. Then the renderer will
- * build the stylesheet(s)
- */
-const RENDERER_TYPE: RendererType2 = {
-  id: '-1',
-  styles: [ ],
-  data: { },
-  encapsulation: ViewEncapsulation.None
-};
 
 /**
  * Private global registry for all dynamically-created, injected style tags

@@ -22,15 +22,19 @@ import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl
 } from '../../utils/testing/helpers';
+import {ServerStylesheet} from '../../utils/styling/server-stylesheet';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
+  let styler: StyleUtils;
   let createTestComponent = (template) => {
     fixture = makeCreateTestComponent(() => TestStyleComponent)(template);
 
-    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
+    inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
       matchMedia = _matchMedia;
+      styler = _styler;
     })();
   };
 
@@ -43,7 +47,9 @@ describe('style directive', () => {
       declarations: [TestStyleComponent, LayoutDirective, StyleDirective],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        ServerStylesheet,
+        StyleUtils,
       ]
     });
   });
@@ -61,7 +67,7 @@ describe('style directive', () => {
         </div>
     `);
       matchMedia.activate(testData.mq);
-      expectNativeEl(fixture).toHaveStyle(testData.styleObj);
+      expectNativeEl(fixture).toHaveStyle(testData.styleObj, styler);
     });
   });
 
@@ -70,30 +76,39 @@ describe('style directive', () => {
         <div style="color: blue" [ngStyle.xs]="{'font-size.px': '15'}">
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({color: 'blue'});
+    expectNativeEl(fixture).toHaveStyle({color: 'blue'}, styler);
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({color: 'blue', 'font-size': '15px'});
+    expectNativeEl(fixture).toHaveStyle({color: 'blue', 'font-size': '15px'}, styler);
   });
 
   it('should support raw-string notations', () => {
     createTestComponent(`
         <div
             style="color: blue"
-            ngStyle.xs="font-size: 15px; background-color:#fc2929;" >
+            ngStyle.xs="font-size: 15px; background-color: #fc2929;" >
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({color: 'blue'});
+    expectNativeEl(fixture).toHaveStyle({color: 'blue'}, styler);
     matchMedia.activate('xs');
+
     expectNativeEl(fixture).toHaveStyle({
       'color': 'blue',
-      'font-size': '15px',
-      'background-color': 'rgb(252, 41, 41)'
-    });
+      'font-size': '15px'
+    }, styler);
+
+    // TODO(CaerusKaru): the Domino server impl. does not process colors correctly
+    const backgroundColor = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
+      'background-color');
+    const hasBackgroundRaw = backgroundColor === '#fc2929';
+    const hasBackgroundFormat = backgroundColor === 'rgb(252, 41, 41)';
+    const hasBackground = hasBackgroundFormat || hasBackgroundRaw;
+
+    expect(hasBackground).toBe(true);
   });
 
   it('should allow more than one responsive breakpoint on one element', () => {
     createTestComponent(`
-      <div  fxLayout
+      <div fxLayout
         [ngStyle]="{'font-size': '10px;', 'margin-left' : '13px'}"
         [ngStyle.xs]="{'font-size': '16px'}"
         [ngStyle.md]="{'font-size': '12px'}">
@@ -103,19 +118,19 @@ describe('style directive', () => {
     fixture.detectChanges();
 
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({'display': 'flex'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'});
+    expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'font-size': '16px'}, styler);
+    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'}, styler);
 
     matchMedia.activate('md');
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '12px'});
+    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'font-size': '12px'}, styler);
 
     matchMedia.activate('lg');
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'});
-    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'});
-    expectNativeEl(fixture).toHaveStyle({'font-size': '10px'});  // original is gone
-    expectNativeEl(fixture).toHaveStyle({'margin-left': '13px'});   // portion remains
+    expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'}, styler);
+    expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'font-size': '10px'}, styler);  // original is gone
+    expectNativeEl(fixture).toHaveStyle({'margin-left': '13px'}, styler);   // portion remains
 
   });
 
@@ -125,7 +140,7 @@ describe('style directive', () => {
         </div>
     `);
     matchMedia.activate('xs');
-    expectNativeEl(fixture).toHaveStyle({'font-size': '15px'});
+    expectNativeEl(fixture).toHaveStyle({'font-size': '15px'}, styler);
   });
 
   it('should work with bound values', () => {
@@ -134,7 +149,7 @@ describe('style directive', () => {
         </div>
     `);
     matchMedia.activate('xs');
-    expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'});
+    expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
 });
 

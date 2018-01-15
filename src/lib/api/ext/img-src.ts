@@ -11,13 +11,16 @@ import {
   Input,
   OnInit,
   OnChanges,
-  Renderer2,
   Inject,
+  Optional,
   PLATFORM_ID,
 } from '@angular/core';
+import {isPlatformServer} from '@angular/common';
 
 import {BaseFxDirective} from '../core/base';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {StyleUtils} from '../../utils/styling/style-utils';
+import {SERVER_TOKEN} from '../../utils/styling/server-token';
 
 /**
  * This directive provides a responsive API for the HTML <img> 'src' attribute
@@ -57,12 +60,16 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
   @Input('src.gt-lg')  set srcGtLg(val) { this._cacheInput('srcGtLg', val);  }
   /* tslint:enable */
 
-  constructor(elRef: ElementRef,
-              renderer: Renderer2,
-              monitor: MediaMonitor,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
-    this._cacheInput('src', elRef.nativeElement.getAttribute('src') || '');
+  constructor(protected _elRef: ElementRef,
+              protected _monitor: MediaMonitor,
+              protected _styler: StyleUtils,
+              @Inject(PLATFORM_ID) protected _platformId: Object,
+              @Optional() @Inject(SERVER_TOKEN) protected _serverModuleLoaded: boolean) {
+    super(_monitor, _elRef, _styler);
+    this._cacheInput('src', _elRef.nativeElement.getAttribute('src') || '');
+    if (isPlatformServer(this._platformId) && this._serverModuleLoaded) {
+      this.nativeElement.setAttribute('src', '');
+    }
   }
 
   /**
@@ -100,7 +107,11 @@ export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChange
   protected _updateSrcFor() {
     if (this.hasResponsiveKeys) {
       let url = this.activatedValue || this.defaultSrc;
-      this._renderer.setAttribute(this.nativeElement, 'src', String(url));
+      if (isPlatformServer(this._platformId) && this._serverModuleLoaded) {
+        this._styler.applyStyleToElement(this.nativeElement, {'content': url ? `url(${url})` : ''});
+      } else {
+        this.nativeElement.setAttribute('src', String(url));
+      }
     }
   }
 

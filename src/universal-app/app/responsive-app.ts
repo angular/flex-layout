@@ -2,6 +2,7 @@ import {Component, NgModule} from '@angular/core';
 import {ServerModule} from '@angular/platform-server';
 import {BrowserModule} from '@angular/platform-browser';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutServerModule} from '@angular/flex-layout/server';
 
 import {SplitModule} from './splitter/split.module';
 
@@ -11,7 +12,7 @@ import {SplitModule} from './splitter/split.module';
   styleUrls: ['./responsive-app.css'],
   template: `
     <div class="night-theme">
-      <div fxLayout="row" style="height:500px" ngxSplit="row">
+      <div fxLayout="row" fxLayout.xs="column" style="height:500px" ngxSplit="row">
         <div fxFlex="30%" ngxSplitArea class="c1r1">
           <div class="c1r1_header">Column #1 - Row #1</div>
           <ul>
@@ -23,7 +24,7 @@ import {SplitModule} from './splitter/split.module';
         <div class="handle handle-row" ngxSplitHandle>
           <i class="material-icons">&#xE25D;</i>
         </div>
-        <div fxFlex="70%" ngxSplitArea>
+        <div fxFlex.xs="70%" fxFlex.gt-md="50%" fxFlex.lg="60%" ngxSplitArea>
           <div fxLayout="column" fxFlexFill ngxSplit="column">
             <div fxFlex="50%" ngxSplitArea class="c2r1_body">
               <div class="c2r1_header">Column #2 - Row #1</div>
@@ -74,7 +75,7 @@ export class ResponsiveAppClientModule {
 
 
 @NgModule({
-  imports: [ResponsiveAppClientModule, ServerModule],
+  imports: [ResponsiveAppClientModule, ServerModule, FlexLayoutServerModule],
   bootstrap: [ResponsiveApp],
 })
 export class ResponsiveAppServerModule {

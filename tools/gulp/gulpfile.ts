@@ -13,5 +13,6 @@ import './tasks/development';
 import './tasks/lint';
 import './tasks/publish';             // publish release to npm
 import './tasks/unit-test';
+import './tasks/unit-test-ssr';
 import './tasks/universal';
 import './tasks/validate-release';

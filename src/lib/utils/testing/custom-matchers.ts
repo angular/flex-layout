@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import {StyleUtils} from '../styling/style-utils';
 
 declare var global: any;
 const _global = <any>(typeof window === 'undefined' ? global : window);
@@ -204,7 +205,7 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
  * specified DOM element.
  */
 function buildCompareStyleFunction(inlineOnly = true) {
-  return function (actual: any, styles: { [k: string]: string } | string) {
+  return function (actual: any, styles: { [k: string]: string } | string, styler: StyleUtils) {
     let found = {};
 
     let allPassed: boolean;
@@ -214,7 +215,7 @@ function buildCompareStyleFunction(inlineOnly = true) {
 
     allPassed = Object.keys(styles).length !== 0;
     Object.keys(styles).forEach(prop => {
-      let {elHasStyle, current} = hasPrefixedStyles(actual, prop, styles[prop], inlineOnly);
+      let {elHasStyle, current} = hasPrefixedStyles(actual, prop, styles[prop], inlineOnly, styler);
       allPassed = allPassed && elHasStyle;
       if (!elHasStyle) {
         extendObject(found, current);
@@ -228,7 +229,7 @@ function buildCompareStyleFunction(inlineOnly = true) {
             JSON.stringify(styles, null, 2);
         const foundValueStr = inlineOnly ? actual.outerHTML : JSON.stringify(found);
         return `
-          Expected ${foundValueStr} ${!allPassed ? ' ' : 'not '} to contain the
+          Expected ${foundValueStr}${!allPassed ? '' : ' not'} to contain the
           CSS ${typeof styles === 'string' ? 'property' : 'styles'} '${expectedValueStr}'
         `;
       }
@@ -241,19 +242,17 @@ function buildCompareStyleFunction(inlineOnly = true) {
  * to possible `prefixed` styles. Useful when some browsers
  * (Safari, IE, etc) will use prefixed style instead of defaults.
  */
-function hasPrefixedStyles(actual, key, value, inlineOnly) {
-  const current = {}, computed = getComputedStyle(actual);
+function hasPrefixedStyles(actual, key, value, inlineOnly, styler) {
+  const current = {};
 
-  value = value !== '*' ? value.trim() : undefined;
-  let elHasStyle = _.hasStyle(actual, key, value, inlineOnly);
+  value = value !== '*' ? value.trim() : '';
+  let elHasStyle = styler.lookupStyle(actual, key, inlineOnly) === value;
   if (!elHasStyle) {
     let prefixedStyles = applyCssPrefixes({[key]: value});
     Object.keys(prefixedStyles).forEach(prop => {
       // Search for optional prefixed values
-      elHasStyle = elHasStyle || _.hasStyle(actual, prop, prefixedStyles[prop], inlineOnly);
-      if (!elHasStyle) {
-        current[prop] = computed.getPropertyValue(prop);
-      }
+      elHasStyle = elHasStyle ||
+        styler.lookupStyle(actual, prop, inlineOnly) === prefixedStyles[prop];
     });
   }
   // Return BOTH confirmation and current computed key values (if confirmation == false)
