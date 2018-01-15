@@ -15,6 +15,7 @@ task('ci:prerender', ['prerender']);
 /** Task which reports the size of the library and stores it in a database. */
 task('ci:payload', ['payload']);
 
+task('ci:ssr', ['test:ssr']);
 
 
 

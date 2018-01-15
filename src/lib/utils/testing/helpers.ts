@@ -8,11 +8,13 @@
 import {Type, DebugElement} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {extendObject} from '../object-extend'; // tslint:disable-line:no-unused-variable
+import {extendObject} from '../object-extend';
 
 export type ComponentClazzFn = () => Type<any>;
 
 /**
+ *  @deprecated
+ *  @deletion-target v5.0.0-beta.15
  *  Function generator that captures a Component Type accessor and enables
  *  `expectTemplate( )` to be reusable for *any* captured Component class.
  *
@@ -40,7 +42,7 @@ export function makeExpectDOMFrom(getClass: ComponentClazzFn, styles?: any) {
 
 /**
  * Function generator that captures a Component Type accessor and enables
- * `createTestComponent( )` to be reusable for *any* captured Component class.
+ * `createTestComponent()` to be reusable for *any* captured Component class.
  */
 export function makeCreateTestComponent(getClass: ComponentClazzFn) {
   let componentAny: Type<any>;
@@ -72,6 +74,15 @@ export function expectNativeEl(fixture: ComponentFixture<any>, instanceOptions ?
 }
 
 /**
+ *
+ */
+export function expectEl(debugEl: DebugElement): any {
+  return expect(debugEl.nativeElement);
+}
+
+/**
+ * @deprecated
+ * @deletion-target v5.0.0-beta.15
  * With the specified Component Type and template,
  * create a component and perform a CSS query to find the nativeElement
  * associated with that query selector.

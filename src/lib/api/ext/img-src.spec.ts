@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {Component, PLATFORM_ID} from '@angular/core';
+import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
@@ -16,9 +16,11 @@ import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../../module';
 
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
+import {expectEl, makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
 import {expect} from '../../utils/testing/custom-matchers';
 import {_dom as _} from '../../utils/testing/dom-tools';
+import {SERVER_TOKEN} from '../../utils/styling/server-token';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 const SRC_URLS = {
   'xs': [
@@ -51,13 +53,17 @@ const DEFAULT_SRC = 'https://dummyimage.com/300x300/c72538/ffffff.png';
 describe('img-src directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
+  let platformId: Object;
+  let styler: StyleUtils;
 
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestSrcComponent)(template);
 
-    inject([MatchMedia, BreakPointRegistry],
-        (_matchMedia: MockMatchMedia) => {
+    inject([MatchMedia, PLATFORM_ID, StyleUtils],
+        (_matchMedia: MockMatchMedia, _platformId: Object, _styler: StyleUtils) => {
           matchMedia = _matchMedia;
+          platformId = _platformId;
+          styler = _styler;
         })();
   };
 
@@ -70,7 +76,8 @@ describe('img-src directive', () => {
       declarations: [TestSrcComponent],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        {provide: SERVER_TOKEN, useValue: true}
       ]
     });
   });
@@ -84,7 +91,7 @@ describe('img-src directive', () => {
       const img = queryFor(fixture, 'img')[0].nativeElement;
 
       fixture.detectChanges();
-      expect(_.getAttribute( img,  'src')).toEqual(url);
+      expect(_.getAttribute(img, 'src')).toEqual(url);
     });
 
     it('should work with empty src attributes', () => {
@@ -103,23 +110,36 @@ describe('img-src directive', () => {
       componentWithTemplate(`
         <img [src]="defaultSrc" [src.xs]="xsSrc">
       `);
-      const img = queryFor(fixture, 'img')[0].nativeElement;
+      const img = queryFor(fixture, 'img')[0];
+      const imgEl = img.nativeElement;
 
       fixture.detectChanges();
-      expect(img).toHaveAttributes({
-        src: 'https://dummyimage.com/300x300/c72538/ffffff.png'
-      });
+      if (isPlatformServer(platformId)) {
+        expectEl(img).toHaveStyle({
+          'content': 'url(https://dummyimage.com/300x300/c72538/ffffff.png)'
+        }, styler);
 
-      let url = 'https://dummyimage.com/700x400/258cc7/fff.png';
-      fixture.componentInstance.defaultSrc = url;
-      fixture.detectChanges();
-      expect(img).toHaveAttributes({ src: url });
+        let url = 'https://dummyimage.com/700x400/258cc7/fff.png';
+        fixture.componentInstance.defaultSrc = url;
+        fixture.detectChanges();
+        expectEl(img).toHaveStyle({
+          'content': `url(${url})`
+        }, styler);
+      } else {
+        expect(imgEl).toHaveAttributes({
+          src: 'https://dummyimage.com/300x300/c72538/ffffff.png'
+        });
 
+        let url = 'https://dummyimage.com/700x400/258cc7/fff.png';
+        fixture.componentInstance.defaultSrc = url;
+        fixture.detectChanges();
+        expect(imgEl).toHaveAttributes({ src: url });
+      }
     });
 
     it('should work when `src` value is not defined', () => {
       componentWithTemplate(`
-        <img src >
+        <img src>
       `);
 
       const img = queryFor(fixture, 'img')[0].nativeElement;
@@ -141,9 +161,44 @@ describe('img-src directive', () => {
       });
     });
 
+    it('should not replace src on the server', () => {
+      if (isPlatformServer(platformId)) {
+        componentWithTemplate(`
+          <img src="https://dummyimage.com/300x300/c72538/ffffff.png">
+        `);
+
+        const img = queryFor(fixture, 'img')[0];
+        fixture.detectChanges();
+        expectEl(img).not.toHaveStyle({
+          'content': 'url(https://dummyimage.com/300x300/c72538/ffffff.png)'
+        }, styler);
+      }
+    });
+
   });
 
   describe('with responsive api', () => {
+
+    it('should work on the server', () => {
+      if (isPlatformServer(platformId)) {
+        componentWithTemplate(`
+          <img [src]="'https://dummyimage.com/300x300/c72538/ffffff.png'" [src.md]="mdSrc">
+        `);
+        fixture.detectChanges();
+
+        const img = queryFor(fixture, 'img')[0];
+
+        expectEl(img).toHaveStyle({
+          'content': `url(https://dummyimage.com/300x300/c72538/ffffff.png)`
+        }, styler);
+
+        matchMedia.activate('md');
+        fixture.detectChanges();
+        expectEl(img).toHaveStyle({
+          'content': `url(${SRC_URLS['md'][0]})`
+        }, styler);
+      }
+    });
 
     it('should work with a isolated image element and responsive srcs', () => {
       componentWithTemplate(`
@@ -152,21 +207,35 @@ describe('img-src directive', () => {
       `);
       fixture.detectChanges();
 
-      let img = queryFor(fixture, 'img')[0].nativeElement;
+      let img = queryFor(fixture, 'img')[0];
+      let imgEl = img.nativeElement;
 
       matchMedia.activate('md');
       fixture.detectChanges();
-      expect(img).toBeDefined();
-      expect(img).toHaveAttributes({
-        src: SRC_URLS['md'][0]
-      });
+      expect(imgEl).toBeDefined();
+      if (isPlatformServer(platformId)) {
+        expectEl(img).toHaveStyle({
+          'content': `url(${SRC_URLS['md'][0]})`
+        }, styler);
 
-      // When activating an unused breakpoint, fallback to default [src] value
-      matchMedia.activate('xl');
-      fixture.detectChanges();
-      expect(img).toHaveAttributes({
-        src: SRC_URLS['xs'][0]
-      });
+        // When activating an unused breakpoint, fallback to default [src] value
+        matchMedia.activate('xl');
+        fixture.detectChanges();
+        expectEl(img).toHaveStyle({
+          'content': `url(${SRC_URLS['xs'][0]})`
+        }, styler);
+      } else {
+        expect(imgEl).toHaveAttributes({
+          src: SRC_URLS['md'][0]
+        });
+
+        // When activating an unused breakpoint, fallback to default [src] value
+        matchMedia.activate('xl');
+        fixture.detectChanges();
+        expect(imgEl).toHaveAttributes({
+          src: SRC_URLS['xs'][0]
+        });
+      }
     });
 
     it('should work if default [src] is not defined', () => {
@@ -177,18 +246,38 @@ describe('img-src directive', () => {
       matchMedia.activate('md');
       fixture.detectChanges();
 
-      let img = queryFor(fixture, 'img')[0].nativeElement;
-      expect(img).toBeDefined();
-      expect(img).toHaveAttributes({
-        src: SRC_URLS['md'][0]
-      });
+      let img = queryFor(fixture, 'img')[0];
+      let imgEl = img.nativeElement;
+      expect(imgEl).toBeDefined();
+      if (isPlatformServer(platformId)) {
+        expect(imgEl).toHaveAttributes({
+          src: ''
+        });
+        expectEl(img).toHaveStyle({
+          'content': `url(${SRC_URLS['md'][0]})`
+        }, styler);
 
-      // When activating an unused breakpoint, fallback to default [src] value
-      matchMedia.activate('xl');
-      fixture.detectChanges();
-      expect(img).toHaveAttributes({
-        src: ''
-      });
+        // When activating an unused breakpoint, fallback to default [src] value
+        matchMedia.activate('xl');
+        fixture.detectChanges();
+        expectEl(img).not.toHaveStyle({
+          'content': `url(${SRC_URLS['md'][0]})`
+        }, styler);
+        expect(imgEl).toHaveAttributes({
+          src: ''
+        });
+      } else {
+        expect(imgEl).toHaveAttributes({
+          src: SRC_URLS['md'][0]
+        });
+
+        // When activating an unused breakpoint, fallback to default [src] value
+        matchMedia.activate('xl');
+        fixture.detectChanges();
+        expect(imgEl).toHaveAttributes({
+          src: ''
+        });
+      }
     });
 
   });

@@ -41,6 +41,8 @@ elif is_prerender; then
   $(npm bin)/gulp ci:prerender
 elif is_closure_compiler; then
   ./scripts/closure-compiler/build-devapp-bundle.sh
+elif is_ssr; then
+  $(npm bin)/gulp ci:ssr
 fi
 
 teardown_tunnel

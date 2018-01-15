@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone, PLATFORM_ID, RendererFactory2} from '@angular/core';
+import {Inject, Injectable, NgZone} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
 import {MatchMedia} from '../match-media';
@@ -19,9 +19,7 @@ import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 @Injectable()
 export class MockMatchMedia extends MatchMedia {
 
-  /**
-   * Special flag used to test BreakPoint registrations with MatchMedia
-   */
+  /** Special flag used to test BreakPoint registrations with MatchMedia */
   autoRegisterQueries = true;
 
   /**
@@ -31,17 +29,13 @@ export class MockMatchMedia extends MatchMedia {
   useOverlaps = false;
 
   constructor(_zone: NgZone,
-              _rendererFactory: RendererFactory2,
               @Inject(DOCUMENT) _document: any,
-              private _breakpoints: BreakPointRegistry,
-              @Inject(PLATFORM_ID) _platformId: Object) {
-    super(_zone, _rendererFactory, _document, _platformId);
+              private _breakpoints: BreakPointRegistry) {
+    super(_zone, _document);
     this._actives = [];
   }
 
-  /**
-   * Easy method to clear all listeners for all mediaQueries
-   */
+  /** Easy method to clear all listeners for all mediaQueries */
   clearAll() {
     this._registry.forEach((mql: MockMediaQueryList, _) => {
       mql.destroy();
@@ -50,9 +44,7 @@ export class MockMatchMedia extends MatchMedia {
     this.useOverlaps = false;
   }
 
-  /**
-   * Feature to support manual, simulated activation of a mediaQuery.
-   */
+  /** Feature to support manual, simulated activation of a mediaQuery. */
   activate(mediaQuery: string, useOverlaps = false): boolean {
     useOverlaps = useOverlaps || this.useOverlaps;
     mediaQuery = this._validateQuery(mediaQuery);
@@ -67,9 +59,7 @@ export class MockMatchMedia extends MatchMedia {
     return this.hasActivated;
   }
 
-  /**
-   * Converts an optional mediaQuery alias to a specific, valid mediaQuery
-   */
+  /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
   _validateQuery(queryOrAlias) {
     let bp = this._breakpoints.findByAlias(queryOrAlias);
     if (bp) {
@@ -149,9 +139,7 @@ export class MockMatchMedia extends MatchMedia {
     return this.hasActivated;
   }
 
-  /**
-   * Deactivate all current Mock MQLs
-   */
+  /** Deactivate all current Mock MQLs */
   private _deactivateAll() {
     if (this._actives.length) {
       // Deactivate all current MQLs and reset the buffer
@@ -163,9 +151,7 @@ export class MockMatchMedia extends MatchMedia {
     return this;
   }
 
-  /**
-   * Insure the mediaQuery is registered with MatchMedia
-   */
+  /** Insure the mediaQuery is registered with MatchMedia */
   private _registerMediaQuery(mediaQuery) {
     if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
       this.registerQuery(mediaQuery);
@@ -194,7 +180,7 @@ export class MockMatchMedia extends MatchMedia {
  */
 export class MockMediaQueryList implements MediaQueryList {
   private _isActive = false;
-  private _listeners: Array<MediaQueryListListener> = [];
+  private _listeners: MediaQueryListListener[] = [];
 
   get matches(): boolean {
     return this._isActive;
@@ -204,20 +190,18 @@ export class MockMediaQueryList implements MediaQueryList {
     return this._mediaQuery;
   }
 
-  constructor(private _mediaQuery: string) {
-  }
+  constructor(private _mediaQuery: string) {}
 
   /**
-   *
+   * Destroy the current list by deactivating the
+   * listeners and clearing the internal list
    */
   destroy() {
     this.deactivate();
     this._listeners = [];
   }
 
-  /**
-   * Notify all listeners that 'matches === TRUE'
-   */
+  /** Notify all listeners that 'matches === TRUE' */
   activate(): MockMediaQueryList {
     if (!this._isActive) {
       this._isActive = true;
@@ -228,9 +212,7 @@ export class MockMediaQueryList implements MediaQueryList {
     return this;
   }
 
-  /**
-   * Notify all listeners that 'matches === false'
-   */
+  /** Notify all listeners that 'matches === false' */
   deactivate(): MockMediaQueryList {
     if (this._isActive) {
       this._isActive = false;
@@ -241,9 +223,7 @@ export class MockMediaQueryList implements MediaQueryList {
     return this;
   }
 
-  /**
-   *
-   */
+  /** Add a listener to our internal list to activate later */
   addListener(listener: MediaQueryListListener) {
     if (this._listeners.indexOf(listener) === -1) {
       this._listeners.push(listener);
@@ -253,6 +233,7 @@ export class MockMediaQueryList implements MediaQueryList {
     }
   }
 
+  /** Don't need to remove listeners in the testing environment */
   removeListener(_: MediaQueryListListener) {
   }
 }

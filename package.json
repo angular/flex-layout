@@ -17,6 +17,7 @@
     "lib:build:aot": "gulp ci:aot",
     "lib:lint": "gulp lint",
     "lib:test": "gulp test",
+    "lib:test:ssr": "gulp test:ssr",
     "universal:build": "gulp universal:build",
     "universal:ci:prerender": "gulp ci:prerender"
   },

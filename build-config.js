@@ -1,6 +1,6 @@
 /**
  * Build configuration for the packaging tool. This file will be automatically detected and used
- * to build the different packages inside of Material.
+ * to build the different packages inside of Layout.
  */
 const {join} = require('path');
 

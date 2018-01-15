@@ -1,4 +1,5 @@
 /*global jasmine, __karma__, window*/
+
 Error.stackTraceLimit = Infinity;
 
 // The default time that jasmine waits for an asynchronous test to finish is five seconds.
@@ -111,7 +112,7 @@ function isSpecFile(path) {
 function configureTestBed() {
   return Promise.all([
     System.import('@angular/core/testing'),
-    System.import('@angular/platform-browser-dynamic/testing')
+    System.import('@angular/platform-browser-dynamic/testing'),
   ]).then(function (providers) {
     var testing = providers[0];
     var testingBrowser = providers[1];

@@ -6,9 +6,10 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {MediaQueriesModule} from './media-query/_module';
+import {Inject, ModuleWithProviders, NgModule, Optional, PLATFORM_ID} from '@angular/core';
+import {isPlatformServer} from '@angular/common';
 
+import {MediaQueriesModule} from './media-query/_module';
 import {BreakPoint} from './media-query/breakpoints/break-point';
 import {
   BreakPointProviderOptions,
@@ -33,6 +34,10 @@ import {StyleDirective} from './api/ext/style';
 import {ImgSrcDirective} from './api/ext/img-src';
 
 import {BidiModule} from './bidi/bidi-module';
+import {BROWSER_PROVIDER} from './utils/styling/browser-provider';
+import {StyleUtils} from './utils/styling/style-utils';
+import {ServerStylesheet} from './utils/styling/server-stylesheet';
+import {SERVER_TOKEN} from './utils/styling/server-token';
 
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
@@ -67,10 +72,23 @@ const ALL_DIRECTIVES = [
   providers: [
     MEDIA_MONITOR_PROVIDER,
     DEFAULT_BREAKPOINTS_PROVIDER,   // Extend defaults with internal custom breakpoints
-    OBSERVABLE_MEDIA_PROVIDER
+    OBSERVABLE_MEDIA_PROVIDER,
+    ServerStylesheet,
+    StyleUtils,
+    BROWSER_PROVIDER,
   ]
 })
 export class FlexLayoutModule {
+
+  constructor (
+    @Optional() @Inject(SERVER_TOKEN) serverModuleLoaded: boolean,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    if (isPlatformServer(platformId) && !serverModuleLoaded) {
+      console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
+    }
+  }
+
   /**
    * External uses can easily add custom breakpoints AND include internal orientations
    * breakpoints; which are not available by default.
@@ -79,7 +97,7 @@ export class FlexLayoutModule {
    * the API directives to support extra selectors for the orientations breakpoints !!
    */
   static provideBreakPoints(breakpoints: BreakPoint[],
-                            options ?: BreakPointProviderOptions): ModuleWithProviders {
+                            options?: BreakPointProviderOptions): ModuleWithProviders {
     return {
       ngModule: FlexLayoutModule,
       providers: [

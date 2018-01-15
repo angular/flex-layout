@@ -12,15 +12,13 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer2,
   SimpleChanges,
-  Inject,
-  PLATFORM_ID,
 } from '@angular/core';
 
 import {BaseFxDirective} from '../core/base';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 /**
  * 'flex-align' flexbox styling directive
@@ -58,9 +56,8 @@ export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnCha
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
   }
 
 
