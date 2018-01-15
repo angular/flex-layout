@@ -6,8 +6,14 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {
-  ElementRef, OnDestroy, SimpleChanges, OnChanges,
-  SimpleChange, Renderer2
+  ElementRef,
+  OnDestroy,
+  SimpleChanges,
+  OnChanges,
+  SimpleChange,
+  Renderer2,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
@@ -16,7 +22,8 @@ import {
   lookupStyle,
   lookupInlineStyle,
   applyStyleToElement,
-  applyStyleToElements, lookupAttributeValue
+  applyStyleToElements,
+  lookupAttributeValue,
 } from '../../utils/style-utils';
 
 import {ResponsiveActivation, KeyOptions} from '../core/responsive-activation';
@@ -63,7 +70,8 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    */
   constructor(protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer2) {
+              protected _renderer: Renderer2,
+              @Inject(PLATFORM_ID) protected _platformId: Object) {
   }
 
   // *********************************************
@@ -133,7 +141,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * and optional restore it when the mediaQueries deactivate
    */
   protected _getDisplayStyle(source: HTMLElement = this.nativeElement): string {
-    return lookupStyle(source || this.nativeElement, 'display');
+    return lookupStyle(this._platformId, source || this.nativeElement, 'display');
   }
 
   /**
@@ -154,7 +162,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
     let value = 'row';
 
     if (target) {
-      value = lookupStyle(target, 'flex-direction') || 'row';
+      value = lookupStyle(this._platformId, target, 'flex-direction') || 'row';
       let hasInlineValue = lookupInlineStyle(target, 'flex-direction');
 
       if (!hasInlineValue && addIfMissing) {

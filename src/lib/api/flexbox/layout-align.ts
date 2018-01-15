@@ -14,7 +14,10 @@ import {
   OnInit,
   Optional,
   Renderer2,
-  SimpleChanges, Self,
+  SimpleChanges,
+  Self,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {extendObject} from '../../utils/object-extend';
@@ -68,8 +71,9 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   constructor(
       monitor: MediaMonitor,
       elRef: ElementRef, renderer: Renderer2,
-      @Optional() @Self() container: LayoutDirective) {
-    super(monitor, elRef, renderer);
+      @Optional() @Self() container: LayoutDirective,
+      @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

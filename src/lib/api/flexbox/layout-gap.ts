@@ -17,6 +17,8 @@ import {
   Optional,
   OnDestroy,
   NgZone,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -67,8 +69,9 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
               elRef: ElementRef,
               renderer: Renderer2,
               @Optional() @Self() container: LayoutDirective,
-              private _zone: NgZone) {
-    super(monitor, elRef, renderer);
+              private _zone: NgZone,
+              @Inject(PLATFORM_ID) platformId: Object) {
+    super(monitor, elRef, renderer, platformId);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

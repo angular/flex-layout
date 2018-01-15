@@ -21,7 +21,7 @@ export class MockElementRef extends ElementRef {
 describe('BaseFxDirectiveAdapter class', () => {
   let component;
   beforeEach(() => {
-    component = new BaseFxDirectiveAdapter('', {} as MediaMonitor, new MockElementRef(), {} as Renderer2); // tslint:disable-line:max-line-length
+    component = new BaseFxDirectiveAdapter('', {} as MediaMonitor, new MockElementRef(), {} as Renderer2, {}); // tslint:disable-line:max-line-length
   });
   describe('cacheInput', () => {
     it('should call _cacheInputArray when source is an array', () => {

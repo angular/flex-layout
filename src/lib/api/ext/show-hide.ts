@@ -15,7 +15,9 @@ import {
   Renderer2,
   SimpleChanges,
   Self,
-  Optional
+  Optional,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {Subscription} from 'rxjs/Subscription';
@@ -104,9 +106,10 @@ export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChan
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected _layout: LayoutDirective,
               protected elRef: ElementRef,
-              protected renderer: Renderer2) {
+              protected renderer: Renderer2,
+              @Inject(PLATFORM_ID) protected platformId: Object) {
 
-    super(monitor, elRef, renderer);
+    super(monitor, elRef, renderer, platformId);
 
     if (_layout) {
       /**

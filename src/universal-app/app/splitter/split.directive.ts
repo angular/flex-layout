@@ -1,6 +1,14 @@
 import {
-  Directive, Input, ContentChild,
-  ContentChildren, AfterContentInit, QueryList, ElementRef, OnDestroy
+  Directive,
+  Input,
+  ContentChild,
+  ContentChildren,
+  AfterContentInit,
+  QueryList,
+  ElementRef,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
 } from '@angular/core';
 
 import {SplitAreaDirective} from './split-area.directive';
@@ -8,7 +16,7 @@ import {SplitHandleDirective} from './split-handle.directive';
 import {FlexDirective} from '@angular/flex-layout';
 import {Subscription} from 'rxjs/Subscription';
 
-import { isBrowser } from '../util/helper';
+import {isPlatformBrowser} from '@angular/common';
 
 @Directive({
   selector: '[ngxSplit]',
@@ -25,11 +33,11 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
   @ContentChild(SplitHandleDirective) handle: SplitHandleDirective;
   @ContentChildren(SplitAreaDirective) areas: QueryList<SplitAreaDirective>;
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef, @Inject(PLATFORM_ID) private _platformId: Object) {
   }
 
   ngAfterContentInit(): void {
-    if (isBrowser()) {
+    if (isPlatformBrowser(this._platformId)) {
       this.watcher = this.handle.drag.subscribe(pos => this.onDrag(pos));
     }
   }
