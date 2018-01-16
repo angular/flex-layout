@@ -33,7 +33,7 @@ jobs:
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
     - stage: Deploy
-    - env: "DEPLOY_MODE=build-artifacts"
+      env: "DEPLOY_MODE=build-artifacts"
 env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
