@@ -38,7 +38,7 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
    * While dragging, continually update the `flex.activatedValue` for each area
    * managed by the splitter.
    */
-  onDrag({x, y}): void {
+  onDrag({x, y}: {x: number, y: number}): void {
     const dragAmount = (this.direction === 'row') ? x : y;
 
     this.areas.forEach((area, i) => {
@@ -56,7 +56,7 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
    * Use the pixel delta change to recalculate the area size (%)
    * Note: flex value may be '', %, px, or '<grow> <shrink> <basis>'
    */
-  calculateSize(value, delta) {
+  calculateSize(value: string|number, delta: number) {
     const containerSizePx = this.elementRef.nativeElement.clientWidth;
     const elementSizePx = Math.round(this.valueToPixel(value, containerSizePx));
 

@@ -22,7 +22,6 @@ import {MediaQuerySubscriber, MediaChange} from '../../media-query/media-change'
 describe('responsive-activation', () => {
   let monitor: MediaMonitor;
   let matchMedia: MockMatchMedia;
-  let breakPoints: BreakPointRegistry;
 
   /**
    * MediaQuery Change responder used to determine the activated input
@@ -52,9 +51,8 @@ describe('responsive-activation', () => {
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(inject(
-      [BreakPointRegistry, MatchMedia, MediaMonitor],
-      (_breakPoints, _matchMedia, _mediaMonitor) => {
-        breakPoints = _breakPoints;    // Only used to look up mediaQuery by aliases
+      [MatchMedia, MediaMonitor],
+      (_matchMedia, _mediaMonitor) => {
         matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
         monitor = _mediaMonitor;
       }

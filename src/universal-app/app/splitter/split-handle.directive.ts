@@ -26,7 +26,7 @@ export class SplitHandleDirective {
   ) {
     const getMouseEventPosition = (event: MouseEvent) => ({x: event.movementX, y: event.movementY});
 
-   if ( isPlatformBrowser(PLATFORM_ID) ) {
+   if ( isPlatformBrowser(this._platformId) ) {
     /* tslint:disable */
     const mousedown$ = fromEvent(ref.nativeElement, 'mousedown').pipe(map(getMouseEventPosition));
     const mousemove$ = fromEvent(_document, 'mousemove').pipe(map(getMouseEventPosition));

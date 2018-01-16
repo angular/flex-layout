@@ -7,7 +7,7 @@
  */
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
@@ -26,14 +26,9 @@ import {
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
   let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestFlexComponent)(template);
-
-    inject([MatchMedia], (_matchMedia: MockMatchMedia) => {
-      matchMedia = _matchMedia;
-    })();
   };
 
   beforeEach(() => {
@@ -152,7 +147,7 @@ describe('flex directive', () => {
   selector: 'test-component-shell',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestFlexComponent {
+class TestFlexComponent {
   direction = 'column';
 }
 

@@ -41,7 +41,7 @@ function getStyle(element: any, stylename: string): string {
 
 function hasStyle(element: any,
                   styleName: string,
-                  styleValue: string = null,
+                  styleValue: string = '',
                   inlineOnly = true): boolean {
   let value = getStyle(element, styleName) || '';
   if ( !value && !inlineOnly ) {
@@ -60,7 +60,7 @@ function getShadowRoot(el: HTMLElement): DocumentFragment {
 }
 
 function getText(el: Node): string {
-  return el.textContent;
+  return el.textContent || '';
 }
 
 function childNodesAsList(el: Node): any[] {

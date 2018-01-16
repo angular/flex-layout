@@ -10,13 +10,13 @@ article, nav, aside, header, footer {
   border-radius: 7px;
 }
 
-#main > article {
+.main > article {
   border-color: #cccc33;
   background: #dddd88;
   cursor: pointer;
 }
 
-#main > nav, #main > aside {
+.main > nav, .main > aside {
   border-color: #8888bb;
   background: #ccccff;
 }

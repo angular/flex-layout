@@ -51,15 +51,13 @@ const DEFAULT_SRC = 'https://dummyimage.com/300x300/c72538/ffffff.png';
 describe('img-src directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
-  let breakpoints: BreakPointRegistry;
 
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestSrcComponent)(template);
 
     inject([MatchMedia, BreakPointRegistry],
-        (_matchMedia: MockMatchMedia, _breakpoints: BreakPointRegistry) => {
+        (_matchMedia: MockMatchMedia) => {
           matchMedia = _matchMedia;
-          breakpoints = _breakpoints;
         })();
   };
 
@@ -204,7 +202,7 @@ describe('img-src directive', () => {
   selector: 'test-src-api',
   template: ''
 })
-export class TestSrcComponent {
+class TestSrcComponent {
   defaultSrc = '';
   xsSrc = '';
   mdSrc = '';

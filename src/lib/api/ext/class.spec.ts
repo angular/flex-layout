@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 
@@ -16,7 +16,6 @@ import {MatButtonModule} from '@angular/material';
 
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
 import {MatchMedia} from '../../media-query/match-media';
-import {ObservableMedia} from '../../media-query/observable-media';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 
@@ -247,17 +246,11 @@ describe('class directive', () => {
   selector: 'test-class-api',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestClassComponent implements OnInit {
+class TestClassComponent {
   hasXs1: boolean;
   hasXs2: boolean;
   hasXs3: boolean;
   formButtonXs = true;
-
-  constructor(private _: ObservableMedia) {
-  }
-
-  ngOnInit() {
-  }
 }
 
 
@@ -280,8 +273,6 @@ describe('binding to CSS class list', () => {
    }
 
    function getComponent(): TestComponent { return fixture.debugElement.componentInstance; }
-
-   afterEach(() => { fixture = null; });
 
    beforeEach(() => {
      TestBed.configureTestingModule({
@@ -358,7 +349,7 @@ describe('binding to CSS class list', () => {
 
           detectChangesAndExpectClassName('foo');
 
-          getComponent().objExpr = null;
+          delete getComponent().objExpr;
           detectChangesAndExpectClassName('');
 
           getComponent().objExpr = {'foo': false, 'bar': true};
@@ -495,7 +486,7 @@ describe('binding to CSS class list', () => {
           fixture = createTestComponent(`<div [ngClass]="strExpr"></div>`);
           detectChangesAndExpectClassName('foo');
 
-          getComponent().strExpr = null;
+          delete getComponent().strExpr;
           detectChangesAndExpectClassName('');
         }));
 
@@ -504,7 +495,7 @@ describe('binding to CSS class list', () => {
           fixture = createTestComponent(`<div class="foo" [ngClass]="strExpr"></div>`);
           detectChangesAndExpectClassName('foo');
 
-          getComponent().strExpr = null;
+          delete getComponent().strExpr;
           detectChangesAndExpectClassName('foo');
         }));
 
@@ -528,7 +519,7 @@ describe('binding to CSS class list', () => {
           objExpr['foo'] = false;
           detectChangesAndExpectClassName('init bar');
 
-          getComponent().objExpr = null;
+          delete getComponent().objExpr;
           detectChangesAndExpectClassName('init foo');
         }));
 
@@ -542,7 +533,7 @@ describe('binding to CSS class list', () => {
           objExpr['foo'] = false;
           detectChangesAndExpectClassName(`init bar`);
 
-          getComponent().objExpr = null;
+          delete getComponent().objExpr;
           detectChangesAndExpectClassName(`init foo`);
         }));
 
@@ -557,7 +548,7 @@ describe('binding to CSS class list', () => {
           objExpr['foo'] = false;
           detectChangesAndExpectClassName(`init bar`);
 
-          getComponent().objExpr = null;
+          delete getComponent().objExpr;
           detectChangesAndExpectClassName(`init foo`);
         }));
 
@@ -593,7 +584,7 @@ describe('binding to CSS class list', () => {
           cmp.strExpr = 'baz';
           detectChangesAndExpectClassName('init bar baz foo');
 
-          cmp.objExpr = null;
+          delete cmp.objExpr;
           detectChangesAndExpectClassName('init baz');
         }));
    });

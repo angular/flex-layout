@@ -126,7 +126,7 @@ export class ClassDirective extends BaseFxDirective
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
-    this._ngClassInstance = null;
+    delete this._ngClassInstance;
   }
 
   // ******************************************************************

@@ -28,7 +28,7 @@ import {Component} from '@angular/core';
         <div class="containerX">
           <div class="colorNested box" fxLayout="column">
             <header>header</header>
-            <div id="main" [fxLayout]="direction" fxLayout.xs="column" fxFlex
+            <div class="main" [fxLayout]="direction" fxLayout.xs="column" fxFlex
                  (click)="toggleDirection()">
               <nav fxFlex="1 6 20%" fxFlexOrder fxFlexOrder.xs="2"> nav</nav>
               <article fxFlex="3 1 60%" fxFlexOrder fxFlexOrder.xs="1"> article</article>

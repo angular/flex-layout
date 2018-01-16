@@ -326,7 +326,7 @@ describe('layout directive', () => {
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
 })
-export class TestLayoutComponent implements OnInit {
+class TestLayoutComponent implements OnInit {
   direction = 'column';
 
   constructor() {
