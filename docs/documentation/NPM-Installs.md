@@ -11,15 +11,14 @@ npm install --save @angular/flex-layout@latest
 You can install latest, nightly builds from master/HEAD using:
 
 ```bash
-yarn add angular/flex-layout-builds --save
+npm install angular/flex-layout-builds --save
 ```
 
 or 
 
 ```bash
-npm i github:angular/flex-layout-builds --save
+yarn add angular/flex-layout-builds --save
 ```
-
 
 ----
 

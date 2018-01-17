@@ -2,11 +2,14 @@ Developers can easily override the default breakpoints used within Flex-Layout.
 
 ### Default Breakpoints
 
-The default breakpoints are defined in [break-points.ts](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/data/break-points.ts#L14) and are registered as a provider using the [`BREAKPOINTS`](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/break-points-token.ts#L16) injection token.
+The default breakpoints are defined in 
+[break-points.ts](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/data/break-points.ts#L14) 
+and are registered as a provider using the 
+[`BREAKPOINTS`](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/break-points-token.ts#L16)
+InjectionToken.
 
-```js
-import { DEFAULT_BREAKPOINTS } from '@angular/flex-layout';
-import { validateSuffixes } from '@angular/flex-layout/utils';
+```typescript
+import {DEFAULT_BREAKPOINTS, BREAKPOINTS, validateSuffixes} from '@angular/flex-layout';
 
 /**
  *  Ensure that only a single global BreakPoint list is instantiated...
@@ -18,7 +21,7 @@ export function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
  * Default Provider that does not support external customization nor provide
  * the extra extended breakpoints:   "handset", "tablet", and "web"
  *
- *  NOTE: !! breakpoints are considered to have unique 'alias' properties,
+ *  NOTE: breakpoints are considered to have unique 'alias' properties,
  *        custom breakpoints matching existing breakpoints will override the properties
  *        of the existing (and not be added as an extra breakpoint entry).
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
@@ -29,21 +32,21 @@ export const DEFAULT_BREAKPOINTS_PROVIDER = { // tslint:disable-line:variable-na
 };
 ```
 
-Please review the wiki [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) to review the specific, default breakpoint range values and the alias suffices used.
+Please review the wiki [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) to review the 
+specific, default breakpoint range values and the alias suffices used.
 
 ### Customizing with your own @media query ranges
 
 Developers should build custom providers to override the default **BreakPointRegistry** provider.
 
-```js
-import { NgModule } from '@angular/core';
-import { DEFAULT_BREAKPOINTS, BreakPoint } from '@angular/flex-layout'
-import { validateSuffixes } from '@angular/flex-layout/utils';
+```typescript
+import {NgModule} from '@angular/core';
+import {DEFAULT_BREAKPOINTS, BreakPoint, BREAKPOINTS, validateSuffixes} from '@angular/flex-layout';
 
 /**
  * For mobile and tablet, reset ranges
  */
-function updateBreakpoints(bp:BreakPoint) {
+function updateBreakpoints(bp: BreakPoint) {
   switch(bp.alias) {
     case 'xs' : bp.mediaQuery =  '(max-width: 470px)';   break;
     case 'sm' : bp.mediaQuery =  '(min-width: 471px) and (max-width: 820px)'; break;
@@ -55,14 +58,14 @@ function updateBreakpoints(bp:BreakPoint) {
   providers: [
     // register a Custom BREAKPOINT Provider
     {
-      provide : BREAKPOINTS,
-      useFactory : function customizeBreakPoints() {
-        return validateSuffixes(DEFAULT_BREAKPOINTS.map( updateBreakpoints ));
+      provide: BREAKPOINTS,
+      useFactory: function customizeBreakPoints() {
+        return validateSuffixes(DEFAULT_BREAKPOINTS.map(updateBreakpoints));
       }
     }
   ]
 })
-export class MyBreakPointsModule { }
+export class MyBreakPointsModule {}
 ```
 
 ---- 
@@ -73,9 +76,13 @@ Developers have, however, **one** (1) significant constraint to the customizatio
 
 Developers should note that each directive selectors are **hard-coded** to use specific **alias**es. 
 
-Consider, for example, the **[layout.ts](https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/layout.ts#L34-L45)** directive:
+Consider, for example, the 
+**[`LayoutDirective`](https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/layout.ts#L34-L45)**:
 
-```js
+```typescript
+import {Directive} from '@angular/core';
+import {BaseFxDirective} from '@angular/flex-layout';
+
 @Directive({selector: `
   [fxLayout],
   [fxLayout.xs],
@@ -93,12 +100,13 @@ export class LayoutDirective extends BaseFxDirective {
 }
 ```
 
-> This restriction will be removed in the future; with the resolution of [Issue @angular/#13355](https://github.com/angular/angular/issues/13355).
+> This restriction will be removed in the future; with the resolution of 
+[Issue @angular/#13355](https://github.com/angular/angular/issues/13355).
 
 
 For the present, these **hard-coded** responsive selectors present two (2) requirements:
 
-#### (1) Required Aliases
+#### 1. Required Aliases
 
 To support the directive selectors, the custom breakpoints list MUST contain the following aliases & suffixes: 
 
@@ -116,29 +124,28 @@ To support the directive selectors, the custom breakpoints list MUST contain the
 |  **xl**    | fxLayout.xl    | fxFlex.xl     |
 
 
-#### (2) Extra Aliases
+#### 2. Extra Aliases
 
-If project features have requirements to support additional aliases/mediaQueries for orientation (e.g. landascape, portraint), or specific devices (kindle tablets, ipads, iphones, apple watch, etc.)... then developers may need to either:
+If project features have requirements to support additional aliases/mediaQueries for orientation 
+(e.g. landascape, portraint), or specific devices (Kindle tablets, iPads, iPhones, Apple Watch, etc.)... then 
+developers may need to either:
 
-*  modify the `mediaQuery` ranges (as shown above), or
-*  add additional aliases and selectors (as shown below)
+* modify the `mediaQuery` ranges (as shown above), or
+* add additional aliases and selectors (as shown below)
 
-<br/>
+Note that any extra **custom aliases** will not be available as selectors UNLESS the Flex-Layout Directives classes are 
+modified or **extended** with those additional custom selectors. 
 
-Note that any extra **custom aliases** will not be available as selectors UNLESS the flex-layout Directives classes are modified or **extended** with those additional custom selectors. 
-
-> This is a known issue and the @angular core team is considering how to appropriately address such dynamic selector features.
-
-<br/>
+> This is a known issue and the @angular core team is considering how to appropriately address such dynamic selector 
+features
 
 ##### Directive Subclassing
 
 Consider the **`LayoutExtDirective`** class below which provides support for the *print* and *tablet* selectors:
 
-```js
-import {Directive, Input, ElementRef, Renderer} from '@angular/core';
-import {LayoutDirective} from 'flexbox/api/layout';
-import {MediaMonitor} from '../../media-query/media-monitor';
+```typescript
+import {Directive, Input, ElementRef, Renderer2} from '@angular/core';
+import {LayoutDirective, MediaMonitor} from '@angular/flex-layout';
 
 @Directive({selector: `
   [fxLayout.print],
@@ -147,7 +154,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 `})
 export class LayoutExtDirective extends LayoutDirective {
 
-  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer) {
+  constructor(monitor: MediaMonitor, elRef: ElementRef, renderer: Renderer2) {
     super(monitor, elRef, renderer);
   }
 
@@ -161,13 +168,12 @@ export class LayoutExtDirective extends LayoutDirective {
   set layoutVTab(val) { this._cacheInput('layoutVTab', val); };
 
 }
-
 ```
 
 ---- 
 
 ### Resources
 
-*  [CSS Media Queries](http://cssmediaqueries.com/)
-*  [Media Queries for Standard Devices](https://css-tricks.com/snippets/css/media-queries-for-standard-devices/)
-*  [Why you don't need device-specific Breakpoints](https://responsivedesign.is/articles/why-you-dont-need-device-specific-breakpoints)
+* [CSS Media Queries](http://cssmediaqueries.com/)
+* [Media Queries for Standard Devices](https://css-tricks.com/snippets/css/media-queries-for-standard-devices/)
+* [Why you don't need device-specific Breakpoints](https://responsivedesign.is/articles/why-you-dont-need-device-specific-breakpoints)

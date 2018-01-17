@@ -1,12 +1,3 @@
-[WIP] - Below are instructions for integrating Flex-Layout into new or existing WebPack driven projects.
-
-## WebPack 1.x
-
-## WebPack 2.x
-Implementation in a 2.x project should be extremely straight forward and won't require any changes to your `webpack.config.js`
-
-> Code examples are from [Angular/Angular2-seed](https://github.com/angular/angular2-seed).
-
 ### Install the Angular Flex-Layout Library  
 
 ```bash
@@ -20,9 +11,10 @@ yarn add @angular/flex-layout
 ### Import the Angular Flex-Layout Module
 
 **app.module.ts**
-```ts
+```typescript
 ...
-import { FlexLayoutModule } from '@angular/flex-layout';
+import {NgModule} from '@angular/core';
+import {FlexLayoutModule} from '@angular/flex-layout';
 ...
 
 @NgModule({
@@ -32,11 +24,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   ],
   ...
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ### Validate Your Configuration
-Add the code below into an existing component ( or add something similar ) to verify `Angular Flex-Layout` has bee properly imported into your application.
+Add the code below into an existing component (or add something similar) to verify `Angular Flex-Layout` has been 
+properly imported into your application.
 
 **home.component.html**
 ```html

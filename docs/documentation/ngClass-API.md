@@ -1,8 +1,10 @@
-The *@angular/flex-layout* [**ngClass**](https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/class.ts) directive is a subclass of the *@angular/common* [**ngClass**](https://github.com/angular/angular/blob/master/modules/@angular/common/src/directives/ng_class.ts#L43) directive. 
+The *@angular/flex-layout* [**ngClass**][ngClass] directive is a subclass of the *@angular/common* 
+[**ngClass**][aioNgClass] directive. 
 
 ### Standard **`class`** Features 
 
-Note that the default classes (specified by `class=""` and `ngClass="..."` will be preserved (and merged) into other activation class lists UNLESS the breakpoint has specified that a default class should be removed.
+Note that the default classes (specified by `class=""` and `ngClass="..."` will be preserved (and merged) into other 
+activation class lists UNLESS the breakpoint has specified that a default class should be removed.
 
 For example:
 
@@ -11,21 +13,21 @@ For example:
 ```
 By default the **div** will have only the `class0` classname assigned. 
 
-*  When the **xs** breakpoint activates, then the div will have `class0 class1 class2` assigned.
-*  When the **xs** breakpoint deactivates, then the div will only have the `class0` name assigned.
+* When the **xs** breakpoint activates, then the div will have `class0 class1 class2` assigned.
+* When the **xs** breakpoint deactivates, then the div will only have the `class0` name assigned.
 
 ### Standard **`ngClass`** Features 
 
 Traditionally **ngClass** adds and removes CSS classes on an HTML element:
 
 The CSS classes are updated as follows, depending on the type of the expression evaluation:
- * - `string` - the CSS classes listed in the string (space delimited) are added,
- * - `Array` - the CSS classes declared as Array elements are added,
- * - `Object` - keys are CSS classes that get added when the expression given in the value evaluates to a truthy value, otherwise they are removed.
+* `string` - the CSS classes listed in the string (space delimited) are added,
+* `Array` - the CSS classes declared as Array elements are added,
+* `Object` - keys are CSS classes that get added when the expression given in the value evaluates to a truthy value, 
+otherwise they are removed.
 
 ```html
 <some-element [ngClass]="stringExp|arrayExp|objExp">...</some-element>
-
 <some-element  ngClass="first second"> </some-element>
 <some-element [ngClass]="['first', 'second']"> </some-element>
 <some-element [ngClass]="{'first': true, 'second': true, 'third': false}"> </some-element>
@@ -36,7 +38,7 @@ The CSS classes are updated as follows, depending on the type of the expression 
 
 The Flex-Layout **ngClass** adds responsive features to also add/remove CSS classes; but only for activated breakpoints.
 
-*  `ngClass.<alias>` ; where alias == `xs` | `sm` | `md` | etc.
+* `ngClass.<alias>` ; where alias == `xs` | `sm` | `md` | etc.
 
 ##### Example #1:
 
@@ -51,7 +53,7 @@ The Flex-Layout **ngClass** adds responsive features to also add/remove CSS clas
 
 ![class](https://user-images.githubusercontent.com/210413/30512759-d3bb1e18-9abb-11e7-9dbf-4f9d8ca89ba9.jpg)
 
->  See [Plunker Demo](https://plnkr.co/edit/86oh19nCBIdpEi6CllmR?p=preview)
+> See [Plunkr Demo](https://plnkr.co/edit/86oh19nCBIdpEi6CllmR?p=preview)
 
 
 ##### Example #2:
@@ -66,14 +68,16 @@ The Flex-Layout **ngClass** adds responsive features to also add/remove CSS clas
 
 ![class2](https://user-images.githubusercontent.com/210413/30512832-9232bf44-9abd-11e7-917f-07077c0a210a.jpg)
 
->  See [Plunker Demo](https://plnkr.co/edit/fEyAnpoFQzXiPa6HTZlt?p=preview)
+> See [Plunkr Demo](https://plnkr.co/edit/fEyAnpoFQzXiPa6HTZlt?p=preview)
 
 
 #### Merging Classes
 
-Note that the default classes (specified by `class=""` and `ngClass="..."` will be preserved (and merged) into other activation class lists UNLESS the breakpoint has specified that a default class should be removed:
+Note that the default classes (specified by `class=""` and `ngClass="..."` will be preserved (and merged) into other 
+activation class lists UNLESS the breakpoint has specified that a default class should be removed:
 
-Below the class `first` is used for all mediaQuery activations **except** for 'xs' (mobile) where it is explicitly removed;
+Below the class `first` is used for all mediaQuery activations **except** for 'xs' (mobile) where it is explicitly 
+removed;
 
 ```html
 <some-element  
@@ -82,3 +86,5 @@ Below the class `first` is used for all mediaQuery activations **except** for 'x
 </some-element>
 ```
 
+[ngClass]: https://github.com/angular/flex-layout/blob/master/src/lib/api/ext/class.ts
+[aioNgClass]: https://github.com/angular/angular/blob/master/packages/common/src/directives/ng_class.ts#L40
