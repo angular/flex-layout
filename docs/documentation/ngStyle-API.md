@@ -1,9 +1,10 @@
-The *@angular/flex-layout* [**ngStyle**](https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/style.ts#L53) directive is a subclass of the *@angular/common* [**ngStyle**](https://github.com/angular/angular/blob/master/modules/@angular/common/src/directives/ng_style.ts#L34) directive. 
+The *@angular/flex-layout* [**ngStyle**][ngStyle] directive is a subclass of the *@angular/common* 
+[**ngStyle**][aioNgStyle] directive. 
 
 ### ngStyle Enhancements 
 
- *  Supports merging `style` key-values into non-responsive `[ngStyle]` options
- *  Supports responsive `[ngStyle.<alias>]` usages; see section below
+* Supports merging `style` key-values into non-responsive `[ngStyle]` options
+* Supports responsive `[ngStyle.<alias>]` usages; see section below
 
 
 ### Standard (non-responsive) Features
@@ -12,8 +13,8 @@ Traditionally **ngStyle** updates an HTML element inline styles (highest specifi
 
 The styles are updated according to the value of the expression evaluation:
 
- *  - keys are style names with an optional `.<unit>` suffix (ie 'top.px', 'font-style.em'),
- *  - values are the values assigned to those properties (expressed in the given unit).
+* keys are style names with an optional `.<unit>` suffix (ie 'top.px', 'font-style.em'),
+* values are the values assigned to those properties (expressed in the given unit).
 
 
 ```html
@@ -60,13 +61,16 @@ The Flex-Layout **ngClass** adds responsive features to also add/remove CSS styl
 ![screen shot 2017-09-15 at 6 04 16 pm](https://user-images.githubusercontent.com/210413/30506288-5adb4cc8-9a40-11e7-9701-e9973a1565f5.png)
 
 
->  See [Plunker Demo](https://plnkr.co/edit/s4ujRdD2RBkdJEYKxYtJ?p=preview)
+> See [Plunkr Demo](https://plnkr.co/edit/s4ujRdD2RBkdJEYKxYtJ?p=preview)
 
 #### Merging Styles
 
-Note that the default styles (specified by `style=""` or `ngStyle="..."`) will be preserved (and merged) into other activation class lists UNLESS the breakpoint has specified that a style should be removed (using a null value)
+Note that the default styles (specified by `style=""` or `ngStyle="..."`) will be preserved (and merged) into other 
+activation class lists UNLESS the breakpoint has specified that a style should be removed (using a null value)
 
-Below the font size and colors are changed for 'sm' and 'md' breakpoints. Yet for 'md', the `text-align` style remains the same as the default === 'left'. Deactivations of 'sm' or 'md' breakpoints to other breakpoints will result in only the default styles being re-applied.
+Below the font size and colors are changed for 'sm' and 'md' breakpoints. Yet for 'md', the `text-align` style remains 
+the same as the default === 'left'. Deactivations of 'sm' or 'md' breakpoints to other breakpoints will result in only 
+the default styles being re-applied.
 
 ```html
 <some-element 
@@ -78,3 +82,6 @@ Below the font size and colors are changed for 'sm' and 'md' breakpoints. Yet fo
 ```
 
 ![sample1](https://user-images.githubusercontent.com/210413/30512495-e974c33a-9ab6-11e7-8dec-9805219baaac.jpg)
+
+[ngStyle]: https://github.com/angular/flex-layout/blob/master/src/lib/api/ext/style.ts#L54
+[aioNgStyle]: https://github.com/angular/angular/blob/master/packages/common/src/directives/ng_style.ts#L34

@@ -1,10 +1,11 @@
-The injectable **ObservableMedia** service will provide mediaQuery **activations** notifications for all [registered BreakPoints](https://github.com/angular/flex-layout/wiki/Custom-Breakpoints). 
+The injectable **ObservableMedia** service will provide mediaQuery **activations** notifications for all 
+[registered BreakPoints](https://github.com/angular/flex-layout/wiki/Custom-Breakpoints). 
 
 This service is essential an Observable that exposes both features to subscribe to mediaQuery
 changes and a validator method `.isActive()` to test if a mediaQuery (or alias) is
 currently active.
 
->  Only mediaChange activations (not deactivations) are announced by the ObservableMedia!
+> Only mediaChange activations (not deactivations) are announced by the ObservableMedia!
 
 ----
 
@@ -19,11 +20,9 @@ The injectable **ObservableMedia** service has three (3) APIs:
 
 ----
 
-<br/>
+#### 1. **`ObservableMedia::subscribe()`**
 
-####  (1) **`ObservableMedia::subscribe()`**
-
-```js
+```typescript
 subscribe(
   next?: (value: MediaChange) => void,
   error?: (error: any) => void,
@@ -33,11 +32,13 @@ subscribe(
 
 Developers use Angular DI to inject a reference to the **ObservableMedia** service as a **constructor** parameter. 
 
-Shown below is the service injection and the subscription to the observable: to get programmatic notifications regarding mediaQuery activations. 
+Shown below is the service injection and the subscription to the observable: to get programmatic notifications 
+regarding mediaQuery activations. 
 
-```js
-import {Subscription} from "rxjs/Subscription";
-import {MediaChange, ObservableMedia} from "@angular/flex-layout";
+```typescript
+import {Component, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 @Component({
    selector : 'responsive-component'
@@ -48,7 +49,7 @@ export class MyDemo implements OnDestroy {
 
   constructor(media: ObservableMedia) {
     this.watcher = media.subscribe((change: MediaChange) => {
-      this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : "";
+      this.activeMediaQuery = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
       if ( change.mqAlias == 'xs') {
          this.loadMobileContent();
       }
@@ -72,25 +73,26 @@ those fields will be ''.
 
 > This method is useful when the developer is not interested in using RxJS operators (eg `.map()`, `.filter()`).
 
-<br/>
-
-#### (2) **`ObservableMedia::asObservable()`**
+#### 2. **`ObservableMedia::asObservable()`**
 
 
-```js
+```typescript
 asObservable(): Observable<MediaChange>
 ```
 
-The **ObservableMedia** is not an actual **Observable**. It is a wrapper of an Observable used to publish additional methods like `isActive(<alias>). 
+The **ObservableMedia** is not an actual **Observable**. It is a wrapper of an Observable used to publish additional 
+methods like `isActive(<alias>). 
 
-Use the `.asObservable()` accessor method to access the **Observable** and use **RxJS** operators; such as `media.asObservable().filter(....)`.
+Use the `.asObservable()` accessor method to access the **Observable** and use **RxJS** operators; such as 
+`media.asObservable().filter(....)`.
 
 > Do not forget to **import** the specific RxJS operators you wish to use!
 
 
-```js
-import {Subscription} from "rxjs/Subscription";
-import 'rxjs/add/operator/filter';
+```typescript
+import {Component} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+import {filter} from 'rxjs/operators/filter';
 
 import {MediaChange, ObservableMedia} from "@angular/flex-layout";
 
@@ -101,33 +103,33 @@ export class MyDemo {
 
   constructor(media: ObservableMedia) {
       media.asObservable()
-        .filter((change: MediaChange) => change.mqAlias == 'xs')
-        .subscribe(() => this.loadMobileContent() );
+        .pipe(
+          filter((change: MediaChange) => change.mqAlias == 'xs')
+        ).subscribe(() => this.loadMobileContent() );
   }
 
   loadMobileContent() {  }
 }
 ```
 
-<br/>
+#### 3. **`ObservableMedia::isActive()`**
 
-#### (3) **`ObservableMedia::isActive()`**
-
-```js
+```typescript
 isActive(query: string): boolean
 ```
 
-This method is useful both for expressions in component templates and in component imperative logic. The query can be an alias or a mediaQuery. 
+This method is useful both for expressions in component templates and in component imperative logic. The query can be 
+an alias or a mediaQuery. 
 
-<br/>For example:
+For example:
 
-*  `print and (max-width: 600px)` is a mediaQuery for printing with mobile viewport sizes.
-*  `xs` is an alias associated with the mediaQuery for mobile viewport sizes.
+* `print and (max-width: 600px)` is a mediaQuery for printing with mobile viewport sizes.
+* `xs` is an alias associated with the mediaQuery for mobile viewport sizes.
 
-<br/>
 
-```js
-import {MediaChange, ObservableMedia} from "@angular/flex-layout";
+```typescript
+import {Component, OnInit} from '@angular/core';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 const PRINT_MOBILE = 'print and (max-width: 600px)';
 
