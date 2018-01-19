@@ -86,7 +86,7 @@ module.exports = (config) => {
     browserDisconnectTimeout: 20000,
     browserNoActivityTimeout: 240000,
     captureTimeout: 120000,
-    browsers: ['Chrome_1024x768'],
+    browsers: ['ChromeHeadlessCISandbox'],
 
     singleRun: false,
 
