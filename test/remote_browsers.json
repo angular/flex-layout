@@ -1,14 +1,24 @@
 {
-  "ChromeHeadless_CI": {
+  "ChromeHeadlessLocal": {
     "base": "ChromeHeadless",
     "flags": [
       "--window-size=1024,768"
     ]
   },
-  "Chrome_1024x768": {
-    "base": "Chrome",
+  "FirefoxHeadless": {
+    "base": "Firefox",
     "flags": [
-      "--window-size=1024,768"
+      "-headless"
+    ]
+  },
+  "ChromeHeadlessCISandbox": {
+    "base": "ChromeHeadlessLocal"
+  },
+  "ChromeHeadlessCI": {
+    "base": "ChromeHeadless",
+    "flags": [
+      "--window-size=1024,768",
+      "--no-sandbox"
     ]
   },
   "SL_CHROME": {
@@ -194,6 +204,12 @@
     "os": "ios",
     "os_version": "9.0",
     "resolution": "1024x768"
+  },
+  "BS_IOS10": {
+    "base": "BrowserStack",
+    "device": "iPhone 7",
+    "os": "ios",
+    "os_version": "10.0"
   },
   "BS_IE9": {
     "base": "BrowserStack",

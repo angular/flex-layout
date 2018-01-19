@@ -45,7 +45,7 @@ if (process.env['TRAVIS']) {
     'chromedriverVersion': '2.28',
     'tunnel-identifier': process.env['TRAVIS_JOB_ID'],
     'build': process.env['TRAVIS_JOB_ID'],
-    'name': 'Material E2E Tests',
+    'name': 'Flex Layout E2E Tests',
 
     // Enables concurrent testing in the Webdriver. Currently runs five e2e files in parallel.
     'maxInstances': 5,
