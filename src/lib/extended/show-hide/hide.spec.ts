@@ -14,7 +14,7 @@ import {
   MatchMedia,
   CoreModule,
   MockMatchMedia,
-  ObservableMedia,
+  MediaObserver,
   StylesheetMap,
   SERVER_TOKEN,
   StyleUtils,
@@ -271,7 +271,7 @@ class TestHideComponent implements OnInit {
   isHidden = true;
   menuHidden = true;
 
-  constructor(public media: ObservableMedia) {
+  constructor(public media: MediaObserver) {
   }
 
   toggleMenu() {

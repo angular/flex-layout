@@ -18,6 +18,7 @@ export * from './breakpoints/index';
 export * from './match-media/index';
 export * from './media-monitor/index';
 export * from './observable-media/index';
+export * from './media-observer/media-observer';
 
 export * from './responsive-activation/responsive-activation';
 export * from './style-utils/style-utils';
