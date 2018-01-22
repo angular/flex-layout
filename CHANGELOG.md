@@ -6,7 +6,7 @@ The 2.0.0-beta.10 and beta.11 releases on npm accidentally glitched-out midway, 
 ### Build Changes
 
 Similar to those used in **@angular/material**, this release also upgrades the package dependencies to Angular ~5.1.0 and the RxJS 5.5.x. 
->  [Lettable RxJS operators](https://github.com/ReactiveX/rxjs/blob/master/doc/lettable-operators.md) are now used instead of prototype-patching *add* operators. 
+>  [Pipeable RxJS operators](https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md) are now used instead of prototype-patching *add* operators. 
 
 * **packages:** update deps to Angular v5 and RxJs 5.5 ([#523](https://github.com/angular/flex-layout/pull/523)) ([62457a5972](https://github.com/angular/flex-layout/commit/62457a5972)), closes [#519](https://github.com/angular/flex-layout/issues/519)
 
