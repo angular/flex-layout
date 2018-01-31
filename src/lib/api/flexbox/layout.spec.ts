@@ -167,6 +167,13 @@ describe('layout directive', () => {
        });
     });
 
+    it('should have valid wrap with flex children', () => {
+      createTestComponent(`<div fxLayout='row wrap'><div fxFlex></div></div>`);
+      expectNativeEl(fixture).toHaveStyle({
+        'flex-wrap': 'wrap'
+      });
+    });
+
   });
 
   describe('with inline options', () => {
