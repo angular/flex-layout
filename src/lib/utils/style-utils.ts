@@ -72,7 +72,7 @@ export function lookupAttributeValue(element: HTMLElement, attribute: string): s
  * Find the DOM element's inline style value (if any)
  */
 export function lookupInlineStyle(element: HTMLElement, styleName: string): string {
-  return element.style[styleName];
+  return element.style[styleName] || element.style.getPropertyValue(styleName);
 }
 
 /**
