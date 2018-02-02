@@ -81,16 +81,11 @@ Shown below is an example of a non-trivial layout using various **fxFlex** optio
 
 #### Source Code:
 
-<a href="https://github.com/angular/flex-layout/blob/master/src/demo-app/app/stack-overflow/columnSpan.demo.ts#L23" target="_blank">
-![screen shot 2016-12-16 at 1 05 45 pm](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)
-</a>
+[![screen shot 2016-12-16 at 1 05 45 pm](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/stack-overflow/columnSpan.demo.ts#L23)
 
 #### Live Demo:
 
-<a href="https://tburleson-layouts-demos.firebaseapp.com/#/stackoverflow" target="_blank">
-![screen shot 2016-12-16 at 1 00 51 pm](https://cloud.githubusercontent.com/assets/210413/21274826/bc8553f2-c38f-11e6-8188-bc7fd36026c2.png)
-</a>
-
+[![screen shot 2016-12-16 at 1 00 51 pm](https://cloud.githubusercontent.com/assets/210413/21274826/bc8553f2-c38f-11e6-8188-bc7fd36026c2.png)](https://tburleson-layouts-demos.firebaseapp.com/#/stackoverflow)
 
 
 ### Additional fxFlex Stylings
@@ -181,9 +176,7 @@ manifest layout issues.
 Developers should consult the **[Known Issues](http://caniuse.com/#feat=flexbox)** and the 
 [Resources](http://caniuse.com/#feat=flexbox) sections.
 
-<a href="http://caniuse.com/#feat=flexbox" target="_blank">
-![caniuseflexbox](https://cloud.githubusercontent.com/assets/210413/21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png)
-</a>
+[![caniuse](https://cloud.githubusercontent.com/assets/210413/21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png)](http://caniuse.com/#feat=flexbox)
 
 Developer's seeking details on FlexBox should 
 * Review [CSS-Tricks - A Guide to FlexBox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/), or 
