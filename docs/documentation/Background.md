@@ -13,11 +13,7 @@ expands items to fill available free space, or shrinks them to prevent overflow.
 Now let's add these complexities the requirements that developers often want combine the CSS Flexbox API with CSS media 
 queries in order to support responsive layouts. e.g.
 
-```html
-<a href="" target="_blank">
-  <img src="https://cloud.githubusercontent.com/assets/210413/20029960/fbbc0e62-a328-11e6-8045-c6532affc857.png">
-</a>
-```
+![](https://cloud.githubusercontent.com/assets/210413/20029960/fbbc0e62-a328-11e6-8045-c6532affc857.png)
 
 Unfortunately, developers manually implementing Flexbox CSS must become experts at both the syntax and the workarounds 
 to accommodate browser-specific differences in Flexbox runtime support.

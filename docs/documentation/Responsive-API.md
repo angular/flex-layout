@@ -2,9 +2,7 @@ Responsive layouts in material design adapt to any possible screen size. Google'
 provide guidance that includes a flexible grid that ensures consistency across layouts, breakpoint details about how 
 content reflows on different screens, and a description of how an app can scale from small to extra-large screens.
 
-<a href="https://material.io/guidelines/layout/responsive-ui.html" target="_blank">
-<img src="http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png">
-</a>
+[![Feature Source](http://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B8olV15J7abPSGFxemFiQVRtb1k/layout_adaptive_breakpoints_01.png)](https://material.io/guidelines/layout/responsive-ui.html)
 
 ## Enhancing the Static API
 
