@@ -14,7 +14,7 @@ available. The flex-grow value overrides the width.
 * **flex-shrink**: defines how much a flexbox item should **shrink** if there is **not enough** space available.
 * **flex-basis**: controls the default size of an element, before it is manipulated by other Flexbox properties
 
-<img width="459" alt="screen shot 2017-02-21 at 10 53 18 pm" src="https://cloud.githubusercontent.com/assets/210413/23197825/9742cf4c-f888-11e6-8812-b287f8aad15f.png">
+![screen shot 2017-02-21 at 10 53 18 pm](https://cloud.githubusercontent.com/assets/210413/23197825/9742cf4c-f888-11e6-8812-b287f8aad15f.png)
 
 Note that the resizing occurs along the main-axis of the layout and maybe affected by the **fxLayoutAlign** options. 
 
