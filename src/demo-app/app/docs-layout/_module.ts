@@ -10,6 +10,7 @@ import {Component} from '@angular/core';
     <demo-flex-attribute-values class="small-demo"></demo-flex-attribute-values>
     <demo-flex-offset-values class="small-demo"></demo-flex-offset-values>
     <demo-flex-align-self class="small-demo"></demo-flex-align-self>
+    <demo-layout-row-direction class="small-demo"></demo-layout-row-direction>
   `
 })
 export class DemosLayoutAPI {
@@ -26,6 +27,7 @@ import {DemoFlexRowFillWrap} from './flexRowFillWrap.demo';
 import {DemoFlexAttributeValues} from './flexOtherValues.demo';
 import {DemoFlexOffsetValues} from './flexOffetValues.demo';
 import {DemoFlexAlignSelf} from './FlexAlignSelf.demo';
+import {DemoLayoutRowDirection} from './layoutRowWithDirection.demo';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import {DemoFlexAlignSelf} from './FlexAlignSelf.demo';
     DemoFlexRowFillWrap,
     DemoFlexAttributeValues,
     DemoFlexOffsetValues,
-    DemoFlexAlignSelf
+    DemoFlexAlignSelf,
+    DemoLayoutRowDirection,
   ],
   imports: [
     SharedModule,

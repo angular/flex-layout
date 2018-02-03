@@ -32,6 +32,8 @@ import {ClassDirective} from './api/ext/class';
 import {StyleDirective} from './api/ext/style';
 import {ImgSrcDirective} from './api/ext/img-src';
 
+import {BidiModule} from './bidi/bidi-module';
+
 /**
  * Since the equivalent results are easily achieved with a css class attached to each
  * layout child, these have been deprecated and removed from the API.
@@ -59,7 +61,7 @@ const ALL_DIRECTIVES = [
  *
  */
 @NgModule({
-  imports: [MediaQueriesModule],
+  imports: [MediaQueriesModule, BidiModule],
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
   declarations: [...ALL_DIRECTIVES],
   providers: [
