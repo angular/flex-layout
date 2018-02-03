@@ -24,6 +24,7 @@ import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from '../core/base';
 import {LayoutDirective} from './layout';
+import {Directionality} from '../../bidi/directionality';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';
@@ -45,6 +46,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;
   protected _observer: MutationObserver;
+  private _directionWatcher: Subscription;
 
   /* tslint:disable */
  @Input('fxLayoutGap')       set gap(val) { this._cacheInput('gap', val); }
@@ -70,12 +72,15 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
               renderer: Renderer2,
               @Optional() @Self() container: LayoutDirective,
               private _zone: NgZone,
-              @Inject(PLATFORM_ID) platformId: Object) {
+              @Inject(PLATFORM_ID) platformId: Object,
+              private _directionality: Directionality) {
     super(monitor, elRef, renderer, platformId);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
     }
+    this._directionWatcher =
+        this._directionality.change.subscribe(this._updateWithValue.bind(this));
   }
 
   // *********************************************
@@ -107,6 +112,9 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
     }
     if (this._observer) {
       this._observer.disconnect();
+    }
+    if (this._directionWatcher) {
+      this._directionWatcher.unsubscribe();
     }
   }
 
@@ -196,7 +204,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
       case 'row' :
       case 'row-reverse':
       default :
-        key = 'margin-right';
+        key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
         break;
     }
     margins[key] = value;

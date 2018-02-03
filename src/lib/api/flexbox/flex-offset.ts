@@ -23,6 +23,7 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 
 import {BaseFxDirective} from '../core/base';
+import {Directionality} from '../../bidi/directionality';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from './layout';
@@ -39,6 +40,7 @@ import {isFlowHorizontal} from '../../utils/layout-validator';
   [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]
 `})
 export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+  private _directionWatcher: Subscription;
 
   /* tslint:disable */
   @Input('fxFlexOffset')       set offset(val)     { this._cacheInput('offset', val); }
@@ -63,8 +65,11 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
               elRef: ElementRef,
               renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
-              @Inject(PLATFORM_ID) platformId: Object) {
+              @Inject(PLATFORM_ID) platformId: Object,
+              private _directionality: Directionality) {
     super(monitor, elRef, renderer, platformId);
+    this._directionWatcher =
+        this._directionality.change.subscribe(this._updateWithValue.bind(this));
 
 
     this.watchParentFlow();
@@ -90,6 +95,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
     super.ngOnDestroy();
     if (this._layoutWatcher) {
       this._layoutWatcher.unsubscribe();
+    }
+    if (this._directionWatcher) {
+      this._directionWatcher.unsubscribe();
     }
   }
 
@@ -162,8 +170,11 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
       offset = offset + '%';
     }
 
+    const horizontalLayoutKey =
+        this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
     // The flex-direction of this element's flex container. Defaults to 'row'.
     let layout = this._getFlowDirection(this.parentElement, true);
-    return isFlowHorizontal(layout) ? {'margin-left': `${offset}`} : {'margin-top': `${offset}`};
+    return isFlowHorizontal(layout) ? {[horizontalLayoutKey]: `${offset}`} :
+                                      {'margin-top': `${offset}`};
   }
 }

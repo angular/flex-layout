@@ -9,6 +9,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TestBed, ComponentFixture, async} from '@angular/core/testing';
 
+import {DIR_DOCUMENT} from '../../bidi/directionality';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
@@ -26,9 +27,11 @@ describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
   let createTestComponent = makeCreateTestComponent(() => TestLayoutGapComponent);
   let expectDomForQuery = makeExpectDOMForQuery(() => TestLayoutGapComponent);
+  let fakeDocument: {body: {dir?: string}, documentElement: {dir?: string}};
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
+    fakeDocument = {body: {}, documentElement: {}};
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
@@ -36,7 +39,8 @@ describe('layout-gap directive', () => {
       declarations: [TestLayoutGapComponent],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        {provide: DIR_DOCUMENT, useValue: fakeDocument}
       ]
     });
   });
@@ -285,6 +289,23 @@ describe('layout-gap directive', () => {
   describe('with responsive features', () => {
 
 
+  });
+
+  describe('rtl support', () => {
+    it('uses margin-left when document body has rtl dir', () => {
+      fakeDocument.body.dir = 'rtl';
+      verifyCorrectMargin('row', 'margin-left');
+    });
+
+    it('uses margin-left when documentElement has rtl dir', () => {
+      fakeDocument.documentElement.dir = 'rtl';
+      verifyCorrectMargin('row', 'margin-left');
+    });
+
+    it('still uses margin-bottom in column layout when body has rtl dir', () => {
+      fakeDocument.body.dir = 'rtl';
+      verifyCorrectMargin('column', 'margin-bottom');
+    });
   });
 
 });

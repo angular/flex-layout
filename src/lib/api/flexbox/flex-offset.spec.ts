@@ -9,6 +9,7 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
+import {DIR_DOCUMENT} from '../../bidi/directionality';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../../media-query/breakpoints/break-point-registry';
 import {MockMatchMedia} from '../../media-query/mock/mock-match-media';
@@ -27,12 +28,14 @@ import {
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
   let expectDOMFrom = makeExpectDOMFrom(() => TestFlexComponent);
+  let fakeDocument: {body: {dir?: string}, documentElement: {dir?: string}};
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestFlexComponent)(template);
   };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
+    fakeDocument = {body: {}, documentElement: {}};
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
@@ -40,7 +43,8 @@ describe('flex directive', () => {
       declarations: [TestFlexComponent],
       providers: [
         BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        {provide: DIR_DOCUMENT, useValue: fakeDocument}
       ]
     });
   });
@@ -132,6 +136,44 @@ describe('flex directive', () => {
         'flex': '1 1 100%',
         'margin-left': '52px',
       });
+    });
+
+    it('should set margin-right for rtl layouts on document body', () => {
+      fakeDocument.body.dir = 'rtl';
+      componentWithTemplate(`
+        <div fxLayout='row' class='test'>
+          <div fxFlex='30px' fxFlexOffset='17px'>  </div>
+        </div>
+      `);
+      fixture.detectChanges();
+
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+      expect(element).toHaveStyle({'margin-right': '17px'});
+    });
+
+    it('should set margin-right for rtl layouts on documentElement', () => {
+      fakeDocument.documentElement.dir = 'rtl';
+      componentWithTemplate(`
+        <div fxLayout='row' class='test'>
+          <div fxFlex='30px' fxFlexOffset='17px'>  </div>
+        </div>
+      `);
+      fixture.detectChanges();
+
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+      expect(element).toHaveStyle({'margin-right': '17px'});
+    });
+
+    it('should set margin-left for ltr layouts', () => {
+      componentWithTemplate(`
+        <div fxLayout='row' class='test'>
+          <div fxFlex='30px' fxFlexOffset='17px'>  </div>
+        </div>
+      `);
+      fixture.detectChanges();
+
+      let element = queryFor(fixture, '[fxFlex]')[0].nativeElement;
+      expect(element).toHaveStyle({'margin-left': '17px'});
     });
 
   });
