@@ -51,13 +51,15 @@ export interface ExecTaskOptions {
   env?: any;
   // Whether the task should fail if the process writes to STDERR.
   failOnStderr?: boolean;
+  // Change the working directory if necessary
+  cwd?: string;
 }
 
 /** Create a task that executes a binary as if from the command line. */
 export function execTask(binPath: string, args: string[], options: ExecTaskOptions = {}) {
   return (done: (err?: string) => void) => {
-    const env = Object.assign({}, process.env, options.env);
-    const childProcess = child_process.spawn(binPath, args, {env});
+    const env = {...process.env, ...options.env};
+    const childProcess = child_process.spawn(binPath, args, {env, cwd: options.cwd});
     const stderrData: string[] = [];
 
     if (!options.silentStdout && !options.silent) {
