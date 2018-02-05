@@ -1,28 +1,29 @@
 import {task} from 'gulp';
-import {execNodeTask} from '../util/task_helpers';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
+import {execTask} from '../util/task_helpers';
 
 const {packagesDir} = buildConfig;
 
 /** Path to the demo-app source directory. */
-const demoAppSource = join(packagesDir, 'demo-app');
+const demoAppSource = join(packagesDir, 'apps', 'demo-app');
 
-/** Path to the tsconfig file that builds the AOT files. */
-const tsconfigFile = join(demoAppSource, 'tsconfig-aot.json');
+/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
+task('aot:build', sequenceTask('clean', 'flex-layout:build-release', 'aot:run'));
+task('aot:run', sequenceTask('aot:deps', 'aot:cli', 'aot:clean'));
 
-/** Builds the demo-app and flex-layout. To be able to run NGC, apply the metadata workaround. */
-task('aot:deps', sequenceTask(
-  ['flex-layout:build-release'],
-  // Build the assets after the releases have been built, because the demo-app assets import
-  // SCSS files from the release packages.
-  [':build:devapp:assets', ':build:devapp:scss'],
+task('aot:deps', [], execTask(
+  'npm', ['install'], {cwd: demoAppSource}));
+
+/** Task that builds the universal-app in server mode */
+task('aot:cli', execTask(
+  'ng', ['build', '--prod'],
+  {cwd: demoAppSource, failOnStderr: true}
 ));
 
-/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
-task('aot:build', sequenceTask('clean', 'aot:deps', 'aot:compiler-cli'));
-
-/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
-task('aot:compiler-cli', execNodeTask(
-    '@angular/compiler-cli', 'ngc', ['-p', tsconfigFile]
+task('aot:clean', [], execTask(
+  'rm', ['-rf', 'node_modules'], {
+    failOnStderr: true,
+    cwd: demoAppSource
+  }
 ));
