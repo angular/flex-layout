@@ -21,14 +21,15 @@ jobs:
     - env: "MODE=lint"
     - env: "MODE=aot"
     - env: "MODE=prerender"
-    # Closure Compiler CI check is temporarily disabled until a new version of
-    # the tool is released with https://github.com/google/closure-compiler/pull/2600
-    # - env: "MODE=closure-compiler"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
     - stage: Deploy
       env: "DEPLOY_MODE=build-artifacts"
+      if: type = push
+    # Closure Compiler CI check is temporarily disabled until a new version of
+    # the tool is released with https://github.com/google/closure-compiler/pull/2600
+    # - env: "MODE=closure-compiler"
 env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
