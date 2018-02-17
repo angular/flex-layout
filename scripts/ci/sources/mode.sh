@@ -28,3 +28,7 @@ is_unit() {
 is_prerender() {
   [[ "$MODE" = prerender ]]
 }
+
+is_ssr() {
+  [[ "$MODE" = ssr ]]
+}

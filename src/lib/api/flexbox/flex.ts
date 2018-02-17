@@ -8,14 +8,11 @@
 import {
   Directive,
   ElementRef,
-  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
-  PLATFORM_ID,
-  Renderer2,
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
@@ -29,6 +26,7 @@ import {MediaMonitor} from '../../media-query/media-monitor';
 import {LayoutDirective} from './layout';
 import {validateBasis} from '../../utils/basis-validator';
 import {isFlowHorizontal} from '../../utils/layout-validator';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 
 /** Built-in aliases for different flex-basis values. */
@@ -85,11 +83,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   //       for the parent flex container for this flex item.
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer2,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
-              @Inject(PLATFORM_ID) platformId: Object) {
-
-    super(monitor, elRef, renderer, platformId);
+              protected styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
 
     this._cacheInput('flex', '');
     this._cacheInput('shrink', 1);
@@ -162,96 +158,94 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   protected _validateValue(grow: number|string,
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
-      // The flex-direction of this element's flex container. Defaults to 'row'.
-      let layout = this._getFlowDirection(this.parentElement, true);
-      let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
-      let css, isValue;
+    // The flex-direction of this element's flex container. Defaults to 'row'.
+    let layout = this._getFlowDirection(this.parentElement, true);
+    let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
+    let css, isValue;
 
-      grow = (grow == '0') ? 0 : grow;
-      shrink = (shrink == '0') ? 0 : shrink;
+    grow = (grow == '0') ? 0 : grow;
+    shrink = (shrink == '0') ? 0 : shrink;
 
-      // flex-basis allows you to specify the initial/starting main-axis size of the element,
-      // before anything else is computed. It can either be a percentage or an absolute value.
-      // It is, however, not the breaking point for flex-grow/shrink properties
-      //
-      // flex-grow can be seen as this:
-      //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
-      //   1: (Default value). Stretch; will be the same size to all other flex items on
-      //       the same row since they have a default value of 1.
-      //   ≥2 (integer n): Stretch. Will be n times the size of other elements
-      //      with 'flex-grow: 1' on the same row.
+    // flex-basis allows you to specify the initial/starting main-axis size of the element,
+    // before anything else is computed. It can either be a percentage or an absolute value.
+    // It is, however, not the breaking point for flex-grow/shrink properties
+    //
+    // flex-grow can be seen as this:
+    //   0: Do not stretch. Either size to element's content width, or obey 'flex-basis'.
+    //   1: (Default value). Stretch; will be the same size to all other flex items on
+    //       the same row since they have a default value of 1.
+    //   ≥2 (integer n): Stretch. Will be n times the size of other elements
+    //      with 'flex-grow: 1' on the same row.
 
-      // Use `null` to clear existing styles.
-      let clearStyles = {
-        'max-width': null,
-        'max-height': null,
-        'min-width': null,
-        'min-height': null
-      };
-      switch (basis || '') {
-        case '':
-          css = extendObject(clearStyles, {'flex': `${grow} ${shrink} 0.000000001px`});
-          break;
-        case 'initial':   // default
-        case 'nogrow':
-          grow = 0;
-          css = extendObject(clearStyles, {'flex': '0 1 auto'});
-          break;
-        case 'grow':
-          css = extendObject(clearStyles, {'flex': '1 1 100%'});
-          break;
-        case 'noshrink':
-          shrink = 0;
-          css = extendObject(clearStyles, {'flex': '1 0 auto'});
-          break;
-        case 'auto':
-          css = extendObject(clearStyles, {'flex': `${grow} ${shrink} auto`});
-          break;
-        case 'none':
-          grow = 0;
-          shrink = 0;
-          css = extendObject(clearStyles, {'flex': '0 0 auto'});
-          break;
-        default:
-          let hasCalc = String(basis).indexOf('calc') > -1;
-          let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
+    // Use `null` to clear existing styles.
+    let clearStyles = {
+      'max-width': null,
+      'max-height': null,
+      'min-width': null,
+      'min-height': null
+    };
+    switch (basis || '') {
+      case '':
+        css = extendObject(clearStyles, {'flex': `${grow} ${shrink} 0.000000001px`});
+        break;
+      case 'initial':   // default
+      case 'nogrow':
+        grow = 0;
+        css = extendObject(clearStyles, {'flex': '0 1 auto'});
+        break;
+      case 'grow':
+        css = extendObject(clearStyles, {'flex': '1 1 100%'});
+        break;
+      case 'noshrink':
+        shrink = 0;
+        css = extendObject(clearStyles, {'flex': '1 0 auto'});
+        break;
+      case 'auto':
+        css = extendObject(clearStyles, {'flex': `${grow} ${shrink} auto`});
+        break;
+      case 'none':
+        grow = 0;
+        shrink = 0;
+        css = extendObject(clearStyles, {'flex': '0 0 auto'});
+        break;
+      default:
+        let hasCalc = String(basis).indexOf('calc') > -1;
+        let isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
 
-          isValue = hasCalc ||
-              String(basis).indexOf('px') > -1 ||
-              String(basis).indexOf('em') > -1 ||
-              String(basis).indexOf('vw') > -1 ||
-              String(basis).indexOf('vh') > -1;
+        isValue = hasCalc ||
+            String(basis).indexOf('px') > -1 ||
+            String(basis).indexOf('em') > -1 ||
+            String(basis).indexOf('vw') > -1 ||
+            String(basis).indexOf('vh') > -1;
 
-          // Defaults to percentage sizing unless `px` is explicitly set
-          if (!isValue && !isPercent && !isNaN(basis as any)) {
-            basis = basis + '%';
-          }
+        // Defaults to percentage sizing unless `px` is explicitly set
+        if (!isValue && !isPercent && !isNaN(basis as any)) {
+          basis = basis + '%';
+        }
 
-          if (basis === '0px') {
-            basis = '0%';
-          }
+        if (basis === '0px') {
+          basis = '0%';
+        }
 
-          css = extendObject(clearStyles, { // fix issue #5345
-            'flex-grow' : `${grow}`,
-            'flex-shrink' : `${shrink}`,
-            'flex-basis' : isValue ? `${basis}` : '100%'
-          });
-          break;
-      }
+        css = extendObject(clearStyles, { // fix issue #5345
+          'flex': `${grow} ${shrink} ${isValue ? basis : '100%'}`
+        });
+        break;
+    }
 
-      let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
-      let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
+    let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
+    let min = isFlowHorizontal(direction) ? 'min-width' : 'min-height';
 
-      let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
-      let isPx = String(basis).indexOf('px') > -1 || usingCalc;
+    let usingCalc = (String(basis).indexOf('calc') > -1) || (basis == 'auto');
+    let isPx = String(basis).indexOf('px') > -1 || usingCalc;
 
 
-      // make box inflexible when shrink and grow are both zero
-      // should not set a min when the grow is zero
-      // should not set a max when the shrink is zero
-      let isFixed = !grow && !shrink;
-      css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
-      css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
+    // make box inflexible when shrink and grow are both zero
+    // should not set a min when the grow is zero
+    // should not set a max when the shrink is zero
+    let isFixed = !grow && !shrink;
+    css[min] = (basis == '0%') ? 0 : isFixed || (isPx && grow) ? basis : null;
+    css[max] = (basis == '0%') ? 0 : isFixed || (!usingCalc && shrink) ? basis : null;
 
     return extendObject(css, {'box-sizing': 'border-box'});
   }

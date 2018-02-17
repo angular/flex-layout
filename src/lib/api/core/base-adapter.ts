@@ -5,12 +5,13 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {ElementRef, Inject, PLATFORM_ID, Renderer2} from '@angular/core';
+import {ElementRef} from '@angular/core';
 
 import {BaseFxDirective} from './base';
 import {ResponsiveActivation} from './responsive-activation';
 import {MediaQuerySubscriber} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 
 /**
@@ -48,9 +49,8 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   constructor(protected _baseKey: string,   // non-responsive @Input property name
               protected _mediaMonitor: MediaMonitor,
               protected _elementRef: ElementRef,
-              protected _renderer: Renderer2,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
-    super(_mediaMonitor, _elementRef, _renderer, _platformId);
+              protected _styler: StyleUtils) {
+    super(_mediaMonitor, _elementRef, _styler);
   }
 
   /**

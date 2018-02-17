@@ -15,7 +15,7 @@ const result = renderModuleFactory(ResponsiveAppServerModuleNgFactory, {
 });
 
 result
-  .then(() => log('Prerender done.'))
+  .then((html) => console.log(html) && log('Prerender done.'))
   // If rendering the module factory fails, exit the process with an error code because otherwise
   // the CI task will not recognize the failure and will show as "success". The error message
   // will be printed automatically by the `renderModuleFactory` method.

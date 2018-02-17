@@ -12,4 +12,4 @@ export * from './basis-validator';
 export * from './layout-validator';
 export * from './breakpoint-tools';
 export * from './object-extend';
-export * from './style-transforms';
+export * from './styling/index';

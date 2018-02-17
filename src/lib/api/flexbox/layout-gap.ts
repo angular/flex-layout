@@ -10,15 +10,12 @@ import {
   ElementRef,
   Input,
   OnChanges,
-  Renderer2,
   SimpleChanges,
   Self,
   AfterContentInit,
   Optional,
   OnDestroy,
   NgZone,
-  Inject,
-  PLATFORM_ID,
 } from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
@@ -28,6 +25,7 @@ import {Directionality} from '../../bidi/directionality';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 /**
  * 'layout-padding' styling directive
@@ -69,12 +67,11 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer2,
               @Optional() @Self() container: LayoutDirective,
               private _zone: NgZone,
-              @Inject(PLATFORM_ID) platformId: Object,
-              private _directionality: Directionality) {
-    super(monitor, elRef, renderer, platformId);
+              private _directionality: Directionality,
+              styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));

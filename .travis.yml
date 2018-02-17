@@ -21,6 +21,7 @@ jobs:
     - env: "MODE=lint"
     - env: "MODE=aot"
     - env: "MODE=prerender"
+    - env: "MODE=ssr"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
@@ -38,6 +39,10 @@ env:
   - BROWSER_STACK_ACCESS_KEY=BWCd4SynLzdDcv8xtzsB
   - BROWSER_PROVIDER_READY_FILE=/tmp/flex-layout-build/readyfile
   - BROWSER_PROVIDER_ERROR_FILE=/tmp/flex-layout-build/errorfile
+
+matrix:
+  allow_failures:
+    - env: "MODE=ssr"
 
 
 before_install:

@@ -12,10 +12,7 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  Renderer2,
   SimpleChanges,
-  Inject,
-  PLATFORM_ID,
 } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 
@@ -24,6 +21,7 @@ import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {buildLayoutCSS} from '../../utils/layout-validator';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {StyleUtils} from '../../utils/styling/style-utils';
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -75,9 +73,8 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
     this._announcer = new ReplaySubject<string>(1);
     this.layout$ = this._announcer.asObservable();
   }

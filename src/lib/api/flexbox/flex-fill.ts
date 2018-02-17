@@ -5,10 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Inject, PLATFORM_ID, Renderer2} from '@angular/core';
+import {Directive, ElementRef} from '@angular/core';
 
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {BaseFxDirective} from '../core/base';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 const FLEX_FILL_CSS = {
   'margin': 0,
@@ -31,9 +32,8 @@ const FLEX_FILL_CSS = {
 export class FlexFillDirective extends BaseFxDirective {
   constructor(monitor: MediaMonitor,
               public elRef: ElementRef,
-              public renderer: Renderer2,
-              @Inject(PLATFORM_ID) platformId: Object) {
-    super(monitor, elRef, renderer, platformId);
+              styleUtils: StyleUtils) {
+    super(monitor, elRef, styleUtils);
     this._applyStyleToElement(FLEX_FILL_CSS);
   }
 }

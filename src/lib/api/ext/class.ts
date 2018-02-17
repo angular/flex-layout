@@ -19,8 +19,6 @@ import {
   SimpleChanges,
   Self,
   OnInit,
-  Inject,
-  PLATFORM_ID,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 
@@ -29,6 +27,7 @@ import {BaseFxDirectiveAdapter} from '../core/base-adapter';
 import {MediaChange} from '../../media-query/media-change';
 import {MediaMonitor} from '../../media-query/media-monitor';
 import {RendererAdapter} from '../core/renderer-adapter';
+import {StyleUtils} from '../../utils/styling/style-utils';
 
 /** NgClass allowed inputs **/
 export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
@@ -36,7 +35,7 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
 /**
  * Directive to add responsive support for ngClass.
  * This maintains the core functionality of 'ngClass' and adds responsive API
- *
+ * Note: this class is a no-op when rendered on the server
  */
 @Directive({
   selector: `
@@ -95,8 +94,8 @@ export class ClassDirective extends BaseFxDirective
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
               @Optional() @Self() private _ngClassInstance: NgClass,
-              @Inject(PLATFORM_ID) protected _platformId: Object) {
-    super(monitor, _ngEl, _renderer, _platformId);
+              protected _styler: StyleUtils) {
+    super(monitor, _ngEl, _styler);
     this._configureAdapters();
   }
 
@@ -139,7 +138,10 @@ export class ClassDirective extends BaseFxDirective
    */
   protected _configureAdapters() {
     this._base = new BaseFxDirectiveAdapter(
-        'ngClass', this.monitor, this._ngEl, this._renderer, this._platformId
+      'ngClass',
+      this.monitor,
+      this._ngEl,
+      this._styler
     );
     if (!this._ngClassInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on

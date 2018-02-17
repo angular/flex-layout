@@ -5,9 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {TestBed, ComponentFixture, async} from '@angular/core/testing';
+import {Component, OnInit, PLATFORM_ID} from '@angular/core';
+import {CommonModule, isPlatformServer} from '@angular/common';
+import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 
 import {DIR_DOCUMENT} from '../../bidi/directionality';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../../media-query/breakpoints/break-points-provider';
@@ -17,17 +17,22 @@ import {MatchMedia} from '../../media-query/match-media';
 import {FlexLayoutModule} from '../../module';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {
-  makeCreateTestComponent,
-  makeExpectDOMForQuery,
-  queryFor
-} from '../../utils/testing/helpers';
+import {expectEl, makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
+import {StyleUtils} from '../../utils/styling/style-utils';
+import {SERVER_TOKEN} from '../../utils/styling/server-token';
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
-  let createTestComponent = makeCreateTestComponent(() => TestLayoutGapComponent);
-  let expectDomForQuery = makeExpectDOMForQuery(() => TestLayoutGapComponent);
   let fakeDocument: {body: {dir?: string}, documentElement: {dir?: string}};
+  let styler: StyleUtils;
+  let platformId: Object;
+  let createTestComponent = (template: string, styles?: any) => {
+    fixture = makeCreateTestComponent(() => TestLayoutGapComponent)(template, styles);
+    inject([StyleUtils, PLATFORM_ID], (_styler: StyleUtils, _platformId: Object) => {
+      styler = _styler;
+      platformId = _platformId;
+    })();
+  };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
@@ -38,9 +43,12 @@ describe('layout-gap directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutGapComponent],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
+        {provide: DIR_DOCUMENT, useValue: fakeDocument},
+        BreakPointRegistry,
+        DEFAULT_BREAKPOINTS_PROVIDER,
         {provide: MatchMedia, useClass: MockMatchMedia},
-        {provide: DIR_DOCUMENT, useValue: fakeDocument}
+        StyleUtils,
+        {provide: SERVER_TOKEN, useValue: true}
       ]
     });
   });
@@ -54,14 +62,14 @@ describe('layout-gap directive', () => {
             </div>
         `;
 
-    const fixture1 = createTestComponent(template);
-    fixture1.detectChanges();
+    createTestComponent(template);
+    fixture.detectChanges();
 
-    const nodes = queryFor(fixture1, 'span');
+    const nodes = queryFor(fixture, 'span');
     const styles = {[marginKey]: margin};
 
-    expect(nodes[0].nativeElement).toHaveStyle(styles);
-    expect(nodes[1].nativeElement).not.toHaveStyle(styles);
+    expectEl(nodes[0]).toHaveStyle(styles, styler);
+    expectEl(nodes[1]).not.toHaveStyle(styles, styler);
   }
 
   describe('with static features', () => {
@@ -72,7 +80,8 @@ describe('layout-gap directive', () => {
                   <div fxFlex></div>
               </div>
           `;
-      expectDomForQuery(template, '[fxFlex]').not.toHaveStyle({'margin-right': '13px;'});
+      createTestComponent(template);
+      expectEl(queryFor(fixture, '[fxFlex]')[0]).not.toHaveStyle({'margin-right': '13px;'}, styler);
     });
 
     it('should add gap styles to all children except the 1st child', () => {
@@ -83,15 +92,15 @@ describe('layout-gap directive', () => {
                   <div fxFlex></div>
               </div>
           `;
-      fixture = createTestComponent(template); // tslint:disable-line:no-shadowed-variable
+      createTestComponent(template);
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '0px'});
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
     it('should add gap styles to dynamics rows EXCEPT first', () => {
@@ -100,17 +109,17 @@ describe('layout-gap directive', () => {
                   <div fxFlex *ngFor='let row of rows'></div>
               </div>
           `;
-      fixture = createTestComponent(template);
+      createTestComponent(template);
       fixture.componentInstance.direction = 'row';
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[2].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '13px'});
-      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '0px'});
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[3]).not.toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[3]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
     it('should add update gap styles when row items are removed', async(() => {
@@ -119,7 +128,7 @@ describe('layout-gap directive', () => {
                   <div fxFlex *ngFor='let row of rows'></div>
               </div>
           `;
-      fixture = createTestComponent(template);
+      createTestComponent(template);
       fixture.componentInstance.direction = 'row';
       fixture.detectChanges();
 
@@ -137,9 +146,12 @@ describe('layout-gap directive', () => {
         nodes = queryFor(fixture, '[fxFlex]');
         expect(nodes.length).toEqual(3);
 
-        expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
-        expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '13px'});
-        expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+        // TODO(CaerusKaru): MutationObserver is not implemented in domino
+        if (typeof MutationObserver !== 'undefined') {
+          expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+          expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+          expectEl(nodes[2]).not.toHaveStyle({'margin-right': '13px'}, styler);
+        }
       });
 
     }));
@@ -150,15 +162,15 @@ describe('layout-gap directive', () => {
                   <div fxFlex *ngFor='let row of rows'></div>
               </div>
           `;
-      fixture = createTestComponent(template);
+      createTestComponent(template);
       fixture.componentInstance.direction = 'row';
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '13px'});
-      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[3]).not.toHaveStyle({'margin-right': '13px'}, styler);
 
       fixture.componentInstance.rows = new Array(1);
       fixture.detectChanges();
@@ -170,7 +182,11 @@ describe('layout-gap directive', () => {
         nodes = queryFor(fixture, '[fxFlex]');
 
         expect(nodes.length).toEqual(1);
-        expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '13px'});
+
+        // TODO(CaerusKaru): MutationObserver is not implemented in domino
+        if (typeof MutationObserver !== 'undefined') {
+          expectEl(nodes[0]).not.toHaveStyle({'margin-right': '13px'}, styler);
+        }
       });
 
     }));
@@ -188,7 +204,7 @@ describe('layout-gap directive', () => {
     });
 
     it('should remove obsolete margin and apply valid margin for layout changes', () => {
-      fixture = createTestComponent(`
+      createTestComponent(`
           <div [fxLayout]='direction' [fxLayoutGap]='gap'>
               <span></span>
               <span></span>
@@ -202,8 +218,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       let nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '8px'});
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-bottom': '8px'});
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '8px'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'margin-bottom': '8px'}, styler);
 
 
       // layout = column-reverse, use margin-bottom
@@ -211,8 +227,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '8px'});
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-bottom': '8px'});
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '8px'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'margin-bottom': '8px'}, styler);
 
 
       // layout = row-reverse, use margin-right
@@ -220,8 +236,8 @@ describe('layout-gap directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, 'span');
 
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
-      expect(nodes[0].nativeElement).toHaveStyle({'margin-right': '8px'});
+      expectEl(nodes[0]).not.toHaveStyle({'margin-bottom': '8px'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '8px'}, styler);
     });
 
     it('should recognize hidden elements when applying gaps', () => {
@@ -233,17 +249,20 @@ describe('layout-gap directive', () => {
           <div fxFlex class='col3'>Div 3</div>
         </div>
       `;
-      fixture = createTestComponent(template, styles);
+      createTestComponent(template, styles);
       fixture.componentInstance.direction = 'row';
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(3);
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '0px'});
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '16px'});
-      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '16px'});
-      expect(nodes[2].nativeElement).not.toHaveStyle({'margin-right': '16px'});
+      // TODO(CaerusKaru): Domino is unable to detect this style
+      if (!isPlatformServer(platformId)) {
+        expectEl(nodes[0]).not.toHaveStyle({'margin-right': '0px'}, styler);
+        expectEl(nodes[0]).not.toHaveStyle({'margin-right': '16px'}, styler);
+        expectEl(nodes[1]).toHaveStyle({'margin-right': '16px'}, styler);
+        expectEl(nodes[2]).not.toHaveStyle({'margin-right': '16px'}, styler);
+      }
 
     });
 
@@ -259,7 +278,7 @@ describe('layout-gap directive', () => {
               <div fxFlex class='col4'>Div 3</div>
             </div>
           `;
-      fixture = createTestComponent(template, styles);
+      createTestComponent(template, styles);
       fixture.componentInstance.gap = '16px';
       fixture.componentInstance.direction = 'row';
       fixture.detectChanges();
@@ -267,10 +286,13 @@ describe('layout-gap directive', () => {
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-right': '16px'});
-      expect(nodes[1].nativeElement).toHaveStyle({'margin-right': '16px'});
-      expect(nodes[2].nativeElement).toHaveStyle({'margin-right': '16px'});
-      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-right': '16px'});
+      // TODO(CaerusKaru): Domino is unable to detect this style
+      if (!isPlatformServer(platformId)) {
+        expectEl(nodes[0]).not.toHaveStyle({'margin-right': '16px'}, styler);
+        expectEl(nodes[1]).toHaveStyle({'margin-right': '16px'}, styler);
+        expectEl(nodes[2]).toHaveStyle({'margin-right': '16px'}, styler);
+        expectEl(nodes[3]).not.toHaveStyle({'margin-right': '16px'}, styler);
+      }
 
       fixture.componentInstance.gap = '8px';
       fixture.componentInstance.direction = 'column';
@@ -279,16 +301,18 @@ describe('layout-gap directive', () => {
       nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(4);
-      expect(nodes[0].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
-      expect(nodes[1].nativeElement).toHaveStyle({'margin-bottom': '8px'});
-      expect(nodes[2].nativeElement).toHaveStyle({'margin-bottom': '8px'});
-      expect(nodes[3].nativeElement).not.toHaveStyle({'margin-bottom': '8px'});
+      // TODO(CaerusKaru): Domino is unable to detect this style
+      if (!isPlatformServer(platformId)) {
+        expectEl(nodes[0]).not.toHaveStyle({'margin-bottom': '8px'}, styler);
+        expectEl(nodes[1]).toHaveStyle({'margin-bottom': '8px'}, styler);
+        expectEl(nodes[2]).toHaveStyle({'margin-bottom': '8px'}, styler);
+        expectEl(nodes[3]).not.toHaveStyle({'margin-bottom': '8px'}, styler);
+      }
     });
   });
 
   describe('with responsive features', () => {
-
-
+    // TODO(ThomasBurleson): add tests here
   });
 
   describe('rtl support', () => {

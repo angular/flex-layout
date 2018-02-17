@@ -7,11 +7,11 @@
  */
 import {NgModule} from '@angular/core';
 
-import {MatchMedia} from './match-media';
 import {MediaMonitor} from './media-monitor';
 import {OBSERVABLE_MEDIA_PROVIDER} from './observable-media-provider';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider';
 import {BreakPointRegistry} from './breakpoints/break-point-registry';
+import {MatchMedia} from './match-media';
 
 /**
  * *****************************************************************
@@ -30,5 +30,3 @@ import {BreakPointRegistry} from './breakpoints/break-point-registry';
 })
 export class MediaQueriesModule {
 }
-
-
