@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 
 import {MatchMedia} from '../match-media';
@@ -29,9 +29,10 @@ export class MockMatchMedia extends MatchMedia {
   useOverlaps = false;
 
   constructor(_zone: NgZone,
+              @Inject(PLATFORM_ID) _platformId: Object,
               @Inject(DOCUMENT) _document: any,
               private _breakpoints: BreakPointRegistry) {
-    super(_zone, _document);
+    super(_zone, _platformId, _document);
     this._actives = [];
   }
 

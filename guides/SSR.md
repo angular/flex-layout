@@ -39,7 +39,10 @@ import {FlexLayoutServerModule} from '@angular/flex-layout/server';
 export class AppServerModule {}
 ```
 
-2. That's it! Your app should now be configured to use the server-side
+2. Make sure that your import of `FlexLayoutServerModule` comes **after** `FlexLayoutModule` or any
+modules that import `FlexLayoutModule`. This requirement may be lifted in a future release
+
+3. That's it! Your app should now be configured to use the server-side
 implementations of the Flex Layout utilities. 
 
 

@@ -13,11 +13,8 @@ import {MediaQueriesModule} from './media-query/_module';
 import {BreakPoint} from './media-query/breakpoints/break-point';
 import {
   BreakPointProviderOptions,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   CUSTOM_BREAKPOINTS_PROVIDER_FACTORY
 } from './media-query/breakpoints/break-points-provider';
-import {MEDIA_MONITOR_PROVIDER} from './media-query/media-monitor-provider';
-import {OBSERVABLE_MEDIA_PROVIDER} from './media-query/observable-media-provider';
 
 import {FlexDirective} from './api/flexbox/flex';
 import {LayoutDirective} from './api/flexbox/layout';
@@ -70,9 +67,6 @@ const ALL_DIRECTIVES = [
   exports: [MediaQueriesModule, ...ALL_DIRECTIVES],
   declarations: [...ALL_DIRECTIVES],
   providers: [
-    MEDIA_MONITOR_PROVIDER,
-    DEFAULT_BREAKPOINTS_PROVIDER,   // Extend defaults with internal custom breakpoints
-    OBSERVABLE_MEDIA_PROVIDER,
     ServerStylesheet,
     StyleUtils,
     BROWSER_PROVIDER,
