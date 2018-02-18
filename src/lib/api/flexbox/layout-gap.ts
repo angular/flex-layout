@@ -39,8 +39,8 @@ import {StyleUtils} from '../../utils/styling/style-utils';
   [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
 `
 })
-export class LayoutGapDirective extends BaseFxDirective implements AfterContentInit, OnChanges,
-    OnDestroy {
+export class LayoutGapDirective extends BaseFxDirective
+  implements AfterContentInit, OnChanges, OnDestroy {
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;
   protected _observer: MutationObserver;
@@ -128,7 +128,7 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
 
       if (typeof MutationObserver !== 'undefined') {
         this._observer = new MutationObserver((mutations: MutationRecord[]) => {
-          let validatedChanges = (it: MutationRecord): boolean => {
+          const validatedChanges = (it: MutationRecord): boolean => {
             return (it.addedNodes && it.addedNodes.length > 0) ||
                 (it.removedNodes && it.removedNodes.length > 0);
           };
@@ -164,16 +164,23 @@ export class LayoutGapDirective extends BaseFxDirective implements AfterContentI
     }
 
     // Gather all non-hidden Element nodes
-    let items = this.childrenNodes
-        .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none');
-    let numItems = items.length;
+    const items = this.childrenNodes
+      .filter(el => el.nodeType === 1 && this._getDisplayStyle(el) != 'none')
+      .sort((a, b) => {
+        const orderA = +this._styler.lookupStyle(a, 'order');
+        const orderB = +this._styler.lookupStyle(b, 'order');
+        if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
+          return 0;
+        } else {
+          return orderA > orderB ? 1 : -1;
+        }
+      });
 
-    if (numItems > 0) {
-      let lastItem = items[numItems - 1];
+    if (items.length > 0) {
+      const lastItem = items.pop();
 
       // For each `element` children EXCEPT the last,
       // set the margin right/bottom styles...
-      items = items.filter((_, j) => j < numItems - 1);
       this._applyStyleToElements(this._buildCSS(value), items);
 
       // Clear all gaps for all visible elements
