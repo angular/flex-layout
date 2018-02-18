@@ -103,6 +103,25 @@ describe('layout-gap directive', () => {
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
+    it('should add gap styles in proper order when order style is applied', () => {
+      let template = `
+        <div fxLayoutAlign='center center' fxLayoutGap='13px'>
+          <div fxFlex fxFlexOrder="3"></div>
+          <div fxFlex fxFlexOrder="2"></div>
+          <div fxFlex fxFlexOrder="1"></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[2]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '0px'}, styler);
+    });
+
     it('should add gap styles to dynamics rows EXCEPT first', () => {
       let template = `
               <div fxLayoutAlign='center center' fxLayoutGap='13px'>
