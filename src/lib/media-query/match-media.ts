@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {filter} from 'rxjs/operators/filter';
@@ -27,6 +27,7 @@ export class MatchMedia {
   protected _observable$: Observable<MediaChange>;
 
   constructor(protected _zone: NgZone,
+              @Inject(PLATFORM_ID) protected _platformId: Object,
               @Inject(DOCUMENT) protected _document: any) {
     this._registry = new Map<string, MediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
@@ -98,7 +99,8 @@ export class MatchMedia {
    * supports 0..n listeners for activation/deactivation
    */
   protected _buildMQL(query: string): MediaQueryList {
-    let canListen = !!(<any>window).matchMedia('all').addListener;
+    let canListen = isPlatformBrowser(this._platformId) &&
+      !!(<any>window).matchMedia('all').addListener;
 
     return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
       matches: query === 'all' || query === '',

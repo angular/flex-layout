@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {MediaChange} from './media-change';
 import {BreakPoint} from './breakpoints/break-point';
@@ -91,8 +91,9 @@ export class ServerMatchMedia extends MatchMedia {
   protected _observable$: Observable<MediaChange>;
 
   constructor(protected _zone: NgZone,
+              @Inject(PLATFORM_ID) protected _platformId: Object,
               @Inject(DOCUMENT) protected _document: any) {
-    super(_zone, _document);
+    super(_zone, _platformId, _document);
     this._registry = new Map<string, ServerMediaQueryList>();
     this._source = new BehaviorSubject<MediaChange>(new MediaChange(true));
     this._observable$ = this._source.asObservable();
