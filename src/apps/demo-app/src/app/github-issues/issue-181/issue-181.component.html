@@ -1,0 +1,24 @@
+<mat-card class="card-demo">
+  <mat-card-title><a href="https://github.com/angular/flex-layout/issues/181" target="_blank">
+    Issue #181</a></mat-card-title>
+  <mat-card-subtitle>Wrong layout when fxHide + fxShow usages do not cooperate properly:
+  </mat-card-subtitle>
+  <mat-card-content>
+    <div class="containerX">
+      <div class="coloredContainerX box fixed"
+           [fxLayout]="direction"
+           (click)="pivot()">
+        <div fxHide fxShow.gt-xs class="box1"> Type 1, row a, fxHide fxShow.gt-xs</div>
+        <div fxHide fxShow.gt-xs class="box2"> Type 1, row b, fxHide fxShow.gt-xs</div>
+        <div fxHide fxShow.gt-xs class="box3"> Type 1, row c, fxHide fxShow.gt-xs</div>
+
+        <div fxShow fxHide.md class="box1"> Type 2, row a, fxShow fxHide.md</div>
+        <div fxShow fxHide.md class="box2"> Type 2, row b, fxShow fxHide.md</div>
+        <div fxShow fxHide.md class="box3"> Type 2, row c, fxShow fxHide.md</div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer style="width:95%;padding-left:20px;margin-top:-5px;">
+    <media-query-status></media-query-status>
+  </mat-card-footer>
+</mat-card>
