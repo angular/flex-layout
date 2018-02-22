@@ -8,6 +8,11 @@ const distDir = join(outputDir, 'releases', 'flex-layout');
 const tarBall = join(distDir, `angular-flex-layout-${projectVersion}.tgz`);
 const appDir = join(packagesDir, 'apps', 'universal-app');
 
+task('universal:serve', sequenceTask(
+  'prerender',
+  'prerender:run:server'
+));
+
 task('prerender', sequenceTask(
   'prerender:pre',
   'prerender:build',
@@ -38,6 +43,11 @@ task('prerender:build', execTask(
 task('prerender:webpack', execTask(
   'npm', ['run', 'build:server'],
   {cwd: appDir}
+));
+
+task('prerender:run:server', execTask(
+  'node', ['dist/server.js'],
+  {cwd: appDir, failOnStderr: true}
 ));
 
 task('prerender:clean', sequenceTask('prerender:clear:deps', 'prerender:clear:dist'));
