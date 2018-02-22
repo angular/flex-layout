@@ -24,3 +24,5 @@ npm-debug.log
 testem.log
 /.chrome
 !/test/karma.conf.js
+
+src/apps/universal-app/package-lock.json
