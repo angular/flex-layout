@@ -166,8 +166,9 @@
     type = prompt('Please select a new version: ');
 
     if (options[ type - 1 ]) version = options[ type - 1 ];
-    else if (type.match(/^\d+\.\d+\.\d+(-rc\.?\d+)?$/)) version = type;
-    else throw new Error('Your entry was invalid.');
+    else version = type;
+    // else if (type.match(/^\d+\.\d+\.\d+(-rc\.?\d+)?$/)) version = type;
+    // else throw new Error('Your entry was invalid.');
 
     log('');
     log('The new version will be ' + version.cyan + '.');
