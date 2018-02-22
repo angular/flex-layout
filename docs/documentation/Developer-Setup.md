@@ -12,6 +12,7 @@
 
 * To build the library, run `npm run lib:build`
 * To build and serve the demo-app, run `npm run demo:serve`
+* To build and serve the Universal app, run `npm run universal:serve`
 
 ## Integration within your project
 

@@ -18,7 +18,8 @@
     "lib:lint": "gulp lint",
     "lib:test": "gulp test",
     "lib:test:ssr": "gulp test:ssr",
-    "universal:build": "gulp ci:prerender"
+    "universal:build": "gulp ci:prerender",
+    "universal:serve": "gulp universal:serve"
   },
   "version": "2.0.0-beta.12",
   "license": "MIT",
@@ -47,7 +48,6 @@
     "@angular/platform-browser-dynamic": "~5.2.0",
     "@angular/platform-server": "~5.2.0",
     "@angular/router": "~5.2.0",
-    "@angular/tsc-wrapped": "^4.4.6",
     "@google-cloud/storage": "^1.4.0",
     "@types/chalk": "^0.4.31",
     "@types/fs-extra": "^4.0.5",
