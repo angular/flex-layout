@@ -8,6 +8,7 @@
 import {InjectionToken} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {BEFORE_APP_SERIALIZED} from '@angular/platform-server';
+import css from 'beautify';
 
 import {
   BreakPoint,
@@ -34,8 +35,7 @@ const IS_DEBUG_MODE = false;
 function generateCss(stylesheet: Map<HTMLElement, Map<string, string|number>>,
                      mediaQuery: string,
                      classMap: Map<HTMLElement, string>) {
-  let styleText = IS_DEBUG_MODE ? `
-        @media ${mediaQuery} {` : `@media ${mediaQuery}{`;
+  let styleText = `@media ${mediaQuery}{`;
   stylesheet.forEach((styles, el) => {
     let className = classMap.get(el);
     if (!className) {
@@ -43,21 +43,17 @@ function generateCss(stylesheet: Map<HTMLElement, Map<string, string|number>>,
       classMap.set(el, className);
     }
     el.classList.add(className);
-    styleText += IS_DEBUG_MODE ? `
-          .${className} {` : `.${className}{`;
+    styleText += `.${className}{`;
     styles.forEach((v, k) => {
       if (v) {
-        styleText += IS_DEBUG_MODE ? `
-              ${k}: ${v};` : `${k}:${v};`;
+        styleText += `${k}:${v};`;
       }
     });
-    styleText += IS_DEBUG_MODE ? `
-          }` : '}';
+    styleText += '}';
   });
-  styleText += IS_DEBUG_MODE ? `
-        }\n` : '}';
+  styleText += '}';
 
-  return styleText;
+  return IS_DEBUG_MODE ? css(styleText, {format: 'css'}) : styleText;
 }
 
 /**
