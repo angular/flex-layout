@@ -40,8 +40,15 @@ export class StylesheetMap {
   /**
    * Retrieve a given style for an HTML element
    */
-  getStyleForElement(el: HTMLElement, styleName: string): string|number {
+  getStyleForElement(el: HTMLElement, styleName: string): string {
     const styles = this.stylesheet.get(el);
-    return (styles && styles.get(styleName)) || '';
+    let value = '';
+    if (styles) {
+      const style = styles.get(styleName);
+      if (typeof style === 'number' || typeof style === 'string') {
+        value = style + '';
+      }
+    }
+    return value;
   }
 }
