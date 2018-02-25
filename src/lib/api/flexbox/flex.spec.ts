@@ -142,7 +142,49 @@ describe('flex directive', () => {
       }
     });
 
-    it('should add correct styles for `fxFlex="0%"` usage', () => {
+    it('should add correct styles for flex-basis unitless 0 input', () => {
+      componentWithTemplate(`<div fxFlex="1 1 0"></div>`);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 0%',
+        'box-sizing': 'border-box',
+      }, styler);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-width': '*'
+      }, styler);
+    });
+
+    it('should add correct styles for flex-basis 0px input', () => {
+      componentWithTemplate(`<div fxFlex="1 1 0px"></div>`);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 0%',
+        'box-sizing': 'border-box',
+      }, styler);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-width': '*'
+      }, styler);
+    });
+
+    it('should add correct styles for noshrink with basis', () => {
+      componentWithTemplate(`<div fxFlex="1 0 50%"></div>`);
+
+      fixture.detectChanges();
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 0 50%',
+        'box-sizing': 'border-box',
+      }, styler);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-width': '*'
+      }, styler);
+    });
+
+    it('should add correct styles for `fxFlex="2%"` usage', () => {
       componentWithTemplate(`<div fxFlex='2%'></div>`);
 
       fixture.detectChanges();
