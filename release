@@ -4,7 +4,14 @@
 
   const REPO_TITLE   = 'Angular Flex-Layout';
   const SOURCE_REPO  = 'flex-layout';         // Source repository with Demo-app and wiki docs
-  const BUILD_REPO   = `${SOURCE_REPO}-builds`;  // Build repository used for npm publish and travis CI
+  const SOURCE_WIKI  = 'flex-layout.wiki';        // Source repository with Demo-app and wiki docs
+  const DEPLOY_REPO   = `${SOURCE_REPO}-builds`;   // Build repository used for npm publish and travis CI
+
+  var ORIGIN_SOURCE  = `git@github.com:angular/${SOURCE_REPO}.git`;
+  var ORIGIN_WIKI    = `git@github.com:angular/${SOURCE_WIKI}.git`;
+  var ORIGIN_DEPLOY  = `git@github.com:angular/${DEPLOY_REPO}.git`;
+
+
   const NPM_RELEASES = 'scripts/release/releases.json';
 
   var lineWidth      = 80;
@@ -20,18 +27,17 @@
   var temp           = require('temp');
 
   const WIKI_PATH    = 'docs/documentation';
-  const WIKI_BUILD   = temp.mkdirSync(`${SOURCE_REPO}.wiki`);
+  const WIKI_LOCAL   = temp.mkdirSync(`${SOURCE_REPO}.wiki`);
 
-  var cleanupCmds    = [];
+  var cleanupCmds    = [ 'rm -rf flex-layout-builds' ];
   var pushCmds       = [ 'rm ./abort ./push' ];
   var abortCmds      = [ 'rm ./abort ./push', 'git reset --hard', 'git checkout master' ];
 
-  var origin         = `git@github.com:angular/${SOURCE_REPO}.git`;
   var newVersion     = "";
   var lastMajorVer   = releases.latest;
   var isYes          = matches.bind(this, "yes");
   var isDryRun       = isYes(prompt(`Is this a dry-run? ${"[yes/no]".cyan} `));
-  var skipOnDryRun           = isDryRun ? '## -- ' : '';
+  var skipOnDryRun   = isDryRun ? '## -- ' : '';
 
   let msg = `What would you like the old version to be? (default: ${oldVersion.cyan}) `;
   oldVersion = prompt(msg) || oldVersion;
@@ -81,9 +87,14 @@
 
   /** confirms that you will be able to perform the release before attempting */
   function validate () {
-    return true;
+    const err = (msg) => {
+      var str = 'Error: ' + msg;
+      log(str.red);
+    }
 
-    if (exec('npm whoami') !== 'angular') {
+    if ( process.argv[2] == '--force' ) {
+      return true;
+    } else if (exec('npm whoami') !== 'angular') {
       err('You must be authenticated with npm as "angular" to perform a release.');
     } else if (exec('git rev-parse --abbrev-ref HEAD') !== 'staging') {
       err('Releases must be performed from a "staging" branch.');
@@ -91,10 +102,7 @@
     } else {
       return true;
     }
-    function err (msg) {
-      var str = 'Error: ' + msg;
-      log(str.red);
-    }
+
   }
 
   /**
@@ -240,7 +248,7 @@
 
     pushCmds.push(
         `git tag v${newVersion} -f`,
-        `${skipOnDryRun} git push --tags ${origin}`
+        `${skipOnDryRun} git push --tags ${ORIGIN_SOURCE}`
     );
 
   }
@@ -259,10 +267,10 @@
 
   /** utility method for cloning github repos */
   function cloneDeployRepo () {
-    let deployPath = "./"+BUILD_REPO;
+    let deployPath = "./"+DEPLOY_REPO;
     start(`Cloning ${deployPath.cyan} from Github...`);
     exec(`rm -Rf ${deployPath}`);
-    exec(`git clone git@github.com:angular/${BUILD_REPO}.git --depth=1`);
+    exec(`git clone git@github.com:angular/${DEPLOY_REPO}.git --depth=1`);
     done();
 
     cleanupCmds.push(
@@ -289,7 +297,7 @@
     done();
 
     // Execute the next commands relative to the nightly builds repo
-    let options = {cwd: "./"+BUILD_REPO};
+    let options = {cwd: "./"+DEPLOY_REPO};
 
     start(`Copy files into ${options.cwd.cyan} repo...`);
 
@@ -303,21 +311,25 @@
 
     // These actions occur AFTER pause and the `./push`
     pushCmds.push(
-      comment(`push to angular/${BUILD_REPO} (master and tag) and publish to npm`),
-      `cd ./${BUILD_REPO}`,
+      comment(`push to angular/${DEPLOY_REPO} (master and tag) and publish to npm`),
+      `cd ./${DEPLOY_REPO}`,
       `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updatePackageVersions)}"`,
       'git add package.json',
+
       'cp -f ../CHANGELOG.md .',                  // Copy Changelog from root (if changed)
       'git add CHANGELOG.md',                     // re-add to the commit
       'git commit --amend --no-edit',
       `git tag -f v${newVersion}`,            // Tag and update nightly builds
       'git pull --rebase --strategy=ours',
-      `${skipOnDryRun} git push`,
-      `${skipOnDryRun} git push --tags`,
+
+       comment(!isDryRun ? '' : `Updating deploy repo @angular/${DEPLOY_REPO} with tag ${newVersion}`),
+      `${skipOnDryRun} git push ${ORIGIN_DEPLOY} master`,
+      `${skipOnDryRun} git push --tags ${ORIGIN_DEPLOY} master`,
+
       comment(!isDryRun ? '' : `Publishing @angular/${SOURCE_REPO} ${newVersion} to npm`),
       `${skipOnDryRun} npm publish`,
-      'cd ../',
 
+      'cd ../',
     );
 
     function stringifyFunction (method) {
@@ -363,7 +375,7 @@
         `node -e "var newVersion = '${newVersion}'; ${stringifyFunction(updateReleasesJson)}"`,
         `git add ${NPM_RELEASES}`,
         `git commit -m "chore(version): update version number in package.json to ${newVersion}"`,
-        `${skipOnDryRun} git push ${origin} master`
+        `${skipOnDryRun} git push ${ORIGIN_SOURCE} master`
     );
 
     function stringifyFunction (method) {
@@ -381,14 +393,14 @@
    * adds the documentation stored in the repo to the GitHub wiki
    */
   function addWikiDocs () {
-    exec(`git clone "https://github.com/angular/${SOURCE_REPO}.wiki" "${WIKI_BUILD}"`);
+    exec(`git clone "https://github.com/angular/${SOURCE_WIKI}" "${WIKI_LOCAL}"`);
     createWikiFiles();
     pushCmds.push(
       comment('push docs to Wiki'),
-      `cd ${WIKI_BUILD}`,
+      `cd ${WIKI_LOCAL}`,
       'git add .',
       `git commit -m "docs(wiki): update to version ${newVersion}"`,
-      `${skipOnDryRun} git push`,
+      `${skipOnDryRun} git push ${ORIGIN_WIKI} master`,
     )
   }
 
@@ -408,7 +420,7 @@
         filelist = readDocFiles(directory + file + `${path.sep}`, filelist);
       } else {
         const originalPath = directory + file;
-        const newPath = path.join(WIKI_BUILD, originalPath
+        const newPath = path.join(WIKI_LOCAL, originalPath
           .replace(WIKI_PATH + `${path.sep}`, '')
           .replace(`${path.sep}`, '-'));
 
