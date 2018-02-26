@@ -8,16 +8,15 @@
 import {InjectionToken} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {BEFORE_APP_SERIALIZED} from '@angular/platform-server';
-
 import {
   BreakPoint,
   BREAKPOINTS,
   CLASS_NAME,
   MatchMedia,
+  ServerMatchMedia,
   ServerStylesheet,
   SERVER_TOKEN,
-  ServerMatchMedia
-} from '@angular/flex-layout';
+} from '@angular/flex-layout/core';
 
 
 /**

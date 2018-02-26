@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {StyleUtils} from '../styling/style-utils';
+import {StyleUtils} from '../../core/style-utils/style-utils';
 
 declare var global: any;
 const _global = <any>(typeof window === 'undefined' ? global : window);
