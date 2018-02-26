@@ -68,7 +68,11 @@ System.config({
     '@angular/cdk/table': 'node:@angular/cdk/bundles/cdk-table.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.
-    '@angular/flex-layout': 'dist/packages/flex-layout/public-api.js'
+    '@angular/flex-layout': 'dist/packages/flex-layout/index.js',
+    '@angular/flex-layout/core': 'dist/packages/flex-layout/core/index.js',
+    '@angular/flex-layout/extended': 'dist/packages/flex-layout/extended/index.js',
+    '@angular/flex-layout/flex': 'dist/packages/flex-layout/flex/index.js',
+    '@angular/flex-layout/server': 'dist/packages/flex-layout/server/index.js',
   },
   packages: {
     // Thirdparty barrels.

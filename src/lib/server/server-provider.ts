@@ -8,16 +8,15 @@
 import {InjectionToken} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {BEFORE_APP_SERIALIZED} from '@angular/platform-server';
-
 import {
-  BreakPoint,
   BREAKPOINTS,
   CLASS_NAME,
-  MatchMedia,
-  ServerStylesheet,
   SERVER_TOKEN,
+  BreakPoint,
+  MatchMedia,
+  StylesheetMap,
   ServerMatchMedia
-} from '@angular/flex-layout';
+} from '@angular/flex-layout/core';
 
 
 /**
@@ -28,7 +27,7 @@ import {
  * @param matchMedia the service to activate/deactive breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
  */
-export function generateStaticFlexLayoutStyles(serverSheet: ServerStylesheet,
+export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
                                                matchMedia: MatchMedia,
                                                breakpoints: BreakPoint[]) {
   // Store the custom classes in the following map, that way only
@@ -60,7 +59,7 @@ export function generateStaticFlexLayoutStyles(serverSheet: ServerStylesheet,
  * Create a style tag populated with the dynamic stylings from Flex
  * components and attach it to the head of the DOM
  */
-export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: ServerStylesheet,
+export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
                                             matchMedia: MatchMedia,
                                             _document: Document,
                                             breakpoints: BreakPoint[]) {
@@ -83,7 +82,7 @@ export const SERVER_PROVIDERS = [
     provide: <InjectionToken<() => void>>BEFORE_APP_SERIALIZED,
     useFactory: FLEX_SSR_SERIALIZER_FACTORY,
     deps: [
-      ServerStylesheet,
+      StylesheetMap,
       MatchMedia,
       DOCUMENT,
       BREAKPOINTS,

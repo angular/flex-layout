@@ -25,7 +25,7 @@ export class BuildPackage {
   esm5OutputDir: string;
 
   /** Whether this package will re-export its secondary-entry points at the root module. */
-  exportsSecondaryEntryPointsAtRoot = false;
+  exportsSecondaryEntryPointsAtRoot = true;
 
   /** Whether the secondary entry-point styles should be copied to the release output. */
   copySecondaryEntryPointStylesToRoot = false;
@@ -59,21 +59,17 @@ export class BuildPackage {
 
   /** Compiles the package sources with all secondary entry points. */
   async compile() {
-    // Compile the primary entry-point.
-    await this._compileBothTargets();
-
     // Compile all secondary entry-points with the same depth in parallel, and each separate depth
     // group in sequence. This will look something like:
     // Depth 0: coercion, platform, keycodes, bidi
     // Depth 1: a11y, scrolling
     // Depth 2: overlay
-    // NOTE: this deviates from Angular Material and should not be removed
-    // * This is because the server endpoint depends on the main library being compiled
-    //   before itself
-    // * This can be removed once we switch to Bazel builds
     for (const entryPointGroup of this.secondaryEntryPointsByDepth) {
       await Promise.all(entryPointGroup.map(p => this._compileBothTargets(p)));
     }
+
+    // Compile the primary entry-point.
+    await this._compileBothTargets();
   }
 
   /** Compiles the TypeScript test source files for the package. */

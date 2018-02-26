@@ -19,7 +19,7 @@ export const BreakPointsProvider = {
  // ObservableMediaProvider  // easy subscription injectable `media$` matchMedia observable
   ]
 })
-export class MediaQueriesModule {
+export class CoreModule {
 }
 ```
 
