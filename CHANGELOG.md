@@ -1,3 +1,33 @@
+<a name="5.0.0-beta.13"></a>
+# [2.0.0-beta.13](https://github.com/angular/flex-layout/compare/v2.0.0-beta.12...5.0.0-beta.13) (2018-02-22)
+
+This **@angular/flex-layout** release provides full support for Angular 5.x
+
+> This release bumps the version for parity with Angular Material and latest builds of Angular.
+
+Angular SSR support has been fixed and is now enabled properly. Developers should see [Live Demo Docs](https://github.com/angular/flex-layout/blob/master/docs/documentation/Live-Demos.md) for details on how to build and test [locally] the demo applications. 
+
+### Features
+
+* **apps:** use Angular CLI to build demo and universal apps ([eda12c3](https://github.com/angular/flex-layout/commit/eda12c3))
+* **ssr:** enhance support for Universal and SSR with stylesheets ([cf5266a](https://github.com/angular/flex-layout/commit/cf5266a)), closes [#373](https://github.com/angular/flex-layout/issues/373) [#567](https://github.com/angular/flex-layout/issues/567)
+
+### Bug Fixes
+
+* **css:** add prefixed values before standard ones ([0c1bf4a](https://github.com/angular/flex-layout/commit/0c1bf4a))
+* **lib:** apply correct layout gaps based on flex order ([de72903](https://github.com/angular/flex-layout/commit/de72903)), closes [#608](https://github.com/angular/flex-layout/issues/608)
+* **lib:** apply correct RTL margins ([7699957](https://github.com/angular/flex-layout/commit/7699957))
+* **lib:** read correct styles during SSR and add test for layout-wrap ([71e2dae](https://github.com/angular/flex-layout/commit/71e2dae))
+* **lib:** remove private Angular 'getDom()' APIs ([#402](https://github.com/angular/flex-layout/pull/402)) ([703add02ad](https://github.com/angular/flex-layout/commit/703add02ad)), closes [#547](https://github.com/angular/flex-layout/issues/547)
+* **ssr:** add browser check for MatchMedia ([9dd03c6](https://github.com/angular/flex-layout/commit/9dd03c6)), closes [#624](https://github.com/angular/flex-layout/issues/624)
+
+### Documentation Fixes
+
+* **docs:** add Universal app changes to documentation ([1cf8a810](https://github.com/angular/flex-layout/commit/1cf8a810))
+* **docs:** add ability to submit PRs for docs ([39c78be](https://github.com/angular/flex-layout/commit/39c78be)), closes [#550](https://github.com/angular/flex-layout/issues/550) [#520](https://github.com/angular/flex-layout/issues/520)
+* **docs:** restore images within links ([d9edab8](https://github.com/angular/flex-layout/commit/d9edab8))
+
+
 <a name="2.0.0-beta.12"></a>
 # [2.0.0-beta.12](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12) (2017-12-14)
 
@@ -92,8 +122,6 @@ This release was just to fix an issue with npm `peerDependencies` not being set 
 
 * **api:** add responsive API for img elements ([#382](https://github.com/angular/flex-layout/issues/382)) ([45cfd2e](https://github.com/angular/flex-layout/commit/45cfd2e)), closes [#366](https://github.com/angular/flex-layout/issues/366) [#376](https://github.com/angular/flex-layout/issues/376)
 * **api:** add responsive API for img elements ([#384](https://github.com/angular/flex-layout/issues/384)) ([354f54f](https://github.com/angular/flex-layout/commit/354f54f)), closes [#366](https://github.com/angular/flex-layout/issues/366) [#81](https://github.com/angular/flex-layout/issues/81) [#376](https://github.com/angular/flex-layout/issues/376)
-* **api:** add responsive support for ngClass and ngStyle ([#170](https://github.com/angular/flex-layout/issues/170)) ([f57a63d](https://github.com/angular/flex-layout/commit/f57a63d))
-* **breakpoints:** support custom breakpoints and enhanced selectors ([#204](https://github.com/angular/flex-layout/issues/204)) ([ecc6e51](https://github.com/angular/flex-layout/commit/ecc6e51))
 * **flexbox:** use protected access to allow API directives to be easily extended ([#163](https://github.com/angular/flex-layout/issues/163)) ([e6bc451](https://github.com/angular/flex-layout/commit/e6bc451))
 * **fxFlex:** compute immediate parent flex-direction ([#220](https://github.com/angular/flex-layout/issues/220)) ([ba0d85d](https://github.com/angular/flex-layout/commit/ba0d85d))
 * **layout:** add wrap options support to fxLayout ([#207](https://github.com/angular/flex-layout/issues/207)) ([2340a19](https://github.com/angular/flex-layout/commit/2340a19))
