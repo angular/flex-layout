@@ -1,5 +1,5 @@
 <a name="5.0.0-beta.13"></a>
-# [2.0.0-beta.13](https://github.com/angular/flex-layout/compare/v2.0.0-beta.12...5.0.0-beta.13) (2018-02-22)
+# [5.0.0-beta.13](https://github.com/angular/flex-layout/compare/v2.0.0-beta.12...5.0.0-beta.13) (2018-02-22)
 
 This **@angular/flex-layout** release provides full support for Angular 5.x
 
