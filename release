@@ -322,14 +322,14 @@
       `git tag -f v${newVersion}`,            // Tag and update nightly builds
       'git pull --rebase --strategy=ours',
 
-       comment(!isDryRun ? '' : `Updating deploy repo @angular/${DEPLOY_REPO} with tag ${newVersion}`),
+      comment(!isDryRun ? '' : `Updating deploy repo @angular/${DEPLOY_REPO} with tag ${newVersion}`),
       `${skipOnDryRun} git push ${ORIGIN_DEPLOY} master`,
       `${skipOnDryRun} git push --tags ${ORIGIN_DEPLOY} master`,
 
       comment(!isDryRun ? '' : `Publishing @angular/${SOURCE_REPO} ${newVersion} to npm`),
       `${skipOnDryRun} npm publish`,
 
-      'cd ../',
+      'cd ../'
     );
 
     function stringifyFunction (method) {
@@ -400,7 +400,7 @@
       `cd ${WIKI_LOCAL}`,
       'git add .',
       `git commit -m "docs(wiki): update to version ${newVersion}"`,
-      `${skipOnDryRun} git push ${ORIGIN_WIKI} master`,
+      `${skipOnDryRun} git push ${ORIGIN_WIKI} master`
     )
   }
 
