@@ -329,7 +329,7 @@
       comment(!isDryRun ? '' : `Publishing @angular/${SOURCE_REPO} ${newVersion} to npm`),
       `${skipOnDryRun} npm publish`,
 
-      'cd ../',
+      'cd ../'
     );
 
     function stringifyFunction (method) {
@@ -400,7 +400,7 @@
       `cd ${WIKI_LOCAL}`,
       'git add .',
       `git commit -m "docs(wiki): update to version ${newVersion}"`,
-      `${skipOnDryRun} git push ${ORIGIN_WIKI} master`,
+      `${skipOnDryRun} git push ${ORIGIN_WIKI} master`
     )
   }
 
