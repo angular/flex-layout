@@ -44,6 +44,37 @@ Angular SSR support has been fixed and is now enabled properly. Developers shoul
 ```
 
 
+### Contributor(s)
+
+To succeed in OSS, you have to get the community involved. Most of all, the developer community needs to contribute solutions, fixes, and enhancements to the project's growth.
+
+Thank you to the contributors who helped with the v5.0.0-beta.13 release:
+
+
+<table>
+  <thead>
+  <tr>
+    <th align="center"><a href="https://github.com/CaerusKaru">
+      <img alt="Splaktar" src="https://avatars3.githubusercontent.com/u/416563?v=4&amp;s=117" width="117" style="max-width:100%;">
+      </a>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td align="center" class="annotated">
+      <a href="https://github.com/CaerusKaru">
+        <span>CaerusKaru</span>
+      </a>
+    </td>
+  </tbody>
+</table>
+
+
+Adam has worked tirelessly on the design and implementation of the Flex Layout SSR solution, an improved docs experience, bug fixes, and so much more. How does he find the time? We try not to ask...
+
+
+
 <a name="2.0.0-beta.12"></a>
 # [2.0.0-beta.12](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12) (2017-12-14)
 
