@@ -27,6 +27,22 @@ Angular SSR support has been fixed and is now enabled properly. Developers shoul
 * **docs:** add ability to submit PRs for docs ([39c78be](https://github.com/angular/flex-layout/commit/39c78be)), closes [#550](https://github.com/angular/flex-layout/issues/550) [#520](https://github.com/angular/flex-layout/issues/520)
 * **docs:** restore images within links ([d9edab8](https://github.com/angular/flex-layout/commit/d9edab8))
 
+### BREAKING CHANGES
+
+* **fxLayoutWrap:** * `[fxLayoutWrap]` was deprecated in earlier betas. fxLayoutWrap has now been removed. Developers should use `fxLayout` options.
+
+*before* 
+
+```html
+<div  fxLayout="row" fxLayoutWrap="wrap"> ... </div>
+```
+
+*current* 
+
+```html
+<div  fxLayout="row wrap"> ... </div>
+```
+
 
 <a name="2.0.0-beta.12"></a>
 # [2.0.0-beta.12](https://github.com/angular/flex-layout/compare/2.0.0-beta.11...2.0.0-beta.12) (2017-12-14)
