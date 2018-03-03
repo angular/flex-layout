@@ -3,12 +3,12 @@ import {execTask} from '../util/task_helpers';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
 
-const {outputDir, packagesDir, projectVersion} = buildConfig;
-const distDir = join(outputDir, 'releases', 'flex-layout');
-const tarName = `angular-flex-layout-${projectVersion}.tgz`;
 const genericName = 'angular-flex-layout.tgz';
+const {outputDir, packagesDir, projectVersion} = buildConfig;
+const tarName = `angular-flex-layout-${projectVersion}.tgz`;
+const distDir = join(outputDir, 'releases', 'flex-layout');
 const genericTar = join(distDir, genericName);
-const appDir = join(packagesDir, 'apps', 'universal-app');
+const universalAppSource = join(packagesDir, 'apps', 'universal-app');
 
 task('universal:serve', sequenceTask(
   'prerender',
@@ -39,52 +39,51 @@ task('prerender:bundle:rename', [], execTask(
 ));
 
 task('prerender:deps', [], execTask(
-  'npm', ['install'], {cwd: appDir}
+  'npm', ['install'], {cwd: universalAppSource}
 ));
 
 task('prerender:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: appDir}
+  'npm', ['install', genericTar], {cwd: universalAppSource}
 ));
 
 /** Task that builds the universal-app in server mode */
 task('prerender:build', execTask(
   'npm', ['run', 'build:ssr:bundle'],
-  {cwd: appDir, failOnStderr: true}
+  {cwd: universalAppSource, failOnStderr: true}
 ));
 
 task('prerender:webpack', execTask(
   'npm', ['run', 'build:server'],
-  {cwd: appDir}
+  {cwd: universalAppSource}
 ));
 
 task('prerender:run:server', execTask(
   'node', ['dist/server.js'],
-  {cwd: appDir, failOnStderr: true}
+  {cwd: universalAppSource, failOnStderr: true}
 ));
 
 task('prerender:clean', sequenceTask(
   'prerender:clear:deps',
-  'prerender:clear:dist',
-  'prerender:clear:lock'
+  'prerender:clear:dist'
 ));
 
 task('prerender:clear:deps', [], execTask(
   'rm', ['-rf', 'node_modules'], {
     failOnStderr: true,
-    cwd: appDir
+    cwd: universalAppSource
   }
 ));
 
 task('prerender:clear:lock', [], execTask(
-  'rm', ['package-lock.json'], {
-    failOnStderr: true,
-    cwd: appDir
+  'rm', ['./package-lock.json'], {
+    silent: true,
+    cwd: universalAppSource
   }
 ));
 
 task('prerender:clear:dist', [], execTask(
   'rm', ['-rf', 'dist'], {
     failOnStderr: true,
-    cwd: appDir
+    cwd: universalAppSource
   }
 ));

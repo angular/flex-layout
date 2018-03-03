@@ -31,7 +31,7 @@ task('aot:clear:mods', [], execTask(
 
 task('aot:clear:lock', [], execTask(
   'rm', ['package-lock.json'], {
-    failOnStderr: true,
+    failOnStderr: false,
     cwd: demoAppSource
   }
 ));
