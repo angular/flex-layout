@@ -27,6 +27,7 @@
     "node": ">= 5.4.1"
   },
   "dependencies": {
+    "@angular/cdk": "^5.2.0",
     "@angular/core": "~5.2.0",
     "@angular/common": "~5.2.0",
     "@angular/compiler": "~5.2.0",
@@ -40,7 +41,6 @@
   },
   "devDependencies": {
     "@angular/animations": "~5.2.0",
-    "@angular/cdk": "^5.2.0",
     "@angular/compiler-cli": "~5.2.0",
     "@angular/forms": "~5.2.0",
     "@angular/http": "~5.2.0",

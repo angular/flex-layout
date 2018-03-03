@@ -15,14 +15,29 @@ task('aot:run', sequenceTask('aot:deps', 'aot:cli', 'aot:clean'));
 task('aot:deps', [], execTask(
   'npm', ['install'], {cwd: demoAppSource}));
 
-/** Task that builds the universal-app in server mode */
 task('aot:cli', execTask(
   'ng', ['build', '--prod'],
   {cwd: demoAppSource, failOnStderr: true}
 ));
 
-task('aot:clean', [], execTask(
+task('aot:clean', sequenceTask('aot:clear:mods', 'aot:clear:lock', 'aot:clear:dist'));
+
+task('aot:clear:mods', [], execTask(
   'rm', ['-rf', 'node_modules'], {
+    failOnStderr: true,
+    cwd: demoAppSource
+  }
+));
+
+task('aot:clear:lock', [], execTask(
+  'rm', ['package-lock.json'], {
+    failOnStderr: true,
+    cwd: demoAppSource
+  }
+));
+
+task('aot:clear:dist', [], execTask(
+  'rm', ['-rf', 'dist'], {
     failOnStderr: true,
     cwd: demoAppSource
   }
