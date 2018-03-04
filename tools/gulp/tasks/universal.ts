@@ -1,4 +1,5 @@
 import {task} from 'gulp';
+import {existsSync} from 'fs';
 import {execTask} from '../util/task_helpers';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
@@ -30,20 +31,26 @@ task('prerender:pre', sequenceTask(
   'prerender:add:tar')
 );
 
+task('prerender:deps', [], execTask(
+  'npm', ['install'], {cwd: universalAppSource}
+));
+
+/**
+ * The following tasks bundle Flex Layout into a tar file that can be installed
+ * directly instead of linked to via sym link. When linking, there are some issues
+ * that npm introduces, like Angular functionality impairment. This also has the
+ * benefit of better simulating the install process for Flex Layout in a CLI app
+ */
+task('prerender:add:tar', [], execTask(
+  'npm', ['install', genericTar], {cwd: universalAppSource}
+));
+
 task('prerender:bundle', [], execTask(
   'npm', ['pack'], {cwd: distDir}
 ));
 
 task('prerender:bundle:rename', [], execTask(
   'mv', [tarName, genericName], {cwd: distDir}
-));
-
-task('prerender:deps', [], execTask(
-  'npm', ['install'], {cwd: universalAppSource}
-));
-
-task('prerender:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: universalAppSource}
 ));
 
 /** Task that builds the universal-app in server mode */
@@ -74,12 +81,15 @@ task('prerender:clear:deps', [], execTask(
   }
 ));
 
-task('prerender:clear:lock', [], execTask(
-  'rm', ['./package-lock.json'], {
-    silent: true,
-    cwd: universalAppSource
-  }
-));
+task('prerender:clear:lock', [], () => existsSync(join(universalAppSource, 'package-lock.json')) ?
+  execTask(
+    'rm', ['package-lock.json'], {
+      failOnStderr: false,
+      silent: true,
+      cwd: universalAppSource
+    }
+  ) : () => {}
+);
 
 task('prerender:clear:dist', [], execTask(
   'rm', ['-rf', 'dist'], {

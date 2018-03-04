@@ -8,6 +8,7 @@
 
 export * from './browser-provider';
 export * from './module';
+export * from './media-queries-module';
 export * from './media-change';
 export * from './renderer-adapter';
 export * from './stylesheet-map';

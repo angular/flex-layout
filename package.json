@@ -28,10 +28,10 @@
   },
   "dependencies": {
     "@angular/cdk": "^5.2.0",
-    "@angular/core": "~5.2.0",
-    "@angular/common": "~5.2.0",
-    "@angular/compiler": "~5.2.0",
-    "@angular/platform-browser": "~5.2.0",
+    "@angular/core": "~5.2.7",
+    "@angular/common": "~5.2.7",
+    "@angular/compiler": "~5.2.7",
+    "@angular/platform-browser": "~5.2.7",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.5",
     "systemjs": "0.19.43",
@@ -40,14 +40,14 @@
     "zone.js": "^0.8.18"
   },
   "devDependencies": {
-    "@angular/animations": "~5.2.0",
-    "@angular/compiler-cli": "~5.2.0",
-    "@angular/forms": "~5.2.0",
-    "@angular/http": "~5.2.0",
+    "@angular/animations": "~5.2.7",
+    "@angular/compiler-cli": "~5.2.7",
+    "@angular/forms": "~5.2.7",
+    "@angular/http": "~5.2.7",
     "@angular/material": "^5.2.0",
-    "@angular/platform-browser-dynamic": "~5.2.0",
-    "@angular/platform-server": "~5.2.0",
-    "@angular/router": "~5.2.0",
+    "@angular/platform-browser-dynamic": "~5.2.7",
+    "@angular/platform-server": "~5.2.7",
+    "@angular/router": "~5.2.7",
     "@google-cloud/storage": "^1.4.0",
     "@types/chalk": "^0.4.31",
     "@types/fs-extra": "^4.0.5",
@@ -123,7 +123,7 @@
     "tsconfig-paths": "^2.3.0",
     "tslint": "^5.8.0",
     "tsutils": "^2.13.0",
-    "typescript": "^2.6.2",
+    "typescript": "~2.6.2",
     "uglify-js": "^2.8.14"
   }
 }
