@@ -17,7 +17,13 @@ import {
   SkipSelf,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseFxDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleDefinition,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {LayoutDirective} from '../layout/layout';
@@ -156,7 +162,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
     this._applyStyleToElement(this._buildCSS(value));
   }
 
-  protected _buildCSS(offset): { [x: string]: string } {
+  protected _buildCSS(offset): StyleDefinition {
     let isPercent = String(offset).indexOf('%') > -1;
     let isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(offset)) {
