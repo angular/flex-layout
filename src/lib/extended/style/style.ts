@@ -27,7 +27,6 @@ import {
   BaseFxDirectiveAdapter,
   MediaChange,
   MediaMonitor,
-  RendererAdapter,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
@@ -146,8 +145,7 @@ export class StyleDirective extends BaseFxDirective
         if (!this._ngStyleInstance) {
           // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
           // defined on the same host element; since the responsive variations may be defined...
-          let adapter = new RendererAdapter(this._renderer);
-          this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, <any> adapter);
+          this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
         }
 
         this._buildCacheInterceptor();
