@@ -5,14 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
+import {APP_ROOT_SCOPE, Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {StylesheetMap} from '../stylesheet-map';
 import {SERVER_TOKEN} from '../server-token';
 
-@Injectable()
+@Injectable({scope: APP_ROOT_SCOPE})
 export class StyleUtils {
 
   constructor(@Optional() private _serverStylesheet: StylesheetMap,

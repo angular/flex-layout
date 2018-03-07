@@ -12,10 +12,7 @@ import {BreakPoint} from '../break-point';
 import {DEFAULT_BREAKPOINTS} from './break-points';
 import {ORIENTATION_BREAKPOINTS} from './orientation-break-points';
 import {BREAKPOINTS} from '../break-points-token';
-import {
-  DEFAULT_BREAKPOINTS_PROVIDER,
-  CUSTOM_BREAKPOINTS_PROVIDER_FACTORY
-} from '../break-points-provider';
+import {CUSTOM_BREAKPOINTS_PROVIDER_FACTORY} from '../break-points-provider';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
@@ -26,12 +23,10 @@ describe('break-point-provider', () => {
   describe('with default breakpoints only', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
-      TestBed.configureTestingModule({
-        providers: [DEFAULT_BREAKPOINTS_PROVIDER]
-      });
+      TestBed.configureTestingModule({});
     });
-    beforeEach(async(inject([BREAKPOINTS], (_) => {
-      breakPoints = _;
+    beforeEach(async(inject([BREAKPOINTS], (_breakPoints) => {
+      breakPoints = _breakPoints;
     })));
 
     it('has the only standard default breakpoints without internal custom breakpoints', () => {

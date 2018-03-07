@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {APP_ROOT_SCOPE, Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
@@ -20,7 +20,7 @@ import {MediaChange} from '../media-change';
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
-@Injectable()
+@Injectable({scope: APP_ROOT_SCOPE})
 export class MatchMedia {
   protected _registry: Map<string, MediaQueryList>;
   protected _source: BehaviorSubject<MediaChange>;

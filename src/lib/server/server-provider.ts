@@ -153,7 +153,7 @@ function formatSegment(css: string, asPrefix: boolean = true): string {
  * If not found, generate global className and set
  * association.
  */
-function  getClassName(stylesheet, classMap) {
+function getClassName(stylesheet, classMap) {
   let className = classMap.get(stylesheet);
    if (!className) {
      className = `${CLASS_NAME}${nextId++}`;

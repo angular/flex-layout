@@ -55,10 +55,13 @@ export function buildMergedBreakPoints(_custom?: BreakPoint[],
 
 /**
  *  Ensure that only a single global BreakPoint list is instantiated...
+ *  @deprecated
+ *  @deletion-target 5.0.0-beta.15
  */
 export function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
   return validateSuffixes(DEFAULT_BREAKPOINTS);
 }
+
 /**
  * Default Provider that does not support external customization nor provide
  * the extra extended breakpoints:   "handset", "tablet", and "web"
@@ -67,11 +70,14 @@ export function DEFAULT_BREAKPOINTS_PROVIDER_FACTORY() {
  *        custom breakpoints matching existing breakpoints will override the properties
  *        of the existing (and not be added as an extra breakpoint entry).
  *        [xs, gt-xs, sm, gt-sm, md, gt-md, lg, gt-lg, xl]
+ * @deprecated
+ * @deletion-target 5.0.0-beta.15
  */
 export const DEFAULT_BREAKPOINTS_PROVIDER = { // tslint:disable-line:variable-name
   provide: BREAKPOINTS,
   useFactory: DEFAULT_BREAKPOINTS_PROVIDER_FACTORY
 };
+
 /**
  * Use with FlexLayoutModule.CUSTOM_BREAKPOINTS_PROVIDER_FACTORY!
  */

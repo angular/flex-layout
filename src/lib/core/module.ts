@@ -7,12 +7,7 @@
  */
 import {NgModule} from '@angular/core';
 
-import {MatchMedia} from './match-media/match-media';
-import {MediaMonitor} from './media-monitor/media-monitor';
-import {BreakPointRegistry} from './breakpoints/break-point-registry';
-
 import {OBSERVABLE_MEDIA_PROVIDER} from './observable-media/observable-media-provider';
-import {DEFAULT_BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider';
 
 /**
  * *****************************************************************
@@ -21,13 +16,8 @@ import {DEFAULT_BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider'
  */
 
 @NgModule({
-  providers: [
-    DEFAULT_BREAKPOINTS_PROVIDER,  // Supports developer overrides of list of known breakpoints
-    BreakPointRegistry,      // Registry of known/used BreakPoint(s)
-    MatchMedia,              // Low-level service to publish observables w/ window.matchMedia()
-    MediaMonitor,            // MediaQuery monitor service observes all known breakpoints
-    OBSERVABLE_MEDIA_PROVIDER  // easy subscription injectable `media$` matchMedia observable
-  ]
+  // easy subscription injectable `media$` matchMedia observable
+  providers: [OBSERVABLE_MEDIA_PROVIDER]
 })
 export class CoreModule {
 }
