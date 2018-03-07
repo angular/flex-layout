@@ -17,7 +17,7 @@ export function removeStyles(_document: Document, platformId: Object) {
   return () => {
     if (isPlatformBrowser(platformId)) {
       const elements = Array.from(_document.querySelectorAll(`[class*=${CLASS_NAME}]`));
-      const classRegex = new RegExp(/\bflex-layout-.+?\b/, 'g');
+      const classRegex = /\bflex-layout-.+?\b/g;
       elements.forEach(el => {
         el.classList.contains(`${CLASS_NAME}ssr`) && el.parentNode ?
           el.parentNode.removeChild(el) : el.className.replace(classRegex, '');
