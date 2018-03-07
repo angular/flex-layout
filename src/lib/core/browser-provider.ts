@@ -21,8 +21,7 @@ export function removeStyles(_document: Document, platformId: Object) {
       // RegExp constructor should only be used if passing a variable to the constructor.
       // When using static regular expression it is more performant to use reg exp literal.
       // This is also needed to provide Safari 9 compatibility, please see
-      // https://stackoverflow.com/questions/37919802/regex-created-with-constructor-not-
-      // working-with-safari for more discussion.
+      // https://stackoverflow.com/questions/37919802 for more discussion.
       const classRegex = /\bflex-layout-.+?\b/g;
       elements.forEach(el => {
         el.classList.contains(`${CLASS_NAME}ssr`) && el.parentNode ?
