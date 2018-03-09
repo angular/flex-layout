@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable} from '@angular/core';
+import {APP_ROOT_SCOPE, Injectable} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable, Subscribable} from 'rxjs/Observable';
 import {map} from 'rxjs/operators/map';
@@ -73,7 +73,7 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  *    }
  *  }
  */
-@Injectable()
+@Injectable({scope: APP_ROOT_SCOPE})
 export class MediaService implements ObservableMedia {
   /**
    * Should we announce gt-<xxx> breakpoint activations ?

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable, Inject} from '@angular/core';
+import {Injectable, Inject, APP_ROOT_SCOPE} from '@angular/core';
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from './break-points-token';
@@ -16,7 +16,7 @@ import {BREAKPOINTS} from './break-points-token';
  * This is published as a provider and may be overriden from custom, application-specific ranges
  *
  */
-@Injectable()
+@Injectable({scope: APP_ROOT_SCOPE})
 export class BreakPointRegistry {
 
   constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[]) {

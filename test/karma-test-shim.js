@@ -66,6 +66,7 @@ System.config({
     '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
     '@angular/cdk/stepper': 'node:@angular/cdk/bundles/cdk-stepper.umd.js',
     '@angular/cdk/table': 'node:@angular/cdk/bundles/cdk-table.umd.js',
+    '@angular/cdk/tree': 'node:@angular/cdk/bundles/cdk-tree.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.
     '@angular/flex-layout': 'dist/packages/flex-layout/index.js',

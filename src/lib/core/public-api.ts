@@ -16,7 +16,7 @@ export * from './server-token';
 export * from './base/index';
 export * from './breakpoints/index';
 export * from './match-media/index';
-export * from './media-monitor/index';
+export * from './media-monitor/media-monitor';
 export * from './observable-media/index';
 
 export * from './responsive-activation/responsive-activation';

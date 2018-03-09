@@ -9,10 +9,9 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   MockMatchMedia,
+  MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -43,9 +42,7 @@ describe('layout directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutComponent],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StyleUtils,
+        MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });

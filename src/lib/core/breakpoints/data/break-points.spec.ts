@@ -13,7 +13,7 @@ import {BREAKPOINTS} from '../break-points-token';
 import {DEFAULT_BREAKPOINTS} from './break-points';
 
 describe('break-point-provider', () => {
-  let breakPoints: BreakPoint[ ];
+  let breakPoints: BreakPoint[];
 
   describe('with default configuration', () => {
     beforeEach(() => {

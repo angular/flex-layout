@@ -9,10 +9,9 @@ import {Component, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   MockMatchMedia,
+  MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -76,8 +75,7 @@ describe('img-src directive', () => {
       imports: [CommonModule, FlexLayoutModule],
       declarations: [TestSrcComponent],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
+        MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });

@@ -7,9 +7,7 @@
  */
 import {TestBed, inject} from '@angular/core/testing';
 
-import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
-import {BreakPointRegistry} from '../breakpoints/break-point-registry';
-import {MockMatchMedia} from '../match-media/mock/mock-match-media';
+import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaMonitor} from '../media-monitor/media-monitor';
 import {ResponsiveActivation, KeyOptions} from './responsive-activation';
@@ -36,12 +34,7 @@ describe('responsive-activation', () => {
   beforeEach(() => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      providers: [
-        MediaMonitor,
-        BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
-        {provide: MatchMedia, useClass: MockMatchMedia}
-      ]
+      providers: [MockMatchMediaProvider]
     });
   });
 

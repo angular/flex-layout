@@ -9,14 +9,7 @@ import {Component, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
-  MatchMedia,
-  MockMatchMedia,
-  SERVER_TOKEN,
-  StyleUtils,
-} from '@angular/flex-layout/core';
+import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
@@ -45,10 +38,6 @@ describe('layout-gap directive', () => {
       declarations: [TestLayoutGapComponent],
       providers: [
         {provide: DIR_DOCUMENT, useValue: fakeDocument},
-        BreakPointRegistry,
-        DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StyleUtils,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });

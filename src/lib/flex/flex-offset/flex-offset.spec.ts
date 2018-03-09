@@ -10,14 +10,7 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {Platform, PlatformModule} from '@angular/cdk/platform';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
-  MatchMedia,
-  MockMatchMedia,
-  SERVER_TOKEN,
-  StyleUtils,
-} from '@angular/flex-layout/core';
+import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
@@ -54,10 +47,7 @@ describe('flex-offset directive', () => {
       imports: [CommonModule, FlexLayoutModule, PlatformModule],
       declarations: [TestFlexComponent],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
         {provide: DIR_DOCUMENT, useValue: fakeDocument},
-        StyleUtils,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });
