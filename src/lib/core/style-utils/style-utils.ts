@@ -70,7 +70,7 @@ export class StyleUtils {
    * Find the DOM element's inline style value (if any)
    */
   lookupInlineStyle(element: HTMLElement, styleName: string): string {
-    return element.style[styleName] || element.style.getPropertyValue(styleName);
+    return element.style[styleName] || element.style.getPropertyValue(styleName) || '';
   }
 
   /**
@@ -88,7 +88,7 @@ export class StyleUtils {
           }
         } else {
           if (this._serverModuleLoaded) {
-            value = `${this._serverStylesheet.getStyleForElement(element, styleName)}`;
+            value = this._serverStylesheet.getStyleForElement(element, styleName);
           }
         }
       }
