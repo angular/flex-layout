@@ -35,8 +35,8 @@ env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
   - SAUCE_USERNAME=angular-ci
-  - BROWSER_STACK_USERNAME=angularteam1
-  - BROWSER_STACK_ACCESS_KEY=BWCd4SynLzdDcv8xtzsB
+  - BROWSER_STACK_USERNAME=adamplumer1
+  - BROWSER_STACK_ACCESS_KEY=WgLjxoB2zQ3tqmsznKnz
   - BROWSER_PROVIDER_READY_FILE=/tmp/flex-layout-build/readyfile
   - BROWSER_PROVIDER_ERROR_FILE=/tmp/flex-layout-build/errorfile
 
