@@ -5,8 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Observable} from 'rxjs/Observable';
-
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {MediaChange} from '../media-change';
@@ -15,8 +13,7 @@ import {MockMatchMedia} from './mock/mock-match-media';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from './match-media';
-import {ObservableMedia} from '../observable-media/observable-media';
-import {OBSERVABLE_MEDIA_PROVIDER} from '../observable-media/observable-media-provider';
+import {MediaObserver} from '../media-observer/media-observer';
 
 describe('match-media', () => {
   let matchMedia: MockMatchMedia;
@@ -27,7 +24,7 @@ describe('match-media', () => {
       providers: [
         BreakPointRegistry,           // Registry of known/used BreakPoint(s)
         DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
       ]
     });
   });
@@ -124,7 +121,7 @@ describe('match-media', () => {
 describe('match-media-observable', () => {
   let breakPoints: BreakPointRegistry;
   let matchMedia: MockMatchMedia;
-  let mediaQuery$: Observable<MediaChange>;
+  let mediaQuery$: MediaObserver;
 
   beforeEach(() => {
     // Configure testbed to prepare services
@@ -132,15 +129,15 @@ describe('match-media-observable', () => {
       providers: [
         DEFAULT_BREAKPOINTS_PROVIDER,  // Supports developer overrides of list of known breakpoints
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
-        OBSERVABLE_MEDIA_PROVIDER,  // injectable `media$` matchMedia observable
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        {provide: MatchMedia, useClass: MockMatchMedia},
+        MediaObserver,
       ]
     });
   });
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
-      [ObservableMedia, MatchMedia, BreakPointRegistry],
+      [MediaObserver, MatchMedia, BreakPointRegistry],
       (_media$, _matchMedia, _breakPoints) => {
         matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
         breakPoints = _breakPoints;
@@ -159,7 +156,7 @@ describe('match-media-observable', () => {
     let current: MediaChange;
     let bp = breakPoints.findByAlias('md') !;
     matchMedia.activate(bp.mediaQuery);
-    let subscription = mediaQuery$.subscribe((change: MediaChange) => {
+    let subscription = mediaQuery$.media$.subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -172,7 +169,7 @@ describe('match-media-observable', () => {
 
   it('can observe the initial, default activation for mediaQuery == "all". ', () => {
     let current: MediaChange;
-    let subscription = mediaQuery$.subscribe((change: MediaChange) => {
+    let subscription = mediaQuery$.media$.subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -186,7 +183,7 @@ describe('match-media-observable', () => {
   it('can observe custom mediaQuery ranges', () => {
     let current: MediaChange;
     let customQuery = 'screen and (min-width: 610px) and (max-width: 620px';
-    let subscription = mediaQuery$.subscribe((change: MediaChange) => {
+    let subscription = mediaQuery$.media$.subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -202,7 +199,7 @@ describe('match-media-observable', () => {
   it('can observe registered breakpoint activations', () => {
     let current: MediaChange;
     let bp = breakPoints.findByAlias('md') !;
-    let subscription = mediaQuery$.subscribe((change: MediaChange) => {
+    let subscription = mediaQuery$.media$.subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -217,13 +214,13 @@ describe('match-media-observable', () => {
   });
 
   /**
-   * Only the ObservableMedia ignores de-activations;
+   * Only the MediaObserver ignores de-activations;
    * MediaMonitor and MatchMedia report both activations and de-activations!
    */
   it('ignores mediaQuery de-activations', () => {
     let activationCount = 0;
     let deactivationCount = 0;
-    let subscription = mediaQuery$.subscribe((change: MediaChange) => {
+    let subscription = mediaQuery$.media$.subscribe((change: MediaChange) => {
       if (change.matches) {
         ++activationCount;
       } else {

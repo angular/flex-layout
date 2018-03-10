@@ -18,6 +18,8 @@ import {mergeAlias} from '../add-alias';
 import {BreakPoint} from '../breakpoints/break-point';
 
 /**
+ * @deprecated use MediaObserver
+ * @deletion-target 5.0.0-beta.16
  * Base class for MediaService and pseudo-token for
  */
 export abstract class ObservableMedia implements Subscribable<MediaChange> {
@@ -31,6 +33,8 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
 }
 
 /**
+ * @deprecated use MediaObserver
+ * @deletion-target 5.0.0-beta.16
  * Class internalizes a MatchMedia service and exposes an Subscribable and Observable interface.
 
  * This an Observable with that exposes a feature to subscribe to mediaQuery

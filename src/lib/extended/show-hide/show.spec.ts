@@ -13,7 +13,7 @@ import {
   DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   MockMatchMedia,
-  ObservableMedia,
+  MediaObserver,
   StylesheetMap,
   SERVER_TOKEN,
   StyleUtils,
@@ -215,7 +215,7 @@ class TestShowComponent implements OnInit {
   isHidden = false;
   menuOpen = true;
 
-  constructor(public media: ObservableMedia) {
+  constructor(public media: MediaObserver) {
   }
 
   toggleMenu() {
