@@ -3,9 +3,9 @@ Developers can easily override the default breakpoints used within Flex-Layout.
 ### Default Breakpoints
 
 The default breakpoints are defined in 
-[break-points.ts](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/data/break-points.ts#L14) 
+[break-points.ts](https://github.com/angular/flex-layout/blob/master/src/lib/core/breakpoints/data/break-points.ts#L14) 
 and are registered as a provider using the 
-[`BREAKPOINTS`](https://github.com/angular/flex-layout/blob/master/src/lib/media-query/breakpoints/break-points-token.ts#L16)
+[`BREAKPOINTS`](https://github.com/angular/flex-layout/blob/master/src/lib/core/breakpoints/break-points-token.ts#L16)
 InjectionToken.
 
 ```typescript
@@ -77,7 +77,7 @@ Developers have, however, **one** (1) significant constraint to the customizatio
 Developers should note that each directive selectors are **hard-coded** to use specific **alias**es. 
 
 Consider, for example, the 
-**[`LayoutDirective`](https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/layout.ts#L34-L45)**:
+**[`LayoutDirective`](https://github.com/angular/flex-layout/blob/master/src/lib/flex/layout/layout.ts#L30-L36)**:
 
 ```typescript
 import {Directive} from '@angular/core';
@@ -127,7 +127,7 @@ To support the directive selectors, the custom breakpoints list MUST contain the
 #### 2. Extra Aliases
 
 If project features have requirements to support additional aliases/mediaQueries for orientation 
-(e.g. landascape, portraint), or specific devices (Kindle tablets, iPads, iPhones, Apple Watch, etc.)... then 
+(e.g. landscape, portrait), or specific devices (Kindle tablets, iPads, iPhones, Apple Watch, etc.)... then 
 developers may need to either:
 
 * modify the `mediaQuery` ranges (as shown above), or
