@@ -10,6 +10,7 @@ import './tasks/clean';
 import './tasks/ci';
 import './tasks/default';
 import './tasks/development';
+import './tasks/hello-world';
 import './tasks/lint';
 import './tasks/publish';             // publish release to npm
 import './tasks/unit-test';

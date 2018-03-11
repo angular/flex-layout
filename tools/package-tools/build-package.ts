@@ -25,7 +25,7 @@ export class BuildPackage {
   esm5OutputDir: string;
 
   /** Whether this package will re-export its secondary-entry points at the root module. */
-  exportsSecondaryEntryPointsAtRoot = true;
+  exportsSecondaryEntryPointsAtRoot = false;
 
   /** Whether the secondary entry-point styles should be copied to the release output. */
   copySecondaryEntryPointStylesToRoot = false;

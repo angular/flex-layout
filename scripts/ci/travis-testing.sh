@@ -21,7 +21,7 @@ source scripts/ci/sources/tunnel.sh
 # Should not apply to master builds.
 if [ "$TRAVIS_PULL_REQUEST" = "true" ]; then
   fileDiff=$(git diff --name-only $TRAVIS_BRANCH...HEAD)
-  
+
   if [[ ${fileDiff} =~ ^(.*\.md\s*)*$ ]]; then
     echo "Skipping tests because only markdown files changed."
     exit 0
@@ -35,6 +35,8 @@ if is_lint; then
   $(npm bin)/gulp ci:lint
 elif is_aot; then
   $(npm bin)/gulp ci:aot
+elif is_hw; then
+  $(npm bin)/gulp ci:hw
 elif is_unit; then
   $(npm bin)/gulp ci:test
 elif is_prerender; then
