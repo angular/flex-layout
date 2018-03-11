@@ -32,3 +32,7 @@ is_prerender() {
 is_ssr() {
   [[ "$MODE" = ssr ]]
 }
+
+is_hw() {
+  [[ "$MODE" = hello-world ]]
+}
