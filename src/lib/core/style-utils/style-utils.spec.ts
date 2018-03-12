@@ -12,7 +12,7 @@ import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
 import {StyleUtils} from './style-utils';
-import {StylesheetMap} from '../stylesheet-map';
+import {StylesheetMap} from '../stylesheet-map/stylesheet-map';
 
 describe('styler', () => {
   let styler: StyleUtils;
