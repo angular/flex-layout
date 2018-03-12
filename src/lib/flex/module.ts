@@ -7,13 +7,7 @@
  */
 import {NgModule} from '@angular/core';
 import {BidiModule} from '@angular/cdk/bidi';
-import {
-  BROWSER_PROVIDER,
-  CoreModule,
-  STYLESHEET_MAP_PROVIDER,
-  StylesheetMap,
-  StyleUtils
-} from '@angular/flex-layout/core';
+import {CoreModule} from '@angular/flex-layout/core';
 
 import {LayoutDirective} from './layout/layout';
 import {LayoutGapDirective} from './layout-gap/layout-gap';
@@ -45,13 +39,7 @@ const ALL_DIRECTIVES = [
 @NgModule({
   imports: [CoreModule, BidiModule],
   declarations: [...ALL_DIRECTIVES],
-  exports: [...ALL_DIRECTIVES],
-  providers: [
-    StylesheetMap,
-    StyleUtils,
-    BROWSER_PROVIDER,
-    STYLESHEET_MAP_PROVIDER,
-  ]
+  exports: [...ALL_DIRECTIVES]
 })
 export class FlexModule {
 }

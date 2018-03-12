@@ -24,14 +24,12 @@ task('devapp:deps', execTask(
   'npm', ['install'], {cwd: appDir}
 ));
 
-task('devapp:pre', sequenceTask('clean', 'flex-layout:build-release', 'devapp:deps'));
-
-task(':serve:devapp', ['devapp:pre'], execTask(
+task(':serve:devapp', ['aot:pre'], execTask(
   'ng', ['serve'],
   {cwd: appDir, failOnStderr: true}
 ));
 
-task('build:devapp', ['devapp:pre'], execTask(
+task('build:devapp', ['aot:pre'], execTask(
   'ng', ['build', '--prod'],
   {cwd: appDir, failOnStderr: true}
 ));

@@ -13,6 +13,9 @@ import {BreakPointRegistry} from './breakpoints/break-point-registry';
 import {OBSERVABLE_MEDIA_PROVIDER} from './observable-media/observable-media-provider';
 import {DEFAULT_BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider';
 import {MATCH_MEDIA_PROVIDER} from './match-media/match-media-provider';
+import {BROWSER_PROVIDER} from './browser-provider';
+import {StyleUtils} from './style-utils/style-utils';
+import {STYLESHEET_MAP_PROVIDER} from './stylesheet-map/stylesheet-map-provider';
 
 /**
  * *****************************************************************
@@ -26,7 +29,10 @@ import {MATCH_MEDIA_PROVIDER} from './match-media/match-media-provider';
     BreakPointRegistry,      // Registry of known/used BreakPoint(s)
     MATCH_MEDIA_PROVIDER,    // Low-level service to publish observables w/ window.matchMedia()
     MediaMonitor,            // MediaQuery monitor service observes all known breakpoints
-    OBSERVABLE_MEDIA_PROVIDER  // easy subscription injectable `media$` matchMedia observable
+    OBSERVABLE_MEDIA_PROVIDER,  // easy subscription injectable `media$` matchMedia observable]
+    STYLESHEET_MAP_PROVIDER,
+    StyleUtils,
+    BROWSER_PROVIDER,
   ]
 })
 export class CoreModule {

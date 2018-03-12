@@ -25,12 +25,12 @@ export function MATCH_MEDIA_PROVIDER_FACTORY(parentMedia: MatchMedia,
  * Export provider that uses a global service factory (above)
  */
 export const MATCH_MEDIA_PROVIDER = {
-  provide : MatchMedia,
-  deps : [
-    [ new Optional(), new SkipSelf(), MatchMedia ],
+  provide: MatchMedia,
+  deps: [
+    [new Optional(), new SkipSelf(), MatchMedia],
     NgZone,
     <InjectionToken<Object>>PLATFORM_ID,
     <InjectionToken<Document>>DOCUMENT,
   ],
-  useFactory : MATCH_MEDIA_PROVIDER_FACTORY
+  useFactory: MATCH_MEDIA_PROVIDER_FACTORY
 };

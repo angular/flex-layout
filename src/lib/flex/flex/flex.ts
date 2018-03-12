@@ -200,7 +200,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     };
     switch (basis || '') {
       case '':
-        basis = '0.000000001px';
+        basis = MIN_FLEX;
         break;
       case 'initial':   // default
       case 'nogrow':
@@ -268,7 +268,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
 
     // Fix for issues 277 and 534
     // TODO(CaerusKaru): convert this to just width/height
-    if (basis !== '0%') {
+    if (basis !== '0%' && basis !== MIN_FLEX) {
       css[min] = isFixed || (isPx && grow) ? basis : null;
       css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
     }
@@ -291,3 +291,5 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     return extendObject(css, {'box-sizing': 'border-box'});
   }
 }
+
+const MIN_FLEX = '0.000000001px';
