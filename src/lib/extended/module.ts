@@ -9,6 +9,7 @@ import {NgModule} from '@angular/core';
 import {
   BROWSER_PROVIDER,
   CoreModule,
+  STYLESHEET_MAP_PROVIDER,
   StylesheetMap,
   StyleUtils
 } from '@angular/flex-layout/core';
@@ -40,6 +41,7 @@ const ALL_DIRECTIVES = [
     StylesheetMap,
     StyleUtils,
     BROWSER_PROVIDER,
+    STYLESHEET_MAP_PROVIDER,
   ]
 })
 export class ExtendedModule {

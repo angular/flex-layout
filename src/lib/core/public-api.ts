@@ -10,7 +10,7 @@ export * from './browser-provider';
 export * from './module';
 export * from './media-queries-module';
 export * from './media-change';
-export * from './stylesheet-map';
+export * from './stylesheet-map/index';
 export * from './server-token';
 
 export * from './base/index';
