@@ -14,7 +14,7 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 
 
 /**
@@ -28,7 +28,7 @@ import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/f
   [fxFlexOrder.lt-sm], [fxFlexOrder.lt-md], [fxFlexOrder.lt-lg], [fxFlexOrder.lt-xl],
   [fxFlexOrder.gt-xs], [fxFlexOrder.gt-sm], [fxFlexOrder.gt-md], [fxFlexOrder.gt-lg]
 `})
-export class FlexOrderDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class FlexOrderDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
   @Input('fxFlexOrder')       set order(val)     { this._cacheInput('order', val); }

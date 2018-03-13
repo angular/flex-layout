@@ -36,6 +36,7 @@ export const rollupGlobals = {
   '@angular/common/http/testing': 'ng.common.http.testing',
   '@angular/material/button': 'ng.material.button',
   '@angular/cdk/bidi': 'ng.cdk.bidi',
+  '@angular/cdk/coercion': 'ng.cdk.coercion',
   '@angular/cdk/platform': 'ng.cdk.platform',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.

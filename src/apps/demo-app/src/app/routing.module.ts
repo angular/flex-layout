@@ -4,6 +4,7 @@ import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 const DEMO_APP_ROUTES: Routes = [
   {path: '', redirectTo: 'docs', pathMatch: 'full'},
+  {path: 'grid', loadChildren: './grid/grid.module#DocsGridModule'},
   {path: 'docs', loadChildren: './layout/layout.module#DocsLayoutModule'},
   {path: 'responsive', loadChildren: './responsive/responsive.module#DocsResponsiveModule'},
   {path: 'issues', loadChildren: './github-issues/github-issues.module#DocsGithubIssuesModule'},

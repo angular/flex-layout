@@ -16,7 +16,7 @@ import {
   SimpleChanges,
   Self,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
 
 import {extendObject} from '../../utils/object-extend';
@@ -38,7 +38,7 @@ import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
   [fxLayoutAlign.lt-sm], [fxLayoutAlign.lt-md], [fxLayoutAlign.lt-lg], [fxLayoutAlign.lt-xl],
   [fxLayoutAlign.gt-xs], [fxLayoutAlign.gt-sm], [fxLayoutAlign.gt-md], [fxLayoutAlign.gt-lg]
 `})
-export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class LayoutAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;

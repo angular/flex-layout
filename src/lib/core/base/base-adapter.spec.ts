@@ -6,15 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ElementRef} from '@angular/core';
-import {BaseFxDirectiveAdapter} from './base-adapter';
+import {BaseDirectiveAdapter} from './base-adapter';
 import {expect} from '../../utils/testing/custom-matchers';
 import {MediaMonitor} from '../media-monitor/media-monitor';
 import {StyleUtils} from '../style-utils/style-utils';
 
-describe('BaseFxDirectiveAdapter class', () => {
+describe('BaseDirectiveAdapter class', () => {
   let component;
   beforeEach(() => {
-    component = new BaseFxDirectiveAdapter('', {} as MediaMonitor, {} as ElementRef, {} as StyleUtils); // tslint:disable-line:max-line-length
+    component = new BaseDirectiveAdapter('', {} as MediaMonitor, {} as ElementRef, {} as StyleUtils); // tslint:disable-line:max-line-length
   });
   describe('cacheInput', () => {
     it('should call _cacheInputArray when source is an array', () => {

@@ -14,7 +14,7 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 import {Observable, ReplaySubject} from 'rxjs';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
@@ -37,7 +37,7 @@ export type Layout = {
   [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],
   [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]
 `})
-export class LayoutDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class LayoutDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Create Observable for nested/child 'flex' directives. This allows

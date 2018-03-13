@@ -14,7 +14,7 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 
 
 /**
@@ -30,7 +30,7 @@ import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/f
   [fxFlexAlign.gt-xs], [fxFlexAlign.gt-sm], [fxFlexAlign.gt-md], [fxFlexAlign.gt-lg]
 `
 })
-export class FlexAlignDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class FlexAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
   @Input('fxFlexAlign')       set align(val)  { this._cacheInput('align', val);  };

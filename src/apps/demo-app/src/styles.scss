@@ -45,27 +45,54 @@ div.coloredContainerX > div, div.colorNested > div > div {
   text-align: center;
 }
 
-div.coloredContainerX > div:nth-child(1), div.colorNested > div > div:nth-child(1), div.box1 {
+div.coloredContainerX > div:nth-child(10n+1), div.colorNested > div > div:nth-child(10n+1),
+div.box1 {
   background-color: #009688;
 }
 
-div.coloredContainerX > div:nth-child(2), div.colorNested > div > div:nth-child(2), div.box2 {
+div.coloredContainerX > div:nth-child(10n+2), div.colorNested > div > div:nth-child(10n+2),
+div.box2 {
   background-color: #3949ab;
 }
 
-div.coloredContainerX > div:nth-child(3), div.coloredChildren > div:nth-child(3),
-div.colorNested > div > div:nth-child(3), div.box3 {
+div.coloredContainerX > div:nth-child(10n+3), div.coloredChildren > div:nth-child(10n+3),
+div.colorNested > div > div:nth-child(10n+3), div.box3 {
   background-color: #9c27b0;
 }
 
-div.coloredContainerX > div:nth-child(4), div.coloredChildren > div:nth-child(4),
-div.colorNested > div > div:nth-child(4) {
+div.coloredContainerX > div:nth-child(10n+4), div.coloredChildren > div:nth-child(10n+4),
+div.colorNested > div > div:nth-child(10n+4) {
   background-color: #b08752;
 }
 
-div.coloredContainerX > div:nth-child(5), div.coloredChildren > div:nth-child(5),
-div.colorNested > div > div:nth-child(5) {
+div.coloredContainerX > div:nth-child(10n+5), div.coloredChildren > div:nth-child(10n+5),
+div.colorNested > div > div:nth-child(10n+5) {
   background-color: #5ca6b0;
+}
+
+div.coloredContainerX > div:nth-child(10n+6), div.coloredChildren > div:nth-child(10n+6),
+div.colorNested > div > div:nth-child(10n+6) {
+  background-color: #8bc34a;
+}
+
+div.coloredContainerX > div:nth-child(10n+7), div.coloredChildren > div:nth-child(10n+7),
+div.colorNested > div > div:nth-child(10n+7) {
+  background-color: #9c27b0;
+}
+
+div.coloredContainerX > div:nth-child(10n+8), div.coloredChildren > div:nth-child(10n+8),
+div.colorNested > div > div:nth-child(10n+8) {
+  background-color: #c9954e;
+}
+
+div.coloredContainerX > div:nth-child(10n+9), div.coloredChildren > div:nth-child(10n+9),
+div.colorNested > div > div:nth-child(10n+9) {
+  background-color: #ff5722;
+}
+
+div.coloredContainerX > div:nth-child(10n), div.coloredChildren > div:nth-child(10n),
+div.colorNested > div > div:nth-child(10n) {
+  background-color: #03a9f4;
 }
 
 div.colored > div {
@@ -76,39 +103,38 @@ div.colored > div {
   text-align: center;
 }
 
-div.colored > div:nth-child(1), .one {
+div.colored > div:nth-child(10n+1), .one {
   background-color: #009688;
 }
 
-div.colored > div:nth-child(2), .two {
+div.colored > div:nth-child(10n+2), .two {
   background-color: #3949ab;
 }
 
-div.colored > div:nth-child(3), .three {
+div.colored > div:nth-child(10n+3), .three {
   background-color: #9c27b0;
 }
 
-div.colored > div:nth-child(4), .four {
+div.colored > div:nth-child(10n+4), .four {
   background-color: #8bc34a;
 }
 
-div.colored > div:nth-child(5), .five {
+div.colored > div:nth-child(10n+5), .five {
   background-color: #03a9f4;
 }
 
-div.colored > div:nth-child(6), .six {
+div.colored > div:nth-child(10n+6), .six {
   background-color: #c9954e;
 }
 
-div.colored > div:nth-child(7), .seven {
+div.colored > div:nth-child(10n+7), .seven {
   background-color: #ff5722;
 }
 
 .hint {
-  margin: 5px;
+  margin: 5px 5px 0;
   font-size: 0.9em;
   color: #a3a3a3;
-  margin-bottom: 0;
 }
 
 .title {
@@ -183,8 +209,7 @@ div.colored.box.nopad > div {
 }
 
 .bigger {
-  padding: 0 20px;
-  padding-bottom: 30px;
+  padding: 0 20px 30px;
 }
 
 mat-toolbar .mat-toolbar-layout mat-toolbar-row {
@@ -287,8 +312,7 @@ mat-card-content pre {
 .hint {
   color: #a3a3a3;
   font-size: 0.9em;
-  margin: 5px;
-  margin-bottom: 0;
+  margin: 5px 5px 0;
 }
 
 .forceAbove {

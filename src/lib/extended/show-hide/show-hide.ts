@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
-  BaseFxDirective,
+  BaseDirective,
   MediaChange,
   MediaMonitor,
   SERVER_TOKEN,
@@ -59,7 +59,7 @@ export function negativeOf(hide: any) {
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
 `
 })
-export class ShowHideDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class ShowHideDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Subscription to the parent flex container's layout changes.

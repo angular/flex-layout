@@ -36,7 +36,7 @@
   "devDependencies": {
     "@angular/cli": "1.7.2",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "^6.0.0-rc.0",
+    "@angular/language-service": "^6.0.0-rc.1",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",

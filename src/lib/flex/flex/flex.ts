@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import {
   ADD_FLEX_STYLES,
-  BaseFxDirective,
+  BaseDirective,
   MediaChange,
   MediaMonitor,
   StyleUtils,
@@ -49,7 +49,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
   [fxFlex.gt-xs], [fxFlex.gt-sm], [fxFlex.gt-md], [fxFlex.gt-lg],
 `
 })
-export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class FlexDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
   protected _layout: Layout;
@@ -163,7 +163,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    let layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
+    let layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
     let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
 
     let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';

@@ -23,8 +23,8 @@ import {
 import {NgStyle} from '@angular/common';
 import {DomSanitizer} from '@angular/platform-browser';
 import {
-  BaseFxDirective,
-  BaseFxDirectiveAdapter,
+  BaseDirective,
+  BaseDirectiveAdapter,
   MediaChange,
   MediaMonitor,
   StyleUtils,
@@ -50,7 +50,7 @@ import {
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
-export class StyleDirective extends BaseFxDirective
+export class StyleDirective extends BaseDirective
     implements DoCheck, OnChanges, OnDestroy, OnInit {
 
   /**
@@ -136,7 +136,7 @@ export class StyleDirective extends BaseFxDirective
      * keys have been defined.
      */
     protected _configureAdapters() {
-        this._base = new BaseFxDirectiveAdapter(
+        this._base = new BaseDirectiveAdapter(
           'ngStyle',
           this.monitor,
           this._ngEl,
@@ -216,6 +216,6 @@ export class StyleDirective extends BaseFxDirective
    * Special adapter to cross-cut responsive behaviors
    * into the StyleDirective
    */
-  protected _base: BaseFxDirectiveAdapter;
+  protected _base: BaseDirectiveAdapter;
 
 }
