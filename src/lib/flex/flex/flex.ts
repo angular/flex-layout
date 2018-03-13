@@ -286,6 +286,11 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
           'flex': `${grow} ${shrink} ${basis}`
         });
       }
+    } else {
+      // Fix for issue 660
+      css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
+        (hasCalc ? css[max] : `${grow} ${shrink} ${css[max]}`) :
+        (hasCalc ? css[min] : `${grow} ${shrink} ${css[min]}`);
     }
 
     return extendObject(css, {'box-sizing': 'border-box'});

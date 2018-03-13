@@ -86,7 +86,7 @@ describe('flex-offset directive', () => {
     it('should work with percentage values', () => {
       componentWithTemplate(`<div fxFlexOffset='17' fxFlex='37'></div>`);
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
+        'flex': '1 1 37%',
         'box-sizing': 'border-box',
         'margin-left': '17%'
       }, styler);

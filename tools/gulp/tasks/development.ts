@@ -20,12 +20,8 @@ task(':watch:devapp', () => {
    watchFiles(join(flexLayoutPackage.sourceDir, '**/!(*.scss)'), ['flex-layout:build-no-bundles']);
 });
 
-task('devapp:deps', execTask(
-  'npm', ['install'], {cwd: appDir}
-));
-
 task(':serve:devapp', ['aot:pre'], execTask(
-  'ng', ['serve'],
+  'ng', ['serve', '--port', '4000'],
   {cwd: appDir, failOnStderr: true}
 ));
 
