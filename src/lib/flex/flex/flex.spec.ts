@@ -190,7 +190,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveStyle({
         'max-width': '2%',
-        'flex': '1 1 100%',
+        'flex': '1 1 2%',
         'box-sizing': 'border-box',
       }, styler);
     });
@@ -198,7 +198,7 @@ describe('flex directive', () => {
     it('should work with percentage values', () => {
       componentWithTemplate(`<div fxFlex='37%'></div>`);
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
+        'flex': '1 1 37%',
         'max-width': '37%',
         'box-sizing': 'border-box',
       }, styler);
@@ -456,7 +456,7 @@ describe('flex directive', () => {
         expectNativeEl(fixture)
             .not.toHaveStyle({
           'flex-direction': 'row',
-          'flex': '1 1 100%',
+          'flex': '1 1 37%',
           'max-height': '37%',
         }, styler);
       });
@@ -472,7 +472,7 @@ describe('flex directive', () => {
         fixture.detectChanges();
         expectEl(queryFor(fixture, '[fxFlex]')[0])
           .toHaveStyle({
-            'flex': '1 1 100%',
+            'flex': '1 1 37%',
             'max-height': '37%',
           }, styler);
       });
@@ -480,7 +480,7 @@ describe('flex directive', () => {
       it('should set max-width for `fxFlex="<%val>"`', () => {
         componentWithTemplate(`<div fxFlex='37%'></div>`);
         expectNativeEl(fixture).toHaveStyle({
-          'flex': '1 1 100%',
+          'flex': '1 1 37%',
           'max-width': '37%',
         }, styler);
       });
@@ -488,7 +488,7 @@ describe('flex directive', () => {
       it('should set max-width for `fxFlex="2%"` usage', () => {
         componentWithTemplate(`<div fxFlex='2%'></div>`);
         expectNativeEl(fixture).toHaveStyle({
-          'flex': '1 1 100%',
+          'flex': '1 1 2%',
           'max-width': '2%',
         }, styler);
       });
@@ -510,7 +510,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
+        'flex': '1 1 50%',
         'max-width': '50%'
       }, styler);
 
@@ -518,7 +518,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
+        'flex': '1 1 33%',
         'max-width': '33%'
       }, styler);
     });
@@ -546,9 +546,9 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       nodes = queryFor(fixture, '[fxFlex]');
-      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 100%', 'max-height': '50%'}, styler);
-      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 100%', 'max-height': '24.4%'}, styler);
-      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 100%', 'max-height': '25.6%'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 50%', 'max-height': '50%'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 24.4%', 'max-height': '24.4%'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 25.6%', 'max-height': '25.6%'}, styler);
 
       matchMedia.activate('sm');
       fixture.detectChanges();
@@ -597,9 +597,9 @@ describe('flex directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
-      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 100%', 'max-height': '50%'}, styler);
-      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 100%', 'max-height': '24.4%'}, styler);
-      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 100%', 'max-height': '25.6%'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 50%', 'max-height': '50%'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 24.4%', 'max-height': '24.4%'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 25.6%', 'max-height': '25.6%'}, styler);
     });
 
     it('should fallback to the default layout from lt-md selectors', () => {
@@ -621,7 +621,7 @@ describe('flex directive', () => {
       nodes = queryFor(fixture, '[fxFlex]');
 
       expectEl(nodes[0]).toHaveStyle({
-        'flex': '1 1 100%',
+        'flex': '1 1 50%',
         'max-height': '50%'
       }, styler);
 
