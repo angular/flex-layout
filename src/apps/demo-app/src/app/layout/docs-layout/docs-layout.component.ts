@@ -5,6 +5,7 @@ import {Component} from '@angular/core';
   template: `
     <demo-layout-alignment class="small-demo"></demo-layout-alignment>
     <demo-layout-fill class="small-demo"></demo-layout-fill>
+    <demo-layout-gap class="small-demo"></demo-layout-gap>
     <demo-flex-row-fill class="small-demo"></demo-flex-row-fill>
     <demo-flex-row-fill-wrap class="small-demo"></demo-flex-row-fill-wrap>
     <demo-flex-attribute-values class="small-demo"></demo-flex-attribute-values>
