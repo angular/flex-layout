@@ -18,7 +18,13 @@ import {
   NgZone,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseFxDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleDefinition,
+  StyleUtils
+} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {Layout, LayoutDirective} from '../layout/layout';
@@ -155,9 +161,9 @@ export class LayoutGapDirective extends BaseFxDirective
    *
    */
   protected _updateWithValue(value?: string) {
-    value = value || this._queryInput('gap') || '0';
+    let gapValue = value || this._queryInput('gap') || '0';
     if (this._mqActivation) {
-      value = this._mqActivation.activatedInput;
+      gapValue = this._mqActivation.activatedInput;
     }
 
     // Gather all non-hidden Element nodes
@@ -174,15 +180,56 @@ export class LayoutGapDirective extends BaseFxDirective
       });
 
     if (items.length > 0) {
-      const lastItem = items.pop();
+      if (gapValue.endsWith(GRID_SPECIFIER)) {
+        gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
+        // For each `element` children, set the padding
+        this._applyStyleToElements(this._buildGridPadding(gapValue), items);
 
-      // For each `element` children EXCEPT the last,
-      // set the margin right/bottom styles...
-      this._applyStyleToElements(this._buildCSS(value), items);
+        // Add the margin to the host element
+        this._applyStyleToElement(this._buildGridMargin(gapValue));
+      } else {
+        const lastItem = items.pop();
 
-      // Clear all gaps for all visible elements
-      this._applyStyleToElements(this._buildCSS(), [lastItem]);
+        // For each `element` children EXCEPT the last,
+        // set the margin right/bottom styles...
+        this._applyStyleToElements(this._buildCSS(gapValue), items);
+
+        // Clear all gaps for all visible elements
+        this._applyStyleToElements(this._buildCSS(), [lastItem]);
+      }
     }
+  }
+
+  /**
+   *
+   */
+  private _buildGridPadding(value: string): StyleDefinition {
+    let paddingTop = '0px', paddingRight = '0px', paddingBottom = value, paddingLeft = '0px';
+
+    if (this._directionality.value === 'rtl') {
+      paddingLeft = value;
+    } else {
+      paddingRight = value;
+    }
+
+    return {'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`};
+  }
+
+  /**
+   * Prepare margin CSS, remove any previous explicitly
+   * assigned margin assignments
+   * Note: this will not work with calc values (negative calc values are invalid)
+   */
+  private _buildGridMargin(value: string): StyleDefinition {
+    let marginTop = '0px', marginRight = '0px', marginBottom = '-' + value, marginLeft = '0px';
+
+    if (this._directionality.value === 'rtl') {
+      marginLeft = '-' + value;
+    } else {
+      marginRight = '-' + value;
+    }
+
+    return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
   }
 
   /**
@@ -212,5 +259,6 @@ export class LayoutGapDirective extends BaseFxDirective
 
     return margins;
   }
-
 }
+
+const GRID_SPECIFIER = ' grid';

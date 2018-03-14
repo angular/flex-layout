@@ -18,6 +18,7 @@ import {RoutingModule} from './routing.module';
 import {
   LayoutWithDirectionComponent
 } from './layout-with-direction/layout-with-direction.component';
+import {LayoutGapComponent} from './layout-gap/layout-gap.component';
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {
     FlexOffsetValuesComponent,
     FlexAlignSelfComponent,
     LayoutWithDirectionComponent,
+    LayoutGapComponent,
   ]
 })
 export class DocsLayoutModule {}

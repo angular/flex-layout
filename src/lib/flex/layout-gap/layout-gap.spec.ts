@@ -13,7 +13,12 @@ import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {expectEl, makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
+import {
+  expectEl,
+  expectNativeEl,
+  makeCreateTestComponent,
+  queryFor,
+} from '../../utils/testing/helpers';
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
@@ -151,7 +156,6 @@ describe('layout-gap directive', () => {
         // Since the layoutGap directive detects the *ngFor changes by using a MutationObserver, the
         // browser will take up some time, to actually announce the changes to the directive.
         // (Kudos to @DevVersion)
-
         nodes = queryFor(fixture, '[fxFlex]');
         expect(nodes.length).toEqual(3);
 
@@ -341,13 +345,57 @@ describe('layout-gap directive', () => {
     });
   });
 
+  describe('grid option', () => {
+    it('should add gap styles correctly', () => {
+      let template = `
+        <div fxLayoutGap='13px grid'>
+          <div fxFlex></div>
+          <div fxFlex></div>
+          <div fxFlex></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      let expectedMargin = {'margin': '0px -13px -13px 0px'};
+      let expectedPadding = {'padding': '0px 13px 13px 0px'};
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[2]).toHaveStyle(expectedPadding, styler);
+      expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
+    });
+
+    it('should add gap styles correctly for rtl', () => {
+      fakeDocument.body.dir = 'rtl';
+      let template = `
+        <div fxLayoutGap='13px grid'>
+          <div fxFlex></div>
+          <div fxFlex></div>
+          <div fxFlex></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      let expectedMargin = {'margin': '0px 0px -13px -13px'};
+      let expectedPadding = {'padding': '0px 0px 13px 13px'};
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[2]).toHaveStyle(expectedPadding, styler);
+      expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
+    });
+  });
+
 });
 
 
 // *****************************************************************
 // Template Component
 // *****************************************************************
-
 @Component({
   selector: 'test-layout',
   template: `<span>PlaceHolder Template HTML</span>`
@@ -363,5 +411,3 @@ class TestLayoutGapComponent implements OnInit {
   ngOnInit() {
   }
 }
-
-
