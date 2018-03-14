@@ -14,7 +14,7 @@ available. The flex-grow value overrides the width.
 * **flex-shrink**: defines how much a flexbox item should **shrink** if there is **not enough** space available.
 * **flex-basis**: controls the default size of an element, before it is manipulated by other Flexbox properties
 
-[![fxFlex example](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/stack-overflow/columnSpan.demo.ts#L23)
+[![fxFlex example](https://cloud.githubusercontent.com/assets/210413/21274996/6b640f8a-c390-11e6-87ac-ca85eb6c3983.png)](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/stack-overflow/grid-column-span/grid-column-span.component.ts#L23)
 
 Note that the resizing occurs along the main-axis of the layout and maybe affected by the **fxLayoutAlign** options. 
 
@@ -182,5 +182,5 @@ Developer's seeking details on FlexBox should
 * Review [CSS-Tricks - A Guide to FlexBox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/), or 
 * Play with the online [Flex-Layout Demos](https://tburleson-layouts-demos.firebaseapp.com/#/docs)
 
-[fxFlex]: https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/flex.ts
-[FlexDirective]: https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/flex.ts#L65-L67
+[fxFlex]: https://github.com/angular/flex-layout/blob/master/src/lib/flex/flex/flex.ts
+[FlexDirective]: https://github.com/angular/flex-layout/blob/master/src/lib/flex/flex/flex.ts#L65-L67

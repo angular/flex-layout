@@ -20,4 +20,4 @@ the positional ordering of the element
 |  `(default)` | `order: 0`     |
 |  `<int>`     | `order: <int>` |
 
-[Order]: https://github.com/angular/flex-layout/blob/master/src/lib/flexbox/api/flex-order.ts#41
+[Order]: https://github.com/angular/flex-layout/blob/master/src/lib/flex/flex-order/flex-order.ts#41
