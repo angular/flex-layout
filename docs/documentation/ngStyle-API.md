@@ -83,5 +83,5 @@ the default styles being re-applied.
 
 ![sample1](https://user-images.githubusercontent.com/210413/30512495-e974c33a-9ab6-11e7-8dec-9805219baaac.jpg)
 
-[ngStyle]: https://github.com/angular/flex-layout/blob/master/src/lib/api/ext/style.ts#L54
+[ngStyle]: https://github.com/angular/flex-layout/blob/master/src/lib/extended/style/style.ts#L54
 [aioNgStyle]: https://github.com/angular/angular/blob/master/packages/common/src/directives/ng_style.ts#L34

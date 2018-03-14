@@ -86,5 +86,5 @@ removed;
 </some-element>
 ```
 
-[ngClass]: https://github.com/angular/flex-layout/blob/master/src/lib/api/ext/class.ts
+[ngClass]: https://github.com/angular/flex-layout/blob/master/src/lib/extended/class/class.ts
 [aioNgClass]: https://github.com/angular/angular/blob/master/packages/common/src/directives/ng_class.ts#L40

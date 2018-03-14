@@ -22,7 +22,7 @@ Developers can use the following directives to achieve some Adaptive UX goals:
 For examples of `fxHide` usages in Adaptive layouts, please review the demo **Show & Hide Directives**:
 
 * [Demo](https://tburleson-layouts-demos.firebaseapp.com/#/responsive)
-* [Source](https://github.com/angular/flex-layout/blob/master/src/demo-app/app/docs-layout-responsive/responsiveShowHide.demo.ts#L15) 
+* [Source](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/responsive/responsive-show-hide/responsive-show-hide.component.ts#L15) 
 
 ---- 
 
