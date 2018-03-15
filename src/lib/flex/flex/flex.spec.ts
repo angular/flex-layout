@@ -74,16 +74,7 @@ describe('flex directive', () => {
 
       let dom = fixture.debugElement.children[0];
       expectEl(dom).toHaveStyle({'box-sizing': 'border-box'}, styler);
-
-      if (platform.BLINK) {
-        expectEl(dom).toHaveStyle({'flex': '1 1 1e-09px'}, styler);
-      } else if (platform.FIREFOX) {
-        expectEl(dom).toHaveStyle({'flex': '1 1 1e-9px'}, styler);
-      } else if (platform.EDGE || platform.TRIDENT) {
-        expectEl(dom).toHaveStyle({'flex': '1 1 0px'}, styler);
-      } else {
-        expectEl(dom).toHaveStyle({'flex': '1 1 0.000000001px'}, styler);
-      }
+      expectEl(dom).toHaveStyle({'flex': '1 1 auto'}, styler);
     });
 
     it('should apply `fxGrow` value to flex-grow when used default `fxFlex`', () => {
@@ -93,16 +84,7 @@ describe('flex directive', () => {
       let dom = fixture.debugElement.children[0];
 
       expectEl(dom).toHaveStyle({'box-sizing': 'border-box'}, styler);
-
-      if (platform.BLINK) {
-        expectEl(dom).toHaveStyle({'flex': '10 1 1e-09px'}, styler);
-      } else if (platform.FIREFOX) {
-        expectEl(dom).toHaveStyle({'flex': '10 1 1e-9px'}, styler);
-      } else if (platform.EDGE || platform.TRIDENT) {
-        expectEl(dom).toHaveStyle({'flex': '10 1 0px'}, styler);
-      } else {
-        expectEl(dom).toHaveStyle({'flex': '10 1 0.000000001px'}, styler);
-      }
+      expectEl(dom).toHaveStyle({'flex': '10 1 auto'}, styler);
     });
 
     it('should apply `fxShrink` value to flex-shrink when used default `fxFlex`', () => {
@@ -112,16 +94,7 @@ describe('flex directive', () => {
       let dom = fixture.debugElement.children[0];
 
       expectEl(dom).toHaveStyle({'box-sizing': 'border-box'}, styler);
-
-      if (platform.BLINK) {
-        expectEl(dom).toHaveStyle({'flex': '1 10 1e-09px'}, styler);
-      } else if (platform.FIREFOX) {
-        expectEl(dom).toHaveStyle({'flex': '1 10 1e-9px'}, styler);
-      } else if (platform.EDGE || platform.TRIDENT) {
-        expectEl(dom).toHaveStyle({'flex': '1 10 0px'}, styler);
-      } else {
-        expectEl(dom).toHaveStyle({'flex': '1 10 0.000000001px'}, styler);
-      }
+      expectEl(dom).toHaveStyle({'flex': '1 10 auto'}, styler);
     });
 
     it('should apply both `fxGrow` and `fxShrink` when used with default fxFlex', () => {
@@ -130,16 +103,7 @@ describe('flex directive', () => {
 
       let dom = fixture.debugElement.children[0];
       expectEl(dom).toHaveStyle({'box-sizing': 'border-box'}, styler);
-
-      if (platform.BLINK) {
-        expectEl(dom).toHaveStyle({'flex': '4 5 1e-09px'}, styler);
-      } else if (platform.FIREFOX) {
-        expectEl(dom).toHaveStyle({'flex': '4 5 1e-9px'}, styler);
-      } else if (platform.EDGE || platform.TRIDENT) {
-        expectEl(dom).toHaveStyle({'flex': '4 5 0px'}, styler);
-      } else {
-        expectEl(dom).toHaveStyle({'flex': '4 5 0.000000001px'}, styler);
-      }
+      expectEl(dom).toHaveStyle({'flex': '4 5 auto'}, styler);
     });
 
     it('should add correct styles for flex-basis unitless 0 input', () => {
@@ -190,7 +154,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
       expectNativeEl(fixture).toHaveStyle({
         'max-width': '2%',
-        'flex': '1 1 2%',
+        'flex': '1 1 100%',
         'box-sizing': 'border-box',
       }, styler);
     });
@@ -198,7 +162,7 @@ describe('flex directive', () => {
     it('should work with percentage values', () => {
       componentWithTemplate(`<div fxFlex='37%'></div>`);
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 37%',
+        'flex': '1 1 100%',
         'max-width': '37%',
         'box-sizing': 'border-box',
       }, styler);
@@ -472,7 +436,7 @@ describe('flex directive', () => {
         fixture.detectChanges();
         expectEl(queryFor(fixture, '[fxFlex]')[0])
           .toHaveStyle({
-            'flex': '1 1 37%',
+            'flex': '1 1 100%',
             'max-height': '37%',
           }, styler);
       });
@@ -480,7 +444,7 @@ describe('flex directive', () => {
       it('should set max-width for `fxFlex="<%val>"`', () => {
         componentWithTemplate(`<div fxFlex='37%'></div>`);
         expectNativeEl(fixture).toHaveStyle({
-          'flex': '1 1 37%',
+          'flex': '1 1 100%',
           'max-width': '37%',
         }, styler);
       });
@@ -488,7 +452,7 @@ describe('flex directive', () => {
       it('should set max-width for `fxFlex="2%"` usage', () => {
         componentWithTemplate(`<div fxFlex='2%'></div>`);
         expectNativeEl(fixture).toHaveStyle({
-          'flex': '1 1 2%',
+          'flex': '1 1 100%',
           'max-width': '2%',
         }, styler);
       });
@@ -510,7 +474,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 50%',
+        'flex': '1 1 100%',
         'max-width': '50%'
       }, styler);
 
@@ -518,7 +482,7 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 33%',
+        'flex': '1 1 100%',
         'max-width': '33%'
       }, styler);
     });
@@ -546,9 +510,9 @@ describe('flex directive', () => {
       fixture.detectChanges();
 
       nodes = queryFor(fixture, '[fxFlex]');
-      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 50%', 'max-height': '50%'}, styler);
-      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 24.4%', 'max-height': '24.4%'}, styler);
-      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 25.6%', 'max-height': '25.6%'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 100%', 'max-height': '50%'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 100%', 'max-height': '24.4%'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 100%', 'max-height': '25.6%'}, styler);
 
       matchMedia.activate('sm');
       fixture.detectChanges();
@@ -597,9 +561,9 @@ describe('flex directive', () => {
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
-      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 50%', 'max-height': '50%'}, styler);
-      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 24.4%', 'max-height': '24.4%'}, styler);
-      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 25.6%', 'max-height': '25.6%'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'flex': '1 1 100%', 'max-height': '50%'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'flex': '1 1 100%', 'max-height': '24.4%'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'flex': '1 1 100%', 'max-height': '25.6%'}, styler);
     });
 
     it('should fallback to the default layout from lt-md selectors', () => {
@@ -621,7 +585,7 @@ describe('flex directive', () => {
       nodes = queryFor(fixture, '[fxFlex]');
 
       expectEl(nodes[0]).toHaveStyle({
-        'flex': '1 1 50%',
+        'flex': '1 1 100%',
         'max-height': '50%'
       }, styler);
 
