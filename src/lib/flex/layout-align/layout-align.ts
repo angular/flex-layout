@@ -20,7 +20,7 @@ import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/f
 import {Subscription} from 'rxjs/Subscription';
 
 import {extendObject} from '../../utils/object-extend';
-import {LayoutDirective} from '../layout/layout';
+import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 
 /**
@@ -124,8 +124,8 @@ export class LayoutAlignDirective extends BaseFxDirective implements OnInit, OnC
   /**
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
-  protected _onLayoutChange(direction) {
-    this._layout = (direction || '').toLowerCase();
+  protected _onLayoutChange(layout: Layout) {
+    this._layout = (layout.direction || '').toLowerCase();
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
     }

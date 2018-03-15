@@ -26,7 +26,7 @@ import {
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs/Subscription';
 
-import {LayoutDirective} from '../layout/layout';
+import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
 /**
@@ -117,7 +117,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   // *********************************************
 
   /** The flex-direction of this element's host container. Defaults to 'row'. */
-  protected _layout = 'row';
+  protected _layout = {direction: 'row', wrap: false};
 
   /**
    * Subscription to the parent flex container's layout changes.
@@ -132,9 +132,9 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
   protected watchParentFlow() {
     if (this._container) {
       // Subscribe to layout immediate parent direction changes (if any)
-      this._layoutWatcher = this._container.layout$.subscribe((direction) => {
+      this._layoutWatcher = this._container.layout$.subscribe((layout) => {
         // `direction` === null if parent container does not have a `fxLayout`
-        this._onLayoutChange(direction);
+        this._onLayoutChange(layout);
       });
     }
   }
@@ -143,8 +143,8 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
    * Caches the parent container's 'flex-direction' and updates the element's style.
    * Used as a handler for layout change events from the parent flex container.
    */
-  protected _onLayoutChange(direction?: string) {
-    this._layout = direction || this._layout || 'row';
+  protected _onLayoutChange(layout?: Layout) {
+    this._layout = layout || this._layout || {direction: 'row', wrap: false};
     this._updateWithValue();
   }
 

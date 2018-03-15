@@ -21,7 +21,7 @@ import {Directionality} from '@angular/cdk/bidi';
 import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs/Subscription';
 
-import {LayoutDirective} from '../layout/layout';
+import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';
 
 /**
@@ -143,8 +143,8 @@ export class LayoutGapDirective extends BaseFxDirective
   /**
    * Cache the parent container 'flex-direction' and update the 'margin' styles
    */
-  protected _onLayoutChange(direction) {
-    this._layout = (direction || '').toLowerCase();
+  protected _onLayoutChange(layout: Layout) {
+    this._layout = (layout.direction || '').toLowerCase();
     if (!LAYOUT_VALUES.find(x => x === this._layout)) {
       this._layout = 'row';
     }
