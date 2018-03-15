@@ -20,6 +20,11 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
 
+export type Layout = {
+  direction: string;
+  wrap: boolean;
+};
+
 /**
  * 'layout' flexbox styling directive
  * Defines the positioning flow direction for the child elements: row or column
@@ -39,13 +44,13 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
    * Create Observable for nested/child 'flex' directives. This allows
    * child flex directives to subscribe/listen for flexbox direction changes.
    */
-  protected _announcer: ReplaySubject<string>;
+  protected _announcer: ReplaySubject<Layout>;
 
   /**
    * Publish observer to enabled nested, dependent directives to listen
    * to parent 'layout' direction changes
    */
-  layout$: Observable<string>;
+  layout$: Observable<Layout>;
 
   /* tslint:disable */
   @Input('fxLayout')       set layout(val)     { this._cacheInput('layout', val); };
@@ -73,7 +78,7 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
               elRef: ElementRef,
               styleUtils: StyleUtils) {
     super(monitor, elRef, styleUtils);
-    this._announcer = new ReplaySubject<string>(1);
+    this._announcer = new ReplaySubject<Layout>(1);
     this.layout$ = this._announcer.asObservable();
   }
 
@@ -122,7 +127,10 @@ export class LayoutDirective extends BaseFxDirective implements OnInit, OnChange
     let css = buildLayoutCSS(!!value ? value : '');
 
     this._applyStyleToElement(css);
-    this._announcer.next(css['flex-direction']);
+    this._announcer.next({
+      direction: css['flex-direction'],
+      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+    });
   }
 
 }

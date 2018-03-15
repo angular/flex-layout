@@ -27,7 +27,7 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 
 import {extendObject} from '../../utils/object-extend';
-import {LayoutDirective} from '../layout/layout';
+import {Layout, LayoutDirective} from '../layout/layout';
 import {validateBasis} from '../../utils/basis-validator';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
@@ -52,7 +52,7 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
-  protected _layout: string;
+  protected _layout: Layout;
 
   /**
    * Subscription to the parent flex container's layout changes.
@@ -98,9 +98,9 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     if (_container) {
       // If this flex item is inside of a flex container marked with
       // Subscribe to layout immediate parent direction changes
-      this._layoutWatcher = _container.layout$.subscribe((direction) => {
+      this._layoutWatcher = _container.layout$.subscribe((layout) => {
         // `direction` === null if parent container does not have a `fxLayout`
-        this._onLayoutChange(direction);
+        this._onLayoutChange(layout);
       });
     }
   }
@@ -139,8 +139,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
    * Caches the parent container's 'flex-direction' and updates the element's style.
    * Used as a handler for layout change events from the parent flex container.
    */
-  protected _onLayoutChange(direction?: string) {
-    this._layout = direction || this._layout || 'row';
+  protected _onLayoutChange(layout?: Layout) {
+    this._layout = layout || this._layout || {direction: 'row', wrap: false};
     this._updateStyle();
   }
 
@@ -208,7 +208,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     };
     switch (basis || '') {
       case '':
-        basis = MIN_FLEX;
+        basis = direction === 'row' ? '0%' : 'auto';
         break;
       case 'initial':   // default
       case 'nogrow':
@@ -275,8 +275,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
     }
 
     // Fix for issues 277 and 534
-    // TODO(CaerusKaru): convert this to just width/height
-    if (basis !== '0%' && basis !== MIN_FLEX) {
+    if (basis !== '0%') {
       css[min] = isFixed || (isPx && grow) ? basis : null;
       css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
     }
@@ -296,13 +295,13 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
       }
     } else {
       // Fix for issue 660
-      css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
-        (hasCalc ? css[max] : `${grow} ${shrink} ${css[max]}`) :
-        (hasCalc ? css[min] : `${grow} ${shrink} ${css[min]}`);
+      if (this._layout && this._layout.wrap) {
+        css[hasCalc ? 'flex-basis' : 'flex'] = css[max] ?
+          (hasCalc ? css[max] : `${grow} ${shrink} ${css[max]}`) :
+          (hasCalc ? css[min] : `${grow} ${shrink} ${css[min]}`);
+      }
     }
 
     return extendObject(css, {'box-sizing': 'border-box'});
   }
 }
-
-const MIN_FLEX = '0.000000001px';
