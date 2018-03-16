@@ -34,9 +34,9 @@ function camelCase(name: string): string {
  */
 export function validateSuffixes(list: BreakPoint[]): BreakPoint[] {
   list.forEach((bp: BreakPoint) => {
-    if (!bp.suffix || bp.suffix === '') {
-      bp.suffix = camelCase(bp.alias);          // create Suffix value based on alias
-      bp.overlapping = bp.overlapping || false; // ensure default value
+    if (!bp.suffix) {
+      bp.suffix = camelCase(bp.alias);   // create Suffix value based on alias
+      bp.overlapping = !!bp.overlapping; // ensure default value
     }
   });
   return list;
@@ -48,21 +48,19 @@ export function validateSuffixes(list: BreakPoint[]): BreakPoint[] {
  *  - Items are merged with the custom override if the alias exists in the default list
  */
 export function mergeByAlias(defaults: BreakPoint[], custom: BreakPoint[] = []): BreakPoint[] {
-  const merged = defaults.map((bp) => extendObject({}, bp));
-  const findByAlias = (alias) => merged.reduce((result, bp) => {
-    return result || (( bp.alias === alias) ? bp : null);
-  }, null);
-
+  const dict: {[key: string]: BreakPoint} = {};
+  defaults.forEach(bp => {
+    dict[bp.alias] = bp;
+  });
   // Merge custom breakpoints
   custom.forEach((bp: BreakPoint) => {
-    let target = findByAlias(bp.alias);
-    if (target) {
-      extendObject(target, bp);
+    if (dict[bp.alias]) {
+      extendObject(dict[bp.alias], bp);
     } else {
-      merged.push(bp);
+      dict[bp.alias] = bp;
     }
   });
 
-  return validateSuffixes(merged);
+  return validateSuffixes(Object.keys(dict).map(k => dict[k]));
 }
 

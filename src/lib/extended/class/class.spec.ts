@@ -10,13 +10,10 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {MatButtonModule} from '@angular/material';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   CoreModule,
   MockMatchMedia,
-  StylesheetMap,
-  StyleUtils
+  MockMatchMediaProvider,
 } from '@angular/flex-layout/core';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
@@ -48,12 +45,7 @@ describe('class directive', () => {
         CoreModule
       ],
       declarations: [TestClassComponent, ClassDirective],
-      providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StylesheetMap,
-        StyleUtils,
-      ]
+      providers: [MockMatchMediaProvider]
     });
   });
 

@@ -8,6 +8,7 @@
 import {
   Directive,
   ElementRef,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -16,7 +17,13 @@ import {
   SimpleChanges,
   SkipSelf,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  ADD_FLEX_STYLES,
+  BaseFxDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {extendObject} from '../../utils/object-extend';
@@ -80,7 +87,8 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
-              protected styleUtils: StyleUtils) {
+              protected styleUtils: StyleUtils,
+              @Optional() @Inject(ADD_FLEX_STYLES) protected addFlexStyles: boolean|null) {
     super(monitor, elRef, styleUtils);
 
     this._cacheInput('flex', '');
@@ -155,7 +163,7 @@ export class FlexDirective extends BaseFxDirective implements OnInit, OnChanges,
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    let layout = this._getFlowDirection(this.parentElement, true);
+    let layout = this._getFlowDirection(this.parentElement, !!this.addFlexStyles);
     let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
 
     let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';

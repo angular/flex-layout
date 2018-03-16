@@ -10,10 +10,9 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {Platform, PlatformModule} from '@angular/cdk/platform';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   MockMatchMedia,
+  MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -47,10 +46,7 @@ describe('layout-align directive', () => {
       imports: [CommonModule, FlexLayoutModule, PlatformModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
-        BreakPointRegistry,
-        DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StyleUtils,
+        MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });

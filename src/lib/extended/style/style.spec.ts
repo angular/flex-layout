@@ -9,12 +9,10 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   CoreModule,
   MockMatchMedia,
-  StylesheetMap,
+  MockMatchMediaProvider,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {LayoutDirective} from '@angular/flex-layout/flex';
@@ -45,12 +43,7 @@ describe('style directive', () => {
     TestBed.configureTestingModule({
       imports: [CommonModule, CoreModule],
       declarations: [TestStyleComponent, LayoutDirective, StyleDirective],
-      providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StylesheetMap,
-        StyleUtils,
-      ]
+      providers: [MockMatchMediaProvider]
     });
   });
 

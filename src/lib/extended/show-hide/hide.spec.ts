@@ -9,13 +9,11 @@ import {Component, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
   MatchMedia,
   CoreModule,
   MockMatchMedia,
+  MockMatchMediaProvider,
   ObservableMedia,
-  StylesheetMap,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -67,10 +65,7 @@ describe('hide directive', () => {
       imports: [CommonModule, CoreModule],
       declarations: [TestHideComponent, ShowHideDirective],
       providers: [
-        BreakPointRegistry, DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StylesheetMap,
-        StyleUtils,
+        MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true},
       ]
     });
