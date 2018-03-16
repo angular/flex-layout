@@ -11,7 +11,7 @@ export * from './module';
 export * from './media-queries-module';
 export * from './media-change';
 export * from './stylesheet-map/index';
-export * from './server-token';
+export * from './tokens/index';
 
 export * from './base/index';
 export * from './breakpoints/index';

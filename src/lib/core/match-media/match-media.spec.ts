@@ -11,8 +11,8 @@ import {TestBed, inject, async} from '@angular/core/testing';
 
 import {MediaChange} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';
-import {MockMatchMedia} from './mock/mock-match-media';
-import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
+import {MockMatchMedia, MockMatchMediaProvider} from './mock/mock-match-media';
+import {BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from './match-media';
 import {ObservableMedia} from '../observable-media/observable-media';
@@ -26,7 +26,7 @@ describe('match-media', () => {
     TestBed.configureTestingModule({
       providers: [
         BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
+        BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });
@@ -43,10 +43,10 @@ describe('match-media', () => {
   it('can observe the initial, default activation for mediaQuery == "all". ', () => {
     let current: MediaChange;
     let subscription = matchMedia
-        .observe()
-        .subscribe((change: MediaChange) => {
-          current = change;
-        });
+      .observe()
+      .subscribe((change: MediaChange) => {
+        current = change;
+      });
 
     async(() => {
       expect(current.mediaQuery).toEqual('all');
@@ -69,14 +69,12 @@ describe('match-media', () => {
 
     async(() => {
       expect(current.mediaQuery).toEqual('all');    // default mediaQuery is active
-
       let activated = matchMedia.activate(query1);    // simulate mediaQuery change to Query1
       expect(activated).toEqual(true);
       expect(current.mediaQuery).toEqual(query1);
       expect(matchMedia.isActive(query1)).toBeTruthy();
 
       activated = matchMedia.activate(query2);        // simulate mediaQuery change to Query2
-
       expect(activated).toEqual(true);
       expect(current.mediaQuery).toEqual(query2);   // confirm no notification
       expect(matchMedia.isActive(query2)).toBeTruthy();
@@ -99,15 +97,12 @@ describe('match-media', () => {
 
     async(() => {
       expect(current).toBeUndefined();   // no notification for the default, active mediaQuery
-
       activated = matchMedia.activate(query1);   // simulate mediaQuery change
-
       expect(activated).toEqual(true);
       expect(current.mediaQuery).toEqual(query1);
       expect(matchMedia.isActive(query1)).toBeTruthy();
 
       activated = matchMedia.activate(query2);   // simulate mediaQuery change
-
       expect(activated).toEqual(true);
       expect(matchMedia.isActive(query2)).toBeTruthy();
 
@@ -130,27 +125,27 @@ describe('match-media-observable', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       providers: [
-        DEFAULT_BREAKPOINTS_PROVIDER,  // Supports developer overrides of list of known breakpoints
+        BREAKPOINTS_PROVIDER,  // Supports developer overrides of list of known breakpoints
         BreakPointRegistry,   // Registry of known/used BreakPoint(s)
         OBSERVABLE_MEDIA_PROVIDER,  // injectable `media$` matchMedia observable
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        MockMatchMediaProvider,
       ]
     });
   });
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
-      [ObservableMedia, MatchMedia, BreakPointRegistry],
-      (_media$, _matchMedia, _breakPoints) => {
-        matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
-        breakPoints = _breakPoints;
-        mediaQuery$ = _media$;
+    [ObservableMedia, MatchMedia, BreakPointRegistry],
+    (_media$, _matchMedia, _breakPoints) => {
+      matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
+      breakPoints = _breakPoints;
+      mediaQuery$ = _media$;
 
-        // Quick register all breakpoint mediaQueries
-        breakPoints.items.forEach((bp: BreakPoint) => {
-          matchMedia.observe(bp.mediaQuery);
-        });
-      })));
+      // Quick register all breakpoint mediaQueries
+      breakPoints.items.forEach((bp: BreakPoint) => {
+        matchMedia.observe(bp.mediaQuery);
+      });
+    })));
   afterEach(() => {
     matchMedia.clearAll();
   });
@@ -235,7 +230,6 @@ describe('match-media-observable', () => {
     matchMedia.activate(breakPoints.findByAlias('gt-md')!.mediaQuery);
 
     // 'all' mediaQuery is already active; total count should be (3)
-
     expect(activationCount).toEqual(2);
     expect(deactivationCount).toEqual(0);
 

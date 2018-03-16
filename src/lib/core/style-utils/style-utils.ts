@@ -10,14 +10,16 @@ import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
 import {StylesheetMap} from '../stylesheet-map/stylesheet-map';
-import {SERVER_TOKEN} from '../server-token';
+import {SERVER_TOKEN} from '../tokens/server-token';
+import {DISABLE_VENDOR_PREFIXES} from '../tokens/vendor-prefixes-token';
 
 @Injectable()
 export class StyleUtils {
 
   constructor(@Optional() private _serverStylesheet: StylesheetMap,
               @Optional() @Inject(SERVER_TOKEN) private _serverModuleLoaded: boolean,
-              @Inject(PLATFORM_ID) private _platformId) {}
+              @Inject(PLATFORM_ID) private _platformId,
+              @Optional() @Inject(DISABLE_VENDOR_PREFIXES) private noVendorPrefixes: boolean) {}
 
   /**
    * Applies styles given via string pair or object map to the directive element
@@ -28,7 +30,7 @@ export class StyleUtils {
       styles[style] = value;
       style = styles;
     }
-    styles = applyCssPrefixes(style);
+    styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
     this._applyMultiValueStyleToElement(styles, element);
   }
 
@@ -36,7 +38,7 @@ export class StyleUtils {
    * Applies styles given via string pair or object map to the directive's element
    */
   applyStyleToElements(style: StyleDefinition, elements: HTMLElement[] = []) {
-    const styles = applyCssPrefixes(style);
+    const styles = this.noVendorPrefixes ? style : applyCssPrefixes(style);
     elements.forEach(el => {
       this._applyMultiValueStyleToElement(styles, el);
     });

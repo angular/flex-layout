@@ -7,7 +7,7 @@
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
+import {BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {DEFAULT_BREAKPOINTS} from '../breakpoints/data/break-points';
 import {MediaChange} from '../media-change';
 import {MockMatchMedia} from '../match-media/mock/mock-match-media';
@@ -27,7 +27,7 @@ describe('media-monitor', () => {
       providers: [
         MediaMonitor,
         BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
+        BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
         {provide: MatchMedia, useClass: MockMatchMedia}
       ]
     });

@@ -10,10 +10,11 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {Platform, PlatformModule} from '@angular/cdk/platform';
 import {
-  BreakPointRegistry,
-  DEFAULT_BREAKPOINTS_PROVIDER,
+  ADD_FLEX_STYLES,
+  DISABLE_VENDOR_PREFIXES,
   MatchMedia,
   MockMatchMedia,
+  MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -57,10 +58,7 @@ describe('flex directive', () => {
       imports: [CommonModule, FlexLayoutModule, PlatformModule],
       declarations: [TestFlexComponent, TestQueryWithFlexComponent],
       providers: [
-        BreakPointRegistry,
-        DEFAULT_BREAKPOINTS_PROVIDER,
-        {provide: MatchMedia, useClass: MockMatchMedia},
-        StyleUtils,
+        MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true}
       ]
     });
@@ -251,7 +249,7 @@ describe('flex directive', () => {
       // TODO(CaerusKaru): Domino is unable to detect this style
       if (!isPlatformServer(platformId)) {
         // parent flex-direction found with 'column' with child height styles
-        expectEl(parent).toHaveStyle({'flex-direction': 'column', 'display': 'flex'}, styler);
+        expectEl(parent).toHaveCSS({'flex-direction': 'column', 'display': 'flex'}, styler);
         expectEl(element).toHaveStyle({'min-height': '30px'}, styler);
         expectEl(element).not.toHaveStyle({'min-width': '30px'}, styler);
       }
@@ -273,7 +271,7 @@ describe('flex directive', () => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
+        expectEl(parent).not.toHaveStyle({'flex-direction': 'row'}, styler);
         expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
         expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
       });
@@ -722,6 +720,86 @@ describe('flex directive', () => {
           expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, _styler);
         })
     );
+  });
+
+  describe('with flex token enabled', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [CommonModule, FlexLayoutModule, PlatformModule],
+        declarations: [TestFlexComponent, TestQueryWithFlexComponent],
+        providers: [
+          MockMatchMediaProvider,
+          {provide: SERVER_TOKEN, useValue: true},
+          {provide: ADD_FLEX_STYLES, useValue: true},
+        ]
+      });
+    });
+
+    it('should work with non-direct-parent fxLayouts', async(() => {
+      componentWithTemplate(`
+        <div fxLayout='column'>
+          <div class='test'>
+            <div fxFlex='40px' fxFlex.gt-sm='50'></div>
+          </div>
+        </div>
+      `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      let parent = queryFor(fixture, '.test')[0];
+
+      setTimeout(() => {
+        // The parent flex-direction not found;
+        // A flex-direction should have been auto-injected to the parent...
+        // fallback to 'row' and set child width styles accordingly
+        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
+        expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
+        expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
+      });
+
+    }));
+  });
+
+  describe('with prefixes disabled', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [CommonModule, FlexLayoutModule, PlatformModule],
+        declarations: [TestFlexComponent, TestQueryWithFlexComponent],
+        providers: [
+          MockMatchMediaProvider,
+          {provide: SERVER_TOKEN, useValue: true},
+          {provide: DISABLE_VENDOR_PREFIXES, useValue: true},
+        ]
+      });
+    });
+
+    it('should work with non-direct-parent fxLayouts', async(() => {
+      componentWithTemplate(`
+        <div fxLayout='column'>
+          <div class='test'>
+            <div fxFlex='40px' fxFlex.gt-sm='50'></div>
+          </div>
+        </div>
+      `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      let parent = queryFor(fixture, '.test')[0];
+
+      setTimeout(() => {
+        // The parent flex-direction not found;
+        // A flex-direction should have been auto-injected to the parent...
+        // fallback to 'row' and set child width styles accordingly
+        expectEl(parent).not.toHaveStyle({'-webkit-flex-direction': 'row'}, styler);
+        expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
+        expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
+      });
+
+    }));
   });
 
 });

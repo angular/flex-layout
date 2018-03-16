@@ -5,14 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {TestBed, inject} from '@angular/core/testing';
+import {TestBed, inject, fakeAsync} from '@angular/core/testing';
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from './break-points-token';
-import {
-  DEFAULT_BREAKPOINTS_PROVIDER,
-  buildMergedBreakPoints
-} from './break-points-provider';
+import {BREAKPOINTS_PROVIDER, BREAKPOINTS_PROVIDER_FACTORY} from './break-points-provider';
 import {validateSuffixes, mergeByAlias} from './breakpoint-tools';
 
 describe('breakpoint-tools', () => {
@@ -22,7 +19,7 @@ describe('breakpoint-tools', () => {
   }, null);
 
   beforeEach(() => {
-    all = buildMergedBreakPoints([], {orientations: true})();
+    all = BREAKPOINTS_PROVIDER_FACTORY([], [], false, true);
   });
 
   describe('validation', () => {
@@ -47,18 +44,20 @@ describe('breakpoint-tools', () => {
       expect(validated[4].suffix).toEqual('HandsetPortrait');
     });
     it('should auto-validate the DEFAULT_BREAKPOINTS', () => {
-      let xsBp: BreakPoint = findByAlias('xs')!;
-      let gtLgBp: BreakPoint = findByAlias('gt-lg')!;
-      let xlBp: BreakPoint = findByAlias('xl')!;
+      fakeAsync(() => {
+        let xsBp: BreakPoint = findByAlias('xs')!;
+        let gtLgBp: BreakPoint = findByAlias('gt-lg')!;
+        let xlBp: BreakPoint = findByAlias('xl')!;
 
-      expect(xsBp.alias).toEqual('xs');
-      expect(xsBp.suffix).toEqual('Xs');
+        expect(xsBp.alias).toEqual('xs');
+        expect(xsBp.suffix).toEqual('Xs');
 
-      expect(gtLgBp.alias).toEqual('gt-lg');
-      expect(gtLgBp.suffix).toEqual('GtLg');
+        expect(gtLgBp.alias).toEqual('gt-lg');
+        expect(gtLgBp.suffix).toEqual('GtLg');
 
-      expect(xlBp.alias).toEqual('xl');
-      expect(xlBp.suffix).toEqual('Xl');
+        expect(xlBp.alias).toEqual('xl');
+        expect(xlBp.suffix).toEqual('Xl');
+      });
     });
   });
 
@@ -76,7 +75,7 @@ describe('breakpoint-tools', () => {
     });
     it('should add custom breakpoints with unique aliases', () => {
       let defaults = [{alias: 'xs', mediaQuery: 'screen and (max-width: 599px)'}],
-          custom = [{alias: 'sm', mediaQuery: 'screen'}, {alias: 'md', mediaQuery: 'screen'}];
+        custom = [{alias: 'sm', mediaQuery: 'screen'}, {alias: 'md', mediaQuery: 'screen'}];
 
       all = mergeByAlias(defaults, custom);
 
@@ -97,12 +96,12 @@ describe('breakpoint-tools', () => {
     });
   });
 
-  describe('with DEFAULT_BREAKPOINTS_PROVIDER', () => {
+  describe('with BREAKPOINTS_PROVIDER', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         providers: [
-          DEFAULT_BREAKPOINTS_PROVIDER  // Supports developer overrides of list of known breakpoints
+          BREAKPOINTS_PROVIDER  // Supports developer overrides of list of known breakpoints
         ]
       });
     });

@@ -12,10 +12,12 @@ import {BreakPoint} from '../break-point';
 import {DEFAULT_BREAKPOINTS} from './break-points';
 import {ORIENTATION_BREAKPOINTS} from './orientation-break-points';
 import {BREAKPOINTS} from '../break-points-token';
+import {BREAKPOINTS_PROVIDER} from '../break-points-provider';
 import {
-  DEFAULT_BREAKPOINTS_PROVIDER,
-  CUSTOM_BREAKPOINTS_PROVIDER_FACTORY
-} from '../break-points-provider';
+  ADD_ORIENTATION_BREAKPOINTS,
+  BREAKPOINT,
+  DISABLE_DEFAULT_BREAKPOINTS,
+} from '../../tokens/breakpoint-token';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
@@ -27,7 +29,7 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [DEFAULT_BREAKPOINTS_PROVIDER]
+        providers: [BREAKPOINTS_PROVIDER]
       });
     });
     beforeEach(async(inject([BREAKPOINTS], (_) => {
@@ -53,7 +55,10 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(EXTRAS)]
+        providers: [
+          BREAKPOINTS_PROVIDER,
+          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
+        ]
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
@@ -90,7 +95,11 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(EXTRAS, {orientations: true})]
+        providers: [
+          BREAKPOINTS_PROVIDER,
+          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
+          {provide: ADD_ORIENTATION_BREAKPOINTS, useValue: true},
+        ]
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
@@ -131,7 +140,11 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(EXTRAS, {defaults: false})]
+        providers: [
+          BREAKPOINTS_PROVIDER,
+          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
+          {provide: DISABLE_DEFAULT_BREAKPOINTS, useValue: true},
+        ]
       });
     });
     // tslint:disable-next-line:no-shadowed-variable

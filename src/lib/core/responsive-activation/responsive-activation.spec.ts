@@ -5,11 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {TestBed, inject} from '@angular/core/testing';
+import {TestBed, inject, fakeAsync} from '@angular/core/testing';
 
-import {DEFAULT_BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
+import {BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
-import {MockMatchMedia} from '../match-media/mock/mock-match-media';
+import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaMonitor} from '../media-monitor/media-monitor';
 import {ResponsiveActivation, KeyOptions} from './responsive-activation';
@@ -38,29 +38,28 @@ describe('responsive-activation', () => {
     TestBed.configureTestingModule({
       providers: [
         MediaMonitor,
-        BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        DEFAULT_BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
-        {provide: MatchMedia, useClass: MockMatchMedia}
+        BreakPointRegistry,   // Registry of known/used BreakPoint(s)
+        BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
+        MockMatchMediaProvider,
       ]
     });
   });
 
   // Single async inject to save references; which are used in all tests below
   beforeEach(inject(
-      [MatchMedia, MediaMonitor],
-      (_matchMedia, _mediaMonitor) => {
-        matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
-        monitor = _mediaMonitor;
-      }
+    [MatchMedia, MediaMonitor],
+    (_matchMedia, _mediaMonitor) => {
+      matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
+      monitor = _mediaMonitor;
+    }
   ));
 
   it('does not report mediaQuery changes for static usages', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange);
-    try {
+    fakeAsync(() => {
       // Confirm static values are returned as expected
-
       expect(value).toBeUndefined();
       expect(responder.activatedInputKey).toEqual('layout');
       expect(responder.activatedInput).toEqual('row');
@@ -68,7 +67,6 @@ describe('responsive-activation', () => {
       // No responsive inputs were defined, so any mediaQuery
       // activations should not affect anything and the change handler
       // should NOT have been called.
-
       matchMedia.activate('xs');
 
       expect(value).toBeUndefined();
@@ -81,23 +79,22 @@ describe('responsive-activation', () => {
       expect(responder.activatedInputKey).toEqual('layout');
       expect(responder.activatedInput).toEqual('row');
 
-    } finally {
       responder.destroy();
-    }
+    });
   });
 
   it('reports mediaQuery changes for responsive usages', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
-          'layout': 'row',
-          'layoutXs': 'column',          // define trigger to 'xs' mediaQuery
-          'layoutMd': 'column-reverse',  // define trigger to 'md' mediaQuery
-          'layoutGtLg': 'row-reverse'    // define trigger to 'md' mediaQuery
-        }
+        'layout': 'row',
+        'layoutXs': 'column',          // define trigger to 'xs' mediaQuery
+        'layoutMd': 'column-reverse',  // define trigger to 'md' mediaQuery
+        'layoutGtLg': 'row-reverse'    // define trigger to 'md' mediaQuery
+      }
     );
 
-    try {
+    fakeAsync(() => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
@@ -109,21 +106,20 @@ describe('responsive-activation', () => {
       matchMedia.activate('gt-lg');
       expect(value).toEqual('row-reverse');
 
-    } finally {
       responder.destroy();
-    }
+    });
   });
 
   it('uses fallback to default input if the activated mediaQuery should be ignored', () => {
     let value;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
-          'layout': 'row',
-          'layoutXs': 'column',          // define input value link to 'xs' mediaQuery
-        }
+        'layout': 'row',
+        'layoutXs': 'column',          // define input value link to 'xs' mediaQuery
+      }
     );
 
-    try {
+    fakeAsync(() => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
@@ -131,26 +127,24 @@ describe('responsive-activation', () => {
 
       // No input 'layoutMd' has been defined, so the fallback
       // to 'layout' input value should be used...
-
       matchMedia.activate('md');
       expect(value).toEqual('row');
 
-    } finally {
       responder.destroy();
-    }
+    });
   });
 
   it('uses closest responsive input value if the activated mediaQuery is not linked', () => {
     let value, enableOverlaps = false;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
-          'layout': 'row',
-          'layoutXs': 'column',          // define link to 'xs' mediaQuery
-          'layoutGtSm': 'row-reverse'      // define link to 'gt-sm' mediaQuery
-        }
+        'layout': 'row',
+        'layoutXs': 'column',          // define link to 'xs' mediaQuery
+        'layoutGtSm': 'row-reverse'      // define link to 'gt-sm' mediaQuery
+      }
     );
 
-    try {
+    fakeAsync(() => {
       expect(value).toBeUndefined();
 
       matchMedia.activate('xs');
@@ -158,13 +152,11 @@ describe('responsive-activation', () => {
 
       // No input 'layoutMd' has been defined, so the fallback
       // to 'layoutGtSm' input value should be used...
-
       matchMedia.activate('md', enableOverlaps = true);
       expect(value).toEqual('row-reverse');
 
-    } finally {
       responder.destroy();
-    }
+    });
   });
 
 });

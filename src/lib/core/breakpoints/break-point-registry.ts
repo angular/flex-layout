@@ -13,7 +13,7 @@ import {BREAKPOINTS} from './break-points-token';
 
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
- * This is published as a provider and may be overriden from custom, application-specific ranges
+ * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
 @Injectable()
@@ -25,7 +25,7 @@ export class BreakPointRegistry {
   /**
    * Accessor to raw list
    */
-  get items(): BreakPoint[ ] {
+  get items(): BreakPoint[] {
     return [...this._registry];
   }
 
