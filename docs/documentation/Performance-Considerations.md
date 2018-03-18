@@ -80,5 +80,5 @@ use a flow-direction == "column":
 ```
 
 This **`class`-based** approach performs very well by leveraging stylesheets instead of inline-styles. Here is an 
-online [Plunkr - Flex-Layout Performance](https://plnkr.co/edit/s0Hkx4S9Xc830Kzoj48V?p=preview) that demonstrates the 
-issue (see `Use fxLayout` button) and solution (see `Use CSS` button).
+online [StackBlitz - Flex-Layout Performance](https://stackblitz.com/edit/angular-flex-layout-seed-jmob2p) that 
+demonstrates the issue (see `Use fxLayout` button) and solution (see `Use CSS` button).
