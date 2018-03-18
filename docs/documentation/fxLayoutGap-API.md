@@ -1,4 +1,4 @@
-The [**fxLayoutGap** directive](https://github.com/angular/flex-layout/blob/master/src/lib/flex/layout-gap/layout-gap.tst#L38) 
+The [**fxLayoutGap** directive](https://github.com/angular/flex-layout/blob/master/src/lib/flex/layout-gap/layout-gap.ts#L38) 
 should be used on to specify margin gaps on children within a flexbox container (e.g. nested within a fxLayout container).
 
 * `margin-right` used when the parent container `flex-direction` == "row" 
