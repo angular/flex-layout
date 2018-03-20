@@ -246,11 +246,17 @@ export class LayoutGapDirective extends BaseFxDirective
 
     switch (this._layout) {
       case 'column':
-      case 'column-reverse':
         key = 'margin-bottom';
         break;
-      case 'row' :
+      case 'column-reverse':
+        key = 'margin-top';
+        break;
+      case 'row':
+        key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
+        break;
       case 'row-reverse':
+        key = this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
+        break;
       default :
         key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
         break;
