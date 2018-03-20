@@ -8,8 +8,7 @@
 import {NgModule} from '@angular/core';
 
 import {MediaMonitor} from './media-monitor/media-monitor';
-import {BreakPointRegistry} from './breakpoints/break-point-registry';
-
+import {BREAKPOINT_REGISTRY_PROVIDER} from './breakpoints/break-point-registry-provider';
 import {OBSERVABLE_MEDIA_PROVIDER} from './observable-media/observable-media-provider';
 import {BREAKPOINTS_PROVIDER} from './breakpoints/break-points-provider';
 import {MATCH_MEDIA_PROVIDER} from './match-media/match-media-provider';
@@ -25,11 +24,11 @@ import {STYLESHEET_MAP_PROVIDER} from './stylesheet-map/stylesheet-map-provider'
 
 @NgModule({
   providers: [
-    BREAKPOINTS_PROVIDER,    // Supports developer overrides of list of known breakpoints
-    BreakPointRegistry,      // Registry of known/used BreakPoint(s)
-    MATCH_MEDIA_PROVIDER,    // Low-level service to publish observables w/ window.matchMedia()
-    MediaMonitor,            // MediaQuery monitor service observes all known breakpoints
-    OBSERVABLE_MEDIA_PROVIDER,  // easy subscription injectable `media$` matchMedia observable]
+    BREAKPOINTS_PROVIDER,         // Supports developer overrides of list of known breakpoints
+    BREAKPOINT_REGISTRY_PROVIDER, // Registry of known/used BreakPoint(s)
+    MATCH_MEDIA_PROVIDER,         // Low-level service to publish observables w/ window.matchMedia()
+    MediaMonitor,                 // MediaQuery monitor service observes all known breakpoints
+    OBSERVABLE_MEDIA_PROVIDER,    // easy subscription injectable `media$` matchMedia observable]
     STYLESHEET_MAP_PROVIDER,
     StyleUtils,
     BROWSER_PROVIDER,
