@@ -100,6 +100,7 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.1",
     "karma-sauce-launcher": "^1.2.0",
+    "karma-spec-reporter": "^0.0.32",
     "karma-sourcemap-loader": "^0.3.7",
     "madge": "^3.0.0",
     "magic-string": "^0.22.4",
