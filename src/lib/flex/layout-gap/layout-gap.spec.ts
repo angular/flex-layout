@@ -208,12 +208,12 @@ describe('layout-gap directive', () => {
       verifyCorrectMargin('column', 'margin-bottom');
     });
 
-    it('should apply margin-right for row-reverse layouts', () => {
-      verifyCorrectMargin('row-reverse', 'margin-right');
+    it('should apply margin-left for row-reverse layouts', () => {
+      verifyCorrectMargin('row-reverse', 'margin-left');
     });
 
-    it('should apply margin-bottom for column-reverse layouts', () => {
-      verifyCorrectMargin('column-reverse', 'margin-bottom');
+    it('should apply margin-top for column-reverse layouts', () => {
+      verifyCorrectMargin('column-reverse', 'margin-top');
     });
 
     it('should remove obsolete margin and apply valid margin for layout changes', () => {
@@ -241,7 +241,7 @@ describe('layout-gap directive', () => {
       nodes = queryFor(fixture, 'span');
 
       expectEl(nodes[0]).not.toHaveStyle({'margin-right': '8px'}, styler);
-      expectEl(nodes[0]).toHaveStyle({'margin-bottom': '8px'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'margin-top': '8px'}, styler);
 
 
       // layout = row-reverse, use margin-right
@@ -250,7 +250,7 @@ describe('layout-gap directive', () => {
       nodes = queryFor(fixture, 'span');
 
       expectEl(nodes[0]).not.toHaveStyle({'margin-bottom': '8px'}, styler);
-      expectEl(nodes[0]).toHaveStyle({'margin-right': '8px'}, styler);
+      expectEl(nodes[0]).toHaveStyle({'margin-left': '8px'}, styler);
     });
 
     it('should recognize hidden elements when applying gaps', () => {
