@@ -44,7 +44,7 @@ task('test:single-run', [':test:build'], (done: () => void) => {
  * This task should be used when running unit tests locally.
  */
 task('test', [':test:build'], () => {
-  let patternRoot = join(packagesDir, '**/*');
+  let patternRoot = join(packagesDir, 'lib', '**/*');
   // Load karma not outside. Karma pollutes Promise with a different implementation.
   let karma = require('karma');
 

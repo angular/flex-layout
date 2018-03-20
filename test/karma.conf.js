@@ -13,7 +13,8 @@ module.exports = (config) => {
       require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
-      require('karma-coverage')
+      require('karma-coverage'),
+      require('karma-spec-reporter')
     ],
     files: [
       {pattern: 'node_modules/core-js/client/core.js', included: true, watched: false},
@@ -49,13 +50,17 @@ module.exports = (config) => {
       'dist/packages/**/*.js': ['sourcemap']
     },
 
-    reporters: ['dots'],
+    reporters: ['spec'],
     autoWatch: false,
 
     coverageReporter: {
       type : 'json-summary',
       dir : 'dist/coverage/',
       subdir: '.'
+    },
+
+    specReporter: {
+      maxLogLines: 1,
     },
 
     sauceLabs: {
@@ -78,14 +83,15 @@ module.exports = (config) => {
       project: 'flex-layout',
       startTunnel: false,
       retryLimit: 1,
-      timeout: 600,
+      timeout: 1800,
       pollingTimeout: 20000,
       video: false
     },
 
-    browserDisconnectTimeout: 20000,
-    browserNoActivityTimeout: 240000,
-    captureTimeout: 120000,
+    browserDisconnectTimeout: 180000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 300000,
+    captureTimeout: 180000,
     browsers: ['ChromeHeadlessCISandbox'],
 
     singleRun: false,
