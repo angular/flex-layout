@@ -11,7 +11,7 @@ const DIRECTIONS = ['row', 'row-reverse', 'column', 'column-reverse'];
       </mat-card-subtitle>
       <mat-card-content class="large">
         <div fxFlexFill>
-          <div fxFlex
+          <div fxFlexFill
                [fxLayout]="direction + ' wrap'"
                fxLayoutGap="10px grid"
                style="cursor: pointer;"
