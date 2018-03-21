@@ -2,16 +2,8 @@
   <div fxLayout="row"
        fxLayoutAlign="start center"
        fxLayoutGap="20px"
-       style="height:40px; min-height:40px;">
+       style="height:30px; min-height:30px;">
     <h2>Layout Demos: </h2>
-    <button mat-raised-button color="primary" [routerLink]="['']">
-      Static
-    </button>
-    <button mat-raised-button color="primary" [routerLink]="['responsive']"> Responsive
-    </button>
-    <button mat-raised-button color="primary" [routerLink]="['issues']"> Github</button>
-    <button mat-raised-button color="primary" [routerLink]="['stackoverflow']"> StackOverflow
-    </button>
     <span>Version: {{version}}</span>
   </div>
   <div fxFlex fxLayout="column"
@@ -23,6 +15,19 @@
     <span class="title" style="font-size: 0.7em; font-weight:normal;">
                 Hint: Click on any of the samples below to toggle the layout direction(s).
               </span>
+  </div>
+  <div fxLayout="row"
+       fxLayoutAlign="start center"
+       fxLayoutGap="20px"
+       style="height:40px; min-height:40px;">
+    <button mat-raised-button color="primary" [routerLink]="['']">
+      Static
+    </button>
+    <button mat-raised-button color="primary" [routerLink]="['responsive']"> Responsive
+    </button>
+    <button mat-raised-button color="primary" [routerLink]="['issues']"> Github</button>
+    <button mat-raised-button color="primary" [routerLink]="['stackoverflow']"> StackOverflow
+    </button>
   </div>
 </div>
 
