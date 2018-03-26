@@ -5,15 +5,9 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, ModuleWithProviders, NgModule, Optional, PLATFORM_ID} from '@angular/core';
+import {Inject, NgModule, Optional, PLATFORM_ID} from '@angular/core';
 import {isPlatformServer} from '@angular/common';
-import {
-  BreakPoint,
-  BreakPointProviderOptions,
-  CUSTOM_BREAKPOINTS_PROVIDER_FACTORY,
-  CoreModule,
-  SERVER_TOKEN,
-} from '@angular/flex-layout/core';
+import {SERVER_TOKEN} from '@angular/flex-layout/core';
 import {ExtendedModule} from '@angular/flex-layout/extended';
 import {FlexModule} from '@angular/flex-layout/flex';
 
@@ -30,8 +24,8 @@ import {FlexModule} from '@angular/flex-layout/flex';
  *
  */
 @NgModule({
-  imports: [FlexModule, ExtendedModule, CoreModule],
-  exports: [FlexModule, ExtendedModule, CoreModule]
+  imports: [FlexModule, ExtendedModule],
+  exports: [FlexModule, ExtendedModule]
 })
 export class FlexLayoutModule {
 
@@ -42,24 +36,5 @@ export class FlexLayoutModule {
     if (isPlatformServer(platformId) && !serverModuleLoaded) {
       console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');
     }
-  }
-
-  /**
-   * External uses can easily add custom breakpoints AND include internal orientations
-   * breakpoints; which are not available by default.
-   *
-   * !! Selector aliases are not auto-configured. Developers must subclass
-   * the API directives to support extra selectors for the orientations breakpoints !!
-   * @deprecated use BREAKPOINT multi-provider instead
-   * @deletion-target v6.0.0-beta.15
-   */
-  static provideBreakPoints(breakpoints: BreakPoint[],
-                            options?: BreakPointProviderOptions): ModuleWithProviders {
-    return {
-      ngModule: FlexLayoutModule,
-      providers: [
-        CUSTOM_BREAKPOINTS_PROVIDER_FACTORY(breakpoints, options || {orientations: false})
-      ]
-    };
   }
 }

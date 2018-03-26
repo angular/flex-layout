@@ -16,7 +16,7 @@ import {BREAKPOINTS} from './break-points-token';
  * This is published as a provider and may be overridden from custom, application-specific ranges
  *
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class BreakPointRegistry {
 
   constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[]) {

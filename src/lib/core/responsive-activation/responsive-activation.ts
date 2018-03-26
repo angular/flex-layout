@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Subscription} from 'rxjs/Subscription';
-import {map} from 'rxjs/operators/map';
+import {Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 import {MediaChange, MediaQuerySubscriber} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';

@@ -13,34 +13,6 @@ import {extendObject} from '../object-extend';
 export type ComponentClazzFn = () => Type<any>;
 
 /**
- *  @deprecated
- *  @deletion-target v5.0.0-beta.15
- *  Function generator that captures a Component Type accessor and enables
- *  `expectTemplate( )` to be reusable for *any* captured Component class.
- *
- *  NOTE: These Generators (aka Partial Functions) are used only in
- *        the Karma/Jasmine testing.
- */
-export function makeExpectDOMFrom(getClass: ComponentClazzFn, styles?: any) {
-  let createTestComponent;
-
-  // Return actual `expectTemplate()` function
-  return function expectTemplate(template: string, key?: string, value?: any): any {
-    if (!createTestComponent) {
-      createTestComponent = makeCreateTestComponent(getClass);
-    }
-
-    let fixture = createTestComponent(template, styles);
-    if (key) {
-      let instance = fixture.componentInstance;
-      instance[key] = value;
-    }
-    fixture.detectChanges();
-    return expectNativeEl(fixture);
-  };
-}
-
-/**
  * Function generator that captures a Component Type accessor and enables
  * `createTestComponent()` to be reusable for *any* captured Component class.
  */
@@ -78,30 +50,6 @@ export function expectNativeEl(fixture: ComponentFixture<any>, instanceOptions ?
  */
 export function expectEl(debugEl: DebugElement): any {
   return expect(debugEl.nativeElement);
-}
-
-/**
- * @deprecated
- * @deletion-target v5.0.0-beta.15
- * With the specified Component Type and template,
- * create a component and perform a CSS query to find the nativeElement
- * associated with that query selector.
- */
-export function makeExpectDOMForQuery(getClass: ComponentClazzFn) {
-  let createTestComponent;
-
-  // Return actual `expectTemplate()` function
-  return function expectDomForQuery(template: string, selector: string, index = 0): any {
-    if (!createTestComponent) {
-      createTestComponent = makeCreateTestComponent(getClass);
-    }
-
-    let fixture = createTestComponent(template);
-    fixture.detectChanges();
-
-    let nodes = queryFor(fixture, selector);
-    return nodes.length > index ? expect(nodes[index].nativeElement) : null;
-  };
 }
 
 

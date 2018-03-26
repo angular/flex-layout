@@ -13,13 +13,7 @@ const buildVersion = package.version;
  * Required Angular version for all Angular Layout packages. This version will be used
  * as the peer dependency version for Angular in all release packages.
  */
-const angularVersion = '^5.0.0';
-
-/**
- * Required Angular CDK version for all Angular Layout packages. This version will be used
- * as the peer dependency version for Angular CDK in all release packages.
- */
-const cdkVersion = '^5.0.0';
+const angularVersion = '>=6.0.0-beta.0 <7.0.0';
 
 /** License that will be placed inside of all created bundles. */
 const buildLicense = `/**
@@ -33,7 +27,6 @@ const buildLicense = `/**
 module.exports = {
   projectVersion: buildVersion,
   angularVersion: angularVersion,
-  cdkVersion: cdkVersion,
   projectDir: __dirname,
   packagesDir: join(__dirname, 'src'),
   outputDir: join(__dirname, 'dist'),

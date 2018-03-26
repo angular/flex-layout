@@ -12,6 +12,8 @@ import {MatchMedia} from '../match-media/match-media';
 
 /**
  * Ensure a single global service provider
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export function MATCH_MEDIA_PROVIDER_FACTORY(parentMedia: MatchMedia,
                                              ngZone: NgZone,
@@ -23,6 +25,8 @@ export function MATCH_MEDIA_PROVIDER_FACTORY(parentMedia: MatchMedia,
 
 /**
  * Export provider that uses a global service factory (above)
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export const MATCH_MEDIA_PROVIDER = {
   provide: MatchMedia,

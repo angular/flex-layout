@@ -24,14 +24,14 @@
     "@angular/platform-browser": "file:../../../node_modules/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
     "@angular/router": "file:../../../node_modules/@angular/router",
-    "core-js": "^2.4.1",
-    "rxjs": "^5.5.6",
-    "zone.js": "^0.8.19"
+    "core-js": "file:../../../node_modules/core-js",
+    "rxjs": "file:../../../node_modules/rxjs",
+    "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.2",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "^5.2.0",
-    "typescript": "~2.6.2"
+    "@angular/language-service": "^6.0.0-rc.0",
+    "typescript": "file:../../../node_modules/typescript"
   }
 }

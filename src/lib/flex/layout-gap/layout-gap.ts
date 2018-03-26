@@ -25,7 +25,7 @@ import {
   StyleDefinition,
   StyleUtils
 } from '@angular/flex-layout/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';

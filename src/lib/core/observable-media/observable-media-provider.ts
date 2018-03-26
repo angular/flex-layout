@@ -13,6 +13,8 @@ import {ObservableMedia, MediaService} from './observable-media';
 
 /**
  * Ensure a single global ObservableMedia service provider
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService: ObservableMedia,
                                                   matchMedia: MatchMedia,
@@ -21,6 +23,8 @@ export function OBSERVABLE_MEDIA_PROVIDER_FACTORY(parentService: ObservableMedia
 }
 /**
  *  Provider to return global service for observable service for all MediaQuery activations
+ *  @deprecated
+ *  @deletion-target v6.0.0-beta.16
  */
 export const OBSERVABLE_MEDIA_PROVIDER = { // tslint:disable-line:variable-name
   provide: ObservableMedia,

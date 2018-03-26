@@ -7,10 +7,9 @@
  */
 import {TestBed, inject, async} from '@angular/core/testing';
 
-import {BREAKPOINTS_PROVIDER} from '../breakpoints/break-points-provider';
 import {DEFAULT_BREAKPOINTS} from '../breakpoints/data/break-points';
 import {MediaChange} from '../media-change';
-import {MockMatchMedia} from '../match-media/mock/mock-match-media';
+import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaMonitor} from './media-monitor';
@@ -24,12 +23,7 @@ describe('media-monitor', () => {
   beforeEach(() => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      providers: [
-        MediaMonitor,
-        BreakPointRegistry,           // Registry of known/used BreakPoint(s)
-        BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
-        {provide: MatchMedia, useClass: MockMatchMedia}
-      ]
+      providers: [MockMatchMediaProvider]
     });
   });
 

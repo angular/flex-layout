@@ -8,4 +8,7 @@
 import {InjectionToken} from '@angular/core';
 
 export const DISABLE_VENDOR_PREFIXES = new InjectionToken<boolean>(
-  'Flex Layout token, whether to add vendor prefix styles inline for elements');
+  'Flex Layout token, whether to add vendor prefix styles inline for elements', {
+    providedIn: 'root',
+    factory: () => false
+  });

@@ -2,7 +2,8 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {MatCardModule, MatCheckboxModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import {DocsResponsiveComponent} from './docs-responsive/docs-responsive.component';
 import {

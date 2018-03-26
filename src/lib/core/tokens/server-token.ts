@@ -13,4 +13,8 @@ import {InjectionToken} from '@angular/core';
  *
  * NOTE: This can be manually provided to disable styles when using SSR
  */
-export const SERVER_TOKEN = new InjectionToken<boolean>('FlexLayoutServerLoaded');
+export const SERVER_TOKEN = new InjectionToken<boolean>(
+  'FlexLayoutServerLoaded', {
+    providedIn: 'root',
+    factory: () => false
+  });
