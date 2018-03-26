@@ -15,8 +15,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
-import {Observable} from 'rxjs/Observable';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {Observable, ReplaySubject} from 'rxjs';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
 

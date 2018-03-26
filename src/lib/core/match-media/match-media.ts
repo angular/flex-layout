@@ -7,9 +7,8 @@
  */
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operators/filter';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
 
 import {MediaChange} from '../media-change';
 
@@ -20,7 +19,7 @@ import {MediaChange} from '../media-change';
  *
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MatchMedia {
   protected _registry: Map<string, MediaQueryList>;
   protected _source: BehaviorSubject<MediaChange>;

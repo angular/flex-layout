@@ -8,7 +8,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
-import {Platform, PlatformModule} from '@angular/cdk/platform';
+import {Platform} from '@angular/cdk/platform';
 import {
   MatchMedia,
   MockMatchMedia,
@@ -43,7 +43,7 @@ describe('layout-align directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule, PlatformModule],
+      imports: [CommonModule, FlexLayoutModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
         MockMatchMediaProvider,

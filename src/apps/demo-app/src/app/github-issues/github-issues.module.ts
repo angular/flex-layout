@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatCardModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {GithubIssuesComponent} from './github-issues/github-issues.component';

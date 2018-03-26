@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MediaChange, ObservableMedia} from '@angular/flex-layout';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'media-query-status',

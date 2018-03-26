@@ -8,7 +8,7 @@
 import {Component, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
-import {MatButtonModule} from '@angular/material';
+import {MatButtonModule} from '@angular/material/button';
 import {
   MatchMedia,
   CoreModule,

@@ -1,7 +1,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
-import {MatCardModule, MatRadioModule} from '@angular/material';
+import {MatCardModule} from '@angular/material/card';
+import {MatRadioModule} from '@angular/material/radio';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {DocsLayoutComponent} from './docs-layout/docs-layout.component';

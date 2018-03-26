@@ -13,7 +13,7 @@ import {StylesheetMap} from '../stylesheet-map/stylesheet-map';
 import {SERVER_TOKEN} from '../tokens/server-token';
 import {DISABLE_VENDOR_PREFIXES} from '../tokens/vendor-prefixes-token';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class StyleUtils {
 
   constructor(@Optional() private _serverStylesheet: StylesheetMap,

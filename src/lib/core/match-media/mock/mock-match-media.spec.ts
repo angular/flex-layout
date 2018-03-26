@@ -8,10 +8,10 @@
 
 import {TestBed, inject, async} from '@angular/core/testing';
 
+import {MatchMedia} from '../../match-media/match-media';
 import {MediaChange} from '../../media-change';
 import {BreakPoint} from '../../breakpoints/break-point';
-import {MockMatchMedia} from './mock-match-media';
-import {BREAKPOINTS_PROVIDER} from '../../breakpoints/break-points-provider';
+import {MockMatchMedia, MockMatchMediaProvider} from './mock-match-media';
 import {BreakPointRegistry} from '../../breakpoints/break-point-registry';
 
 describe('mock-match-media', () => {
@@ -21,14 +21,10 @@ describe('mock-match-media', () => {
   beforeEach(() => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      providers: [
-        MockMatchMedia,
-        BreakPointRegistry,   // Registry of known/used BreakPoint(s)
-        BREAKPOINTS_PROVIDER, // Supports developer overrides of list of known breakpoints
-      ]
+      providers: [MockMatchMediaProvider]
     });
   });
-  beforeEach(async(inject([MockMatchMedia, BreakPointRegistry], (_matchMedia, _breakPoints) => {
+  beforeEach(async(inject([MatchMedia, BreakPointRegistry], (_matchMedia, _breakPoints) => {
     // Single async inject to save references; which are used in all tests below
     matchMedia = _matchMedia;
     breakPoints = _breakPoints;

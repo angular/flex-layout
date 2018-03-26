@@ -24,7 +24,7 @@ import {
   StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';

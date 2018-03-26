@@ -19,7 +19,6 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
-import {Subscription} from 'rxjs/Subscription';
 import {
   BaseFxDirective,
   MediaChange,
@@ -27,6 +26,7 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {Subscription} from 'rxjs';
 
 import {LayoutDirective} from '@angular/flex-layout/flex';
 

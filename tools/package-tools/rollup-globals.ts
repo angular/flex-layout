@@ -34,8 +34,7 @@ export const rollupGlobals = {
   '@angular/core/testing': 'ng.core.testing',
   '@angular/common/testing': 'ng.common.testing',
   '@angular/common/http/testing': 'ng.common.http.testing',
-  '@angular/material': 'ng.material',
-  '@angular/cdk': 'ng.cdk',
+  '@angular/material/button': 'ng.material.button',
   '@angular/cdk/bidi': 'ng.cdk.bidi',
   '@angular/cdk/platform': 'ng.cdk.platform',
 
@@ -45,23 +44,6 @@ export const rollupGlobals = {
   // Include secondary entry-points of the cdk and material packages
    ...rollupFlexLayoutEntryPoints,
 
-  'rxjs/BehaviorSubject': 'Rx',
-  'rxjs/Observable': 'Rx',
-  'rxjs/Subject': 'Rx',
-  'rxjs/Subscription': 'Rx',
-  'rxjs/Observer': 'Rx',
-  'rxjs/Subscriber': 'Rx',
-  'rxjs/Scheduler': 'Rx',
-  'rxjs/ReplaySubject': 'Rx',
-
-  'rxjs/observable/combineLatest': 'Rx.Observable',
-  'rxjs/observable/forkJoin': 'Rx.Observable',
-  'rxjs/observable/fromEvent': 'Rx.Observable',
-  'rxjs/observable/merge': 'Rx.Observable',
-  'rxjs/observable/of': 'Rx.Observable',
-  'rxjs/observable/throw': 'Rx.Observable',
-  'rxjs/observable/defer': 'Rx.Observable',
-
-  'rxjs/operators/filter': 'Rx.operators',
-  'rxjs/operators/map': 'Rx.operators',
+  'rxjs': 'Rx',
+  'rxjs/operators': 'Rx.operators',
 };

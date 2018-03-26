@@ -5,8 +5,6 @@ export interface BuildConfig {
   projectVersion: string;
   /** Required Angular version for the project. */
   angularVersion: string;
-  /** Required Angular CDK version for the project. */
-  cdkVersion: string;
   /** Path to the root of the project. */
   projectDir: string;
   /** Path to the directory where all packages are living. */

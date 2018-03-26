@@ -13,6 +13,8 @@ import {BREAKPOINTS} from './break-points-token';
 
 /**
  * Ensure a single global service provider
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export function BREAKPOINT_REGISTRY_PROVIDER_FACTORY(parentRegistry: BreakPointRegistry,
                                                      breakpoints: BreakPoint[]) {
@@ -22,6 +24,8 @@ export function BREAKPOINT_REGISTRY_PROVIDER_FACTORY(parentRegistry: BreakPointR
 
 /**
  * Export provider that uses a global service factory (above)
+ * @deprecated
+ * @deletion-target v6.0.0-beta.16
  */
 export const BREAKPOINT_REGISTRY_PROVIDER = {
   provide: BreakPointRegistry,

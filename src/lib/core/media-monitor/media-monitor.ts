@@ -6,9 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operators/filter';
-import {map} from 'rxjs/operators/map';
+import {Observable} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 
 import {BreakPoint} from '../breakpoints/break-point';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
@@ -30,7 +29,7 @@ import {mergeAlias} from '../add-alias';
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MediaMonitor {
   constructor(private _breakpoints: BreakPointRegistry, private _matchMedia: MatchMedia) {
     this._registerBreakpoints();

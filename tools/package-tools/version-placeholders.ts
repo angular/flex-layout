@@ -9,17 +9,11 @@ const versionPlaceholderText = '0.0.0-PLACEHOLDER';
 /** Placeholder that will be replaced with the required Angular version. */
 const ngVersionPlaceholderText = '0.0.0-NG';
 
-/** Placeholder that will be replaced with the required Angular CDK version. */
-const cdkVersionPlaceholderText = '0.0.0-CDK';
-
 /** RegExp that matches version placeholders inside of a file. */
 const ngVersionPlaceholderRegex = new RegExp(ngVersionPlaceholderText, 'g');
 
 /** Expression that matches Angular version placeholders within a file. */
 const versionPlaceholderRegex = new RegExp(versionPlaceholderText, 'g');
-
-/** Expression that matches Angular CDK version placeholders within a file. */
-const cdkVersionPlaceholderRegex = new RegExp(cdkVersionPlaceholderText, 'g');
 
 /**
  * Walks through every file in a directory and replaces the version placeholders with the current
@@ -35,8 +29,7 @@ export function replaceVersionPlaceholders(packageDir: string) {
   files.forEach(filePath => {
     const fileContent = readFileSync(filePath, 'utf-8')
       .replace(ngVersionPlaceholderRegex, buildConfig.angularVersion)
-      .replace(versionPlaceholderRegex, buildConfig.projectVersion)
-      .replace(cdkVersionPlaceholderRegex, buildConfig.cdkVersion);
+      .replace(versionPlaceholderRegex, buildConfig.projectVersion);
 
     writeFileSync(filePath, fileContent);
   });

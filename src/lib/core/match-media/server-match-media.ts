@@ -7,8 +7,7 @@
  */
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 import {BreakPoint} from '../breakpoints/break-point';
 import {MatchMedia} from './match-media';

@@ -13,7 +13,7 @@ import {Injectable} from '@angular/core';
  * This utility class stores all of the styles for a given HTML element
  * as a readonly `stylesheet` map.
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class StylesheetMap {
 
   readonly stylesheet = new Map<HTMLElement, Map<string, string|number>>();

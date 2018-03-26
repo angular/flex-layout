@@ -8,4 +8,7 @@
 import {InjectionToken} from '@angular/core';
 
 export const ADD_FLEX_STYLES = new InjectionToken<boolean>(
-  'Flex Layout token, should flex stylings be applied to parents automatically');
+  'Flex Layout token, should flex stylings be applied to parents automatically', {
+    providedIn: 'root',
+    factory: () => false
+  });

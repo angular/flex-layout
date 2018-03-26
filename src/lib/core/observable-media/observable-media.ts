@@ -6,10 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
-import {Observable, Subscribable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {filter} from 'rxjs/operators/filter';
+import {Observable, Subscribable, Subscription} from 'rxjs';
+import {filter, map} from 'rxjs/operators';
 
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MediaChange} from '../media-change';
@@ -73,7 +71,7 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
  *    }
  *  }
  */
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MediaService implements ObservableMedia {
   /**
    * Should we announce gt-<xxx> breakpoint activations ?
@@ -183,4 +181,7 @@ export class MediaService implements ObservableMedia {
   private observable$: Observable<MediaChange>;
 }
 
-
+export const ObservableMediaProvider = { // tslint:disable-line:variable-name
+  provide: ObservableMedia,
+  useClass: MediaService
+};

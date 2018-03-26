@@ -9,7 +9,7 @@ import {
   QueryList,
 } from '@angular/core';
 import {FlexDirective} from '@angular/flex-layout';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 import {SplitHandleDirective} from './split-handle.directive';
 import {SplitAreaDirective} from './split-area.directive';
