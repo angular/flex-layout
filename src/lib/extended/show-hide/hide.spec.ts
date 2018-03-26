@@ -9,19 +9,21 @@ import {Component, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  MatchMedia,
   CoreModule,
+  customMatchers,
+  expect,
+  expectNativeEl,
+  makeCreateTestComponent,
+  MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
+  NgMatchers,
   ObservableMedia,
+  queryFor,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
-import {
-  makeCreateTestComponent, expectNativeEl, queryFor
-} from '../../utils/testing/helpers';
 import {ShowHideDirective} from './show-hide';
 
 

@@ -21,7 +21,7 @@
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
-    "@angular/flex-layout": "file:../../../dist/releases/flex-layout/angular-flex-layout.tgz",
+    "@angular/flex-layout": "../../../angular-flex-layout-5.0.0-beta.14.tgz",
     "@angular/forms": "file:../../../node_modules/@angular/forms",
     "@angular/http": "file:../../../node_modules/@angular/http",
     "@angular/platform-browser": "file:../../../node_modules/@angular/platform-browser",
@@ -34,9 +34,9 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
+    "@angular/cli": "1.7.3",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "^6.0.0-rc.0",
+    "@angular/language-service": "^6.0.0-rc.3",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",

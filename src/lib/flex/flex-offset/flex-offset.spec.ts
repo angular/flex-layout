@@ -9,16 +9,17 @@ import {Component, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
-  makeCreateTestComponent,
-  queryFor,
+  customMatchers,
   expectEl,
   expectNativeEl,
-} from '../../utils/testing/helpers';
+  makeCreateTestComponent,
+  queryFor,
+  SERVER_TOKEN,
+  StyleUtils,
+} from '@angular/flex-layout/core';
+
+import {FlexModule} from '../module';
 
 describe('flex-offset directive', () => {
   let fixture: ComponentFixture<any>;
@@ -41,7 +42,7 @@ describe('flex-offset directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestFlexComponent],
       providers: [
         {provide: DIR_DOCUMENT, useValue: fakeDocument},

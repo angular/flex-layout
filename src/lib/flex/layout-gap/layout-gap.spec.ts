@@ -9,16 +9,18 @@ import {Component, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
+  customMatchers,
+  expect,
   expectEl,
   expectNativeEl,
   makeCreateTestComponent,
   queryFor,
-} from '../../utils/testing/helpers';
+  SERVER_TOKEN,
+  StyleUtils,
+} from '@angular/flex-layout/core';
+
+import {FlexModule} from '../module';
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
@@ -39,7 +41,7 @@ describe('layout-gap directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutGapComponent],
       providers: [
         {provide: DIR_DOCUMENT, useValue: fakeDocument},

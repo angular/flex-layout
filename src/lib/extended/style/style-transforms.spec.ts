@@ -5,7 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect} from '@angular/flex-layout/core';
+
 import {NgStyleRawList, NgStyleMap, ngStyleUtils as _} from './style-transforms';
 
 describe('ngStyleUtils', () => {

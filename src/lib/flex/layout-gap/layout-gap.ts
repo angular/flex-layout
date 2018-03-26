@@ -20,6 +20,7 @@ import {
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseFxDirective,
+  LAYOUT_VALUES,
   MediaChange,
   MediaMonitor,
   StyleDefinition,
@@ -28,7 +29,6 @@ import {
 import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
-import {LAYOUT_VALUES} from '../../utils/layout-validator';
 
 /**
  * 'layout-padding' styling directive

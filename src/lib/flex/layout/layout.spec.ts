@@ -9,17 +9,19 @@ import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
+  customMatchers,
+  expectEl,
+  expectNativeEl,
+  makeCreateTestComponent,
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
+  queryFor,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
-import {queryFor} from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -39,7 +41,7 @@ describe('layout directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutComponent],
       providers: [
         MockMatchMediaProvider,

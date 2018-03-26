@@ -7,7 +7,7 @@
  */
 import {MediaChange} from './media-change';
 import {BreakPoint} from './breakpoints/break-point';
-import {extendObject} from '../utils/object-extend';
+import {extendObject} from './utils/object-extend';
 
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias

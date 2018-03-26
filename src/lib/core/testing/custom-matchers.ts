@@ -5,15 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {StyleUtils} from '../../core/style-utils/style-utils';
+import {StyleUtils} from '../style-utils/style-utils';
 
 declare var global: any;
 const _global = <any>(typeof window === 'undefined' ? global : window);
 
 import {_dom as _} from './dom-tools';
 
-import {applyCssPrefixes} from '../auto-prefixer';
-import {extendObject} from '../object-extend';
+import {applyCssPrefixes} from '../utils/auto-prefixer';
+import {extendObject} from '../utils/object-extend';
 
 export const expect: (actual: any) => NgMatchers = <any> _global.expect;
 

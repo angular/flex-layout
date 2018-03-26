@@ -25,12 +25,12 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {
   BaseFxDirective,
   BaseFxDirectiveAdapter,
+  extendObject,
   MediaChange,
   MediaMonitor,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {extendObject} from '../../utils/object-extend';
 import {
   NgStyleRawList,
   NgStyleType,
