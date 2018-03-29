@@ -1,3 +1,39 @@
+<a name="5.0.0-beta.14"></a>
+# [5.0.0-beta.14](https://github.com/angular/flex-layout/compare/v2.0.0-beta.old...5.0.0-beta.14) (2018-03-29)
+
+
+### BREAKING CHANGES
+
+* **tokens:** * `fxFlex` no longer adds `display: flex; flex-direction: row` by
+  default
+
+
+### Bug Fixes
+
+* **breakpoints:** add global provider for BreakPointRegistry ([7cedf6f](https://github.com/angular/flex-layout/commit/7cedf6f))
+* **demo-app:** add polyfills for IE11 to demo-app ([a425035](https://github.com/angular/flex-layout/commit/a425035))
+* **demo-app:** fix sizing for layout-gap demo ([0562fcc](https://github.com/angular/flex-layout/commit/0562fcc))
+* **fxFlex:** apply correct flex-basis stylings ([#629](https://github.com/angular/flex-layout/issues/629)) ([1e96cea](https://github.com/angular/flex-layout/commit/1e96cea)), closes [#277](https://github.com/angular/flex-layout/issues/277) [#280](https://github.com/angular/flex-layout/issues/280) [#323](https://github.com/angular/flex-layout/issues/323) [#528](https://github.com/angular/flex-layout/issues/528) [#534](https://github.com/angular/flex-layout/issues/534)
+* **fxFlex:** fix non-wrapping behavior and default fxFlex value ([3cfafd1](https://github.com/angular/flex-layout/commit/3cfafd1))
+* **fxFlex:** fix wrapping in older versions of Safari ([3809608](https://github.com/angular/flex-layout/commit/3809608))
+* **fxFlex:** make sure not to set width/height when flex is default ([b152998](https://github.com/angular/flex-layout/commit/b152998))
+* **fxLayoutGap:** add proper gaps for reverse dir ([3a8041d](https://github.com/angular/flex-layout/commit/3a8041d))
+* **layout-gap:** apply correct gaps based on flex order ([de72903](https://github.com/angular/flex-layout/commit/de72903)), closes [#608](https://github.com/angular/flex-layout/issues/608)
+* **lib:** resolve RegExp Issue in older versions of Safari ([#643](https://github.com/angular/flex-layout/issues/643)) ([85e8aa2](https://github.com/angular/flex-layout/commit/85e8aa2))
+* **release:** Fix release script by removing ',' of the last item in the list ([0486e85](https://github.com/angular/flex-layout/commit/0486e85))
+* **ssr:** fix lazy-loading functionality ([d4f2514](https://github.com/angular/flex-layout/commit/d4f2514))
+
+
+### Features
+
+* **demo-app:** add version number to header ([c984937](https://github.com/angular/flex-layout/commit/c984937))
+* **demo-app:** use Angular CLI to build demo and universal apps ([eda12c3](https://github.com/angular/flex-layout/commit/eda12c3))
+* **demo-app:** use/register custom breakpoints ([0d4144c](https://github.com/angular/flex-layout/commit/0d4144c))
+* **fxLayoutGap:** add gutter functionality to layout-gap ([84ca5c3](https://github.com/angular/flex-layout/commit/84ca5c3))
+* **tokens:** add configuration for breakpoints and flex styles ([605f4d1](https://github.com/angular/flex-layout/commit/605f4d1))
+
+
+
 <a name="5.0.0-beta.13"></a>
 # [5.0.0-beta.13](https://github.com/angular/flex-layout/compare/v2.0.0-beta.12...5.0.0-beta.13) (2018-02-22)
 
