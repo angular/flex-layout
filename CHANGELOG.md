@@ -6,6 +6,7 @@
 
 * **tokens:** * `fxFlex` no longer adds `display: flex; flex-direction: row` by
   default
+* **validateSuffixes:** * `validateSuffixes` is no longer exported for public use. Please use the new [BreakPoints API](https://github.com/angular/flex-layout/wiki/Breakpoints). If you must use `validateSuffixes`, please use `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY`, which is a deprecated wrapper around `validateSuffixes` (please note this has already been removed in the nightly builds, and will be removed completely in the next release)
 
 
 ### Bug Fixes
