@@ -8,6 +8,15 @@
   default
 * **validateSuffixes:** * `validateSuffixes` is no longer exported for public use. Please use the new [BreakPoints API](https://github.com/angular/flex-layout/wiki/Breakpoints). If you must use `validateSuffixes`, please use `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY`, which is a deprecated wrapper around `validateSuffixes` (please note this has already been removed in the nightly builds, and will be removed completely in the next release)
 
+BEFORE:
+
+`import {validateSuffixes} from '@angular/flex-layout';`
+
+AFTER:
+
+`import {DEFAULT_BREAKPOINTS_PROVIDER_FACTORY} from '@angular/flex-layout';`
+
+The functions can be called in the exact same manner, as `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY` is simply a wrapper around `validateSuffixes`. Please note that `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY` is deprecated in this release.
 
 ### Bug Fixes
 
