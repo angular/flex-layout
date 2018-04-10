@@ -1,37 +1,93 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
+# Configuration file for https://circleci.com/gh/angular/flex-layout
+
+# Note: YAML anchors allow an object to be re-used, reducing duplication.
+# The ampersand declares an alias for an object, then later the `<<: *name`
+# syntax dereferences it.
+# See http://blog.daemonl.com/2016/02/yaml.html
+# To validate changes, use an online parser, eg.
+# http://yaml-online-parser.appspot.com/
+
+# Settings common to each job
+anchor_1: &job_defaults
+  working_directory: ~/ng
+  docker:
+    - image: angular/ngcontainer:0.2.0
+
+# After checkout, rebase on top of master.
+# Similar to travis behavior, but not quite the same.
+# By default, PRs are not rebased on top of master, which we want.
+# See https://discuss.circleci.com/t/1662
+anchor_2: &post_checkout
+  post: git pull --ff-only origin "refs/pull/${CI_PULL_REQUEST//*pull\//}/merge"
+
 version: 2
 jobs:
   build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:8.9
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+    <<: *job_defaults
+    resource_class: large
     steps:
-      - checkout
-
-      # Download and cache dependencies
+      - checkout:
+          <<: *post_checkout
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          key: layout-{{ .Branch }}-{{ checksum "package-lock.json" }}
 
-      - run: npm install
-
+      - run: bazel run @nodejs//:npm install
+      # For some reason, circleci needs the postinstall to be run explicitly.
+      # This may be unnecessary once rules_nodejs uses nodejs 8
+      - run: bazel run @nodejs//:npm run postinstall
+      # Use bazel query so that we explicitly ask for all buildable targets to be built as well
+      # This avoids waiting for the slowest build target to finish before running the first test
+      # See https://github.com/bazelbuild/bazel/issues/4257
+      # NOTE: Angular developers should typically just bazel build //... or bazel test //...
+      - run: bazel query --output=label //... | xargs bazel test
       - save_cache:
+          key: layout-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - "node_modules"
 
-      # run the build!
-      - run: npm run lib:build
+  hello_world:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - restore_cache:
+          key: layout-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run: npm run hw:build
+
+  aot:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - restore_cache:
+          key: layout-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run: npm run lib:build:aot
+
+  universal:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - restore_cache:
+          key: layout-{{ .Branch }}-{{ checksum "package-lock.json" }}
+      - run: npm run universal:build
+
+workflows:
+  version: 2
+  default_workflow:
+    jobs:
+      - build
+      - hello_world:
+        requires:
+          - build
+      - aot:
+        requires:
+          - build
+      - universal:
+        requires:
+          - build
+
+general:
+  branches:
+    only:
+      - master

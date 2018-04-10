@@ -5,6 +5,7 @@ dist
 /tmp
 /deploy
 /screenshots
+/bazel-out
 
 # dependencies
 node_modules
@@ -28,3 +29,6 @@ testem.log
 src/apps/universal-app/package-lock.json
 src/apps/demo-app/package-lock.json
 src/apps/hello-world/package-lock.json
+src/apps/universal-app/yarn.lock
+src/apps/demo-app/yarn.lock
+src/apps/hello-world/yarn.lock

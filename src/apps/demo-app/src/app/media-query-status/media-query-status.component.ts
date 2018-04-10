@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout/core';
 import {Observable} from 'rxjs';
 
 @Component({

@@ -4,11 +4,7 @@ import {execTask} from '../util/task_helpers';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
 
-const genericName = 'angular-flex-layout.tgz';
-const {outputDir, packagesDir, projectVersion} = buildConfig;
-const tarName = `angular-flex-layout-${projectVersion}.tgz`;
-const distDir = join(outputDir, 'releases', 'flex-layout');
-const genericTar = join(distDir, genericName);
+const {packagesDir} = buildConfig;
 const universalAppSource = join(packagesDir, 'apps', 'universal-app');
 
 task('universal:serve', sequenceTask(
@@ -22,35 +18,16 @@ task('prerender', sequenceTask(
   'prerender:webpack')
 );
 task('prerender:pre', sequenceTask(
-  'clean',
-  'flex-layout:build-release',
-  'prerender:bundle',
-  'prerender:bundle:rename',
+  'prerender:build:bazel',
   'prerender:clean',
-  'prerender:deps',
-  'prerender:add:tar')
+  'prerender:deps')
 );
 
+task('prerender:build:bazel', execTask(
+  'bazel', ['build', '...']));
+
 task('prerender:deps', [], execTask(
-  'npm', ['install'], {cwd: universalAppSource}
-));
-
-/**
- * The following tasks bundle Flex Layout into a tar file that can be installed
- * directly instead of linked to via sym link. When linking, there are some issues
- * that npm introduces, like Angular functionality impairment. This also has the
- * benefit of better simulating the install process for Flex Layout in a CLI app
- */
-task('prerender:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: universalAppSource}
-));
-
-task('prerender:bundle', [], execTask(
-  'npm', ['pack'], {cwd: distDir}
-));
-
-task('prerender:bundle:rename', [], execTask(
-  'mv', [tarName, genericName], {cwd: distDir}
+  'yarn', [], {cwd: universalAppSource}
 ));
 
 /** Task that builds the universal-app in server mode */
@@ -81,9 +58,9 @@ task('prerender:clear:deps', [], execTask(
   }
 ));
 
-task('prerender:clear:lock', [], () => existsSync(join(universalAppSource, 'package-lock.json')) ?
+task('prerender:clear:lock', [], () => existsSync(join(universalAppSource, 'yarn.lock')) ?
   execTask(
-    'rm', ['package-lock.json'], {
+    'rm', ['yarn.lock'], {
       failOnStderr: false,
       silent: true,
       cwd: universalAppSource

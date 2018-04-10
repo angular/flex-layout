@@ -13,7 +13,7 @@ import {
   SimpleChange,
 } from '@angular/core';
 
-import {buildLayoutCSS} from '../../utils/layout-validator';
+import {buildLayoutCSS} from '../utils/layout-validator';
 import {
   StyleDefinition,
   StyleUtils,

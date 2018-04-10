@@ -19,6 +19,7 @@ import {
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseFxDirective,
+  isFlowHorizontal,
   MediaChange,
   MediaMonitor,
   StyleDefinition,
@@ -27,7 +28,6 @@ import {
 import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
-import {isFlowHorizontal} from '../../utils/layout-validator';
 
 /**
  * 'flex-offset' flexbox styling directive

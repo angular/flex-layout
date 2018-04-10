@@ -19,9 +19,9 @@ branches:
 jobs:
   include:
     - env: "MODE=lint"
-    - env: "MODE=aot"
-    - env: "MODE=hello-world"
-    - env: "MODE=prerender"
+    # - env: "MODE=aot"
+    # - env: "MODE=hello-world"
+    # - env: "MODE=prerender"
     - env: "MODE=ssr"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"

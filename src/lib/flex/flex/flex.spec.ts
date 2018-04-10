@@ -11,41 +11,37 @@ import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
 import {
   ADD_FLEX_STYLES,
+  customMatchers,
   DISABLE_VENDOR_PREFIXES,
+  expect,
+  expectEl,
+  expectNativeEl,
+  makeCreateTestComponent,
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
+  queryFor,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {FlexModule} from '../module';
 import {FlexDirective} from './flex';
 import {LayoutDirective} from '../layout/layout';
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {
-  makeCreateTestComponent,
-  expectNativeEl,
-  queryFor,
-  expectEl,
-} from '../../utils/testing/helpers';
 
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
   let styler: StyleUtils;
-  let platform: Platform;
   let platformId: Object;
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestFlexComponent)(template);
 
-    inject([MatchMedia, StyleUtils, Platform, PLATFORM_ID],
-      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform,
-       _platformId: Object) => {
+    inject([MatchMedia, StyleUtils, PLATFORM_ID],
+      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
       matchMedia = _matchMedia;
       styler = _styler;
-      platform = _platform;
       platformId = _platformId;
     })();
   };
@@ -55,7 +51,7 @@ describe('flex directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestFlexComponent, TestQueryWithFlexComponent],
       providers: [
         MockMatchMediaProvider,
@@ -283,6 +279,7 @@ describe('flex directive', () => {
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate(`<div fxFlex='calc(30vw - 10px)'></div>`);
+      let platform = TestBed.get(Platform);
       if (!(platform.FIREFOX || platform.TRIDENT)) {
         expectNativeEl(fixture).toHaveStyle({
           'box-sizing': 'border-box',
@@ -296,6 +293,7 @@ describe('flex directive', () => {
     it('should work with calc without internal whitespaces', async(() => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
+      let platform = TestBed.get(Platform);
       if (!(platform.FIREFOX || platform.TRIDENT)) {
         fixture.detectChanges();
         setTimeout(() => {
@@ -692,7 +690,7 @@ describe('flex directive', () => {
 
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        imports: [CommonModule, FlexLayoutModule],
+        imports: [CommonModule, FlexModule],
         declarations: [TestFlexComponent, TestQueryWithFlexComponent],
         providers: [
           MockMatchMediaProvider,
@@ -732,7 +730,7 @@ describe('flex directive', () => {
 
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        imports: [CommonModule, FlexLayoutModule],
+        imports: [CommonModule, FlexModule],
         declarations: [TestFlexComponent, TestQueryWithFlexComponent],
         providers: [
           MockMatchMediaProvider,

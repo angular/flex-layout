@@ -10,6 +10,10 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
 import {
+  customMatchers,
+  expectNativeEl,
+  extendObject,
+  makeCreateTestComponent,
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
@@ -17,23 +21,17 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
-import {extendObject} from '../../utils/object-extend';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
-  let platform: Platform;
   let styler: StyleUtils;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestLayoutAlignComponent)(template);
 
-    inject([MatchMedia, Platform, StyleUtils],
-      (_matchMedia: MockMatchMedia, _platform: Platform, _styler: StyleUtils) => {
+    inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
       matchMedia = _matchMedia;
-      platform = _platform;
       styler = _styler;
     })();
   };
@@ -43,7 +41,7 @@ describe('layout-align directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
         MockMatchMediaProvider,
@@ -109,7 +107,7 @@ describe('layout-align directive', () => {
       });
       it('should add correct styles for `fxLayoutAlign="space-evenly"` usage', () => {
         createTestComponent(`<div fxLayoutAlign='space-evenly'></div>`);
-
+        let platform = TestBed.get(Platform);
         // Safari does not appear to support this property
         if (platform.SAFARI) {
           expectNativeEl(fixture).toHaveStyle(

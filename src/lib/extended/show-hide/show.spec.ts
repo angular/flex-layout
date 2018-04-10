@@ -9,6 +9,9 @@ import {Component, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
+  customMatchers,
+  expectNativeEl,
+  makeCreateTestComponent,
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
@@ -16,10 +19,9 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {FlexModule} from '@angular/flex-layout/flex';
 
-import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {ExtendedModule} from '../module';
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
@@ -42,7 +44,7 @@ describe('show directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, ExtendedModule, FlexModule],
       declarations: [TestShowComponent],
       providers: [
         MockMatchMediaProvider,

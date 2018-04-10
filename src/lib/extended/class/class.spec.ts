@@ -10,14 +10,17 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {MatButtonModule} from '@angular/material/button';
 import {
-  MatchMedia,
+  customMatchers,
   CoreModule,
+  expect,
+  expectNativeEl,
+  makeCreateTestComponent,
+  MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
+  queryFor,
 } from '@angular/flex-layout/core';
 
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../utils/testing/helpers';
 import {ClassDirective} from './class';
 
 

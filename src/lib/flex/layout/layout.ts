@@ -14,10 +14,14 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
-import {BaseFxDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseFxDirective,
+  buildLayoutCSS,
+  MediaChange,
+  MediaMonitor,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 import {Observable, ReplaySubject} from 'rxjs';
-
-import {buildLayoutCSS} from '../../utils/layout-validator';
 
 export type Layout = {
   direction: string;

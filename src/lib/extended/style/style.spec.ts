@@ -9,8 +9,11 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  MatchMedia,
   CoreModule,
+  customMatchers,
+  expectNativeEl,
+  makeCreateTestComponent,
+  MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
   StyleUtils,
@@ -18,10 +21,6 @@ import {
 import {LayoutDirective} from '@angular/flex-layout/flex';
 
 import {StyleDirective} from './style';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {
-  makeCreateTestComponent, expectNativeEl
-} from '../../utils/testing/helpers';
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;
