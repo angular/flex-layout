@@ -1,10 +1,7 @@
 import {task} from 'gulp';
 import {execTask} from '../util/task_helpers';
 import {join} from 'path';
-import {
-  buildConfig, copyFiles, sequenceTask,  watchFiles
-} from 'lib-build-tools';
-import {flexLayoutPackage} from '../packages';
+import {buildConfig, copyFiles} from 'lib-build-tools';
 
 // These imports don't have any typings provided.
 const firebaseTools = require('firebase-tools');
@@ -14,13 +11,7 @@ const {outputDir, packagesDir, projectDir} = buildConfig;
 const appDir = join(packagesDir, 'apps', 'demo-app');
 const outDir = join(outputDir, 'packages', 'demo-app');
 
-task(':watch:devapp', () => {
-  // Custom watchers for all packages that are used inside of the demo-app. This is necessary
-  // because we only want to build the changed package (using the build-no-bundles task).
-   watchFiles(join(flexLayoutPackage.sourceDir, '**/!(*.scss)'), ['flex-layout:build-no-bundles']);
-});
-
-task(':serve:devapp', ['aot:pre'], execTask(
+task('serve:devapp', ['aot:pre'], execTask(
   'ng', ['serve', '--port', '5000'],
   {cwd: appDir, failOnStderr: true}
 ));
@@ -30,7 +21,6 @@ task('build:devapp', ['aot:pre'], execTask(
   {cwd: appDir, failOnStderr: true}
 ));
 
-task('serve:devapp', sequenceTask([':serve:devapp', ':watch:devapp']));
 
 /** Task that copies all vendors into the demo-app package. Allows hosting the app on firebase. */
 task('stage-deploy:devapp', ['build:devapp'],

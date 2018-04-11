@@ -17,7 +17,7 @@
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
-    "@angular/flex-layout": "file:../../../dist/releases/flex-layout/angular-flex-layout.tgz",
+    "@angular/flex-layout": "file:../../../dist/bazel/bin/src/lib/npm_package",
     "@angular/forms": "file:../../../node_modules/@angular/forms",
     "@angular/http": "file:../../../node_modules/@angular/http",
     "@angular/material": "file:../../../node_modules/@angular/material",
@@ -29,7 +29,7 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "~1.7.2",
+    "@angular/cli": "1.7.4",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
     "@angular/language-service": "^6.0.0",
     "typescript": "file:../../../node_modules/typescript"

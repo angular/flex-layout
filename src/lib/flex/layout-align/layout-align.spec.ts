@@ -17,7 +17,7 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {FlexModule} from '../module';
 import {extendObject} from '../../utils/object-extend';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
@@ -43,7 +43,7 @@ describe('layout-align directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutAlignComponent],
       providers: [
         MockMatchMediaProvider,

@@ -4,52 +4,29 @@ import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
 import {execTask} from '../util/task_helpers';
 
-const {outputDir, packagesDir, projectVersion} = buildConfig;
+const {packagesDir} = buildConfig;
 
 /** Path to the demo-app source directory. */
-const genericName = 'angular-flex-layout.tgz';
 const helloWorldSource = join(packagesDir, 'apps', 'hello-world');
-const tarName = `angular-flex-layout-${projectVersion}.tgz`;
-const distDir = join(outputDir, 'releases', 'flex-layout');
-const genericTar = join(distDir, genericName);
 
 /** Build the hello-world app to check bundle size for regression */
 task('hw:build', sequenceTask('hw:pre', 'hw:cli'));
 
 task('hw:pre', sequenceTask(
-  'clean',
-  'flex-layout:build-release',
-  'hw:bundle',
-  'hw:bundle:rename',
+  'hw:build:bazel',
   'hw:clean',
-  'hw:deps',
-  'hw:add:tar')
+  'hw:deps')
 );
 
+task('hw:build:bazel', execTask(
+  'bazel', ['build', '...']));
+
 task('hw:deps', [], execTask(
-  'npm', ['install'], {cwd: helloWorldSource}));
+  'yarn', [], {cwd: helloWorldSource}));
 
-
-/**
- * The following tasks bundle Flex Layout into a tar file that can be installed
- * directly instead of linked to via sym link. When linking, there are some issues
- * that npm introduces, like Angular functionality impairment. This also has the
- * benefit of better simulating the install process for Flex Layout in a CLI app
- */
-task('hw:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: helloWorldSource}
-));
-
-task('hw:bundle', [], execTask(
-  'npm', ['pack'], {cwd: distDir}
-));
-
-task('hw:bundle:rename', [], execTask(
-  'mv', [tarName, genericName], {cwd: distDir}
-));
 
 task('hw:cli', execTask(
-  'ng', ['build', '--prod'],
+  'npm', ['run', 'build'],
   {cwd: helloWorldSource, failOnStderr: true}
 ));
 
@@ -62,9 +39,9 @@ task('hw:clear:mods', [], execTask(
   }
 ));
 
-task('hw:clear:lock', [], existsSync(join(helloWorldSource, 'package-lock.json')) ?
+task('hw:clear:lock', [], existsSync(join(helloWorldSource, 'yarn.lock')) ?
   execTask(
-    'rm', ['package-lock.json'], {
+    'rm', ['yarn.lock'], {
       failOnStderr: false,
       cwd: helloWorldSource
     }) : () => {}

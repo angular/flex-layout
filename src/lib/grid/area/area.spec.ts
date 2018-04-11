@@ -92,7 +92,8 @@ describe('grid area child directive', () => {
       } else {
         let areaStyles = styler.lookupStyle(nodes[1].nativeElement, 'grid-area');
         let correctArea = areaStyles === 'grace / sarah' ||
-          areaStyles === 'grace / sarah / grace / sarah';
+          areaStyles === 'grace / sarah / grace / sarah' ||
+          areaStyles === 'grace /  sarah /  grace /  sarah';
         expect(correctArea).toBe(true);
       }
     });
@@ -119,7 +120,8 @@ describe('grid area child directive', () => {
         let areaStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
           'grid-area');
         let correctArea = areaStyles === 'sidebar' ||
-          areaStyles === 'sidebar / sidebar / sidebar / sidebar';
+          areaStyles === 'sidebar / sidebar / sidebar / sidebar' ||
+          areaStyles === 'sidebar /  sidebar /  sidebar /  sidebar';
         expect(correctArea).toBe(true);
       }
 
@@ -138,7 +140,8 @@ describe('grid area child directive', () => {
         let areaStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
           'grid-area');
         let correctArea = areaStyles === 'header' ||
-          areaStyles === 'header / header / header / header';
+          areaStyles === 'header / header / header / header' ||
+          areaStyles === 'header /  header /  header /  header';
         expect(correctArea).toBe(true);
       }
     });
@@ -167,7 +170,8 @@ describe('grid area child directive', () => {
         let areaStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
           'grid-area');
         let correctArea = areaStyles === 'sidebar' ||
-          areaStyles === 'sidebar / sidebar / sidebar / sidebar';
+          areaStyles === 'sidebar / sidebar / sidebar / sidebar' ||
+          areaStyles === 'sidebar /  sidebar /  sidebar /  sidebar';
         expect(correctArea).toBe(true);
       }
 
@@ -183,7 +187,8 @@ describe('grid area child directive', () => {
         let areaStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
           'grid-area');
         let correctArea = areaStyles === 'footer' ||
-          areaStyles === 'footer / footer / footer / footer';
+          areaStyles === 'footer / footer / footer / footer' ||
+          areaStyles === 'footer /  footer /  footer /  footer';
         expect(correctArea).toBe(true);
       }
 
@@ -199,7 +204,8 @@ describe('grid area child directive', () => {
         let areaStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
           'grid-area');
         let correctArea = areaStyles === 'sidebar' ||
-          areaStyles === 'sidebar / sidebar / sidebar / sidebar';
+          areaStyles === 'sidebar / sidebar / sidebar / sidebar' ||
+          areaStyles === 'sidebar /  sidebar /  sidebar /  sidebar';
         expect(correctArea).toBe(true);
       }
     });

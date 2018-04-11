@@ -88,7 +88,10 @@ describe('grid column child directive', () => {
           'grid-column-end': '6',
         }, styler);
       } else {
-        expectEl(nodes[1]).toHaveStyle({'grid-column': 'span 2 / 6'}, styler);
+        let rowStyles = styler.lookupStyle(nodes[1].nativeElement,
+          'grid-column');
+        let correctRow = rowStyles === 'span 2 / 6' || rowStyles === 'span 2 /  6';
+        expect(correctRow).toBe(true);
       }
     });
 
@@ -107,7 +110,7 @@ describe('grid column child directive', () => {
       let colStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-column');
       let correctCol = colStyles === 'apples' || colStyles === 'apples / apples' ||
-        colStyles === 'apples apples';
+        colStyles === 'apples apples' || colStyles === 'apples /  apples';
 
       expect(correctCol).toBe(true);
 
@@ -116,7 +119,7 @@ describe('grid column child directive', () => {
 
       colStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement, 'grid-column');
       correctCol = colStyles === 'oranges' || colStyles === 'oranges / oranges' ||
-        colStyles === 'oranges oranges';
+        colStyles === 'oranges oranges' || colStyles === 'oranges /  oranges';
       expect(correctCol).toBe(true);
     });
   });
@@ -136,21 +139,21 @@ describe('grid column child directive', () => {
       let colStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-column');
       let correctCol = colStyles === 'sidebar' || colStyles === 'sidebar / sidebar' ||
-        colStyles === 'sidebar sidebar';
+        colStyles === 'sidebar sidebar' || colStyles === 'sidebar /  sidebar';
       expect(correctCol).toBe(true);
 
       matchMedia.activate('xs');
       colStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-column');
       correctCol = colStyles === 'footer' || colStyles === 'footer / footer' ||
-        colStyles === 'footer footer';
+        colStyles === 'footer footer' || colStyles === 'footer /  footer';
       expect(correctCol).toBe(true);
 
       matchMedia.activate('md');
       colStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-column');
       correctCol = colStyles === 'sidebar' || colStyles === 'sidebar / sidebar' ||
-        colStyles === 'sidebar sidebar';
+        colStyles === 'sidebar sidebar' || colStyles === 'sidebar /  sidebar';
       expect(correctCol).toBe(true);
     });
   });

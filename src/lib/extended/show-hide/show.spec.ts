@@ -16,8 +16,9 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {FlexModule} from '@angular/flex-layout/flex';
 
-import {FlexLayoutModule} from '../../module';
+import {ExtendedModule} from '../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
 
@@ -42,7 +43,7 @@ describe('show directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule, ExtendedModule],
       declarations: [TestShowComponent],
       providers: [
         MockMatchMediaProvider,

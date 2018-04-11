@@ -16,7 +16,7 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {FlexModule} from '../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
 import {queryFor} from '../../utils/testing/helpers';
@@ -39,7 +39,7 @@ describe('layout directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutComponent],
       providers: [
         MockMatchMediaProvider,

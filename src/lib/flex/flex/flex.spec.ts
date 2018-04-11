@@ -16,7 +16,7 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {FlexDirective} from './flex';
 import {LayoutDirective} from '../layout/layout';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';

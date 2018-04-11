@@ -5,7 +5,8 @@
     "rootDir": "..",
     "baseUrl": ".",
     "paths": {
-      "@angular/flex-layout/*": ["./*"]
+      "@angular/flex-layout/*": ["./*"],
+      "@angular/flex-layout": ["./"]
     }
   },
   "include": ["./**/*.ts"]
