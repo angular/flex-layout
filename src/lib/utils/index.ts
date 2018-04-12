@@ -7,6 +7,5 @@
  */
 
 export * from './auto-prefixer';
-export * from './basis-validator';
 export * from './layout-validator';
 export * from './object-extend';

@@ -23,12 +23,12 @@ import {
   MediaChange,
   MediaMonitor,
   StyleUtils,
+  validateBasis,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
 
 import {extendObject} from '../../utils/object-extend';
 import {Layout, LayoutDirective} from '../layout/layout';
-import {validateBasis} from '../../utils/basis-validator';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
 
