@@ -140,6 +140,7 @@
     start(`Generating changelog from ${oldVersion.cyan} to ${newVersion.cyan}...`);
 
     // Use the current CHANGELOG.md (that is on #master and now this branch)
+    exec(`git fetch origin --tags`);
     exec(`./scripts/release/changelog.js`);
     done();
 
