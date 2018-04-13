@@ -1,3 +1,13 @@
+<a name="6.0.0-beta.15"></a>
+# [6.0.0-beta.15](https://github.com/angular/flex-layout/compare/v5.0.0-beta.14...6.0.0-beta.15) (2018-04-13)
+
+
+### Features
+
+* **core:** add validateBasis to core export ([#706](https://github.com/angular/flex-layout/issues/706)) ([c603a86](https://github.com/angular/flex-layout/commit/c603a86))
+
+
+
 <a name="5.0.0-beta.14"></a>
 # [5.0.0-beta.14](https://github.com/angular/flex-layout/compare/v2.0.0-beta.old...5.0.0-beta.14) (2018-03-29)
 
