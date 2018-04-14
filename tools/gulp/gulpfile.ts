@@ -7,6 +7,7 @@ createPackageBuildTasks(flexLayoutPackage);
 import './tasks/aot';
 import './tasks/build-release';       // release build `github.com/angular/flex-layout-builds`
 import './tasks/clean';
+import './tasks/changelog';
 import './tasks/ci';
 import './tasks/default';
 import './tasks/development';
