@@ -10,6 +10,7 @@ import {isPlatformServer} from '@angular/common';
 import {SERVER_TOKEN} from '@angular/flex-layout/core';
 import {ExtendedModule} from '@angular/flex-layout/extended';
 import {FlexModule} from '@angular/flex-layout/flex';
+import {GridModule} from '@angular/flex-layout/grid';
 
 
 /**
@@ -24,8 +25,8 @@ import {FlexModule} from '@angular/flex-layout/flex';
  *
  */
 @NgModule({
-  imports: [FlexModule, ExtendedModule],
-  exports: [FlexModule, ExtendedModule]
+  imports: [FlexModule, ExtendedModule, GridModule],
+  exports: [FlexModule, ExtendedModule, GridModule]
 })
 export class FlexLayoutModule {
 

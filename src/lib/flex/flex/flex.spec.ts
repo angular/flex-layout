@@ -283,7 +283,7 @@ describe('flex directive', () => {
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate(`<div fxFlex='calc(30vw - 10px)'></div>`);
-      if (!(platform.FIREFOX || platform.TRIDENT)) {
+      if (!(platform.FIREFOX || platform.EDGE)) {
         expectNativeEl(fixture).toHaveStyle({
           'box-sizing': 'border-box',
           'flex-grow': '1',
@@ -296,7 +296,7 @@ describe('flex directive', () => {
     it('should work with calc without internal whitespaces', async(() => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
-      if (!(platform.FIREFOX || platform.TRIDENT)) {
+      if (!(platform.FIREFOX || platform.EDGE)) {
         fixture.detectChanges();
         setTimeout(() => {
           expectNativeEl(fixture).toHaveStyle({

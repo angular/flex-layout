@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
-  BaseFxDirective,
+  BaseDirective,
   MediaChange,
   MediaMonitor,
   StyleDefinition,
@@ -42,7 +42,7 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
   [fxLayoutGap.gt-xs], [fxLayoutGap.gt-sm], [fxLayoutGap.gt-md], [fxLayoutGap.gt-lg]
 `
 })
-export class LayoutGapDirective extends BaseFxDirective
+export class LayoutGapDirective extends BaseDirective
   implements AfterContentInit, OnChanges, OnDestroy {
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher: Subscription;

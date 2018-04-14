@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
-  BaseFxDirective,
+  BaseDirective,
   MediaChange,
   MediaMonitor,
   StyleDefinition,
@@ -39,7 +39,7 @@ import {isFlowHorizontal} from '../../utils/layout-validator';
   [fxFlexOffset.lt-sm], [fxFlexOffset.lt-md], [fxFlexOffset.lt-lg], [fxFlexOffset.lt-xl],
   [fxFlexOffset.gt-xs], [fxFlexOffset.gt-sm], [fxFlexOffset.gt-md], [fxFlexOffset.gt-lg]
 `})
-export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnChanges, OnDestroy {
+export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
   private _directionWatcher: Subscription;
 
   /* tslint:disable */
@@ -171,7 +171,7 @@ export class FlexOffsetDirective extends BaseFxDirective implements OnInit, OnCh
 
     // The flex-direction of this element's flex container. Defaults to 'row'.
     const isRtl = this._directionality.value === 'rtl';
-    const layout = this._getFlowDirection(this.parentElement, true);
+    const layout = this._getFlexFlowDirection(this.parentElement, true);
     const horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
 
     return isFlowHorizontal(layout) ? {[horizontalLayoutKey]: `${offset}`} :

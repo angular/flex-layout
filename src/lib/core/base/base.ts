@@ -18,13 +18,12 @@ import {
   StyleDefinition,
   StyleUtils,
 } from '../style-utils/style-utils';
-
 import {ResponsiveActivation, KeyOptions} from '../responsive-activation/responsive-activation';
 import {MediaMonitor} from '../media-monitor/media-monitor';
 import {MediaQuerySubscriber} from '../media-change';
 
 /** Abstract base class for the Layout API styling directives. */
-export abstract class BaseFxDirective implements OnDestroy, OnChanges {
+export abstract class BaseDirective implements OnDestroy, OnChanges {
   get hasMediaQueryListener() {
     return !!this._mqActivation;
   }
@@ -103,7 +102,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
   }
 
   ngOnChanges(change: SimpleChanges) {
-    throw new Error(`BaseFxDirective::ngOnChanges should be overridden in subclass: ${change}`);
+    throw new Error(`BaseDirective::ngOnChanges should be overridden in subclass: ${change}`);
   }
 
   ngOnDestroy() {
@@ -151,7 +150,7 @@ export abstract class BaseFxDirective implements OnDestroy, OnChanges {
    * Check inline style first then check computed (stylesheet) style.
    * And optionally add the flow value to element's inline style.
    */
-  protected _getFlowDirection(target: HTMLElement, addIfMissing = false): string {
+  protected _getFlexFlowDirection(target: HTMLElement, addIfMissing = false): string {
     let value = 'row';
     let hasInlineValue = '';
 

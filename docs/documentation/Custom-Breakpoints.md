@@ -81,7 +81,7 @@ Consider, for example, the
 
 ```typescript
 import {Directive} from '@angular/core';
-import {BaseFxDirective} from '@angular/flex-layout';
+import {BaseDirective} from '@angular/flex-layout';
 
 @Directive({selector: `
   [fxLayout],
@@ -95,7 +95,7 @@ import {BaseFxDirective} from '@angular/flex-layout';
   [fxLayout.gt-lg],
   [fxLayout.xl]
 `})
-export class LayoutDirective extends BaseFxDirective { 
+export class LayoutDirective extends BaseDirective { 
  ... 
 }
 ```

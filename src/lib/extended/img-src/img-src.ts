@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
-  BaseFxDirective,
+  BaseDirective,
   MediaMonitor,
   SERVER_TOKEN,
   StyleUtils,
@@ -40,7 +40,7 @@ import {
   img[src.gt-xs], img[src.gt-sm], img[src.gt-md], img[src.gt-lg]
 `
 })
-export class ImgSrcDirective extends BaseFxDirective implements OnInit, OnChanges {
+export class ImgSrcDirective extends BaseDirective implements OnInit, OnChanges {
 
   /* tslint:disable */
   @Input('src')        set srcBase(val) { this.cacheDefaultSrc(val);           }

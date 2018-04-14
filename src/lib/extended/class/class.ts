@@ -22,8 +22,8 @@ import {
 } from '@angular/core';
 import {NgClass} from '@angular/common';
 import {
-  BaseFxDirective,
-  BaseFxDirectiveAdapter,
+  BaseDirective,
+  BaseDirectiveAdapter,
   MediaChange,
   MediaMonitor,
   StyleUtils,
@@ -45,7 +45,7 @@ export type NgClassType = string | string[] | Set<string> | {[klass: string]: an
     [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
   `
 })
-export class ClassDirective extends BaseFxDirective
+export class ClassDirective extends BaseDirective
     implements DoCheck, OnChanges, OnDestroy, OnInit {
 
   /**
@@ -138,7 +138,7 @@ export class ClassDirective extends BaseFxDirective
    * keys have been defined.
    */
   protected _configureAdapters() {
-    this._base = new BaseFxDirectiveAdapter(
+    this._base = new BaseDirectiveAdapter(
       'ngClass',
       this.monitor,
       this._ngEl,
@@ -171,5 +171,5 @@ export class ClassDirective extends BaseFxDirective
    * Special adapter to cross-cut responsive behaviors and capture mediaQuery changes
    * Delegate value changes to the internal `_ngClassInstance` for processing
    */
-  protected _base: BaseFxDirectiveAdapter;   // used for `ngClass.xxx` selectors
+  protected _base: BaseDirectiveAdapter;   // used for `ngClass.xxx` selectors
 }

@@ -17,7 +17,7 @@ import {BREAKPOINTS} from '@angular/flex-layout';
 providers: [{provide: BREAKPOINTS, useValue: MY_CUSTOM_BREAKPOINTS }]
 ```
 
-* **[BaseFxDirectiveAdapter](https://github.com/angular/flex-layout/wiki/BaseFxDirectiveAdapter)**:  
+* **[BaseDirectiveAdapter](https://github.com/angular/flex-layout/wiki/BaseDirectiveAdapter)**:  
 Adapter class useful to extend existing Directives with MediaQuery activation features.  
 ```typescript
 import {NgClass} from '@angular/core';

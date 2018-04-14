@@ -7,7 +7,7 @@
  */
 import {ElementRef} from '@angular/core';
 
-import {BaseFxDirective} from './base';
+import {BaseDirective} from './base';
 import {ResponsiveActivation} from '../responsive-activation/responsive-activation';
 import {MediaQuerySubscriber} from '../media-change';
 import {MediaMonitor} from '../media-monitor/media-monitor';
@@ -15,10 +15,10 @@ import {StyleUtils} from '../style-utils/style-utils';
 
 
 /**
- * Adapter to the BaseFxDirective abstract class so it can be used via composition.
- * @see BaseFxDirective
+ * Adapter to the BaseDirective abstract class so it can be used via composition.
+ * @see BaseDirective
  */
-export class BaseFxDirectiveAdapter extends BaseFxDirective {
+export class BaseDirectiveAdapter extends BaseDirective {
 
   /**
    * Accessor to determine which @Input property is "active"
@@ -37,14 +37,14 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   }
 
   /**
-   * @see BaseFxDirective._mqActivation
+   * @see BaseDirective._mqActivation
    */
   get mqActivation(): ResponsiveActivation {
     return this._mqActivation;
   }
 
   /**
-   * BaseFxDirectiveAdapter constructor
+   * BaseDirectiveAdapter constructor
    */
   constructor(protected _baseKey: string,   // non-responsive @Input property name
               protected _mediaMonitor: MediaMonitor,
@@ -62,7 +62,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   }
 
   /**
-   * @see BaseFxDirective._queryInput
+   * @see BaseDirective._queryInput
    */
   queryInput(key) {
     return key ? this._queryInput(key) : undefined;
@@ -88,7 +88,7 @@ export class BaseFxDirectiveAdapter extends BaseFxDirective {
   }
 
   /**
-   * @see BaseFxDirective._listenForMediaQueryChanges
+   * @see BaseDirective._listenForMediaQueryChanges
    */
   listenForMediaQueryChanges(key: string,
                              defaultValue: any,

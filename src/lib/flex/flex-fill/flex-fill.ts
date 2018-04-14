@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Directive, ElementRef} from '@angular/core';
-import {BaseFxDirective, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {BaseDirective, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
 
 
 const FLEX_FILL_CSS = {
@@ -27,7 +27,7 @@ const FLEX_FILL_CSS = {
   [fxFill],
   [fxFlexFill]
 `})
-export class FlexFillDirective extends BaseFxDirective {
+export class FlexFillDirective extends BaseDirective {
   constructor(monitor: MediaMonitor,
               public elRef: ElementRef,
               styleUtils: StyleUtils) {
