@@ -104,6 +104,11 @@ describe('grid gap directive', () => {
           'grid-row-gap': '10px',
           'grid-column-gap': '15px',
         }, styler);
+      } else if (platform.BLINK) {
+        expectNativeEl(fixture).toHaveStyle({
+          'display': 'grid',
+          'gap': '10px 15px',
+        }, styler);
       } else {
         expectNativeEl(fixture).toHaveStyle({
           'display': 'grid',
