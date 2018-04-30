@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+  <break-point alias="test" mediaQuery="(min-width: 1250px) and (max-width: 1909px)" overlapping></break-point>
+  <default-breakpoints></default-breakpoints>
+  <script type="text/javascript" src="breakpoint.js"></script>
+  <script type="text/javascript" src="flexbox.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<flex-box direction="column" align="center center" gap="10px" direction.md="row">
+  <span id="hello">Hello world</span>
+  <span>Hello world 2 </span>
+  <span>Hello world 3 </span>
+</flex-box>
+</body>
+</html>
