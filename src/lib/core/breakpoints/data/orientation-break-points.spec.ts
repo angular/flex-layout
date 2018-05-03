@@ -12,12 +12,7 @@ import {BreakPoint} from '../break-point';
 import {DEFAULT_BREAKPOINTS} from './break-points';
 import {ORIENTATION_BREAKPOINTS} from './orientation-break-points';
 import {BREAKPOINTS} from '../break-points-token';
-import {BREAKPOINTS_PROVIDER} from '../break-points-provider';
-import {
-  ADD_ORIENTATION_BREAKPOINTS,
-  BREAKPOINT,
-  DISABLE_DEFAULT_BREAKPOINTS,
-} from '../../tokens/breakpoint-token';
+import {FlexLayoutModule} from '../../../module';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
@@ -26,14 +21,8 @@ describe('break-point-provider', () => {
   }, null);
 
   describe('with default breakpoints only', () => {
-    beforeEach(() => {
-      // Configure testbed to prepare services
-      TestBed.configureTestingModule({
-        providers: [BREAKPOINTS_PROVIDER]
-      });
-    });
-    beforeEach(async(inject([BREAKPOINTS], (_) => {
-      breakPoints = _;
+    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+      breakPoints = bps;
     })));
 
     it('has the only standard default breakpoints without internal custom breakpoints', () => {
@@ -55,25 +44,21 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [
-          BREAKPOINTS_PROVIDER,
-          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
-        ]
+        imports: [FlexLayoutModule.withConfig({}, EXTRAS)]
       });
     });
-    // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints) => {
-      bpList = breakPoints;
+    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+      bpList = bps;
     })));
 
     it('has the custom breakpoints', () => {
       const total = DEFAULT_BREAKPOINTS.length + EXTRAS.length;
 
       expect(bpList.length).toEqual(total);
-      expect(bpList[total - 2].alias).toEqual('lt-ab');
-      expect(bpList[total - 2].suffix).toEqual('LtAb');
-      expect(bpList[total - 1].alias).toEqual('cd');
-      expect(bpList[total - 1].suffix).toEqual('Cd');
+      expect(bpList[bpList.length - 2].alias).toEqual('lt-ab');
+      expect(bpList[bpList.length - 2].suffix).toEqual('LtAb');
+      expect(bpList[bpList.length - 1].alias).toEqual('cd');
+      expect(bpList[bpList.length - 1].suffix).toEqual('Cd');
     });
   });
 
@@ -95,11 +80,7 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [
-          BREAKPOINTS_PROVIDER,
-          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
-          {provide: ADD_ORIENTATION_BREAKPOINTS, useValue: true},
-        ]
+        imports: [FlexLayoutModule.withConfig({addOrientationBps: true}, EXTRAS)]
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
@@ -123,10 +104,10 @@ describe('break-point-provider', () => {
       const total = ORIENTATION_BREAKPOINTS.length + DEFAULT_BREAKPOINTS.length + NUM_EXTRAS;
 
       expect(bpList.length).toEqual(total);
-      expect(bpList[total - 2].alias).toEqual('lt-ab');
-      expect(bpList[total - 2].suffix).toEqual('LtAb');
-      expect(bpList[total - 1].alias).toEqual('cd');
-      expect(bpList[total - 1].suffix).toEqual('Cd');
+      expect(bpList[bpList.length - 2].alias).toEqual('lt-ab');
+      expect(bpList[bpList.length - 2].suffix).toEqual('LtAb');
+      expect(bpList[bpList.length - 1].alias).toEqual('cd');
+      expect(bpList[bpList.length - 1].suffix).toEqual('Cd');
     });
   });
 
@@ -134,32 +115,27 @@ describe('break-point-provider', () => {
     let bpList;
     const EXTRAS: BreakPoint[] = [
       {alias: 'lt-ab', mediaQuery: '(max-width: 297px)'},
-      {alias: 'cd', mediaQuery: '(min-width: 298px) and (max-width:414px)'}
+      {alias: 'cd', mediaQuery: '(min-width: 298px) and (max-width: 414px)'}
     ];
 
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        providers: [
-          BREAKPOINTS_PROVIDER,
-          {provide: BREAKPOINT, useValue: EXTRAS, multi: true},
-          {provide: DISABLE_DEFAULT_BREAKPOINTS, useValue: true},
-        ]
+        imports: [FlexLayoutModule.withConfig({disableDefaultBps: true}, EXTRAS)]
       });
     });
-    // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints) => {
-      bpList = breakPoints;
+    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+      bpList = bps;
     })));
 
     it('has the only the registered custom breakpoints; defaults are excluded.', () => {
       const total = EXTRAS.length;
 
       expect(bpList.length).toEqual(total);
-      expect(bpList[total - 1].alias).toEqual('cd');
-      expect(bpList[total - 1].suffix).toEqual('Cd');
-      expect(bpList[total - 2].alias).toEqual('lt-ab');
-      expect(bpList[total - 2].suffix).toEqual('LtAb');
+      expect(bpList[bpList.length - 1].alias).toEqual('cd');
+      expect(bpList[bpList.length - 1].suffix).toEqual('Cd');
+      expect(bpList[bpList.length - 2].alias).toEqual('lt-ab');
+      expect(bpList[bpList.length - 2].suffix).toEqual('LtAb');
     });
   });
 
