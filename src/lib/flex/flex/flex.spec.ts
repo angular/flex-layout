@@ -219,7 +219,7 @@ describe('flex directive', () => {
       }
     });
 
-    it('should not work with non-direct-parent fxLayouts', async(() => {
+    it('should work with non-direct-parent fxLayouts', async(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div class='test'>
@@ -235,7 +235,7 @@ describe('flex directive', () => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).not.toHaveStyle({'flex-direction': 'row'}, styler);
+        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
         expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
         expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
       });
@@ -686,7 +686,7 @@ describe('flex directive', () => {
     );
   });
 
-  describe('with flex token enabled', () => {
+  describe('with flex token disabled', () => {
     beforeEach(() => {
       jasmine.addMatchers(customMatchers);
 
@@ -697,7 +697,7 @@ describe('flex directive', () => {
         providers: [
           MockMatchMediaProvider,
           {provide: SERVER_TOKEN, useValue: true},
-          {provide: ADD_FLEX_STYLES, useValue: true},
+          {provide: ADD_FLEX_STYLES, useValue: false},
         ]
       });
     });
@@ -718,7 +718,7 @@ describe('flex directive', () => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
+        expectEl(parent).not.toHaveStyle({'flex-direction': 'row'}, styler);
         expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
         expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
       });
@@ -758,7 +758,7 @@ describe('flex directive', () => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).not.toHaveStyle({'-webkit-flex-direction': 'row'}, styler);
+        expect(parent.nativeElement.getAttribute('style')).not.toContain('-webkit-flex-direction');
         expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
         expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
       });

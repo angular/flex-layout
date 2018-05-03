@@ -15,6 +15,7 @@ import {MATCH_MEDIA_PROVIDER} from './match-media/match-media-provider';
 import {BROWSER_PROVIDER} from './browser-provider';
 import {StyleUtils} from './style-utils/style-utils';
 import {STYLESHEET_MAP_PROVIDER} from './stylesheet-map/stylesheet-map-provider';
+import {FLEX_STYLES_PROVIDER} from './tokens/flex-styles-token';
 
 /**
  * *****************************************************************
@@ -32,6 +33,7 @@ import {STYLESHEET_MAP_PROVIDER} from './stylesheet-map/stylesheet-map-provider'
     STYLESHEET_MAP_PROVIDER,
     StyleUtils,
     BROWSER_PROVIDER,
+    FLEX_STYLES_PROVIDER,
   ]
 })
 export class CoreModule {
