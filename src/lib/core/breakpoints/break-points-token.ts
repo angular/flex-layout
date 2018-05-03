@@ -8,14 +8,11 @@
 
 import {inject, InjectionToken} from '@angular/core';
 import {BreakPoint} from './break-point';
-import {
-  ADD_ORIENTATION_BREAKPOINTS,
-  BREAKPOINT,
-  DISABLE_DEFAULT_BREAKPOINTS,
-} from '../tokens/breakpoint-token';
+import {BREAKPOINT} from '../tokens/breakpoint-token';
 import {DEFAULT_BREAKPOINTS} from '../breakpoints/data/break-points';
 import {ORIENTATION_BREAKPOINTS} from '../breakpoints/data/orientation-break-points';
 import {mergeByAlias} from '../breakpoints/breakpoint-tools';
+import {LAYOUT_CONFIG} from '../tokens/library-config';
 
 /**
  *  Injection token unique to the flex-layout library.
@@ -26,12 +23,12 @@ export const BREAKPOINTS =
     providedIn: 'root',
     factory: () => {
       const breakpoints: any = inject(BREAKPOINT);
-      const disableDefaults = inject(DISABLE_DEFAULT_BREAKPOINTS);
-      const addOrientation = inject(ADD_ORIENTATION_BREAKPOINTS);
-      const bpFlattenArray = [].concat.apply([], (breakpoints || [])
+      const layoutConfig = inject(LAYOUT_CONFIG);
+      const bpFlattenArray: BreakPoint[] = [].concat.apply([], (breakpoints || [])
         .map(v => Array.isArray(v) ? v : [v]));
-      const builtIns = DEFAULT_BREAKPOINTS.concat(addOrientation ? ORIENTATION_BREAKPOINTS : []);
-      return disableDefaults ?
-        mergeByAlias(bpFlattenArray) : mergeByAlias(builtIns, bpFlattenArray);
+      const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
+        .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
+
+      return mergeByAlias(builtIns, bpFlattenArray);
     }
   });

@@ -5,12 +5,12 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {TestBed, inject, fakeAsync} from '@angular/core/testing';
+import {fakeAsync} from '@angular/core/testing';
 
 import {BreakPoint} from './break-point';
-import {BREAKPOINTS} from './break-points-token';
-import {BREAKPOINTS_PROVIDER, BREAKPOINTS_PROVIDER_FACTORY} from './break-points-provider';
 import {validateSuffixes, mergeByAlias} from './breakpoint-tools';
+import {DEFAULT_BREAKPOINTS} from './data/break-points';
+import {ORIENTATION_BREAKPOINTS} from './data/orientation-break-points';
 
 describe('breakpoint-tools', () => {
   let all: BreakPoint[];
@@ -19,7 +19,7 @@ describe('breakpoint-tools', () => {
   }, null);
 
   beforeEach(() => {
-    all = BREAKPOINTS_PROVIDER_FACTORY([], [], false, true);
+    all = DEFAULT_BREAKPOINTS.concat(ORIENTATION_BREAKPOINTS);
   });
 
   describe('validation', () => {
@@ -94,33 +94,6 @@ describe('breakpoint-tools', () => {
       expect(findByAlias('xs')!.suffix).toEqual('Xs');
       expect(findByAlias('xs')!.mediaQuery).toEqual('screen and none');
     });
-  });
-
-  describe('with BREAKPOINTS_PROVIDER', () => {
-    beforeEach(() => {
-      // Configure testbed to prepare services
-      TestBed.configureTestingModule({
-        providers: [
-          BREAKPOINTS_PROVIDER  // Supports developer overrides of list of known breakpoints
-        ]
-      });
-    });
-
-    it('should inject the BREAKPOINTS with auto-validate items', inject([BREAKPOINTS], (list) => {
-      all = list;
-      let xsBp: BreakPoint = findByAlias('xs')!;
-      let gtLgBp: BreakPoint = findByAlias('gt-lg')!;
-      let xlBp: BreakPoint = findByAlias('xl')!;
-
-      expect(xsBp.alias).toEqual('xs');
-      expect(xsBp.suffix).toEqual('Xs');
-
-      expect(gtLgBp.alias).toEqual('gt-lg');
-      expect(gtLgBp.suffix).toEqual('GtLg');
-
-      expect(xlBp.alias).toEqual('xl');
-      expect(xlBp.suffix).toEqual('Xl');
-    }));
   });
 
 });

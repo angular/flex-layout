@@ -18,8 +18,9 @@ import {
   SkipSelf,
 } from '@angular/core';
 import {
-  ADD_FLEX_STYLES,
   BaseDirective,
+  LayoutConfigOptions,
+  LAYOUT_CONFIG,
   MediaChange,
   MediaMonitor,
   StyleUtils,
@@ -88,7 +89,7 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
               elRef: ElementRef,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
               protected styleUtils: StyleUtils,
-              @Optional() @Inject(ADD_FLEX_STYLES) protected addFlexStyles: boolean|null) {
+              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
     super(monitor, elRef, styleUtils);
 
     this._cacheInput('flex', '');
@@ -163,7 +164,7 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    let layout = this._getFlexFlowDirection(this.parentElement, !!this.addFlexStyles);
+    let layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
     let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
 
     let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';
@@ -208,7 +209,8 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
     };
     switch (basis || '') {
       case '':
-        basis = direction === 'row' ? '0%' : 'auto';
+        basis = direction === 'row' ? '0%' :
+          (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
         break;
       case 'initial':   // default
       case 'nogrow':
@@ -274,8 +276,8 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
       }
     }
 
-    // Fix for issues 277 and 534
-    if (basis !== '0%') {
+    // Fix for issues 277, 534, and 728
+    if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
       css[min] = isFixed || (isPx && grow) ? basis : null;
       css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
     }

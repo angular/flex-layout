@@ -21,7 +21,7 @@ task(':watch:devapp', () => {
 });
 
 task(':serve:devapp', ['aot:pre'], execTask(
-  'ng', ['serve', '--port', '4000'],
+  'ng', ['serve', '--port', '5000'],
   {cwd: appDir, failOnStderr: true}
 ));
 

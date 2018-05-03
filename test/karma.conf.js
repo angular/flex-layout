@@ -45,7 +45,7 @@ module.exports = (config) => {
       'dist/packages/**/*.js': ['sourcemap']
     },
 
-    reporters: ['spec'],
+    reporters: ['dots'],
     autoWatch: false,
 
     coverageReporter: {
