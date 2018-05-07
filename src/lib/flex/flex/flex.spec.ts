@@ -75,6 +75,34 @@ describe('flex directive', () => {
       expectEl(dom).toHaveStyle({'flex': '1 1 0%'}, styler);
     });
 
+    it('should add correct styles for `fxFlex` and ngStyle with layout change', () => {
+      componentWithTemplate(`
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <div *ngIf="true" fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}"></div>
+        </div>
+      `);
+      fixture.detectChanges();
+      matchMedia.activate('sm', true);
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      expectEl(element).toHaveStyle({'width': '15px'}, styler);
+      expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
+      expectEl(element).toHaveStyle({'flex': '10 1 auto'}, styler);
+    });
+
+    it('should add correct styles for `fxFlex` and ngStyle without layout change', () => {
+      componentWithTemplate(`
+        <div fxLayout="row wrap" fxLayoutAlign="start center">
+          <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}"></div>
+        </div>
+      `);
+      fixture.detectChanges();
+      matchMedia.activate('sm', true);
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      expectEl(element).toHaveStyle({'width': '15px'}, styler);
+      expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
+      expectEl(element).toHaveStyle({'flex': '10 1 auto'}, styler);
+    });
+
     it('should apply `fxGrow` value to flex-grow when used default `fxFlex`', () => {
       componentWithTemplate(`<div fxFlex fxGrow="10"></div>`);
       fixture.detectChanges();

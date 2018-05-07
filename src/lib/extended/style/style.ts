@@ -109,6 +109,22 @@ export class StyleDirective extends BaseDirective
     if (this._base.activeKey in changes) {
       this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
     }
+
+    // Fix for issue 700
+    const currentStyleBase = this._getAttributeValue('style');
+    if (!currentStyleBase.includes(this._base.queryInput(this._base.activeKey))) {
+      this.ngStyleBase = currentStyleBase || '';
+      Object.getOwnPropertyNames(this._base.inputMap).forEach((input) => {
+        if (input !== this._base.activeKey) {
+          Object.getOwnPropertyNames(this._base.inputMap[input]).forEach((style) => {
+            if (currentStyleBase.includes(style)) {
+              delete this._base.inputMap[input][style];
+            }
+          });
+          this._base.cacheInput(input, this._base.inputMap[input], true);
+        }
+      });
+    }
   }
 
 
