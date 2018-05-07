@@ -35,7 +35,8 @@ import {
   NgStyleRawList,
   NgStyleType,
   NgStyleSanitizer,
-  ngStyleUtils as _
+  ngStyleUtils as _,
+  NgStyleMap
 } from './style-transforms';
 
 
@@ -108,6 +109,22 @@ export class StyleDirective extends BaseDirective
   ngOnChanges(changes: SimpleChanges) {
     if (this._base.activeKey in changes) {
       this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
+    }
+
+    // Fix for issue 700
+    const currentStyleBase = this._getAttributeValue('style');
+    if (!this._checkBaseValueSame(currentStyleBase, this._base.queryInput(this._base.activeKey))) {
+      this.ngStyleBase = currentStyleBase || '';
+      Object.getOwnPropertyNames(this._base.inputMap).forEach((input) => {
+        if (input !== this._base.activeKey) {
+          Object.getOwnPropertyNames(this._base.inputMap[input]).forEach((style) => {
+            if (currentStyleBase.includes(style)) {
+              delete this._base.inputMap[input][style];
+            }
+          });
+          this._base.cacheInput(input, this._base.inputMap[input], true);
+        }
+      });
     }
   }
 
@@ -218,4 +235,17 @@ export class StyleDirective extends BaseDirective
    */
   protected _base: BaseDirectiveAdapter;
 
+  /**
+   * Check the base value in the map is same with the value in the style
+   */
+  protected _checkBaseValueSame(styleBase: string, input: NgStyleMap): boolean {
+    const styleMap = this._buildStyleMap(styleBase);
+    let same = true;
+    Object.getOwnPropertyNames(input).forEach((key) => {
+      if (styleMap[key] && styleMap[key] !== input[key]) {
+        same = false;
+      }
+    });
+    return same;
+  }
 }
