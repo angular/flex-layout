@@ -34,6 +34,19 @@ container:
 |  `column`         | `flex-direction: column`         |
 |  `column-reverse` | `flex-direction: column-reverse` |
 
+
+### fxLayout + wrap
+
+By default, flex items will not wrap in their container. Formerly published as distinct directive, `fxLayoutWrap` was deprecated in favor of simply adding the **wrap** parameter as a secondary option to the `fxLayout` directive.
+
+```html
+<div fxLayout="row wrap">
+  <div>1. One</div> <div>2. Two</div> <div>3. Three</div> <div>4. Four</div>
+</div>
+```
+
+Note: when using `wrap`, developers must **first** specify the layout direction.
+
 ### fxLayout Side-Effects
 
 Changes to the fxLayout value will cause the following directives to update and modify their element stylings:
