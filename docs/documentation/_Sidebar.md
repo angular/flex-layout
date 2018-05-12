@@ -8,7 +8,7 @@
   * [Static API](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview)
   * [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API)
   * [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
-  * [Custom Breakpoints](https://github.com/angular/flex-layout/wiki/Custom-Breakpoints)
+  * [Custom Breakpoints](https://github.com/angular/flex-layout/wiki/Breakpoints)
   * [Best Performance](https://github.com/angular/flex-layout/wiki/Best-Performance)
 * Demos 
   * [Live Online](https://tburleson-layouts-demos.firebaseapp.com/)
