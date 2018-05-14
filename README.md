@@ -18,6 +18,16 @@ different layouts, sizing, visibilities for different viewport sizes and display
 
 ---
 
+### Angular 6
+
+When upgrading your application to use Angular 6 and RxJS 6, you must install release 6.x of Flex Layout:
+
+```shell
+npm i --save @angular/flex-layout@6.0.0-beta.15
+```
+
+---
+
 ### Quick Links
 
 *  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
