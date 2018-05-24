@@ -45,6 +45,6 @@ export const rollupGlobals = {
   // Include secondary entry-points of the cdk and material packages
    ...rollupFlexLayoutEntryPoints,
 
-  'rxjs': 'Rx',
-  'rxjs/operators': 'Rx.operators',
+  'rxjs': 'rxjs',
+  'rxjs/operators': 'rxjs.operators',
 };
