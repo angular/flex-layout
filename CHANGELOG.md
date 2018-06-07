@@ -1,3 +1,13 @@
+<a name="5.0.0-beta.15"></a>
+# [5.0.0-beta.15](https://github.com/angular/flex-layout/compare/v6.0.0-beta.15...5.0.0-beta.15) (2018-06-05)
+
+
+### Bug Fixes
+
+* **fxFlex:** enable parent flex styles by default ([76d14b7](https://github.com/angular/flex-layout/commit/76d14b7))
+
+
+
 <a name="5.0.0-beta.14"></a>
 # [5.0.0-beta.14](https://github.com/angular/flex-layout/compare/v2.0.0-beta.old...5.0.0-beta.14) (2018-03-29)
 
