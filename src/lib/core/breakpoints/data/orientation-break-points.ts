@@ -9,14 +9,14 @@
 import {BreakPoint} from '../break-point';
 
 /* tslint:disable */
-const HANDSET_PORTRAIT  = '(orientations: portrait) and (max-width: 599px)';
-const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
+const HANDSET_PORTRAIT  = '(orientation: portrait) and (max-width: 599px)';
+const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
 
-const TABLET_LANDSCAPE  = '(orientations: landscape) and (min-width: 960px) and (max-width: 1279px)';
-const TABLET_PORTRAIT   = '(orientations: portrait) and (min-width: 600px) and (max-width: 839px)';
+const TABLET_LANDSCAPE  = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
+const TABLET_PORTRAIT   = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
 
-const WEB_PORTRAIT      = '(orientations: portrait) and (min-width: 840px)';
-const WEB_LANDSCAPE     = '(orientations: landscape) and (min-width: 1280px)';
+const WEB_PORTRAIT      = '(orientation: portrait) and (min-width: 840px)';
+const WEB_LANDSCAPE     = '(orientation: landscape) and (min-width: 1280px)';
 
 export const ScreenTypes = {
   'HANDSET'           : `${HANDSET_PORTRAIT}, ${HANDSET_LANDSCAPE}`,
