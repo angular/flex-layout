@@ -1,3 +1,42 @@
+<a name="6.0.0-beta.16"></a>
+# [6.0.0-beta.16](https://github.com/angular/flex-layout/compare/v6.0.0-beta.15...6.0.0-beta.16) (2018-06-07)
+
+With Beta 16, we have added support + API for CSS Grid. Now @angular/flex-layout supports both Flexbox and CSS Grid layouts. 
+
+### Bug Fixes
+
+* **breakpoints:** use correct orientation mediaquery ([666aa0a](https://github.com/angular/flex-layout/commit/666aa0a)), closes [#763](https://github.com/angular/flex-layout/issues/763)
+
+
+### Features
+
+* **grid:** add CSS Grid directives and demo ([#712](https://github.com/angular/flex-layout/issues/712)) ([b8c86be](https://github.com/angular/flex-layout/commit/b8c86be))
+* **lib:** add config options for flex basis and other tokens ([f01e551](https://github.com/angular/flex-layout/commit/f01e551))
+
+
+### BREAKING CHANGES
+
+* **lib:** * Four configuration tokens have been removed:
+
+* * `ADD_FLEX_STYLES`
+* * `ADD_ORIENTATION_BREAKPOINTS`
+* * `DISABLE_DEFAULT_BREAKPOINTS`
+* * `DISABLE_VENDOR_PREFIXES`
+
+These tokens have been consolidated into a new configuration token:
+
+* * `LAYOUT_CONFIG`
+
+* The default column flex-basis has been reverted to `1e-9px`. To
+  have that value be `auto` instead, set the config in your top-level
+  module as follows:
+
+```
+FlexLayoutModule.withConfig({useColumnBasisZero: false})
+```
+
+
+
 <a name="6.0.0-beta.15"></a>
 # [6.0.0-beta.15](https://github.com/angular/flex-layout/compare/v5.0.0-beta.14...6.0.0-beta.15) (2018-04-13)
 
@@ -6,6 +45,14 @@
 
 * **core:** add validateBasis to core export ([#706](https://github.com/angular/flex-layout/issues/706)) ([c603a86](https://github.com/angular/flex-layout/commit/c603a86))
 
+
+<a name="5.0.0-beta.15"></a>
+# [5.0.0-beta.15](https://github.com/angular/flex-layout/compare/v6.0.0-beta.15...5.0.0-beta.15) (2018-06-05)
+
+
+### Bug Fixes
+
+* **fxFlex:** enable parent flex styles by default ([76d14b7](https://github.com/angular/flex-layout/commit/76d14b7))
 
 
 <a name="5.0.0-beta.14"></a>
