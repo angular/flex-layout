@@ -1,5 +1,8 @@
-#### Bug, feature request, or proposal:
-
+---
+name: 🐞 Bug Report
+about: Something is broken in Angular Layout
+---
+# Bug Report
 
 #### What is the expected behavior?
 
