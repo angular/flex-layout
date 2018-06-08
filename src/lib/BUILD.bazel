@@ -1,0 +1,33 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@build_bazel_rules_typescript//:defs.bzl", "ts_config", "ts_library")
+load("@angular//:index.bzl", "ng_module", "ng_package")
+load("//:packages.bzl", "LAYOUT_PACKAGES", "LAYOUT_ROLLUP_GLOBALS", "LAYOUT_TARGETS", "PKG_GROUP_REPLACEMENTS")
+
+# Export the Layout tsconfig so that subpackages can reference it directly.
+exports_files(["tsconfig-build.json"])
+
+# Root "@angular/flex-layout" entry-point
+ng_module(
+    name = "flex-layout",
+    srcs = glob(
+        ["*.ts"],
+        exclude = ["**/*.spec.ts"],
+    ),
+    module_name = "@angular/flex-layout",
+    tsconfig = "//src/lib:tsconfig-build.json",
+    deps = ["//src/lib/%s" % p for p in LAYOUT_PACKAGES],
+)
+
+# Creates the @angular/flex-layout package published to npm.
+# https://github.com/angular/flex-layout/blob/master/docs/documentation/Bazel.md for details
+ng_package(
+    name = "npm_package",
+    srcs = ["package.json"],
+    entry_point = "src/lib/public_api.js",
+    entry_point_name = "flex-layout",
+    globals = LAYOUT_ROLLUP_GLOBALS,
+    readme_md = "//src:README.md",
+    replacements = PKG_GROUP_REPLACEMENTS,
+    deps = LAYOUT_TARGETS,
+)

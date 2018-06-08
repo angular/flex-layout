@@ -16,7 +16,7 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {ExtendedModule} from '../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {expectEl, makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
 import {expect} from '../../utils/testing/custom-matchers';
@@ -72,7 +72,7 @@ describe('img-src directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, ExtendedModule],
       declarations: [TestSrcComponent],
       providers: [
         MockMatchMediaProvider,

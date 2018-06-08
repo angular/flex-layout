@@ -11,7 +11,7 @@ import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
 import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
 
-import {FlexLayoutModule} from '../../module';
+import {FlexModule} from '../module';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
   expectEl,
@@ -39,7 +39,7 @@ describe('layout-gap directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexModule],
       declarations: [TestLayoutGapComponent],
       providers: [
         {provide: DIR_DOCUMENT, useValue: fakeDocument},

@@ -13,14 +13,14 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "file:../../../node_modules/@angular/animations",
-    "@angular/cdk": "file:../../../node_modules/@angular/cdk",
+    "@angular/cdk": "^6.0.0",
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
-    "@angular/flex-layout": "file:../../../dist/releases/flex-layout/angular-flex-layout.tgz",
+    "@angular/flex-layout": "file:../../../dist/bazel/bin/src/lib/npm_package",
     "@angular/forms": "file:../../../node_modules/@angular/forms",
     "@angular/http": "file:../../../node_modules/@angular/http",
-    "@angular/material": "file:../../../node_modules/@angular/material",
+    "@angular/material": "^6.0.0",
     "@angular/platform-browser": "file:../../../node_modules/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
     "@angular/platform-server": "file:../../../node_modules/@angular/platform-server",
@@ -30,7 +30,7 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
+    "@angular/cli": "1.7.4",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
     "@angular/language-service": "^6.0.0",
     "@types/jasmine": "~2.8.3",

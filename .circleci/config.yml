@@ -1,37 +1,151 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
+# Configuration file for https://circleci.com/gh/angular/flex-layout
+
+# Note: YAML anchors allow an object to be re-used, reducing duplication.
+# The ampersand declares an alias for an object, then later the `<<: *name`
+# syntax dereferences it.
+# See http://blog.daemonl.com/2016/02/yaml.html
+# To validate changes, use an online parser, eg.
+# http://yaml-online-parser.appspot.com/
+
+## IMPORTANT
+# If you change the `docker_image` version, also change the `cache_key` suffix and the version of
+# `com_github_bazelbuild_buildtools` in the `/WORKSPACE` file.
+var_1: &docker_image angular/ngcontainer:0.3.1
+var_2: &cache_key v2-ng-mat-{{ .Branch }}-{{ checksum "package-lock.json" }}-0.3.1
+
+# Define common ENV vars
+var_3: &define_env_vars
+  run: echo "export PROJECT_ROOT=$(pwd)" >> $BASH_ENV
+
+# See remote cache documentation in /docs/BAZEL.md
+var_4: &setup-bazel-remote-cache
+  run:
+    name: Start up bazel remote cache proxy
+    command: ~/bazel-remote-proxy -backend circleci://
+    background: true
+
+# Settings common to each job
+anchor_1: &job_defaults
+  working_directory: ~/ng
+  docker:
+    - image: *docker_image
+
+# After checkout, rebase on top of master.
+# Similar to travis behavior, but not quite the same.
+# By default, PRs are not rebased on top of master, which we want.
+# See https://discuss.circleci.com/t/1662
+anchor_2: &post_checkout
+  post: git pull --ff-only origin "refs/pull/${CI_PULL_REQUEST//*pull\//}/merge"
+
 version: 2
 jobs:
-  build:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:8.9
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
+  lint:
+    <<: *job_defaults
     steps:
-      - checkout
+      - checkout:
+          <<: *post_checkout
 
-      # Download and cache dependencies
+      # Enforce that BUILD files are formatted. Note that this uses the version of buildifier
+      # from the docker image above - take care that you use the same version when you run
+      # buildifier locally on your change.
+      - run: 'buildifier -mode=check $(find . -type f \( -name BUILD.bazel -or -name BUILD \)) ||
+              (echo "BUILD files not formatted. Please run ''npm run buildifier''" ; exit 1)'
+
+      # Run the skylark linter to check our Bazel rules
+      - run: 'find . -type f -name "*.bzl" |
+              xargs java -jar /usr/local/bin/Skylint_deploy.jar ||
+              (echo -e "\n.bzl files have lint errors. Please run ''npm run skylint''"; exit 1)'
+
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+          key: *cache_key
 
-      - run: npm install
+      - run: npm install --frozen-lockfile --non-interactive
+      - run: ./node_modules/.bin/gulp lint
+
+  build:
+    <<: *job_defaults
+    resource_class: large
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - run: sudo cp .circleci/bazel.rc /etc/bazel.bazelrc
+      - restore_cache:
+          key: *cache_key
+
+      - run: bazel info release
+      - run: bazel run @nodejs//:npm install
+      # For some reason, circleci needs the postinstall to be run explicitly.
+      # This may be unnecessary once rules_nodejs uses nodejs 8
+      - run: bazel run @nodejs//:npm run postinstall
+      # Use bazel query so that we explicitly ask for all buildable targets to be built as well
+      # This avoids waiting for the slowest build target to finish before running the first test
+      # See https://github.com/bazelbuild/bazel/issues/4257
+      # NOTE: Angular developers should typically just bazel build //... or bazel test //...
+      - run: bazel query --output=label //... | xargs bazel test
+
+      # Save the npm packages from //packages/... for other workflow jobs to read
+      # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
+      - persist_to_workspace:
+          root: dist
+          paths:
+            - bazel/bin/**/*
 
       - save_cache:
+          key: *cache_key
           paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+            - "node_modules"
 
-      # run the build!
-      - run: npm run lib:build
+  hello_world:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: dist
+      - run: npm install --frozen-lockfile --non-interactive
+      - run: npm install --frozen-lockfile --non-interactive saucelabs
+      - run: npm run hw:build
+
+  aot:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: dist
+      - run: npm install --frozen-lockfile --non-interactive
+      - run: npm run lib:build:aot
+
+  universal:
+    <<: *job_defaults
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: dist
+      - run: npm install --frozen-lockfile --non-interactive
+      - run: npm run universal:build
+
+workflows:
+  version: 2
+  default_workflow:
+    jobs:
+      - lint
+      - build
+      # TODO(CaerusKaru): add config for the switch from Travis
+      # - saucelabs_required
+      # - browserstack_required
+      - hello_world:
+          requires:
+            - build
+      - aot:
+          requires:
+            - build
+      - universal:
+          requires:
+            - build
+
+general:
+  branches:
+    only:
+      - master

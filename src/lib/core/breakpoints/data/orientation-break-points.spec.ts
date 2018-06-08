@@ -12,7 +12,7 @@ import {BreakPoint} from '../break-point';
 import {DEFAULT_BREAKPOINTS} from './break-points';
 import {ORIENTATION_BREAKPOINTS} from './orientation-break-points';
 import {BREAKPOINTS} from '../break-points-token';
-import {FlexLayoutModule} from '../../../module';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];

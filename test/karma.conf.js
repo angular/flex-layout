@@ -5,7 +5,7 @@ module.exports = (config) => {
 
   config.set({
     basePath: path.join(__dirname, '..'),
-    frameworks: ['jasmine'],
+    frameworks: ['sharding', 'jasmine'],
     plugins: [
       require('karma-jasmine'),
       require('karma-browserstack-launcher'),
@@ -14,7 +14,8 @@ module.exports = (config) => {
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
       require('karma-coverage'),
-      require('karma-spec-reporter')
+      require('karma-spec-reporter'),
+      require('karma-sharding'),
     ],
     files: [
       {pattern: 'node_modules/core-js/client/core.js', included: true, watched: false},
@@ -113,6 +114,8 @@ module.exports = (config) => {
 
       config.preprocessors['dist/packages/**/!(*+(.|-)spec).js'] = ['coverage'];
       config.reporters.push('coverage');
+      // Hide passed tests from logs while on travis.
+      config.specReporter.suppressPassed = true;
     }
 
     // The MODE variable is the indicator of what row in the test matrix we're running.
@@ -131,6 +134,7 @@ module.exports = (config) => {
       throw new Error(`Platform "${platform}" unknown, but Travis specified. Exiting.`);
     }
 
-    config.browsers = platformMap[platform][target.toLowerCase()];
+    // Set the browser list to be the same browser 3 times, to shard tests into three instances.
+    config.browsers = (new Array(3)).fill(platformMap[platform][target.toLowerCase()][0]);
   }
 };

@@ -87,7 +87,10 @@ describe('grid row child directive', () => {
           'grid-row-end': '6',
         }, styler);
       } else {
-        expectEl(nodes[1]).toHaveStyle({'grid-row': 'span 2 / 6'}, styler);
+        let rowStyles = styler.lookupStyle(nodes[1].nativeElement,
+          'grid-row');
+        let correctRow = rowStyles === 'span 2 / 6' || rowStyles === 'span 2 /  6';
+        expect(correctRow).toBe(true);
       }
     });
 
@@ -106,7 +109,7 @@ describe('grid row child directive', () => {
       let rowStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-row');
       let correctRow = rowStyles === 'apples' || rowStyles === 'apples / apples' ||
-        rowStyles === 'apples apples';
+        rowStyles === 'apples apples' || rowStyles === 'apples /  apples';
 
       expect(correctRow).toBe(true);
 
@@ -115,7 +118,7 @@ describe('grid row child directive', () => {
 
       rowStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement, 'grid-row');
       correctRow = rowStyles === 'oranges' || rowStyles === 'oranges / oranges' ||
-        rowStyles === 'oranges oranges';
+        rowStyles === 'oranges oranges' || rowStyles === 'oranges /  oranges';
       expect(correctRow).toBe(true);
     });
   });
@@ -135,21 +138,21 @@ describe('grid row child directive', () => {
       let rowStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-row');
       let correctRow = rowStyles === 'sidebar' || rowStyles === 'sidebar / sidebar' ||
-        rowStyles === 'sidebar sidebar';
+        rowStyles === 'sidebar sidebar' || rowStyles === 'sidebar /  sidebar';
       expect(correctRow).toBe(true);
 
       matchMedia.activate('xs');
       rowStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-row');
       correctRow = rowStyles === 'footer' || rowStyles === 'footer / footer' ||
-        rowStyles === 'footer footer';
+        rowStyles === 'footer footer' || rowStyles === 'footer /  footer';
       expect(correctRow).toBe(true);
 
       matchMedia.activate('md');
       rowStyles = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
         'grid-row');
       correctRow = rowStyles === 'sidebar' || rowStyles === 'sidebar / sidebar' ||
-        rowStyles === 'sidebar sidebar';
+        rowStyles === 'sidebar sidebar' || rowStyles === 'sidebar /  sidebar';
       expect(correctRow).toBe(true);
     });
   });
