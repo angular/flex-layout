@@ -56,37 +56,20 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
     this.ngOnChanges({[key]: change} as SimpleChanges);
   }
 
-
-  /**
-   * Constructor
-   */
-  constructor(protected _mediaMonitor: MediaMonitor,
-              protected _elementRef: ElementRef,
-              protected _styler: StyleUtils) {
-  }
-
-  // *********************************************
-  // Accessor Methods
-  // *********************************************
-
-  /**
-   * Access to host element's parent DOM node
-   */
-  protected get parentElement(): any {
-    return this._elementRef.nativeElement.parentNode;
-  }
-
-  protected get nativeElement(): HTMLElement {
-    return this._elementRef.nativeElement;
+  protected constructor(protected _mediaMonitor: MediaMonitor,
+                        protected _elementRef: ElementRef,
+                        protected _styler: StyleUtils) {
   }
 
   /**
-   * Access the current value (if any) of the @Input property.
+   * Does this directive have 1 or more responsive keys defined
+   * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
    */
-  protected _queryInput(key) {
-    return this._inputMap[key];
+  hasResponsiveAPI(baseKey: string) {
+    const totalKeys = Object.keys(this._inputMap).length;
+    const baseValue = this._inputMap[baseKey];
+    return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
   }
-
 
   // *********************************************
   // Lifecycle Methods
@@ -116,6 +99,20 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   // Protected Methods
   // *********************************************
 
+  /** Access to host element's parent DOM node */
+  protected get parentElement(): any {
+    return this._elementRef.nativeElement.parentNode;
+  }
+
+  protected get nativeElement(): HTMLElement {
+    return this._elementRef.nativeElement;
+  }
+
+  /** Access the current value (if any) of the @Input property */
+  protected _queryInput(key) {
+    return this._inputMap[key];
+  }
+
   /**
    * Was the directive's default selector used ?
    * If not, use the fallback value!
@@ -136,9 +133,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
     return this._styler.lookupStyle(source, query);
   }
 
-  /**
-   * Quick accessor to raw attribute value on the target DOM element
-   */
+  /** Quick accessor to raw attribute value on the target DOM element */
   protected _getAttributeValue(attribute: string,
                                source: HTMLElement = this.nativeElement): string {
     return this._styler.lookupAttributeValue(source, attribute);
@@ -167,18 +162,14 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
     return value.trim() || 'row';
   }
 
-  /**
-   * Applies styles given via string pair or object map to the directive element.
-   */
+  /** Applies styles given via string pair or object map to the directive element */
   protected _applyStyleToElement(style: StyleDefinition,
                                  value?: string | number,
                                  element: HTMLElement = this.nativeElement) {
     this._styler.applyStyleToElement(element, style, value);
   }
 
-  /**
-   * Applies styles given via string pair or object map to the directive's element.
-   */
+  /** Applies styles given via string pair or object map to the directive's element */
   protected _applyStyleToElements(style: StyleDefinition, elements: HTMLElement[]) {
     this._styler.applyStyleToElements(style, elements);
   }
@@ -209,18 +200,13 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
                                         onMediaQueryChange: MediaQuerySubscriber): ResponsiveActivation { // tslint:disable-line:max-line-length
     if (!this._mqActivation) {
       let keyOptions = new KeyOptions(key, defaultValue, this._inputMap);
-      this._mqActivation = new ResponsiveActivation(
-          keyOptions,
-          this._mediaMonitor,
-          (change) => onMediaQueryChange(change)
-      );
+      this._mqActivation = new ResponsiveActivation(keyOptions, this._mediaMonitor,
+        (change) => onMediaQueryChange(change));
     }
     return this._mqActivation;
   }
 
-  /**
-   * Special accessor to query for all child 'element' nodes regardless of type, class, etc.
-   */
+  /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
   protected get childrenNodes() {
     const obj = this.nativeElement.children;
     const buffer: any[] = [];
@@ -232,20 +218,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
     return buffer;
   }
 
-  /**
-   * Does this directive have 1 or more responsive keys defined
-   * Note: we exclude the 'baseKey' key (which is NOT considered responsive)
-   */
-  hasResponsiveAPI(baseKey: string) {
-    const totalKeys = Object.keys(this._inputMap).length;
-    const baseValue = this._inputMap[baseKey];
-    return (totalKeys - (!!baseValue ? 1 : 0)) > 0;
-  }
-
-
-  /**
-   * Fast validator for presence of attribute on the host element
-   */
+  /** Fast validator for presence of attribute on the host element */
   protected hasKeyValue(key) {
     return this._mqActivation.hasKeyValue(key);
   }
@@ -257,14 +230,10 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   /** Original dom Elements CSS display style */
   protected _display;
 
-  /**
-   * MediaQuery Activation Tracker
-   */
+  /** MediaQuery Activation Tracker */
   protected _mqActivation: ResponsiveActivation;
 
-  /**
-   *  Dictionary of input keys with associated values
-   */
+  /** Dictionary of input keys with associated values */
   protected _inputMap = {};
 
   /**
