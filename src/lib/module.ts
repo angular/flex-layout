@@ -36,7 +36,10 @@ import {GridModule} from '@angular/flex-layout/grid';
  */
 
 /**
- *
+ * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
+ * * Will automatically provide Flex, Grid, and Extended modules for use in the application
+ * * Can be configured using the static withConfig method, options viewable on the Wiki's
+ *   Configuration page
  */
 @NgModule({
   imports: [FlexModule, ExtendedModule, GridModule],
