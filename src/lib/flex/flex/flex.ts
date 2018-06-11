@@ -95,15 +95,6 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
     this._cacheInput('flex', '');
     this._cacheInput('shrink', 1);
     this._cacheInput('grow', 1);
-
-    if (_container) {
-      // If this flex item is inside of a flex container marked with
-      // Subscribe to layout immediate parent direction changes
-      this._layoutWatcher = _container.layout$.subscribe((layout) => {
-        // `direction` === null if parent container does not have a `fxLayout`
-        this._onLayoutChange(layout);
-      });
-    }
   }
 
   /**
@@ -126,6 +117,15 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
       this._updateStyle(changes.value);
     });
     this._updateStyle();
+
+    if (this._container) {
+      // If this flex item is inside of a flex container marked with
+      // Subscribe to layout immediate parent direction changes
+      this._layoutWatcher = this._container.layout$.subscribe((layout) => {
+        // `direction` === null if parent container does not have a `fxLayout`
+        this._onLayoutChange(layout);
+      });
+    }
   }
 
   ngOnDestroy() {

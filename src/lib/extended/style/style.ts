@@ -35,7 +35,7 @@ import {
   NgStyleRawList,
   NgStyleType,
   NgStyleSanitizer,
-  ngStyleUtils as _
+  ngStyleUtils as _,
 } from './style-transforms';
 
 
@@ -50,8 +50,7 @@ import {
     [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
   `
 })
-export class StyleDirective extends BaseDirective
-    implements DoCheck, OnChanges, OnDestroy, OnInit {
+export class StyleDirective extends BaseDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
 
   /**
    * Intercept ngStyle assignments so we cache the default styles
@@ -93,7 +92,6 @@ export class StyleDirective extends BaseDirective
               protected _differs: KeyValueDiffers,
               @Optional() @Self() private _ngStyleInstance: NgStyle,
               protected _styler: StyleUtils) {
-
     super(monitor, _ngEl, _styler);
     this._configureAdapters();
   }
@@ -102,22 +100,18 @@ export class StyleDirective extends BaseDirective
   // Lifecycle Hooks
   // ******************************************************************
 
-  /**
-   * For @Input changes on the current mq activation property
-   */
+  /** For @Input changes on the current mq activation property */
   ngOnChanges(changes: SimpleChanges) {
     if (this._base.activeKey in changes) {
       this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
     }
   }
 
-
   ngOnInit() {
     this._configureMQListener();
   }
-  /**
-   * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
-   */
+
+  /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
   ngDoCheck() {
     this._ngStyleInstance.ngDoCheck();
   }
@@ -132,45 +126,43 @@ export class StyleDirective extends BaseDirective
   // ******************************************************************
 
   /**
-     * Configure adapters (that delegate to an internal ngClass instance) if responsive
-     * keys have been defined.
-     */
-    protected _configureAdapters() {
-        this._base = new BaseDirectiveAdapter(
-          'ngStyle',
-          this.monitor,
-          this._ngEl,
-          this._styler
-        );
-        if (!this._ngStyleInstance) {
-          // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
-          // defined on the same host element; since the responsive variations may be defined...
-          this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
-        }
+   * Configure adapters (that delegate to an internal ngClass instance) if responsive
+   * keys have been defined.
+   */
+  protected _configureAdapters() {
+      this._base = new BaseDirectiveAdapter(
+        'ngStyle',
+        this.monitor,
+        this._ngEl,
+        this._styler
+      );
+      if (!this._ngStyleInstance) {
+        // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+        // defined on the same host element; since the responsive variations may be defined...
+        this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
+      }
 
-        this._buildCacheInterceptor();
-        this._fallbackToStyle();
-    }
+      this._buildCacheInterceptor();
+      this._fallbackToStyle();
+  }
 
-    /**
-     * Build an mqActivation object that bridges
-     * mql change events to onMediaQueryChange handlers
-     */
-    protected _configureMQListener(baseKey = 'ngStyle') {
-      const fallbackValue = this._base.queryInput(baseKey);
-      this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
-        this._ngStyleInstance.ngStyle = changes.value || '';
-        this._ngStyleInstance.ngDoCheck();
-      });
-    }
+  /**
+   * Build an mqActivation object that bridges
+   * mql change events to onMediaQueryChange handlers
+   */
+  protected _configureMQListener(baseKey = 'ngStyle') {
+    const fallbackValue = this._base.queryInput(baseKey);
+    this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
+      this._ngStyleInstance.ngStyle = changes.value || '';
+      this._ngStyleInstance.ngDoCheck();
+    });
+  }
 
   // ************************************************************************
   // Private Internal Methods
   // ************************************************************************
 
-  /**
-   * Build intercept to convert raw strings to ngStyleMap
-   */
+  /** Build intercept to convert raw strings to ngStyleMap */
   protected _buildCacheInterceptor() {
     let cacheInput = this._base.cacheInput.bind(this._base);
     this._base.cacheInput = (key?: string, source?: any, cacheRaw = false, merge = true) => {
@@ -181,6 +173,7 @@ export class StyleDirective extends BaseDirective
       cacheInput(key, styles, cacheRaw);
     };
   }
+
   /**
    * Convert raw strings to ngStyleMap; which is required by ngStyle
    * NOTE: Raw string key-value pairs MUST be delimited by `;`
@@ -200,12 +193,11 @@ export class StyleDirective extends BaseDirective
         default      :  return _.buildMapFromSet(styles, sanitizer);
       }
     }
+
     return styles;
   }
 
-  /**
-   * Initial lookup of raw 'class' value (if any)
-   */
+  /** Initial lookup of raw 'class' value (if any) */
   protected _fallbackToStyle() {
     if (!this._base.queryInput('ngStyle')) {
       this.ngStyleBase = this._getAttributeValue('style') || '';
