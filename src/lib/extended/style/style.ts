@@ -35,7 +35,7 @@ import {
   NgStyleRawList,
   NgStyleType,
   NgStyleSanitizer,
-  ngStyleUtils as _, NgStyleMap
+  ngStyleUtils as _,
 } from './style-transforms';
 
 
