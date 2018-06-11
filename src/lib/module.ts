@@ -26,15 +26,6 @@ import {ExtendedModule} from '@angular/flex-layout/extended';
 import {FlexModule} from '@angular/flex-layout/flex';
 import {GridModule} from '@angular/flex-layout/grid';
 
-
-/**
- * Since the equivalent results are easily achieved with a css class attached to each
- * layout child, these have been deprecated and removed from the API.
- *
- *  import {LayoutPaddingDirective} from './api/flexbox/layout-padding';
- *  import {LayoutMarginDirective} from './api/flexbox/layout-margin';
- */
-
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library
  * * Will automatically provide Flex, Grid, and Extended modules for use in the application
