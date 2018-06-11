@@ -81,7 +81,6 @@ export class FlexAlignDirective extends BaseDirective implements OnInit, OnChang
     this._listenForMediaQueryChanges('align', 'stretch', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
-    this._updateWithValue();
   }
 
   // *********************************************

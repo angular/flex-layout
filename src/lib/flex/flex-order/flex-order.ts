@@ -78,7 +78,6 @@ export class FlexOrderDirective extends BaseDirective implements OnInit, OnChang
     this._listenForMediaQueryChanges('order', '0', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
-    this._updateWithValue();
   }
 
   // *********************************************
