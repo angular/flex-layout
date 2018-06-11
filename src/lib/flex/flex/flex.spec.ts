@@ -73,6 +73,7 @@ describe('flex directive', () => {
     });
 
     it('should add correct styles for `fxFlex` and ngStyle with layout change', () => {
+      // NOTE: the presence of ngIf on the child element is imperative for detecting issue 700
       componentWithTemplate(`
         <div fxLayout="row wrap" fxLayoutAlign="start center">
           <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}" *ngIf="true"></div>
@@ -87,9 +88,10 @@ describe('flex directive', () => {
     });
 
     it('should add correct styles for `fxFlex` and ngStyle without layout change', () => {
+      // NOTE: the presence of ngIf on the child element is imperative for detecting issue 700
       componentWithTemplate(`
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-          <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}"></div>
+          <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}" *ngIf="true"></div>
         </div>
       `);
       fixture.detectChanges();
@@ -101,9 +103,10 @@ describe('flex directive', () => {
     });
 
     it('should add correct styles for `fxFlex` and ngStyle with multiple layout changes', () => {
+      // NOTE: the presence of ngIf on the child element is imperative for detecting 700
       componentWithTemplate(`
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-          <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}"></div>
+          <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}" *ngIf="true"></div>
         </div>
       `);
       matchMedia.activate('sm', true);
