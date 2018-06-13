@@ -11,12 +11,10 @@ import {
   NgModule,
   Optional,
   PLATFORM_ID,
-  Provider,
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
   SERVER_TOKEN,
-  DEFAULT_CONFIG,
   LayoutConfigOptions,
   LAYOUT_CONFIG,
   BreakPoint,
@@ -50,30 +48,26 @@ export class FlexLayoutModule {
    */
   static withConfig(configOptions: LayoutConfigOptions,
                     breakpoints?: BreakPoint|BreakPoint[]): ModuleWithProviders {
-    const config = Object.assign({}, DEFAULT_CONFIG);
-    const moduleProviders: Provider[] = [];
-
-    for (const key in configOptions) {
-      // If the setting is different and not undefined or null, change it
-      if (configOptions[key] !== config[key] &&
-        (configOptions[key] === false || configOptions[key] === true)) {
-        config[key] = configOptions[key];
-      }
-    }
-
-    if (configOptions.serverLoaded) {
-      moduleProviders.push({provide: SERVER_TOKEN, useValue: true});
-    }
-
-    if (Array.isArray(breakpoints)) {
-      moduleProviders.push({provide: BREAKPOINT, useValue: breakpoints, multi: true});
-    }
-
-    moduleProviders.push({provide: LAYOUT_CONFIG, useValue: config});
-
     return {
       ngModule: FlexLayoutModule,
-      providers: moduleProviders
+      providers: Array.isArray(breakpoints) ?
+        configOptions.serverLoaded ?
+          [
+            {provide: LAYOUT_CONFIG, useValue: configOptions},
+            {provide: BREAKPOINT, useValue: breakpoints, multi: true},
+            {provide: SERVER_TOKEN, useValue: true},
+          ] : [
+            {provide: LAYOUT_CONFIG, useValue: configOptions},
+            {provide: BREAKPOINT, useValue: breakpoints, multi: true},
+          ]
+        :
+        configOptions.serverLoaded ?
+          [
+            {provide: LAYOUT_CONFIG, useValue: configOptions},
+          ] :
+          [
+            {provide: LAYOUT_CONFIG, useValue: configOptions},
+          ]
     };
   }
 
