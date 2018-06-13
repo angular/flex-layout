@@ -210,8 +210,8 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
     };
     switch (basis || '') {
       case '':
-        basis = direction === 'row' ? '0%' :
-          (this.layoutConfig.useColumnBasisZero ? '0.000000001px' : 'auto');
+        const useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
+        basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
         break;
       case 'initial':   // default
       case 'nogrow':

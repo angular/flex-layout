@@ -64,6 +64,7 @@ export class FlexLayoutModule {
         configOptions.serverLoaded ?
           [
             {provide: LAYOUT_CONFIG, useValue: configOptions},
+            {provide: SERVER_TOKEN, useValue: true},
           ] :
           [
             {provide: LAYOUT_CONFIG, useValue: configOptions},
