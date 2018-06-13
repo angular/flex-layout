@@ -163,8 +163,9 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
   protected _validateValue(grow: number|string,
                            shrink: number|string,
                            basis: string|number|FlexBasisAlias) {
+    let addFlexToParent = this.layoutConfig.addFlexToParent !== false;
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    let layout = this._getFlexFlowDirection(this.parentElement, this.layoutConfig.addFlexToParent);
+    let layout = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
     let direction = (layout.indexOf('column') > -1) ? 'column' : 'row';
 
     let max = isFlowHorizontal(direction) ? 'max-width' : 'max-height';

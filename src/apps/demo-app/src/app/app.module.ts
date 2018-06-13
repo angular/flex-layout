@@ -23,7 +23,7 @@ const PRINT_BREAKPOINTS = [{
     BrowserAnimationsModule,
     RoutingModule,
     DemoMaterialModule,
-    FlexLayoutModule,
+    FlexLayoutModule.withConfig({useColumnBasisZero: false}),
   ],
   providers: [{provide: BREAKPOINT, useValue: PRINT_BREAKPOINTS, multi: true}],
   bootstrap: [AppComponent]
