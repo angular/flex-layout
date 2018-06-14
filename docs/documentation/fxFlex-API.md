@@ -60,6 +60,7 @@ The **flex-basis** values can be pixels, percentages, calcs, em, vw, vh, or know
 * `fxFlex="102px"`
 * `fxFlex="auto"`
 
+If no unit is specified it defaults to percentages (e.g. `fxFlex="50"` => `flex: 1 1 50%`).
 
 Flex-basis **aliases** are accepted shorthand terms used to quickly specify Flexbox stylings. Here are the industry 
 mappings of the alias to its resulting CSS styling:
