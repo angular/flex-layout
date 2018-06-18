@@ -80,7 +80,6 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
    * querying such as computed Display style
    */
   ngOnInit() {
-    this._display = this._getDisplayStyle();
     this._hasInitialized = true;
   }
 
@@ -226,9 +225,6 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   protected get hasInitialized() {
     return this._hasInitialized;
   }
-
-  /** Original dom Elements CSS display style */
-  protected _display;
 
   /** MediaQuery Activation Tracker */
   protected _mqActivation: ResponsiveActivation;

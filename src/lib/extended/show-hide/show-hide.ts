@@ -67,6 +67,9 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
    */
   protected _layoutWatcher: Subscription;
 
+  /** Original dom Elements CSS display style */
+  protected _display: string;
+
   /* tslint:disable */
   @Input('fxShow')       set show(val) {  this._cacheInput('show', val);  }
   @Input('fxShow.xs')    set showXs(val) {this._cacheInput('showXs', val);}
@@ -101,11 +104,8 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
   @Input('fxHide.gt-sm') set hideGtSm(val) {this._cacheInput('showGtSm', negativeOf(val)); };
   @Input('fxHide.gt-md') set hideGtMd(val) {this._cacheInput('showGtMd', negativeOf(val)); };
   @Input('fxHide.gt-lg') set hideGtLg(val) {this._cacheInput('showGtLg', negativeOf(val)); };
-
   /* tslint:enable */
-  /**
-   *
-   */
+
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected layout: LayoutDirective,
               protected elRef: ElementRef,
@@ -155,6 +155,7 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
    */
   ngOnInit() {
     super.ngOnInit();
+    this._display = this._getDisplayStyle();
 
     let value = this._getDefaultVal('show', true);
     // Build _mqActivation controller
