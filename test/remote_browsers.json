@@ -209,7 +209,8 @@
     "base": "BrowserStack",
     "device": "iPhone 7",
     "os": "ios",
-    "os_version": "10.0"
+    "os_version": "10.0",
+    "real_mobile": "true"
   },
   "BS_IE9": {
     "base": "BrowserStack",
