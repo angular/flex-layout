@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git+https://github.com/angular/flex-layout.git"
   },
+  "license": "MIT",
+  "engines": {
+    "node": ">= 5.4.1"
+  },
   "scripts": {
     "demo:serve": "gulp serve:devapp",
     "demo:stage": "gulp stage-deploy:devapp",
@@ -22,10 +26,7 @@
     "universal:serve": "gulp universal:serve"
   },
   "version": "6.0.0-beta.16",
-  "license": "MIT",
-  "engines": {
-    "node": ">= 5.4.1"
-  },
+  "requiredAngularVersion": ">=6.0.0 <7.0.0",
   "dependencies": {
     "@angular/cdk": "6.0.0",
     "@angular/common": "^6.0.0",

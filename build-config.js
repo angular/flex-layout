@@ -4,16 +4,16 @@
  */
 const {join} = require('path');
 
-const package = require('./package.json');
+const packageJson = require('./package.json');
 
 /** Current version of the project*/
-const buildVersion = package.version;
+const buildVersion = packageJson.version;
 
 /**
  * Required Angular version for all Angular Layout packages. This version will be used
  * as the peer dependency version for Angular in all release packages.
  */
-const angularVersion = '^6.0.0';
+const angularVersion = packageJson.requiredAngularVersion;
 
 /** License that will be placed inside of all created bundles. */
 const buildLicense = `/**
