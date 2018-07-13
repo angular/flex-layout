@@ -11,7 +11,7 @@ const {packagesDir, projectDir} = buildConfig;
 task(':test:build', sequenceTask(
   'clean',
   // Build ESM output of Flex-Layout that also includes all test files.
-  'flex-layout:build-tests',
+  'flex-layout:build-no-bundles',
 ));
 
 /**
@@ -44,7 +44,7 @@ task('test:single-run', [':test:build'], (done: () => void) => {
  * This task should be used when running unit tests locally.
  */
 task('test', [':test:build'], () => {
-  let patternRoot = join(packagesDir, '**/*');
+  let patternRoot = join(packagesDir, 'lib', '**/*');
   // Load karma not outside. Karma pollutes Promise with a different implementation.
   let karma = require('karma');
 

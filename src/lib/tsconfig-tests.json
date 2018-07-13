@@ -8,8 +8,15 @@
     "module": "commonjs",
     "target": "es5",
     "types": ["jasmine"],
-    "experimentalDecorators": true,
-    "strictNullChecks": false
+    "paths": {
+      "@angular/flex-layout/*": ["./*"]
+    }
+  },
+  "angularCompilerOptions": {
+    "strictMetadataEmit": false, // Workaround for Angular #22210
+    "skipTemplateCodegen": true,
+    "emitDecoratorMetadata": true,
+    "fullTemplateTypeCheck": true
   },
   "include": [
     "**/*.spec.ts",

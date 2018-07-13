@@ -5,22 +5,16 @@
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)
 
 Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery. 
-This module provides Angular (v4.1 and higher) developers with component layout features using a 
+This module provides Angular developers with component layout features using a 
 custom Layout API, mediaQuery observables, and injected DOM flexbox-2016 CSS stylings.  
 
 The Flex Layout engine intelligently automates the process of applying appropriate 
 Flexbox CSS to browser view hierarchies. This automation also addresses many of the 
 complexities and workarounds encountered with the traditional, manual, CSS-only application of box CSS. 
 
-The **real** power of Flex Layout, however, is its **responsive** engine. The [Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) enables developers to easily specify different layouts, sizing, visibilities for different viewport sizes and display devices.
-
----
-
-#### Deprecated support for Angular 2.4.x
-
-With recent changes build and source changes, @angular/flex-layout (Beta.9 or higher)
-will no longer support Angular 2.4.x. These changes were required to support to the revised
-Angular v4.1 AOT and Renderers.
+The **real** power of Flex Layout, however, is its **responsive** engine. The 
+[Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) enables developers to easily specify 
+different layouts, sizing, visibilities for different viewport sizes and display devices.
 
 ---
 
@@ -41,11 +35,12 @@ Developers
 Demos 
 
 *  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/demo-app/demo-app-module.ts)
+*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
 
-Templates
+* StackBlitz Templates
 
-*  [Plunkr Template](https://plnkr.co/edit/h8hzyoEyqdCXmTBA7DfK?p=preview)
+  *  [Flex-Layout Template](https://stackblitz.com/edit/angular-flex-layout-seed)
+  *  [Flex-Layout + Material](https://stackblitz.com/edit/angular-material-flex-layout-seed?file=app%2Fapp.module.ts)
 
 ----
 
@@ -65,6 +60,3 @@ The sources for this package are in the [Flex Layout](https://github.com/angular
 Please file issues and pull requests against that repo.
 
 License: MIT
-
-
-

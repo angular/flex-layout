@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright Google Inc. All Rights Reserved.
+ * Copyright Google LLC All Rights Reserved.
  *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
@@ -41,12 +41,13 @@ function getStyle(element: any, stylename: string): string {
 
 function hasStyle(element: any,
                   styleName: string,
-                  styleValue: string = null,
+                  styleValue: string = '',
                   inlineOnly = true): boolean {
   let value = getStyle(element, styleName) || '';
-  if ( !value && !inlineOnly ) {
+  if (!value && !inlineOnly) {
     // Search stylesheets
-    value = getComputedStyle(element).getPropertyValue(styleName) || '';
+    value = typeof getComputedStyle === 'function' &&
+      getComputedStyle(element).getPropertyValue(styleName) || '';
   }
   return styleValue ? value == styleValue : value.length > 0;
 }
@@ -60,7 +61,7 @@ function getShadowRoot(el: HTMLElement): DocumentFragment {
 }
 
 function getText(el: Node): string {
-  return el.textContent;
+  return el.textContent || '';
 }
 
 function childNodesAsList(el: Node): any[] {

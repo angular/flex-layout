@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # compiled output
-/dist
+dist
 /tmp
 /deploy
 /screenshots
@@ -24,3 +24,7 @@ npm-debug.log
 testem.log
 /.chrome
 !/test/karma.conf.js
+
+src/apps/universal-app/package-lock.json
+src/apps/demo-app/package-lock.json
+src/apps/hello-world/package-lock.json

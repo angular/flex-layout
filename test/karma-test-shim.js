@@ -1,4 +1,5 @@
 /*global jasmine, __karma__, window*/
+
 Error.stackTraceLimit = Infinity;
 
 // The default time that jasmine waits for an asynchronous test to finish is five seconds.
@@ -20,12 +21,15 @@ System.config({
   map: {
     'rxjs': 'node:rxjs',
     'main': 'main.js',
+    'tslib': 'node:tslib/tslib.js',
 
     // Angular specific mappings.
     '@angular/core': 'node:@angular/core/bundles/core.umd.js',
     '@angular/core/testing': 'node:@angular/core/bundles/core-testing.umd.js',
     '@angular/common': 'node:@angular/common/bundles/common.umd.js',
     '@angular/common/testing': 'node:@angular/common/bundles/common-testing.umd.js',
+    '@angular/common/http': 'node:@angular/common/bundles/common-http.umd.js',
+    '@angular/common/http/testing': 'node:@angular/common/bundles/common-http-testing.umd.js',
     '@angular/compiler': 'node:@angular/compiler/bundles/compiler.umd.js',
     '@angular/compiler/testing': 'node:@angular/compiler/bundles/compiler-testing.umd.js',
     '@angular/http': 'node:@angular/http/bundles/http.umd.js',
@@ -44,29 +48,28 @@ System.config({
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
     '@angular/platform-browser-dynamic/testing':
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
-    
-    '@angular/material': 'node:@angular/material/bundles/material.umd.js',
+
+    '@angular/material/button': 'node:@angular/material/bundles/material-button.umd.js',
+    '@angular/material/core': 'node:@angular/material/bundles/material-core.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
     '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
     '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
     '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
-    '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
     '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
-    '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
-    '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
     '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
-    '@angular/cdk/portal': 'node:@angular/cdk/bundles/cdk-portal.umd.js',
-    '@angular/cdk/rxjs': 'node:@angular/cdk/bundles/cdk-rxjs.umd.js',
-    '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
-    '@angular/cdk/stepper': 'node:@angular/cdk/bundles/cdk-stepper.umd.js',
-    '@angular/cdk/table': 'node:@angular/cdk/bundles/cdk-table.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.
-    '@angular/flex-layout': 'dist/packages/flex-layout/public_api.js'
+    '@angular/flex-layout': 'dist/packages/flex-layout/index.js',
+    '@angular/flex-layout/core': 'dist/packages/flex-layout/core/index.js',
+    '@angular/flex-layout/extended': 'dist/packages/flex-layout/extended/index.js',
+    '@angular/flex-layout/flex': 'dist/packages/flex-layout/flex/index.js',
+    '@angular/flex-layout/grid': 'dist/packages/flex-layout/grid/index.js',
+    '@angular/flex-layout/server': 'dist/packages/flex-layout/server/index.js',
   },
   packages: {
     // Thirdparty barrels.
     'rxjs': {main: 'index'},
+    'rxjs/operators': {main: 'index'},
 
     // Set the default extension for the root package, because otherwise the demo-app can't
     // be built within the production mode. Due to missing file extensions.
@@ -77,9 +80,15 @@ System.config({
 });
 
 // Configure the Angular test bed and run all specs once configured.
- configureTestBed()
+configureTestBed()
   .then(runSpecs)
-  .then(__karma__.start, __karma__.error);
+  .then(__karma__.start, function(error) {
+    // Passing in the error object directly to Karma won't log out the stack trace and
+    // passing the `originalErr` doesn't work correctly either. We have to log out the
+    // stack trace so we can actually debug errors before the tests have started.
+    console.error(error.originalErr.stack);
+    __karma__.error(error);
+  });
 
 
 /** Runs the specs in Karma. */
@@ -99,7 +108,7 @@ function isSpecFile(path) {
 function configureTestBed() {
   return Promise.all([
     System.import('@angular/core/testing'),
-    System.import('@angular/platform-browser-dynamic/testing')
+    System.import('@angular/platform-browser-dynamic/testing'),
   ]).then(function (providers) {
     var testing = providers[0];
     var testingBrowser = providers[1];

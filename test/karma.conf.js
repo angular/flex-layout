@@ -13,10 +13,12 @@ module.exports = (config) => {
       require('karma-chrome-launcher'),
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
-      require('karma-coverage')
+      require('karma-coverage'),
+      require('karma-spec-reporter')
     ],
     files: [
       {pattern: 'node_modules/core-js/client/core.js', included: true, watched: false},
+      {pattern: 'node_modules/tslib/tslib.js', included: true, watched: false},
       {pattern: 'node_modules/systemjs/dist/system.src.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/zone.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/proxy.js', included: true, watched: false},
@@ -24,11 +26,6 @@ module.exports = (config) => {
       {pattern: 'node_modules/zone.js/dist/jasmine-patch.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
-      {pattern: 'node_modules/hammerjs/hammer.min.js', included: true, watched: false},
-      {pattern: 'node_modules/hammerjs/hammer.min.js.map', included: false, watched: false},
-
-      // Include all Angular dependencies
-      {pattern: 'node_modules/@angular/material/prebuilt-themes/indigo-pink.css', included: true, watched: false},
 
       {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
       {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
@@ -57,11 +54,18 @@ module.exports = (config) => {
       subdir: '.'
     },
 
+    specReporter: {
+      maxLogLines: 1,
+    },
+
     sauceLabs: {
       testName: 'flex-layout',
       startConnect: false,
       recordVideo: false,
       recordScreenshots: false,
+      idleTimeout: 600,
+      commandTimeout: 600,
+      maxDuration: 5400,
       options: {
         'selenium-version': '2.48.2',
         'command-timeout': 600,
@@ -74,14 +78,16 @@ module.exports = (config) => {
       project: 'flex-layout',
       startTunnel: false,
       retryLimit: 1,
-      timeout: 600,
-      pollingTimeout: 20000
+      timeout: 1800,
+      pollingTimeout: 20000,
+      video: false
     },
 
-    browserDisconnectTimeout: 20000,
-    browserNoActivityTimeout: 240000,
-    captureTimeout: 120000,
-    browsers: ['Chrome_1024x768'],
+    browserDisconnectTimeout: 180000,
+    browserDisconnectTolerance: 3,
+    browserNoActivityTimeout: 300000,
+    captureTimeout: 180000,
+    browsers: ['ChromeHeadlessCISandbox'],
 
     singleRun: false,
 

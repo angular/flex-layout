@@ -1,37 +1,78 @@
 import {task} from 'gulp';
-import {copySync} from 'fs-extra';
-import {execNodeTask} from '../util/task_helpers';
+import {existsSync} from 'fs';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
+import {execTask} from '../util/task_helpers';
 
-const {outputDir} = buildConfig;
+const {outputDir, packagesDir, projectVersion} = buildConfig;
 
-/** Path to the directory where all releases are living. */
-const releasesDir = join(outputDir, 'releases');
+/** Path to the demo-app source directory. */
+const genericName = 'angular-flex-layout.tgz';
+const demoAppSource = join(packagesDir, 'apps', 'demo-app');
+const tarName = `angular-flex-layout-${projectVersion}.tgz`;
+const distDir = join(outputDir, 'releases', 'flex-layout');
+const genericTar = join(distDir, genericName);
 
-/** Path to the demo-app output directory. */
-const demoAppOut = join(outputDir, 'packages', 'demo-app');
+/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
+task('aot:build', sequenceTask('aot:pre', 'aot:cli'));
 
-/** Path to the tsconfig file that builds the AOT files. */
-const tsconfigFile = join(demoAppOut, 'tsconfig-aot.json');
+task('aot:pre', sequenceTask(
+  'clean',
+  'flex-layout:build-release',
+  'aot:bundle',
+  'aot:bundle:rename',
+  'aot:clean',
+  'aot:deps',
+  'aot:add:tar')
+);
 
-/** Builds the demo-app and flex-layout. To be able to run NGC, apply the metadata workaround. */
-task('aot:deps', sequenceTask(
-  'build:devapp',
-  ['flex-layout:build-release'],
-  'aot:copy-release'
+task('aot:deps', [], execTask(
+  'npm', ['install'], {cwd: demoAppSource}));
+
+
+/**
+ * The following tasks bundle Flex Layout into a tar file that can be installed
+ * directly instead of linked to via sym link. When linking, there are some issues
+ * that npm introduces, like Angular functionality impairment. This also has the
+ * benefit of better simulating the install process for Flex Layout in a CLI app
+ */
+task('aot:add:tar', [], execTask(
+  'npm', ['install', genericTar], {cwd: demoAppSource}
 ));
 
-// As a workaround for https://github.com/angular/angular/issues/12249, we need to
-// copy the Flex-Layout output inside of the demo-app output.
-task('aot:copy-release', () => {
-  copySync(join(releasesDir, 'flex-layout'), join(demoAppOut, 'flex-layout'));
-});
+task('aot:bundle', [], execTask(
+  'npm', ['pack'], {cwd: distDir}
+));
 
-/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
-task('aot:build', sequenceTask('aot:deps', 'aot:compiler-cli'));
+task('aot:bundle:rename', [], execTask(
+  'mv', [tarName, genericName], {cwd: distDir}
+));
 
-/** Build the demo-app and a release to confirm that the library is AOT-compatible. */
-task('aot:compiler-cli', execNodeTask(
-  '@angular/compiler-cli', 'ngc', ['-p', tsconfigFile]
+task('aot:cli', execTask(
+  'ng', ['build', '--prod'],
+  {cwd: demoAppSource, failOnStderr: true}
+));
+
+task('aot:clean', sequenceTask('aot:clear:mods', 'aot:clear:lock', 'aot:clear:dist'));
+
+task('aot:clear:mods', [], execTask(
+  'rm', ['-rf', 'node_modules'], {
+    failOnStderr: true,
+    cwd: demoAppSource
+  }
+));
+
+task('aot:clear:lock', [], existsSync(join(demoAppSource, 'package-lock.json')) ?
+  execTask(
+  'rm', ['package-lock.json'], {
+    failOnStderr: false,
+    cwd: demoAppSource
+  }) : () => {}
+);
+
+task('aot:clear:dist', [], execTask(
+  'rm', ['-rf', 'dist'], {
+    failOnStderr: true,
+    cwd: demoAppSource
+  }
 ));

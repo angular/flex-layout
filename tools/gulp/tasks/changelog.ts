@@ -1,5 +1,5 @@
 import {task, src, dest} from 'gulp';
-import {buildConfig} from 'material2-build-tools';
+import {buildConfig} from 'lib-build-tools';
 import {join} from 'path';
 import {yellow, red} from 'chalk';
 

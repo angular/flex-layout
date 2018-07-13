@@ -19,9 +19,6 @@ $(npm bin)/tsc -p src/demo-app/tsconfig-build.json --target ES2015 --module ES20
 # Create a list of all RxJS source files.
 rxjsSourceFiles=$(find node_modules/rxjs/ -name '*.js');
 
-# List of entry points in the CDK package. Exclude "testing" since it's not an entry point.
-cdkEntryPoints=($(find node_modules/@angular/cdk -maxdepth 1 -mindepth 1 -type d -not -name testing -not -name bundles -not -name typings -not -name @angular -exec basename {} \;))
-
 OPTS=(
   "--language_in=ES6_STRICT"
   "--language_out=ES5"
@@ -39,9 +36,9 @@ OPTS=(
   "--js_module_root=dist/releases/flex-layout"
   "--js_module_root=node_modules/@angular/core"
   "--js_module_root=node_modules/@angular/common"
+  "--js_module_root=node_modules/@angular/common/http"
   "--js_module_root=node_modules/@angular/compiler"
   "--js_module_root=node_modules/@angular/forms"
-  "--js_module_root=node_modules/@angular/http"
   "--js_module_root=node_modules/@angular/router"
   "--js_module_root=node_modules/@angular/platform-browser"
   "--js_module_root=node_modules/@angular/platform-browser/animations"
@@ -55,23 +52,24 @@ OPTS=(
   "--formatting=PRETTY_PRINT"
   "--debug"
 
-  # Include the Material and CDK FESM bundles
-  dist/releases/flex-layout/@angular/flex-layout.js
+  # Include the Flex Layout FESM bundles
+  dist/releases/flex-layout/esm2015/flex-layout.js
 
   # Include all Angular FESM bundles.
-  node_modules/@angular/core/@angular/core.js
-  node_modules/@angular/common/@angular/common.js
-  node_modules/@angular/compiler/@angular/compiler.js
-  node_modules/@angular/forms/@angular/forms.js
-  node_modules/@angular/http/@angular/http.js
-  node_modules/@angular/router/@angular/router.js
-  node_modules/@angular/platform-browser/@angular/platform-browser.js
-  node_modules/@angular/platform-browser/@angular/platform-browser/animations.js
-  node_modules/@angular/platform-browser-dynamic/@angular/platform-browser-dynamic.js
-  node_modules/@angular/animations/@angular/animations.js
-  node_modules/@angular/animations/@angular/animations/browser.js
-  node_modules/@angular/material/@angular/material.js
-  node_modules/@angular/cdk/@angular/cdk.js
+  node_modules/@angular/core/esm5/index.js
+  node_modules/@angular/common/esm5/index.js
+  node_modules/@angular/common/esm5/http.js
+  node_modules/@angular/compiler/esm5/index.js
+  node_modules/@angular/forms/esm5/index.js
+  node_modules/@angular/http/esm5/index.js
+  node_modules/@angular/router/esm5/index.js
+  node_modules/@angular/platform-browser/esm5/index.js
+  node_modules/@angular/platform-browser/esm5/animations/index.js
+  node_modules/@angular/platform-browser-dynamic/esm5/index.js
+  node_modules/@angular/animations/esm5/index.js
+  node_modules/@angular/animations/esm5/browser/index.js
+  node_modules/@angular/material/esm5/material.js
+  node_modules/@angular/cdk/esm5/cdk.js
 
   # Include other dependencies like Zone.js and RxJS
   node_modules/zone.js/dist/zone.js
@@ -83,12 +81,6 @@ OPTS=(
   "--entry_point=./dist/packages/demo-app/main.js"
   "--dependency_mode=STRICT"
 )
-
-# Walk through every entry-point of the CDK and add it to closure options.
-for i in "${cdkEntryPoints[@]}"; do
-  OPTS+=("--js_module_root=node_modules/@angular/cdk/@angular/cdk/${i}")
-  OPTS+=("node_modules/@angular/cdk/@angular/cdk/${i}.js")
-done
 
 # Write closure flags to a closure flagfile.
 closureFlags=$(mktemp)

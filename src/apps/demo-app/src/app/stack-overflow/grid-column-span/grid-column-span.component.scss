@@ -1,0 +1,49 @@
+.containerX {
+  padding: 5px;
+  border: solid 1px #b6b6b6;
+  box-sizing: content-box !important;
+}
+
+.card-demo mat-card,
+.card-demo mat-card-content {
+  margin-bottom: 24px;
+}
+
+.card-demo mat-card-footer {
+  left: 24px;
+  margin-bottom: 24px;
+}
+
+div.container {
+  display: flex;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.container div[ng-reflect-flex*=calc] {
+  color: #343434;
+  background-color: #8bc34a;
+}
+
+.container div.col3 {
+  background-color: #009682;
+  color: white;
+}
+
+div.container > div {
+  flex: 1 1 5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  background-color: #03a9f4;
+  margin-left: 10px;
+  height: 50px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+div.container > div:first-child {
+  margin-left: 0;
+}

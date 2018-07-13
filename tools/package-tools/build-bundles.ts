@@ -1,89 +1,206 @@
-import {join} from 'path';
-import {ScriptTarget, ModuleKind, NewLineKind} from 'typescript';
+import {join, dirname} from 'path';
 import {uglifyJsFile} from './minify-sources';
-import {createRollupBundle} from './rollup-helpers';
-import {remapSourcemap} from './sourcemap-remap';
-import {transpileFile} from './typescript-transpile';
 import {buildConfig} from './build-config';
+import {BuildPackage} from './build-package';
+import {rollupRemoveLicensesPlugin} from './rollup-remove-licenses';
+import {rollupGlobals, dashCaseToCamelCase} from './rollup-globals';
+import {remapSourcemap} from './sourcemap-remap';
+
+// There are no type definitions available for these imports.
+const rollup = require('rollup');
+const rollupNodeResolutionPlugin = require('rollup-plugin-node-resolve');
+const rollupAlias = require('rollup-plugin-alias');
 
 /** Directory where all bundles will be created in. */
 const bundlesDir = join(buildConfig.outputDir, 'bundles');
 
-/** Builds bundles for the primary entry-point w/ given entry file, e.g. @angular/cdk */
-export async function buildPrimaryEntryPointBundles(entryFile: string, packageName: string) {
-  return createBundlesForEntryPoint({
-    entryFile,
-    moduleName: `ng.${packageName}`,
-    fesm2015Dest: join(bundlesDir, `${packageName}.js`),
-    fesm2014Dest: join(bundlesDir, `${packageName}.es5.js`),
-    umdDest: join(bundlesDir, `${packageName}.umd.js`),
-    umdMinDest: join(bundlesDir, `${packageName}.umd.min.js`),
-  });
-}
 
-/** Builds bundles for a single secondary entry-point w/ given entry file, e.g. @angular/cdk/a11y */
-export async function buildSecondaryEntryPointBundles(entryFile: string, packageName: string,
-                                                      entryPointName: string) {
-  return createBundlesForEntryPoint({
-    entryFile,
-    moduleName: `ng.${packageName}.${entryPointName}`,
-    fesm2015Dest: join(bundlesDir, `${packageName}`, `${entryPointName}.js`),
-    fesm2014Dest: join(bundlesDir, `${packageName}`, `${entryPointName}.es5.js`),
-    umdDest: join(bundlesDir, `${packageName}-${entryPointName}.umd.js`),
-    umdMinDest: join(bundlesDir, `${packageName}-${entryPointName}.umd.min.js`),
-  });
-}
+/** Utility for creating bundles from raw ngc output. */
+export class PackageBundler {
+  constructor(private buildPackage: BuildPackage) {}
 
-/**
- * Creates the ES5, ES2015, and UMD bundles for the specified entry-point.
- * @param config Configuration that specifies the entry-point, module name, and output
- *     bundle paths.
- */
-async function createBundlesForEntryPoint(config: BundlesConfig) {
-  // Build FESM-2015 bundle file.
-  await createRollupBundle({
-    moduleName: config.moduleName,
-    entry: config.entryFile,
-    dest: config.fesm2015Dest,
-    format: 'es',
-  });
+  /** Creates all bundles for the package and all associated entry points (UMD, ES5, ES2015). */
+  async createBundles() {
+    for (const entryPoint of this.buildPackage.secondaryEntryPoints) {
+      await this.bundleSecondaryEntryPoint(entryPoint);
+    }
 
-  await remapSourcemap(config.fesm2015Dest);
+    await this.bundlePrimaryEntryPoint();
+  }
 
-  // Downlevel FESM-2015 file to ES5.
-  transpileFile(config.fesm2015Dest, config.fesm2014Dest, {
-    importHelpers: true,
-    target: ScriptTarget.ES5,
-    module: ModuleKind.ES2015,
-    allowJs: true,
-    newLine: NewLineKind.LineFeed
-  });
+  /** Bundles the primary entry-point w/ given entry file, e.g. @angular/cdk */
+  private async bundlePrimaryEntryPoint() {
+    const packageName = this.buildPackage.name;
 
-  await remapSourcemap(config.fesm2014Dest);
+    return this.bundleEntryPoint({
+      entryFile: this.buildPackage.entryFilePath,
+      esm5EntryFile: join(this.buildPackage.esm5OutputDir, 'index.js'),
+      importName: `@angular/${this.buildPackage.name}`,
+      moduleName: `ng.${this.buildPackage.name}`,
+      esm2015Dest: join(bundlesDir, `${packageName}.js`),
+      esm5Dest: join(bundlesDir, `${packageName}.es5.js`),
+      umdDest: join(bundlesDir, `${packageName}.umd.js`),
+      umdMinDest: join(bundlesDir, `${packageName}.umd.min.js`),
+    });
+  }
 
-  // Create UMD bundle of FESM-2014 output.
-  await createRollupBundle({
-    moduleName: config.moduleName,
-    entry: config.fesm2014Dest,
-    dest: config.umdDest,
-    format: 'umd'
-  });
+  /** Bundles a single secondary entry-point w/ given entry file, e.g. @angular/cdk/a11y */
+  private async bundleSecondaryEntryPoint(entryPoint: string) {
+    const packageName = this.buildPackage.name;
+    const entryFile = join(this.buildPackage.outputDir, entryPoint, 'index.js');
+    const esm5EntryFile = join(this.buildPackage.esm5OutputDir, entryPoint, 'index.js');
+    const dashedEntryName = dashCaseToCamelCase(entryPoint);
 
-  await remapSourcemap(config.umdDest);
+    return this.bundleEntryPoint({
+      entryFile,
+      esm5EntryFile,
+      importName: `@angular/${this.buildPackage.name}/${dashedEntryName}`,
+      moduleName: `ng.${packageName}.${dashedEntryName}`,
+      esm2015Dest: join(bundlesDir, `${packageName}`, `${entryPoint}.js`),
+      esm5Dest: join(bundlesDir, `${packageName}`, `${entryPoint}.es5.js`),
+      umdDest: join(bundlesDir, `${packageName}-${entryPoint}.umd.js`),
+      umdMinDest: join(bundlesDir, `${packageName}-${entryPoint}.umd.min.js`),
+    });
+  }
 
-  // Create a minified UMD bundle using UglifyJS
-  uglifyJsFile(config.umdDest, config.umdMinDest);
+  /**
+   * Creates the ES5, ES2015, and UMD bundles for the specified entry-point.
+   * @param config Configuration that specifies the entry-point, module name, and output
+   *     bundle paths.
+   */
+  private async bundleEntryPoint(config: BundlesConfig) {
+    // Build FESM-2015 bundle file.
+    await this.createRollupBundle({
+      importName: config.importName,
+      moduleName: config.moduleName,
+      entry: config.entryFile,
+      dest: config.esm2015Dest,
+      format: 'es',
+    });
 
-  await remapSourcemap(config.umdMinDest);
+    // Build FESM-5 bundle file.
+    await this.createRollupBundle({
+      importName: config.importName,
+      moduleName: config.moduleName,
+      entry: config.esm5EntryFile,
+      dest: config.esm5Dest,
+      format: 'es',
+    });
+
+    // Create UMD bundle of ES5 output.
+    await this.createRollupBundle({
+      importName: config.importName,
+      moduleName: config.moduleName,
+      entry: config.esm5Dest,
+      dest: config.umdDest,
+      format: 'umd'
+    });
+
+    // Create a minified UMD bundle using UglifyJS
+    uglifyJsFile(config.umdDest, config.umdMinDest);
+
+    // Remaps the sourcemaps to be based on top of the original TypeScript source files.
+    await remapSourcemap(config.esm2015Dest);
+    await remapSourcemap(config.esm5Dest);
+    await remapSourcemap(config.umdDest);
+    await remapSourcemap(config.umdMinDest);
+  }
+
+  /** Creates a rollup bundle of a specified JavaScript file.*/
+  private async createRollupBundle(config: RollupBundleConfig) {
+    const bundleOptions = {
+      context: 'this',
+      external: Object.keys(rollupGlobals),
+      input: config.entry,
+      onwarn: (message: string) => {
+        // TODO(jelbourn): figure out *why* rollup warns about certain symbols not being found
+        // when those symbols don't appear to be in the input file in the first place.
+        if (/but never used/.test(message)) {
+          return false;
+        }
+
+        console.warn(message);
+      },
+      plugins: [
+        rollupRemoveLicensesPlugin,
+      ]
+    };
+
+    const writeOptions = {
+      name: config.moduleName || 'ng.flexLayout',
+      amd: {id: config.importName},
+      banner: buildConfig.licenseBanner,
+      format: config.format,
+      file: config.dest,
+      globals: rollupGlobals,
+      sourcemap: true
+    };
+
+    // For UMD bundles, we need to adjust the `external` bundle option in order to include
+    // all necessary code in the bundle.
+    if (config.format === 'umd') {
+      bundleOptions.plugins.push(rollupNodeResolutionPlugin());
+
+      // For all UMD bundles, we want to exclude tslib from the `external` bundle option so that
+      // it is inlined into the bundle.
+      let external = Object.keys(rollupGlobals);
+      external.splice(external.indexOf('tslib'), 1);
+
+      // If each secondary entry-point is re-exported at the root, we want to exlclude those
+      // secondary entry-points from the rollup globals because we want the UMD for this package
+      // to include *all* of the sources for those entry-points.
+      if (this.buildPackage.exportsSecondaryEntryPointsAtRoot &&
+          config.moduleName === `ng.${this.buildPackage.name}`) {
+
+        const importRegex = new RegExp(`@angular/${this.buildPackage.name}/.+`);
+        external = external.filter(e => !importRegex.test(e));
+
+        // Use the rollup-alias plugin to map imports of the form `@angular/material/button`
+        // to the actual file location so that rollup can resolve the imports (otherwise they
+        // will be treated as external dependencies and not included in the bundle).
+        bundleOptions.plugins.push(
+            rollupAlias(this.getResolvedSecondaryEntryPointImportPaths(config.dest)));
+      }
+
+      bundleOptions.external = external;
+    }
+
+    return rollup.rollup(bundleOptions).then((bundle: any) => bundle.write(writeOptions));
+  }
+
+  /**
+   * Gets mapping of import aliases (e.g. `@angular/material/button`) to the path of the es5
+   * bundle output.
+   * @param bundleOutputDir Path to the bundle output directory.
+   * @returns Map of alias to resolved path.
+   */
+  private getResolvedSecondaryEntryPointImportPaths(bundleOutputDir: string) {
+    return this.buildPackage.secondaryEntryPoints.reduce((map, p) => {
+      map[`@angular/${this.buildPackage.name}/${p}`] =
+          join(dirname(bundleOutputDir), this.buildPackage.name, `${p}.es5.js`);
+      return map;
+    }, {} as {[key: string]: string});
+  }
 }
 
 
 /** Configuration for creating library bundles. */
 interface BundlesConfig {
   entryFile: string;
+  esm5EntryFile: string;
+  importName: string;
   moduleName: string;
-  fesm2015Dest: string;
-  fesm2014Dest: string;
+  esm2015Dest: string;
+  esm5Dest: string;
   umdDest: string;
   umdMinDest: string;
+}
+
+/** Configuration for creating a bundle via rollup. */
+interface RollupBundleConfig {
+  entry: string;
+  dest: string;
+  format: string;
+  moduleName: string;
+  importName: string;
 }

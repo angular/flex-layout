@@ -1,9 +1,9 @@
 language: node_js
-sudo: false
 dist: trusty
+sudo: false
 
 node_js:
-  - '--lts'
+  - '8.9.4'
 
 addons:
   jwt:
@@ -20,26 +20,34 @@ jobs:
   include:
     - env: "MODE=lint"
     - env: "MODE=aot"
+    - env: "MODE=hello-world"
     - env: "MODE=prerender"
-    - env: "MODE=closure-compiler"
+    - env: "MODE=ssr"
     - env: "MODE=saucelabs_required"
     - env: "MODE=browserstack_required"
     - env: "MODE=travis_required"
     - stage: Deploy
       env: "DEPLOY_MODE=build-artifacts"
+      if: type = push
+    # Closure Compiler CI check is temporarily disabled until a new version of
+    # the tool is released with https://github.com/google/closure-compiler/pull/2600
+    # - env: "MODE=closure-compiler"
 env:
   global:
   - LOGS_DIR=/tmp/flex-layout-build/logs
   - SAUCE_USERNAME=angular-ci
-  - BROWSER_STACK_USERNAME=angularteam1
-  - BROWSER_STACK_ACCESS_KEY=BWCd4SynLzdDcv8xtzsB
+  - BROWSER_STACK_USERNAME=adamplumer1
+  - BROWSER_STACK_ACCESS_KEY=WgLjxoB2zQ3tqmsznKnz
   - BROWSER_PROVIDER_READY_FILE=/tmp/flex-layout-build/readyfile
   - BROWSER_PROVIDER_ERROR_FILE=/tmp/flex-layout-build/errorfile
+
+matrix:
+  allow_failures:
+    - env: "MODE=ssr"
 
 
 before_install:
   - source ./scripts/ci/env.sh
-  - npm i -g npm@^5.3
 
 install:
   - npm install
@@ -52,4 +60,4 @@ script:
 
 cache:
   directories:
-    - $HOME/.npm
+    - ./node_modules/
