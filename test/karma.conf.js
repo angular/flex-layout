@@ -14,7 +14,6 @@ module.exports = (config) => {
       require('karma-firefox-launcher'),
       require('karma-sourcemap-loader'),
       require('karma-coverage'),
-      require('karma-spec-reporter')
     ],
     files: [
       {pattern: 'node_modules/core-js/client/core.js', included: true, watched: false},
@@ -75,11 +74,10 @@ module.exports = (config) => {
     },
 
     browserStack: {
-      project: 'flex-layout',
+      project: 'Angular Layout Unit Tests',
       startTunnel: false,
-      retryLimit: 1,
+      retryLimit: 3,
       timeout: 1800,
-      pollingTimeout: 20000,
       video: false
     },
 
@@ -87,9 +85,12 @@ module.exports = (config) => {
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
-    browsers: ['ChromeHeadlessCISandbox'],
 
+    browsers: ['ChromeHeadlessCISandbox'],
     singleRun: false,
+
+    // Try Websocket for a faster transmission first. Fallback to polling if necessary.
+    transports: ['websocket', 'polling'],
 
     browserConsoleLogOptions: {
       terminal: true,
@@ -102,7 +103,7 @@ module.exports = (config) => {
         // accidentally on other tests.
         random: true
       }
-    }
+    },
   });
 
   if (process.env['TRAVIS']) {
@@ -129,6 +130,12 @@ module.exports = (config) => {
       config.browserStack.tunnelIdentifier = process.env.TRAVIS_JOB_ID;
     } else if (platform !== 'travis') {
       throw new Error(`Platform "${platform}" unknown, but Travis specified. Exiting.`);
+    }
+
+    if (platform !== 'travis') {
+      // To guarantee a better stability for tests running on external browsers, we disable
+      // concurrency. Stability is compared to speed more important.
+      config.concurrency = 1;
     }
 
     config.browsers = platformMap[platform][target.toLowerCase()];
