@@ -11,14 +11,10 @@ export type NgStyleMap = {[klass: string]: string};
 // NgStyle selectors accept NgStyleType values
 export type NgStyleType = string | Set<string> | NgStyleRawList | NgStyleMap;
 
-/**
- * Callback function for SecurityContext.STYLE sanitization
- */
+/** Callback function for SecurityContext.STYLE sanitization */
 export type NgStyleSanitizer = (val: any) => string;
 
-/**
- * NgStyle allowed inputs
- */
+/** NgStyle allowed inputs */
 export class NgStyleKeyValue {
   constructor(public key: string, public value: string, noQuotes = true) {
     this.key = noQuotes ? key.replace(/['"]/g, '').trim() : key.trim();
@@ -28,9 +24,7 @@ export class NgStyleKeyValue {
   }
 }
 
-/**
- * Transform Operators for @angular/flex-layout NgStyle Directive
- */
+/** Transform Operators for @angular/flex-layout NgStyle Directive */
 export const ngStyleUtils = {
   getType,
   buildRawList,
@@ -59,9 +53,7 @@ function buildRawList(source: any, delimiter = ';'): NgStyleRawList {
       .filter(val => val !== '');
 }
 
-/**
- * Convert array of key:value strings to a iterable map object
- */
+/** Convert array of key:value strings to a iterable map object */
 function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap {
   let sanitizeValue = (it: NgStyleKeyValue) => {
     if (sanitize) {
@@ -77,9 +69,7 @@ function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): 
       .reduce(keyValuesToMap, {});
 }
 
-/**
- * Convert Set<string> or raw Object to an iterable NgStyleMap
- */
+/** Convert Set<string> or raw Object to an iterable NgStyleMap */
 function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
   let list = new Array<string>();
   if (getType(source) == 'set') {
@@ -93,17 +83,13 @@ function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
 }
 
 
-/**
- * Convert 'key:value' -> [key, value]
- */
-function stringToKeyValue(it: string): NgStyleKeyValue|null {
+/** Convert 'key:value' -> [key, value] */
+function stringToKeyValue(it: string): NgStyleKeyValue {
   let [key, val] = it.split(':');
-  return val ? new NgStyleKeyValue(key, val) : null;
+  return new NgStyleKeyValue(key, val);
 }
 
-/**
- * Convert [ [key,value] ] -> { key : value }
- */
+/** Convert [ [key,value] ] -> { key : value } */
 function keyValuesToMap(map: NgStyleMap, entry: NgStyleKeyValue): NgStyleMap {
   if (!!entry.key) {
     map[entry.key] = entry.value;
