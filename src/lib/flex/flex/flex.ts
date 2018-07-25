@@ -116,7 +116,6 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
     this._listenForMediaQueryChanges('flex', '', (changes: MediaChange) => {
       this._updateStyle(changes.value);
     });
-    this._updateStyle();
 
     if (this._container) {
       // If this flex item is inside of a flex container marked with

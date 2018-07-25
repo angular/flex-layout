@@ -68,11 +68,8 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
   @Input('fxLayout.lt-md') set layoutLtMd(val) { this._cacheInput('layoutLtMd', val); };
   @Input('fxLayout.lt-lg') set layoutLtLg(val) { this._cacheInput('layoutLtLg', val); };
   @Input('fxLayout.lt-xl') set layoutLtXl(val) { this._cacheInput('layoutLtXl', val); };
-
   /* tslint:enable */
-  /**
-   *
-   */
+
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
               styleUtils: StyleUtils) {
@@ -106,16 +103,13 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
     this._listenForMediaQueryChanges('layout', 'row', (changes: MediaChange) => {
       this._updateWithDirection(changes.value);
     });
-    this._updateWithDirection();
   }
 
   // *********************************************
   // Protected methods
   // *********************************************
 
-  /**
-   * Validate the direction value and then update the host's inline flexbox styles
-   */
+  /** Validate the direction value and then update the host's inline flexbox styles */
   protected _updateWithDirection(value?: string) {
     value = value || this._queryInput('layout') || 'row';
     if (this._mqActivation) {

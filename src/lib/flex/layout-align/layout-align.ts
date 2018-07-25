@@ -94,7 +94,6 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     this._listenForMediaQueryChanges('align', 'start stretch', (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
-    this._updateWithValue();
   }
 
   ngOnDestroy() {
