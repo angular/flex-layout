@@ -66,7 +66,7 @@ export const DEFAULT_BREAKPOINTS: BreakPoint[] = [
   {
     alias: 'lt-xl',
     overlapping: true,
-    mediaQuery: '(max-width: 1920px)'
+    mediaQuery: '(max-width: 1919px)'
   },
   {
     alias: 'xl',
