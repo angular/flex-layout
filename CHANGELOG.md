@@ -1,3 +1,20 @@
+<a name="6.0.0-beta.17"></a>
+# [6.0.0-beta.17](https://github.com/angular/flex-layout/compare/6.0.0-beta.16...6.0.0-beta.17) (2018-07-27)
+
+
+### Bug Fixes
+
+* **fxFlex:** do not eagerly listen to layout changes ([#771](https://github.com/angular/flex-layout/issues/771)) ([dc431d8](https://github.com/angular/flex-layout/commit/dc431d8)), closes [#700](https://github.com/angular/flex-layout/issues/700) [#733](https://github.com/angular/flex-layout/issues/733)
+* **module:** make withConfig AOT compatible ([85e3145](https://github.com/angular/flex-layout/commit/85e3145))
+* use correct xl breakpoint ([#809](https://github.com/angular/flex-layout/issues/809)) ([b64b1b3](https://github.com/angular/flex-layout/commit/b64b1b3))
+
+
+### Performance Improvements
+
+* remove duplicate function calls ([#773](https://github.com/angular/flex-layout/issues/773)) ([bc7f77f](https://github.com/angular/flex-layout/commit/bc7f77f)), closes [#761](https://github.com/angular/flex-layout/issues/761)
+
+
+
 <a name="6.0.0-beta.16"></a>
 # [6.0.0-beta.16](https://github.com/angular/flex-layout/compare/v6.0.0-beta.15...6.0.0-beta.16) (2018-06-07)
 
