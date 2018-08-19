@@ -1,0 +1,13 @@
+// This is the root config file where the schematics are defined.
+{
+  "$schema": "./node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    // Adds Angular Layout to an application without changing any templates
+    "ng-add": {
+      "description": "Adds Angular Layout to the application without affecting any templates",
+      "factory": "./install",
+      "schema": "./install/schema.json",
+      "aliases": ["layout-shell"]
+    }
+  }
+}

@@ -7,13 +7,15 @@ const {join} = require('path');
 const packageJson = require('./package.json');
 
 /** Current version of the project*/
-const buildVersion = packageJson.version;
+const projectVersion = packageJson.version;
 
 /**
  * Required Angular version for all Angular Layout packages. This version will be used
  * as the peer dependency version for Angular in all release packages.
  */
 const angularVersion = packageJson.requiredAngularVersion;
+const rxjsVersion = packageJson.dependencies.rxjs;
+const cdkVersion = packageJson.dependencies['@angular/cdk'];
 
 /** License that will be placed inside of all created bundles. */
 const buildLicense = `/**
@@ -25,8 +27,10 @@ const buildLicense = `/**
  */`;
 
 module.exports = {
-  projectVersion: buildVersion,
-  angularVersion: angularVersion,
+  projectVersion,
+  angularVersion,
+  rxjsVersion,
+  cdkVersion,
   projectDir: __dirname,
   packagesDir: join(__dirname, 'src'),
   outputDir: join(__dirname, 'dist'),
