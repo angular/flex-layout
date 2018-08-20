@@ -3,7 +3,7 @@ import {SchematicTestRunner} from '@angular-devkit/schematics/testing';
 import {getFileContent} from '@schematics/angular/utility/test';
 import {collectionPath, createTestApp} from '../test-setup/test-app';
 
-describe('material-install-schematic', () => {
+describe('layout-install-schematic', () => {
   let runner: SchematicTestRunner;
   let appTree: Tree;
 
