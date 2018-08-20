@@ -106,8 +106,14 @@
     "missing-rollup-globals": [
       true,
       "./tools/package-tools/rollup-globals.ts",
-      "src/lib/**/*.ts"
+      "src/lib/!(schematics)**/*.ts"
     ],
     "deletion-target": true
+  },
+  "linterOptions": {
+    "exclude": [
+      // Exclude schematic template files and test cases that can't be linted.
+      "src/lib/schematics/**/files/**/*"
+    ]
   }
 }
