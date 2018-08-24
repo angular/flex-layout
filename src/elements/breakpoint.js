@@ -2,11 +2,7 @@
  * Breakpoint -- a Custom Element representation a CSS Media Query
  * Options: alias, overlapping, mediaQuery
  */
-class Breakpoint extends HTMLElement {
-
-  static get observedAttributes() {
-    return ['alias', 'mediaquery'];
-  }
+export class Breakpoint extends HTMLElement {
 
   /** overlapping -- whether or not the breakpoint overlaps with others */
   get overlapping() {
@@ -22,7 +18,7 @@ class Breakpoint extends HTMLElement {
 
   /** alias -- the suffix to be used for the breakpoint */
   get alias() {
-    return this._alias;
+    return this.getAttribute('alias');
   }
   set alias(val) {
     this.setAttribute('alias', val);
@@ -30,7 +26,7 @@ class Breakpoint extends HTMLElement {
 
   /** mediaQuery -- the media query CSS to use for the breakpoint */
   get mediaquery() {
-    return this._mediaquery;
+    return this.getAttribute('mediaquery');
   }
   set mediaquery(val) {
     this.setAttribute('mediaquery', val);
@@ -38,33 +34,13 @@ class Breakpoint extends HTMLElement {
 
   constructor() {
     super();
-    this._alias = null;
-    this._mediaquery = null;
     const shadow = this.attachShadow({mode: 'open'});
-    const styleEl = document.createElement('style');
-    styleEl.innerHTML = ':host{display:contents;}';
-    shadow.appendChild(styleEl);
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'alias') {
-      this._alias = newValue;
-    } else if (name === 'mediaquery') {
-      this._mediaquery = newValue;
-    }
+    shadow.innerHTML = `
+      <style>
+        :host {
+          display: contents;
+        }
+      </style>
+    `;
   }
 }
-
-customElements.define('break-point', Breakpoint);
-
-class DefaultBreakpoints extends HTMLElement {
-  constructor() {
-    super();
-    const shadow = this.attachShadow({mode: 'open'});
-    const styleEl = document.createElement('style');
-    styleEl.innerHTML = ':host{display:contents;}';
-    shadow.appendChild(styleEl);
-  }
-}
-
-customElements.define('default-breakpoints', DefaultBreakpoints);

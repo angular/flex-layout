@@ -2,164 +2,68 @@
  * FlexLayout -- a Custom Element representation of a flexbox container
  * Options: align, direction, gap
  */
-import {findBpBySuffix, getBps, getProps} from './util';
+import {getProps} from './util';
+import {BaseLayout} from './base';
 
-class FlexLayout extends HTMLElement {
+class FlexLayout extends BaseLayout {
 
   static get observedAttributes() {
     return getProps(properties);
   }
 
   constructor() {
-    super();
-    this.attachShadow({mode: 'open'});
-    this._breakpoints = getBps();
-    this._observer = null;
-    this._childrenObserver = null;
-    this._initialized = false;
-    properties.forEach(p => p.updateFn.bind(this));
-    childrenProperties.forEach(p => p.updateFn.bind(this));
-  }
-
-  connectedCallback() {
-    this._buildStyle();
-    this._observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        // Detect insertion of new nodes
-        mutation.addedNodes.forEach(node => this.shadowRoot.appendChild(node.cloneNode(true)));
-      });
-    });
-
-    const childrenPropsBps = getProps(childrenProperties);
-    // TODO(CaerusKaru): finalize the mutation
-    const childObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-
-      });
-    });
-    for (let i = 0; i < this.children.length; i++) {
-      // init the properties
-      const child = this.children[i];
-      for (let j = 0; j < childrenPropsBps.length; j++) {
-
-      }
-      // then watch them
-      childObserver.observe(child, { attributes: true, attributeFilter: childrenPropsBps });
-    }
-
-    this._observer.observe(this, { childList: true });
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    const [prop, suffix] = name.split('.');
-    const bp = findBpBySuffix(this._breakpoints, suffix);
-    if (bp) {
-      let suffixCss = '';
-      for (let prop of properties) {
-        const attribute = this.getAttribute(`${prop.name}.${bp.alias}`);
-        suffixCss += attribute ? prop.updateFn(attribute) : '';
-      }
-      if (suffixCss) {
-        suffixCss += ':host{display:flex;}';
-        const styleEl = this.shadowRoot.querySelector(`#flex-${bp.alias}`);
-
-        if (styleEl) {
-          styleEl.textContent = `@media ${bp.mediaQuery}{${suffixCss}}`;
-        } else if (!styleEl && this._initialized) {
-          const newEl = document.createElement('style');
-          newEl.textContent = `@media ${bp.mediaQuery}{${suffixCss}}`;
-          newEl.id = `flex-${bp.alias}`;
-
-          if (this.shadowRoot.firstChild) {
-            this.shadowRoot.firstChild.insertAdjacentElement('afterend', newEl);
-          } else {
-            this.shadowRoot.appendChild(newEl);
-          }
-        }
-      }
-    } else {
-      if (properties.some(p => p.name === prop)) {
-        let suffixCss = '';
-        for (let prop of properties) {
-          const attribute = this.getAttribute(prop.name);
-          suffixCss += attribute ? prop.updateFn(attribute) : '';
-          if (suffixCss) {
-            suffixCss += ':host{display:flex;}';
-          }
-        }
-
-        if (suffixCss) {
-          const styleEl = this.shadowRoot.querySelector('#flex-all');
-          if (styleEl) {
-            styleEl.textContent = `@media all{${suffixCss}}`;
-          } else if (!styleEl && this._initialized) {
-            const newEl = document.createElement('style');
-            newEl.textContent = `@media all{${suffixCss}}`;
-            newEl.id = 'flex-all';
-
-            if (this.shadowRoot.firstChild) {
-              this.shadowRoot.firstChild.insertAdjacentElement('afterend', newEl);
-            } else {
-              this.shadowRoot.appendChild(newEl);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  disconnectedCallback() {
-    this._observer.disconnect();
-    this._childrenObserver.disconnect();
-  }
-
-  _buildStyle() {
-    // First add the catch-all
-    let suffixCss = '';
-    for (let prop of properties) {
-      const attribute = this.getAttribute(prop.name);
-      suffixCss += attribute ? prop.updateFn(attribute) : '';
-      if (suffixCss) {
-        suffixCss += ':host{display:flex;}';
-      }
-    }
-
-    if (suffixCss) {
-      const styleEl = document.createElement('style');
-      styleEl.textContent = `@media all{${suffixCss}}`;
-      styleEl.id = 'flex-all';
-      this.shadowRoot.appendChild(styleEl);
-    }
-
-    // Then add the responsive stuff
-    for (let bp of this._breakpoints) {
-      suffixCss = '';
-      for (let prop of properties) {
-        const attribute = this.getAttribute(`${prop.name}.${bp.alias}`);
-        suffixCss += attribute ? prop.updateFn(attribute) : '';
-      }
-      if (suffixCss) {
-        suffixCss += ':host{display:flex;}';
-        const styleEl = document.createElement('style');
-        styleEl.textContent = `@media ${bp.mediaQuery}{${suffixCss}}`;
-        styleEl.id = `flex-${bp.alias}`;
-        this.shadowRoot.appendChild(styleEl);
-      }
-    }
-
-    this._initialized = true;
+    super('flex', properties, childrenProperties);
   }
 }
 
+// TODO(CaerusKaru): when we switch to TypeScript, we can probably make this work...
+// export function withFlexLayout() {
+//   'use strict';
+//   return FlexLayout;
+// }
 
-Promise.all([
-  customElements.whenDefined('layout-config'),
-  customElements.whenDefined('break-point'),
-  customElements.whenDefined('default-breakpoints')
-]).then(() => {
+
+customElements.whenDefined('layout-config').then(() => {
   'use strict';
   customElements.define('flex-layout', FlexLayout);
 });
+
+const properties = [
+  {
+    name: 'gap',
+    updateFn: _buildGapCSS
+  },
+  {
+    name: 'direction',
+    updateFn: _buildDirCSS
+  },
+  {
+    name: 'align',
+    updateFn: _buildAlignCSS
+  }
+];
+
+
+const childrenProperties = [
+  {
+    name: 'fxFlex',
+    updateFn: _buildFlex
+  },
+  {
+    name: 'fxAlign',
+    updateFn: _buildFlexAlign
+  },
+  {
+    name: 'fxOrder',
+    updateFn: _buildOrderCss
+  },
+  {
+    name: 'fxOffset',
+    updateFn: _buildOffsetCss
+  },
+];
+
+/******* TOP-LEVEL PROPERTY FUNCTIONS ********/
 
 function _buildGapCSS(gap) {
   'use strict';
@@ -270,6 +174,8 @@ function _buildAlignCSS(align) {
   return css + '}';
 }
 
+/******* CHILD-LEVEL PROPERTY FUNCTIONS ********/
+
 function _buildOrderCss(order = 0) {
   'use strict';
   let value = Number(order);
@@ -338,39 +244,8 @@ function _buildFlexAlign(align) {
 
 function _buildFlex(flex) {
   'use strict';
+  const configs = document.getElementsByTagName('layout-config');
+  const config = configs.length > 0 ? config[0] : null;
+  const useColumnBasisZero = config ? config.useColumnBasisZero : false;
+  const disableVendorPrefixes = config ? config.disableVendorPrefixes : false;
 }
-
-const properties = [
-  {
-    name: 'gap',
-    updateFn: _buildGapCSS
-  },
-  {
-    name: 'direction',
-    updateFn: _buildDirCSS
-  },
-  {
-    name: 'align',
-    updateFn: _buildAlignCSS
-  }
-];
-
-
-const childrenProperties = [
-  {
-    name: 'fxFlex',
-    updateFn: _buildFlex
-  },
-  {
-    name: 'fxAlign',
-    updateFn: _buildFlexAlign
-  },
-  {
-    name: 'fxOrder',
-    updateFn: _buildOrderCss
-  },
-  {
-    name: 'fxOffset',
-    updateFn: _buildOffsetCss
-  },
-];

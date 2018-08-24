@@ -1,61 +1,97 @@
+import {Breakpoint} from './breakpoint';
+import {BREAKPOINTS, ORIENTATION_BREAKPOINTS} from './data';
+
 /**
  * Breakpoint -- a Custom Element representation a CSS Media Query
  * Options: alias, overlapping, mediaQuery
  */
 
-import {DEFAULT_CONFIG} from '../lib/core/tokens';
-
 class LayoutConfig extends HTMLElement {
 
-  static get observedAttributes() {
-    return Object.keys(DEFAULT_CONFIG);
+  /** disableDefaultBps -- whether or not to use the default breakpoints */
+  get disableDefaultBps() {
+    return this.hasAttribute('disableDefaultBps');
   }
-
-  /** overlapping -- whether or not the breakpoint overlaps with others */
-  get overlapping() {
-    return this.hasAttribute('overlapping');
-  }
-  set overlapping(val) {
+  set disableDefaultBps(val) {
     if (val) {
-      this.setAttribute('overlapping', '');
+      this.setAttribute('disableDefaultBps', '');
     } else {
-      this.removeAttribute('overlapping');
+      this.removeAttribute('disableDefaultBps');
     }
   }
 
-  /** alias -- the suffix to be used for the breakpoint */
-  get alias() {
-    return this._alias;
+  /** addOrientationBps -- whether or not to use the default breakpoints */
+  get addOrientationBps() {
+    return this.hasAttribute('addOrientationBps');
   }
-  set alias(val) {
-    this.setAttribute('alias', val);
+  set addOrientationBps(val) {
+    if (val) {
+      this.setAttribute('addOrientationBps', '');
+    } else {
+      this.removeAttribute('addOrientationBps');
+    }
   }
 
-  /** mediaQuery -- the media query CSS to use for the breakpoint */
-  get mediaquery() {
-    return this._mediaquery;
+  /** disableVendorPrefixes -- whether or not to use vendor prefixes on added styles */
+  get disableVendorPrefixes() {
+    return this.hasAttribute('disableVendorPrefixes');
   }
-  set mediaquery(val) {
-    this.setAttribute('mediaquery', val);
+  set disableVendorPrefixes(val) {
+    if (val) {
+      this.setAttribute('disableVendorPrefixes', '');
+    } else {
+      this.removeAttribute('disableVendorPrefixes');
+    }
+  }
+
+  /** useColumnBasisZero -- whether or not to use zero as the default flex value in column mode */
+  get useColumnBasisZero() {
+    return this.hasAttribute('useColumnBasisZero');
+  }
+  set useColumnBasisZero(val) {
+    if (val) {
+      this.setAttribute('useColumnBasisZero', '');
+    } else {
+      this.removeAttribute('useColumnBasisZero');
+    }
   }
 
   constructor() {
     super();
-    this._alias = null;
-    this._mediaquery = null;
     const shadow = this.attachShadow({mode: 'open'});
-    const styleEl = document.createElement('style');
-    styleEl.innerHTML = ':host{display:contents;}';
-    shadow.appendChild(styleEl);
+    shadow.innerHTML = `
+      <style>
+        :host {
+          display: contents;
+        }
+      </style>
+    `;
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'alias') {
-      this._alias = newValue;
-    } else if (name === 'mediaquery') {
-      this._mediaquery = newValue;
+  getBreakpoints() {
+    const bps = [];
+    const bpElements = this.getElementsByTagName('break-point');
+    const numEls = bpElements.length;
+    for (let i = 0; i < numEls; i++) {
+      const element = bpElements[i];
+      bps.push({
+        alias: element.alias,
+        overlapping: element.overlapping,
+        mediaQuery: element.mediaQuery,
+      });
     }
+
+    if (!this.disableDefaultBps) {
+      bps.concat(BREAKPOINTS);
+    }
+
+    if (this.addOrientationBps) {
+      bps.concat(ORIENTATION_BREAKPOINTS);
+    }
+
+    return bps;
   }
 }
 
+customElements.define('break-point', Breakpoint);
 customElements.define('layout-config', LayoutConfig);
