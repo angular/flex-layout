@@ -116,6 +116,10 @@ export class ResponsiveActivation {
    * Cache 1..n subscriptions for internal auto-unsubscribes when the the directive destructs
    */
   private _configureChangeObservers(): SubscriptionList {
+    if (!this._registryMap || typeof this._registryMap.forEach !== 'function') {
+      return [];
+    }
+
     let subscriptions: Subscription[] = [];
 
     this._registryMap.forEach((bp: BreakPointX) => {
