@@ -2,8 +2,8 @@
  * GridLayout -- a Custom Element representation of a CSS Grid container
  * Options: areas, rows, columns, auto, gap, alignColumns, alignRows
  */
-import {getProps} from './util';
-import {BaseLayout} from './base';
+import {getProps} from './util.js';
+import {BaseLayout} from './base.js';
 
 const DELIMETER = '|';
 const AUTO_SPECIFIER = '!';
@@ -12,14 +12,14 @@ const DEFAULT_CROSS = 'stretch';
 const ROW_DEFAULT = 'stretch';
 const COL_DEFAULT = 'stretch';
 
-class GridLayout extends BaseLayout {
+export class GridLayout extends BaseLayout {
 
   static get observedAttributes() {
-    return getProps(properties);
+    return getProps(properties.filter(d => !d.child));
   }
 
   constructor() {
-    super('grid', properties, childrenProperties);
+    super('grid', properties);
   }
 }
 
@@ -30,81 +30,98 @@ class GridLayout extends BaseLayout {
 //   };
 // }
 
-
-customElements.whenDefined('layout-config').then(() => {
-  'use strict';
-  customElements.define('grid-layout', GridLayout);
-});
+export function defineGrid() {
+  customElements.whenDefined('layout-config').then(() => {
+    customElements.define('grid-layout', GridLayout);
+  });
+}
 
 
 // Type: Property
-// {name: string, updateFn: (value: string, inline?: boolean) => string}
+// {name: string, updateFn: (value: string) => string}
 const properties = [
   {
     name: 'areas',
-    updateFn: _buildAreas
+    updateFn: _buildAreas,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'rows',
-    updateFn: _buildRows
+    updateFn: _buildRows,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'columns',
-    updateFn: _buildColumns
+    updateFn: _buildColumns,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'gap',
-    updateFn: _buildGap
+    updateFn: _buildGap,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'auto',
-    updateFn: _buildAuto
+    updateFn: _buildAuto,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'alignColumns',
-    updateFn: _buildAlignColumns
+    updateFn: _buildAlignColumns,
+    child: false,
+    values: new Map(),
   },
   {
     name: 'alignRows',
-    updateFn: _buildAlignRows
-  }
-];
-
-
-const childrenProperties = [
+    updateFn: _buildAlignRows,
+    child: false,
+    values: new Map(), // map: <value, numInstances>
+  },
   {
     name: 'gdRow',
-    updateFn: _buildRow
+    updateFn: _buildRow,
+    child: true,
+    values: new Map(),
   },
   {
     name: 'gdArea',
-    updateFn: _buildArea
+    updateFn: _buildArea,
+    child: true,
+    values: new Map(),
   },
   {
     name: 'gdColumn',
-    updateFn: _buildColumn
+    updateFn: _buildColumn,
+    child: true,
+    values: new Map(),
   },
   {
     name: 'gdAlign',
-    updateFn: _buildAlign
+    updateFn: _buildAlign,
+    child: true,
+    values: new Map(),
   },
 ];
 
 
 /******* TOP-LEVEL PROPERTY FUNCTIONS ********/
 
-function _buildAreas(value, inline = false) {
-  'use strict';
+/**
+ * The return type for these functions is [host styles, child styles]
+ */
+
+function _buildAreas(value) {
   const areas = value.split(DELIMETER).map(v => `"${v.trim()}"`);
 
-  return {
-    'display': inline ? 'inline-grid' : 'grid',
-    'grid-template-areas': areas.join(' ')
-  };
+  return [{'grid-template-areas': areas.join(' ')}, {}];
 }
 
-function _buildRows(value, inline = false) {
-  'use strict';
+function _buildRows(value) {
   let auto = false;
   if (value.endsWith(AUTO_SPECIFIER)) {
     value = value.substring(0, value.indexOf(AUTO_SPECIFIER));
@@ -112,18 +129,16 @@ function _buildRows(value, inline = false) {
   }
 
   let css = {
-    'display': inline ? 'inline-grid' : 'grid',
     'grid-auto-rows': '',
     'grid-template-rows': '',
   };
   const key = (auto ? 'grid-auto-rows' : 'grid-template-rows');
   css[key] = value;
 
-  return css;
+  return [css, {}];
 }
 
-function _buildColumns(value, inline = false) {
-  'use strict';
+function _buildColumns(value) {
   let auto = false;
   if (value.endsWith(AUTO_SPECIFIER)) {
     value = value.substring(0, value.indexOf(AUTO_SPECIFIER));
@@ -131,26 +146,20 @@ function _buildColumns(value, inline = false) {
   }
 
   let css = {
-    'display': inline ? 'inline-grid' : 'grid',
     'grid-auto-columns': '',
     'grid-template-columns': '',
   };
   const key = (auto ? 'grid-auto-columns' : 'grid-template-columns');
   css[key] = value;
 
-  return css;
+  return [css, {}];
 }
 
-function _buildGap(value, inline = false) {
-  'use strict';
-  return {
-    'display': inline ? 'inline-grid' : 'grid',
-    'grid-gap': value
-  };
+function _buildGap(value) {
+  return [{'grid-gap': value}, {}];
 }
 
-function _buildAuto(value, inline = false) {
-  'use strict';
+function _buildAuto(value) {
   let [direction, dense] = value.split(' ');
   if (direction !== 'column' && direction !== 'row' && direction !== 'dense') {
     direction = 'row';
@@ -158,14 +167,10 @@ function _buildAuto(value, inline = false) {
 
   dense = (dense === 'dense' && direction !== 'dense') ? ' dense' : '';
 
-  return {
-    'display': inline ? 'inline-grid' : 'grid',
-    'grid-auto-flow': direction + dense
-  };
+  return [{'grid-auto-flow': direction + dense}, {}];
 }
 
-function _buildAlignColumns(align, inline = false) {
-  'use strict';
+function _buildAlignColumns(align) {
   let css = {}, [mainAxis, crossAxis] = align.split(' ');
 
   // Main axis
@@ -215,12 +220,10 @@ function _buildAlignColumns(align, inline = false) {
       break;
   }
 
-  css.display = inline ? 'inline-grid' : 'grid';
-  return css;
+  return [css, {}];
 }
 
-function _buildAlignRows(align, inline = false) {
-  'use strict';
+function _buildAlignRows(align) {
   let css = {}, [mainAxis, crossAxis] = align.split(' ');
 
   // Main axis
@@ -252,29 +255,24 @@ function _buildAlignRows(align, inline = false) {
       break;
   }
 
-  css.display = inline ? 'inline-grid' : 'grid';
-  return css;
+  return [css, {}];
 }
 
 /******* CHILD-LEVEL PROPERTY FUNCTIONS ********/
 
 function _buildArea(value) {
-  'use strict';
-  return {'grid-area': value};
+  return [{'grid-area': value}];
 }
 
 function _buildRow(value) {
-  'use strict';
-  return {'grid-row': value};
+  return [{'grid-row': value}];
 }
 
 function _buildColumn(value) {
-  'use strict';
-  return {'grid-column': value};
+  return [{'grid-column': value}];
 }
 
 function _buildAlign(align) {
-  'use strict';
   let css = {}, [rowAxis, columnAxis] = align.split(' ');
 
   // Row axis
@@ -315,5 +313,5 @@ function _buildAlign(align) {
       break;
   }
 
-  return css;
+  return [css];
 }

@@ -1,12 +1,19 @@
-import {Breakpoint} from './breakpoint';
-import {BREAKPOINTS, ORIENTATION_BREAKPOINTS} from './data';
+import {BreakPoint, BREAKPOINTS, ORIENTATION_BREAKPOINTS} from './data.js';
+import {Breakpoint} from './breakpoint.js';
+
+export interface Property {
+}
+
+export interface BreakPointProperty extends BreakPoint {
+  properties: Property[];
+}
 
 /**
  * Breakpoint -- a Custom Element representation a CSS Media Query
  * Options: alias, overlapping, mediaQuery
  */
 
-class LayoutConfig extends HTMLElement {
+export class LayoutConfig extends HTMLElement {
 
   /** disableDefaultBps -- whether or not to use the default breakpoints */
   get disableDefaultBps() {
@@ -68,28 +75,36 @@ class LayoutConfig extends HTMLElement {
     `;
   }
 
-  getBreakpoints() {
-    const bps = [];
+  getBreakpoints(): BreakPointProperty[] {
+    const bps: BreakPoint[] = [];
     const bpElements = this.getElementsByTagName('break-point');
     const numEls = bpElements.length;
     for (let i = 0; i < numEls; i++) {
       const element = bpElements[i];
+      const alias = element.getAttribute('alias')!;
+      const overlapping = element.hasAttribute('overlapping');
+      const mediaQuery = element.getAttribute('mediaquery')!;
       bps.push({
-        alias: element.alias,
-        overlapping: element.overlapping,
-        mediaQuery: element.mediaQuery,
+        alias,
+        overlapping,
+        mediaQuery,
       });
     }
 
     if (!this.disableDefaultBps) {
-      bps.concat(BREAKPOINTS);
+      bps.push(...BREAKPOINTS);
     }
 
     if (this.addOrientationBps) {
-      bps.concat(ORIENTATION_BREAKPOINTS);
+      bps.push(...ORIENTATION_BREAKPOINTS);
     }
 
-    return bps;
+    return bps.map(bp => {
+      return {
+        ...bp,
+        properties: [],
+      };
+    });
   }
 }
 

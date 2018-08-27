@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Test</title>
-  <break-point alias="test" mediaQuery="(min-width: 1250px) and (max-width: 1909px)" overlapping></break-point>
-  <default-breakpoints></default-breakpoints>
-  <script type="text/javascript" src="breakpoint.js"></script>
-  <script type="text/javascript" src="flexbox.js"></script>
+  <meta charset="UTF-8">
+  <title>Test</title>
+  <script type="module" src="dist/breakpoint.js"></script>
+  <script type="module" src="dist/util.js"></script>
+  <script type="module" src="dist/config.js"></script>
+  <layout-config>
+    <break-point alias="test" mediaQuery="(min-width: 1250px) and (max-width: 1909px)" overlapping></break-point>
+  </layout-config>
+  <script type="module" src="dist/flexbox.js"></script>
+  <script type="module" src="dist/grid.js"></script>
+  <script type="module">
+    import {defineGrid} from './dist/grid.js';
+    import {defineFlex} from './dist/flexbox.js';
+    defineGrid();
+    defineFlex();
+  </script>
   <style>
     html, body {
       height: 100%;
@@ -16,10 +26,10 @@
   </style>
 </head>
 <body>
-<flex-box direction="column" align="center center" gap="10px" direction.md="row">
-  <span id="hello">Hello world</span>
-  <span>Hello world 2 </span>
-  <span>Hello world 3 </span>
-</flex-box>
+<flex-layout direction="column" align="center center" gap="10px" direction.md="row">
+  <span id="hello" flex fx-align="center">Hello world</span>
+  <span flex="10">Hello world 2 </span>
+  <span fx-align.md="end">Hello world 3 </span>
+</flex-layout>
 </body>
 </html>

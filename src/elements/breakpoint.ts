@@ -21,7 +21,7 @@ export class Breakpoint extends HTMLElement {
     return this.getAttribute('alias');
   }
   set alias(val) {
-    this.setAttribute('alias', val);
+    this.setAttribute('alias', val || '');
   }
 
   /** mediaQuery -- the media query CSS to use for the breakpoint */
@@ -29,7 +29,7 @@ export class Breakpoint extends HTMLElement {
     return this.getAttribute('mediaquery');
   }
   set mediaquery(val) {
-    this.setAttribute('mediaquery', val);
+    this.setAttribute('mediaquery', val || '');
   }
 
   constructor() {

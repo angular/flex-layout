@@ -1,4 +1,10 @@
-export const BREAKPOINTS = [
+export interface BreakPoint {
+  alias: string;
+  mediaQuery: string;
+  overlapping?: boolean;
+}
+
+export const BREAKPOINTS: BreakPoint[] = [
   {
     alias: 'xs',
     mediaQuery: '(min-width: 0px) and (max-width: 599px)'
@@ -61,6 +67,8 @@ export const BREAKPOINTS = [
   }
 ];
 
+// tslint:disable
+
 const HANDSET_PORTRAIT  = '(orientations: portrait) and (max-width: 599px)';
 const HANDSET_LANDSCAPE = '(orientations: landscape) and (max-width: 959px)';
 
@@ -84,10 +92,8 @@ export const ScreenTypes = {
   'WEB_LANDSCAPE'     : `${WEB_LANDSCAPE}`
 };
 
-/**
- * Extended Breakpoints for handset/tablets with landscape or portrait orientations
- */
-export const ORIENTATION_BREAKPOINTS = [
+/** Extended Breakpoints for handset/tablets with landscape or portrait orientations */
+export const ORIENTATION_BREAKPOINTS: BreakPoint[] = [
   {'alias': 'handset',            'mediaQuery': ScreenTypes.HANDSET},
   {'alias': 'handset.landscape',  'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE},
   {'alias': 'handset.portrait',   'mediaQuery': ScreenTypes.HANDSET_PORTRAIT},

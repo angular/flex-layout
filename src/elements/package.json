@@ -1,0 +1,28 @@
+{
+  "name": "@ce/layout",
+  "version": "0.0.0-PLACEHOLDER",
+  "description": "Layout Custom Elements",
+  "main": "./bundles/layout-ce.umd.js",
+  "module": "./esm5/layout-ce.es5.js",
+  "es2015": "./esm2015/layout-ce.js",
+  "typings": "./layout-ce.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ce/layout.git"
+  },
+  "keywords": [
+    "flex-layout",
+    "flexbox css",
+    "media query",
+    "breakpoints"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ce/layout/issues"
+  },
+  "homepage": "https://github.com/ce/layout#readme",
+  "dependencies": {
+    "tslib": "^1.7.1"
+  },
+  "sideEffects": false
+}

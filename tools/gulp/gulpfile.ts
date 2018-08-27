@@ -1,8 +1,9 @@
 import {createPackageBuildTasks} from 'lib-build-tools';
-import {flexLayoutPackage} from './packages';
+import {elementsPackage, flexLayoutPackage} from './packages';
 
 /** Create gulp tasks to build the different packages in the project. */
 createPackageBuildTasks(flexLayoutPackage);
+createPackageBuildTasks(elementsPackage);
 
 import './tasks/aot';
 import './tasks/build-release';       // release build `github.com/angular/flex-layout-builds`
