@@ -4,6 +4,7 @@
  */
 import {getProps} from './util.js';
 import {BaseLayout} from './base.js';
+import {Property} from './config.js';
 
 export class FlexLayout extends BaseLayout {
 
@@ -29,7 +30,7 @@ export function defineFlex() {
 }
 
 
-const properties = [
+const properties: Property[] = [
   {
     name: 'gap',
     updateFn: _buildGapCSS,
@@ -195,7 +196,7 @@ function _buildOrderCss(order) {
   return [{order: value}];
 }
 
-function _buildOffsetCss(offset, direction) {
+function _buildOffsetCss(offset, alias) {
   if (!offset) {
     offset = 0;
   }
@@ -210,6 +211,7 @@ function _buildOffsetCss(offset, direction) {
   // for children, send direction as well
   // how to handle RTL?
 
+  const direction = getDirection(this, alias);
   const css = {};
   let key = '';
   switch (direction) {
@@ -254,14 +256,22 @@ function _buildFlexAlign(align) {
   return [css];
 }
 
-function _buildFlex(flex) {
+function _buildFlex(flex, alias) {
   // const configs = document.getElementsByTagName('layout-config');
   // const config = configs.length > 0 ? configs[0] : null;
   // const useColumnBasisZero = config ? config.useColumnBasisZero : false;
   // const disableVendorPrefixes = config ? config.disableVendorPrefixes : false;
   const css = {};
+  console.log({t: this});
+  const direction = getDirection(this, alias);
 
   css['flex'] = flex || '1';
 
   return [css];
+}
+
+function getDirection(element, alias): string {
+  console.log({element});
+  const attribute = alias ? `direction.${alias}` : 'direction';
+  return element.getAttribute(attribute);
 }

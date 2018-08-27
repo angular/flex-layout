@@ -2,6 +2,10 @@ import {BreakPoint, BREAKPOINTS, ORIENTATION_BREAKPOINTS} from './data.js';
 import {Breakpoint} from './breakpoint.js';
 
 export interface Property {
+  name: string;
+  updateFn: (value: string, alias?: string) => {}[];
+  child: boolean;
+  values: Map<string, number>;
 }
 
 export interface BreakPointProperty extends BreakPoint {
@@ -9,10 +13,11 @@ export interface BreakPointProperty extends BreakPoint {
 }
 
 /**
- * Breakpoint -- a Custom Element representation a CSS Media Query
- * Options: alias, overlapping, mediaQuery
+ * LayoutConfig -- a Custom Element representation of the configuration options
+ *                 for the layout library. Also accumulates all breakpoints for
+ *                 later consumption
+ * Options: disableDefaultBps, addOrientationBps, disableVendorPrefixes
  */
-
 export class LayoutConfig extends HTMLElement {
 
   /** disableDefaultBps -- whether or not to use the default breakpoints */
@@ -66,13 +71,7 @@ export class LayoutConfig extends HTMLElement {
   constructor() {
     super();
     const shadow = this.attachShadow({mode: 'open'});
-    shadow.innerHTML = `
-      <style>
-        :host {
-          display: contents;
-        }
-      </style>
-    `;
+    shadow.innerHTML = `<style>:host {display: contents;}</style>`;
   }
 
   getBreakpoints(): BreakPointProperty[] {

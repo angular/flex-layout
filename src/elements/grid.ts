@@ -4,6 +4,7 @@
  */
 import {getProps} from './util.js';
 import {BaseLayout} from './base.js';
+import {Property} from './config.js';
 
 const DELIMETER = '|';
 const AUTO_SPECIFIER = '!';
@@ -39,7 +40,7 @@ export function defineGrid() {
 
 // Type: Property
 // {name: string, updateFn: (value: string) => string}
-const properties = [
+const properties: Property[] = [
   {
     name: 'areas',
     updateFn: _buildAreas,

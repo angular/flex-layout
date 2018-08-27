@@ -1,35 +1,27 @@
 import {getBps, getProps} from './util.js';
+import {BreakPointProperty, Property} from './config.js';
 
 export class BaseLayout extends HTMLElement {
 
-  readonly _breakpoints;
-  readonly _layoutType;
-  readonly _allBreakpoint;
-  private _childObserver;
-  private _properties;
+  readonly _breakpoints: BreakPointProperty[];
+  readonly _layoutType: string;
+  readonly _allBreakpoint: BreakPointProperty;
+  private _childObserver: MutationObserver;
+  private _properties: Property[];
 
-  constructor(layoutType, properties) {
+  constructor(layoutType: string, properties: Property[]) {
     super();
     const shadowRoot = this.attachShadow({mode: 'open'});
-    shadowRoot.innerHTML = `
-      <style>
-      :host {
-        contain: content;
-      }
-      </style>
-      <style id="${layoutType}-all">
-      @media all {
-        :host {
-          display: ${layoutType};
-        }
-      }
-      </style>
-      <slot></slot>
-    `;
+    shadowRoot.innerHTML = `<style>:host {contain: content;}</style>
+<style id="${layoutType}-all">@media all {:host {display: ${layoutType};}}</style><slot></slot>`;
 
     this._breakpoints = getBps();
-    this._childObserver = null;
-    this._properties = properties;
+    // Bind the instance of the HTMLElement to each function so that
+    // each has access to parent properties
+    this._properties = properties.map(p => {
+      p.updateFn = p.updateFn.bind(this);
+      return p;
+    });
     this._layoutType = layoutType;
     this._allBreakpoint = {
       alias: '',
@@ -40,7 +32,7 @@ export class BaseLayout extends HTMLElement {
   }
 
   /**
-   * attributeChangedCallback -- fired when a top-level attribute from observedAttributes
+   * attributeChangedCallback -- fired when an attribute from observedAttributes or a child
    *                             changes, at which point we should find the breakpoint for
    *                             that attribute and recompute the style block
    */
@@ -61,7 +53,7 @@ export class BaseLayout extends HTMLElement {
 
     if (property.values.has(oldValue)) {
       console.log(`has old value: ${oldValue}, ${property.values.get(oldValue)}`);
-      property.values.set(oldValue, property.values.get(oldValue) - 1);
+      property.values.set(oldValue, property.values.get(oldValue)! - 1);
     }
 
     if (newValue !== null) {
@@ -119,7 +111,7 @@ export class BaseLayout extends HTMLElement {
     this._childObserver.disconnect();
   }
 
-  _attachCss(css, mediaQuery, alias) {
+  _attachCss(css: {}, mediaQuery: string, alias: string) {
     const id = `${this._layoutType}-${alias || 'all'}`;
     const styleElement = this.shadowRoot!.getElementById(id);
 
@@ -156,21 +148,30 @@ export class BaseLayout extends HTMLElement {
     }
   }
 
-  _getBreakpointByAlias(alias) {
+  _getBreakpointByAlias(alias: string): BreakPointProperty {
     const bpIndex = this._breakpoints.findIndex(b => b.alias === alias);
     const bpFound = bpIndex !== -1;
     return bpFound ? this._breakpoints[bpIndex] : this._allBreakpoint;
   }
 
-  _getPropertyByName(bp, prop) {
+  _getPropertyByName(bp: BreakPointProperty, prop: string): [Property, boolean] {
     const bpPropIndex = bp.properties.findIndex(p => p.name === prop);
     const bpPropFound = bpPropIndex !== -1;
     return bpPropFound ?
-      [bp.properties[bpPropIndex], false] : [this._properties.find(p => p.name === prop), true];
+      [bp.properties[bpPropIndex], false] : [this._properties.find(p => p.name === prop)!, true];
   }
 }
 
-function buildCss(alias, properties, inline, layoutType, applyDefaults) {
+/**
+ * buildCss -- construct the CSS object with necessary wrappings,
+ *             e.g. all host properties must be wrapped with :host
+ *             and all child attributes need to be wrapped with ::slotted
+ */
+function buildCss(alias: string,
+                  properties: Property[],
+                  inline: boolean,
+                  layoutType: string,
+                  applyDefaults: boolean) {
   const parentProps = properties.filter(p => !p.child);
   const childProps = properties.filter(p => p.child);
   const numParentProps = parentProps.length;
@@ -189,7 +190,7 @@ function buildCss(alias, properties, inline, layoutType, applyDefaults) {
     }
 
     const [[value]] = Array.from(parentProp.values);
-    const [hostCss, childCss] = parentProp.updateFn(value);
+    const [hostCss, childCss] = parentProp.updateFn(value, alias);
     for (let key of Object.keys(hostCss)) {
       css[parentKey][key] = hostCss[key];
     }
@@ -203,7 +204,7 @@ function buildCss(alias, properties, inline, layoutType, applyDefaults) {
     for (let key of childProp.values.keys()) {
       const childPropName = alias ? `${childProp.name}.${alias}` : `${childProp.name}`;
       const childKey = wrapChildKey(`[${childPropName}="${key}"]`);
-      const [childCss] = childProp.updateFn(key);
+      const [childCss] = childProp.updateFn(key, alias);
       css[childKey] = childCss;
     }
   }
