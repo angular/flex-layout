@@ -35,43 +35,36 @@ const properties: Property[] = [
     name: 'gap',
     updateFn: _buildGapCSS,
     child: false,
-    values: new Map(),
   },
   {
     name: 'direction',
     updateFn: _buildDirCSS,
     child: false,
-    values: new Map(),
   },
   {
     name: 'align',
     updateFn: _buildAlignCSS,
     child: false,
-    values: new Map(),
   },
   {
     name: 'flex',
     updateFn: _buildFlex,
     child: true,
-    values: new Map(),
   },
   {
     name: 'fx-align',
     updateFn: _buildFlexAlign,
     child: true,
-    values: new Map(),
   },
   {
     name: 'order',
     updateFn: _buildOrderCss,
     child: true,
-    values: new Map(),
   },
   {
     name: 'offset',
     updateFn: _buildOffsetCss,
     child: true,
-    values: new Map(),
   },
 ];
 
@@ -257,13 +250,13 @@ function _buildFlexAlign(align) {
 }
 
 function _buildFlex(flex, alias) {
-  // const configs = document.getElementsByTagName('layout-config');
-  // const config = configs.length > 0 ? configs[0] : null;
-  // const useColumnBasisZero = config ? config.useColumnBasisZero : false;
-  // const disableVendorPrefixes = config ? config.disableVendorPrefixes : false;
+  const configs = document.getElementsByTagName('layout-config');
+  const config = configs.length > 0 ? configs[0] : null;
+  const useColumnBasisZero = config ? config.hasAttribute('useColumnBasisZero') : false;
+  const disableVendorPrefixes = config ? config.hasAttribute('disableVendorPrefixes') : false;
   const css = {};
-  console.log({t: this});
-  const direction = getDirection(this, alias);
+  const [direction, wrap] = (getDirection(this, alias) || 'row').split(' ');
+  const isHorizontal = direction.startsWith('row');
 
   css['flex'] = flex || '1';
 
@@ -271,7 +264,6 @@ function _buildFlex(flex, alias) {
 }
 
 function getDirection(element, alias): string {
-  console.log({element});
   const attribute = alias ? `direction.${alias}` : 'direction';
   return element.getAttribute(attribute);
 }

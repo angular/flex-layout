@@ -5,7 +5,6 @@ export interface Property {
   name: string;
   updateFn: (value: string, alias?: string) => {}[];
   child: boolean;
-  values: Map<string, number>;
 }
 
 export interface BreakPointProperty extends BreakPoint {

@@ -37,75 +37,61 @@ export function defineGrid() {
   });
 }
 
-
-// Type: Property
-// {name: string, updateFn: (value: string) => string}
 const properties: Property[] = [
   {
     name: 'areas',
     updateFn: _buildAreas,
     child: false,
-    values: new Map(),
   },
   {
     name: 'rows',
     updateFn: _buildRows,
     child: false,
-    values: new Map(),
   },
   {
     name: 'columns',
     updateFn: _buildColumns,
     child: false,
-    values: new Map(),
   },
   {
     name: 'gap',
     updateFn: _buildGap,
     child: false,
-    values: new Map(),
   },
   {
     name: 'auto',
     updateFn: _buildAuto,
     child: false,
-    values: new Map(),
   },
   {
     name: 'alignColumns',
     updateFn: _buildAlignColumns,
     child: false,
-    values: new Map(),
   },
   {
     name: 'alignRows',
     updateFn: _buildAlignRows,
     child: false,
-    values: new Map(), // map: <value, numInstances>
   },
   {
     name: 'gdRow',
     updateFn: _buildRow,
     child: true,
-    values: new Map(),
   },
   {
     name: 'gdArea',
     updateFn: _buildArea,
     child: true,
-    values: new Map(),
   },
   {
     name: 'gdColumn',
     updateFn: _buildColumn,
     child: true,
-    values: new Map(),
   },
   {
     name: 'gdAlign',
     updateFn: _buildAlign,
     child: true,
-    values: new Map(),
   },
 ];
 
