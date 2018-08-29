@@ -26,10 +26,13 @@
   </style>
 </head>
 <body>
-<flex-layout direction="column" align="center center" gap="10px" direction.md="row">
-  <span id="hello" flex fx-align="center">Hello world</span>
+<flex-layout direction="column" align="center center" gap="10px" direction-md="row" direction-gt-xs="row">
+  <span id="hello" flex fxalign="center">Hello world</span>
   <span flex="10">Hello world 2 </span>
-  <span fx-align.md="end">Hello world 3 </span>
+  <span fxalign-md="end">Hello world 3 </span>
 </flex-layout>
+<grid-layout>
+  <span id="otherhello"></span>
+</grid-layout>
 </body>
 </html>

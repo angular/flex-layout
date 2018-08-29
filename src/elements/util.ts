@@ -1,9 +1,9 @@
 import {BreakPointProperty, LayoutConfig} from './config.js';
-/* the default breakpoints for all Layout Custom Elements */
+import {SEPARATOR} from './base.js';
 
 /* propToBps - map the given breakpoints to a given property to get the full selector */
 export function propToBps(prop, bps) {
-  return bps.map(bp => `${prop}.${bp.alias}`);
+  return bps.map(bp => `${prop}${SEPARATOR}${bp.alias}`);
 }
 
 /* getBps - return the full list of breakpoints as provided by the user in the DOM */

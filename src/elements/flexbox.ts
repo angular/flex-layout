@@ -3,7 +3,7 @@
  * Options: align, direction, gap
  */
 import {getProps} from './util.js';
-import {BaseLayout} from './base.js';
+import {BaseLayout, SEPARATOR} from './base.js';
 import {Property} from './config.js';
 
 export class FlexLayout extends BaseLayout {
@@ -52,7 +52,7 @@ const properties: Property[] = [
     child: true,
   },
   {
-    name: 'fx-align',
+    name: 'fxalign',
     updateFn: _buildFlexAlign,
     child: true,
   },
@@ -76,9 +76,9 @@ const properties: Property[] = [
 
 function _buildGapCSS(gap) {
   const hostCss = {}, childCss = {};
-  const ltrKey = '[dir="rtl"]';
-  childCss[ltrKey] = {};
-  hostCss[ltrKey] = {};
+  // const ltrKey = '[dir="rtl"]';
+  // childCss[ltrKey] = {};
+  // hostCss[ltrKey] = {};
   if (!gap) {
     gap = '0';
   }
@@ -88,8 +88,8 @@ function _buildGapCSS(gap) {
 
   childCss['padding'] = `${paddingTop} ${gap} ${paddingBottom} ${paddingLeft}`;
   hostCss['margin'] = `${marginTop} -${gap} ${marginBottom} ${marginLeft}`;
-  childCss[ltrKey]['padding'] = `${paddingTop} ${paddingRight} ${paddingBottom} ${gap}`;
-  hostCss[ltrKey]['margin'] = `${marginTop} ${marginRight} ${marginBottom} -${gap}`;
+  // childCss[ltrKey]['padding'] = `${paddingTop} ${paddingRight} ${paddingBottom} ${gap}`;
+  // hostCss[ltrKey]['margin'] = `${marginTop} ${marginRight} ${marginBottom} -${gap}`;
 
   return [hostCss, childCss];
 }
@@ -255,7 +255,7 @@ function _buildFlex(flex, alias) {
   const useColumnBasisZero = config ? config.hasAttribute('useColumnBasisZero') : false;
   const disableVendorPrefixes = config ? config.hasAttribute('disableVendorPrefixes') : false;
   const css = {};
-  const [direction, wrap] = (getDirection(this, alias) || 'row').split(' ');
+  const [direction, wrap] = getDirection(this, alias).split(' ');
   const isHorizontal = direction.startsWith('row');
 
   css['flex'] = flex || '1';
@@ -264,6 +264,7 @@ function _buildFlex(flex, alias) {
 }
 
 function getDirection(element, alias): string {
-  const attribute = alias ? `direction.${alias}` : 'direction';
-  return element.getAttribute(attribute);
+  const fallback = element.getAttribute('direction');
+  const attribute = alias ? `direction${SEPARATOR}${alias}` : 'direction';
+  return element.getAttribute(attribute) || fallback || 'row';
 }

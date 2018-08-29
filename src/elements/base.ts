@@ -1,6 +1,8 @@
 import {getBps, getProps} from './util.js';
 import {BreakPointProperty, Property} from './config.js';
 
+export const SEPARATOR = '-';
+
 export class BaseLayout extends HTMLElement {
 
   readonly _breakpoints: BreakPointProperty[];
@@ -38,7 +40,8 @@ export class BaseLayout extends HTMLElement {
    *                             that attribute and recompute the style block
    */
   attributeChangedCallback(name, oldValue, newValue) {
-    const [prop, alias] = name.split('.');
+    const [prop, ...remainder] = name.split(SEPARATOR);
+    const alias = remainder.join(SEPARATOR);
     const bp = this._getBreakpointByAlias(alias);
     const [property, newProp] = this._getPropertyByName(bp, prop);
     if (newProp) {
@@ -55,11 +58,10 @@ export class BaseLayout extends HTMLElement {
     }
 
     if (values.get(oldValue) === 0) {
-      console.log('removing old value');
       values.delete(oldValue);
     }
 
-    const inlineAttr = bp.alias ? `inline.${bp.alias}` : 'inline';
+    const inlineAttr = bp.alias ? `inline${SEPARATOR}${bp.alias}` : 'inline';
     const css = this._buildCss(bp.alias, bp.properties, this.hasAttribute(inlineAttr),
       this._layoutType, !!alias);
     this._attachCss(css, bp.mediaQuery, bp.alias);
@@ -180,7 +182,7 @@ export class BaseLayout extends HTMLElement {
       const childProp = childProps[i];
       const values = this._getValues(childProp.name, alias)!;
       for (let key of values.keys()) {
-        const childPropName = alias ? `${childProp.name}.${alias}` : `${childProp.name}`;
+        const childPropName = alias ? `${childProp.name}${SEPARATOR}${alias}` : `${childProp.name}`;
         const childKey = wrapChildKey(`[${childPropName}="${key}"]`);
         const [childCss] = childProp.updateFn(key, alias);
         css[childKey] = childCss;
