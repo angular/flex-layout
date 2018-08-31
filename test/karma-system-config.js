@@ -41,6 +41,7 @@ System.config({
     '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
     '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
     '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
     '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.

@@ -16,7 +16,7 @@ import {FlexLayoutModule} from '../../../module';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
-  let findByAlias = (alias): BreakPoint|null => breakPoints.reduce((pos, it) => {
+  let findByAlias = (alias): BreakPoint|null => breakPoints.reduce((pos: BreakPoint | null, it) => {
     return pos || ((it.alias == alias) ? it : null);
   }, null);
 
