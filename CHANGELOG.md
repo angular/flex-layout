@@ -1,3 +1,13 @@
+<a name="6.0.0-beta.18"></a>
+# [6.0.0-beta.18](https://github.com/angular/flex-layout/compare/6.0.0-beta.17...6.0.0-beta.18) (2018-08-31)
+
+
+### Bug Fixes
+
+* **build:** update to TypeScript 2.9 and RxJS 6.3  ([aa8fb8c](https://github.com/angular/flex-layout/commit/aa8fb8c)), closes [#828](https://github.com/angular/flex-layout/issues/828) [#827](https://github.com/angular/flex-layout/issues/827)
+
+
+
 <a name="6.0.0-beta.17"></a>
 # [6.0.0-beta.17](https://github.com/angular/flex-layout/compare/6.0.0-beta.16...6.0.0-beta.17) (2018-07-27)
 
