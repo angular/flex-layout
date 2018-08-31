@@ -24,7 +24,9 @@ export class StyleUtils {
   /**
    * Applies styles given via string pair or object map to the directive element
    */
-  applyStyleToElement(element: HTMLElement, style: StyleDefinition, value?: string | number) {
+  applyStyleToElement(element: HTMLElement,
+                      style: StyleDefinition | string,
+                      value?: string | number) {
     let styles = {};
     if (typeof style === 'string') {
       styles[style] = value;

@@ -22,7 +22,7 @@ describe('observable-media', () => {
     let knownBreakPoints: BreakPoint[] = [];
     let findMediaQuery: (alias: string) => string = (alias) => {
       const NOT_FOUND = `${alias} not found`;
-      return knownBreakPoints.reduce((mediaQuery, bp) => {
+      return knownBreakPoints.reduce((mediaQuery: string | null, bp) => {
         return mediaQuery || ((bp.alias === alias) ? bp.mediaQuery : null);
       }, null) as string || NOT_FOUND;
     };
