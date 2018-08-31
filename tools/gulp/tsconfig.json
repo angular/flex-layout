@@ -6,9 +6,10 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../../dist/tools/gulp",
-    "strictNullChecks": false,
-    "noEmitOnError": false,
-    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
     "target": "es5",
     "removeComments": true,
     "types": [

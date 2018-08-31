@@ -14,7 +14,7 @@ import {ORIENTATION_BREAKPOINTS} from './data/orientation-break-points';
 
 describe('breakpoint-tools', () => {
   let all: BreakPoint[];
-  let findByAlias = (alias): BreakPoint|null => all.reduce((pos, it) => {
+  let findByAlias = (alias): BreakPoint|null => all.reduce((pos: BreakPoint | null, it) => {
     return pos || ((it.alias == alias) ? it : null);
   }, null);
 

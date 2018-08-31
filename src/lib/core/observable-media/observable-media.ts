@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable} from '@angular/core';
-import {Observable, Subscribable, Subscription} from 'rxjs';
+import {Observable, PartialObserver, Subscribable, Subscription} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
@@ -26,6 +26,7 @@ export abstract class ObservableMedia implements Subscribable<MediaChange> {
   abstract subscribe(next?: (value: MediaChange) => void,
                      error?: (error: any) => void,
                      complete?: () => void): Subscription;
+  abstract subscribe(observer?: PartialObserver<MediaChange>): Subscription;
 }
 
 /**
@@ -95,10 +96,17 @@ export class MediaService implements ObservableMedia {
   /**
    * Proxy to the Observable subscribe method
    */
-  subscribe(next?: (value: MediaChange) => void,
+  subscribe(observerOrNext?: PartialObserver<MediaChange> | ((value: MediaChange) => void),
             error?: (error: any) => void,
             complete?: () => void): Subscription {
-    return this.observable$.subscribe(next, error, complete);
+    if (observerOrNext) {
+      if (typeof observerOrNext === 'object') {
+        return this.observable$.subscribe(observerOrNext.next, observerOrNext.error,
+          observerOrNext.complete);
+      }
+    }
+
+    return this.observable$.subscribe(observerOrNext, error, complete);
   }
 
   /**
@@ -178,7 +186,7 @@ export class MediaService implements ObservableMedia {
     return bp ? bp.mediaQuery : query;
   }
 
-  private observable$: Observable<MediaChange>;
+  private readonly observable$: Observable<MediaChange>;
 }
 
 export const ObservableMediaProvider = { // tslint:disable-line:variable-name

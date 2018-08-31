@@ -28,6 +28,8 @@ export class MockMatchMedia extends MatchMedia {
    */
   useOverlaps = false;
 
+  protected _registry: Map<string, MockMediaQueryList>;
+
   constructor(_zone: NgZone,
               @Inject(PLATFORM_ID) _platformId: Object,
               @Inject(DOCUMENT) _document: any,
@@ -38,7 +40,7 @@ export class MockMatchMedia extends MatchMedia {
 
   /** Easy method to clear all listeners for all mediaQueries */
   clearAll() {
-    this._registry.forEach((mql: MockMediaQueryList, _) => {
+    this._registry.forEach((mql: MockMediaQueryList) => {
       mql.destroy();
     });
     this._registry.clear();
