@@ -5,23 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  SimpleChanges,
-  Self,
-} from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
-import {Subscription} from 'rxjs';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
+import { BaseDirective, MediaChange, MediaMonitor, StyleUtils } from '@angular/flex-layout/core';
+import { Subscription } from 'rxjs';
+import { isFlowHorizontal, LAYOUT_VALUES } from '../../utils/layout-validator';
+import { extendObject } from '../../utils/object-extend';
+import { Layout, LayoutDirective } from '../layout/layout';
 
-import {extendObject} from '../../utils/object-extend';
-import {Layout, LayoutDirective} from '../layout/layout';
-import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
+
 
 /**
  * 'layout-align' flexbox styling directive
