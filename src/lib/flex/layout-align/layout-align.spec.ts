@@ -154,14 +154,6 @@ describe('layout-align directive', () => {
           styler
         );
       });
-      it('should add correct styles for `fxLayoutAlign="start baseline"` usage', () => {
-        createTestComponent(`<div fxLayoutAlign='start baseline'></div>`);
-        expectNativeEl(fixture)
-            .toHaveStyle({
-              'justify-content': 'flex-start',
-              'align-items': 'baseline'
-            }, styler);
-      });
       it('should add correct styles for `fxLayoutAlign="start center"` usage', () => {
         createTestComponent(`<div fxLayoutAlign='start center'></div>`);
         expectNativeEl(fixture).toHaveStyle(
@@ -179,6 +171,33 @@ describe('layout-align directive', () => {
               'align-content': 'flex-end'
             }), styler
         );
+      });
+      it('should add correct styles for `fxLayoutAlign="start space-between"` usage', () => {
+        createTestComponent(`<div fxLayoutAlign='start space-between'></div>`);
+        expectNativeEl(fixture).toHaveStyle(
+            extendObject(MAINAXIS_DEFAULTS, {
+              'align-items': 'stretch',
+              'align-content': 'space-between'
+            }), styler
+        );
+      });
+      it('should add correct styles for `fxLayoutAlign="start space-around"` usage', () => {
+        createTestComponent(`<div fxLayoutAlign='start space-around'></div>`);
+        expectNativeEl(fixture).toHaveStyle(
+            extendObject(MAINAXIS_DEFAULTS, {
+              'align-items': 'stretch',
+              'align-content': 'space-around'
+            }), styler
+        );
+      });
+      it('should add correct styles for `fxLayoutAlign="start baseline"` usage', () => {
+        createTestComponent(`<div fxLayoutAlign='start baseline'></div>`);
+        expectNativeEl(fixture)
+            .toHaveStyle({
+              'justify-content': 'flex-start',
+              'align-items': 'baseline',
+              'align-content': 'stretch'
+            }, styler);
       });
       it('should add ignore invalid cross-axis values', () => {
         createTestComponent(`<div fxLayoutAlign='start invalid'></div>`);
