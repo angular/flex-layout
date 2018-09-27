@@ -5,16 +5,22 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import { Platform } from '@angular/cdk/platform';
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
-import { MatchMedia, MockMatchMedia, MockMatchMediaProvider, SERVER_TOKEN, StyleUtils } from '@angular/flex-layout/core';
-import { FlexLayoutModule } from '../../module';
-import { extendObject } from '../../utils/object-extend';
-import { customMatchers } from '../../utils/testing/custom-matchers';
-import { expectNativeEl, makeCreateTestComponent } from '../../utils/testing/helpers';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {Platform} from '@angular/cdk/platform';
+import {
+  MatchMedia,
+  MockMatchMedia,
+  MockMatchMediaProvider,
+  SERVER_TOKEN,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 
+import {FlexLayoutModule} from '../../module';
+import {extendObject} from '../../utils/object-extend';
+import {customMatchers} from '../../utils/testing/custom-matchers';
+import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
