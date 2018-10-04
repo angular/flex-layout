@@ -6,7 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {NgStyleRawList, NgStyleMap, buildRawList, buildMapFromList, buildMapFromSet} from './style-transforms';
+import {
+  NgStyleRawList,
+  NgStyleMap,
+  buildRawList,
+  buildMapFromList,
+  buildMapFromSet,
+} from './style-transforms';
 
 describe('ngStyleUtils', () => {
   beforeEach(() => {
