@@ -5,8 +5,11 @@
     "stripInternal": false,
     "experimentalDecorators": true,
     "noUnusedParameters": true,
+    "noUnusedLocals": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
     "importHelpers": true,
     "newLine": "lf",
     "module": "es2015",
@@ -34,7 +37,7 @@
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
-    "strictMetadataEmit": false, // Workaround for Angular #22210
+    "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "@angular/flex-layout",
     "skipTemplateCodegen": true,

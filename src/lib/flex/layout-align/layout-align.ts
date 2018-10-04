@@ -41,7 +41,7 @@ import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 export class LayoutAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   protected _layout = 'row';  // default flex-direction
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /* tslint:disable */
   @Input('fxLayoutAlign')       set align(val)     { this._cacheInput('align', val); }

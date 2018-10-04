@@ -45,8 +45,8 @@ import {LAYOUT_VALUES} from '../../utils/layout-validator';
 export class LayoutGapDirective extends BaseDirective
   implements AfterContentInit, OnChanges, OnDestroy {
   protected _layout = 'row';  // default flex-direction
-  protected _layoutWatcher: Subscription;
-  protected _observer: MutationObserver;
+  protected _layoutWatcher?: Subscription;
+  protected _observer?: MutationObserver;
   private _directionWatcher: Subscription;
 
   /* tslint:disable */

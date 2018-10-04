@@ -28,7 +28,7 @@ export class MockMatchMedia extends MatchMedia {
    */
   useOverlaps = false;
 
-  protected _registry: Map<string, MockMediaQueryList>;
+  protected _registry: Map<string, MockMediaQueryList> = new Map();
 
   constructor(_zone: NgZone,
               @Inject(PLATFORM_ID) _platformId: Object,

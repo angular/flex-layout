@@ -40,7 +40,7 @@ export class BaseDirectiveAdapter extends BaseDirective {
    * @see BaseDirective._mqActivation
    */
   get mqActivation(): ResponsiveActivation {
-    return this._mqActivation;
+    return this._mqActivation!;
   }
 
   /**

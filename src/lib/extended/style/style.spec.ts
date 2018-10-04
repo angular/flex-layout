@@ -155,7 +155,7 @@ describe('style directive', () => {
   template: `<span>PlaceHolder Template HTML</span>`
 })
 class TestStyleComponent {
-  fontSize: number;
+  fontSize: number = 0;
 }
 
 

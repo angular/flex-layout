@@ -41,7 +41,7 @@ export class KeyOptions {
  */
 export class ResponsiveActivation {
   private _subscribers: SubscriptionList = [];
-  private _activatedInputKey: string;
+  private _activatedInputKey: string = '';
   private _registryMap: BreakPointX[];
 
   /**

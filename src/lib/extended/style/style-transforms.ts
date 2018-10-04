@@ -26,19 +26,11 @@ export class NgStyleKeyValue {
   }
 }
 
-/** Transform Operators for @angular/flex-layout NgStyle Directive */
-export const ngStyleUtils = {
-  getType,
-  buildRawList,
-  buildMapFromList,
-  buildMapFromSet
-};
-
-function getType(target: any): string {
+export function getType(target: any): string {
   let what = typeof target;
   if (what === 'object') {
     return (target.constructor === Array) ? 'array' :
-        (target.constructor === Set ) ? 'set' : 'object';
+        (target.constructor === Set) ? 'set' : 'object';
   }
   return what;
 }
@@ -47,7 +39,7 @@ function getType(target: any): string {
  * Split string of key:value pairs into Array of k-v pairs
  * e.g.  'key:value; key:value; key:value;' -> ['key:value',...]
  */
-function buildRawList(source: any, delimiter = ';'): NgStyleRawList {
+export function buildRawList(source: any, delimiter = ';'): NgStyleRawList {
   return String(source)
       .trim()
       .split(delimiter)
@@ -56,8 +48,8 @@ function buildRawList(source: any, delimiter = ';'): NgStyleRawList {
 }
 
 /** Convert array of key:value strings to a iterable map object */
-function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap {
-  let sanitizeValue = (it: NgStyleKeyValue) => {
+export function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap {
+  const sanitizeValue = (it: NgStyleKeyValue) => {
     if (sanitize) {
       it.value = sanitize(it.value);
     }
@@ -68,12 +60,12 @@ function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): 
       .map(stringToKeyValue)
       .filter(entry => !!entry)
       .map(sanitizeValue)
-      .reduce(keyValuesToMap, {});
+      .reduce(keyValuesToMap, {} as NgStyleMap);
 }
 
 /** Convert Set<string> or raw Object to an iterable NgStyleMap */
-function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
-  let list = new Array<string>();
+export function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
+  let list: string[] = [];
   if (getType(source) == 'set') {
     source.forEach(entry => list.push(entry));
   } else {                                // simple hashmap
@@ -86,13 +78,13 @@ function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
 
 
 /** Convert 'key:value' -> [key, value] */
-function stringToKeyValue(it: string): NgStyleKeyValue {
+export function stringToKeyValue(it: string): NgStyleKeyValue {
   let [key, val] = it.split(':');
   return new NgStyleKeyValue(key, val);
 }
 
 /** Convert [ [key,value] ] -> { key : value } */
-function keyValuesToMap(map: NgStyleMap, entry: NgStyleKeyValue): NgStyleMap {
+export function keyValuesToMap(map: NgStyleMap, entry: NgStyleKeyValue): NgStyleMap {
   if (!!entry.key) {
     map[entry.key] = entry.value;
   }

@@ -53,13 +53,13 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 export class FlexDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /** The flex-direction of this element's flex container. Defaults to 'row'. */
-  protected _layout: Layout;
+  protected _layout?: Layout;
 
   /**
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /* tslint:disable */
   @Input('fxShrink')     set shrink(val)    { this._cacheInput('shrink', val); };

@@ -65,10 +65,10 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /** Original dom Elements CSS display style */
-  protected _display: string;
+  protected _display: string = '';
 
   /* tslint:disable */
   @Input('fxShow')       set show(val) {  this._cacheInput('show', val);  }

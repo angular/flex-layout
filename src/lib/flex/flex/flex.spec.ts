@@ -909,6 +909,6 @@ class TestFlexComponent {
   `
 })
 class TestQueryWithFlexComponent {
-  @ViewChild(FlexDirective) flex: FlexDirective;
-  @ViewChild(LayoutDirective) layout: LayoutDirective;
+  @ViewChild(FlexDirective) flex!: FlexDirective;
+  @ViewChild(LayoutDirective) layout!: LayoutDirective;
 }

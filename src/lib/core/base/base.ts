@@ -219,7 +219,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
 
   /** Fast validator for presence of attribute on the host element */
   protected hasKeyValue(key) {
-    return this._mqActivation.hasKeyValue(key);
+    return this._mqActivation!.hasKeyValue(key);
   }
 
   protected get hasInitialized() {
@@ -227,7 +227,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   }
 
   /** MediaQuery Activation Tracker */
-  protected _mqActivation: ResponsiveActivation;
+  protected _mqActivation?: ResponsiveActivation;
 
   /** Dictionary of input keys with associated values */
   protected _inputMap = {};

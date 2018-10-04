@@ -123,7 +123,7 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /**
    * If parent flow-direction changes, then update the margin property

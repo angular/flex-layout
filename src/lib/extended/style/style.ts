@@ -35,9 +35,14 @@ import {
   NgStyleRawList,
   NgStyleType,
   NgStyleSanitizer,
-  ngStyleUtils as _,
+  buildRawList,
+  getType,
+  buildMapFromSet,
+  NgStyleMap,
+  NgStyleKeyValue,
+  stringToKeyValue,
+  keyValuesToMap,
 } from './style-transforms';
-
 
 /**
  * Directive to add responsive support for ngStyle.
@@ -90,10 +95,23 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
               protected _differs: KeyValueDiffers,
-              @Optional() @Self() private _ngStyleInstance: NgStyle,
+              @Optional() @Self() private readonly _ngStyleInstance: NgStyle,
               protected _styler: StyleUtils) {
     super(monitor, _ngEl, _styler);
-    this._configureAdapters();
+    this._base = new BaseDirectiveAdapter(
+      'ngStyle',
+      this.monitor,
+      this._ngEl,
+      this._styler
+    );
+    if (!this._ngStyleInstance) {
+      // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+      // defined on the same host element; since the responsive variations may be defined...
+      this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
+    }
+
+    this._buildCacheInterceptor();
+    this._fallbackToStyle();
   }
 
   // ******************************************************************
@@ -118,33 +136,11 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
-    delete this._ngStyleInstance;
   }
 
   // ******************************************************************
   // Internal Methods
   // ******************************************************************
-
-  /**
-   * Configure adapters (that delegate to an internal ngClass instance) if responsive
-   * keys have been defined.
-   */
-  protected _configureAdapters() {
-      this._base = new BaseDirectiveAdapter(
-        'ngStyle',
-        this.monitor,
-        this._ngEl,
-        this._styler
-      );
-      if (!this._ngStyleInstance) {
-        // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
-        // defined on the same host element; since the responsive variations may be defined...
-        this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
-      }
-
-      this._buildCacheInterceptor();
-      this._fallbackToStyle();
-  }
 
   /**
    * Build an mqActivation object that bridges
@@ -186,11 +182,12 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
       return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
     };
     if (styles) {
-      switch ( _.getType(styles) ) {
-        case 'string':  return _.buildMapFromList(_.buildRawList(styles), sanitizer);
-        case 'array' :  return _.buildMapFromList(styles as NgStyleRawList, sanitizer);
-        case 'set'   :  return _.buildMapFromSet(styles, sanitizer);
-        default      :  return _.buildMapFromSet(styles, sanitizer);
+      switch (getType(styles)) {
+        case 'string':  return buildMapFromList(buildRawList(styles),
+          sanitizer);
+        case 'array' :  return buildMapFromList(styles as NgStyleRawList, sanitizer);
+        case 'set'   :  return buildMapFromSet(styles, sanitizer);
+        default      :  return buildMapFromSet(styles, sanitizer);
       }
     }
 
@@ -210,4 +207,20 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
    */
   protected _base: BaseDirectiveAdapter;
 
+}
+
+/** Build a styles map from a list of styles, while sanitizing bad values first */
+function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanitizer): NgStyleMap {
+  const sanitizeValue = (it: NgStyleKeyValue) => {
+    if (sanitize) {
+      it.value = sanitize(it.value);
+    }
+    return it;
+  };
+
+  return styles
+    .map(stringToKeyValue)
+    .filter(entry => !!entry)
+    .map(sanitizeValue)
+    .reduce(keyValuesToMap, {} as NgStyleMap);
 }
