@@ -151,7 +151,7 @@ export class ClassDirective extends BaseDirective
    *       Use ngDoCheck() to actually apply the values to the element
    */
   protected _configureMQListener(baseKey = 'ngClass') {
-    const fallbackValue = this._base!.queryInput(baseKey);
+    const fallbackValue = this._base.queryInput(baseKey);
     this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
       this._ngClassInstance.ngClass = changes.value || '';
       this._ngClassInstance.ngDoCheck();
