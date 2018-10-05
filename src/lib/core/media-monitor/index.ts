@@ -7,4 +7,3 @@
  */
 
 export * from './media-monitor';
-export * from './media-monitor-provider';
