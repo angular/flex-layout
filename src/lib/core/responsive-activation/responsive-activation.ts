@@ -41,7 +41,7 @@ export class KeyOptions {
  */
 export class ResponsiveActivation {
   private _subscribers: SubscriptionList = [];
-  private _activatedInputKey: string;
+  private _activatedInputKey: string = '';
   private _registryMap: BreakPointX[];
 
   /**
@@ -96,7 +96,7 @@ export class ResponsiveActivation {
   /**
    * Fast validator for presence of attribute on the host element
    */
-  hasKeyValue(key) {
+  hasKeyValue(key: string) {
     let value = this._options.inputKeys[key];
     return typeof value !== 'undefined';
   }
@@ -173,7 +173,7 @@ export class ResponsiveActivation {
    * Has the key been specified in the HTML markup and thus is intended
    * to participate in activation processes.
    */
-  private _keyInUse(key): boolean {
+  private _keyInUse(key: string): boolean {
     return this._lookupKeyValue(key) !== undefined;
   }
 
@@ -201,8 +201,8 @@ export class ResponsiveActivation {
    *
    * NOTE: scans in the order defined by activeOverLaps (largest viewport ranges -> smallest ranges)
    */
-  private _validateInputKey(inputKey) {
-    let isMissingKey = (key) => !this._keyInUse(key);
+  private _validateInputKey(inputKey: string) {
+    let isMissingKey = (key: string) => !this._keyInUse(key);
 
     if (isMissingKey(inputKey)) {
       this.mediaMonitor.activeOverlaps.some(bp => {
@@ -220,7 +220,7 @@ export class ResponsiveActivation {
   /**
    * Get the value (if any) for the directive instances @Input property (aka key)
    */
-  private _lookupKeyValue(key) {
+  private _lookupKeyValue(key: string) {
     return this._options.inputKeys[key];
   }
 

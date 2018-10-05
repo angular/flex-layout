@@ -296,7 +296,9 @@ describe('auto-prefixer for ', () => {
 /**
  * Internal checks to `expect().toEqual()`
  */
-function checkCssPrefix(key, actual, expected) {
+function checkCssPrefix(key: string,
+                        actual: {[key: string]: string},
+                        expected: {[key: string]: string}) {
   expect(actual[key]).toEqual(expected[key]);
   switch (key) {
     case 'display':

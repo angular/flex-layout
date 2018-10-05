@@ -6,7 +6,13 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {NgStyleRawList, NgStyleMap, ngStyleUtils as _} from './style-transforms';
+import {
+  NgStyleRawList,
+  NgStyleMap,
+  buildRawList,
+  buildMapFromList,
+  buildMapFromSet,
+} from './style-transforms';
 
 describe('ngStyleUtils', () => {
   beforeEach(() => {
@@ -14,7 +20,7 @@ describe('ngStyleUtils', () => {
   });
 
   it('should parse a raw string of key:value pairs', () => {
-    let list: NgStyleRawList = _.buildRawList(`
+    let list: NgStyleRawList = buildRawList(`
       color:'red';
       font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
@@ -26,7 +32,7 @@ describe('ngStyleUtils', () => {
   });
 
   it('should build an iterable map from a raw string of key:value pairs', () => {
-    let map: NgStyleMap = _.buildMapFromList(_.buildRawList(`
+    let map: NgStyleMap = buildMapFromList(buildRawList(`
       color:'red';
       font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
@@ -40,7 +46,7 @@ describe('ngStyleUtils', () => {
   });
 
   it('should build an iterable map from an Array of key:value strings', () => {
-    let map: NgStyleMap = _.buildMapFromList(_.buildRawList(`
+    let map: NgStyleMap = buildMapFromList(buildRawList(`
       color:'red';
       font-size :16px;
       background-color:rgba(116, 37, 49, 0.72);
@@ -59,7 +65,7 @@ describe('ngStyleUtils', () => {
       customSet.add('font-size :16px;');
       customSet.add('background-color:rgba(116, 37, 49, 0.72)');
 
-      let map: NgStyleMap = _.buildMapFromSet(customSet);
+      let map: NgStyleMap = buildMapFromSet(customSet);
 
       expect(map).toHaveMap({
         'color': 'red',

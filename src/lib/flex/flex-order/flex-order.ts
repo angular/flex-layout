@@ -31,22 +31,22 @@ import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/fle
 export class FlexOrderDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
-  @Input('fxFlexOrder')       set order(val)     { this._cacheInput('order', val); }
-  @Input('fxFlexOrder.xs')    set orderXs(val)   { this._cacheInput('orderXs', val); }
-  @Input('fxFlexOrder.sm')    set orderSm(val)   { this._cacheInput('orderSm', val); };
-  @Input('fxFlexOrder.md')    set orderMd(val)   { this._cacheInput('orderMd', val); };
-  @Input('fxFlexOrder.lg')    set orderLg(val)   { this._cacheInput('orderLg', val); };
-  @Input('fxFlexOrder.xl')    set orderXl(val)   { this._cacheInput('orderXl', val); };
+  @Input('fxFlexOrder')       set order(val: string)     { this._cacheInput('order', val); }
+  @Input('fxFlexOrder.xs')    set orderXs(val: string)   { this._cacheInput('orderXs', val); }
+  @Input('fxFlexOrder.sm')    set orderSm(val: string)   { this._cacheInput('orderSm', val); };
+  @Input('fxFlexOrder.md')    set orderMd(val: string)   { this._cacheInput('orderMd', val); };
+  @Input('fxFlexOrder.lg')    set orderLg(val: string)   { this._cacheInput('orderLg', val); };
+  @Input('fxFlexOrder.xl')    set orderXl(val: string)   { this._cacheInput('orderXl', val); };
 
-  @Input('fxFlexOrder.gt-xs') set orderGtXs(val) { this._cacheInput('orderGtXs', val); };
-  @Input('fxFlexOrder.gt-sm') set orderGtSm(val) { this._cacheInput('orderGtSm', val); };
-  @Input('fxFlexOrder.gt-md') set orderGtMd(val) { this._cacheInput('orderGtMd', val); };
-  @Input('fxFlexOrder.gt-lg') set orderGtLg(val) { this._cacheInput('orderGtLg', val); };
+  @Input('fxFlexOrder.gt-xs') set orderGtXs(val: string) { this._cacheInput('orderGtXs', val); };
+  @Input('fxFlexOrder.gt-sm') set orderGtSm(val: string) { this._cacheInput('orderGtSm', val); };
+  @Input('fxFlexOrder.gt-md') set orderGtMd(val: string) { this._cacheInput('orderGtMd', val); };
+  @Input('fxFlexOrder.gt-lg') set orderGtLg(val: string) { this._cacheInput('orderGtLg', val); };
 
-  @Input('fxFlexOrder.lt-sm') set orderLtSm(val) { this._cacheInput('orderLtSm', val); };
-  @Input('fxFlexOrder.lt-md') set orderLtMd(val) { this._cacheInput('orderLtMd', val); };
-  @Input('fxFlexOrder.lt-lg') set orderLtLg(val) { this._cacheInput('orderLtLg', val); };
-  @Input('fxFlexOrder.lt-xl') set orderLtXl(val) { this._cacheInput('orderLtXl', val); };
+  @Input('fxFlexOrder.lt-sm') set orderLtSm(val: string) { this._cacheInput('orderLtSm', val); };
+  @Input('fxFlexOrder.lt-md') set orderLtMd(val: string) { this._cacheInput('orderLtMd', val); };
+  @Input('fxFlexOrder.lt-lg') set orderLtLg(val: string) { this._cacheInput('orderLtLg', val); };
+  @Input('fxFlexOrder.lt-xl') set orderLtXl(val: string) { this._cacheInput('orderLtXl', val); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
@@ -94,8 +94,8 @@ export class FlexOrderDirective extends BaseDirective implements OnInit, OnChang
   }
 
 
-  protected _buildCSS(value) {
-    value = parseInt(value, 10);
-    return {order: isNaN(value) ? 0 : value};
+  protected _buildCSS(value: string = '') {
+    const val = parseInt(value, 10);
+    return {order: isNaN(val) ? 0 : val};
   }
 }

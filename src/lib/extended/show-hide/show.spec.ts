@@ -26,7 +26,7 @@ describe('show directive', () => {
   let matchMedia: MockMatchMedia;
   let styler: StyleUtils;
   let platformId: Object;
-  let createTestComponent = (template) => {
+  let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestShowComponent)(template);
 
     inject([MatchMedia, StyleUtils, PLATFORM_ID],

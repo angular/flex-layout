@@ -52,7 +52,7 @@ describe('break-points', () => {
       });
     });
 
-    it('has the custom breakpoints', async(inject([BREAKPOINTS], (list) => {
+    it('has the custom breakpoints', async(inject([BREAKPOINTS], (list: BreakPoint[]) => {
       expect(list.length).toEqual(CUSTOM_BPS.length);
       expect(list[0].alias).toEqual('ab');
       expect(list[list.length - 1].suffix).toEqual('Cd');

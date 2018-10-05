@@ -33,22 +33,22 @@ const DEFAULT_VALUE = 'auto';
 export class GridRowDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
-  @Input('gdRow')       set align(val)     { this._cacheInput(`${CACHE_KEY}`, val); }
-  @Input('gdRow.xs')    set alignXs(val)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
-  @Input('gdRow.sm')    set alignSm(val)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
-  @Input('gdRow.md')    set alignMd(val)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
-  @Input('gdRow.lg')    set alignLg(val)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
-  @Input('gdRow.xl')    set alignXl(val)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
+  @Input('gdRow')       set align(val: string)     { this._cacheInput(`${CACHE_KEY}`, val); }
+  @Input('gdRow.xs')    set alignXs(val: string)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
+  @Input('gdRow.sm')    set alignSm(val: string)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
+  @Input('gdRow.md')    set alignMd(val: string)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
+  @Input('gdRow.lg')    set alignLg(val: string)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
+  @Input('gdRow.xl')    set alignXl(val: string)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
 
-  @Input('gdRow.gt-xs') set alignGtXs(val) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
-  @Input('gdRow.gt-sm') set alignGtSm(val) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
-  @Input('gdRow.gt-md') set alignGtMd(val) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
-  @Input('gdRow.gt-lg') set alignGtLg(val) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
+  @Input('gdRow.gt-xs') set alignGtXs(val: string) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
+  @Input('gdRow.gt-sm') set alignGtSm(val: string) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
+  @Input('gdRow.gt-md') set alignGtMd(val: string) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
+  @Input('gdRow.gt-lg') set alignGtLg(val: string) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
 
-  @Input('gdRow.lt-sm') set alignLtSm(val) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
-  @Input('gdRow.lt-md') set alignLtMd(val) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
-  @Input('gdRow.lt-lg') set alignLtLg(val) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
-  @Input('gdRow.lt-xl') set alignLtXl(val) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
+  @Input('gdRow.lt-sm') set alignLtSm(val: string) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
+  @Input('gdRow.lt-md') set alignLtMd(val: string) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
+  @Input('gdRow.lt-lg') set alignLtLg(val: string) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
+  @Input('gdRow.lt-xl') set alignLtXl(val: string) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
@@ -97,7 +97,7 @@ export class GridRowDirective extends BaseDirective implements OnInit, OnChanges
   }
 
 
-  protected _buildCSS(value) {
+  protected _buildCSS(value: string = '') {
     return {'grid-row': value};
   }
 }

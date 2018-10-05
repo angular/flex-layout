@@ -40,24 +40,24 @@ export class GridAlignColumnsDirective extends BaseDirective
   implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
-  @Input('gdAlignColumns')       set align(val)     { this._cacheInput(`${CACHE_KEY}`, val); }
-  @Input('gdAlignColumns.xs')    set alignXs(val)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
-  @Input('gdAlignColumns.sm')    set alignSm(val)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
-  @Input('gdAlignColumns.md')    set alignMd(val)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
-  @Input('gdAlignColumns.lg')    set alignLg(val)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
-  @Input('gdAlignColumns.xl')    set alignXl(val)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
+  @Input('gdAlignColumns')       set align(val: string)     { this._cacheInput(`${CACHE_KEY}`, val); }
+  @Input('gdAlignColumns.xs')    set alignXs(val: string)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
+  @Input('gdAlignColumns.sm')    set alignSm(val: string)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
+  @Input('gdAlignColumns.md')    set alignMd(val: string)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
+  @Input('gdAlignColumns.lg')    set alignLg(val: string)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
+  @Input('gdAlignColumns.xl')    set alignXl(val: string)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
 
-  @Input('gdAlignColumns.gt-xs') set alignGtXs(val) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
-  @Input('gdAlignColumns.gt-sm') set alignGtSm(val) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
-  @Input('gdAlignColumns.gt-md') set alignGtMd(val) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
-  @Input('gdAlignColumns.gt-lg') set alignGtLg(val) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
+  @Input('gdAlignColumns.gt-xs') set alignGtXs(val: string) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
+  @Input('gdAlignColumns.gt-sm') set alignGtSm(val: string) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
+  @Input('gdAlignColumns.gt-md') set alignGtMd(val: string) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
+  @Input('gdAlignColumns.gt-lg') set alignGtLg(val: string) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
 
-  @Input('gdAlignColumns.lt-sm') set alignLtSm(val) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
-  @Input('gdAlignColumns.lt-md') set alignLtMd(val) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
-  @Input('gdAlignColumns.lt-lg') set alignLtLg(val) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
-  @Input('gdAlignColumns.lt-xl') set alignLtXl(val) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
+  @Input('gdAlignColumns.lt-sm') set alignLtSm(val: string) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
+  @Input('gdAlignColumns.lt-md') set alignLtMd(val: string) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
+  @Input('gdAlignColumns.lt-lg') set alignLtLg(val: string) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
+  @Input('gdAlignColumns.lt-xl') set alignLtXl(val: string) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
 
-  @Input('gdInline') set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); };
+  @Input('gdInline') set inline(val: string) { this._cacheInput('inline', coerceBooleanProperty(val)); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
@@ -107,8 +107,8 @@ export class GridAlignColumnsDirective extends BaseDirective
   }
 
 
-  protected _buildCSS(align) {
-    let css = {}, [mainAxis, crossAxis] = align.split(' ');
+  protected _buildCSS(align: string = '') {
+    let css: {[key: string]: string} = {}, [mainAxis, crossAxis] = align.split(' ');
 
     // Main axis
     switch (mainAxis) {

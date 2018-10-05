@@ -206,16 +206,19 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
  */
 function buildCompareStyleFunction(inlineOnly = true) {
   return function (actual: any, styles: { [k: string]: string } | string, styler: StyleUtils) {
-    let found = {};
+    const found = {};
+    const styleMap: {[k: string]: string} = {};
 
-    let allPassed: boolean;
     if (typeof styles === 'string') {
-      styles = {[styles]: ''};
+      styleMap[styles] = '';
+    } else {
+      Object.assign(styleMap, styles);
     }
 
-    allPassed = Object.keys(styles).length !== 0;
-    Object.keys(styles).forEach(prop => {
-      let {elHasStyle, current} = hasPrefixedStyles(actual, prop, styles[prop], inlineOnly, styler);
+    let allPassed = Object.keys(styleMap).length !== 0;
+    Object.keys(styleMap).forEach(prop => {
+      let {elHasStyle, current} = hasPrefixedStyles(actual, prop, styleMap[prop], inlineOnly,
+        styler);
       allPassed = allPassed && elHasStyle;
       if (!elHasStyle) {
         extendObject(found, current);
@@ -225,8 +228,8 @@ function buildCompareStyleFunction(inlineOnly = true) {
     return {
       pass: allPassed,
       get message() {
-        const expectedValueStr = (typeof styles === 'string') ? styles :
-            JSON.stringify(styles, null, 2);
+        const expectedValueStr = (typeof styles === 'string') ? styleMap :
+            JSON.stringify(styleMap, null, 2);
         const foundValueStr = inlineOnly ? actual.outerHTML : JSON.stringify(found);
         return `
           Expected ${foundValueStr}${!allPassed ? '' : ' not'} to contain the
@@ -242,7 +245,11 @@ function buildCompareStyleFunction(inlineOnly = true) {
  * to possible `prefixed` styles. Useful when some browsers
  * (Safari, IE, etc) will use prefixed style instead of defaults.
  */
-function hasPrefixedStyles(actual, key, value, inlineOnly, styler) {
+function hasPrefixedStyles(actual: HTMLElement,
+                           key: string,
+                           value: string,
+                           inlineOnly: boolean,
+                           styler: StyleUtils) {
   const current = {};
 
   value = value !== '*' ? value.trim() : '';

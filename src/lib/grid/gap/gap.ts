@@ -35,24 +35,24 @@ const DEFAULT_VALUE = '0';
 export class GridGapDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
-  @Input('gdGap')       set align(val)     { this._cacheInput(`${CACHE_KEY}`, val); }
-  @Input('gdGap.xs')    set alignXs(val)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
-  @Input('gdGap.sm')    set alignSm(val)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
-  @Input('gdGap.md')    set alignMd(val)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
-  @Input('gdGap.lg')    set alignLg(val)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
-  @Input('gdGap.xl')    set alignXl(val)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
+  @Input('gdGap')       set align(val: string)     { this._cacheInput(`${CACHE_KEY}`, val); }
+  @Input('gdGap.xs')    set alignXs(val: string)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
+  @Input('gdGap.sm')    set alignSm(val: string)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
+  @Input('gdGap.md')    set alignMd(val: string)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
+  @Input('gdGap.lg')    set alignLg(val: string)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
+  @Input('gdGap.xl')    set alignXl(val: string)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
 
-  @Input('gdGap.gt-xs') set alignGtXs(val) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
-  @Input('gdGap.gt-sm') set alignGtSm(val) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
-  @Input('gdGap.gt-md') set alignGtMd(val) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
-  @Input('gdGap.gt-lg') set alignGtLg(val) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
+  @Input('gdGap.gt-xs') set alignGtXs(val: string) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
+  @Input('gdGap.gt-sm') set alignGtSm(val: string) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
+  @Input('gdGap.gt-md') set alignGtMd(val: string) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
+  @Input('gdGap.gt-lg') set alignGtLg(val: string) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
 
-  @Input('gdGap.lt-sm') set alignLtSm(val) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
-  @Input('gdGap.lt-md') set alignLtMd(val) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
-  @Input('gdGap.lt-lg') set alignLtLg(val) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
-  @Input('gdGap.lt-xl') set alignLtXl(val) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
+  @Input('gdGap.lt-sm') set alignLtSm(val: string) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
+  @Input('gdGap.lt-md') set alignLtMd(val: string) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
+  @Input('gdGap.lt-lg') set alignLtLg(val: string) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
+  @Input('gdGap.lt-xl') set alignLtXl(val: string) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
 
-  @Input('gdInline') set inline(val) { this._cacheInput('inline', coerceBooleanProperty(val)); };
+  @Input('gdInline') set inline(val: string) { this._cacheInput('inline', coerceBooleanProperty(val)); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
@@ -101,7 +101,7 @@ export class GridGapDirective extends BaseDirective implements OnInit, OnChanges
   }
 
 
-  protected _buildCSS(value) {
+  protected _buildCSS(value: string = '') {
     return {
       'display': this._queryInput('inline') ? 'inline-grid' : 'grid',
       'grid-gap': value

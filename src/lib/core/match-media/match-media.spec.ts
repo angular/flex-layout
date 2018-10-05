@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {TestBed, inject, async} from '@angular/core/testing';
-import {Observable} from 'rxjs';
 
 import {MediaChange} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';
@@ -26,7 +25,7 @@ describe('match-media', () => {
   });
 
   // Single async inject to save references; which are used in all tests below
-  beforeEach(async(inject([MatchMedia], (service) => {
+  beforeEach(async(inject([MatchMedia], (service: MockMatchMedia) => {
     matchMedia = service;      // inject only to manually activate mediaQuery ranges
   })));
   afterEach(() => {
@@ -112,7 +111,7 @@ describe('match-media', () => {
 describe('match-media-observable', () => {
   let breakPoints: BreakPointRegistry;
   let matchMedia: MockMatchMedia;
-  let mediaQuery$: Observable<MediaChange>;
+  let mediaQuery$: ObservableMedia;
 
   beforeEach(() => {
     // Configure testbed to prepare services
@@ -124,7 +123,7 @@ describe('match-media-observable', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
     [ObservableMedia, MatchMedia, BreakPointRegistry],
-    (_media$, _matchMedia, _breakPoints) => {
+    (_media$: ObservableMedia, _matchMedia: MockMatchMedia, _breakPoints: BreakPointRegistry) => {
       matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
       breakPoints = _breakPoints;
       mediaQuery$ = _media$;

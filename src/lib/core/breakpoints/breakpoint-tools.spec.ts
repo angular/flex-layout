@@ -14,7 +14,7 @@ import {ORIENTATION_BREAKPOINTS} from './data/orientation-break-points';
 
 describe('breakpoint-tools', () => {
   let all: BreakPoint[];
-  let findByAlias = (alias): BreakPoint|null => all.reduce((pos: BreakPoint | null, it) => {
+  let findByAlias = (alias: string): BreakPoint|null => all.reduce((pos: BreakPoint | null, it) => {
     return pos || ((it.alias == alias) ? it : null);
   }, null);
 
@@ -63,7 +63,7 @@ describe('breakpoint-tools', () => {
 
   describe('merges', () => {
     it('should add custom breakpoints with empty defaults', () => {
-      let defaults = [], custom = [
+      let defaults: BreakPoint[] = [], custom = [
         {alias: 'sm', mediaQuery: 'screen'},
         {alias: 'md', mediaQuery: 'screen'},
       ];

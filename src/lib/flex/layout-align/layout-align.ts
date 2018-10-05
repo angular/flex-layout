@@ -41,25 +41,25 @@ import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 export class LayoutAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   protected _layout = 'row';  // default flex-direction
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /* tslint:disable */
-  @Input('fxLayoutAlign')       set align(val)     { this._cacheInput('align', val); }
-  @Input('fxLayoutAlign.xs')    set alignXs(val)   { this._cacheInput('alignXs', val); }
-  @Input('fxLayoutAlign.sm')    set alignSm(val)   { this._cacheInput('alignSm', val); };
-  @Input('fxLayoutAlign.md')    set alignMd(val)   { this._cacheInput('alignMd', val); };
-  @Input('fxLayoutAlign.lg')    set alignLg(val)   { this._cacheInput('alignLg', val); };
-  @Input('fxLayoutAlign.xl')    set alignXl(val)   { this._cacheInput('alignXl', val); };
+  @Input('fxLayoutAlign')       set align(val: string)     { this._cacheInput('align', val); }
+  @Input('fxLayoutAlign.xs')    set alignXs(val: string)   { this._cacheInput('alignXs', val); }
+  @Input('fxLayoutAlign.sm')    set alignSm(val: string)   { this._cacheInput('alignSm', val); };
+  @Input('fxLayoutAlign.md')    set alignMd(val: string)   { this._cacheInput('alignMd', val); };
+  @Input('fxLayoutAlign.lg')    set alignLg(val: string)   { this._cacheInput('alignLg', val); };
+  @Input('fxLayoutAlign.xl')    set alignXl(val: string)   { this._cacheInput('alignXl', val); };
 
-  @Input('fxLayoutAlign.gt-xs') set alignGtXs(val) { this._cacheInput('alignGtXs', val); };
-  @Input('fxLayoutAlign.gt-sm') set alignGtSm(val) { this._cacheInput('alignGtSm', val); };
-  @Input('fxLayoutAlign.gt-md') set alignGtMd(val) { this._cacheInput('alignGtMd', val); };
-  @Input('fxLayoutAlign.gt-lg') set alignGtLg(val) { this._cacheInput('alignGtLg', val); };
+  @Input('fxLayoutAlign.gt-xs') set alignGtXs(val: string) { this._cacheInput('alignGtXs', val); };
+  @Input('fxLayoutAlign.gt-sm') set alignGtSm(val: string) { this._cacheInput('alignGtSm', val); };
+  @Input('fxLayoutAlign.gt-md') set alignGtMd(val: string) { this._cacheInput('alignGtMd', val); };
+  @Input('fxLayoutAlign.gt-lg') set alignGtLg(val: string) { this._cacheInput('alignGtLg', val); };
 
-  @Input('fxLayoutAlign.lt-sm') set alignLtSm(val) { this._cacheInput('alignLtSm', val); };
-  @Input('fxLayoutAlign.lt-md') set alignLtMd(val) { this._cacheInput('alignLtMd', val); };
-  @Input('fxLayoutAlign.lt-lg') set alignLtLg(val) { this._cacheInput('alignLtLg', val); };
-  @Input('fxLayoutAlign.lt-xl') set alignLtXl(val) { this._cacheInput('alignLtXl', val); };
+  @Input('fxLayoutAlign.lt-sm') set alignLtSm(val: string) { this._cacheInput('alignLtSm', val); };
+  @Input('fxLayoutAlign.lt-md') set alignLtMd(val: string) { this._cacheInput('alignLtMd', val); };
+  @Input('fxLayoutAlign.lt-lg') set alignLtLg(val: string) { this._cacheInput('alignLtLg', val); };
+  @Input('fxLayoutAlign.lt-xl') set alignLtXl(val: string) { this._cacheInput('alignLtXl', val); };
 
   /* tslint:enable */
   constructor(
@@ -136,8 +136,9 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     this._allowStretching(value, this._layout || 'row');
   }
 
-  protected _buildCSS(align) {
-    let css = {}, [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
+  protected _buildCSS(align: string = '') {
+    let css: {[key: string]: string} = {},
+      [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     // Main axis
     switch (main_axis) {
@@ -198,7 +199,7 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
    * Update container element to 'stretch' as needed...
    * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
    */
-  protected _allowStretching(align, layout) {
+  protected _allowStretching(align: string = '', layout: string = '') {
     let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
 
     if (cross_axis == 'stretch') {

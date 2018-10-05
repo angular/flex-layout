@@ -41,14 +41,14 @@ describe('responsive-activation', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(inject(
     [MatchMedia, MediaMonitor],
-    (_matchMedia, _mediaMonitor) => {
+    (_matchMedia: MockMatchMedia, _mediaMonitor: MediaMonitor) => {
       matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
       monitor = _mediaMonitor;
     }
   ));
 
   it('does not report mediaQuery changes for static usages', () => {
-    let value;
+    let value: any;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange);
     fakeAsync(() => {
@@ -77,7 +77,7 @@ describe('responsive-activation', () => {
   });
 
   it('reports mediaQuery changes for responsive usages', () => {
-    let value;
+    let value: any;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
         'layout': 'row',
@@ -104,7 +104,7 @@ describe('responsive-activation', () => {
   });
 
   it('uses fallback to default input if the activated mediaQuery should be ignored', () => {
-    let value;
+    let value: any;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
         'layout': 'row',
@@ -128,7 +128,7 @@ describe('responsive-activation', () => {
   });
 
   it('uses closest responsive input value if the activated mediaQuery is not linked', () => {
-    let value, enableOverlaps = false;
+    let value: any, enableOverlaps = false;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
         'layout': 'row',

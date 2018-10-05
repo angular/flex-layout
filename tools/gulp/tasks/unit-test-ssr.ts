@@ -18,9 +18,16 @@ task('test:ssr', [':test:build'], (done: () => void) => {
     '@angular/flex-layout/*': ['./*']
   };
   register({baseUrl, paths});
+  require('zone.js/dist/zone-node.js');
+  require('zone.js/dist/long-stack-trace-zone.js');
+  require('zone.js/dist/proxy.js');
+  require('zone.js/dist/sync-test.js');
+  require('zone.js/dist/async-test.js');
+  require('zone.js/dist/fake-async-test.js');
+  require('zone.js/dist/task-tracking.js');
+  require('reflect-metadata/Reflect');
   const jasmine = new (require('jasmine'))({projectBaseDir: projectDir});
-  require('zone.js');
-  require('zone.js/dist/zone-testing');
+  require('zone.js/dist/jasmine-patch.js');
   const {TestBed} = require('@angular/core/testing');
   const {ServerTestingModule, platformServerTesting} = require('@angular/platform-server/testing');
   let testBed = TestBed.initTestEnvironment(

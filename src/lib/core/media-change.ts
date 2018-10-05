@@ -11,7 +11,7 @@ export type MediaQuerySubscriber = (changes: MediaChange) => void;
  * Class instances emitted [to observers] for each mql notification
  */
 export class MediaChange {
-  property: string;
+  property: string = '';
   value: any;
 
   constructor(public matches = false,       // Is the mq currently activated

@@ -43,22 +43,22 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
   private _directionWatcher: Subscription;
 
   /* tslint:disable */
-  @Input('fxFlexOffset')       set offset(val)     { this._cacheInput('offset', val); }
-  @Input('fxFlexOffset.xs')    set offsetXs(val)   { this._cacheInput('offsetXs', val); }
-  @Input('fxFlexOffset.sm')    set offsetSm(val)   { this._cacheInput('offsetSm', val); };
-  @Input('fxFlexOffset.md')    set offsetMd(val)   { this._cacheInput('offsetMd', val); };
-  @Input('fxFlexOffset.lg')    set offsetLg(val)   { this._cacheInput('offsetLg', val); };
-  @Input('fxFlexOffset.xl')    set offsetXl(val)   { this._cacheInput('offsetXl', val); };
+  @Input('fxFlexOffset')       set offset(val: string)     { this._cacheInput('offset', val); }
+  @Input('fxFlexOffset.xs')    set offsetXs(val: string)   { this._cacheInput('offsetXs', val); }
+  @Input('fxFlexOffset.sm')    set offsetSm(val: string)   { this._cacheInput('offsetSm', val); };
+  @Input('fxFlexOffset.md')    set offsetMd(val: string)   { this._cacheInput('offsetMd', val); };
+  @Input('fxFlexOffset.lg')    set offsetLg(val: string)   { this._cacheInput('offsetLg', val); };
+  @Input('fxFlexOffset.xl')    set offsetXl(val: string)   { this._cacheInput('offsetXl', val); };
 
-  @Input('fxFlexOffset.lt-sm') set offsetLtSm(val) { this._cacheInput('offsetLtSm', val); };
-  @Input('fxFlexOffset.lt-md') set offsetLtMd(val) { this._cacheInput('offsetLtMd', val); };
-  @Input('fxFlexOffset.lt-lg') set offsetLtLg(val) { this._cacheInput('offsetLtLg', val); };
-  @Input('fxFlexOffset.lt-xl') set offsetLtXl(val) { this._cacheInput('offsetLtXl', val); };
+  @Input('fxFlexOffset.lt-sm') set offsetLtSm(val: string) { this._cacheInput('offsetLtSm', val); };
+  @Input('fxFlexOffset.lt-md') set offsetLtMd(val: string) { this._cacheInput('offsetLtMd', val); };
+  @Input('fxFlexOffset.lt-lg') set offsetLtLg(val: string) { this._cacheInput('offsetLtLg', val); };
+  @Input('fxFlexOffset.lt-xl') set offsetLtXl(val: string) { this._cacheInput('offsetLtXl', val); };
 
-  @Input('fxFlexOffset.gt-xs') set offsetGtXs(val) { this._cacheInput('offsetGtXs', val); };
-  @Input('fxFlexOffset.gt-sm') set offsetGtSm(val) { this._cacheInput('offsetGtSm', val); };
-  @Input('fxFlexOffset.gt-md') set offsetGtMd(val) { this._cacheInput('offsetGtMd', val); };
-  @Input('fxFlexOffset.gt-lg') set offsetGtLg(val) { this._cacheInput('offsetGtLg', val); };
+  @Input('fxFlexOffset.gt-xs') set offsetGtXs(val: string) { this._cacheInput('offsetGtXs', val); };
+  @Input('fxFlexOffset.gt-sm') set offsetGtSm(val: string) { this._cacheInput('offsetGtSm', val); };
+  @Input('fxFlexOffset.gt-md') set offsetGtMd(val: string) { this._cacheInput('offsetGtMd', val); };
+  @Input('fxFlexOffset.gt-lg') set offsetGtLg(val: string) { this._cacheInput('offsetGtLg', val); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
@@ -123,7 +123,7 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
    * Subscription to the parent flex container's layout changes.
    * Stored so we can unsubscribe when this directive is destroyed.
    */
-  protected _layoutWatcher: Subscription;
+  protected _layoutWatcher?: Subscription;
 
   /**
    * If parent flow-direction changes, then update the margin property
@@ -162,10 +162,10 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
     this._applyStyleToElement(this._buildCSS(value));
   }
 
-  protected _buildCSS(offset): StyleDefinition {
+  protected _buildCSS(offset: string|number = ''): StyleDefinition {
     let isPercent = String(offset).indexOf('%') > -1;
     let isPx = String(offset).indexOf('px') > -1;
-    if (!isPx && !isPercent && !isNaN(offset)) {
+    if (!isPx && !isPercent && !isNaN(+offset)) {
       offset = offset + '%';
     }
 

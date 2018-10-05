@@ -94,10 +94,22 @@ export class ClassDirective extends BaseDirective
               protected _keyValueDiffers: KeyValueDiffers,
               protected _ngEl: ElementRef,
               protected _renderer: Renderer2,
-              @Optional() @Self() private _ngClassInstance: NgClass,
+              @Optional() @Self() private readonly _ngClassInstance: NgClass,
               protected _styler: StyleUtils) {
     super(monitor, _ngEl, _styler);
-    this._configureAdapters();
+    this._base = new BaseDirectiveAdapter(
+      'ngClass',
+      this.monitor,
+      this._ngEl,
+      this._styler
+    );
+    if (!this._ngClassInstance) {
+      // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
+      // the same host element; since the responsive variations may be defined...
+      this._ngClassInstance = new NgClass(
+        this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer
+      );
+    }
   }
 
   // ******************************************************************
@@ -126,32 +138,11 @@ export class ClassDirective extends BaseDirective
 
   ngOnDestroy() {
     this._base.ngOnDestroy();
-    delete this._ngClassInstance;
   }
 
   // ******************************************************************
   // Internal Methods
   // ******************************************************************
-
-  /**
-   * Configure adapters (that delegate to an internal ngClass instance) if responsive
-   * keys have been defined.
-   */
-  protected _configureAdapters() {
-    this._base = new BaseDirectiveAdapter(
-      'ngClass',
-      this.monitor,
-      this._ngEl,
-      this._styler
-    );
-    if (!this._ngClassInstance) {
-      // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
-      // the same host element; since the responsive variations may be defined...
-      this._ngClassInstance = new NgClass(
-          this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer
-      );
-    }
-  }
 
   /**
    * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers

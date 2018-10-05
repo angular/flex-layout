@@ -43,23 +43,23 @@ import {
 export class ImgSrcDirective extends BaseDirective implements OnInit, OnChanges {
 
   /* tslint:disable */
-  @Input('src')        set srcBase(val) { this.cacheDefaultSrc(val);           }
+  @Input('src')        set srcBase(val: string) { this.cacheDefaultSrc(val);           }
 
-  @Input('src.xs')     set srcXs(val)   { this._cacheInput('srcXs', val);  }
-  @Input('src.sm')     set srcSm(val)   { this._cacheInput('srcSm', val);  }
-  @Input('src.md')     set srcMd(val)   { this._cacheInput('srcMd', val);  }
-  @Input('src.lg')     set srcLg(val)   { this._cacheInput('srcLg', val);  }
-  @Input('src.xl')     set srcXl(val)   { this._cacheInput('srcXl', val);  }
+  @Input('src.xs')     set srcXs(val: string)   { this._cacheInput('srcXs', val);  }
+  @Input('src.sm')     set srcSm(val: string)   { this._cacheInput('srcSm', val);  }
+  @Input('src.md')     set srcMd(val: string)   { this._cacheInput('srcMd', val);  }
+  @Input('src.lg')     set srcLg(val: string)   { this._cacheInput('srcLg', val);  }
+  @Input('src.xl')     set srcXl(val: string)   { this._cacheInput('srcXl', val);  }
 
-  @Input('src.lt-sm')  set srcLtSm(val) { this._cacheInput('srcLtSm', val);  }
-  @Input('src.lt-md')  set srcLtMd(val) { this._cacheInput('srcLtMd', val);  }
-  @Input('src.lt-lg')  set srcLtLg(val) { this._cacheInput('srcLtLg', val);  }
-  @Input('src.lt-xl')  set srcLtXl(val) { this._cacheInput('srcLtXl', val);  }
+  @Input('src.lt-sm')  set srcLtSm(val: string) { this._cacheInput('srcLtSm', val);  }
+  @Input('src.lt-md')  set srcLtMd(val: string) { this._cacheInput('srcLtMd', val);  }
+  @Input('src.lt-lg')  set srcLtLg(val: string) { this._cacheInput('srcLtLg', val);  }
+  @Input('src.lt-xl')  set srcLtXl(val: string) { this._cacheInput('srcLtXl', val);  }
 
-  @Input('src.gt-xs')  set srcGtXs(val) { this._cacheInput('srcGtXs', val);  }
-  @Input('src.gt-sm')  set srcGtSm(val) { this._cacheInput('srcGtSm', val);  }
-  @Input('src.gt-md')  set srcGtMd(val) { this._cacheInput('srcGtMd', val);  }
-  @Input('src.gt-lg')  set srcGtLg(val) { this._cacheInput('srcGtLg', val);  }
+  @Input('src.gt-xs')  set srcGtXs(val: string) { this._cacheInput('srcGtXs', val);  }
+  @Input('src.gt-sm')  set srcGtSm(val: string) { this._cacheInput('srcGtSm', val);  }
+  @Input('src.gt-md')  set srcGtMd(val: string) { this._cacheInput('srcGtMd', val);  }
+  @Input('src.gt-lg')  set srcGtLg(val: string) { this._cacheInput('srcGtLg', val);  }
   /* tslint:enable */
 
   constructor(protected _elRef: ElementRef,

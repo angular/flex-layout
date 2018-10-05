@@ -18,7 +18,7 @@ export class StyleUtils {
 
   constructor(@Optional() private _serverStylesheet: StylesheetMap,
               @Optional() @Inject(SERVER_TOKEN) private _serverModuleLoaded: boolean,
-              @Inject(PLATFORM_ID) private _platformId,
+              @Inject(PLATFORM_ID) private _platformId: Object,
               @Inject(LAYOUT_CONFIG) private layoutConfig: LayoutConfigOptions) {}
 
   /**
@@ -26,8 +26,8 @@ export class StyleUtils {
    */
   applyStyleToElement(element: HTMLElement,
                       style: StyleDefinition | string,
-                      value?: string | number) {
-    let styles = {};
+                      value: string | number | null = null) {
+    let styles: StyleDefinition = {};
     if (typeof style === 'string') {
       styles[style] = value;
       style = styles;
@@ -75,7 +75,7 @@ export class StyleUtils {
    */
   lookupInlineStyle(element: HTMLElement, styleName: string): string {
     return isPlatformBrowser(this._platformId) ?
-      element.style[styleName] : this._getServerStyle(element, styleName);
+      element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
   }
 
   /**
@@ -109,11 +109,14 @@ export class StyleUtils {
    * Each value will be added as element style
    * Keys are sorted to add prefixed styles (like -webkit-x) first, before the standard ones
    */
-  private _applyMultiValueStyleToElement(styles: {}, element: HTMLElement) {
+  private _applyMultiValueStyleToElement(styles: StyleDefinition,
+                                         element: HTMLElement) {
     Object.keys(styles).sort().forEach(key => {
-      const values = Array.isArray(styles[key]) ? styles[key] : [styles[key]];
+      const el = styles[key];
+      const values: (string | number | null)[] = Array.isArray(el) ? el : [el];
       values.sort();
       for (let value of values) {
+        value = value ? value + '' : '';
         if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
           isPlatformBrowser(this._platformId) ?
             element.style.setProperty(key, value) : this._setServerStyle(element, key, value);

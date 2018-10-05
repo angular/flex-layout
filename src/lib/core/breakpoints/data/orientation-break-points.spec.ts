@@ -16,12 +16,11 @@ import {FlexLayoutModule} from '../../../module';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
-  let findByAlias = (alias): BreakPoint|null => breakPoints.reduce((pos: BreakPoint | null, it) => {
-    return pos || ((it.alias == alias) ? it : null);
-  }, null);
+  let findByAlias = (alias: string): BreakPoint|null => breakPoints.reduce(
+    (pos: BreakPoint | null, it) =>  pos || ((it.alias == alias) ? it : null), null);
 
   describe('with default breakpoints only', () => {
-    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       breakPoints = bps;
     })));
 
@@ -35,7 +34,7 @@ describe('break-point-provider', () => {
   });
 
   describe('with merged custom breakpoints', () => {
-    let bpList;
+    let bpList: BreakPoint[];
     const EXTRAS: BreakPoint[] = [
       {alias: 'lt-ab', mediaQuery: '(max-width: 297px)'},
       {alias: 'cd', mediaQuery: '(min-width: 298px) and (max-width:414px)'}
@@ -47,7 +46,7 @@ describe('break-point-provider', () => {
         imports: [FlexLayoutModule.withConfig({}, EXTRAS)]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       bpList = bps;
     })));
 
@@ -72,10 +71,11 @@ describe('break-point-provider', () => {
       {alias: 'cd', mediaQuery: '(min-width: 298px) and (max-width:414px)'}
     ];
     const NUM_EXTRAS = 2;   // since md and gt-xs will not be added but merged
-    let bpList;
-    let byAlias = (alias): BreakPoint => bpList.reduce((pos, it) => {
-      return pos || ((it.alias == alias) ? it : null);
-    }, null);
+    let bpList: BreakPoint[];
+    let accumulator: BreakPoint | null = null;
+    let byAlias = (alias: string): BreakPoint | null => bpList.reduce((pos, it) => {
+      return pos || ((it.alias === alias) ? it : null);
+    }, accumulator);
 
     beforeEach(() => {
       // Configure testbed to prepare services
@@ -84,7 +84,7 @@ describe('break-point-provider', () => {
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints) => {
+    beforeEach(async(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
       bpList = breakPoints;
     })));
 
@@ -94,10 +94,10 @@ describe('break-point-provider', () => {
       expect(bpList.length).toEqual(total);
 
       expect(byAlias('gt-xs')).toBeDefined();
-      expect(byAlias('gt-xs').mediaQuery).toEqual(gtXsMediaQuery);
+      expect(byAlias('gt-xs')!.mediaQuery).toEqual(gtXsMediaQuery);
 
       expect(byAlias('md')).toBeDefined();
-      expect(byAlias('md').mediaQuery).toEqual(mdMediaQuery);
+      expect(byAlias('md')!.mediaQuery).toEqual(mdMediaQuery);
     });
 
     it('can extend existing default breakpoints with custom settings', () => {
@@ -112,7 +112,7 @@ describe('break-point-provider', () => {
   });
 
   describe('with exclusive custom breakpoints', () => {
-    let bpList;
+    let bpList: BreakPoint[];
     const EXTRAS: BreakPoint[] = [
       {alias: 'lt-ab', mediaQuery: '(max-width: 297px)'},
       {alias: 'cd', mediaQuery: '(min-width: 298px) and (max-width: 414px)'}
@@ -124,7 +124,7 @@ describe('break-point-provider', () => {
         imports: [FlexLayoutModule.withConfig({disableDefaultBps: true}, EXTRAS)]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (bps) => {
+    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       bpList = bps;
     })));
 

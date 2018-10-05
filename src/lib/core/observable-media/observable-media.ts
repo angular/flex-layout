@@ -88,7 +88,7 @@ export class MediaService implements ObservableMedia {
   /**
    * Test if specified query/alias is active.
    */
-  isActive(alias): boolean {
+  isActive(alias: string): boolean {
     let query = this._toMediaQuery(alias);
     return this.mediaWatcher.isActive(query);
   }
@@ -167,21 +167,21 @@ export class MediaService implements ObservableMedia {
   /**
    * Breakpoint locator by alias
    */
-  private _findByAlias(alias) {
+  private _findByAlias(alias: string) {
     return this.breakpoints.findByAlias(alias);
   }
 
   /**
    * Breakpoint locator by mediaQuery
    */
-  private _findByQuery(query) {
+  private _findByQuery(query: string) {
     return this.breakpoints.findByQuery(query);
   }
 
   /**
    * Find associated breakpoint (if any)
    */
-  private _toMediaQuery(query) {
+  private _toMediaQuery(query: string) {
     let bp: BreakPoint | null = this._findByAlias(query) || this._findByQuery(query);
     return bp ? bp.mediaQuery : query;
   }
