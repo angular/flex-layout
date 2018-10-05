@@ -24,7 +24,8 @@ describe('mock-match-media', () => {
       providers: [MockMatchMediaProvider]
     });
   });
-  beforeEach(async(inject([MatchMedia, BreakPointRegistry], (_matchMedia, _breakPoints) => {
+  beforeEach(async(inject([MatchMedia, BreakPointRegistry],
+    (_matchMedia: MockMatchMedia, _breakPoints: BreakPointRegistry) => {
     // Single async inject to save references; which are used in all tests below
     matchMedia = _matchMedia;
     breakPoints = _breakPoints;

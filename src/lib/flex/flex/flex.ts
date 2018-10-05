@@ -62,25 +62,25 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
   protected _layoutWatcher?: Subscription;
 
   /* tslint:disable */
-  @Input('fxShrink')     set shrink(val)    { this._cacheInput('shrink', val); };
-  @Input('fxGrow')       set grow(val)      { this._cacheInput('grow', val); };
+  @Input('fxShrink')     set shrink(val: string)    { this._cacheInput('shrink', val); };
+  @Input('fxGrow')       set grow(val: string)      { this._cacheInput('grow', val); };
 
-  @Input('fxFlex')       set flex(val)      { this._cacheInput('flex', val); };
-  @Input('fxFlex.xs')    set flexXs(val)    { this._cacheInput('flexXs', val); };
-  @Input('fxFlex.sm')    set flexSm(val)    { this._cacheInput('flexSm', val); };
-  @Input('fxFlex.md')    set flexMd(val)    { this._cacheInput('flexMd', val); };
-  @Input('fxFlex.lg')    set flexLg(val)    { this._cacheInput('flexLg', val); };
-  @Input('fxFlex.xl')    set flexXl(val)    { this._cacheInput('flexXl', val); };
+  @Input('fxFlex')       set flex(val: string)      { this._cacheInput('flex', val); };
+  @Input('fxFlex.xs')    set flexXs(val: string)    { this._cacheInput('flexXs', val); };
+  @Input('fxFlex.sm')    set flexSm(val: string)    { this._cacheInput('flexSm', val); };
+  @Input('fxFlex.md')    set flexMd(val: string)    { this._cacheInput('flexMd', val); };
+  @Input('fxFlex.lg')    set flexLg(val: string)    { this._cacheInput('flexLg', val); };
+  @Input('fxFlex.xl')    set flexXl(val: string)    { this._cacheInput('flexXl', val); };
 
-  @Input('fxFlex.gt-xs') set flexGtXs(val)  { this._cacheInput('flexGtXs', val); };
-  @Input('fxFlex.gt-sm') set flexGtSm(val)  { this._cacheInput('flexGtSm', val); };
-  @Input('fxFlex.gt-md') set flexGtMd(val)  { this._cacheInput('flexGtMd', val); };
-  @Input('fxFlex.gt-lg') set flexGtLg(val)  { this._cacheInput('flexGtLg', val); };
+  @Input('fxFlex.gt-xs') set flexGtXs(val: string)  { this._cacheInput('flexGtXs', val); };
+  @Input('fxFlex.gt-sm') set flexGtSm(val: string)  { this._cacheInput('flexGtSm', val); };
+  @Input('fxFlex.gt-md') set flexGtMd(val: string)  { this._cacheInput('flexGtMd', val); };
+  @Input('fxFlex.gt-lg') set flexGtLg(val: string)  { this._cacheInput('flexGtLg', val); };
 
-  @Input('fxFlex.lt-sm') set flexLtSm(val) { this._cacheInput('flexLtSm', val); };
-  @Input('fxFlex.lt-md') set flexLtMd(val) { this._cacheInput('flexLtMd', val); };
-  @Input('fxFlex.lt-lg') set flexLtLg(val) { this._cacheInput('flexLtLg', val); };
-  @Input('fxFlex.lt-xl') set flexLtXl(val) { this._cacheInput('flexLtXl', val); };
+  @Input('fxFlex.lt-sm') set flexLtSm(val: string) { this._cacheInput('flexLtSm', val); };
+  @Input('fxFlex.lt-md') set flexLtMd(val: string) { this._cacheInput('flexLtMd', val); };
+  @Input('fxFlex.lt-lg') set flexLtLg(val: string) { this._cacheInput('flexLtLg', val); };
+  @Input('fxFlex.lt-xl') set flexLtXl(val: string) { this._cacheInput('flexLtXl', val); };
   /* tslint:enable */
 
   // Note: Explicitly @SkipSelf on LayoutDirective because we are looking
@@ -187,7 +187,7 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
     // should not set a max when the shrink is zero
     let isFixed = !grow && !shrink;
 
-    let css = {};
+    let css: {[key: string]: string | number | null} = {};
 
     // flex-basis allows you to specify the initial/starting main-axis size of the element,
     // before anything else is computed. It can either be a percentage or an absolute value.

@@ -18,7 +18,7 @@ describe('media-monitor', () => {
   let monitor: MediaMonitor;
   let matchMedia: MockMatchMedia;
   let breakPoints: BreakPointRegistry;
-  let findQuery = (alias) => breakPoints.findByAlias(alias)!.mediaQuery;
+  let findQuery = (alias: string) => breakPoints.findByAlias(alias)!.mediaQuery;
 
   beforeEach(() => {
     // Configure testbed to prepare services
@@ -30,7 +30,8 @@ describe('media-monitor', () => {
   // Single async inject to save references; which are used in all tests below
   beforeEach(async(inject(
       [MediaMonitor, MatchMedia, BreakPointRegistry],
-      (_mediaMonitor, _matchMedia, _breakPoints) => {
+      (_mediaMonitor: MediaMonitor, _matchMedia: MockMatchMedia,
+       _breakPoints: BreakPointRegistry) => {
         monitor = _mediaMonitor;
         matchMedia = _matchMedia;      // Only used to manual/simulate activate a mediaQuery
         breakPoints = _breakPoints;    // Only used to look up mediaQuery by aliases

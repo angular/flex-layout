@@ -5,7 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {BreakPoint} from '../break-point';
@@ -22,8 +21,8 @@ describe('break-point-provider', () => {
         providers: [{provide: BREAKPOINTS, useValue: DEFAULT_BREAKPOINTS}]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (_) => {
-      breakPoints = _;
+    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
+      breakPoints = bps;
     })));
 
     it('has the standard breakpoints', () => {
@@ -34,7 +33,7 @@ describe('break-point-provider', () => {
   });
 
   describe('with custom configuration', () => {
-    let bpList;
+    let bpList: BreakPoint[];
 
     const CUSTOM_BPS: BreakPoint[] = [
       {
@@ -58,7 +57,7 @@ describe('break-point-provider', () => {
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints) => {
+    beforeEach(async(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
       bpList = breakPoints;
     })));
 

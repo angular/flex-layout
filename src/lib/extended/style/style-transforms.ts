@@ -64,13 +64,13 @@ export function buildMapFromList(styles: NgStyleRawList, sanitize?: NgStyleSanit
 }
 
 /** Convert Set<string> or raw Object to an iterable NgStyleMap */
-export function buildMapFromSet(source: any, sanitize?: NgStyleSanitizer): NgStyleMap {
+export function buildMapFromSet(source: NgStyleType, sanitize?: NgStyleSanitizer): NgStyleMap {
   let list: string[] = [];
-  if (getType(source) == 'set') {
-    source.forEach(entry => list.push(entry));
-  } else {                                // simple hashmap
-    Object.keys(source).forEach(key => {
-      list.push(`${key}:${source[key]}`);
+  if (getType(source) === 'set') {
+    (source as Set<string>).forEach(entry => list.push(entry));
+  } else {
+    Object.keys(source).forEach((key: string) => {
+      list.push(`${key}:${(source as NgStyleMap)[key]}`);
     });
   }
   return buildMapFromList(list, sanitize);

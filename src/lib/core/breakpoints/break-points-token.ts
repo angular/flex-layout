@@ -25,7 +25,7 @@ export const BREAKPOINTS =
       const breakpoints: any = inject(BREAKPOINT);
       const layoutConfig = inject(LAYOUT_CONFIG);
       const bpFlattenArray: BreakPoint[] = [].concat.apply([], (breakpoints || [])
-        .map(v => Array.isArray(v) ? v : [v]));
+        .map((v: BreakPoint | BreakPoint[]) => Array.isArray(v) ? v : [v]));
       const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
         .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
 

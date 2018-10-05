@@ -11,6 +11,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
+    "noImplicitAny": true,
     "noImplicitThis": true,
     "skipLibCheck": true,
     "target": "es2015",

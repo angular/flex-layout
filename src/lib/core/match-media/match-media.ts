@@ -115,19 +115,19 @@ export class MatchMedia {
    * For Webkit engines that only trigger the MediaQueryList Listener
    * when there is at least one CSS selector for the respective media query.
    *
-   * @param query string The mediaQuery used to create a faux CSS selector
-   *
+   * @param mediaQueries
+   * @param _document
    */
   protected _prepareQueryCSS(mediaQueries: string[], _document: Document) {
-    let list = mediaQueries.filter(it => !ALL_STYLES[it]);
+    const list: string[] = mediaQueries.filter(it => !ALL_STYLES[it]);
     if (list.length > 0) {
-      let query = list.join(', ');
+      const query = list.join(', ');
 
       try {
         let styleEl = _document.createElement('style');
 
         styleEl.setAttribute('type', 'text/css');
-        if (!styleEl['styleSheet']) {
+        if (!(styleEl as any).styleSheet) {
           let cssText = `
 /*
   @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
@@ -154,7 +154,7 @@ export class MatchMedia {
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
-const ALL_STYLES = {};
+const ALL_STYLES: {[key: string]: any} = {};
 
 /**
  * Always convert to unique list of queries; for iteration in ::registerQuery()
@@ -168,7 +168,7 @@ function normalizeQuery(mediaQuery: string | string[]): string[] {
  * Filter duplicate mediaQueries in the list
  */
 function unique(list: string[]): string[] {
-  let seen = {};
+  let seen: {[key: string]: boolean} = {};
   return list.filter(item => {
     return seen.hasOwnProperty(item) ? false : (seen[item] = true);
   });

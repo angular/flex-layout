@@ -27,7 +27,7 @@ describe('style directive', () => {
   let fixture: ComponentFixture<any>;
   let matchMedia: MockMatchMedia;
   let styler: StyleUtils;
-  let createTestComponent = (template) => {
+  let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestStyleComponent)(template);
 
     inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {

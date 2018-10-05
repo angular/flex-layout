@@ -12,7 +12,7 @@ import {MediaMonitor} from '../media-monitor/media-monitor';
 import {StyleUtils} from '../style-utils/style-utils';
 
 describe('BaseDirectiveAdapter class', () => {
-  let component;
+  let component: any;
   beforeEach(() => {
     component = new BaseDirectiveAdapter('', {} as MediaMonitor, {} as ElementRef, {} as StyleUtils); // tslint:disable-line:max-line-length
   });

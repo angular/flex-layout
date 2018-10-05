@@ -108,7 +108,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   }
 
   /** Access the current value (if any) of the @Input property */
-  protected _queryInput(key) {
+  protected _queryInput(key: string) {
     return this._inputMap[key];
   }
 
@@ -218,7 +218,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   }
 
   /** Fast validator for presence of attribute on the host element */
-  protected hasKeyValue(key) {
+  protected hasKeyValue(key: string) {
     return this._mqActivation!.hasKeyValue(key);
   }
 
@@ -230,7 +230,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   protected _mqActivation?: ResponsiveActivation;
 
   /** Dictionary of input keys with associated values */
-  protected _inputMap = {};
+  protected _inputMap: {[key: string]: any} = {};
 
   /**
    * Has the `ngOnInit()` method fired

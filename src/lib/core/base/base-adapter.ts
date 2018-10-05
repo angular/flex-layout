@@ -64,7 +64,7 @@ export class BaseDirectiveAdapter extends BaseDirective {
   /**
    * @see BaseDirective._queryInput
    */
-  queryInput(key) {
+  queryInput(key: string | null) {
     return key ? this._queryInput(key) : undefined;
   }
 

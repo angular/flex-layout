@@ -63,7 +63,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
-  _validateQuery(queryOrAlias) {
+  _validateQuery(queryOrAlias: string) {
     let bp = this._breakpoints.findByAlias(queryOrAlias);
     if (bp) {
       queryOrAlias = bp.mediaQuery;
@@ -119,8 +119,8 @@ export class MockMatchMedia extends MatchMedia {
   /**
    *
    */
-  private _activateByAlias(aliases) {
-    let activate = (alias) => {
+  private _activateByAlias(aliases: string) {
+    let activate = (alias: string) => {
       let bp = this._breakpoints.findByAlias(alias);
       this._activateByQuery(bp ? bp.mediaQuery : alias);
     };
@@ -130,7 +130,7 @@ export class MockMatchMedia extends MatchMedia {
   /**
    *
    */
-  private _activateByQuery(mediaQuery) {
+  private _activateByQuery(mediaQuery: string) {
     let mql = <MockMediaQueryList> this._registry.get(mediaQuery);
     let alreadyAdded = this._actives.reduce((found, it) => {
       return found || (mql && (it.media === mql.media));
@@ -155,7 +155,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   /** Insure the mediaQuery is registered with MatchMedia */
-  private _registerMediaQuery(mediaQuery) {
+  private _registerMediaQuery(mediaQuery: string) {
     if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
       this.registerQuery(mediaQuery);
     }

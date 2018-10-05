@@ -12,8 +12,8 @@ import {BreakPoint} from '../breakpoints/break-point';
 import {BREAKPOINTS} from '../breakpoints/break-points-token';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaChange} from '../media-change';
-import {ObservableMedia, ObservableMediaProvider} from './observable-media';
-import {MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
+import {MediaService, ObservableMedia, ObservableMediaProvider} from './observable-media';
+import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
 import {BREAKPOINT} from '../tokens/breakpoint-token';
 
 describe('observable-media', () => {
@@ -39,7 +39,7 @@ describe('observable-media', () => {
 
     it('can supports the `.isActive()` API', async(inject(
       [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
+      (media: ObservableMedia, matchMedia: MockMatchMedia) => {
         expect(media).toBeDefined();
 
         // Activate mediaQuery associated with 'md' alias
@@ -54,7 +54,7 @@ describe('observable-media', () => {
 
     it('can supports RxJS operators', inject(
       [ObservableMedia, MatchMedia],
-      (mediaService, matchMedia) => {
+      (mediaService: ObservableMedia, matchMedia: MockMatchMedia) => {
         let count = 0,
           subscription = mediaService.asObservable().pipe(
             filter((change: MediaChange) => change.mqAlias == 'md'),
@@ -87,7 +87,7 @@ describe('observable-media', () => {
 
     it('can subscribe to built-in mediaQueries', inject(
       [ObservableMedia, MatchMedia],
-      (media$, matchMedia) => {
+      (media$: MediaService, matchMedia: MockMatchMedia) => {
         let current: MediaChange;
 
         expect(media$).toBeDefined();
@@ -127,7 +127,7 @@ describe('observable-media', () => {
 
     it('can `.unsubscribe()` properly', inject(
       [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
+      (media: ObservableMedia, matchMedia: MockMatchMedia) => {
         let current: MediaChange;
         let subscription = media.subscribe((change: MediaChange) => {
           current = change;
@@ -151,7 +151,7 @@ describe('observable-media', () => {
 
     it('can observe a startup activation of XS', inject(
       [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
+      (media: ObservableMedia, matchMedia: MockMatchMedia) => {
         let current: MediaChange;
         let subscription = media.subscribe((change: MediaChange) => {
           current = change;
@@ -192,7 +192,7 @@ describe('observable-media', () => {
 
     it('can activate custom alias with custom mediaQueries', inject(
       [ObservableMedia, MatchMedia],
-      (media, matchMedia) => {
+      (media: ObservableMedia, matchMedia: MockMatchMedia) => {
         let current: MediaChange;
         let subscription = media.subscribe((change: MediaChange) => {
           current = change;

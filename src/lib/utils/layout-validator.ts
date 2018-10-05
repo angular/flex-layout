@@ -20,7 +20,7 @@ export function buildLayoutCSS(value: string) {
   * Validate the value to be one of the acceptable value options
   * Use default fallback of 'row'
   */
-export function validateValue(value: string) {
+export function validateValue(value: string): [string, string, boolean] {
   value = value ? value.toLowerCase() : '';
   let [direction, wrap, inline] = value.split(' ');
 
@@ -49,7 +49,7 @@ export function isFlowHorizontal(value: string): boolean {
 /**
  * Convert layout-wrap='<value>' to expected flex-wrap style
  */
-export function validateWrapValue(value) {
+export function validateWrapValue(value: string) {
   if (!!value) {
     switch (value.toLowerCase()) {
       case 'reverse':
@@ -82,7 +82,7 @@ export function validateWrapValue(value) {
  *  This way any padding or border specified on the child elements are
  *  laid out and drawn inside that element's specified width and height.
  */
-function buildCSS(direction, wrap = null, inline = false) {
+function buildCSS(direction: string, wrap: string | null = null, inline = false) {
   return {
     'display': inline ? 'inline-flex' : 'flex',
     'box-sizing': 'border-box',
