@@ -7,4 +7,3 @@
  */
 
 export * from './stylesheet-map';
-export * from './stylesheet-map-provider';

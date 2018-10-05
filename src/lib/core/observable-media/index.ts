@@ -7,4 +7,3 @@
  */
 
 export * from './observable-media';
-export * from './observable-media-provider';
