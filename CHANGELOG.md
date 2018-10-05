@@ -1,3 +1,14 @@
+<a name="7.0.0-beta.19"></a>
+# [7.0.0-beta.19](https://github.com/angular/flex-layout/compare/6.0.0-beta.18...7.0.0-beta.19) (2018-10-05)
+
+
+### Bug Fixes
+
+* **build:** upgrade to Angular and Material v7 and add strict flags  ([5ddccb5](https://github.com/angular/flex-layout/commit/5ddccb5)), closes [#851](https://github.com/angular/flex-layout/issues/851) [#855](https://github.com/angular/flex-layout/issues/855)
+* **module:** do not require breakpoints in withConfig ([#853](https://github.com/angular/flex-layout/issues/853)) ([76c110e](https://github.com/angular/flex-layout/commit/76c110e)), closes [#846](https://github.com/angular/flex-layout/issues/846)
+
+
+
 <a name="6.0.0-beta.18"></a>
 # [6.0.0-beta.18](https://github.com/angular/flex-layout/compare/6.0.0-beta.17...6.0.0-beta.18) (2018-08-31)
 
