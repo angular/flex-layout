@@ -16,9 +16,8 @@ import {FlexLayoutModule} from '../../../module';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
-  let findByAlias = (alias: string): BreakPoint|null => breakPoints.reduce((pos: BreakPoint | null, it) => {
-    return pos || ((it.alias == alias) ? it : null);
-  }, null);
+  let findByAlias = (alias: string): BreakPoint|null => breakPoints.reduce(
+    (pos: BreakPoint | null, it) =>  pos || ((it.alias == alias) ? it : null), null);
 
   describe('with default breakpoints only', () => {
     beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
