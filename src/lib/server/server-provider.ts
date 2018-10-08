@@ -70,7 +70,7 @@ export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
     const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
     styleTag.classList.add(`${CLASS_NAME}ssr`);
     styleTag.textContent = styleText;
-    _document.head.appendChild(styleTag);
+    _document.head!.appendChild(styleTag);
   };
 }
 

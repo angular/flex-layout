@@ -128,7 +128,7 @@ describe('responsive-activation', () => {
   });
 
   it('uses closest responsive input value if the activated mediaQuery is not linked', () => {
-    let value: any, enableOverlaps = false;
+    let value: any;
     let onMediaChange = (changes: MediaChange) => value = changes.value;
     let responder = buildResponder('layout', 'row', onMediaChange, {
         'layout': 'row',
@@ -145,7 +145,7 @@ describe('responsive-activation', () => {
 
       // No input 'layoutMd' has been defined, so the fallback
       // to 'layoutGtSm' input value should be used...
-      matchMedia.activate('md', enableOverlaps = true);
+      matchMedia.activate('md', true);
       expect(value).toEqual('row-reverse');
 
       responder.destroy();
