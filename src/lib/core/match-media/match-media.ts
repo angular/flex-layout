@@ -73,7 +73,7 @@ export class MatchMedia {
 
       list.forEach(query => {
         let mql = this._registry.get(query);
-        let onMQLEvent = (e: MediaQueryList) => {
+        let onMQLEvent = (e: MediaQueryListEvent) => {
           this._zone.run(() => {
             let change = new MediaChange(e.matches, query);
             this._source.next(change);
@@ -87,7 +87,7 @@ export class MatchMedia {
         }
 
         if (mql.matches) {
-          onMQLEvent(mql);  // Announce activate range for initial subscribers
+          onMQLEvent(mql as unknown as MediaQueryListEvent);
         }
       });
     }
@@ -101,14 +101,14 @@ export class MatchMedia {
     let canListen = isPlatformBrowser(this._platformId) &&
       !!(<any>window).matchMedia('all').addListener;
 
-    return canListen ? (<any>window).matchMedia(query) : <MediaQueryList>{
+    return canListen ? (<any>window).matchMedia(query) : {
       matches: query === 'all' || query === '',
       media: query,
       addListener: () => {
       },
       removeListener: () => {
       }
-    };
+    } as unknown as MediaQueryList;
   }
 
   /**
@@ -138,7 +138,7 @@ export class MatchMedia {
           styleEl.appendChild(_document.createTextNode(cssText));
         }
 
-        _document.head.appendChild(styleEl);
+        _document.head!.appendChild(styleEl);
 
         // Store in private global registry
         list.forEach(mq => ALL_STYLES[mq] = styleEl);

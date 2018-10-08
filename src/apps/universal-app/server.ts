@@ -22,7 +22,7 @@ const DIST_FOLDER = join(process.cwd(), 'dist');
 const template = readFileSync(join(DIST_FOLDER, 'browser', 'index.html')).toString();
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
-const {AppServerModuleNgFactory} = require('./dist/server/main.bundle');
+const {AppServerModuleNgFactory} = require('./dist/server/main');
 
 app.engine('html', (_, options, callback) => {
   renderModuleFactory(AppServerModuleNgFactory, {

@@ -9,7 +9,7 @@
     "build": "ng build --prod",
     "build:server": "webpack --config webpack.server.config.js --progress --colors",
     "build:ssr": "npm run build:ssr:bundle && npm run build:server",
-    "build:ssr:bundle": "ng build --prod && ng build --prod --app 1 --output-hashing=false",
+    "build:ssr:bundle": "ng build --prod && ng run universal-app:server",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -18,6 +18,7 @@
   "dependencies": {
     "@angular/animations": "file:../../../node_modules/@angular/animations",
     "@angular/cdk": "file:../../../node_modules/@angular/cdk",
+    "@angular/cli": "^7.0.0-rc.2",
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
@@ -34,7 +35,7 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
+    "@angular-devkit/build-angular": "~0.9.0-rc.1",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
     "@angular/language-service": "^6.0.0",
     "@types/jasmine": "~2.8.3",
@@ -49,10 +50,11 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
-    "ts-loader": "^3.4.0",
+    "ts-loader": "^5.2.1",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "file:../../../node_modules/typescript",
-    "webpack": "^3.10.0"
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2"
   }
 }

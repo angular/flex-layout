@@ -209,7 +209,8 @@ export class MockMediaQueryList implements MediaQueryList {
     if (!this._isActive) {
       this._isActive = true;
       this._listeners.forEach((callback) => {
-        callback(this);
+        const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = callback!;
+        cb.call(null, this);
       });
     }
     return this;
@@ -220,7 +221,8 @@ export class MockMediaQueryList implements MediaQueryList {
     if (this._isActive) {
       this._isActive = false;
       this._listeners.forEach((callback) => {
-        callback(this);
+        const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = callback!;
+        cb.call(null, this);
       });
     }
     return this;
@@ -232,13 +234,40 @@ export class MockMediaQueryList implements MediaQueryList {
       this._listeners.push(listener);
     }
     if (this._isActive) {
-      listener(this);
+      const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = listener!;
+      cb.call(null, this);
     }
   }
 
   /** Don't need to remove listeners in the testing environment */
-  removeListener(_: MediaQueryListListener) {
+  removeListener(_: EventListenerOrEventListenerObject | null) {
   }
+
+  addEventListener<K extends keyof
+    MediaQueryListEventMap>(_: K,
+                            __: (this: MediaQueryList,
+                                 ev: MediaQueryListEventMap[K]) => any,
+                            ___?: boolean | AddEventListenerOptions): void;
+  addEventListener(_: string,
+                   __: EventListenerOrEventListenerObject,
+                   ___?: boolean | AddEventListenerOptions) {
+  }
+
+  removeEventListener<K extends keyof
+    MediaQueryListEventMap>(_: K,
+                            __: (this: MediaQueryList,
+                                  ev: MediaQueryListEventMap[K]) => any,
+                            ___?: boolean | EventListenerOptions): void;
+  removeEventListener(_: string,
+                      __: EventListenerOrEventListenerObject,
+                      ___?: boolean | EventListenerOptions) {
+  }
+
+  dispatchEvent(_: Event): boolean {
+    return false;
+  }
+
+  onchange: MediaQueryListListener = null;
 }
 
 /**
@@ -249,4 +278,4 @@ export const MockMatchMediaProvider = {  // tslint:disable-line:variable-name
   useClass: MockMatchMedia
 };
 
-
+type MediaQueryListListener = ((this: MediaQueryList, ev: MediaQueryListEvent) => any) | null;
