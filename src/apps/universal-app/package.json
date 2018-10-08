@@ -18,6 +18,7 @@
   "dependencies": {
     "@angular/animations": "file:../../../node_modules/@angular/animations",
     "@angular/cdk": "file:../../../node_modules/@angular/cdk",
+    "@angular/cli": "^7.0.0-rc.2",
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
@@ -34,7 +35,7 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular/cli": "1.7.2",
+    "@angular-devkit/build-angular": "~0.9.0-rc.1",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
     "@angular/language-service": "^6.0.0",
     "@types/jasmine": "~2.8.3",
