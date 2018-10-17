@@ -34,7 +34,7 @@ features.
 BreakPoints details.
 
 As each directive (aka API) within **@angular/flex-layout** has its own constraints and options, 
-the links below should be used to navigate to the specific the documentation pages for each directive
+the links below should be used to navigate to the specific documentation pages for each directive
 
 
 ### Containers
