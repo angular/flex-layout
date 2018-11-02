@@ -203,6 +203,17 @@ describe('layout-align directive', () => {
               'max-width': '100%'
             }, styler);
       });
+      it('should not add special styles for cross-axis `stretch` when the cross-axis is not `stretch`', () => {
+        createTestComponent(`
+          <div fxLayout
+               fxLayoutAlign='center center'>
+          </div>
+        `);
+  
+        expectNativeEl(fixture).not.toHaveStyle({
+          'max-height': '100%'
+        }, styler);
+      });
     });
 
     describe('for dynamic inputs', () => {
@@ -279,6 +290,25 @@ describe('layout-align directive', () => {
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'flex-end',
         'max-width': '100%'
+      }, styler);
+    });
+
+    it('should undo special cross-axis `stretch` styles when changing cross-axis to something else', () => {
+      createTestComponent(`
+        <div fxLayout
+             fxLayoutAlign='center stretch'
+             fxLayoutAlign.md='center center'>
+        </div>
+      `);
+
+      expectNativeEl(fixture).toHaveStyle({
+        'max-height': '100%'
+      }, styler);
+
+      matchMedia.activate('md');
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-height': '100%'
       }, styler);
     });
 

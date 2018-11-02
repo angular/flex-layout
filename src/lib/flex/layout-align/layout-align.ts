@@ -190,7 +190,9 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     return extendObject(css, {
       'display' : 'flex',
       'flex-direction' : this._layout || 'row',
-      'box-sizing' : 'border-box'
+      'box-sizing' : 'border-box',
+      'max-width': null,
+      'max-height': null,
     });
   }
 
