@@ -196,6 +196,17 @@ describe('layout-align directive', () => {
               'max-height': '100%'
             }, styler);
       });
+      it('should not add special styles when the cross-axis is not `stretch`', () => {
+        createTestComponent(`
+          <div fxLayout
+               fxLayoutAlign='center center'>
+          </div>
+        `);
+
+        expectNativeEl(fixture).not.toHaveStyle({
+          'max-height': '100%'
+        }, styler);
+      });
       it('should add special styles for cross-axis `stretch` when layout is `column`', () => {
         createTestComponent(`<div fxLayout="column" fxLayoutAlign='end stretch'></div>`);
         expectNativeEl(fixture)
@@ -279,6 +290,25 @@ describe('layout-align directive', () => {
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'flex-end',
         'max-width': '100%'
+      }, styler);
+    });
+
+    it('should undo special styles when cross-axis changes from `stretch` to anything else', () => {
+      createTestComponent(`
+        <div fxLayout
+             fxLayoutAlign='center stretch'
+             fxLayoutAlign.md='center center'>
+        </div>
+      `);
+
+      expectNativeEl(fixture).toHaveStyle({
+        'max-height': '100%'
+      }, styler);
+
+      matchMedia.activate('md');
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-height': '100%'
       }, styler);
     });
 
