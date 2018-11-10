@@ -39,11 +39,11 @@ describe('styler', () => {
 
   describe('testing display styles', () => {
 
-    it('should default to "display:block" for <div></div>', () => {
+    it('should not have a default for <div></div>', () => {
       componentWithTemplate(`
         <div></div>
       `);
-      expectNativeEl(fixture).toHaveCSS({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'block'}, styler);
     });
 
     it('should find to "display" for inline style <div></div>', () => {
