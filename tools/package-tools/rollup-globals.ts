@@ -35,6 +35,8 @@ export const rollupGlobals = {
   '@angular/common/testing': 'ng.common.testing',
   '@angular/common/http/testing': 'ng.common.http.testing',
   '@angular/material/button': 'ng.material.button',
+  '@angular/material/select': 'ng.material.select',
+  '@angular/material/form-field': 'ng.material.formField',
   '@angular/cdk/bidi': 'ng.cdk.bidi',
   '@angular/cdk/coercion': 'ng.cdk.coercion',
   '@angular/cdk/platform': 'ng.cdk.platform',

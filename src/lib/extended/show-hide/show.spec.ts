@@ -19,7 +19,11 @@ import {
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {makeCreateTestComponent, expectNativeEl, expectEl, queryFor} from '../../utils/testing/helpers';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
@@ -42,7 +46,14 @@ describe('show directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [
+        CommonModule,
+        FlexLayoutModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+      ],
       declarations: [TestShowComponent],
       providers: [
         MockMatchMediaProvider,
@@ -171,6 +182,21 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
     });
 
+    it('should work oninit with responsive', () => {
+      createTestComponent(`
+        <div fxFlex fxShow="false" fxShow.gt-lg> 
+          Shown on devices larger than 1200px wide only. 
+        </div>`);
+
+      matchMedia.activate('gt-lg');
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+
+      matchMedia.activate('lg');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('gt-lg');
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+    });
 
   });
 
@@ -191,6 +217,59 @@ describe('show directive', () => {
 
       matchMedia.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
+
+    it('should work with responsive and adding flex to parent', () => {
+      createTestComponent(`
+        <div fxHide fxShow.gt-sm>
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="0 1 auto">
+            This content doesn't get hidden on small screen size!
+          </div>
+        </div>
+      `);
+
+      matchMedia.useOverlaps = true;
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('gt-sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
+
+      matchMedia.activate('sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
+
+    it('should work with unknown elements', () => {
+      createTestComponent(`
+        <mat-form-field>
+          <mat-placeholder>foo</mat-placeholder>
+          <mat-placeholder fxHide.xs el>bar</mat-placeholder>
+          <mat-select>
+            <mat-option *ngFor="let option of [1,2,3]" [value]=option> 
+              option {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      `);
+
+      let selector = '[el]';
+
+      matchMedia.useOverlaps = true;
+      fixture.detectChanges();
+      expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+        'display': 'inline'
+      }, styler);
+
+      matchMedia.activate('xs');
+      fixture.detectChanges();
+      expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+        'display': 'none'
+      }, styler);
+
+      matchMedia.activate('lg');
+      fixture.detectChanges();
+      expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+        'display': 'inline'
+      }, styler);
     });
   });
 

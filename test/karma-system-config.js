@@ -35,14 +35,20 @@ System.config({
       'node:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic-testing.umd.js',
 
     '@angular/material/button': 'node:@angular/material/bundles/material-button.umd.js',
+    '@angular/material/form-field': 'node:@angular/material/bundles/material-form-field.umd.js',
     '@angular/material/core': 'node:@angular/material/bundles/material-core.umd.js',
+    '@angular/material/select': 'node:@angular/material/bundles/material-select.umd.js',
     '@angular/cdk': 'node:@angular/cdk/bundles/cdk.umd.js',
     '@angular/cdk/a11y': 'node:@angular/cdk/bundles/cdk-a11y.umd.js',
     '@angular/cdk/bidi': 'node:@angular/cdk/bundles/cdk-bidi.umd.js',
     '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
+    '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
     '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
     '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
+    '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
     '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
+    '@angular/cdk/portal': 'node:@angular/cdk/bundles/cdk-portal.umd.js',
+    '@angular/cdk/scrolling': 'node:@angular/cdk/bundles/cdk-scrolling.umd.js',
 
     // Path mappings for local packages that can be imported inside of tests.
     '@angular/flex-layout': 'dist/packages/flex-layout/index.js',

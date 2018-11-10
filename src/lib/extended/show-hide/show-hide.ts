@@ -17,18 +17,21 @@ import {
   Optional,
   Inject,
   PLATFORM_ID,
+  ViewChild,
+  AfterViewInit,
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
   BaseDirective,
+  LAYOUT_CONFIG,
+  LayoutConfigOptions,
   MediaChange,
   MediaMonitor,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {FlexDirective, LayoutDirective} from '@angular/flex-layout/flex';
 import {Subscription} from 'rxjs';
-
-import {LayoutDirective} from '@angular/flex-layout/flex';
 
 const FALSY = ['false', false, 0];
 
@@ -59,7 +62,8 @@ export function negativeOf(hide: any) {
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
 `
 })
-export class ShowHideDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
+export class ShowHideDirective extends BaseDirective
+  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
 
   /**
    * Subscription to the parent flex container's layout changes.
@@ -106,22 +110,17 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
   @Input('fxHide.gt-lg') set hideGtLg(val: string) {this._cacheInput('showGtLg', negativeOf(val)); };
   /* tslint:enable */
 
+  @ViewChild(FlexDirective) protected _flexChild: FlexDirective | null = null;
+
   constructor(monitor: MediaMonitor,
               @Optional() @Self() protected layout: LayoutDirective,
               protected elRef: ElementRef,
               protected styleUtils: StyleUtils,
               @Inject(PLATFORM_ID) protected platformId: Object,
-              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
+              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean,
+              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
 
     super(monitor, elRef, styleUtils);
-
-    if (layout) {
-      /**
-       * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-       * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-       */
-      this._layoutWatcher = layout.layout$.subscribe(() => this._updateWithValue());
-    }
   }
 
   // *********************************************
@@ -134,7 +133,8 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
    * unless it was already explicitly specified inline or in a CSS stylesheet.
    */
   protected _getDisplayStyle(): string {
-    return this.layout ? 'flex' : super._getDisplayStyle();
+    return (this.layout || (this._flexChild && this.layoutConfig.addFlexToParent)) ?
+      'flex' : super._getDisplayStyle();
   }
 
 
@@ -155,14 +155,22 @@ export class ShowHideDirective extends BaseDirective implements OnInit, OnChange
    */
   ngOnInit() {
     super.ngOnInit();
-    this._display = this._getDisplayStyle();
+  }
 
+  ngAfterViewInit() {
+    this._display = this._getDisplayStyle();
+    if (this.layout) {
+      /**
+       * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
+       * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
+       */
+      this._layoutWatcher = this.layout.layout$.subscribe(() => this._updateWithValue());
+    }
     let value = this._getDefaultVal('show', true);
     // Build _mqActivation controller
     this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
       this._updateWithValue(changes.value);
     });
-
     this._updateWithValue();
   }
 
