@@ -252,7 +252,11 @@ function hasPrefixedStyles(actual: HTMLElement,
                            styler: StyleUtils) {
   const current = {};
 
-  value = value !== '*' ? value.trim() : '';
+  if (value === '*') {
+    return {elHasStyle: styler.lookupStyle(actual, key, inlineOnly) !== '', current};
+  }
+
+  value = value.trim();
   let elHasStyle = styler.lookupStyle(actual, key, inlineOnly) === value;
   if (!elHasStyle) {
     let prefixedStyles = applyCssPrefixes({[key]: value});
