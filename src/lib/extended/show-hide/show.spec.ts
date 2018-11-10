@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Component, OnInit, PLATFORM_ID} from '@angular/core';
-import {CommonModule, isPlatformBrowser, isPlatformServer} from '@angular/common';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   MatchMedia,
