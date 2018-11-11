@@ -13,7 +13,8 @@ import {
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
-  SERVER_TOKEN, StyleBuilder,
+  SERVER_TOKEN,
+  StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
 

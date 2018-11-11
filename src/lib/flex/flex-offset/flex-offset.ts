@@ -14,13 +14,15 @@ import {
   OnDestroy,
   Optional,
   SimpleChanges,
-  SkipSelf, Injectable,
+  SkipSelf,
+  Injectable,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseDirective,
   MediaChange,
-  MediaMonitor, StyleBuilder,
+  MediaMonitor,
+  StyleBuilder,
   StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';

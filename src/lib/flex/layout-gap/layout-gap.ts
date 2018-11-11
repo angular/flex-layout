@@ -15,13 +15,15 @@ import {
   AfterContentInit,
   Optional,
   OnDestroy,
-  NgZone, Injectable,
+  NgZone,
+  Injectable,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseDirective,
   MediaChange,
-  MediaMonitor, StyleBuilder,
+  MediaMonitor,
+  StyleBuilder,
   StyleDefinition,
   StyleUtils
 } from '@angular/flex-layout/core';

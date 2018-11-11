@@ -12,7 +12,8 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  SimpleChanges, Injectable,
+  SimpleChanges,
+  Injectable,
 } from '@angular/core';
 import {
   BaseDirective,

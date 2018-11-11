@@ -12,7 +12,8 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  SimpleChanges, Injectable,
+  SimpleChanges,
+  Injectable,
 } from '@angular/core';
 import {
   BaseDirective,
@@ -31,10 +32,19 @@ export type Layout = {
   wrap: boolean;
 };
 
+interface LayoutParent {
+  announcer: ReplaySubject<Layout>;
+}
+
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder implements StyleBuilder {
-  buildStyles(input: string): StyleDefinition {
-    return buildLayoutCSS(input);
+  buildStyles(input: string, parent: LayoutParent): StyleDefinition {
+    const css = buildLayoutCSS(input);
+    parent.announcer.next({
+      direction: css['flex-direction'],
+      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+    });
+    return css;
   }
 }
 
@@ -131,14 +141,7 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
       value = this._mqActivation.activatedInput;
     }
 
-    // Update styles and announce to subscribers the *new* direction
-    let css = buildLayoutCSS(!!value ? value : '');
-    this._announcer.next({
-      direction: css['flex-direction'],
-      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
-    });
-
-    this.addStyles(value || '');
+    this.addStyles(value || '', {announcer: this._announcer});
   }
 
 }

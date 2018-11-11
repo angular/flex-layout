@@ -12,7 +12,8 @@ import {
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
-  SERVER_TOKEN, StyleBuilder,
+  SERVER_TOKEN,
+  StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
@@ -21,7 +22,8 @@ import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
 import {queryFor} from '../../utils/testing/helpers';
 import {FlexModule} from '../module';
-import {LayoutStyleBuilder} from './layout';
+import {Layout, LayoutStyleBuilder} from './layout';
+import {ReplaySubject} from 'rxjs';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -344,13 +346,13 @@ describe('layout directive', () => {
           MockMatchMediaProvider,
           {
             provide: LayoutStyleBuilder,
-            useClass: MockFlexLayoutStyleBuilder,
+            useClass: MockLayoutStyleBuilder,
           }
         ]
       });
     });
 
-    it('should set flex basis to input', async(() => {
+    it('should set layout not to input', async(() => {
       createTestComponent(`
         <div fxLayout='column'>
           <div fxFlexOffset="25"></div>
@@ -363,8 +365,12 @@ describe('layout directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockFlexLayoutStyleBuilder implements StyleBuilder {
-  buildStyles(_input: string) {
+export class MockLayoutStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string, parent: {announcer: ReplaySubject<Layout>}) {
+    parent.announcer.next({
+      direction: 'column',
+      wrap: false
+    });
     return {'display': 'inline-flex'};
   }
 }

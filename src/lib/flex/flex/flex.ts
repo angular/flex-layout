@@ -34,7 +34,6 @@ import {Subscription} from 'rxjs';
 import {extendObject} from '../../utils/object-extend';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
-// import {FlexModule} from '../module';
 
 /** Built-in aliases for different flex-basis values. */
 export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | 'noshrink';
