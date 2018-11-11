@@ -1,7 +1,7 @@
 The injectable **ObservableMedia** service will provide mediaQuery **activations** notifications for all 
 [registered BreakPoints](https://github.com/angular/flex-layout/wiki/Custom-Breakpoints). 
 
-This service is essential an Observable that exposes both features to subscribe to mediaQuery
+This service is essentially an Observable that exposes both features to subscribe to mediaQuery
 changes and a validator method `.isActive()` to test if a mediaQuery (or alias) is
 currently active.
 
@@ -45,7 +45,7 @@ import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 })
 export class MyDemo implements OnDestroy {
   watcher: Subscription;
-  activeMediaQuery = "";
+  activeMediaQuery = '';
 
   constructor(media: ObservableMedia) {
     this.watcher = media.subscribe((change: MediaChange) => {
@@ -94,7 +94,7 @@ import {Component} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {filter} from 'rxjs/operators/filter';
 
-import {MediaChange, ObservableMedia} from "@angular/flex-layout";
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 @Component({
    selector : 'responsive-component'
