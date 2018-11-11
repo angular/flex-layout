@@ -12,10 +12,38 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  SimpleChanges,
+  SimpleChanges, Injectable,
 } from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleBuilder,
+  StyleDefinition,
+  StyleUtils
+} from '@angular/flex-layout/core';
 
+@Injectable({providedIn: 'root'})
+export class FlexAlignStyleBuilder implements StyleBuilder {
+  buildStyles(input: string): StyleDefinition {
+    const css: {[key: string]: string | number} = {};
+
+    // Cross-axis
+    switch (input) {
+      case 'start':
+        css['align-self'] = 'flex-start';
+        break;
+      case 'end':
+        css['align-self'] = 'flex-end';
+        break;
+      default:
+        css['align-self'] = input;
+        break;
+    }
+
+    return css;
+  }
+}
 
 /**
  * 'flex-align' flexbox styling directive
@@ -53,8 +81,9 @@ export class FlexAlignDirective extends BaseDirective implements OnInit, OnChang
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+              styleUtils: StyleUtils,
+              styleBuilder: FlexAlignStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
   }
 
 
@@ -93,25 +122,6 @@ export class FlexAlignDirective extends BaseDirective implements OnInit, OnChang
       value = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._buildCSS(value));
-  }
-
-  protected _buildCSS(align: string | number = '') {
-    let css: {[key: string]: string | number} = {};
-
-    // Cross-axis
-    switch (align) {
-      case 'start':
-        css['align-self'] = 'flex-start';
-        break;
-      case 'end':
-        css['align-self'] = 'flex-end';
-        break;
-      default:
-        css['align-self'] = align;
-        break;
-    }
-
-    return css;
+    this.addStyles(value && (value + '') || '');
   }
 }

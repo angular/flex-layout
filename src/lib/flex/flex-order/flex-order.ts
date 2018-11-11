@@ -12,10 +12,24 @@ import {
   OnInit,
   OnChanges,
   OnDestroy,
-  SimpleChanges,
+  SimpleChanges, Injectable,
 } from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleBuilder,
+  StyleDefinition,
+  StyleUtils
+} from '@angular/flex-layout/core';
 
+@Injectable({providedIn: 'root'})
+export class FlexOrderStyleBuilder implements StyleBuilder {
+  buildStyles(value: string): StyleDefinition {
+    const val = parseInt(value, 10);
+    return {order: isNaN(val) ? 0 : val};
+  }
+}
 
 /**
  * 'flex-order' flexbox styling directive
@@ -51,8 +65,9 @@ export class FlexOrderDirective extends BaseDirective implements OnInit, OnChang
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+              styleUtils: StyleUtils,
+              styleBuilder: FlexOrderStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
   }
 
   // *********************************************
@@ -90,12 +105,6 @@ export class FlexOrderDirective extends BaseDirective implements OnInit, OnChang
       value = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._buildCSS(value));
-  }
-
-
-  protected _buildCSS(value: string = '') {
-    const val = parseInt(value, 10);
-    return {order: isNaN(val) ? 0 : val};
+    this.addStyles(value || '');
   }
 }

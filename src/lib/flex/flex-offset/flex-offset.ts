@@ -14,13 +14,13 @@ import {
   OnDestroy,
   Optional,
   SimpleChanges,
-  SkipSelf,
+  SkipSelf, Injectable,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseDirective,
   MediaChange,
-  MediaMonitor,
+  MediaMonitor, StyleBuilder,
   StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -28,6 +28,26 @@ import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
+
+interface FlexOffsetParent {
+  layout: string;
+  isRtl: boolean;
+}
+
+@Injectable({providedIn: 'root'})
+export class FlexOffsetStyleBuilder implements StyleBuilder {
+  buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition {
+    const isPercent = String(offset).indexOf('%') > -1;
+    const isPx = String(offset).indexOf('px') > -1;
+    if (!isPx && !isPercent && !isNaN(+offset)) {
+      offset = offset + '%';
+    }
+    const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
+
+    return isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
+      {'margin-top': `${offset}`};
+  }
+}
 
 /**
  * 'flex-offset' flexbox styling directive
@@ -65,8 +85,9 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
               elRef: ElementRef,
               @Optional() @SkipSelf() protected _container: LayoutDirective,
               private _directionality: Directionality,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+              styleUtils: StyleUtils,
+              styleBuilder: FlexOffsetStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
 
     this._directionWatcher =
         this._directionality.change.subscribe(this._updateWithValue.bind(this));
@@ -159,22 +180,9 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
       value = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._buildCSS(value));
-  }
-
-  protected _buildCSS(offset: string|number = ''): StyleDefinition {
-    let isPercent = String(offset).indexOf('%') > -1;
-    let isPx = String(offset).indexOf('px') > -1;
-    if (!isPx && !isPercent && !isNaN(+offset)) {
-      offset = offset + '%';
-    }
-
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    const isRtl = this._directionality.value === 'rtl';
     const layout = this._getFlexFlowDirection(this.parentElement, true);
-    const horizontalLayoutKey = isRtl ? 'margin-right' : 'margin-left';
-
-    return isFlowHorizontal(layout) ? {[horizontalLayoutKey]: `${offset}`} :
-                                      {'margin-top': `${offset}`};
+    const isRtl = this._directionality.value === 'rtl';
+    this.addStyles((value && (value + '') || ''), {layout, isRtl});
   }
 }

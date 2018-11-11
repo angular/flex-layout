@@ -21,6 +21,7 @@ import {
 import {ResponsiveActivation, KeyOptions} from '../responsive-activation/responsive-activation';
 import {MediaMonitor} from '../media-monitor/media-monitor';
 import {MediaQuerySubscriber} from '../media-change';
+import {StyleBuilder} from '../style-builder/style-builder';
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseDirective implements OnDestroy, OnChanges {
@@ -58,7 +59,8 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
 
   protected constructor(protected _mediaMonitor: MediaMonitor,
                         protected _elementRef: ElementRef,
-                        protected _styler: StyleUtils) {
+                        protected _styler: StyleUtils,
+                        protected _styleBuilder?: StyleBuilder) {
   }
 
   /**
@@ -105,6 +107,11 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
 
   protected get nativeElement(): HTMLElement {
     return this._elementRef.nativeElement;
+  }
+
+  protected addStyles(input: string, parent?: Object) {
+    const styles: StyleDefinition = this._styleBuilder!.buildStyles(input, parent);
+    this._applyStyleToElement(styles);
   }
 
   /** Access the current value (if any) of the @Input property */
@@ -206,7 +213,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   }
 
   /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
-  protected get childrenNodes() {
+  protected get childrenNodes(): HTMLElement[] {
     const obj = this.nativeElement.children;
     const buffer: any[] = [];
 

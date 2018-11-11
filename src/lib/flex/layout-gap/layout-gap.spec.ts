@@ -5,11 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Injectable, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
+import {MockMatchMediaProvider, SERVER_TOKEN, StyleBuilder, StyleUtils} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
@@ -19,6 +19,8 @@ import {
   makeCreateTestComponent,
   queryFor,
 } from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
+import {LayoutGapStyleBuilder} from './layout-gap';
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;
@@ -390,7 +392,48 @@ describe('layout-gap directive', () => {
     });
   });
 
+  describe('with custom builder', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          FlexLayoutModule.withConfig({
+            useColumnBasisZero: false,
+            serverLoaded: true,
+          }),
+        ],
+        declarations: [],
+        providers: [
+          MockMatchMediaProvider,
+          {
+            provide: LayoutGapStyleBuilder,
+            useClass: MockLayoutGapStyleBuilder,
+          }
+        ]
+      });
+    });
+
+    it('should set gap not to input', async(() => {
+      createTestComponent(`
+        <div fxLayoutGap='10px'>
+          <div fxFlexOffset="25"></div>
+        </div>
+      `);
+      expectNativeEl(fixture).toHaveStyle({'margin-top': '12px'}, styler);
+    }));
+  });
+
 });
+
+@Injectable({providedIn: FlexModule})
+export class MockLayoutGapStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string) {
+    return {'margin-top': '12px'};
+  }
+}
 
 
 // *****************************************************************
