@@ -9,7 +9,12 @@ import {Component, Injectable, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {MockMatchMediaProvider, SERVER_TOKEN, StyleBuilder, StyleUtils} from '@angular/flex-layout/core';
+import {
+  MockMatchMediaProvider,
+  SERVER_TOKEN,
+  StyleBuilder,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';

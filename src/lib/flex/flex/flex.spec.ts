@@ -919,7 +919,7 @@ describe('flex directive', () => {
       `);
       fixture.detectChanges();
       let element = queryFor(fixture, '[fxFlex]')[0];
-      expectEl(element).toHaveStyle({'flex': '1 1 0%'}, styler);
+      expectEl(element).toHaveStyle({'flex': '1 1 30%'}, styler);
     }));
   });
 
@@ -928,7 +928,7 @@ describe('flex directive', () => {
 @Injectable({providedIn: FlexModule})
 export class MockFlexStyleBuilder implements StyleBuilder {
   buildStyles(_input: string) {
-    return {'flex': '1'};
+    return {'flex': '1 1 30%'};
   }
 }
 
