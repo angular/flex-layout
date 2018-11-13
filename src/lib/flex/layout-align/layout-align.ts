@@ -171,15 +171,24 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
       case 'flex-start':
         css['align-items'] = css['align-content'] = 'flex-start';
         break;
-      case 'baseline':
-        css['align-items'] = 'baseline';
-        break;
       case 'center':
         css['align-items'] = css['align-content'] = 'center';
         break;
       case 'end':
       case 'flex-end':
         css['align-items'] = css['align-content'] = 'flex-end';
+        break;
+      case 'space-between':
+        css['align-content'] = 'space-between';
+        css['align-items'] = 'stretch';
+        break;
+      case 'space-around':
+        css['align-content'] = 'space-around';
+        css['align-items'] = 'stretch';
+        break;
+      case 'baseline':
+        css['align-content'] = 'stretch';
+        css['align-items'] = 'baseline';
         break;
       case 'stretch':
       default : // 'stretch'
