@@ -54,9 +54,6 @@ export class StyleUtils {
   getFlowDirection(target: HTMLElement): [string, string] {
     const query = 'flex-direction';
     let value = this.lookupStyle(target, query);
-    if (value === FALLBACK_STYLE) {
-      value = '';
-    }
     const hasInlineValue = this.lookupInlineStyle(target, query) ||
     (isPlatformServer(this._platformId) && this._serverModuleLoaded) ? value : '';
 
@@ -101,7 +98,7 @@ export class StyleUtils {
 
     // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
     //       in which case getComputedStyle() should determine a valid value.
-    return value ? value.trim() : FALLBACK_STYLE;
+    return value.trim();
   }
 
   /**
@@ -176,5 +173,3 @@ export class StyleUtils {
  * map of property name and value (e.g. {display: 'none', flex-order: 5})
  */
 export type StyleDefinition = { [property: string]: string | number | null };
-
-const FALLBACK_STYLE = 'block';

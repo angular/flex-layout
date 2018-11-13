@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Component, OnInit, PLATFORM_ID} from '@angular/core';
-import {CommonModule, isPlatformServer} from '@angular/common';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   MatchMedia,
@@ -19,7 +19,16 @@ import {
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {
+  makeCreateTestComponent,
+  expectNativeEl,
+  expectEl,
+  queryFor,
+} from '../../utils/testing/helpers';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormsModule} from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
@@ -42,7 +51,14 @@ describe('show directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [
+        CommonModule,
+        FlexLayoutModule,
+        MatFormFieldModule,
+        FormsModule,
+        MatSelectModule,
+        NoopAnimationsModule,
+      ],
       declarations: [TestShowComponent],
       providers: [
         MockMatchMediaProvider,
@@ -55,7 +71,7 @@ describe('show directive', () => {
 
     it('should initial with component visible as default', () => {
       createTestComponent(`<div fxShow></div>`);
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should initial with component not visible when set to `false`', () => {
@@ -68,24 +84,21 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
       fixture.componentInstance.isVisible = true;
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should update styles with binding changes', () => {
       createTestComponent(`<div [fxShow]="menuOpen" fxShow.xs="true"></div>`);
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
       fixture.componentInstance.toggleMenu();
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
       fixture.componentInstance.toggleMenu();
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should use "block" display style when not explicitly defined', () => {
       createTestComponent(`<button fxShow></button>`);
-      // TODO(CaerusKaru): the Domino server impl. does not process inline display correctly
-      expectNativeEl(fixture).toHaveStyle({
-        'display': isPlatformServer(platformId) ? 'block' : 'inline-block'
-      }, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should use "flex" display style when the element also has an fxLayout', () => {
@@ -99,18 +112,18 @@ describe('show directive', () => {
 
     it('should hide on `xs` viewports only', () => {
       createTestComponent(`<div fxShow fxShow.xs="false"></div>`);
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should hide when fallbacks are configured to hide on `gt-xs` viewports', () => {
       createTestComponent(`<div fxShow fxShow.gt-xs="false"></div>`);
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('md', true);
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
@@ -123,7 +136,7 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('xs');
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('gt-md');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
@@ -171,6 +184,21 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
     });
 
+    it('should work oninit with responsive', () => {
+      createTestComponent(`
+        <div fxFlex fxShow="false" fxShow.gt-lg>
+          Shown on devices larger than 1200px wide only.
+        </div>`);
+
+      matchMedia.activate('gt-lg');
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('lg');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('gt-lg');
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+    });
 
   });
 
@@ -187,10 +215,78 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('lg');
-      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
       matchMedia.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
+
+    it('should work with responsive and adding flex to parent', () => {
+      createTestComponent(`
+        <div fxHide fxShow.gt-sm>
+          <div fxLayout="row" fxLayoutAlign="start center" fxFlex="0 1 auto">
+            This content doesn't get hidden on small screen size!
+          </div>
+        </div>
+      `);
+
+      matchMedia.useOverlaps = true;
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('gt-sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
+
+      matchMedia.activate('sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
+
+    it('should work with unknown elements', () => {
+      createTestComponent(`
+        <mat-form-field>
+          <mat-placeholder>foo</mat-placeholder>
+          <mat-placeholder fxHide.xs el>bar</mat-placeholder>
+          <mat-select>
+            <mat-option *ngFor="let option of [1,2,3]" [value]=option>
+              option {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      `);
+
+      let selector = '[el]';
+
+      matchMedia.useOverlaps = true;
+      fixture.detectChanges();
+
+      // NOTE: platform-server can't compute display for unknown elements
+      if (isPlatformBrowser(platformId)) {
+        expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+          'display': 'inline'
+        }, styler);
+      } else {
+        expectEl(queryFor(fixture, selector)[0]).not.toHaveStyle({
+          'display': '*'
+        }, styler);
+      }
+
+      matchMedia.activate('xs');
+      fixture.detectChanges();
+      expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+        'display': 'none'
+      }, styler);
+
+      matchMedia.activate('lg');
+      fixture.detectChanges();
+      // NOTE: platform-server can't compute display for unknown elements
+      if (isPlatformBrowser(platformId)) {
+        expectEl(queryFor(fixture, selector)[0]).toHaveStyle({
+          'display': 'inline'
+        }, styler);
+      } else {
+        expectEl(queryFor(fixture, selector)[0]).not.toHaveStyle({
+          'display': '*'
+        }, styler);
+      }
     });
   });
 
