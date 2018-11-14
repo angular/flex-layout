@@ -1,6 +1,6 @@
 The `core` entrypoint contains all of the common utilities to build Layout 
 components. Its primary exports are the `MediaQuery` utilities (`MatchMedia`,
-`ObservableMedia`) and the module that encapsulates the imports of these
+`MediaObserver`) and the module that encapsulates the imports of these
 providers, the `CoreModule`, and the base directive for layout
 components, `BaseDirective`. These utilies can be imported separately
 from the root module to take advantage of tree shaking.
