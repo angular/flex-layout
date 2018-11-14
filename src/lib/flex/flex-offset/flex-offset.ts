@@ -23,7 +23,7 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleDefinition,
+  StyleBuilderOutput,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
@@ -31,23 +31,27 @@ import {Subscription} from 'rxjs';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
-interface FlexOffsetParent {
+export interface FlexOffsetParent {
   layout: string;
   isRtl: boolean;
 }
 
 @Injectable({providedIn: 'root'})
-export class FlexOffsetStyleBuilder implements StyleBuilder {
-  buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition {
+export class FlexOffsetStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(offset: string, parent: FlexOffsetParent): StyleBuilderOutput {
     const isPercent = String(offset).indexOf('%') > -1;
     const isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(+offset)) {
       offset = offset + '%';
     }
     const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
-
-    return isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
+    const styles = isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
       {'margin-top': `${offset}`};
+
+    return {styles, shouldCache: true};
   }
 }
 

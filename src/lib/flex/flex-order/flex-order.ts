@@ -20,15 +20,19 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleDefinition,
-  StyleUtils
+  StyleBuilderOutput,
+  StyleUtils,
 } from '@angular/flex-layout/core';
 
 @Injectable({providedIn: 'root'})
-export class FlexOrderStyleBuilder implements StyleBuilder {
-  buildStyles(value: string): StyleDefinition {
+export class FlexOrderStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(value: string): StyleBuilderOutput {
     const val = parseInt(value, 10);
-    return {order: isNaN(val) ? 0 : val};
+    const styles = {order: isNaN(val) ? 0 : val};
+    return {styles, shouldCache: true};
   }
 }
 

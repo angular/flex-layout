@@ -10,7 +10,7 @@ import {
   BaseDirective,
   MediaMonitor,
   StyleBuilder,
-  StyleDefinition,
+  StyleBuilderOutput,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
@@ -23,9 +23,12 @@ const FLEX_FILL_CSS = {
 };
 
 @Injectable({providedIn: 'root'})
-export class FlexFillStyleBuilder implements StyleBuilder {
-  buildStyles(_input: string): StyleDefinition {
-    return FLEX_FILL_CSS;
+export class FlexFillStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(_input: string): StyleBuilderOutput {
+    return {styles: FLEX_FILL_CSS, shouldCache: true};
   }
 }
 

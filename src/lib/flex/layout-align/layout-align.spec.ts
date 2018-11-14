@@ -452,9 +452,12 @@ describe('layout-align directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockLayoutAlignStyleBuilder implements StyleBuilder {
+export class MockLayoutAlignStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
   buildStyles(_input: string) {
-    return {'justify-content': 'flex-end'};
+    return {styles: {'justify-content': 'flex-end'}, shouldCache: false};
   }
 }
 

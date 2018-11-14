@@ -27,7 +27,7 @@ import {
   StyleUtils,
   validateBasis,
   StyleBuilder,
-  StyleDefinition,
+  StyleBuilderOutput,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
 
@@ -45,8 +45,11 @@ interface FlexBuilderParent {
 }
 
 @Injectable({providedIn: 'root'})
-export class FlexStyleBuilder implements StyleBuilder {
-  buildStyles(input: string, parent: FlexBuilderParent): StyleDefinition {
+export class FlexStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(input: string, parent: FlexBuilderParent): StyleBuilderOutput {
     let grow: string | number;
     let shrink: string | number;
     let basis: string | number;
@@ -192,7 +195,7 @@ export class FlexStyleBuilder implements StyleBuilder {
       }
     }
 
-    return extendObject(css, {'box-sizing': 'border-box'});
+    return {styles: extendObject(css, {'box-sizing': 'border-box'}), shouldCache: true};
   }
 }
 

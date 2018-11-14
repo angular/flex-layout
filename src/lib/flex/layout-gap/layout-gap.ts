@@ -24,6 +24,7 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
+  StyleBuilderOutput,
   StyleDefinition,
   StyleUtils
 } from '@angular/flex-layout/core';
@@ -32,10 +33,10 @@ import {Subscription} from 'rxjs';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';
 
-interface LayoutGapParent {
-  layout: string;
+export interface LayoutGapParent {
   directionality: string;
   items: HTMLElement[];
+  layout: string;
 }
 
 const CLEAR_MARGIN_CSS = {
@@ -46,56 +47,42 @@ const CLEAR_MARGIN_CSS = {
 };
 
 @Injectable({providedIn: 'root'})
-export class LayoutGapStyleBuilder implements StyleBuilder {
-  constructor(private styler: StyleUtils) {}
+export class LayoutGapStyleBuilder extends StyleBuilder {
+  constructor(private _styler: StyleUtils) {
+    super();
+  }
 
-  buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition {
-    const items = parent.items;
+  buildStyles(gapValue: string, parent: LayoutGapParent): StyleBuilderOutput {
     if (gapValue.endsWith(GRID_SPECIFIER)) {
-      gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
+      gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
       // For each `element` children, set the padding
-      const paddingStyles = buildGridPadding(gapValue, parent.directionality);
       const marginStyles = buildGridMargin(gapValue, parent.directionality);
-      this.styler.applyStyleToElements(paddingStyles, items);
 
       // Add the margin to the host element
-      return marginStyles;
+      return {styles: marginStyles, shouldCache: true};
+    } else {
+      return {styles: {}, shouldCache: true};
+    }
+  }
+
+  sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent) {
+    const items = parent.items;
+    if (gapValue.endsWith(GRID_SPECIFIER)) {
+      gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+      // For each `element` children, set the padding
+      const paddingStyles = buildGridPadding(gapValue, parent.directionality);
+      this._styler.applyStyleToElements(paddingStyles, parent.items);
     } else {
       const lastItem = items.pop();
 
       // For each `element` children EXCEPT the last,
       // set the margin right/bottom styles...
-      this.styler.applyStyleToElements(this._buildCSS(gapValue, parent), items);
+      const gapCss = buildGapCSS(gapValue, parent);
+      this._styler.applyStyleToElements(gapCss, items);
 
       // Clear all gaps for all visible elements
-      this.styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem!]);
-      return {};
+      this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem!]);
     }
-  }
-
-  private _buildCSS(gapValue: string, parent: LayoutGapParent): StyleDefinition {
-    let key, margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
-
-    switch (parent.layout) {
-      case 'column':
-        key = 'margin-bottom';
-        break;
-      case 'column-reverse':
-        key = 'margin-top';
-        break;
-      case 'row':
-        key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-        break;
-      case 'row-reverse':
-        key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-        break;
-      default :
-        key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-        break;
-    }
-    margins[key] = gapValue;
-
-    return margins;
   }
 }
 
@@ -137,13 +124,13 @@ export class LayoutGapDirective extends BaseDirective
  @Input('fxLayoutGap.lt-xl') set gapLtXl(val: string) { this._cacheInput('gapLtXl', val); };
 
   /* tslint:enable */
-  constructor(monitor: MediaMonitor,
-              elRef: ElementRef,
-              @Optional() @Self() container: LayoutDirective,
-              private _zone: NgZone,
-              private _directionality: Directionality,
-              styleUtils: StyleUtils,
-              styleBuilder: LayoutGapStyleBuilder) {
+  constructor(protected monitor: MediaMonitor,
+              protected elRef: ElementRef,
+              @Optional() @Self() protected container: LayoutDirective,
+              protected _zone: NgZone,
+              protected _directionality: Directionality,
+              protected styleUtils: StyleUtils,
+              protected styleBuilder: LayoutGapStyleBuilder) {
     super(monitor, elRef, styleUtils, styleBuilder);
 
     if (container) {  // Subscribe to layout direction changes
@@ -250,11 +237,9 @@ export class LayoutGapDirective extends BaseDirective
       });
 
     if (items.length > 0) {
-      this.addStyles(gapValue, {
-        directionality: this._directionality.value,
-        items,
-        layout: this._layout
-      });
+      const directionality = this._directionality.value;
+      const layout = this._layout;
+      this.addStyles(gapValue, {directionality, items, layout});
     }
   }
 }
@@ -283,4 +268,30 @@ function buildGridMargin(value: string, directionality: string): StyleDefinition
   }
 
   return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
+}
+
+function buildGapCSS(gapValue: string,
+                     parent: {directionality: string, layout: string}): StyleDefinition {
+  let key, margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
+
+  switch (parent.layout) {
+    case 'column':
+      key = 'margin-bottom';
+      break;
+    case 'column-reverse':
+      key = 'margin-top';
+      break;
+    case 'row':
+      key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+      break;
+    case 'row-reverse':
+      key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
+      break;
+    default :
+      key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+      break;
+  }
+  margins[key] = gapValue;
+
+  return margins;
 }

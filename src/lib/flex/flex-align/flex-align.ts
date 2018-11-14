@@ -20,29 +20,32 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleDefinition,
-  StyleUtils
+  StyleBuilderOutput,
+  StyleUtils,
 } from '@angular/flex-layout/core';
 
 @Injectable({providedIn: 'root'})
-export class FlexAlignStyleBuilder implements StyleBuilder {
-  buildStyles(input: string): StyleDefinition {
-    const css: {[key: string]: string | number} = {};
+export class FlexAlignStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(input: string): StyleBuilderOutput {
+    const styles: {[key: string]: string | number} = {};
 
     // Cross-axis
     switch (input) {
       case 'start':
-        css['align-self'] = 'flex-start';
+        styles['align-self'] = 'flex-start';
         break;
       case 'end':
-        css['align-self'] = 'flex-end';
+        styles['align-self'] = 'flex-end';
         break;
       default:
-        css['align-self'] = input;
+        styles['align-self'] = input;
         break;
     }
 
-    return css;
+    return {styles, shouldCache: true};
   }
 }
 

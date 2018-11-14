@@ -22,8 +22,8 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleDefinition,
-  StyleUtils
+  StyleBuilderOutput,
+  StyleUtils,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
 
@@ -31,13 +31,16 @@ import {extendObject} from '../../utils/object-extend';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 
-interface LayoutAlignParent {
+export interface LayoutAlignParent {
   layout: string;
 }
 
 @Injectable({providedIn: 'root'})
-export class LayoutAlignStyleBuilder implements StyleBuilder {
-  buildStyles(align: string, parent: LayoutAlignParent): StyleDefinition {
+export class LayoutAlignStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
+  buildStyles(align: string, parent: LayoutAlignParent): StyleBuilderOutput {
     let css: {[key: string]: string} = {},
       [mainAxis, crossAxis] = align.split(' ');
 
@@ -97,7 +100,7 @@ export class LayoutAlignStyleBuilder implements StyleBuilder {
         break;
     }
 
-    return extendObject(css, {
+    const styles = extendObject(css, {
       'display' : 'flex',
       'flex-direction' : parent.layout,
       'box-sizing' : 'border-box',
@@ -106,6 +109,8 @@ export class LayoutAlignStyleBuilder implements StyleBuilder {
       'max-height': crossAxis === 'stretch' ?
         isFlowHorizontal(parent.layout) ? '100%' : null : null,
     });
+
+    return {styles, shouldCache: true};
   }
 }
 

@@ -109,9 +109,21 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
     return this._elementRef.nativeElement;
   }
 
+  /** Add styles to the element using predefined style builder */
   protected addStyles(input: string, parent?: Object) {
-    const styles: StyleDefinition = this._styleBuilder!.buildStyles(input, parent);
-    this._applyStyleToElement(styles);
+    let styleDefinition: StyleDefinition;
+    if (this._styleCache.has(input)) {
+      styleDefinition = this._styleCache.get(input)!;
+      this._applyStyleToElement(styleDefinition);
+    } else {
+      const {shouldCache, styles} = this._styleBuilder!.buildStyles(input, parent);
+      this._applyStyleToElement(styles);
+      if (shouldCache) {
+        this._styleCache.set(input, styles);
+      }
+      styleDefinition = styles;
+    }
+    this._styleBuilder!.sideEffect(input, styleDefinition, parent);
   }
 
   /** Access the current value (if any) of the @Input property */
@@ -246,4 +258,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
    * getComputedStyle() during ngOnInit().
    */
   protected _hasInitialized = false;
+
+  /** Cache map for style computation */
+  protected _styleCache: Map<string, StyleDefinition> = new Map();
 }

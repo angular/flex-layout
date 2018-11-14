@@ -223,9 +223,12 @@ describe('flex-offset directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockFlexOffsetStyleBuilder implements StyleBuilder {
+export class MockFlexOffsetStyleBuilder extends StyleBuilder {
+  constructor() {
+    super();
+  }
   buildStyles(_input: string) {
-    return {'margin-top': '10px'};
+    return {styles: {'margin-top': '10px'}, shouldCache: false};
   }
 }
 
