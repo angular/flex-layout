@@ -5,11 +5,16 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, PLATFORM_ID} from '@angular/core';
+import {Component, Injectable, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
-import {SERVER_TOKEN, StyleUtils} from '@angular/flex-layout/core';
+import {
+  MockMatchMediaProvider,
+  SERVER_TOKEN,
+  StyleBuilder,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
@@ -19,6 +24,8 @@ import {
   expectEl,
   expectNativeEl,
 } from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
+import {FlexOffsetStyleBuilder} from './flex-offset';
 
 describe('flex-offset directive', () => {
   let fixture: ComponentFixture<any>;
@@ -177,7 +184,50 @@ describe('flex-offset directive', () => {
 
   });
 
+  describe('with custom builder', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          FlexLayoutModule.withConfig({
+            useColumnBasisZero: false,
+            serverLoaded: true,
+          }),
+        ],
+        declarations: [TestFlexComponent],
+        providers: [
+          MockMatchMediaProvider,
+          {
+            provide: FlexOffsetStyleBuilder,
+            useClass: MockFlexOffsetStyleBuilder,
+          }
+        ]
+      });
+    });
+
+    it('should set flex offset not to input', async(() => {
+      componentWithTemplate(`
+        <div fxLayout='column'>
+          <div fxFlexOffset="25"></div>
+        </div>
+      `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, '[fxFlexOffset]')[0];
+      expectEl(element).toHaveStyle({'margin-top': '10px'}, styler);
+    }));
+  });
+
 });
+
+@Injectable({providedIn: FlexModule})
+export class MockFlexOffsetStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string) {
+    return {'margin-top': '10px'};
+  }
+}
 
 
 // *****************************************************************

@@ -13,8 +13,16 @@ import {
   OnChanges,
   OnDestroy,
   SimpleChanges,
+  Injectable,
 } from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleBuilder,
+  StyleDefinition,
+  StyleUtils
+} from '@angular/flex-layout/core';
 import {Observable, ReplaySubject} from 'rxjs';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
@@ -23,6 +31,22 @@ export type Layout = {
   direction: string;
   wrap: boolean;
 };
+
+interface LayoutParent {
+  announcer: ReplaySubject<Layout>;
+}
+
+@Injectable({providedIn: 'root'})
+export class LayoutStyleBuilder implements StyleBuilder {
+  buildStyles(input: string, parent: LayoutParent): StyleDefinition {
+    const css = buildLayoutCSS(input);
+    parent.announcer.next({
+      direction: css['flex-direction'],
+      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+    });
+    return css;
+  }
+}
 
 /**
  * 'layout' flexbox styling directive
@@ -72,8 +96,9 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
 
   constructor(monitor: MediaMonitor,
               elRef: ElementRef,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+              styleUtils: StyleUtils,
+              styleBuilder: LayoutStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
     this._announcer = new ReplaySubject<Layout>(1);
     this.layout$ = this._announcer.asObservable();
   }
@@ -116,14 +141,7 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
       value = this._mqActivation.activatedInput;
     }
 
-    // Update styles and announce to subscribers the *new* direction
-    let css = buildLayoutCSS(!!value ? value : '');
-
-    this._applyStyleToElement(css);
-    this._announcer.next({
-      direction: css['flex-direction'],
-      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
-    });
+    this.addStyles(value || '', {announcer: this._announcer});
   }
 
 }

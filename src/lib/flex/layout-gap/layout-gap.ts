@@ -16,12 +16,14 @@ import {
   Optional,
   OnDestroy,
   NgZone,
+  Injectable,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   BaseDirective,
   MediaChange,
   MediaMonitor,
+  StyleBuilder,
   StyleDefinition,
   StyleUtils
 } from '@angular/flex-layout/core';
@@ -29,6 +31,73 @@ import {Subscription} from 'rxjs';
 
 import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES} from '../../utils/layout-validator';
+
+interface LayoutGapParent {
+  layout: string;
+  directionality: string;
+  items: HTMLElement[];
+}
+
+const CLEAR_MARGIN_CSS = {
+  'margin-left': null,
+  'margin-right': null,
+  'margin-top': null,
+  'margin-bottom': null
+};
+
+@Injectable({providedIn: 'root'})
+export class LayoutGapStyleBuilder implements StyleBuilder {
+  constructor(private styler: StyleUtils) {}
+
+  buildStyles(gapValue: string, parent: LayoutGapParent): StyleDefinition {
+    const items = parent.items;
+    if (gapValue.endsWith(GRID_SPECIFIER)) {
+      gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
+      // For each `element` children, set the padding
+      const paddingStyles = buildGridPadding(gapValue, parent.directionality);
+      const marginStyles = buildGridMargin(gapValue, parent.directionality);
+      this.styler.applyStyleToElements(paddingStyles, items);
+
+      // Add the margin to the host element
+      return marginStyles;
+    } else {
+      const lastItem = items.pop();
+
+      // For each `element` children EXCEPT the last,
+      // set the margin right/bottom styles...
+      this.styler.applyStyleToElements(this._buildCSS(gapValue, parent), items);
+
+      // Clear all gaps for all visible elements
+      this.styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem!]);
+      return {};
+    }
+  }
+
+  private _buildCSS(gapValue: string, parent: LayoutGapParent): StyleDefinition {
+    let key, margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
+
+    switch (parent.layout) {
+      case 'column':
+        key = 'margin-bottom';
+        break;
+      case 'column-reverse':
+        key = 'margin-top';
+        break;
+      case 'row':
+        key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+        break;
+      case 'row-reverse':
+        key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
+        break;
+      default :
+        key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
+        break;
+    }
+    margins[key] = gapValue;
+
+    return margins;
+  }
+}
 
 /**
  * 'layout-padding' styling directive
@@ -47,7 +116,7 @@ export class LayoutGapDirective extends BaseDirective
   protected _layout = 'row';  // default flex-direction
   protected _layoutWatcher?: Subscription;
   protected _observer?: MutationObserver;
-  private _directionWatcher: Subscription;
+  private readonly _directionWatcher: Subscription;
 
   /* tslint:disable */
  @Input('fxLayoutGap')       set gap(val: string) { this._cacheInput('gap', val); }
@@ -73,8 +142,9 @@ export class LayoutGapDirective extends BaseDirective
               @Optional() @Self() container: LayoutDirective,
               private _zone: NgZone,
               private _directionality: Directionality,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+              styleUtils: StyleUtils,
+              styleBuilder: LayoutGapStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -180,91 +250,37 @@ export class LayoutGapDirective extends BaseDirective
       });
 
     if (items.length > 0) {
-      if (gapValue.endsWith(GRID_SPECIFIER)) {
-        gapValue = gapValue.substring(0, gapValue.indexOf(GRID_SPECIFIER));
-        // For each `element` children, set the padding
-        this._applyStyleToElements(this._buildGridPadding(gapValue), items);
-
-        // Add the margin to the host element
-        this._applyStyleToElement(this._buildGridMargin(gapValue));
-      } else {
-        const lastItem = items.pop();
-
-        // For each `element` children EXCEPT the last,
-        // set the margin right/bottom styles...
-        this._applyStyleToElements(this._buildCSS(gapValue), items);
-
-        // Clear all gaps for all visible elements
-        this._applyStyleToElements(this._buildCSS(), [lastItem]);
-      }
+      this.addStyles(gapValue, {
+        directionality: this._directionality.value,
+        items,
+        layout: this._layout
+      });
     }
-  }
-
-  /**
-   *
-   */
-  private _buildGridPadding(value: string): StyleDefinition {
-    let paddingTop = '0px', paddingRight = '0px', paddingBottom = value, paddingLeft = '0px';
-
-    if (this._directionality.value === 'rtl') {
-      paddingLeft = value;
-    } else {
-      paddingRight = value;
-    }
-
-    return {'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`};
-  }
-
-  /**
-   * Prepare margin CSS, remove any previous explicitly
-   * assigned margin assignments
-   * Note: this will not work with calc values (negative calc values are invalid)
-   */
-  private _buildGridMargin(value: string): StyleDefinition {
-    let marginTop = '0px', marginRight = '0px', marginBottom = '-' + value, marginLeft = '0px';
-
-    if (this._directionality.value === 'rtl') {
-      marginLeft = '-' + value;
-    } else {
-      marginRight = '-' + value;
-    }
-
-    return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
-  }
-
-  /**
-   * Prepare margin CSS, remove any previous explicitly
-   * assigned margin assignments
-   */
-  private _buildCSS(value: any = null) {
-    let key, margins: {[key: string]: string | null} = {
-      'margin-left': null,
-      'margin-right': null,
-      'margin-top': null,
-      'margin-bottom': null
-    };
-
-    switch (this._layout) {
-      case 'column':
-        key = 'margin-bottom';
-        break;
-      case 'column-reverse':
-        key = 'margin-top';
-        break;
-      case 'row':
-        key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
-        break;
-      case 'row-reverse':
-        key = this._directionality.value === 'rtl' ? 'margin-right' : 'margin-left';
-        break;
-      default :
-        key = this._directionality.value === 'rtl' ? 'margin-left' : 'margin-right';
-        break;
-    }
-    margins[key] = value;
-
-    return margins;
   }
 }
 
 const GRID_SPECIFIER = ' grid';
+
+function buildGridPadding(value: string, directionality: string): StyleDefinition {
+  let paddingTop = '0px', paddingRight = '0px', paddingBottom = value, paddingLeft = '0px';
+
+  if (directionality === 'rtl') {
+    paddingLeft = value;
+  } else {
+    paddingRight = value;
+  }
+
+  return {'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`};
+}
+
+function buildGridMargin(value: string, directionality: string): StyleDefinition {
+  let marginTop = '0px', marginRight = '0px', marginBottom = '-' + value, marginLeft = '0px';
+
+  if (directionality === 'rtl') {
+    marginLeft = '-' + value;
+  } else {
+    marginRight = '-' + value;
+  }
+
+  return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
+}

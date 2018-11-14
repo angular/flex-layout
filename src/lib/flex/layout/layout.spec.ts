@@ -5,14 +5,15 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject, async} from '@angular/core/testing';
 import {
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
   SERVER_TOKEN,
+  StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
@@ -20,6 +21,9 @@ import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
 import {queryFor} from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
+import {Layout, LayoutStyleBuilder} from './layout';
+import {ReplaySubject} from 'rxjs';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -325,7 +329,51 @@ describe('layout directive', () => {
 
   });
 
+  describe('with custom builder', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          FlexLayoutModule.withConfig({
+            useColumnBasisZero: false,
+            serverLoaded: true,
+          }),
+        ],
+        providers: [
+          MockMatchMediaProvider,
+          {
+            provide: LayoutStyleBuilder,
+            useClass: MockLayoutStyleBuilder,
+          }
+        ]
+      });
+    });
+
+    it('should set layout not to input', async(() => {
+      createTestComponent(`
+        <div fxLayout='column'>
+          <div fxFlexOffset="25"></div>
+        </div>
+      `);
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-flex'}, styler);
+    }));
+  });
+
 });
+
+@Injectable({providedIn: FlexModule})
+export class MockLayoutStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string, parent: {announcer: ReplaySubject<Layout>}) {
+    parent.announcer.next({
+      direction: 'column',
+      wrap: false
+    });
+    return {'display': 'inline-flex'};
+  }
+}
 
 
 // *****************************************************************

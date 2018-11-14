@@ -15,13 +15,99 @@ import {
   Optional,
   SimpleChanges,
   Self,
+  Injectable,
 } from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
+import {
+  BaseDirective,
+  MediaChange,
+  MediaMonitor,
+  StyleBuilder,
+  StyleDefinition,
+  StyleUtils
+} from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
 
 import {extendObject} from '../../utils/object-extend';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
+
+interface LayoutAlignParent {
+  layout: string;
+}
+
+@Injectable({providedIn: 'root'})
+export class LayoutAlignStyleBuilder implements StyleBuilder {
+  buildStyles(align: string, parent: LayoutAlignParent): StyleDefinition {
+    let css: {[key: string]: string} = {},
+      [mainAxis, crossAxis] = align.split(' ');
+
+    // Main axis
+    switch (mainAxis) {
+      case 'center':
+        css['justify-content'] = 'center';
+        break;
+      case 'space-around':
+        css['justify-content'] = 'space-around';
+        break;
+      case 'space-between':
+        css['justify-content'] = 'space-between';
+        break;
+      case 'space-evenly':
+        css['justify-content'] = 'space-evenly';
+        break;
+      case 'end':
+      case 'flex-end':
+        css['justify-content'] = 'flex-end';
+        break;
+      case 'start':
+      case 'flex-start':
+      default :
+        css['justify-content'] = 'flex-start';  // default main axis
+        break;
+    }
+
+    // Cross-axis
+    switch (crossAxis) {
+      case 'start':
+      case 'flex-start':
+        css['align-items'] = css['align-content'] = 'flex-start';
+        break;
+      case 'center':
+        css['align-items'] = css['align-content'] = 'center';
+        break;
+      case 'end':
+      case 'flex-end':
+        css['align-items'] = css['align-content'] = 'flex-end';
+        break;
+      case 'space-between':
+        css['align-content'] = 'space-between';
+        css['align-items'] = 'stretch';
+        break;
+      case 'space-around':
+        css['align-content'] = 'space-around';
+        css['align-items'] = 'stretch';
+        break;
+      case 'baseline':
+        css['align-content'] = 'stretch';
+        css['align-items'] = 'baseline';
+        break;
+      case 'stretch':
+      default : // 'stretch'
+        css['align-items'] = css['align-content'] = 'stretch';   // default cross axis
+        break;
+    }
+
+    return extendObject(css, {
+      'display' : 'flex',
+      'flex-direction' : parent.layout,
+      'box-sizing' : 'border-box',
+      'max-width': crossAxis === 'stretch' ?
+        !isFlowHorizontal(parent.layout) ? '100%' : null : null,
+      'max-height': crossAxis === 'stretch' ?
+        isFlowHorizontal(parent.layout) ? '100%' : null : null,
+    });
+  }
+}
 
 /**
  * 'layout-align' flexbox styling directive
@@ -66,8 +152,9 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
       monitor: MediaMonitor,
       elRef: ElementRef,
       @Optional() @Self() container: LayoutDirective,
-      styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+      styleUtils: StyleUtils,
+      styleBuilder: LayoutAlignStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
 
     if (container) {  // Subscribe to layout direction changes
       this._layoutWatcher = container.layout$.subscribe(this._onLayoutChange.bind(this));
@@ -116,8 +203,8 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
       value = this._mqActivation.activatedInput;
     }
 
-    this._applyStyleToElement(this._buildCSS(value));
-    this._allowStretching(value, !this._layout ? 'row' : this._layout);
+    const layout = this._layout || 'row';
+    this.addStyles(value || '', {layout});
   }
 
   /**
@@ -133,93 +220,6 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-    this._allowStretching(value, this._layout || 'row');
-  }
-
-  protected _buildCSS(align: string = '') {
-    let css: {[key: string]: string} = {},
-      [main_axis, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
-
-    // Main axis
-    switch (main_axis) {
-      case 'center':
-        css['justify-content'] = 'center';
-        break;
-      case 'space-around':
-        css['justify-content'] = 'space-around';
-        break;
-      case 'space-between':
-        css['justify-content'] = 'space-between';
-        break;
-      case 'space-evenly':
-        css['justify-content'] = 'space-evenly';
-        break;
-      case 'end':
-      case 'flex-end':
-        css['justify-content'] = 'flex-end';
-        break;
-      case 'start':
-      case 'flex-start':
-      default :
-        css['justify-content'] = 'flex-start';  // default main axis
-        break;
-    }
-
-    // Cross-axis
-    switch (cross_axis) {
-      case 'start':
-      case 'flex-start':
-        css['align-items'] = css['align-content'] = 'flex-start';
-        break;
-      case 'center':
-        css['align-items'] = css['align-content'] = 'center';
-        break;
-      case 'end':
-      case 'flex-end':
-        css['align-items'] = css['align-content'] = 'flex-end';
-        break;
-      case 'space-between':
-        css['align-content'] = 'space-between';
-        css['align-items'] = 'stretch';
-        break;
-      case 'space-around':
-        css['align-content'] = 'space-around';
-        css['align-items'] = 'stretch';
-        break;
-      case 'baseline':
-        css['align-content'] = 'stretch';
-        css['align-items'] = 'baseline';
-        break;
-      case 'stretch':
-      default : // 'stretch'
-        css['align-items'] = css['align-content'] = 'stretch';   // default cross axis
-        break;
-    }
-
-    return extendObject(css, {
-      'display' : 'flex',
-      'flex-direction' : this._layout || 'row',
-      'box-sizing' : 'border-box',
-      'max-width': null,
-      'max-height': null,
-    });
-  }
-
-
-  /**
-   * Update container element to 'stretch' as needed...
-   * NOTE: this is only done if the crossAxis is explicitly set to 'stretch'
-   */
-  protected _allowStretching(align: string = '', layout: string = '') {
-    let [, cross_axis] = align.split(' '); // tslint:disable-line:variable-name
-
-    if (cross_axis == 'stretch') {
-      // Use `null` values to remove style
-      this._applyStyleToElement({
-        'box-sizing': 'border-box',
-        'max-width': !isFlowHorizontal(layout) ? '100%' : null,
-        'max-height': isFlowHorizontal(layout) ? '100%' : null
-      });
-    }
+    this.addStyles(value, {layout: this._layout || 'row'});
   }
 }

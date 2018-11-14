@@ -5,9 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef} from '@angular/core';
-import {BaseDirective, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
-
+import {Directive, ElementRef, Injectable} from '@angular/core';
+import {
+  BaseDirective,
+  MediaMonitor,
+  StyleBuilder,
+  StyleDefinition,
+  StyleUtils,
+} from '@angular/flex-layout/core';
 
 const FLEX_FILL_CSS = {
   'margin': 0,
@@ -16,6 +21,13 @@ const FLEX_FILL_CSS = {
   'min-width': '100%',
   'min-height': '100%'
 };
+
+@Injectable({providedIn: 'root'})
+export class FlexFillStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string): StyleDefinition {
+    return FLEX_FILL_CSS;
+  }
+}
 
 /**
  * 'fxFill' flexbox styling directive
@@ -30,8 +42,9 @@ const FLEX_FILL_CSS = {
 export class FlexFillDirective extends BaseDirective {
   constructor(monitor: MediaMonitor,
               public elRef: ElementRef,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
-    this._applyStyleToElement(FLEX_FILL_CSS);
+              styleUtils: StyleUtils,
+              styleBuilder: FlexFillStyleBuilder) {
+    super(monitor, elRef, styleUtils, styleBuilder);
+    this.addStyles('');
   }
 }

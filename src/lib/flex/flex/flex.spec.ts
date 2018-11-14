@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, PLATFORM_ID, ViewChild} from '@angular/core';
+import {Component, Injectable, PLATFORM_ID, ViewChild} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
@@ -13,11 +13,12 @@ import {
   MatchMedia,
   MockMatchMedia,
   MockMatchMediaProvider,
+  StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {FlexDirective} from './flex';
+import {FlexDirective, FlexStyleBuilder} from './flex';
 import {LayoutDirective} from '../layout/layout';
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
@@ -26,6 +27,7 @@ import {
   queryFor,
   expectEl,
 } from '../../utils/testing/helpers';
+import {FlexModule} from '../module';
 
 
 describe('flex directive', () => {
@@ -885,7 +887,50 @@ describe('flex directive', () => {
     }));
   });
 
+  describe('with custom builder', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          FlexLayoutModule.withConfig({
+            useColumnBasisZero: false,
+            serverLoaded: true,
+          }),
+        ],
+        declarations: [TestFlexComponent, TestQueryWithFlexComponent],
+        providers: [
+          MockMatchMediaProvider,
+          {
+            provide: FlexStyleBuilder,
+            useClass: MockFlexStyleBuilder,
+          }
+        ]
+      });
+    });
+
+    it('should set flex basis to input', async(() => {
+      componentWithTemplate(`
+        <div fxLayout='column'>
+          <div fxFlex="25"></div>
+        </div>
+      `);
+      fixture.detectChanges();
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      expectEl(element).toHaveStyle({'flex': '1 1 30%'}, styler);
+    }));
+  });
+
 });
+
+@Injectable({providedIn: FlexModule})
+export class MockFlexStyleBuilder implements StyleBuilder {
+  buildStyles(_input: string) {
+    return {'flex': '1 1 30%'};
+  }
+}
 
 
 // *****************************************************************
