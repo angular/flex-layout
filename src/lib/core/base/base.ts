@@ -112,16 +112,15 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
   /** Add styles to the element using predefined style builder */
   protected addStyles(input: string, parent?: Object) {
     let styleDefinition: StyleDefinition;
-    if (this._styleCache.has(input)) {
+    if (this._styleBuilder!.shouldCache && this._styleCache.has(input)) {
       styleDefinition = this._styleCache.get(input)!;
       this._applyStyleToElement(styleDefinition);
     } else {
-      const {shouldCache, styles} = this._styleBuilder!.buildStyles(input, parent);
-      this._applyStyleToElement(styles);
-      if (shouldCache) {
-        this._styleCache.set(input, styles);
+      styleDefinition = this._styleBuilder!.buildStyles(input, parent);
+      this._applyStyleToElement(styleDefinition);
+      if (this._styleBuilder!.shouldCache) {
+        this._styleCache.set(input, styleDefinition);
       }
-      styleDefinition = styles;
     }
     this._styleBuilder!.sideEffect(input, styleDefinition, parent);
   }

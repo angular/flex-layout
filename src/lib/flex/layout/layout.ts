@@ -20,7 +20,6 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleBuilderOutput,
   StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -39,12 +38,9 @@ export interface LayoutParent {
 
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder extends StyleBuilder {
-  constructor() {
-    super();
-  }
-  buildStyles(input: string, _parent: LayoutParent): StyleBuilderOutput {
+  buildStyles(input: string, _parent: LayoutParent) {
     const styles = buildLayoutCSS(input);
-    return {styles, shouldCache: true};
+    return styles;
   }
   sideEffect(_input: string, styles: StyleDefinition, parent: LayoutParent) {
     parent.announcer.next({
@@ -149,4 +145,7 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
     this.addStyles(value || '', {announcer: this._announcer});
   }
 
+  protected _styleCache = layoutCache;
 }
+
+const layoutCache: Map<string, StyleDefinition> = new Map();

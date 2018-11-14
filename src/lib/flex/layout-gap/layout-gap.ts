@@ -24,7 +24,6 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleBuilderOutput,
   StyleDefinition,
   StyleUtils
 } from '@angular/flex-layout/core';
@@ -52,16 +51,14 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
     super();
   }
 
-  buildStyles(gapValue: string, parent: LayoutGapParent): StyleBuilderOutput {
+  buildStyles(gapValue: string, parent: LayoutGapParent) {
     if (gapValue.endsWith(GRID_SPECIFIER)) {
       gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
-      // For each `element` children, set the padding
-      const marginStyles = buildGridMargin(gapValue, parent.directionality);
 
       // Add the margin to the host element
-      return {styles: marginStyles, shouldCache: true};
+      return buildGridMargin(gapValue, parent.directionality);
     } else {
-      return {styles: {}, shouldCache: true};
+      return {};
     }
   }
 
@@ -239,10 +236,24 @@ export class LayoutGapDirective extends BaseDirective
     if (items.length > 0) {
       const directionality = this._directionality.value;
       const layout = this._layout;
+      if (layout === 'row' && directionality === 'rtl') {
+        this._styleCache = layoutGapCacheRowRtl;
+      } else if (layout === 'row' && directionality !== 'rtl') {
+        this._styleCache = layoutGapCacheRowLtr;
+      } else if (layout === 'column' && directionality === 'rtl') {
+        this._styleCache = layoutGapCacheColumnRtl;
+      } else if (layout === 'column' && directionality !== 'rtl') {
+        this._styleCache = layoutGapCacheColumnLtr;
+      }
       this.addStyles(gapValue, {directionality, items, layout});
     }
   }
 }
+
+const layoutGapCacheRowRtl: Map<string, StyleDefinition> = new Map();
+const layoutGapCacheColumnRtl: Map<string, StyleDefinition> = new Map();
+const layoutGapCacheRowLtr: Map<string, StyleDefinition> = new Map();
+const layoutGapCacheColumnLtr: Map<string, StyleDefinition> = new Map();
 
 const GRID_SPECIFIER = ' grid';
 

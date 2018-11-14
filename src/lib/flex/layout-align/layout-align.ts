@@ -22,7 +22,7 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleBuilderOutput,
+  StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
@@ -37,12 +37,8 @@ export interface LayoutAlignParent {
 
 @Injectable({providedIn: 'root'})
 export class LayoutAlignStyleBuilder extends StyleBuilder {
-  constructor() {
-    super();
-  }
-  buildStyles(align: string, parent: LayoutAlignParent): StyleBuilderOutput {
-    let css: {[key: string]: string} = {},
-      [mainAxis, crossAxis] = align.split(' ');
+  buildStyles(align: string, parent: LayoutAlignParent) {
+    const css: StyleDefinition = {}, [mainAxis, crossAxis] = align.split(' ');
 
     // Main axis
     switch (mainAxis) {
@@ -100,7 +96,7 @@ export class LayoutAlignStyleBuilder extends StyleBuilder {
         break;
     }
 
-    const styles = extendObject(css, {
+    return extendObject(css, {
       'display' : 'flex',
       'flex-direction' : parent.layout,
       'box-sizing' : 'border-box',
@@ -108,9 +104,7 @@ export class LayoutAlignStyleBuilder extends StyleBuilder {
         !isFlowHorizontal(parent.layout) ? '100%' : null : null,
       'max-height': crossAxis === 'stretch' ?
         isFlowHorizontal(parent.layout) ? '100%' : null : null,
-    });
-
-    return {styles, shouldCache: true};
+    }) as StyleDefinition;
   }
 }
 
@@ -209,6 +203,8 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     }
 
     const layout = this._layout || 'row';
+    this._styleCache = layout === 'row' ?
+      layoutAlignHorizontalCache : layoutAlignVerticalCache;
     this.addStyles(value || '', {layout});
   }
 
@@ -228,3 +224,6 @@ export class LayoutAlignDirective extends BaseDirective implements OnInit, OnCha
     this.addStyles(value, {layout: this._layout || 'row'});
   }
 }
+
+const layoutAlignHorizontalCache: Map<string, StyleDefinition> = new Map();
+const layoutAlignVerticalCache: Map<string, StyleDefinition> = new Map();

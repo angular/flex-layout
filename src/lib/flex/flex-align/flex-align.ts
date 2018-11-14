@@ -20,17 +20,14 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleBuilderOutput,
+  StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
 
 @Injectable({providedIn: 'root'})
 export class FlexAlignStyleBuilder extends StyleBuilder {
-  constructor() {
-    super();
-  }
-  buildStyles(input: string): StyleBuilderOutput {
-    const styles: {[key: string]: string | number} = {};
+  buildStyles(input: string) {
+    const styles: StyleDefinition = {};
 
     // Cross-axis
     switch (input) {
@@ -45,7 +42,7 @@ export class FlexAlignStyleBuilder extends StyleBuilder {
         break;
     }
 
-    return {styles, shouldCache: true};
+    return styles;
   }
 }
 
@@ -128,4 +125,8 @@ export class FlexAlignDirective extends BaseDirective implements OnInit, OnChang
 
     this.addStyles(value && (value + '') || '');
   }
+
+  protected _styleCache = flexAlignCache;
 }
+
+const flexAlignCache: Map<string, StyleDefinition> = new Map();

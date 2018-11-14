@@ -23,7 +23,7 @@ import {
   MediaChange,
   MediaMonitor,
   StyleBuilder,
-  StyleBuilderOutput,
+  StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {Subscription} from 'rxjs';
@@ -38,10 +38,7 @@ export interface FlexOffsetParent {
 
 @Injectable({providedIn: 'root'})
 export class FlexOffsetStyleBuilder extends StyleBuilder {
-  constructor() {
-    super();
-  }
-  buildStyles(offset: string, parent: FlexOffsetParent): StyleBuilderOutput {
+  buildStyles(offset: string, parent: FlexOffsetParent) {
     const isPercent = String(offset).indexOf('%') > -1;
     const isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(+offset)) {
@@ -51,7 +48,7 @@ export class FlexOffsetStyleBuilder extends StyleBuilder {
     const styles = isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
       {'margin-top': `${offset}`};
 
-    return {styles, shouldCache: true};
+    return styles;
   }
 }
 
@@ -189,6 +186,20 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
     // The flex-direction of this element's flex container. Defaults to 'row'.
     const layout = this._getFlexFlowDirection(this.parentElement, true);
     const isRtl = this._directionality.value === 'rtl';
+    if (layout === 'row' && isRtl) {
+      this._styleCache = flexOffsetCacheRowRtl;
+    } else if (layout === 'row' && !isRtl) {
+      this._styleCache = flexOffsetCacheRowLtr;
+    } else if (layout === 'column' && isRtl) {
+      this._styleCache = flexOffsetCacheColumnRtl;
+    } else if (layout === 'column' && !isRtl) {
+      this._styleCache = flexOffsetCacheColumnLtr;
+    }
     this.addStyles((value && (value + '') || ''), {layout, isRtl});
   }
 }
+
+const flexOffsetCacheRowRtl: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheColumnRtl: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheRowLtr: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheColumnLtr: Map<string, StyleDefinition> = new Map();
