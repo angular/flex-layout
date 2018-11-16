@@ -5,11 +5,24 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, OnInit, PLATFORM_ID} from '@angular/core';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
-import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
+  Component,
+  Directive,
+  ElementRef,
+  Inject,
+  Input,
+  OnInit,
+  Optional,
+  PLATFORM_ID,
+  Self,
+} from '@angular/core';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {ComponentFixture, TestBed, inject, async} from '@angular/core/testing';
+import {
+  LAYOUT_CONFIG,
+  LayoutConfigOptions,
   MatchMedia,
+  MediaMonitor,
   MockMatchMedia,
   MockMatchMediaProvider,
   ObservableMedia,
@@ -29,6 +42,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {negativeOf, ShowHideDirective} from './show-hide';
+import {LayoutDirective} from '@angular/flex-layout/flex';
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
@@ -290,7 +305,70 @@ describe('show directive', () => {
     });
   });
 
+  describe('with custom breakpoints', () => {
+    beforeEach(() => {
+      jasmine.addMatchers(customMatchers);
+
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        imports: [
+          CommonModule,
+          FlexLayoutModule.withConfig({
+            serverLoaded: true,
+          }, {
+            alias: 'sm-md',
+            suffix: 'SmMd',
+            mediaQuery: 'screen and (min-width: 720px) and (max-width: 839px)',
+            overlapping: false
+          }),
+        ],
+        declarations: [FxShowHideDirective],
+        providers: [
+          MockMatchMediaProvider,
+        ]
+      });
+    });
+
+    it('should respond to custom breakpoint', async(() => {
+      createTestComponent(`
+        <p fxFlex="100%" fxHide="true" fxShow.sm-md="true"></p>
+      `);
+
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('sm-md');
+
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('sm');
+
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    }));
+  });
+
 });
+
+@Directive({
+  selector: `[fxShow.sm-md], [fxHide.sm-md]`
+})
+class FxShowHideDirective extends ShowHideDirective {
+  constructor(monitor: MediaMonitor,
+              @Optional() @Self() protected layout: LayoutDirective,
+              protected elRef: ElementRef,
+              protected styleUtils: StyleUtils,
+              @Inject(PLATFORM_ID) protected platformId: Object,
+              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean,
+              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
+    super(monitor, layout, elRef, styleUtils, platformId, serverModuleLoaded, layoutConfig);
+  }
+
+  @Input('fxShow.sm-md') set showSmMd(val: string) {
+    this._cacheInput('showSmMd', val);
+  }
+  @Input('fxHide.sm-md') set hideSmMd(val: string) {
+    this._cacheInput('showSmMd', negativeOf(val));
+  }
+}
 
 
 // *****************************************************************

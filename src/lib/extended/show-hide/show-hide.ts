@@ -158,7 +158,12 @@ export class ShowHideDirective extends BaseDirective
   }
 
   ngAfterViewInit() {
-    this._display = this._getDisplayStyle();
+    if (DISPLAY_MAP.has(this.nativeElement)) {
+      this._display = DISPLAY_MAP.get(this.nativeElement)!;
+    } else {
+      this._display = this._getDisplayStyle();
+      DISPLAY_MAP.set(this.nativeElement, this._display);
+    }
     if (this.layout) {
       /**
        * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
@@ -210,3 +215,5 @@ export class ShowHideDirective extends BaseDirective
     return (FALSY.indexOf(show) === -1);
   }
 }
+
+const DISPLAY_MAP: WeakMap<HTMLElement, string> = new WeakMap();
