@@ -12,104 +12,48 @@ import {
   Input,
   IterableDiffers,
   KeyValueDiffers,
-  OnChanges,
-  OnDestroy,
   Optional,
   Renderer2,
-  SimpleChanges,
   Self,
-  OnInit,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
-import {
-  BaseDirective,
-  BaseDirectiveAdapter,
-  MediaChange,
-  MediaMonitor,
-  StyleUtils,
-} from '@angular/flex-layout/core';
+import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/core';
 
+export class ClassDirective extends BaseDirective2 implements DoCheck {
 
-/** NgClass allowed inputs **/
-export type NgClassType = string | string[] | Set<string> | {[klass: string]: any};
-
-/**
- * Directive to add responsive support for ngClass.
- * This maintains the core functionality of 'ngClass' and adds responsive API
- * Note: this class is a no-op when rendered on the server
- */
-@Directive({
-  selector: `
-    [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
-    [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
-    [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
-  `
-})
-export class ClassDirective extends BaseDirective
-    implements DoCheck, OnChanges, OnDestroy, OnInit {
-
-  /**
-   * Intercept ngClass assignments so we cache the default classes
-   * which are merged with activated styles or used as fallbacks.
-   * Note: Base ngClass values are applied during ngDoCheck()
-   */
-  @Input('ngClass')
-  set ngClassBase(val: NgClassType) {
-    const key = 'ngClass';
-    this._base.cacheInput(key, val, true);
-    this._ngClassInstance.ngClass = this._base.queryInput(key);
-  }
+  protected DIRECTIVE_KEY = 'ngClass';
 
   /**
    * Capture class assignments so we cache the default classes
    * which are merged with activated styles and used as fallbacks.
    */
   @Input('class')
-  set klazz(val: string) {
-    const key = 'class';
-    this._base.cacheInput(key, val);
-    this._ngClassInstance.klass = val;
+  set klass(val: string) {
+    this.ngClassInstance.klass = val;
+    this.setValue(val, '');
   }
 
-  /* tslint:disable */
-  @Input('ngClass.xs')    set ngClassXs(val:   NgClassType) { this._base.cacheInput('ngClassXs',   val, true); }
-  @Input('ngClass.sm')    set ngClassSm(val:   NgClassType) { this._base.cacheInput('ngClassSm',   val, true); }
-  @Input('ngClass.md')    set ngClassMd(val:   NgClassType) { this._base.cacheInput('ngClassMd',   val, true); }
-  @Input('ngClass.lg')    set ngClassLg(val:   NgClassType) { this._base.cacheInput('ngClassLg',   val, true); }
-  @Input('ngClass.xl')    set ngClassXl(val:   NgClassType) { this._base.cacheInput('ngClassXl',   val, true); }
-
-  @Input('ngClass.lt-sm') set ngClassLtSm(val: NgClassType) { this._base.cacheInput('ngClassLtSm', val, true); }
-  @Input('ngClass.lt-md') set ngClassLtMd(val: NgClassType) { this._base.cacheInput('ngClassLtMd', val, true); }
-  @Input('ngClass.lt-lg') set ngClassLtLg(val: NgClassType) { this._base.cacheInput('ngClassLtLg', val, true); }
-  @Input('ngClass.lt-xl') set ngClassLtXl(val: NgClassType) { this._base.cacheInput('ngClassLtXl', val, true); }
-
-  @Input('ngClass.gt-xs') set ngClassGtXs(val: NgClassType) { this._base.cacheInput('ngClassGtXs', val, true); }
-  @Input('ngClass.gt-sm') set ngClassGtSm(val: NgClassType) { this._base.cacheInput('ngClassGtSm', val, true); }
-  @Input('ngClass.gt-md') set ngClassGtMd(val: NgClassType) { this._base.cacheInput('ngClassGtMd', val, true); }
-  @Input('ngClass.gt-lg') set ngClassGtLg(val: NgClassType) { this._base.cacheInput('ngClassGtLg', val, true); }
-
-  /* tslint:enable */
-  constructor(protected monitor: MediaMonitor,
-              protected _iterableDiffers: IterableDiffers,
-              protected _keyValueDiffers: KeyValueDiffers,
-              protected _ngEl: ElementRef,
-              protected _renderer: Renderer2,
-              @Optional() @Self() private readonly _ngClassInstance: NgClass,
-              protected _styler: StyleUtils) {
-    super(monitor, _ngEl, _styler);
-    this._base = new BaseDirectiveAdapter(
-      'ngClass',
-      this.monitor,
-      this._ngEl,
-      this._styler
-    );
-    if (!this._ngClassInstance) {
+  constructor(protected elementRef: ElementRef,
+              protected styler: StyleUtils,
+              protected marshal: MediaMarshaller,
+              protected iterableDiffers: IterableDiffers,
+              protected keyValueDiffers: KeyValueDiffers,
+              protected renderer: Renderer2,
+              @Optional() @Self() protected readonly ngClassInstance: NgClass) {
+    super(elementRef, null!, styler, marshal);
+    if (!this.ngClassInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
       // the same host element; since the responsive variations may be defined...
-      this._ngClassInstance = new NgClass(
-        this._iterableDiffers, this._keyValueDiffers, this._ngEl, this._renderer
+      this.ngClassInstance = new NgClass(
+        this.iterableDiffers, this.keyValueDiffers, this.elementRef, this.renderer
       );
     }
+    this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+  }
+
+  protected updateWithValue(value: any) {
+    this.ngClassInstance.ngClass = value;
+    this.ngClassInstance.ngDoCheck();
   }
 
   // ******************************************************************
@@ -117,50 +61,31 @@ export class ClassDirective extends BaseDirective
   // ******************************************************************
 
   /**
-   * For @Input changes on the current mq activation property
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    if (this._base.activeKey in changes) {
-      this._ngClassInstance.ngClass = this._base.mqActivation.activatedInput || '';
-    }
-  }
-
-  ngOnInit() {
-    this._configureMQListener();
-  }
-
-  /**
    * For ChangeDetectionStrategy.onPush and ngOnChanges() updates
    */
   ngDoCheck() {
-    this._ngClassInstance.ngDoCheck();
+    this.ngClassInstance.ngDoCheck();
   }
+}
 
-  ngOnDestroy() {
-    this._base.ngOnDestroy();
-  }
+const inputs = [
+  'ngClass', 'ngClass.xs', 'ngClass.sm', 'ngClass.md', 'ngClass.lg', 'ngClass.xl',
+  'ngClass.lt-sm', 'ngClass.lt-md', 'ngClass.lt-lg', 'ngClass.lt-xl',
+  'ngClass.gt-xs', 'ngClass.gt-sm', 'ngClass.gt-md', 'ngClass.gt-lg'
+];
 
-  // ******************************************************************
-  // Internal Methods
-  // ******************************************************************
+const selector = `
+  [ngClass], [ngClass.xs], [ngClass.sm], [ngClass.md], [ngClass.lg], [ngClass.xl],
+  [ngClass.lt-sm], [ngClass.lt-md], [ngClass.lt-lg], [ngClass.lt-xl],
+  [ngClass.gt-xs], [ngClass.gt-sm], [ngClass.gt-md], [ngClass.gt-lg]
+`;
 
-  /**
-   * Build an mqActivation object that bridges mql change events to onMediaQueryChange handlers
-   * NOTE: We delegate subsequent activity to the NgClass logic
-   *       Identify the activated input value and update the ngClass iterables...
-   *       Use ngDoCheck() to actually apply the values to the element
-   */
-  protected _configureMQListener(baseKey = 'ngClass') {
-    const fallbackValue = this._base.queryInput(baseKey);
-    this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
-      this._ngClassInstance.ngClass = changes.value || '';
-      this._ngClassInstance.ngDoCheck();
-    });
-  }
-
-  /**
-   * Special adapter to cross-cut responsive behaviors and capture mediaQuery changes
-   * Delegate value changes to the internal `_ngClassInstance` for processing
-   */
-  protected _base: BaseDirectiveAdapter;   // used for `ngClass.xxx` selectors
+/**
+ * Directive to add responsive support for ngClass.
+ * This maintains the core functionality of 'ngClass' and adds responsive API
+ * Note: this class is a no-op when rendered on the server
+ */
+@Directive({selector, inputs})
+export class DefaultClassDirective extends ClassDirective {
+  protected inputs = inputs;
 }

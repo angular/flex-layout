@@ -8,6 +8,7 @@
 import {NgModule} from '@angular/core';
 
 import {BROWSER_PROVIDER} from './browser-provider';
+import {ObservableMediaProvider} from './observable-media/observable-media';
 
 /**
  * *****************************************************************
@@ -16,7 +17,7 @@ import {BROWSER_PROVIDER} from './browser-provider';
  */
 
 @NgModule({
-  providers: [BROWSER_PROVIDER]
+  providers: [BROWSER_PROVIDER, ObservableMediaProvider]
 })
 export class CoreModule {
 }

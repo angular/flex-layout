@@ -13,7 +13,7 @@ import {extendObject} from '../utils/object-extend';
  * For the specified MediaChange, make sure it contains the breakpoint alias
  * and suffix (if available).
  */
-export function mergeAlias(dest: MediaChange, source: BreakPoint | null) {
+export function mergeAlias(dest: MediaChange, source: BreakPoint | null): MediaChange {
   return extendObject(dest, source ? {
         mqAlias: source.alias,
         suffix: source.suffix

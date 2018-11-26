@@ -10,4 +10,6 @@ export interface BreakPoint {
   alias: string;
   suffix?: string;
   overlapping?: boolean;
+  // The priority of the individual breakpoint when overlapping another breakpoint
+  priority?: number;
 }

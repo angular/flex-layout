@@ -9,28 +9,16 @@ import {
   Directive,
   DoCheck,
   ElementRef,
-  Input,
   KeyValueDiffers,
-  OnDestroy,
-  OnChanges,
   Optional,
   Renderer2,
   SecurityContext,
   Self,
-  SimpleChanges,
-  OnInit,
 } from '@angular/core';
 import {NgStyle} from '@angular/common';
 import {DomSanitizer} from '@angular/platform-browser';
-import {
-  BaseDirective,
-  BaseDirectiveAdapter,
-  MediaChange,
-  MediaMonitor,
-  StyleUtils,
-} from '@angular/flex-layout/core';
+import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/core';
 
-import {extendObject} from '../../utils/object-extend';
 import {
   NgStyleRawList,
   NgStyleType,
@@ -44,130 +32,33 @@ import {
   keyValuesToMap,
 } from './style-transforms';
 
-/**
- * Directive to add responsive support for ngStyle.
- *
- */
-@Directive({
-  selector: `
-    [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
-    [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
-    [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
-  `
-})
-export class StyleDirective extends BaseDirective implements DoCheck, OnChanges, OnDestroy, OnInit {
+export class StyleDirective extends BaseDirective2 implements DoCheck {
 
-  /**
-   * Intercept ngStyle assignments so we cache the default styles
-   * which are merged with activated styles or used as fallbacks.
-   */
-  @Input('ngStyle')
-  set ngStyleBase(val: NgStyleType) {
-    const key = 'ngStyle';
-    this._base.cacheInput(key, val, true);  // convert val to hashmap
-    this._ngStyleInstance.ngStyle = this._base.queryInput(key);
-  }
+  protected DIRECTIVE_KEY = 'ngStyle';
 
-  /* tslint:disable */
-  @Input('ngStyle.xs')    set ngStyleXs(val: NgStyleType) { this._base.cacheInput('ngStyleXs', val, true); }
-  @Input('ngStyle.sm')    set ngStyleSm(val: NgStyleType) { this._base.cacheInput('ngStyleSm', val, true); };
-  @Input('ngStyle.md')    set ngStyleMd(val: NgStyleType) { this._base.cacheInput('ngStyleMd', val, true); };
-  @Input('ngStyle.lg')    set ngStyleLg(val: NgStyleType) { this._base.cacheInput('ngStyleLg', val, true); };
-  @Input('ngStyle.xl')    set ngStyleXl(val: NgStyleType) { this._base.cacheInput('ngStyleXl', val, true); };
-
-  @Input('ngStyle.lt-sm') set ngStyleLtSm(val: NgStyleType) { this._base.cacheInput('ngStyleLtSm', val, true); };
-  @Input('ngStyle.lt-md') set ngStyleLtMd(val: NgStyleType) { this._base.cacheInput('ngStyleLtMd', val, true); };
-  @Input('ngStyle.lt-lg') set ngStyleLtLg(val: NgStyleType) { this._base.cacheInput('ngStyleLtLg', val, true); };
-  @Input('ngStyle.lt-xl') set ngStyleLtXl(val: NgStyleType) { this._base.cacheInput('ngStyleLtXl', val, true); };
-
-  @Input('ngStyle.gt-xs') set ngStyleGtXs(val: NgStyleType) { this._base.cacheInput('ngStyleGtXs', val, true); };
-  @Input('ngStyle.gt-sm') set ngStyleGtSm(val: NgStyleType) { this._base.cacheInput('ngStyleGtSm', val, true); } ;
-  @Input('ngStyle.gt-md') set ngStyleGtMd(val: NgStyleType) { this._base.cacheInput('ngStyleGtMd', val, true); };
-  @Input('ngStyle.gt-lg') set ngStyleGtLg(val: NgStyleType) { this._base.cacheInput('ngStyleGtLg', val, true); };
-  /* tslint:enable */
-
-  /**
-   *  Constructor for the ngStyle subclass; which adds selectors and
-   *  a MediaQuery Activation Adapter
-   */
-  constructor(private monitor: MediaMonitor,
-              protected _sanitizer: DomSanitizer,
-              protected _ngEl: ElementRef,
-              protected _renderer: Renderer2,
-              protected _differs: KeyValueDiffers,
-              @Optional() @Self() private readonly _ngStyleInstance: NgStyle,
-              protected _styler: StyleUtils) {
-    super(monitor, _ngEl, _styler);
-    this._base = new BaseDirectiveAdapter(
-      'ngStyle',
-      this.monitor,
-      this._ngEl,
-      this._styler
-    );
-    if (!this._ngStyleInstance) {
+  constructor(protected elementRef: ElementRef,
+              protected styler: StyleUtils,
+              protected marshal: MediaMarshaller,
+              protected keyValueDiffers: KeyValueDiffers,
+              protected renderer: Renderer2,
+              protected sanitizer: DomSanitizer,
+              @Optional() @Self() private readonly ngStyleInstance: NgStyle) {
+    super(elementRef, null!, styler, marshal);
+    if (!this.ngStyleInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
       // defined on the same host element; since the responsive variations may be defined...
-      this._ngStyleInstance = new NgStyle(this._differs, this._ngEl, this._renderer);
+      this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
     }
-
-    this._buildCacheInterceptor();
-    this._fallbackToStyle();
+    this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    this.setValue(this.nativeElement.getAttribute('style') || '', '');
   }
 
-  // ******************************************************************
-  // Lifecycle Hooks
-  // ******************************************************************
-
-  /** For @Input changes on the current mq activation property */
-  ngOnChanges(changes: SimpleChanges) {
-    if (this._base.activeKey in changes) {
-      this._ngStyleInstance.ngStyle = this._base.mqActivation.activatedInput || '';
-    }
-  }
-
-  ngOnInit() {
-    this._configureMQListener();
-  }
-
-  /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
-  ngDoCheck() {
-    this._ngStyleInstance.ngDoCheck();
-  }
-
-  ngOnDestroy() {
-    this._base.ngOnDestroy();
-  }
-
-  // ******************************************************************
-  // Internal Methods
-  // ******************************************************************
-
-  /**
-   * Build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  protected _configureMQListener(baseKey = 'ngStyle') {
-    const fallbackValue = this._base.queryInput(baseKey);
-    this._base.listenForMediaQueryChanges(baseKey, fallbackValue, (changes: MediaChange) => {
-      this._ngStyleInstance.ngStyle = changes.value || '';
-      this._ngStyleInstance.ngDoCheck();
-    });
-  }
-
-  // ************************************************************************
-  // Private Internal Methods
-  // ************************************************************************
-
-  /** Build intercept to convert raw strings to ngStyleMap */
-  protected _buildCacheInterceptor() {
-    let cacheInput = this._base.cacheInput.bind(this._base);
-    this._base.cacheInput = (key?: string, source?: any, cacheRaw = false, merge = true) => {
-      let styles = this._buildStyleMap(source);
-      if (merge) {
-        styles = extendObject({}, this._base.inputMap['ngStyle'], styles);
-      }
-      cacheInput(key, styles, cacheRaw);
-    };
+  protected updateWithValue(value: any) {
+    const styles = this.buildStyleMap(value);
+    const defaultStyles = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
+    const fallback = this.buildStyleMap(defaultStyles);
+    this.ngStyleInstance.ngStyle = {...fallback, ...styles};
+    this.ngStyleInstance.ngDoCheck();
   }
 
   /**
@@ -176,11 +67,10 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
    *       Comma-delimiters are not supported due to complexities of
    *       possible style values such as `rgba(x,x,x,x)` and others
    */
-  protected _buildStyleMap(styles: NgStyleType) {
-    let sanitizer: NgStyleSanitizer = (val: any) => {
-      // Always safe-guard (aka sanitize) style property values
-      return this._sanitizer.sanitize(SecurityContext.STYLE, val) || '';
-    };
+  protected buildStyleMap(styles: NgStyleType): NgStyleMap {
+    // Always safe-guard (aka sanitize) style property values
+    const sanitizer: NgStyleSanitizer = (val: any) =>
+      this.sanitizer.sanitize(SecurityContext.STYLE, val) || '';
     if (styles) {
       switch (getType(styles)) {
         case 'string':  return buildMapFromList(buildRawList(styles),
@@ -191,22 +81,40 @@ export class StyleDirective extends BaseDirective implements DoCheck, OnChanges,
       }
     }
 
-    return styles;
+    return {};
   }
 
-  /** Initial lookup of raw 'class' value (if any) */
-  protected _fallbackToStyle() {
-    if (!this._base.queryInput('ngStyle')) {
-      this.ngStyleBase = this._getAttributeValue('style') || '';
-    }
+  // ******************************************************************
+  // Lifecycle Hooks
+  // ******************************************************************
+
+  /** For ChangeDetectionStrategy.onPush and ngOnChanges() updates */
+  ngDoCheck() {
+    this.ngStyleInstance.ngDoCheck();
   }
+}
 
-  /**
-   * Special adapter to cross-cut responsive behaviors
-   * into the StyleDirective
-   */
-  protected _base: BaseDirectiveAdapter;
+const inputs = [
+  'ngStyle',
+  'ngStyle.xs', 'ngStyle.sm', 'ngStyle.md', 'ngStyle.lg', 'ngStyle.xl',
+  'ngStyle.lt-sm', 'ngStyle.lt-md', 'ngStyle.lt-lg', 'ngStyle.lt-xl',
+  'ngStyle.gt-xs', 'ngStyle.gt-sm', 'ngStyle.gt-md', 'ngStyle.gt-lg'
+];
 
+const selector = `
+  [ngStyle],
+  [ngStyle.xs], [ngStyle.sm], [ngStyle.md], [ngStyle.lg], [ngStyle.xl],
+  [ngStyle.lt-sm], [ngStyle.lt-md], [ngStyle.lt-lg], [ngStyle.lt-xl],
+  [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
+`;
+
+/**
+ * Directive to add responsive support for ngStyle.
+ *
+ */
+@Directive({selector, inputs})
+export class DefaultStyleDirective extends StyleDirective implements DoCheck {
+  protected inputs = inputs;
 }
 
 /** Build a styles map from a list of styles, while sanitizing bad values first */

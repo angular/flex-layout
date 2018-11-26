@@ -15,9 +15,9 @@ import {
   MockMatchMediaProvider,
   StyleUtils,
 } from '@angular/flex-layout/core';
-import {LayoutDirective} from '@angular/flex-layout/flex';
+import {DefaultLayoutDirective} from '@angular/flex-layout/flex';
 
-import {StyleDirective} from './style';
+import {DefaultStyleDirective} from './style';
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl
@@ -42,7 +42,7 @@ describe('style directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, CoreModule],
-      declarations: [TestStyleComponent, LayoutDirective, StyleDirective],
+      declarations: [TestStyleComponent, DefaultLayoutDirective, DefaultStyleDirective],
       providers: [MockMatchMediaProvider]
     });
   });

@@ -60,7 +60,7 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
       const currentValue = flex.activatedValue;
 
       // Update Flex-Layout value to build/inject new flexbox CSS
-      flex.activatedValue = this.calculateSize(currentValue, delta);
+      flex.activatedValue = `${this.calculateSize(currentValue, delta)}`;
     });
   }
 
