@@ -4,12 +4,12 @@ logic defaults to **hiding** an element.
 
 ### API 
 
-1) Flex-Layout supports **STATIC** API for responsive layouts  using the API **without** `.<xxx>` alias suffices: 
+1) Flex-Layout supports **STATIC** API for responsive layouts  using the API **without** `.<xxx>` alias suffixes: 
 fxShow, fxHide, etc. These values of these directives are used (and styles applied) regardless of the viewport size. 
 These static rules can be specifically  overridden by a registered responsive API use (see below).
 
 2) Flex-Layout provides a **RESPONSIVE** API for dynamic adaptive layouts. This is simply using the the static API with 
-mediaQuery aliase suffices.
+mediaQuery alias suffixes.
 e.g.  
 * **fxHide.lg**, etc.  
 * **fxShow.gt-sm**, 
