@@ -23,8 +23,8 @@ const FLEX_FILL_CSS = {
 };
 
 @Injectable({providedIn: 'root'})
-export class FlexFillStyleBuilder implements StyleBuilder {
-  buildStyles(_input: string): StyleDefinition {
+export class FlexFillStyleBuilder extends StyleBuilder {
+  buildStyles(_input: string) {
     return FLEX_FILL_CSS;
   }
 }
@@ -47,4 +47,8 @@ export class FlexFillDirective extends BaseDirective {
     super(monitor, elRef, styleUtils, styleBuilder);
     this.addStyles('');
   }
+
+  protected _styleCache = flexFillCache;
 }
+
+const flexFillCache: Map<string, StyleDefinition> = new Map();

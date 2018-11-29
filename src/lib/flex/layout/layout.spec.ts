@@ -22,8 +22,7 @@ import {customMatchers} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
 import {queryFor} from '../../utils/testing/helpers';
 import {FlexModule} from '../module';
-import {Layout, LayoutStyleBuilder} from './layout';
-import {ReplaySubject} from 'rxjs';
+import {LayoutStyleBuilder} from './layout';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
@@ -365,13 +364,10 @@ describe('layout directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockLayoutStyleBuilder implements StyleBuilder {
-  buildStyles(_input: string, parent: {announcer: ReplaySubject<Layout>}) {
-    parent.announcer.next({
-      direction: 'column',
-      wrap: false
-    });
-    return {'display': 'inline-flex'};
+export class MockLayoutStyleBuilder extends StyleBuilder {
+  shouldCache = false;
+  buildStyles(_input: string) {
+    return {'display': 'inline-flex', 'flex-direction': 'row'};
   }
 }
 

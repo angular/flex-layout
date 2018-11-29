@@ -858,6 +858,7 @@ describe('flex directive', () => {
   });
 
   describe('with column basis zero disabled', () => {
+    let styleBuilder: FlexStyleBuilder;
     beforeEach(() => {
       jasmine.addMatchers(customMatchers);
 
@@ -875,16 +876,20 @@ describe('flex directive', () => {
       });
     });
 
-    it('should set flex basis to auto', async(() => {
+    it('should set flex basis to auto', () => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div fxFlex></div>
         </div>
       `);
+      styleBuilder = TestBed.get(FlexStyleBuilder);
+
+      // Reset the cache because the layout config is only set at startup
+      styleBuilder.shouldCache = false;
       fixture.detectChanges();
       let element = queryFor(fixture, '[fxFlex]')[0];
       expectEl(element).toHaveStyle({'flex': '1 1 auto'}, styler);
-    }));
+    });
   });
 
   describe('with custom builder', () => {
@@ -926,7 +931,7 @@ describe('flex directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockFlexStyleBuilder implements StyleBuilder {
+export class MockFlexStyleBuilder extends StyleBuilder {
   buildStyles(_input: string) {
     return {'flex': '1 1 30%'};
   }

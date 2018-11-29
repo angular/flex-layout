@@ -434,7 +434,7 @@ describe('layout-gap directive', () => {
 });
 
 @Injectable({providedIn: FlexModule})
-export class MockLayoutGapStyleBuilder implements StyleBuilder {
+export class MockLayoutGapStyleBuilder extends StyleBuilder {
   buildStyles(_input: string) {
     return {'margin-top': '12px'};
   }

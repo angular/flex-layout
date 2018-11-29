@@ -21,7 +21,7 @@ import {
   MediaMonitor,
   StyleBuilder,
   StyleDefinition,
-  StyleUtils
+  StyleUtils,
 } from '@angular/flex-layout/core';
 import {Observable, ReplaySubject} from 'rxjs';
 
@@ -32,19 +32,21 @@ export type Layout = {
   wrap: boolean;
 };
 
-interface LayoutParent {
+export interface LayoutParent {
   announcer: ReplaySubject<Layout>;
 }
 
 @Injectable({providedIn: 'root'})
-export class LayoutStyleBuilder implements StyleBuilder {
-  buildStyles(input: string, parent: LayoutParent): StyleDefinition {
-    const css = buildLayoutCSS(input);
+export class LayoutStyleBuilder extends StyleBuilder {
+  buildStyles(input: string, _parent: LayoutParent) {
+    const styles = buildLayoutCSS(input);
+    return styles;
+  }
+  sideEffect(_input: string, styles: StyleDefinition, parent: LayoutParent) {
     parent.announcer.next({
-      direction: css['flex-direction'],
-      wrap: !!css['flex-wrap'] && css['flex-wrap'] !== 'nowrap'
+      direction: styles['flex-direction'] as string,
+      wrap: !!styles['flex-wrap'] && styles['flex-wrap'] !== 'nowrap'
     });
-    return css;
   }
 }
 
@@ -140,8 +142,10 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
     if (this._mqActivation) {
       value = this._mqActivation.activatedInput;
     }
-
     this.addStyles(value || '', {announcer: this._announcer});
   }
 
+  protected _styleCache = layoutCache;
 }
+
+const layoutCache: Map<string, StyleDefinition> = new Map();

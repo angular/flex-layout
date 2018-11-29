@@ -21,14 +21,15 @@ import {
   MediaMonitor,
   StyleBuilder,
   StyleDefinition,
-  StyleUtils
+  StyleUtils,
 } from '@angular/flex-layout/core';
 
 @Injectable({providedIn: 'root'})
-export class FlexOrderStyleBuilder implements StyleBuilder {
-  buildStyles(value: string): StyleDefinition {
+export class FlexOrderStyleBuilder extends StyleBuilder {
+  buildStyles(value: string) {
     const val = parseInt(value, 10);
-    return {order: isNaN(val) ? 0 : val};
+    const styles = {order: isNaN(val) ? 0 : val};
+    return styles;
   }
 }
 
@@ -108,4 +109,8 @@ export class FlexOrderDirective extends BaseDirective implements OnInit, OnChang
 
     this.addStyles(value || '');
   }
+
+  protected _styleCache = flexOrderCache;
 }
+
+const flexOrderCache: Map<string, StyleDefinition> = new Map();

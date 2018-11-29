@@ -41,16 +41,16 @@ export type FlexBasisAlias = 'grow' | 'initial' | 'auto' | 'none' | 'nogrow' | '
 interface FlexBuilderParent {
   direction: string;
   hasWrap: boolean;
-  useColumnBasisZero: boolean | undefined;
 }
 
 @Injectable({providedIn: 'root'})
-export class FlexStyleBuilder implements StyleBuilder {
-  buildStyles(input: string, parent: FlexBuilderParent): StyleDefinition {
-    let grow: string | number;
-    let shrink: string | number;
-    let basis: string | number;
-    [grow, shrink, basis] = input.split('_');
+export class FlexStyleBuilder extends StyleBuilder {
+  constructor(@Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
+    super();
+  }
+  buildStyles(input: string, parent: FlexBuilderParent) {
+    let [grow, shrink, ...basisParts]: (string|number)[] = input.split(' ');
+    let basis = basisParts.join(' ');
 
     // The flex-direction of this element's flex container. Defaults to 'row'.
     const direction = (parent.direction.indexOf('column') > -1) ? 'column' : 'row';
@@ -97,7 +97,7 @@ export class FlexStyleBuilder implements StyleBuilder {
     };
     switch (basis || '') {
       case '':
-        const useColumnBasisZero = parent.useColumnBasisZero !== false;
+        const useColumnBasisZero = this.layoutConfig.useColumnBasisZero !== false;
         basis = direction === 'row' ? '0%' : (useColumnBasisZero ? '0.000000001px' : 'auto');
         break;
       case 'initial':   // default
@@ -192,7 +192,7 @@ export class FlexStyleBuilder implements StyleBuilder {
       }
     }
 
-    return extendObject(css, {'box-sizing': 'border-box'});
+    return extendObject(css, {'box-sizing': 'border-box'}) as StyleDefinition;
   }
 }
 
@@ -310,12 +310,25 @@ export class FlexDirective extends BaseDirective implements OnInit, OnChanges, O
       flexBasis = this._mqActivation.activatedInput;
     }
 
-    let basis = String(flexBasis).replace(';', '');
-    let parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
+    const basis = String(flexBasis).replace(';', '');
+    const parts = validateBasis(basis, this._queryInput('grow'), this._queryInput('shrink'));
     const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
     const direction = this._getFlexFlowDirection(this.parentElement, addFlexToParent);
     const hasWrap = this._layout && this._layout.wrap;
-    const useColumnBasisZero = this.layoutConfig.useColumnBasisZero;
-    this.addStyles(parts.join('_'), {direction, hasWrap, useColumnBasisZero});
+    if (direction === 'row' && hasWrap) {
+      this._styleCache = flexRowWrapCache;
+    } else if (direction === 'row' && !hasWrap) {
+      this._styleCache = flexRowCache;
+    } else if (direction === 'column' && hasWrap) {
+      this._styleCache = flexColumnWrapCache;
+    } else if (direction === 'column' && !hasWrap) {
+      this._styleCache = flexColumnCache;
+    }
+    this.addStyles(parts.join(' '), {direction, hasWrap});
   }
 }
+
+const flexRowCache: Map<string, StyleDefinition> = new Map();
+const flexColumnCache: Map<string, StyleDefinition> = new Map();
+const flexRowWrapCache: Map<string, StyleDefinition> = new Map();
+const flexColumnWrapCache: Map<string, StyleDefinition> = new Map();

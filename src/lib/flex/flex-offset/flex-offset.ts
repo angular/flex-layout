@@ -31,23 +31,24 @@ import {Subscription} from 'rxjs';
 import {Layout, LayoutDirective} from '../layout/layout';
 import {isFlowHorizontal} from '../../utils/layout-validator';
 
-interface FlexOffsetParent {
+export interface FlexOffsetParent {
   layout: string;
   isRtl: boolean;
 }
 
 @Injectable({providedIn: 'root'})
-export class FlexOffsetStyleBuilder implements StyleBuilder {
-  buildStyles(offset: string, parent: FlexOffsetParent): StyleDefinition {
+export class FlexOffsetStyleBuilder extends StyleBuilder {
+  buildStyles(offset: string, parent: FlexOffsetParent) {
     const isPercent = String(offset).indexOf('%') > -1;
     const isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(+offset)) {
       offset = offset + '%';
     }
     const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
-
-    return isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
+    const styles = isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
       {'margin-top': `${offset}`};
+
+    return styles;
   }
 }
 
@@ -185,6 +186,20 @@ export class FlexOffsetDirective extends BaseDirective implements OnInit, OnChan
     // The flex-direction of this element's flex container. Defaults to 'row'.
     const layout = this._getFlexFlowDirection(this.parentElement, true);
     const isRtl = this._directionality.value === 'rtl';
+    if (layout === 'row' && isRtl) {
+      this._styleCache = flexOffsetCacheRowRtl;
+    } else if (layout === 'row' && !isRtl) {
+      this._styleCache = flexOffsetCacheRowLtr;
+    } else if (layout === 'column' && isRtl) {
+      this._styleCache = flexOffsetCacheColumnRtl;
+    } else if (layout === 'column' && !isRtl) {
+      this._styleCache = flexOffsetCacheColumnLtr;
+    }
     this.addStyles((value && (value + '') || ''), {layout, isRtl});
   }
 }
+
+const flexOffsetCacheRowRtl: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheColumnRtl: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheRowLtr: Map<string, StyleDefinition> = new Map();
+const flexOffsetCacheColumnLtr: Map<string, StyleDefinition> = new Map();
