@@ -43,31 +43,22 @@ export class MediaMonitor {
   }
 
   get activeOverlaps(): BreakPoint[] {
-    let items: BreakPoint[] = this._breakpoints.overlappings.reverse();
-    return items.filter((bp: BreakPoint) => {
-      return this._matchMedia.isActive(bp.mediaQuery);
-    });
+    return this._breakpoints.overlappings
+      .reverse()
+      .filter(bp => this._matchMedia.isActive(bp.mediaQuery));
   }
 
   get active(): BreakPoint | null {
-    let found: BreakPoint | null = null, items = this.breakpoints.reverse();
-    items.forEach(bp => {
-      if (bp.alias !== '') {
-        if (!found && this._matchMedia.isActive(bp.mediaQuery)) {
-          found = bp;
-        }
-      }
-    });
-
-    let first = this.breakpoints[0];
-    return found || (this._matchMedia.isActive(first.mediaQuery) ? first : null);
+    const items = this.breakpoints.reverse();
+    const first = items.find(bp => bp.alias !== '' && this._matchMedia.isActive(bp.mediaQuery));
+    return first || null;
   }
 
   /**
    * For the specified mediaQuery alias, is the mediaQuery range active?
    */
   isActive(alias: string): boolean {
-    let bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+    const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
     return this._matchMedia.isActive(bp ? bp.mediaQuery : alias);
   }
 
@@ -76,13 +67,12 @@ export class MediaMonitor {
    * If specific breakpoint is observed, only return *activated* events
    * otherwise return all events for BOTH activated + deactivated changes.
    */
-  observe(alias?: string): Observable<MediaChange> {
-    let bp = this._breakpoints.findByAlias(alias || '') ||
-      this._breakpoints.findByQuery(alias || '');
-    let hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== '' : true);
+  observe(alias: string = ''): Observable<MediaChange> {
+    const bp = this._breakpoints.findByAlias(alias) || this._breakpoints.findByQuery(alias);
+    const hasAlias = (change: MediaChange) => (bp ? change.mqAlias !== '' : true);
     // Note: the raw MediaChange events [from MatchMedia] do not contain important alias information
 
-    let media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
+    const media$ = this._matchMedia.observe(bp ? bp.mediaQuery : alias);
     return media$.pipe(
       map(change => mergeAlias(change, bp)),
       filter(hasAlias)
@@ -94,7 +84,7 @@ export class MediaMonitor {
    * and prepare for immediate subscription notifications
    */
   private _registerBreakpoints() {
-    let queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
+    const queries = this._breakpoints.sortedItems.map(bp => bp.mediaQuery);
     this._matchMedia.registerQuery(queries);
   }
 }

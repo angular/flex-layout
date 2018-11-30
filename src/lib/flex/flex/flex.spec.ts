@@ -27,7 +27,6 @@ import {
   queryFor,
   expectEl,
 } from '../../utils/testing/helpers';
-import {FlexModule} from '../module';
 
 
 describe('flex directive', () => {
@@ -930,7 +929,7 @@ describe('flex directive', () => {
 
 });
 
-@Injectable({providedIn: FlexModule})
+@Injectable()
 export class MockFlexStyleBuilder extends StyleBuilder {
   buildStyles(_input: string) {
     return {'flex': '1 1 30%'};

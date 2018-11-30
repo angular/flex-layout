@@ -25,7 +25,7 @@ import {
   MediaMonitor,
   MockMatchMedia,
   MockMatchMediaProvider,
-  ObservableMedia,
+  MediaObserver,
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
@@ -384,7 +384,7 @@ class TestShowComponent implements OnInit {
   isHidden = false;
   menuOpen = true;
 
-  constructor(public media: ObservableMedia) {
+  constructor(public media: MediaObserver) {
   }
 
   toggleMenu() {

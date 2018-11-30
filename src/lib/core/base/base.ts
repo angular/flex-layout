@@ -25,9 +25,6 @@ import {StyleBuilder} from '../style-builder/style-builder';
 
 /** Abstract base class for the Layout API styling directives. */
 export abstract class BaseDirective implements OnDestroy, OnChanges {
-  get hasMediaQueryListener() {
-    return !!this._mqActivation;
-  }
 
   /**
    * Imperatively determine the current activated [input] value;
@@ -52,7 +49,7 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
       previousVal = this._inputMap[key];
       this._inputMap[key] = value;
     }
-    let change = new SimpleChange(previousVal, value, false);
+    const change = new SimpleChange(previousVal, value, false);
 
     this.ngOnChanges({[key]: change} as SimpleChanges);
   }
@@ -137,8 +134,8 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
    * If not, use the fallback value!
    */
   protected _getDefaultVal(key: string, fallbackVal: any): string | boolean {
-    let val = this._queryInput(key);
-    let hasDefaultVal = (val !== undefined && val !== null);
+    const val = this._queryInput(key);
+    const hasDefaultVal = (val !== undefined && val !== null);
     return (hasDefaultVal && val !== '') ? val : fallbackVal;
   }
 
@@ -165,20 +162,19 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
    * And optionally add the flow value to element's inline style.
    */
   protected _getFlexFlowDirection(target: HTMLElement, addIfMissing = false): string {
-    let value = 'row';
-    let hasInlineValue = '';
-
     if (target) {
-      [value, hasInlineValue] = this._styler.getFlowDirection(target);
+      let [value, hasInlineValue] = this._styler.getFlowDirection(target);
 
       if (!hasInlineValue && addIfMissing) {
         const style = buildLayoutCSS(value);
         const elements = [target];
         this._styler.applyStyleToElements(style, elements);
       }
+
+      return value.trim();
     }
 
-    return value.trim() || 'row';
+    return 'row';
   }
 
   /** Applies styles given via string pair or object map to the directive element */
@@ -235,11 +231,6 @@ export abstract class BaseDirective implements OnDestroy, OnChanges {
       buffer[i] = obj[i];
     }
     return buffer;
-  }
-
-  /** Fast validator for presence of attribute on the host element */
-  protected hasKeyValue(key: string) {
-    return this._mqActivation!.hasKeyValue(key);
   }
 
   protected get hasInitialized() {

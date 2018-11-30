@@ -35,7 +35,6 @@ export class MockMatchMedia extends MatchMedia {
               @Inject(DOCUMENT) _document: any,
               private _breakpoints: BreakPointRegistry) {
     super(_zone, _platformId, _document);
-    this._actives = [];
   }
 
   /** Easy method to clear all listeners for all mediaQueries */
@@ -64,11 +63,8 @@ export class MockMatchMedia extends MatchMedia {
 
   /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
   _validateQuery(queryOrAlias: string) {
-    let bp = this._breakpoints.findByAlias(queryOrAlias);
-    if (bp) {
-      queryOrAlias = bp.mediaQuery;
-    }
-    return queryOrAlias;
+    const bp = this._breakpoints.findByAlias(queryOrAlias);
+    return (bp && bp.mediaQuery) || queryOrAlias;
   }
 
   /**
@@ -77,8 +73,8 @@ export class MockMatchMedia extends MatchMedia {
    */
   private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean): boolean {
     if (useOverlaps) {
-      let bp = this._breakpoints.findByQuery(mediaQuery);
-      let alias = bp ? bp.alias : 'unknown';
+      const bp = this._breakpoints.findByQuery(mediaQuery);
+      const alias = bp ? bp.alias : 'unknown';
 
       // Simulate activation of overlapping lt-<XXX> ranges
       switch (alias) {
@@ -120,8 +116,8 @@ export class MockMatchMedia extends MatchMedia {
    *
    */
   private _activateByAlias(aliases: string) {
-    let activate = (alias: string) => {
-      let bp = this._breakpoints.findByAlias(alias);
+    const activate = (alias: string) => {
+      const bp = this._breakpoints.findByAlias(alias);
       this._activateByQuery(bp ? bp.mediaQuery : alias);
     };
     aliases.split(',').forEach(alias => activate(alias.trim()));
@@ -131,10 +127,9 @@ export class MockMatchMedia extends MatchMedia {
    *
    */
   private _activateByQuery(mediaQuery: string) {
-    let mql = <MockMediaQueryList> this._registry.get(mediaQuery);
-    let alreadyAdded = this._actives.reduce((found, it) => {
-      return found || (mql && (it.media === mql.media));
-    }, false);
+    const mql = this._registry.get(mediaQuery)!;
+    const alreadyAdded = this._actives
+      .reduce((found, it) => (found || (mql && (it.media === mql.media))), false);
 
     if (mql && !alreadyAdded) {
       this._actives.push(mql.activate());
@@ -170,7 +165,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   protected get hasActivated() {
-    return (this._actives.length > 0);
+    return this._actives.length > 0;
   }
 
   private _actives: MockMediaQueryList[] = [];
