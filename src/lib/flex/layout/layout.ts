@@ -28,13 +28,21 @@ import {Observable, ReplaySubject} from 'rxjs';
 import {buildLayoutCSS} from '../../utils/layout-validator';
 
 export type Layout = {
-  direction: string;
+  direction: LayoutValuesType;
   wrap: boolean;
 };
 
 export interface LayoutParent {
   announcer: ReplaySubject<Layout>;
 }
+
+type LayoutValuesType
+  = ''
+  | 'row'
+  | 'row-reverse'
+  | 'column'
+  | 'column-reverse'
+  ;
 
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder extends StyleBuilder {
@@ -44,7 +52,7 @@ export class LayoutStyleBuilder extends StyleBuilder {
   }
   sideEffect(_input: string, styles: StyleDefinition, parent: LayoutParent) {
     parent.announcer.next({
-      direction: styles['flex-direction'] as string,
+      direction: styles['flex-direction'] as LayoutValuesType,
       wrap: !!styles['flex-wrap'] && styles['flex-wrap'] !== 'nowrap'
     });
   }
@@ -78,22 +86,22 @@ export class LayoutDirective extends BaseDirective implements OnInit, OnChanges,
   layout$: Observable<Layout>;
 
   /* tslint:disable */
-  @Input('fxLayout')       set layout(val: string)     { this._cacheInput('layout', val); };
-  @Input('fxLayout.xs')    set layoutXs(val: string)   { this._cacheInput('layoutXs', val); };
-  @Input('fxLayout.sm')    set layoutSm(val: string)   { this._cacheInput('layoutSm', val); };
-  @Input('fxLayout.md')    set layoutMd(val: string)   { this._cacheInput('layoutMd', val); };
-  @Input('fxLayout.lg')    set layoutLg(val: string)   { this._cacheInput('layoutLg', val); };
-  @Input('fxLayout.xl')    set layoutXl(val: string)   { this._cacheInput('layoutXl', val); };
+  @Input('fxLayout')       set layout(val: LayoutValuesType)     { this._cacheInput('layout', val); };
+  @Input('fxLayout.xs')    set layoutXs(val: LayoutValuesType)   { this._cacheInput('layoutXs', val); };
+  @Input('fxLayout.sm')    set layoutSm(val: LayoutValuesType)   { this._cacheInput('layoutSm', val); };
+  @Input('fxLayout.md')    set layoutMd(val: LayoutValuesType)   { this._cacheInput('layoutMd', val); };
+  @Input('fxLayout.lg')    set layoutLg(val: LayoutValuesType)   { this._cacheInput('layoutLg', val); };
+  @Input('fxLayout.xl')    set layoutXl(val: LayoutValuesType)   { this._cacheInput('layoutXl', val); };
 
-  @Input('fxLayout.gt-xs') set layoutGtXs(val: string) { this._cacheInput('layoutGtXs', val); };
-  @Input('fxLayout.gt-sm') set layoutGtSm(val: string) { this._cacheInput('layoutGtSm', val); };
-  @Input('fxLayout.gt-md') set layoutGtMd(val: string) { this._cacheInput('layoutGtMd', val); };
-  @Input('fxLayout.gt-lg') set layoutGtLg(val: string) { this._cacheInput('layoutGtLg', val); };
+  @Input('fxLayout.gt-xs') set layoutGtXs(val: LayoutValuesType) { this._cacheInput('layoutGtXs', val); };
+  @Input('fxLayout.gt-sm') set layoutGtSm(val: LayoutValuesType) { this._cacheInput('layoutGtSm', val); };
+  @Input('fxLayout.gt-md') set layoutGtMd(val: LayoutValuesType) { this._cacheInput('layoutGtMd', val); };
+  @Input('fxLayout.gt-lg') set layoutGtLg(val: LayoutValuesType) { this._cacheInput('layoutGtLg', val); };
 
-  @Input('fxLayout.lt-sm') set layoutLtSm(val: string) { this._cacheInput('layoutLtSm', val); };
-  @Input('fxLayout.lt-md') set layoutLtMd(val: string) { this._cacheInput('layoutLtMd', val); };
-  @Input('fxLayout.lt-lg') set layoutLtLg(val: string) { this._cacheInput('layoutLtLg', val); };
-  @Input('fxLayout.lt-xl') set layoutLtXl(val: string) { this._cacheInput('layoutLtXl', val); };
+  @Input('fxLayout.lt-sm') set layoutLtSm(val: LayoutValuesType) { this._cacheInput('layoutLtSm', val); };
+  @Input('fxLayout.lt-md') set layoutLtMd(val: LayoutValuesType) { this._cacheInput('layoutLtMd', val); };
+  @Input('fxLayout.lt-lg') set layoutLtLg(val: LayoutValuesType) { this._cacheInput('layoutLtLg', val); };
+  @Input('fxLayout.lt-xl') set layoutLtXl(val: LayoutValuesType) { this._cacheInput('layoutLtXl', val); };
   /* tslint:enable */
 
   constructor(monitor: MediaMonitor,
