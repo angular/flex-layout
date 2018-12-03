@@ -24,9 +24,17 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
+type FlexAlignValuesType
+  = 'start'
+  | 'center'
+  | 'end'
+  | 'baseline'
+  | 'stretch'
+  ;
+
 @Injectable({providedIn: 'root'})
 export class FlexAlignStyleBuilder extends StyleBuilder {
-  buildStyles(input: string) {
+  buildStyles(input: FlexAlignValuesType) {
     const styles: StyleDefinition = {};
 
     // Cross-axis
@@ -62,22 +70,22 @@ export class FlexAlignStyleBuilder extends StyleBuilder {
 export class FlexAlignDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
 
   /* tslint:disable */
-  @Input('fxFlexAlign')       set align(val: string)  { this._cacheInput('align', val);  };
-  @Input('fxFlexAlign.xs')    set alignXs(val: string)  { this._cacheInput('alignXs', val);  };
-  @Input('fxFlexAlign.sm')    set alignSm(val: string)  { this._cacheInput('alignSm', val); };
-  @Input('fxFlexAlign.md')    set alignMd(val: string)  { this._cacheInput('alignMd', val); };
-  @Input('fxFlexAlign.lg')    set alignLg(val: string)  { this._cacheInput('alignLg', val); };
-  @Input('fxFlexAlign.xl')    set alignXl(val: string)  { this._cacheInput('alignXl', val); };
+  @Input('fxFlexAlign')       set align(val: FlexAlignValuesType)  { this._cacheInput('align', val);  };
+  @Input('fxFlexAlign.xs')    set alignXs(val: FlexAlignValuesType)  { this._cacheInput('alignXs', val);  };
+  @Input('fxFlexAlign.sm')    set alignSm(val: FlexAlignValuesType)  { this._cacheInput('alignSm', val); };
+  @Input('fxFlexAlign.md')    set alignMd(val: FlexAlignValuesType)  { this._cacheInput('alignMd', val); };
+  @Input('fxFlexAlign.lg')    set alignLg(val: FlexAlignValuesType)  { this._cacheInput('alignLg', val); };
+  @Input('fxFlexAlign.xl')    set alignXl(val: FlexAlignValuesType)  { this._cacheInput('alignXl', val); };
 
-  @Input('fxFlexAlign.lt-sm') set alignLtSm(val: string) { this._cacheInput('alignLtSm', val); };
-  @Input('fxFlexAlign.lt-md') set alignLtMd(val: string) { this._cacheInput('alignLtMd', val); };
-  @Input('fxFlexAlign.lt-lg') set alignLtLg(val: string) { this._cacheInput('alignLtLg', val); };
-  @Input('fxFlexAlign.lt-xl') set alignLtXl(val: string) { this._cacheInput('alignLtXl', val); };
+  @Input('fxFlexAlign.lt-sm') set alignLtSm(val: FlexAlignValuesType) { this._cacheInput('alignLtSm', val); };
+  @Input('fxFlexAlign.lt-md') set alignLtMd(val: FlexAlignValuesType) { this._cacheInput('alignLtMd', val); };
+  @Input('fxFlexAlign.lt-lg') set alignLtLg(val: FlexAlignValuesType) { this._cacheInput('alignLtLg', val); };
+  @Input('fxFlexAlign.lt-xl') set alignLtXl(val: FlexAlignValuesType) { this._cacheInput('alignLtXl', val); };
 
-  @Input('fxFlexAlign.gt-xs') set alignGtXs(val: string)  { this._cacheInput('alignGtXs', val); };
-  @Input('fxFlexAlign.gt-sm') set alignGtSm(val: string)  { this._cacheInput('alignGtSm', val); };
-  @Input('fxFlexAlign.gt-md') set alignGtMd(val: string)  { this._cacheInput('alignGtMd', val); };
-  @Input('fxFlexAlign.gt-lg') set alignGtLg(val: string)  { this._cacheInput('alignGtLg', val); };
+  @Input('fxFlexAlign.gt-xs') set alignGtXs(val: FlexAlignValuesType)  { this._cacheInput('alignGtXs', val); };
+  @Input('fxFlexAlign.gt-sm') set alignGtSm(val: FlexAlignValuesType)  { this._cacheInput('alignGtSm', val); };
+  @Input('fxFlexAlign.gt-md') set alignGtMd(val: FlexAlignValuesType)  { this._cacheInput('alignGtMd', val); };
+  @Input('fxFlexAlign.gt-lg') set alignGtLg(val: FlexAlignValuesType)  { this._cacheInput('alignGtLg', val); };
 
   /* tslint:enable */
   constructor(monitor: MediaMonitor,
