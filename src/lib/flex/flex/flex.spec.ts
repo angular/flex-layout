@@ -497,6 +497,15 @@ describe('flex directive', () => {
       }, styler);
     });
 
+    it('should set a min-width and max-width when basis is a rem value', () => {
+      componentWithTemplate(`<div fxFlex='12rem'></div>`);
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 12rem',
+        'max-width': '12rem',
+        'min-width': '12rem'
+      }, styler);
+    });
+
     describe('', () => {
 
       it('should ignore fxLayout settings on same element', () => {

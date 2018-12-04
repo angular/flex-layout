@@ -61,9 +61,9 @@ export class FlexStyleBuilder extends StyleBuilder {
     const hasCalc = String(basis).indexOf('calc') > -1;
     const usingCalc = hasCalc || (basis === 'auto');
     const isPercent = String(basis).indexOf('%') > -1 && !hasCalc;
-    const hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('em') > -1 ||
-      String(basis).indexOf('vw') > -1 || String(basis).indexOf('vh') > -1;
-    const isPx = String(basis).indexOf('px') > -1 || usingCalc;
+    const hasUnits = String(basis).indexOf('px') > -1 || String(basis).indexOf('rem') > -1 ||
+      String(basis).indexOf('em') > -1 || String(basis).indexOf('vw') > -1 ||
+      String(basis).indexOf('vh') > -1;
 
     let isValue = (hasCalc || hasUnits);
 
@@ -166,7 +166,7 @@ export class FlexStyleBuilder extends StyleBuilder {
 
     // Fix for issues 277, 534, and 728
     if (basis !== '0%' && basis !== '0px' && basis !== '0.000000001px' && basis !== 'auto') {
-      css[min] = isFixed || (isPx && grow) ? basis : null;
+      css[min] = isFixed || (isValue && grow) ? basis : null;
       css[max] = isFixed || (!usingCalc && shrink) ? basis : null;
     }
 
