@@ -15,7 +15,7 @@ if [ -z ${FLEX_LAYOUT_BUILDS_TOKEN} ]; then
   exit 1
 fi
 
-# Flex-Layout packages that need to published.
+# Layout packages that need to published.
 PACKAGES=(flex-layout)
 REPOSITORIES=(flex-layout-builds)
 
@@ -29,20 +29,23 @@ publishPackage() {
   packageName=${1}
   packageRepo=${2}
 
-  srcDir=$(pwd)
-  buildDir="dist/releases/${packageName}"
+  buildDir="$(pwd)/dist/releases/${packageName}"
   buildVersion=$(node -pe "require('./package.json').version")
+  branchName=${CIRCLE_BRANCH:-'master'}
 
   commitSha=$(git rev-parse --short HEAD)
   commitAuthorName=$(git --no-pager show -s --format='%an' HEAD)
   commitAuthorEmail=$(git --no-pager show -s --format='%ae' HEAD)
   commitMessage=$(git log --oneline -n 1)
-  commitTag="${buildVersion}-${commitSha}"
+
+  buildVersionName="${buildVersion}-${commitSha}"
+  buildTagName="${branchName}-${commitSha}"
+  buildCommitMessage="${branchName} - ${commitMessage}"
 
   repoUrl="https://github.com/angular/${packageRepo}.git"
   repoDir="tmp/${packageRepo}"
 
-  echo "Starting publish process of ${packageName} for ${commitTag}.."
+  echo "Starting publish process of ${packageName} for ${buildVersionName} into ${branchName}.."
 
   if [[ ! ${COMMAND_ARGS} == *--no-build* ]]; then
     # Create a release of the current repository.
@@ -55,26 +58,31 @@ publishPackage() {
 
   echo "Starting cloning process of ${repoUrl} into ${repoDir}.."
 
-  # Clone the repository and only fetch the last commit to download less unused data.
-  git clone ${repoUrl} ${repoDir} --depth 1
+  if [[ $(git ls-remote --heads ${repoUrl} ${branchName}) ]]; then
+    echo "Branch ${branchName} already exists. Cloning that branch."
+    git clone ${repoUrl} ${repoDir} --depth 1 --branch ${branchName}
 
-  echo "Successfully cloned ${repoUrl} into ${repoDir}."
+    cd ${repoDir}
+    echo "Cloned repository and switched into the repository directory (${repoDir})."
+  else
+    echo "Branch ${branchName} does not exist on ${packageRepo} yet."
+    echo "Cloning default branch and creating branch '${branchName}' on top of it."
+
+    git clone ${repoUrl} ${repoDir} --depth 1
+    cd ${repoDir}
+
+    echo "Cloned repository and switched into directory. Creating new branch now.."
+
+    git checkout -b ${branchName}
+  fi
 
   # Copy the build files to the repository
-  rm -rf ${repoDir}/*
-  cp -r ${buildDir}/* ${repoDir}
+  rm -rf ./*
+  cp -r ${buildDir}/* ./
 
-  # Copy the npm README.md to the flex-layout-builds dir...
-  cp -f "scripts/release/README.md" ${repoDir}
+  echo "Removed everything from ${packageRepo}#${branchName} and added the new build output."
 
-  echo "Removed everything from ${packageRepo} and added the new build output."
-
-  # Create the build commit and push the changes to the repository.
-  cd ${repoDir}
-
-  echo "Switched into the repository directory (${repoDir})."
-
-  if [[ $(git ls-remote origin "refs/tags/${commitTag}") ]]; then
+  if [[ $(git ls-remote origin "refs/tags/${buildTagName}") ]]; then
     echo "Skipping publish because tag is already published"
     exit 0
   fi
@@ -82,9 +90,7 @@ publishPackage() {
   # Replace the version in every file recursively with a more specific version that also includes
   # the SHA of the current build job. Normally this "sed" call would just replace the version
   # placeholder, but the version placeholders have been replaced by the release task already.
-  sed -i "s/${buildVersion}/${commitTag}/g" $(find . -type f -not -path '*\/.*')
-
-  cp -f "${srcDir}/CHANGELOG.md" ./
+  sed -i "s/${buildVersion}/${buildVersionName}/g" $(find . -type f -not -path '*\/.*')
 
   echo "Updated the build version in every file to include the SHA of the latest commit."
 
@@ -93,16 +99,16 @@ publishPackage() {
   git config user.email "${commitAuthorEmail}"
   git config credential.helper "store --file=.git/credentials"
 
-   echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
+  echo "https://${FLEX_LAYOUT_BUILDS_TOKEN}:@github.com" > .git/credentials
 
   echo "Git configuration has been updated to match the last commit author. Publishing now.."
 
   git add -A
-  git commit --allow-empty -m "${commitMessage}"
-  git tag "${commitTag}"
-  git push origin master --tags
+  git commit --allow-empty -m "${buildCommitMessage}"
+  git tag "${buildTagName}"
+  git push origin ${branchName} --tags
 
-  echo "Published package artifacts for ${packageName}#${commitSha}."
+  echo "Published package artifacts for ${packageName}#${buildVersionName} into ${branchName}"
 }
 
 for ((i = 0; i < ${#PACKAGES[@]}; i++)); do

@@ -1,4 +1,5 @@
 import {task} from 'gulp';
+import {sequenceTask} from 'lib-build-tools';
 
 
 task('ci:lint', ['lint']);
@@ -15,10 +16,13 @@ task('ci:hw', ['hw:build']);
 /** Task that verifies if all Flex-layout components are working with platform-server.*/
 task('ci:prerender', ['prerender']);
 
-/** Task which reports the size of the library and stores it in a database. */
-task('ci:payload', ['payload']);
-
 task('ci:ssr', ['test:ssr']);
+
+/** Task that builds all release packages. */
+task('ci:build-release-packages', sequenceTask(
+  'clean',
+  'flex-layout:build-release'
+));
 
 
 

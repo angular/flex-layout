@@ -49,7 +49,7 @@ task('hw:bundle:rename', [], execTask(
 ));
 
 task('hw:cli', execTask(
-  'ng', ['build', '--prod'],
+  'yarn', ['ng', 'build', '--prod'],
   {cwd: helloWorldSource, failOnStderr: true}
 ));
 
