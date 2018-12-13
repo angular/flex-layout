@@ -49,7 +49,7 @@ task('aot:bundle:rename', [], execTask(
 ));
 
 task('aot:cli', execTask(
-  'ng', ['build', '--prod'],
+  'yarn', ['ng', 'build', '--prod'],
   {cwd: demoAppSource, failOnStderr: true}
 ));
 

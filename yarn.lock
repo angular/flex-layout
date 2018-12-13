@@ -5874,7 +5874,7 @@ isstream@0.1.x, isstream@~0.1.2:
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
 
-istanbul@^0.4.0:
+istanbul@^0.4.0, istanbul@^0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/istanbul/-/istanbul-0.4.5.tgz#65c7d73d4c4da84d4f3ac310b918fb0b8033733b"
   integrity sha1-ZcfXPUxNqE1POsMQuRj7C4Azczs=
@@ -6182,6 +6182,14 @@ karma-jasmine@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.1.2.tgz#394f2b25ffb4a644b9ada6f22d443e2fd08886c3"
   integrity sha1-OU8rJf+0pkS5rabyLUQ+L9CIhsM=
+
+karma-parallel@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/karma-parallel/-/karma-parallel-0.3.1.tgz#781876e5992b2781619e762f3e04dcbf85f47fa1"
+  integrity sha512-64jxNYamYi/9Y67h4+FfViSYhwDgod3rLuq+ZdZ0c3XeZFp/3q3v3HVkd8b5Czp3hCB+LLF8DIv4zlR4xFqbRw==
+  dependencies:
+    istanbul "^0.4.5"
+    lodash "^4.17.11"
 
 karma-sauce-launcher@^1.2.0:
   version "1.2.0"
@@ -11610,7 +11618,6 @@ zip-stream@^1.2.0:
     lodash "^4.8.0"
     readable-stream "^2.0.0"
 
-zone.js@^0.8.26:
-  version "0.8.26"
-  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.26.tgz#7bdd72f7668c5a7ad6b118148b4ea39c59d08d2d"
-  integrity sha512-W9Nj+UmBJG251wkCacIkETgra4QgBo/vgoEkb4a2uoLzpQG7qF9nzwoLXWU5xj3Fg2mxGvEDh47mg24vXccYjA==
+"zone.js@https://github.com/CaerusKaru/zone.js#adam/27":
+  version "0.8.27"
+  resolved "https://github.com/CaerusKaru/zone.js#5090cc9b85b3f71105f4c56489b2aedd6df8d053"

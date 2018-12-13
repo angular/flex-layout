@@ -5,9 +5,9 @@ require('ts-node').register({
   project: path.join(__dirname, '../e2e/')
 });
 
-
 const E2E_BASE_URL = process.env['E2E_BASE_URL'] || 'http://localhost:4200';
-const config = {
+
+exports.config = {
   useAllAngular2AppRoots: true,
   specs: [ path.join(__dirname, '../e2e/**/*.spec.ts') ],
   baseUrl: E2E_BASE_URL,
@@ -24,37 +24,22 @@ const config = {
       path: '../tools/axe-protractor/axe-protractor.js',
 
       rules: [
-        // Exclude md-menu elements because those are empty if not active.
-        { id: 'aria-required-children', selector: '*:not(md-menu)' },
 
-        // Disable color constrast checks since the final colors will vary based on the theme.
+        // Disable color contrast checks since the final colors will vary based on the theme.
         { id: 'color-contrast', enabled: false },
       ]
     }
-  ]
+  ],
+
+  capabilities: {
+    browserName: 'chrome',
+
+    chromeOptions: {
+      args: [ '--headless', '--window-size=1024,768']
+    },
+
+    // Enables concurrent testing in the Webdriver. Currently runs three e2e files in parallel.
+    shardTestFiles: true,
+    maxInstances: 5,
+  }
 };
-
-if (process.env['TRAVIS']) {
-  const key = require('../scripts/saucelabs/sauce_config');
-  config.sauceUser = process.env['SAUCE_USERNAME'];
-  config.sauceKey = key;
-  config.capabilities = {
-    'browserName': 'chrome',
-    'version': 'latest',
-    'chromedriverVersion': '2.28',
-    'tunnel-identifier': process.env['TRAVIS_JOB_ID'],
-    'build': process.env['TRAVIS_JOB_ID'],
-    'name': 'Flex Layout E2E Tests',
-
-    // Enables concurrent testing in the Webdriver. Currently runs five e2e files in parallel.
-    'maxInstances': 5,
-    'shardTestFiles': true,
-
-    // By default Saucelabs tries to record the whole e2e run. This can slow down the builds.
-    'recordVideo': false,
-    'recordScreenshots': false
-  };
-}
-
-
-exports.config = config;
