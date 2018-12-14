@@ -23,3 +23,4 @@ export * from './responsive-activation/responsive-activation';
 export * from './style-utils/style-utils';
 export * from './style-builder/style-builder';
 export * from './basis-validator/basis-validator';
+export * from './media-marshaller/media-marshaller';

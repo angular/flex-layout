@@ -22,7 +22,7 @@ import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-mat
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
 } from '../../utils/testing/helpers';
-import {ShowHideDirective} from './show-hide';
+import {DefaultShowHideDirective} from './show-hide';
 
 
 describe('hide directive', () => {
@@ -60,7 +60,7 @@ describe('hide directive', () => {
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, CoreModule],
-      declarations: [TestHideComponent, ShowHideDirective],
+      declarations: [TestHideComponent, DefaultShowHideDirective],
       providers: [
         MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true},

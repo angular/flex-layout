@@ -28,6 +28,8 @@ import {mergeAlias} from '../add-alias';
  *  - injects alias information into each raw MediaChange event
  *  - provides accessor to the currently active BreakPoint
  *  - publish list of overlapping BreakPoint(s); used by ResponsiveActivation
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
  */
 @Injectable({providedIn: 'root'})
 export class MediaMonitor {

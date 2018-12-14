@@ -8,50 +8,167 @@
 import {
   Directive,
   ElementRef,
-  Input,
-  OnInit,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
-  Self,
   Optional,
   Inject,
   PLATFORM_ID,
-  ViewChild,
+  Injectable,
   AfterViewInit,
 } from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
-  BaseDirective,
+  BaseDirective2,
   LAYOUT_CONFIG,
   LayoutConfigOptions,
-  MediaChange,
-  MediaMonitor,
+  MediaMarshaller,
   SERVER_TOKEN,
   StyleUtils,
+  StyleBuilder,
 } from '@angular/flex-layout/core';
-import {FlexDirective, LayoutDirective} from '@angular/flex-layout/flex';
-import {Subscription} from 'rxjs';
-
-const FALSY = ['false', false, 0];
+import {coerceBooleanProperty} from '@angular/cdk/coercion';
+import {takeUntil} from 'rxjs/operators';
 
 /**
  * For fxHide selectors, we invert the 'value'
  * and assign to the equivalent fxShow selector cache
  *  - When 'hide' === '' === true, do NOT show the element
  *  - When 'hide' === false or 0... we WILL show the element
+ * @deprecated
+ * @deletion-target v7.0.0-beta.21
  */
 export function negativeOf(hide: any) {
   return (hide === '') ? false :
          ((hide === 'false') || (hide === 0)) ? true : !hide;
 }
 
-/**
- * 'show' Layout API directive
- *
- */
-@Directive({
-  selector: `
+export interface ShowHideParent {
+  display: string;
+}
+
+@Injectable({providedIn: 'root'})
+export class ShowHideStyleBuilder extends StyleBuilder {
+  buildStyles(show: string, parent: ShowHideParent) {
+    const shouldShow = show === 'true';
+    return {'display': shouldShow ? parent.display : 'none'};
+  }
+}
+
+export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, OnChanges {
+  protected DIRECTIVE_KEY = 'show-hide';
+
+  /** Original dom Elements CSS display style */
+  protected display: string = '';
+  protected hasLayout = false;
+  protected hasFlexChild = false;
+
+  constructor(protected elementRef: ElementRef,
+              protected styleBuilder: ShowHideStyleBuilder,
+              protected styler: StyleUtils,
+              protected marshal: MediaMarshaller,
+              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
+              @Inject(PLATFORM_ID) protected platformId: Object,
+              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
+    super(elementRef, styleBuilder, styler, marshal);
+  }
+
+  // *********************************************
+  // Lifecycle Methods
+  // *********************************************
+
+  ngAfterViewInit() {
+    this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+    this.marshal.trackValue(this.nativeElement, 'layout')
+      .pipe(takeUntil(this.destroySubject))
+      .subscribe(this.updateWithValue.bind(this));
+
+    const children = Array.from(this.nativeElement.children);
+    for (let i = 0; i < children.length; i++) {
+      if (this.marshal.hasValue(children[i] as HTMLElement, 'flex')) {
+        this.hasFlexChild = true;
+        break;
+      }
+    }
+
+    if (DISPLAY_MAP.has(this.nativeElement)) {
+      this.display = DISPLAY_MAP.get(this.nativeElement)!;
+    } else {
+      this.display = this.getDisplayStyle();
+      DISPLAY_MAP.set(this.nativeElement, this.display);
+    }
+
+    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this));
+    // set the default to show unless explicitly overridden
+    const defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
+    if (defaultValue === undefined || defaultValue === '') {
+      this.setValue(true, '');
+    }
+    this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
+  }
+
+  /**
+   * On changes to any @Input properties...
+   * Default to use the non-responsive Input value ('fxShow')
+   * Then conditionally override with the mq-activated Input's current value
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    Object.keys(changes).forEach(key => {
+      if (this.inputs.indexOf(key) !== -1) {
+        const inputKey = key.split('.');
+        const bp = inputKey[1] || '';
+        const inputValue = changes[key].currentValue;
+        let shouldShow = inputValue !== '' ?
+          inputValue !== 0 ? coerceBooleanProperty(inputValue) : false
+          : true;
+        if (inputKey[0] === 'fxHide') {
+          shouldShow = !shouldShow;
+        }
+        this.setValue(shouldShow, bp);
+      }
+    });
+  }
+
+  // *********************************************
+  // Protected methods
+  // *********************************************
+
+  /**
+   * Override accessor to the current HTMLElement's `display` style
+   * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
+   * unless it was already explicitly specified inline or in a CSS stylesheet.
+   */
+  protected getDisplayStyle(): string {
+    return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
+      'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
+  }
+
+  /** Validate the visibility value and then update the host's inline display style */
+  protected updateWithValue(value: boolean|string = true) {
+    if (value === '') {
+      return;
+    }
+    this.addStyles(value ? 'true' : 'false', {display: this.display});
+    if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+      this.nativeElement.style.setProperty('display', '');
+    }
+  }
+}
+
+const DISPLAY_MAP: WeakMap<HTMLElement, string> = new WeakMap();
+
+const inputs = [
+  'fxShow',
+  'fxShow.xs', 'fxShow.sm', 'fxShow.md', 'fxShow.lg', 'fxShow.xl',
+  'fxShow.lt-sm', 'fxShow.lt-md', 'fxShow.lt-lg', 'fxShow.lt-xl',
+  'fxShow.gt-xs', 'fxShow.gt-sm', 'fxShow.gt-md', 'fxShow.gt-lg',
+  'fxHide',
+  'fxHide.xs', 'fxHide.sm', 'fxHide.md', 'fxHide.lg', 'fxHide.xl',
+  'fxHide.lt-sm', 'fxHide.lt-md', 'fxHide.lt-lg', 'fxHide.lt-xl',
+  'fxHide.gt-xs', 'fxHide.gt-sm', 'fxHide.gt-md', 'fxHide.gt-lg'
+];
+
+const selector = `
   [fxShow],
   [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
   [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
@@ -60,160 +177,12 @@ export function negativeOf(hide: any) {
   [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
   [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]
-`
-})
-export class ShowHideDirective extends BaseDirective
-  implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+`;
 
-  /**
-   * Subscription to the parent flex container's layout changes.
-   * Stored so we can unsubscribe when this directive is destroyed.
-   */
-  protected _layoutWatcher?: Subscription;
-
-  /** Original dom Elements CSS display style */
-  protected _display: string = '';
-
-  /* tslint:disable */
-  @Input('fxShow')       set show(val: string) {  this._cacheInput('show', val);  }
-  @Input('fxShow.xs')    set showXs(val: string) {this._cacheInput('showXs', val);}
-  @Input('fxShow.sm')    set showSm(val: string) {this._cacheInput('showSm', val); };
-  @Input('fxShow.md')    set showMd(val: string) {this._cacheInput('showMd', val); };
-  @Input('fxShow.lg')    set showLg(val: string) {this._cacheInput('showLg', val); };
-  @Input('fxShow.xl')    set showXl(val: string) {this._cacheInput('showXl', val); };
-
-  @Input('fxShow.lt-sm') set showLtSm(val: string) { this._cacheInput('showLtSm', val); };
-  @Input('fxShow.lt-md') set showLtMd(val: string) { this._cacheInput('showLtMd', val); };
-  @Input('fxShow.lt-lg') set showLtLg(val: string) { this._cacheInput('showLtLg', val); };
-  @Input('fxShow.lt-xl') set showLtXl(val: string) { this._cacheInput('showLtXl', val); };
-
-  @Input('fxShow.gt-xs') set showGtXs(val: string) {this._cacheInput('showGtXs', val); };
-  @Input('fxShow.gt-sm') set showGtSm(val: string) {this._cacheInput('showGtSm', val); };
-  @Input('fxShow.gt-md') set showGtMd(val: string) {this._cacheInput('showGtMd', val); };
-  @Input('fxShow.gt-lg') set showGtLg(val: string) {this._cacheInput('showGtLg', val); };
-
-  @Input('fxHide')       set hide(val: string) {this._cacheInput('show', negativeOf(val));}
-  @Input('fxHide.xs')    set hideXs(val: string) {this._cacheInput('showXs', negativeOf(val));}
-  @Input('fxHide.sm')    set hideSm(val: string) {this._cacheInput('showSm', negativeOf(val)); };
-  @Input('fxHide.md')    set hideMd(val: string) {this._cacheInput('showMd', negativeOf(val)); };
-  @Input('fxHide.lg')    set hideLg(val: string) {this._cacheInput('showLg', negativeOf(val)); };
-  @Input('fxHide.xl')    set hideXl(val: string) {this._cacheInput('showXl', negativeOf(val)); };
-
-  @Input('fxHide.lt-sm') set hideLtSm(val: string) { this._cacheInput('showLtSm', negativeOf(val)); };
-  @Input('fxHide.lt-md') set hideLtMd(val: string) { this._cacheInput('showLtMd', negativeOf(val)); };
-  @Input('fxHide.lt-lg') set hideLtLg(val: string) { this._cacheInput('showLtLg', negativeOf(val)); };
-  @Input('fxHide.lt-xl') set hideLtXl(val: string) { this._cacheInput('showLtXl', negativeOf(val)); };
-
-  @Input('fxHide.gt-xs') set hideGtXs(val: string) {this._cacheInput('showGtXs', negativeOf(val)); };
-  @Input('fxHide.gt-sm') set hideGtSm(val: string) {this._cacheInput('showGtSm', negativeOf(val)); };
-  @Input('fxHide.gt-md') set hideGtMd(val: string) {this._cacheInput('showGtMd', negativeOf(val)); };
-  @Input('fxHide.gt-lg') set hideGtLg(val: string) {this._cacheInput('showGtLg', negativeOf(val)); };
-  /* tslint:enable */
-
-  @ViewChild(FlexDirective) protected _flexChild: FlexDirective | null = null;
-
-  constructor(monitor: MediaMonitor,
-              @Optional() @Self() protected layout: LayoutDirective,
-              protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              @Inject(PLATFORM_ID) protected platformId: Object,
-              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean,
-              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
-
-    super(monitor, elRef, styleUtils);
-  }
-
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
-  /**
-   * Override accessor to the current HTMLElement's `display` style
-   * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
-   * unless it was already explicitly specified inline or in a CSS stylesheet.
-   */
-  protected _getDisplayStyle(): string {
-    return (this.layout || (this._flexChild && this.layoutConfig.addFlexToParent)) ?
-      'flex' : super._getDisplayStyle();
-  }
-
-
-  /**
-   * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('fxShow')
-   * Then conditionally override with the mq-activated Input's current value
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.hasInitialized && (changes['show'] != null || this._mqActivation)) {
-      this._updateWithValue();
-    }
-  }
-
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    super.ngOnInit();
-  }
-
-  ngAfterViewInit() {
-    if (DISPLAY_MAP.has(this.nativeElement)) {
-      this._display = DISPLAY_MAP.get(this.nativeElement)!;
-    } else {
-      this._display = this._getDisplayStyle();
-      DISPLAY_MAP.set(this.nativeElement, this._display);
-    }
-    if (this.layout) {
-      /**
-       * The Layout can set the display:flex (and incorrectly affect the Hide/Show directives.
-       * Whenever Layout [on the same element] resets its CSS, then update the Hide/Show CSS
-       */
-      this._layoutWatcher = this.layout.layout$.subscribe(() => this._updateWithValue());
-    }
-    let value = this._getDefaultVal('show', true);
-    // Build _mqActivation controller
-    this._listenForMediaQueryChanges('show', value, (changes: MediaChange) => {
-      this._updateWithValue(changes.value);
-    });
-    this._updateWithValue();
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this._layoutWatcher) {
-      this._layoutWatcher.unsubscribe();
-    }
-  }
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-  /** Validate the visibility value and then update the host's inline display style */
-  protected _updateWithValue(value?: string|number|boolean) {
-    value = value || this._getDefaultVal('show', true);
-    if (this._mqActivation) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    let shouldShow = this._validateTruthy(value);
-    this._applyStyleToElement(this._buildCSS(shouldShow));
-    if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
-      this.nativeElement.style.setProperty('display', '');
-    }
-  }
-
-
-  /** Build the CSS that should be assigned to the element instance */
-  protected _buildCSS(show: boolean) {
-    return {'display': show ? this._display : 'none'};
-  }
-
-  /**  Validate the to be not FALSY */
-  _validateTruthy(show: string | number | boolean = '') {
-    return (FALSY.indexOf(show) === -1);
-  }
+/**
+ * 'show' Layout API directive
+ */
+@Directive({selector, inputs})
+export class DefaultShowHideDirective extends ShowHideDirective {
+  protected inputs = inputs;
 }
-
-const DISPLAY_MAP: WeakMap<HTMLElement, string> = new WeakMap();

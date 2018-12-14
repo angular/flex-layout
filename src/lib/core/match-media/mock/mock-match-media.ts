@@ -79,32 +79,32 @@ export class MockMatchMedia extends MatchMedia {
       // Simulate activation of overlapping lt-<XXX> ranges
       switch (alias) {
         case 'lg'   :
-          this._activateByAlias('lt-xl');
+          this._activateByAlias('lt-xl', true);
           break;
         case 'md'   :
-          this._activateByAlias('lt-xl, lt-lg');
+          this._activateByAlias('lt-xl, lt-lg', true);
           break;
         case 'sm'   :
-          this._activateByAlias('lt-xl, lt-lg, lt-md');
+          this._activateByAlias('lt-xl, lt-lg, lt-md', true);
           break;
         case 'xs'   :
-          this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm');
+          this._activateByAlias('lt-xl, lt-lg, lt-md, lt-sm', true);
           break;
       }
 
       // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
       switch (alias) {
         case 'xl'   :
-          this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
+          this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs', true);
           break;
         case 'lg'   :
-          this._activateByAlias('gt-md, gt-sm, gt-xs');
+          this._activateByAlias('gt-md, gt-sm, gt-xs', true);
           break;
         case 'md'   :
-          this._activateByAlias('gt-sm, gt-xs');
+          this._activateByAlias('gt-sm, gt-xs', true);
           break;
         case 'sm'   :
-          this._activateByAlias('gt-xs');
+          this._activateByAlias('gt-xs', true);
           break;
       }
     }
@@ -115,10 +115,10 @@ export class MockMatchMedia extends MatchMedia {
   /**
    *
    */
-  private _activateByAlias(aliases: string) {
+  private _activateByAlias(aliases: string, useOverlaps = false) {
     const activate = (alias: string) => {
       const bp = this._breakpoints.findByAlias(alias);
-      this._activateByQuery(bp ? bp.mediaQuery : alias);
+      this._activateByQuery(bp ? bp.mediaQuery : alias, useOverlaps);
     };
     aliases.split(',').forEach(alias => activate(alias.trim()));
   }
@@ -126,10 +126,13 @@ export class MockMatchMedia extends MatchMedia {
   /**
    *
    */
-  private _activateByQuery(mediaQuery: string) {
-    const mql = this._registry.get(mediaQuery)!;
+  private _activateByQuery(mediaQuery: string, useOverlaps = false) {
+    if (useOverlaps) {
+      this._registerMediaQuery(mediaQuery);
+    }
+    const mql = this._registry.get(mediaQuery);
     const alreadyAdded = this._actives
-      .reduce((found, it) => (found || (mql && (it.media === mql.media))), false);
+      .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
 
     if (mql && !alreadyAdded) {
       this._actives.push(mql.activate());

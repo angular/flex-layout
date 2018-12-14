@@ -64,3 +64,9 @@ export function mergeByAlias(defaults: BreakPoint[], custom: BreakPoint[] = []):
   return validateSuffixes(Object.keys(dict).map(k => dict[k]));
 }
 
+/** HOF to sort the breakpoints by priority */
+export function prioritySort(a: BreakPoint, b: BreakPoint): number {
+  const priorityA = a.priority || 0;
+  const priorityB = b.priority || 0;
+  return priorityB - priorityA;
+}

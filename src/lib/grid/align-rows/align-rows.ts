@@ -5,22 +5,79 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import {Directive, ElementRef, Injectable, Input, Optional} from '@angular/core';
 import {
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-} from '@angular/core';
-import {BaseDirective, MediaChange, MediaMonitor, StyleUtils} from '@angular/flex-layout/core';
-import {extendObject} from '../../utils/object-extend';
+  BaseDirective2,
+  StyleUtils,
+  StyleBuilder,
+  StyleDefinition,
+  MediaMarshaller,
+} from '@angular/flex-layout/core';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
-const CACHE_KEY = 'alignRows';
 const DEFAULT_MAIN = 'start';
 const DEFAULT_CROSS = 'stretch';
+
+export interface GridAlignRowsParent {
+  inline: boolean;
+}
+
+@Injectable({providedIn: 'root'})
+export class GridAlignRowsStyleBuilder extends StyleBuilder {
+  buildStyles(input: string, parent: GridAlignRowsParent) {
+    return buildCss(input || `${DEFAULT_MAIN} ${DEFAULT_CROSS}`, parent.inline);
+  }
+}
+
+export class GridAlignRowsDirective extends BaseDirective2 {
+
+  protected DIRECTIVE_KEY = 'grid-align-rows';
+
+  @Input('gdInline')
+  get inline(): boolean { return this._inline; }
+  set inline(val: boolean) { this._inline = coerceBooleanProperty(val); }
+  protected _inline = false;
+
+  constructor(protected elementRef: ElementRef,
+              // NOTE: not actually optional, but we need to force DI without a
+              // constructor call
+              @Optional() protected styleBuilder: GridAlignRowsStyleBuilder,
+              protected styler: StyleUtils,
+              protected marshal: MediaMarshaller) {
+    super(elementRef, styleBuilder, styler, marshal);
+    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this));
+  }
+
+  // *********************************************
+  // Protected methods
+  // *********************************************
+
+  protected updateWithValue(value: string) {
+    this.styleCache = this.inline ? alignRowsInlineCache : alignRowsCache;
+    this.addStyles(value, {inline: this.inline});
+  }
+}
+
+const alignRowsCache: Map<string, StyleDefinition> = new Map();
+const alignRowsInlineCache: Map<string, StyleDefinition> = new Map();
+
+const inputs = [
+  'gdAlignRows',
+  'gdAlignRows.xs', 'gdAlignRows.sm', 'gdAlignRows.md',
+  'gdAlignRows.lg', 'gdAlignRows.xl', 'gdAlignRows.lt-sm',
+  'gdAlignRows.lt-md', 'gdAlignRows.lt-lg', 'gdAlignRows.lt-xl',
+  'gdAlignRows.gt-xs', 'gdAlignRows.gt-sm', 'gdAlignRows.gt-md',
+  'gdAlignRows.gt-lg'
+];
+const selector = `
+  [gdAlignRows],
+  [gdAlignRows.xs], [gdAlignRows.sm], [gdAlignRows.md],
+  [gdAlignRows.lg], [gdAlignRows.xl], [gdAlignRows.lt-sm],
+  [gdAlignRows.lt-md], [gdAlignRows.lt-lg], [gdAlignRows.lt-xl],
+  [gdAlignRows.gt-xs], [gdAlignRows.gt-sm], [gdAlignRows.gt-md],
+  [gdAlignRows.gt-lg]
+`;
 
 /**
  * 'row alignment' CSS Grid styling directive
@@ -28,116 +85,44 @@ const DEFAULT_CROSS = 'stretch';
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-18
  * @see https://css-tricks.com/snippets/css/complete-guide-grid/#article-header-id-20
  */
-@Directive({selector: `
-  [gdAlignRows],
-  [gdAlignRows.xs], [gdAlignRows.sm], [gdAlignRows.md],
-  [gdAlignRows.lg], [gdAlignRows.xl], [gdAlignRows.lt-sm],
-  [gdAlignRows.lt-md], [gdAlignRows.lt-lg], [gdAlignRows.lt-xl],
-  [gdAlignRows.gt-xs], [gdAlignRows.gt-sm], [gdAlignRows.gt-md],
-  [gdAlignRows.gt-lg]
-`})
-export class GridAlignRowsDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
+@Directive({selector, inputs})
+export class DefaultGridAlignRowsDirective extends GridAlignRowsDirective {
+  protected inputs = inputs;
+}
 
-  /* tslint:disable */
-  @Input('gdAlignRows')       set align(val: string)     { this._cacheInput(`${CACHE_KEY}`, val); }
-  @Input('gdAlignRows.xs')    set alignXs(val: string)   { this._cacheInput(`${CACHE_KEY}Xs`, val); }
-  @Input('gdAlignRows.sm')    set alignSm(val: string)   { this._cacheInput(`${CACHE_KEY}Sm`, val); };
-  @Input('gdAlignRows.md')    set alignMd(val: string)   { this._cacheInput(`${CACHE_KEY}Md`, val); };
-  @Input('gdAlignRows.lg')    set alignLg(val: string)   { this._cacheInput(`${CACHE_KEY}Lg`, val); };
-  @Input('gdAlignRows.xl')    set alignXl(val: string)   { this._cacheInput(`${CACHE_KEY}Xl`, val); };
+function buildCss(align: string, inline: boolean): StyleDefinition {
+  const css: {[key: string]: string} = {}, [mainAxis, crossAxis] = align.split(' ');
 
-  @Input('gdAlignRows.gt-xs') set alignGtXs(val: string) { this._cacheInput(`${CACHE_KEY}GtXs`, val); };
-  @Input('gdAlignRows.gt-sm') set alignGtSm(val: string) { this._cacheInput(`${CACHE_KEY}GtSm`, val); };
-  @Input('gdAlignRows.gt-md') set alignGtMd(val: string) { this._cacheInput(`${CACHE_KEY}GtMd`, val); };
-  @Input('gdAlignRows.gt-lg') set alignGtLg(val: string) { this._cacheInput(`${CACHE_KEY}GtLg`, val); };
-
-  @Input('gdAlignRows.lt-sm') set alignLtSm(val: string) { this._cacheInput(`${CACHE_KEY}LtSm`, val); };
-  @Input('gdAlignRows.lt-md') set alignLtMd(val: string) { this._cacheInput(`${CACHE_KEY}LtMd`, val); };
-  @Input('gdAlignRows.lt-lg') set alignLtLg(val: string) { this._cacheInput(`${CACHE_KEY}LtLg`, val); };
-  @Input('gdAlignRows.lt-xl') set alignLtXl(val: string) { this._cacheInput(`${CACHE_KEY}LtXl`, val); };
-
-  @Input('gdInline') set inline(val: string) { this._cacheInput('inline', coerceBooleanProperty(val)); };
-
-  /* tslint:enable */
-  constructor(monitor: MediaMonitor,
-              elRef: ElementRef,
-              styleUtils: StyleUtils) {
-    super(monitor, elRef, styleUtils);
+  // Main axis
+  switch (mainAxis) {
+    case 'center':
+    case 'space-around':
+    case 'space-between':
+    case 'space-evenly':
+    case 'end':
+    case 'start':
+    case 'stretch':
+      css['justify-content'] = mainAxis;
+      break;
+    default:
+      css['justify-content'] = DEFAULT_MAIN;  // default main axis
+      break;
   }
 
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
-
-  /**
-   * For @Input changes on the current mq activation property, see onMediaQueryChanges()
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes[CACHE_KEY] != null || this._mqActivation) {
-      this._updateWithValue();
-    }
+  // Cross-axis
+  switch (crossAxis) {
+    case 'start':
+    case 'center':
+    case 'end':
+    case 'stretch':
+      css['justify-items'] = crossAxis;
+      break;
+    default : // 'stretch'
+      css['justify-items'] = DEFAULT_CROSS;   // default cross axis
+      break;
   }
 
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    super.ngOnInit();
+  css['display'] = inline ? 'inline-grid' : 'grid';
 
-    this._listenForMediaQueryChanges(CACHE_KEY, `${DEFAULT_MAIN} ${DEFAULT_CROSS}`,
-      (changes: MediaChange) => {
-      this._updateWithValue(changes.value);
-    });
-    this._updateWithValue();
-  }
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-  protected _updateWithValue(value?: string) {
-    value = value || this._queryInput(CACHE_KEY) || `${DEFAULT_MAIN} ${DEFAULT_CROSS}`;
-    if (this._mqActivation) {
-      value = this._mqActivation.activatedInput;
-    }
-
-    this._applyStyleToElement(this._buildCSS(value));
-  }
-
-
-  protected _buildCSS(align: string = '') {
-    let css: {[key: string]: string} = {}, [mainAxis, crossAxis] = align.split(' ');
-
-    // Main axis
-    switch (mainAxis) {
-      case 'center':
-      case 'space-around':
-      case 'space-between':
-      case 'space-evenly':
-      case 'end':
-      case 'start':
-      case 'stretch':
-        css['justify-content'] = mainAxis;
-        break;
-      default:
-        css['justify-content'] = DEFAULT_MAIN;  // default main axis
-        break;
-    }
-
-    // Cross-axis
-    switch (crossAxis) {
-      case 'start':
-      case 'center':
-      case 'end':
-      case 'stretch':
-        css['justify-items'] = crossAxis;
-        break;
-      default : // 'stretch'
-        css['justify-items'] = DEFAULT_CROSS;   // default cross axis
-        break;
-    }
-
-    return extendObject(css, {'display' : this._queryInput('inline') ? 'inline-grid' : 'grid'});
-  }
+  return css;
 }

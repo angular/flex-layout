@@ -18,7 +18,7 @@ import {
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../utils/testing/helpers';
-import {ClassDirective} from './class';
+import {DefaultClassDirective} from './class';
 
 
 describe('class directive', () => {
@@ -44,7 +44,7 @@ describe('class directive', () => {
         CommonModule,
         CoreModule
       ],
-      declarations: [TestClassComponent, ClassDirective],
+      declarations: [TestClassComponent, DefaultClassDirective],
       providers: [MockMatchMediaProvider]
     });
   });

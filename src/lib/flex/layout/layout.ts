@@ -5,50 +5,36 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
+import {Directive, ElementRef, OnChanges, Injectable, Optional} from '@angular/core';
 import {
-  Directive,
-  ElementRef,
-  Input,
-  OnInit,
-  OnChanges,
-  OnDestroy,
-  SimpleChanges,
-  Injectable,
-} from '@angular/core';
-import {
-  BaseDirective,
-  MediaChange,
-  MediaMonitor,
+  BaseDirective2,
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
+  MediaMarshaller,
 } from '@angular/flex-layout/core';
-import {Observable, ReplaySubject} from 'rxjs';
 
 import {buildLayoutCSS} from '../../utils/layout-validator';
 
-export type Layout = {
-  direction: string;
-  wrap: boolean;
-};
-
-export interface LayoutParent {
-  announcer: ReplaySubject<Layout>;
-}
-
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder extends StyleBuilder {
-  buildStyles(input: string, _parent: LayoutParent) {
-    const styles = buildLayoutCSS(input);
-    return styles;
-  }
-  sideEffect(_input: string, styles: StyleDefinition, parent: LayoutParent) {
-    parent.announcer.next({
-      direction: styles['flex-direction'] as string,
-      wrap: !!styles['flex-wrap'] && styles['flex-wrap'] !== 'nowrap'
-    });
+  buildStyles(input: string) {
+    return buildLayoutCSS(input);
   }
 }
+
+const inputs = [
+  'fxLayout', 'fxLayout.xs', 'fxLayout.sm', 'fxLayout.md',
+  'fxLayout.lg', 'fxLayout.xl', 'fxLayout.lt-sm', 'fxLayout.lt-md',
+  'fxLayout.lt-lg', 'fxLayout.lt-xl', 'fxLayout.gt-xs', 'fxLayout.gt-sm',
+  'fxLayout.gt-md', 'fxLayout.gt-lg'
+];
+const selector = `
+  [fxLayout], [fxLayout.xs], [fxLayout.sm], [fxLayout.md],
+  [fxLayout.lg], [fxLayout.xl], [fxLayout.lt-sm], [fxLayout.lt-md],
+  [fxLayout.lt-lg], [fxLayout.lt-xl], [fxLayout.gt-xs], [fxLayout.gt-sm],
+  [fxLayout.gt-md], [fxLayout.gt-lg]
+`;
 
 /**
  * 'layout' flexbox styling directive
@@ -57,95 +43,27 @@ export class LayoutStyleBuilder extends StyleBuilder {
  * @see https://css-tricks.com/almanac/properties/f/flex-direction/
  *
  */
-@Directive({selector: `
-  [fxLayout],
-  [fxLayout.xs], [fxLayout.sm], [fxLayout.md], [fxLayout.lg], [fxLayout.xl],
-  [fxLayout.lt-sm], [fxLayout.lt-md], [fxLayout.lt-lg], [fxLayout.lt-xl],
-  [fxLayout.gt-xs], [fxLayout.gt-sm], [fxLayout.gt-md], [fxLayout.gt-lg]
-`})
-export class LayoutDirective extends BaseDirective implements OnInit, OnChanges, OnDestroy {
+export class LayoutDirective extends BaseDirective2 implements OnChanges {
 
-  /**
-   * Create Observable for nested/child 'flex' directives. This allows
-   * child flex directives to subscribe/listen for flexbox direction changes.
-   */
-  protected _announcer: ReplaySubject<Layout>;
+  protected DIRECTIVE_KEY = 'layout';
 
-  /**
-   * Publish observer to enabled nested, dependent directives to listen
-   * to parent 'layout' direction changes
-   */
-  layout$: Observable<Layout>;
-
-  /* tslint:disable */
-  @Input('fxLayout')       set layout(val: string)     { this._cacheInput('layout', val); };
-  @Input('fxLayout.xs')    set layoutXs(val: string)   { this._cacheInput('layoutXs', val); };
-  @Input('fxLayout.sm')    set layoutSm(val: string)   { this._cacheInput('layoutSm', val); };
-  @Input('fxLayout.md')    set layoutMd(val: string)   { this._cacheInput('layoutMd', val); };
-  @Input('fxLayout.lg')    set layoutLg(val: string)   { this._cacheInput('layoutLg', val); };
-  @Input('fxLayout.xl')    set layoutXl(val: string)   { this._cacheInput('layoutXl', val); };
-
-  @Input('fxLayout.gt-xs') set layoutGtXs(val: string) { this._cacheInput('layoutGtXs', val); };
-  @Input('fxLayout.gt-sm') set layoutGtSm(val: string) { this._cacheInput('layoutGtSm', val); };
-  @Input('fxLayout.gt-md') set layoutGtMd(val: string) { this._cacheInput('layoutGtMd', val); };
-  @Input('fxLayout.gt-lg') set layoutGtLg(val: string) { this._cacheInput('layoutGtLg', val); };
-
-  @Input('fxLayout.lt-sm') set layoutLtSm(val: string) { this._cacheInput('layoutLtSm', val); };
-  @Input('fxLayout.lt-md') set layoutLtMd(val: string) { this._cacheInput('layoutLtMd', val); };
-  @Input('fxLayout.lt-lg') set layoutLtLg(val: string) { this._cacheInput('layoutLtLg', val); };
-  @Input('fxLayout.lt-xl') set layoutLtXl(val: string) { this._cacheInput('layoutLtXl', val); };
-  /* tslint:enable */
-
-  constructor(monitor: MediaMonitor,
-              elRef: ElementRef,
-              styleUtils: StyleUtils,
-              styleBuilder: LayoutStyleBuilder) {
-    super(monitor, elRef, styleUtils, styleBuilder);
-    this._announcer = new ReplaySubject<Layout>(1);
-    this.layout$ = this._announcer.asObservable();
+  constructor(protected elRef: ElementRef,
+              protected styleUtils: StyleUtils,
+              // NOTE: not actually optional, but we need to force DI without a
+              // constructor call
+              @Optional() protected styleBuilder: LayoutStyleBuilder,
+              protected marshal: MediaMarshaller) {
+    super(elRef, styleBuilder, styleUtils, marshal);
+    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
+      this.addStyles.bind(this));
   }
 
-  // *********************************************
-  // Lifecycle Methods
-  // *********************************************
+  protected styleCache = layoutCache;
+}
 
-  /**
-   * On changes to any @Input properties...
-   * Default to use the non-responsive Input value ('fxLayout')
-   * Then conditionally override with the mq-activated Input's current value
-   */
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['layout'] != null || this._mqActivation) {
-      this._updateWithDirection();
-    }
-  }
-
-  /**
-   * After the initial onChanges, build an mqActivation object that bridges
-   * mql change events to onMediaQueryChange handlers
-   */
-  ngOnInit() {
-    super.ngOnInit();
-
-    this._listenForMediaQueryChanges('layout', 'row', (changes: MediaChange) => {
-      this._updateWithDirection(changes.value);
-    });
-  }
-
-  // *********************************************
-  // Protected methods
-  // *********************************************
-
-  /** Validate the direction value and then update the host's inline flexbox styles */
-  protected _updateWithDirection(value?: string) {
-    value = value || this._queryInput('layout') || 'row';
-    if (this._mqActivation) {
-      value = this._mqActivation.activatedInput;
-    }
-    this.addStyles(value || '', {announcer: this._announcer});
-  }
-
-  protected _styleCache = layoutCache;
+@Directive({selector, inputs})
+export class DefaultLayoutDirective extends LayoutDirective {
+  protected inputs = inputs;
 }
 
 const layoutCache: Map<string, StyleDefinition> = new Map();
