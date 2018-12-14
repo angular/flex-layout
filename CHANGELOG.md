@@ -1,3 +1,36 @@
+<a name="7.0.0-beta.20"></a>
+# [7.0.0-beta.20](https://github.com/angular/flex-layout/compare/7.0.0-beta.19...7.0.0-beta.20) (2018-12-14)
+
+Beta 20 brings about numerous high-visibility improvements to the library with very minimal API changes. With the
+introduction of `StyleBuilder`s, users now have the flexibility to augment or replace our style generation algorithms. 
+They also allow us to memoize style generation to improve performance. With the introduction of `MediaMarshaller`, we
+are able to _dramatically_ reduce the size and complexity of the library and improve the usability of custom breakpoints.
+
+### Bug Fixes
+
+* **fxLayoutAlign:** add space-between and space-around options ([#845](https://github.com/angular/flex-layout/issues/845)) ([5e3ec0e](https://github.com/angular/flex-layout/commit/5e3ec0e)), closes [#841](https://github.com/angular/flex-layout/issues/841)
+* **fxLayoutAlign:** do not apply cross-axis stretch styles when not needed ([#877](https://github.com/angular/flex-layout/issues/877)) ([3cd5bc1](https://github.com/angular/flex-layout/commit/3cd5bc1)), closes [#876](https://github.com/angular/flex-layout/issues/876)
+* **show-hide:** account for multiple directives on the same element ([ad3e9c9](https://github.com/angular/flex-layout/commit/ad3e9c9))
+* **show-hide:** work with Angular components and elements without fxLayout ([#881](https://github.com/angular/flex-layout/issues/881)) ([3a0ec5d](https://github.com/angular/flex-layout/commit/3a0ec5d)), closes [#848](https://github.com/angular/flex-layout/issues/848) [#724](https://github.com/angular/flex-layout/issues/724)
+
+
+### Features
+
+* **core:** add ability to override style building ([#884](https://github.com/angular/flex-layout/issues/884)) ([9148e87](https://github.com/angular/flex-layout/commit/9148e87)), closes [#689](https://github.com/angular/flex-layout/issues/689)
+* **core:** add centralized media marshal service ([#900](https://github.com/angular/flex-layout/issues/900)) ([cd05cb4](https://github.com/angular/flex-layout/commit/cd05cb4)), closes [#903](https://github.com/angular/flex-layout/issues/903) [#692](https://github.com/angular/flex-layout/issues/692)
+* **core:** add memoization to style generation ([#888](https://github.com/angular/flex-layout/issues/888)) ([4600672](https://github.com/angular/flex-layout/commit/4600672))
+* **flex:** add support for rem units ([#901](https://github.com/angular/flex-layout/issues/901)) ([5990ed0](https://github.com/angular/flex-layout/commit/5990ed0)), closes [#898](https://github.com/angular/flex-layout/issues/898)
+* **media-observer:** migrate ObservableMedia ([#892](https://github.com/angular/flex-layout/issues/892)) ([1205588](https://github.com/angular/flex-layout/commit/1205588)), closes [#885](https://github.com/angular/flex-layout/issues/885)
+
+
+### BREAKING CHANGES
+
+* **media-observer:** `ObservableMedia` is now deprecated in anticipation of RxJS v7.
+The new API is called **`MediaObserver`**, and provides the exact same functionality as ObservableMedia, except you cannot directly subscribe to it,
+You can subscribe to MediaObserver's `media$` property; in place of subscribing directly to ObservableMedia.
+
+
+
 <a name="7.0.0-beta.19"></a>
 # [7.0.0-beta.19](https://github.com/angular/flex-layout/compare/6.0.0-beta.18...7.0.0-beta.19) (2018-10-05)
 
