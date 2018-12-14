@@ -1,10 +1,14 @@
 <a name="7.0.0-beta.20"></a>
 # [7.0.0-beta.20](https://github.com/angular/flex-layout/compare/7.0.0-beta.19...7.0.0-beta.20) (2018-12-14)
 
-Beta 20 brings about numerous high-visibility improvements to the library with very minimal API changes. With the
-introduction of `StyleBuilder`s, users now have the flexibility to augment or replace our style generation algorithms. 
-They also allow us to memoize style generation to improve performance. With the introduction of `MediaMarshaller`, we
-are able to _dramatically_ reduce the size and complexity of the library and improve the usability of custom breakpoints.
+Beta 20 brings about numerous, high-visibility improvements to the library with very minimal API changes. These include:
+
+* StyleBuilders: style memoization and support for easy customization of injected styles
+* MediaMarshaller: centralizes handling of mediaQuery events to trigger layout style injections
+
+#### StyleBuilders
+
+With the introduction of `StyleBuilder`s, users now have the flexibility to augment or replace our style generation algorithms.  They also allow us to memoize style generation to improve performance. With the introduction of `MediaMarshaller`, we are able to _dramatically_ reduce the size and complexity of the library and improve the usability of custom breakpoints.
 
 ### Bug Fixes
 
@@ -27,7 +31,8 @@ are able to _dramatically_ reduce the size and complexity of the library and imp
 
 * **media-observer:** `ObservableMedia` is now deprecated in anticipation of RxJS v7.
 The new API is called **`MediaObserver`**, and provides the exact same functionality as ObservableMedia, except you cannot directly subscribe to it,
-You can subscribe to MediaObserver's `media$` property; in place of subscribing directly to ObservableMedia.
+
+Developers should subscribe to MediaObserver's `media$` property; in place of subscribing directly to ObservableMedia.
 
 
 
