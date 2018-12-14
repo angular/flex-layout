@@ -29,19 +29,6 @@ import {
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {takeUntil} from 'rxjs/operators';
 
-/**
- * For fxHide selectors, we invert the 'value'
- * and assign to the equivalent fxShow selector cache
- *  - When 'hide' === '' === true, do NOT show the element
- *  - When 'hide' === false or 0... we WILL show the element
- * @deprecated
- * @deletion-target v7.0.0-beta.21
- */
-export function negativeOf(hide: any) {
-  return (hide === '') ? false :
-         ((hide === 'false') || (hide === 0)) ? true : !hide;
-}
-
 export interface ShowHideParent {
   display: string;
 }

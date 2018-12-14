@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 
 @Component({
   selector: 'demo-responsive-row-column',
@@ -19,8 +19,8 @@ export class ResponsiveRowColumnComponent implements OnDestroy {
   private _activeMQC: MediaChange;
   private _watcher;
 
-  constructor(private _media$: ObservableMedia) {
-    this._watcher = this._media$
+  constructor(private mediaObserver: MediaObserver) {
+    this._watcher = this.mediaObserver.media$
       .subscribe((e: MediaChange) => {
         this._activeMQC = e;
       });
