@@ -48,7 +48,7 @@ export class ClassDirective extends BaseDirective2 implements DoCheck {
         this.iterableDiffers, this.keyValueDiffers, this.elementRef, this.renderer
       );
     }
-    this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    this.init();
   }
 
   protected updateWithValue(value: any) {

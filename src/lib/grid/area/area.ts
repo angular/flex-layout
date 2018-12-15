@@ -34,8 +34,7 @@ export class GridAreaDirective extends BaseDirective2 {
               @Optional() protected styleBuilder: GridAreaStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.addStyles.bind(this));
+    this.init();
   }
 
   protected styleCache = gridAreaCache;

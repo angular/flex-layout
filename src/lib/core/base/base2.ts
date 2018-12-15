@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ElementRef, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 import {StyleDefinition, StyleUtils} from '../style-utils/style-utils';
 import {StyleBuilder} from '../style-builder/style-builder';
@@ -18,6 +18,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   protected DIRECTIVE_KEY = '';
   protected inputs: string[] = [];
   protected destroySubject: Subject<void> = new Subject();
+  protected observables: Observable<any>[] = [];
+  /** The least recently used styles for the builder */
+  protected lru: StyleDefinition = {};
 
   /** Access to host element's parent DOM node */
   protected get parentElement(): HTMLElement | null {
@@ -64,6 +67,11 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.marshal.releaseElement(this.nativeElement);
   }
 
+  protected init(): void {
+    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this), this.clearStyles.bind(this), this.observables);
+  }
+
   /** Add styles to the element using predefined style builder */
   protected addStyles(input: string, parent?: Object) {
     const builder = this.styleBuilder;
@@ -78,8 +86,18 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
       }
     }
 
+    this.lru = {...genStyles};
     this.applyStyleToElement(genStyles);
     builder.sideEffect(input, genStyles, parent);
+  }
+
+  /** Remove generated styles from an element using predefined style builder */
+  protected clearStyles() {
+    Object.keys(this.lru).forEach(k => {
+      this.lru[k] = '';
+    });
+    this.applyStyleToElement(this.lru);
+    this.lru = {};
   }
 
   protected triggerUpdate() {
@@ -118,5 +136,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
   protected setValue(val: any, bp: string): void {
     this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
+  }
+
+  protected updateWithValue(input: string) {
+    this.addStyles(input);
   }
 }

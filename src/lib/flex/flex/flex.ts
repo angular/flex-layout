@@ -229,8 +229,7 @@ export class FlexDirective extends BaseDirective2 {
               protected styleBuilder: FlexStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateStyle.bind(this));
+    this.init();
     if (this.parentElement) {
       this.marshal.trackValue(this.parentElement, 'layout')
         .pipe(takeUntil(this.destroySubject))
@@ -251,7 +250,7 @@ export class FlexDirective extends BaseDirective2 {
   }
 
   /** Input to this is exclusively the basis input value */
-  protected updateStyle(value: string) {
+  protected updateWithValue(value: string) {
     const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
     if (!this.direction) {
       this.direction = this.getFlexFlowDirection(this.parentElement!, addFlexToParent);

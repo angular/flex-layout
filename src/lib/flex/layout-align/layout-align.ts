@@ -129,8 +129,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
               @Optional() protected styleBuilder: LayoutAlignStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this));
+    this.init();
     this.marshal.trackValue(this.nativeElement, 'layout')
       .pipe(takeUntil(this.destroySubject))
       .subscribe(this.onLayoutChange.bind(this));

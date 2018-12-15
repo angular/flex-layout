@@ -49,7 +49,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
       // defined on the same host element; since the responsive variations may be defined...
       this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
     }
-    this.marshal.init(this.nativeElement, this.DIRECTIVE_KEY, this.updateWithValue.bind(this));
+    this.init();
     this.setValue(this.nativeElement.getAttribute('style') || '', '');
   }
 

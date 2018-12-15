@@ -66,8 +66,7 @@ export class FlexAlignDirective extends BaseDirective2 {
               @Optional() protected styleBuilder: FlexAlignStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.addStyles.bind(this));
+    this.init();
   }
 
   protected styleCache = flexAlignCache;

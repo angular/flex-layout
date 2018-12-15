@@ -60,7 +60,7 @@ describe('flex-order', () => {
       expectNativeEl(fixture).not.toHaveStyle({
         'order': '1',
       }, styler);
-      matchMedia.activate('lt-sm', true);
+      matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'order': '1',
       }, styler);
