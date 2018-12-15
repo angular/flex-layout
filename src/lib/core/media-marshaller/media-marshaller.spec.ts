@@ -66,7 +66,7 @@ describe('media-marshaller', () => {
     const builder = () => {
       triggered = true;
     };
-    mediaMarshaller.init(fakeElement, fakeKey, builder, [obs]);
+    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {}, [obs]);
     subject.next();
     expect(triggered).toBeTruthy();
   });
@@ -119,7 +119,7 @@ describe('media-marshaller', () => {
     const builder = () => {
       triggered = true;
     };
-    mediaMarshaller.init(fakeElement, fakeKey, builder, [obs]);
+    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {}, [obs]);
     mediaMarshaller.releaseElement(fakeElement);
     subject.next();
     expect(triggered).toBeFalsy();

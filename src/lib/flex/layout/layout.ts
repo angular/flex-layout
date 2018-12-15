@@ -54,8 +54,7 @@ export class LayoutDirective extends BaseDirective2 implements OnChanges {
               @Optional() protected styleBuilder: LayoutStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.addStyles.bind(this));
+    this.init();
   }
 
   protected styleCache = layoutCache;

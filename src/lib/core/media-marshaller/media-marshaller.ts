@@ -19,6 +19,7 @@ type Builder = Function;
 type ValueMap = Map<string, string>;
 type BreakpointMap = Map<string, ValueMap>;
 type ElementMap = Map<HTMLElement, BreakpointMap>;
+type ElementKeyMap = WeakMap<HTMLElement, Set<string>>;
 type SubscriptionMap = Map<string, Subscription>;
 type WatcherMap = WeakMap<HTMLElement, SubscriptionMap>;
 type BuilderMap = WeakMap<HTMLElement, Map<string, Builder>>;
@@ -37,8 +38,10 @@ export interface ElementMatcher {
 export class MediaMarshaller {
   private activatedBreakpoints: BreakPoint[] = [];
   private elementMap: ElementMap = new Map();
+  private elementKeyMap: ElementKeyMap = new WeakMap();
   private watcherMap: WatcherMap = new WeakMap();
   private builderMap: BuilderMap = new WeakMap();
+  private clearBuilderMap: BuilderMap = new WeakMap();
   private subject: Subject<ElementMatcher> = new Subject();
 
   get activatedBreakpoint(): string {
@@ -72,20 +75,22 @@ export class MediaMarshaller {
    * @param element
    * @param key
    * @param builder optional so that custom bp directives don't have to re-provide this
+   * @param clearBuilder optional so that custom bp directives don't have to re-provide this
    * @param observables
    */
   init(element: HTMLElement,
        key: string,
        builder?: Builder,
+       clearBuilder?: Builder,
        observables: Observable<any>[] = []): void {
-    if (builder) {
-      let builders = this.builderMap.get(element);
-      if (!builders) {
-        builders = new Map();
-        this.builderMap.set(element, builders);
-      }
-      builders.set(key, builder);
+    let keyMap = this.elementKeyMap.get(element);
+    if (!keyMap) {
+      keyMap = new Set();
+      this.elementKeyMap.set(element, keyMap);
     }
+    keyMap.add(key);
+    initBuilderMap(this.builderMap, element, key, builder);
+    initBuilderMap(this.clearBuilderMap, element, key, clearBuilder);
     if (observables) {
       let watchers = this.watcherMap.get(element);
       if (!watchers) {
@@ -166,10 +171,39 @@ export class MediaMarshaller {
   updateStyles(): void {
     this.elementMap.forEach((bpMap, el) => {
       const valueMap = this.getFallback(bpMap);
+      const keyMap = new Set(this.elementKeyMap.get(el)!);
       if (valueMap) {
-        valueMap.forEach((v, k) => this.updateElement(el, k, v));
+        valueMap.forEach((v, k) => {
+          this.updateElement(el, k, v);
+          keyMap.delete(k);
+        });
       }
+      keyMap.forEach(k => {
+        const fallbackMap = this.getFallback(bpMap, k);
+        if (fallbackMap) {
+          const value = fallbackMap.get(k);
+          this.updateElement(el, k, value);
+        } else {
+          this.clearElement(el, k);
+        }
+      });
     });
+  }
+
+  /**
+   * clear the styles for a given element
+   * @param element
+   * @param key
+   */
+  clearElement(element: HTMLElement, key: string): void {
+    const builders = this.clearBuilderMap.get(element);
+    if (builders) {
+      const builder: Builder | undefined = builders.get(key);
+      if (builder) {
+        builder();
+        this.subject.next({element, key, value: ''});
+      }
+    }
   }
 
   /**
@@ -232,5 +266,16 @@ export class MediaMarshaller {
   private registerBreakpoints() {
     const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
     this.matchMedia.registerQuery(queries);
+  }
+}
+
+function initBuilderMap(map: BuilderMap, element: HTMLElement, key: string, input?: Builder): void {
+  if (input !== undefined) {
+    let oldMap = map.get(element);
+    if (!oldMap) {
+      oldMap = new Map();
+      map.set(element, oldMap);
+    }
+    oldMap.set(key, input);
   }
 }

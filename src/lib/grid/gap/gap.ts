@@ -46,8 +46,7 @@ export class GridGapDirective extends BaseDirective2 {
               @Optional() protected styleBuilder: GridGapStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this));
+    this.init();
   }
 
   // *********************************************

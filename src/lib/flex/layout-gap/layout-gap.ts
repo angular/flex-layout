@@ -100,6 +100,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
   protected layout = 'row';  // default flex-direction
   protected DIRECTIVE_KEY = 'layout-gap';
   protected observerSubject = new Subject<void>();
+  protected observables = [this.directionality.change, this.observerSubject.asObservable()];
 
   /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
   protected get childrenNodes(): HTMLElement[] {
@@ -122,9 +123,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
               @Optional() protected styleBuilder: LayoutGapStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this), [this.directionality.change,
-        this.observerSubject.asObservable()]);
+    this.init();
     this.marshal.trackValue(this.nativeElement, 'layout')
       .pipe(takeUntil(this.destroySubject))
       .subscribe(this.onLayoutChange.bind(this));
