@@ -51,7 +51,7 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     Object.keys(changes).forEach(key => {
       if (this.inputs.indexOf(key) !== -1) {
-        const bp = key.split('.')[1] || '';
+        const bp = key.split('.').slice(1).join('.');
         const val = changes[key].currentValue;
         this.setValue(val, bp);
       }

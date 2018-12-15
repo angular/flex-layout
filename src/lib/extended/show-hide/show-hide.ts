@@ -117,7 +117,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
     Object.keys(changes).forEach(key => {
       if (this.inputs.indexOf(key) !== -1) {
         const inputKey = key.split('.');
-        const bp = inputKey[1] || '';
+        const bp = inputKey.slice(1).join('.');
         const inputValue = changes[key].currentValue;
         let shouldShow = inputValue !== '' ?
           inputValue !== 0 ? coerceBooleanProperty(inputValue) : false
