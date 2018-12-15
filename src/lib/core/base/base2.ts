@@ -19,8 +19,8 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   protected inputs: string[] = [];
   protected destroySubject: Subject<void> = new Subject();
   protected observables: Observable<any>[] = [];
-  /** The least recently used styles for the builder */
-  protected lru: StyleDefinition = {};
+  /** The most recently used styles for the builder */
+  protected mru: StyleDefinition = {};
 
   /** Access to host element's parent DOM node */
   protected get parentElement(): HTMLElement | null {
@@ -86,18 +86,18 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
       }
     }
 
-    this.lru = {...genStyles};
+    this.mru = {...genStyles};
     this.applyStyleToElement(genStyles);
     builder.sideEffect(input, genStyles, parent);
   }
 
   /** Remove generated styles from an element using predefined style builder */
   protected clearStyles() {
-    Object.keys(this.lru).forEach(k => {
-      this.lru[k] = '';
+    Object.keys(this.mru).forEach(k => {
+      this.mru[k] = '';
     });
-    this.applyStyleToElement(this.lru);
-    this.lru = {};
+    this.applyStyleToElement(this.mru);
+    this.mru = {};
   }
 
   protected triggerUpdate() {
