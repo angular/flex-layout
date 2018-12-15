@@ -112,7 +112,7 @@ export class MediaMarshaller {
   getValue(element: HTMLElement, key: string, bp?: string): any {
     const bpMap = this.elementMap.get(element);
     if (bpMap) {
-      const values = bp !== undefined ? bpMap.get(bp) : this.getFallbackForKey(bpMap, key);
+      const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
       if (values) {
         const value = values.get(key);
         return value !== undefined ? value : '';
@@ -129,7 +129,7 @@ export class MediaMarshaller {
   hasValue(element: HTMLElement, key: string): boolean {
     const bpMap = this.elementMap.get(element);
     if (bpMap) {
-      const values = this.getFallbackForKey(bpMap, key);
+      const values = this.getFallback(bpMap, key);
       if (values) {
         return values.get(key) !== undefined || false;
       }
@@ -165,7 +165,7 @@ export class MediaMarshaller {
   /** update all styles for all elements on the current breakpoint */
   updateStyles(): void {
     this.elementMap.forEach((bpMap, el) => {
-      const valueMap = this.getFallbackForKey(bpMap);
+      const valueMap = this.getFallback(bpMap);
       if (valueMap) {
         valueMap.forEach((v, k) => this.updateElement(el, k, v));
       }
@@ -216,7 +216,7 @@ export class MediaMarshaller {
    * @param bpMap
    * @param key
    */
-  private getFallbackForKey(bpMap: BreakpointMap, key?: string): ValueMap | undefined {
+  private getFallback(bpMap: BreakpointMap, key?: string): ValueMap | undefined {
     for (let i = 0; i < this.activatedBreakpoints.length; i++) {
       const activatedBp = this.activatedBreakpoints[i];
       const valueMap = bpMap.get(activatedBp.alias);
