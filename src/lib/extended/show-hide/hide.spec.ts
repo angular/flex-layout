@@ -224,6 +224,22 @@ describe('hide directive', () => {
       expectActivation('xs').toHaveStyle({'display': 'none'}, styler);
       expectActivation('md').not.toHaveStyle({'display': 'none'}, styler);
     });
+
+    it('should work with overlapping breakpoint', () => {
+      let template = `
+              <div>
+                <span fxHide></span>
+                <span fxHide.lt-md class="hideOnXs">Label</span>
+              </div>
+           `;
+      let expectActivation: any =
+        makeExpectWithActivation(createTestComponent(template), '.hideOnXs');
+
+      matchMedia.useOverlaps = true;
+      expectActivation().not.toHaveStyle({'display': 'none'}, styler);
+      expectActivation('xs').toHaveStyle({'display': 'none'}, styler);
+      expectActivation('md').not.toHaveStyle({'display': 'none'}, styler);
+    });
   });
 
   it('should support hide and show', () => {

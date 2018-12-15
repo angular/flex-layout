@@ -103,8 +103,9 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
     const defaultValue = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY, '');
     if (defaultValue === undefined || defaultValue === '') {
       this.setValue(true, '');
+    } else {
+      this.triggerUpdate();
     }
-    this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
   }
 
   /**

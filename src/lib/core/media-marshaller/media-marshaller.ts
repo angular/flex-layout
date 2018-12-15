@@ -47,6 +47,7 @@ export class MediaMarshaller {
 
   constructor(protected matchMedia: MatchMedia,
               protected breakpoints: BreakPointRegistry) {
+    this.registerBreakpoints();
     this.matchMedia.observe().subscribe(this.activate.bind(this));
   }
 
@@ -223,5 +224,10 @@ export class MediaMarshaller {
       }
     }
     return bpMap.get('');
+  }
+
+  private registerBreakpoints() {
+    const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
+    this.matchMedia.registerQuery(queries);
   }
 }

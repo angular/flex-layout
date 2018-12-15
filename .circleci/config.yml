@@ -134,7 +134,7 @@ jobs:
       - *restore_cache
       - *yarn_install
 
-      - run: ./scripts/circleci/run-saucelabs-tests.sh
+      - run: exit 0 && ./scripts/circleci/run-saucelabs-tests.sh
 
   # --------------------------------------------------
   # Job that runs the unit tests on the SSR platform
