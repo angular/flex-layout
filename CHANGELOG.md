@@ -1,3 +1,13 @@
+<a name="7.0.0-beta.21"></a>
+# [7.0.0-beta.21](https://github.com/angular/flex-layout/compare/7.0.0-beta.20...7.0.0-beta.21) (2018-12-15)
+
+
+### Bug Fixes
+
+* **core:** register all breakpoints at startup ([#916](https://github.com/angular/flex-layout/issues/916)) ([8f1a085](https://github.com/angular/flex-layout/commit/8f1a085)), closes [#915](https://github.com/angular/flex-layout/issues/915)
+
+
+
 <a name="7.0.0-beta.20"></a>
 # [7.0.0-beta.20](https://github.com/angular/flex-layout/compare/7.0.0-beta.19...7.0.0-beta.20) (2018-12-14)
 
