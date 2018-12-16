@@ -301,12 +301,20 @@ describe('show directive', () => {
           CommonModule,
           FlexLayoutModule.withConfig({
             serverLoaded: true,
-          }, {
-            alias: 'sm-md',
-            suffix: 'SmMd',
-            mediaQuery: 'screen and (min-width: 720px) and (max-width: 839px)',
-            overlapping: false
-          }),
+          }, [
+            {
+              alias: 'sm-md',
+              suffix: 'SmMd',
+              mediaQuery: 'screen and (min-width: 720px) and (max-width: 839px)',
+              overlapping: false
+            },
+            {
+              alias: 'sm.lg',
+              suffix: 'SmLg',
+              mediaQuery: 'screen and (min-width: 840px) and (max-width: 1000px)',
+              overlapping: false
+            }
+          ]),
         ],
         declarations: [FxShowHideDirective],
         providers: [
@@ -317,7 +325,7 @@ describe('show directive', () => {
 
     it('should respond to custom breakpoint', async(() => {
       createTestComponent(`
-        <p fxFlex="100%" fxHide="true" fxShow.sm-md="true"></p>
+        <p fxFlex="100%" fxHide="true" fxShow.sm-md="true" fxShow.sm.lg="true"></p>
       `);
 
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
@@ -329,13 +337,17 @@ describe('show directive', () => {
       matchMedia.activate('sm');
 
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('sm.lg');
+
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     }));
   });
 
 });
 
-const inputs = ['fxShow.sm-md', 'fxHide.sm-md'];
-const selector = `[fxShow.sm-md], [fxHide.sm-md]`;
+const inputs = ['fxShow.sm-md', 'fxHide.sm-md', 'fxShow.sm.lg', 'fxHide.sm.lg'];
+const selector = `[fxShow.sm-md], [fxHide.sm-md], [fxShow.sm.lg], [fxHide.sm.lg]`;
 
 // Used to test custom breakpoint functionality
 @Directive({inputs, selector})
