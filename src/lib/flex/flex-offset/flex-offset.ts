@@ -67,7 +67,6 @@ const selector = `
  */
 export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
   protected DIRECTIVE_KEY = 'flex-offset';
-  protected observables = [this.directionality.change];
 
   constructor(protected elRef: ElementRef,
               protected directionality: Directionality,
@@ -77,11 +76,15 @@ export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
               protected marshal: MediaMarshaller,
               protected styler: StyleUtils) {
     super(elRef, styleBuilder, styler, marshal);
-    this.init();
+
+    this.init([this.directionality.change]);
+
+    // Parent DOM `layout-gap` will affect the nested child with `flex-offset`
     if (this.parentElement) {
-      this.marshal.trackValue(this.parentElement, 'layout-gap')
-        .pipe(takeUntil(this.destroySubject))
-        .subscribe(this.triggerUpdate.bind(this));
+      this.marshal
+          .trackValue(this.parentElement, 'layout-gap')
+          .pipe(takeUntil(this.destroyed$))
+          .subscribe(this.triggerUpdate.bind(this));
     }
   }
 

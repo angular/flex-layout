@@ -131,7 +131,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
     this.marshal.trackValue(this.nativeElement, 'layout')
-      .pipe(takeUntil(this.destroySubject))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(this.onLayoutChange.bind(this));
   }
 

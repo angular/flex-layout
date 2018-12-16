@@ -30,6 +30,9 @@ export interface ElementMatcher {
   value: any;
 }
 
+export type ClearCallback = () => void;
+export type UpdateCallback = (val: string | number) => void;
+
 /**
  * MediaMarshaller - register responsive values from directives and
  *                   trigger them based on media query events
@@ -39,7 +42,7 @@ export class MediaMarshaller {
   private activatedBreakpoints: BreakPoint[] = [];
   private elementMap: ElementMap = new Map();
   private elementKeyMap: ElementKeyMap = new WeakMap();
-  private watcherMap: WatcherMap = new WeakMap();
+  private watcherMap: WatcherMap = new WeakMap();   // registry of special triggers to update elRef
   private builderMap: BuilderMap = new WeakMap();
   private clearBuilderMap: BuilderMap = new WeakMap();
   private subject: Subject<ElementMatcher> = new Subject();
@@ -50,8 +53,10 @@ export class MediaMarshaller {
 
   constructor(protected matchMedia: MatchMedia,
               protected breakpoints: BreakPointRegistry) {
-    this.matchMedia.observe().subscribe(this.activate.bind(this));
-    this.registerBreakpoints();
+    this.registerBreakpoints(); // register first!
+    this.matchMedia
+        .observe()
+        .subscribe(this.activate.bind(this));
   }
 
   /**
@@ -74,38 +79,21 @@ export class MediaMarshaller {
    * initialize the marshaller with necessary elements for delegation on an element
    * @param element
    * @param key
-   * @param builder optional so that custom bp directives don't have to re-provide this
-   * @param clearBuilder optional so that custom bp directives don't have to re-provide this
-   * @param observables
+   * @param updateFn optional callback so custom bp directives don't have to re-provide this
+   * @param clearFn optional callback so custom bp directives don't have to re-provide this
+   * @param extraTriggers Other triggers to force style updates: directionality,  mutationObserver, etc.
    */
   init(element: HTMLElement,
        key: string,
-       builder?: Builder,
-       clearBuilder?: Builder,
-       observables: Observable<any>[] = []): void {
-    let keyMap = this.elementKeyMap.get(element);
-    if (!keyMap) {
-      keyMap = new Set();
-      this.elementKeyMap.set(element, keyMap);
-    }
-    keyMap.add(key);
-    initBuilderMap(this.builderMap, element, key, builder);
-    initBuilderMap(this.clearBuilderMap, element, key, clearBuilder);
-    if (observables) {
-      let watchers = this.watcherMap.get(element);
-      if (!watchers) {
-        watchers = new Map();
-        this.watcherMap.set(element, watchers);
-      }
-      const subscription = watchers.get(key);
-      if (!subscription) {
-        const newSubscription = merge(...observables).subscribe(() => {
-          const currentValue = this.getValue(element, key);
-          this.updateElement(element, key, currentValue);
-        });
-        watchers.set(key, newSubscription);
-      }
-    }
+       updateFn?: UpdateCallback,
+       clearFn?: ClearCallback,
+       extraTriggers: Observable<any>[] = []): void {
+
+    initBuilderMap(this.builderMap, element, key, updateFn);
+    initBuilderMap(this.clearBuilderMap, element, key, clearFn);
+
+    this.buildElementKeyMap(element, key);
+    this.watchExtraTriggers(element, key, extraTriggers);
   }
 
   /**
@@ -162,12 +150,17 @@ export class MediaMarshaller {
     this.updateElement(element, key, this.getValue(element, key));
   }
 
+  /**
+   * Track elRef value changes for specific key
+   */
   trackValue(element: HTMLElement, key: string): Observable<ElementMatcher> {
     return this.subject.asObservable()
-      .pipe(filter(v => v.element === element && v.key === key));
+        .pipe(filter(v => v.element === element && v.key === key));
   }
 
-  /** update all styles for all elements on the current breakpoint */
+  /**
+   * Update all styles for all elements on the current breakpoint
+   */
   updateStyles(): void {
     this.elementMap.forEach((bpMap, el) => {
       const valueMap = this.getFallback(bpMap);
@@ -240,6 +233,46 @@ export class MediaMarshaller {
     }
   }
 
+  /**
+   * Cross-reference for HTMLElement with directive key
+   */
+  private buildElementKeyMap(element: HTMLElement, key: string) {
+    let keyMap = this.elementKeyMap.get(element);
+    if (!keyMap) {
+      keyMap = new Set();
+      this.elementKeyMap.set(element, keyMap);
+    }
+
+    keyMap.add(key);
+  }
+
+  /**
+   * Other triggers that should force style updates:
+   *  directionality,
+   *  mutationObserver, etc.
+   */
+  private watchExtraTriggers(
+      element: HTMLElement,
+      key: string,
+      triggers: Observable<any>[]) {
+
+    if (triggers && triggers.length) {
+      let watchers = this.watcherMap.get(element);
+      if (!watchers) {
+        watchers = new Map();
+        this.watcherMap.set(element, watchers);
+      }
+      const subscription = watchers.get(key);
+      if (!subscription) {
+        const newSubscription = merge(...triggers).subscribe(() => {
+          const currentValue = this.getValue(element, key);
+          this.updateElement(element, key, currentValue);
+        });
+        watchers.set(key, newSubscription);
+      }
+    }
+  }
+
   /** Breakpoint locator by mediaQuery */
   private findByQuery(query: string) {
     return this.breakpoints.findByQuery(query);
@@ -269,7 +302,11 @@ export class MediaMarshaller {
   }
 }
 
-function initBuilderMap(map: BuilderMap, element: HTMLElement, key: string, input?: Builder): void {
+function initBuilderMap(
+    map: BuilderMap,
+    element: HTMLElement,
+    key: string,
+    input?: UpdateCallback | ClearCallback): void {
   if (input !== undefined) {
     let oldMap = map.get(element);
     if (!oldMap) {

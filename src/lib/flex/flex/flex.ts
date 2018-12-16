@@ -232,7 +232,7 @@ export class FlexDirective extends BaseDirective2 {
     this.init();
     if (this.parentElement) {
       this.marshal.trackValue(this.parentElement, 'layout')
-        .pipe(takeUntil(this.destroySubject))
+        .pipe(takeUntil(this.destroyed$))
         .subscribe(this.onLayoutChange.bind(this));
     }
   }

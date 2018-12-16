@@ -15,10 +15,12 @@ import {buildLayoutCSS} from '../../utils/layout-validator';
 
 export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
+  private destroySubject: Subject<void> = new Subject();
+  protected destroyed$ = this.destroySubject.asObservable();
+
   protected DIRECTIVE_KEY = '';
   protected inputs: string[] = [];
-  protected destroySubject: Subject<void> = new Subject();
-  protected observables: Observable<any>[] = [];
+
   /** The most recently used styles for the builder */
   protected mru: StyleDefinition = {};
 
@@ -67,9 +69,17 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.marshal.releaseElement(this.nativeElement);
   }
 
-  protected init(): void {
-    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this), this.clearStyles.bind(this), this.observables);
+  /**
+   * Register with central marshaller service
+   */
+  protected init(extraTriggers:Observable<any>[] = []): void {
+    this.marshal.init(
+      this.elementRef.nativeElement,
+      this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this),
+      this.clearStyles.bind(this),
+      extraTriggers
+    );
   }
 
   /** Add styles to the element using predefined style builder */
@@ -91,7 +101,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     builder.sideEffect(input, genStyles, parent);
   }
 
-  /** Remove generated styles from an element using predefined style builder */
+  /**
+   * Remove generated styles from an element using predefined style builder
+   */
   protected clearStyles() {
     Object.keys(this.mru).forEach(k => {
       this.mru[k] = '';
@@ -100,6 +112,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.mru = {};
   }
 
+  /**
+   * Force trigger style updates on DOM el
+   */
   protected triggerUpdate() {
     const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
     this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
@@ -127,7 +142,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     return 'row';
   }
 
-  /** Applies styles given via string pair or object map to the directive element */
+  /**
+   * Applies styles given via string pair or object map to the directive element
+   */
   protected applyStyleToElement(style: StyleDefinition,
                                 value?: string | number,
                                 element: HTMLElement = this.nativeElement) {

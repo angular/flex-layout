@@ -79,7 +79,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   ngAfterViewInit() {
     this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
     this.marshal.trackValue(this.nativeElement, 'layout')
-      .pipe(takeUntil(this.destroySubject))
+      .pipe(takeUntil(this.destroyed$))
       .subscribe(this.updateWithValue.bind(this));
 
     const children = Array.from(this.nativeElement.children);

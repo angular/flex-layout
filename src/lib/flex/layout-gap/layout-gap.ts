@@ -100,7 +100,6 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
   protected layout = 'row';  // default flex-direction
   protected DIRECTIVE_KEY = 'layout-gap';
   protected observerSubject = new Subject<void>();
-  protected observables = [this.directionality.change, this.observerSubject.asObservable()];
 
   /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
   protected get childrenNodes(): HTMLElement[] {
@@ -108,7 +107,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     const buffer: any[] = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for (let i = obj.length; i--; ) {
+    for (let i = obj.length; i--;) {
       buffer[i] = obj[i];
     }
     return buffer;
@@ -123,10 +122,14 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
               @Optional() protected styleBuilder: LayoutGapStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.init();
-    this.marshal.trackValue(this.nativeElement, 'layout')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(this.onLayoutChange.bind(this));
+
+    const extraTriggers = [this.directionality.change, this.observerSubject.asObservable()];
+    this.init(extraTriggers);
+
+    this.marshal
+        .trackValue(this.nativeElement, 'layout')
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(this.onLayoutChange.bind(this));
   }
 
   // *********************************************
@@ -172,16 +175,16 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     }
     // Gather all non-hidden Element nodes
     const items = this.childrenNodes
-      .filter(el => el.nodeType === 1 && this.getDisplayStyle(el) !== 'none')
-      .sort((a, b) => {
-        const orderA = +this.styler.lookupStyle(a, 'order');
-        const orderB = +this.styler.lookupStyle(b, 'order');
-        if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
-          return 0;
-        } else {
-          return orderA > orderB ? 1 : -1;
-        }
-      });
+        .filter(el => el.nodeType === 1 && this.getDisplayStyle(el) !== 'none')
+        .sort((a, b) => {
+          const orderA = +this.styler.lookupStyle(a, 'order');
+          const orderB = +this.styler.lookupStyle(b, 'order');
+          if (isNaN(orderA) || isNaN(orderB) || orderA === orderB) {
+            return 0;
+          } else {
+            return orderA > orderB ? 1 : -1;
+          }
+        });
 
     if (items.length > 0) {
       const directionality = this.directionality.value;
@@ -215,7 +218,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
         this.observer = new MutationObserver((mutations: MutationRecord[]) => {
           const validatedChanges = (it: MutationRecord): boolean => {
             return (it.addedNodes && it.addedNodes.length > 0) ||
-              (it.removedNodes && it.removedNodes.length > 0);
+                (it.removedNodes && it.removedNodes.length > 0);
           };
 
           // update gap styles only for child 'added' or 'removed' events
@@ -268,8 +271,8 @@ function buildGridMargin(value: string, directionality: string): StyleDefinition
 }
 
 function buildGapCSS(gapValue: string,
-                     parent: {directionality: string, layout: string}): StyleDefinition {
-  let key, margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
+                     parent: { directionality: string, layout: string }): StyleDefinition {
+  let key, margins: { [key: string]: string | null } = {...CLEAR_MARGIN_CSS};
 
   switch (parent.layout) {
     case 'column':
