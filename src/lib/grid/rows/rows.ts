@@ -59,8 +59,7 @@ export class GridRowsDirective extends BaseDirective2 {
               protected styler: StyleUtils,
               protected marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
-    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this));
+    this.init();
   }
 
   // *********************************************

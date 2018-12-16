@@ -107,7 +107,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     const buffer: any[] = [];
 
     // iterate backwards ensuring that length is an UInt32
-    for (let i = obj.length; i--; ) {
+    for (let i = obj.length; i--;) {
       buffer[i] = obj[i];
     }
     return buffer;
@@ -122,10 +122,10 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
               @Optional() protected styleBuilder: LayoutGapStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this), [this.directionality.change,
-        this.observerSubject.asObservable()]);
-    this.marshal.trackValue(this.nativeElement, 'layout')
+    const extraTriggers = [this.directionality.change, this.observerSubject.asObservable()];
+    this.init(extraTriggers);
+    this.marshal
+      .trackValue(this.nativeElement, 'layout')
       .pipe(takeUntil(this.destroySubject))
       .subscribe(this.onLayoutChange.bind(this));
   }

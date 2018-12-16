@@ -50,8 +50,7 @@ export class GridAreasDirective extends BaseDirective2 {
               @Optional() protected styleBuilder: GridAreasStyleBuiler,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this));
+    this.init();
   }
 
   // *********************************************

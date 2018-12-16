@@ -17,8 +17,7 @@ import {
 @Injectable({providedIn: 'root'})
 export class FlexOrderStyleBuilder extends StyleBuilder {
   buildStyles(value: string) {
-    const val = parseInt((value || '0'), 10);
-    return {order: isNaN(val) ? 0 : val};
+    return {order: (value && parseInt(value, 10)) || ''};
   }
 }
 
@@ -51,8 +50,7 @@ export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
               @Optional() protected styleBuilder: FlexOrderStyleBuilder,
               protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.addStyles.bind(this));
+    this.init();
   }
 
   protected styleCache = flexOrderCache;

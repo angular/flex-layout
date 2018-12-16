@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {ElementRef, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 
 import {StyleDefinition, StyleUtils} from '../style-utils/style-utils';
 import {StyleBuilder} from '../style-builder/style-builder';
@@ -17,6 +17,8 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
   protected DIRECTIVE_KEY = '';
   protected inputs: string[] = [];
+  /** The most recently used styles for the builder */
+  protected mru: StyleDefinition = {};
   protected destroySubject: Subject<void> = new Subject();
 
   /** Access to host element's parent DOM node */
@@ -64,6 +66,17 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.marshal.releaseElement(this.nativeElement);
   }
 
+  /** Register with central marshaller service */
+  protected init(extraTriggers: Observable<any>[] = []): void {
+    this.marshal.init(
+      this.elementRef.nativeElement,
+      this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this),
+      this.clearStyles.bind(this),
+      extraTriggers
+    );
+  }
+
   /** Add styles to the element using predefined style builder */
   protected addStyles(input: string, parent?: Object) {
     const builder = this.styleBuilder;
@@ -78,10 +91,21 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
       }
     }
 
+    this.mru = {...genStyles};
     this.applyStyleToElement(genStyles);
     builder.sideEffect(input, genStyles, parent);
   }
 
+  /** Remove generated styles from an element using predefined style builder */
+  protected clearStyles() {
+    Object.keys(this.mru).forEach(k => {
+      this.mru[k] = '';
+    });
+    this.applyStyleToElement(this.mru);
+    this.mru = {};
+  }
+
+  /** Force trigger style updates on DOM element */
   protected triggerUpdate() {
     const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
     this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
@@ -118,5 +142,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
   protected setValue(val: any, bp: string): void {
     this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, val, bp);
+  }
+
+  protected updateWithValue(input: string) {
+    this.addStyles(input);
   }
 }

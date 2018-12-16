@@ -33,8 +33,7 @@ export class GridRowDirective extends BaseDirective2 {
               protected styler: StyleUtils,
               protected marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
-    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
-      this.addStyles.bind(this));
+    this.init();
   }
 
   protected styleCache = rowCache;

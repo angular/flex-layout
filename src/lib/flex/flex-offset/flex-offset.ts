@@ -76,10 +76,11 @@ export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
               protected marshal: MediaMarshaller,
               protected styler: StyleUtils) {
     super(elRef, styleBuilder, styler, marshal);
-    this.marshal.init(this.elRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this), [this.directionality.change]);
+    this.init([this.directionality.change]);
+    // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
     if (this.parentElement) {
-      this.marshal.trackValue(this.parentElement, 'layout-gap')
+      this.marshal
+        .trackValue(this.parentElement, 'layout-gap')
         .pipe(takeUntil(this.destroySubject))
         .subscribe(this.triggerUpdate.bind(this));
     }
