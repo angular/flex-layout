@@ -17,10 +17,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
   protected DIRECTIVE_KEY = '';
   protected inputs: string[] = [];
-  protected destroySubject: Subject<void> = new Subject();
-  protected observables: Observable<any>[] = [];
   /** The most recently used styles for the builder */
   protected mru: StyleDefinition = {};
+  protected destroySubject: Subject<void> = new Subject();
 
   /** Access to host element's parent DOM node */
   protected get parentElement(): HTMLElement | null {
@@ -67,9 +66,15 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.marshal.releaseElement(this.nativeElement);
   }
 
-  protected init(): void {
-    this.marshal.init(this.elementRef.nativeElement, this.DIRECTIVE_KEY,
-      this.updateWithValue.bind(this), this.clearStyles.bind(this), this.observables);
+  /** Register with central marshaller service */
+  protected init(extraTriggers: Observable<any>[] = []): void {
+    this.marshal.init(
+      this.elementRef.nativeElement,
+      this.DIRECTIVE_KEY,
+      this.updateWithValue.bind(this),
+      this.clearStyles.bind(this),
+      extraTriggers
+    );
   }
 
   /** Add styles to the element using predefined style builder */
@@ -100,6 +105,7 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     this.mru = {};
   }
 
+  /** Force trigger style updates on DOM element */
   protected triggerUpdate() {
     const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
     this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
