@@ -412,6 +412,36 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle({'margin-bottom': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-bottom': '*'}, styler);
     });
+
+    it('should work with responsive fxHide', () => {
+      let template = `
+        <div fxLayoutAlign="center center" fxLayoutGap="13px">
+          <div fxFlex="15" class="sec1" fxFlex.xs="55"></div>
+          <div fxFlex="30" class="sec2" fxFlex.sm></div>
+          <div fxFlex="55" class="sec3" fxShow fxHide.sm></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
+
+      matchMedia.activate('sm');
+      fixture.detectChanges();
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
+
+      matchMedia.activate('lg');
+      fixture.detectChanges();
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
+    });
   });
 
   describe('rtl support', () => {
