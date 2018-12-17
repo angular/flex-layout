@@ -41,8 +41,8 @@ export class FlexOffsetStyleBuilder extends StyleBuilder {
       offset = offset + '%';
     }
     const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
-    const styles = isFlowHorizontal(parent.layout) ? {[horizontalLayoutKey]: `${offset}`} :
-      {'margin-top': `${offset}`};
+    const styles: StyleDefinition = isFlowHorizontal(parent.layout) ?
+      {[horizontalLayoutKey]: `${offset}`} : {'margin-top': `${offset}`};
 
     return styles;
   }
