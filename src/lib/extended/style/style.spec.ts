@@ -145,6 +145,18 @@ describe('style directive', () => {
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
 
+  it('should work with URLs', () => {
+    createTestComponent(`
+        <div [ngStyle]="{'background-image': 'url(' + testUrl + ')', 'height': '300px'}">
+        </div>
+    `);
+    fixture.detectChanges();
+    const url = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
+      'background-image');
+    const isUrl = url === `url("${URL}")` || url === `url(${URL})`;
+    expect(isUrl).toBeTruthy();
+  });
+
   it('should work with just ngStyle and preexisting styles', () => {
     createTestComponent(`
       <div style="background-color: red; height: 100px; width: 100px;" [ngStyle]="divStyle">
@@ -168,8 +180,9 @@ describe('style directive', () => {
 })
 class TestStyleComponent {
   fontSize: number = 0;
+  testUrl = URL;
   divStyle = {'border': '2px solid green'};
 }
 
-
-
+const URL = 'https://cloud.githubusercontent.com/assets/210413/' +
+  '21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png';
