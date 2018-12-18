@@ -144,6 +144,18 @@ describe('style directive', () => {
     matchMedia.activate('xs');
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
+
+  fit('should work with just ngStyle and preexisting styles', () => {
+    createTestComponent(`
+      <div style="background-color: red; height: 100px; width: 100px;" [ngStyle]="divStyle">
+        First div
+      </div>
+    `);
+    expectNativeEl(fixture).toHaveStyle({'background-color': 'red'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'height': '100px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'width': '100px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'border': '2px solid green'}, styler);
+  });
 });
 
 // *****************************************************************
@@ -156,6 +168,7 @@ describe('style directive', () => {
 })
 class TestStyleComponent {
   fontSize: number = 0;
+  divStyle = {'border': '2px solid green'};
 }
 
 
