@@ -144,6 +144,14 @@ describe('style directive', () => {
     matchMedia.activate('xs');
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
+
+  fit('should work with bound values', () => {
+    createTestComponent(`
+        <div [ngStyle]="{'background-image': 'url(' + safeUrl + ')', 'height': '300px'}">
+        </div>
+    `);
+    expectNativeEl(fixture).toHaveStyle({'background-image': `url(${URL})`}, styler);
+  });
 });
 
 // *****************************************************************
@@ -156,7 +164,8 @@ describe('style directive', () => {
 })
 class TestStyleComponent {
   fontSize: number = 0;
+  url = URL;
 }
 
-
-
+const URL = 'https://cloud.githubusercontent.com/assets/210413/' +
+  '21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png';
