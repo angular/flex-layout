@@ -147,7 +147,7 @@ describe('style directive', () => {
 
   it('should work with URLs', () => {
     createTestComponent(`
-        <div [ngStyle]="{'background-image': 'url(' + url + ')', 'height': '300px'}">
+        <div [ngStyle]="{'background-image': 'url(' + testUrl + ')', 'height': '300px'}">
         </div>
     `);
     fixture.detectChanges();
@@ -168,7 +168,7 @@ describe('style directive', () => {
 })
 class TestStyleComponent {
   fontSize: number = 0;
-  url = URL;
+  testUrl = URL;
 }
 
 const URL = 'https://cloud.githubusercontent.com/assets/210413/' +
