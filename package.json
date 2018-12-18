@@ -25,7 +25,7 @@
     "universal:build": "gulp ci:prerender",
     "universal:serve": "gulp universal:serve"
   },
-  "version": "7.0.0-beta.21",
+  "version": "7.0.0-beta.22",
   "requiredAngularVersion": ">=7.0.0-rc.0",
   "dependencies": {
     "@angular/cdk": "^7.0.3",
