@@ -156,6 +156,18 @@ describe('style directive', () => {
     const isUrl = url === `url("${URL}")` || url === `url(${URL})`;
     expect(isUrl).toBeTruthy();
   });
+
+  it('should work with just ngStyle and preexisting styles', () => {
+    createTestComponent(`
+      <div style="background-color: red; height: 100px; width: 100px;" [ngStyle]="divStyle">
+        First div
+      </div>
+    `);
+    expectNativeEl(fixture).toHaveStyle({'background-color': 'red'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'height': '100px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'width': '100px'}, styler);
+    expectNativeEl(fixture).toHaveStyle({'border': '2px solid green'}, styler);
+  });
 });
 
 // *****************************************************************
@@ -169,6 +181,7 @@ describe('style directive', () => {
 class TestStyleComponent {
   fontSize: number = 0;
   testUrl = URL;
+  divStyle = {'border': '2px solid green'};
 }
 
 const URL = 'https://cloud.githubusercontent.com/assets/210413/' +
