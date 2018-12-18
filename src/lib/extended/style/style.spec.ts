@@ -150,7 +150,11 @@ describe('style directive', () => {
         <div [ngStyle]="{'background-image': 'url(' + url + ')', 'height': '300px'}">
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({'background-image': `url("${URL}")`}, styler);
+    fixture.detectChanges();
+    const url = styler.lookupStyle(fixture.debugElement.children[0].nativeElement,
+      'background-image');
+    const isUrl = url === `url("${URL}")` || url === `url(${URL})`;
+    expect(isUrl).toBeTruthy();
   });
 });
 
