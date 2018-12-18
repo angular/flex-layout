@@ -65,14 +65,16 @@ export class MediaMarshaller {
    */
   activate(mc: MediaChange) {
     const bp: BreakPoint | null = this.findByQuery(mc.mediaQuery);
-    if (mc.matches && bp && this.activatedBreakpoints.indexOf(bp) === -1) {
-      this.activatedBreakpoints.push(bp);
-      this.activatedBreakpoints.sort(prioritySort);
-      this.updateStyles();
-    } else if (!mc.matches && bp && this.activatedBreakpoints.indexOf(bp) !== -1) {
-      // Remove the breakpoint when it's deactivated
-      this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
-      this.updateStyles();
+    if (bp) {
+      if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+        this.activatedBreakpoints.push(bp);
+        this.activatedBreakpoints.sort(prioritySort);
+        this.updateStyles();
+      } else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+        // Remove the breakpoint when it's deactivated
+        this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+        this.updateStyles();
+      }
     }
   }
 
