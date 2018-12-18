@@ -79,7 +79,7 @@ describe('ngStyleUtils', () => {
     const backgroundUrl = `background-url: url(${URL})`;
     const keyValue: NgStyleKeyValue = stringToKeyValue(backgroundUrl);
     expect(keyValue.key).toBe('background-url');
-    expect(keyValue.value).toBe(`url(${URL}`);
+    expect(keyValue.value).toBe(`url(${URL})`);
   });
 
 });

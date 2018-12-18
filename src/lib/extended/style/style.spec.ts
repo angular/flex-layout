@@ -147,10 +147,10 @@ describe('style directive', () => {
 
   it('should work with bound values', () => {
     createTestComponent(`
-        <div [ngStyle]="{'background-image': 'url(' + safeUrl + ')', 'height': '300px'}">
+        <div [ngStyle]="{'background-image': 'url(' + url + ')', 'height': '300px'}">
         </div>
     `);
-    expectNativeEl(fixture).toHaveStyle({'background-image': `url(${URL})`}, styler);
+    expectNativeEl(fixture).toHaveStyle({'background-image': `url("${URL}")`}, styler);
   });
 });
 
