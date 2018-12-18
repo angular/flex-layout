@@ -145,7 +145,7 @@ describe('style directive', () => {
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
 
-  fit('should work with just ngStyle and preexisting styles', () => {
+  it('should work with just ngStyle and preexisting styles', () => {
     createTestComponent(`
       <div style="background-color: red; height: 100px; width: 100px;" [ngStyle]="divStyle">
         First div
