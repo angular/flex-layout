@@ -145,7 +145,7 @@ describe('style directive', () => {
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
 
-  fit('should work with bound values', () => {
+  it('should work with bound values', () => {
     createTestComponent(`
         <div [ngStyle]="{'background-image': 'url(' + safeUrl + ')', 'height': '300px'}">
         </div>

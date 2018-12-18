@@ -12,6 +12,7 @@ import {
   buildRawList,
   buildMapFromList,
   buildMapFromSet,
+  stringToKeyValue, NgStyleKeyValue,
 } from './style-transforms';
 
 describe('ngStyleUtils', () => {
@@ -74,4 +75,15 @@ describe('ngStyleUtils', () => {
       });
     });
 
+  it('should convert string correctly to key value with URLs', () => {
+    const backgroundUrl = `background-url: url(${URL})`;
+    const keyValue: NgStyleKeyValue = stringToKeyValue(backgroundUrl);
+    expect(keyValue.key).toBe('background-url');
+    expect(keyValue.value).toBe(`url(${URL}`);
+  });
+
 });
+
+
+const URL = 'https://cloud.githubusercontent.com/assets/210413/' +
+  '21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png';
