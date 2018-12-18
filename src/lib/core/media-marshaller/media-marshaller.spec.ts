@@ -22,6 +22,7 @@ describe('media-marshaller', () => {
       providers: [MockMatchMediaProvider]
     });
     spyOn(MediaMarshaller.prototype, 'activate').and.callThrough();
+    spyOn(MediaMarshaller.prototype, 'updateStyles').and.callThrough();
   });
 
   // Single async inject to save references; which are used in all tests below
@@ -37,6 +38,12 @@ describe('media-marshaller', () => {
   it('activates when match-media activates', () => {
     matchMedia.activate('xs');
     expect(mediaMarshaller.activate).toHaveBeenCalled();
+  });
+
+  it('doesn\'t activate when match-media activates the same breakpoint twice', () => {
+    matchMedia.activate('xs');
+    matchMedia.activate('xs');
+    expect(mediaMarshaller.updateStyles).toHaveBeenCalledTimes(1);
   });
 
   it('should set correct activated breakpoint', () => {
