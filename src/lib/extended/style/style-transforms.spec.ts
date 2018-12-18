@@ -8,11 +8,12 @@
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';
 import {
   NgStyleRawList,
+  NgStyleKeyValue,
   NgStyleMap,
   buildRawList,
   buildMapFromList,
   buildMapFromSet,
-  stringToKeyValue, NgStyleKeyValue,
+  stringToKeyValue,
 } from './style-transforms';
 
 describe('ngStyleUtils', () => {
