@@ -147,7 +147,7 @@ describe('style directive', () => {
 
   it('should work with URLs', () => {
     createTestComponent(`
-        <div [ngStyle]="{'background-image': 'url(' + testUrl + ')', 'height': '300px'}">
+        <div [ngStyle]="{'background-image': 'url(${testUrl})', 'height': '300px'}">
         </div>
     `);
     fixture.detectChanges();
