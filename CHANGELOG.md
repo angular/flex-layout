@@ -1,3 +1,41 @@
+<a name="7.0.0-beta.22"></a>
+# [7.0.0-beta.22](https://github.com/angular/flex-layout/compare/7.0.0-beta.21...7.0.0-beta.22) (2018-12-19)
+
+
+### Bug Fixes
+
+* **core:** allow for breakpoints with periods in them ([#921](https://github.com/angular/flex-layout/issues/921)) ([84e811b](https://github.com/angular/flex-layout/commit/84e811b)), closes [#776](https://github.com/angular/flex-layout/issues/776)
+* **core:** avoid duplicate mediaQuery activations ([#937](https://github.com/angular/flex-layout/issues/937)) ([23592ee](https://github.com/angular/flex-layout/commit/23592ee))
+* **core:** avoid race condition between registration and activation ([#923](https://github.com/angular/flex-layout/issues/923)) ([232fc6e](https://github.com/angular/flex-layout/commit/232fc6e))
+* **core:** clear recent styles after responsive deactivation ([#927](https://github.com/angular/flex-layout/issues/927)) ([d322ea7](https://github.com/angular/flex-layout/commit/d322ea7)), closes [#697](https://github.com/angular/flex-layout/issues/697) [#296](https://github.com/angular/flex-layout/issues/296)
+* **flex-offset:** correct type when using with 'strictNullChecks' ([#929](https://github.com/angular/flex-layout/issues/929)) ([21b6d29](https://github.com/angular/flex-layout/commit/21b6d29))
+* **fxLayoutGap:** account for responsive fxHide on children elements ([#931](https://github.com/angular/flex-layout/issues/931)) ([7759b6c](https://github.com/angular/flex-layout/commit/7759b6c)), closes [#606](https://github.com/angular/flex-layout/issues/606)
+* **fxLayoutGap:** respond correctly to layout changes ([#919](https://github.com/angular/flex-layout/issues/919)) ([676ddf7](https://github.com/angular/flex-layout/commit/676ddf7))
+* **ngStyle:** do not truncate URLs ([#938](https://github.com/angular/flex-layout/issues/938)) ([1548727](https://github.com/angular/flex-layout/commit/1548727)), closes [#935](https://github.com/angular/flex-layout/issues/935)
+* **ngStyle:** should work with preexisting styles ([#939](https://github.com/angular/flex-layout/issues/939)) ([4be5cef](https://github.com/angular/flex-layout/commit/4be5cef))
+
+
+### Features
+
+* **core:** add static scss mixin ([#940](https://github.com/angular/flex-layout/issues/940)) ([ffd8331](https://github.com/angular/flex-layout/commit/ffd8331)), closes [#783](https://github.com/angular/flex-layout/issues/783)
+
+Used for extra styling more easily at build time (instead of runtime with the HTML API), this feature (sass mixin) 
+allows developers to generate and include Layout mediaQuery css to their own stylesheets.
+
+NOTE: This feature is marked as experimental and is subject to change unless posted otherwise. To use, import
+the new SASS file as follows:
+
+```sass
+@import '~@angular/flex-layout/mq';
+
+// This translates to (min-width: 0) and (max-width: 599px) {}
+@include layout-bp(xs) {
+  background-color: red;
+}
+```
+
+Feedback on this feature is very much welcome, and we are open to adding additional functionality based on user interest.
+
 <a name="7.0.0-beta.21"></a>
 # [7.0.0-beta.21](https://github.com/angular/flex-layout/compare/7.0.0-beta.20...7.0.0-beta.21) (2018-12-15)
 
