@@ -2,7 +2,7 @@ import {spawn} from 'child_process';
 import {existsSync, statSync} from 'fs-extra';
 import {join} from 'path';
 import {task} from 'gulp';
-import {execTask} from '../util/task_helpers';
+import {execTask} from '../util/task-helpers';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
 import {yellow, green, red, grey} from 'chalk';
 import * as minimist from 'minimist';

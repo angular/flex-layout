@@ -2,7 +2,7 @@ import {task} from 'gulp';
 import {existsSync} from 'fs';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
-import {execTask} from '../util/task_helpers';
+import {execTask} from '../util/task-helpers';
 
 const {outputDir, packagesDir, projectVersion} = buildConfig;
 
