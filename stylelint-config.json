@@ -28,8 +28,9 @@
     "shorthand-property-no-redundant-values": true,
 
     "property-case": "lower",
+    "no-duplicate-at-import-rules": true,
 
-    "declaration-block-no-duplicate-properties": [ true, {
+    "declaration-block-no-duplicate-properties": [true, {
       "ignore": ["consecutive-duplicates-with-different-values"]
     }],
     "declaration-block-trailing-semicolon": "always",
@@ -39,8 +40,8 @@
     "declaration-block-semicolon-newline-before": "never-multi-line",
     "declaration-block-semicolon-newline-after": "always-multi-line",
     "declaration-property-value-blacklist": [
-      { "/.*/": ["initial"] },
-      { "message": "The `initial` value is not supported in IE."}
+      {"/.*/": ["initial"]},
+      {"message": "The `initial` value is not supported in IE."}
     ],
 
     "block-closing-brace-newline-after": "always",
@@ -61,6 +62,8 @@
     "selector-type-case": "lower",
     "selector-max-id": 0,
     "no-missing-end-of-source-newline": true,
-    "max-line-length": 100
+    "no-eol-whitespace": true,
+    "max-line-length": 100,
+    "linebreaks": "unix"
   }
 }

@@ -1,6 +1,6 @@
 import {task} from 'gulp';
 import {existsSync} from 'fs';
-import {execTask} from '../util/task_helpers';
+import {execTask} from '../util/task-helpers';
 import {join} from 'path';
 import {buildConfig, sequenceTask} from 'lib-build-tools';
 
