@@ -13,9 +13,11 @@ import {Observable} from 'rxjs';
   changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class MediaQueryStatusComponent {
-  media$: Observable<MediaChange> = this.mediaService.media$;
+  media$: Observable<MediaChange>;
 
-  constructor(private mediaService: MediaObserver) {}
+  constructor(mediaObserver: MediaObserver) {
+    this.media$ = mediaObserver.media$;
+  }
 
   extractQuery(change: MediaChange): string {
     return change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';

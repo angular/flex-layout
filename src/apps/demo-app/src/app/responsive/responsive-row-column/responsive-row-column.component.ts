@@ -1,5 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'demo-responsive-row-column',
@@ -16,24 +17,24 @@ export class ResponsiveRowColumnComponent implements OnDestroy {
   };
   isVisible = true;
 
-  private _activeMQC: MediaChange;
-  private _watcher;
+  private activeMQC: MediaChange;
+  private subscription: Subscription;
 
-  constructor(private mediaObserver: MediaObserver) {
-    this._watcher = this.mediaObserver.media$
+  constructor(mediaObserver: MediaObserver) {
+    this.subscription = mediaObserver.media$
       .subscribe((e: MediaChange) => {
-        this._activeMQC = e;
+        this.activeMQC = e;
       });
   }
 
   ngOnDestroy() {
-    this._watcher.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   toggleLayoutFor(col: number) {
     switch (col) {
       case 1:
-        const set1 = `firstCol${this._activeMQC ? this._activeMQC.suffix : ''}`;
+        const set1 = `firstCol${this.activeMQC ? this.activeMQC.suffix : ''}`;
         this.cols[set1] = (this.cols[set1] === 'column') ? 'row' : 'column';
         break;
 
