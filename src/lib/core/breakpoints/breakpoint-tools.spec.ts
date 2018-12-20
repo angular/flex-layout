@@ -5,30 +5,36 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {fakeAsync} from '@angular/core/testing';
-
 import {BreakPoint} from './break-point';
 import {validateSuffixes, mergeByAlias} from './breakpoint-tools';
 import {DEFAULT_BREAKPOINTS} from './data/break-points';
 import {ORIENTATION_BREAKPOINTS} from './data/orientation-break-points';
 
 describe('breakpoint-tools', () => {
-  let all: BreakPoint[];
-  let findByAlias = (alias: string): BreakPoint|null => all.reduce((pos: BreakPoint | null, it) => {
-    return pos || ((it.alias == alias) ? it : null);
-  }, null);
+  let allBreakPoints: BreakPoint[] = [];
+  const findByAlias = (alias: string): BreakPoint => {
+    let result = {mediaQuery: '', alias: ''};
+    allBreakPoints.forEach(bp => {
+      if (bp.alias === alias) {
+        result = {...bp};
+      }
+    });
+    return result;
+  };
 
   beforeEach(() => {
-    all = DEFAULT_BREAKPOINTS.concat(ORIENTATION_BREAKPOINTS);
+    allBreakPoints = validateSuffixes([...DEFAULT_BREAKPOINTS, ...ORIENTATION_BREAKPOINTS]);
   });
 
-  describe('validation', () => {
+  describe('validation ', () => {
+
     it('should not replace an existing suffix', () => {
       let validated = validateSuffixes([
         {alias: 'handset-portrait', suffix: 'Handset', mediaQuery: 'screen'}
       ]);
       expect(validated[0].suffix).toEqual('Handset');
     });
+
     it('should add valid suffixes to breakpoints', () => {
       let validated = validateSuffixes([
         {alias: 'xs', mediaQuery: 'screen and (max-width: 599px)'},
@@ -43,21 +49,19 @@ describe('breakpoint-tools', () => {
       expect(validated[3].suffix).toEqual('GtXs');
       expect(validated[4].suffix).toEqual('HandsetPortrait');
     });
+
     it('should auto-validate the DEFAULT_BREAKPOINTS', () => {
-      fakeAsync(() => {
-        let xsBp: BreakPoint = findByAlias('xs')!;
-        let gtLgBp: BreakPoint = findByAlias('gt-lg')!;
-        let xlBp: BreakPoint = findByAlias('xl')!;
+      let xsBp: BreakPoint = findByAlias('xs');
+      expect(xsBp.alias).toEqual('xs');
+      expect(xsBp.suffix).toEqual('Xs');
 
-        expect(xsBp.alias).toEqual('xs');
-        expect(xsBp.suffix).toEqual('Xs');
+      let gtLgBp: BreakPoint = findByAlias('gt-lg');
+      expect(gtLgBp.alias).toEqual('gt-lg');
+      expect(gtLgBp.suffix).toEqual('GtLg');
 
-        expect(gtLgBp.alias).toEqual('gt-lg');
-        expect(gtLgBp.suffix).toEqual('GtLg');
-
-        expect(xlBp.alias).toEqual('xl');
-        expect(xlBp.suffix).toEqual('Xl');
-      });
+      let xlBp: BreakPoint = findByAlias('xl');
+      expect(xlBp.alias).toEqual('xl');
+      expect(xlBp.suffix).toEqual('Xl');
     });
   });
 
@@ -67,19 +71,19 @@ describe('breakpoint-tools', () => {
         {alias: 'sm', mediaQuery: 'screen'},
         {alias: 'md', mediaQuery: 'screen'},
       ];
-      all = mergeByAlias(defaults, custom);
+      allBreakPoints = mergeByAlias(defaults, custom);
 
-      expect(all.length).toEqual(2);
+      expect(allBreakPoints.length).toEqual(2);
       expect(findByAlias('sm')!.suffix).toEqual('Sm');
       expect(findByAlias('md')!.suffix).toEqual('Md');
     });
     it('should add custom breakpoints with unique aliases', () => {
       let defaults = [{alias: 'xs', mediaQuery: 'screen and (max-width: 599px)'}],
-        custom = [{alias: 'sm', mediaQuery: 'screen'}, {alias: 'md', mediaQuery: 'screen'}];
+          custom = [{alias: 'sm', mediaQuery: 'screen'}, {alias: 'md', mediaQuery: 'screen'}];
 
-      all = mergeByAlias(defaults, custom);
+      allBreakPoints = mergeByAlias(defaults, custom);
 
-      expect(all.length).toEqual(3);
+      expect(allBreakPoints.length).toEqual(3);
       expect(findByAlias('xs')!.suffix).toEqual('Xs');
       expect(findByAlias('sm')!.suffix).toEqual('Sm');
       expect(findByAlias('md')!.suffix).toEqual('Md');
@@ -88,9 +92,9 @@ describe('breakpoint-tools', () => {
       let defaults = [{alias: 'xs', mediaQuery: 'screen and (max-width: 599px)'}];
       let custom = [{alias: 'xs', mediaQuery: 'screen and none'}];
 
-      all = mergeByAlias(defaults, custom);
+      allBreakPoints = mergeByAlias(defaults, custom);
 
-      expect(all.length).toEqual(1);
+      expect(allBreakPoints.length).toEqual(1);
       expect(findByAlias('xs')!.suffix).toEqual('Xs');
       expect(findByAlias('xs')!.mediaQuery).toEqual('screen and none');
     });

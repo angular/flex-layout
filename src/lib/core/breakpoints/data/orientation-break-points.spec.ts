@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {TestBed, inject, async} from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
 import {BreakPoint} from '../break-point';
 import {DEFAULT_BREAKPOINTS} from './break-points';
@@ -16,13 +16,20 @@ import {FlexLayoutModule} from '../../../module';
 
 describe('break-point-provider', () => {
   let breakPoints: BreakPoint[];
-  let findByAlias = (alias: string): BreakPoint|null => breakPoints.reduce(
-    (pos: BreakPoint | null, it) =>  pos || ((it.alias == alias) ? it : null), null);
+  const findByAlias = (alias: string): BreakPoint|null => {
+      let result = null;
+       breakPoints.forEach(bp => {
+          if (bp.alias === alias) {
+            result = {...bp};
+          }
+      });
+      return result;
+    };
 
   describe('with default breakpoints only', () => {
-    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
+    beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       breakPoints = bps;
-    })));
+    }));
 
     it('has the only standard default breakpoints without internal custom breakpoints', () => {
       const total = DEFAULT_BREAKPOINTS.length;
@@ -46,9 +53,9 @@ describe('break-point-provider', () => {
         imports: [FlexLayoutModule.withConfig({}, EXTRAS)]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
+    beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       bpList = bps;
-    })));
+    }));
 
     it('has the custom breakpoints', () => {
       const total = DEFAULT_BREAKPOINTS.length + EXTRAS.length;
@@ -84,9 +91,9 @@ describe('break-point-provider', () => {
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
+    beforeEach(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
       bpList = breakPoints;
-    })));
+    }));
 
     it('has merged the custom breakpoints as overrides to existing defaults', () => {
       const total = ORIENTATION_BREAKPOINTS.length + DEFAULT_BREAKPOINTS.length + NUM_EXTRAS;
@@ -124,9 +131,9 @@ describe('break-point-provider', () => {
         imports: [FlexLayoutModule.withConfig({disableDefaultBps: true}, EXTRAS)]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
+    beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
       bpList = bps;
-    })));
+    }));
 
     it('has the only the registered custom breakpoints; defaults are excluded.', () => {
       const total = EXTRAS.length;

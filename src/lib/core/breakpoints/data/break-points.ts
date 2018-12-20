@@ -7,83 +7,81 @@
  */
 import {BreakPoint} from '../break-point';
 
-export const RESPONSIVE_ALIASES = [
-  'xs', 'gt-xs', 'sm', 'gt-sm', 'md', 'gt-md', 'lg', 'gt-lg', 'xl'
-];
-
+/**
+ * NOTE: Smaller ranges have HIGHER priority since the match is more specific
+ */
 export const DEFAULT_BREAKPOINTS: BreakPoint[] = [
   {
     alias: 'xs',
-    mediaQuery: '(min-width: 0px) and (max-width: 599px)',
-    priority: 100,
+    mediaQuery: 'screen and (min-width: 0px) and (max-width: 599px)',
+    priority: 1000,
   },
   {
-    alias: 'gt-xs',
-    overlapping: true,
-    mediaQuery: '(min-width: 600px)',
-    priority: 7,
+    alias: 'sm',
+    mediaQuery: 'screen and (min-width: 600px) and (max-width: 959px)',
+    priority: 900,
+  },
+  {
+    alias: 'md',
+    mediaQuery: 'screen and (min-width: 960px) and (max-width: 1279px)',
+    priority: 800,
+  },
+  {
+    alias: 'lg',
+    mediaQuery: 'screen and (min-width: 1280px) and (max-width: 1919px)',
+    priority: 700,
+  },
+  {
+    alias: 'xl',
+    mediaQuery: 'screen and (min-width: 1920px) and (max-width: 5000px)',
+    priority: 600,
   },
   {
     alias: 'lt-sm',
     overlapping: true,
-    mediaQuery: '(max-width: 599px)',
-    priority: 10,
-  },
-  {
-    alias: 'sm',
-    mediaQuery: '(min-width: 600px) and (max-width: 959px)',
-    priority: 100,
-  },
-  {
-    alias: 'gt-sm',
-    overlapping: true,
-    mediaQuery: '(min-width: 960px)',
-    priority: 8,
+    mediaQuery: 'screen and (max-width: 599px)',
+    priority: 950,
   },
   {
     alias: 'lt-md',
     overlapping: true,
-    mediaQuery: '(max-width: 959px)',
-    priority: 9,
-  },
-  {
-    alias: 'md',
-    mediaQuery: '(min-width: 960px) and (max-width: 1279px)',
-    priority: 100,
-  },
-  {
-    alias: 'gt-md',
-    overlapping: true,
-    mediaQuery: '(min-width: 1280px)',
-    priority: 9,
+    mediaQuery: 'screen and (max-width: 959px)',
+    priority: 850,
   },
   {
     alias: 'lt-lg',
     overlapping: true,
-    mediaQuery: '(max-width: 1279px)',
-    priority: 8,
-  },
-  {
-    alias: 'lg',
-    mediaQuery: '(min-width: 1280px) and (max-width: 1919px)',
-    priority: 100,
-  },
-  {
-    alias: 'gt-lg',
-    overlapping: true,
-    mediaQuery: '(min-width: 1920px)',
-    priority: 10,
+    mediaQuery: 'screen and (max-width: 1279px)',
+    priority: 750,
   },
   {
     alias: 'lt-xl',
     overlapping: true,
-    mediaQuery: '(max-width: 1919px)',
-    priority: 7,
+    priority: 650,
+    mediaQuery: 'screen and (max-width: 1919px)',
   },
   {
-    alias: 'xl',
-    mediaQuery: '(min-width: 1920px) and (max-width: 5000px)',
-    priority: 100,
+    alias: 'gt-xs',
+    overlapping: true,
+    mediaQuery: 'screen and (min-width: 600px)',
+    priority: -950,
+  },
+  {
+    alias: 'gt-sm',
+    overlapping: true,
+    mediaQuery: 'screen and (min-width: 960px)',
+    priority: -850,
+  }, {
+    alias: 'gt-md',
+    overlapping: true,
+    mediaQuery: 'screen and (min-width: 1280px)',
+    priority: -750,
+  },
+  {
+    alias: 'gt-lg',
+    overlapping: true,
+    mediaQuery: 'screen and (min-width: 1920px)',
+    priority: -650,
   }
 ];
 

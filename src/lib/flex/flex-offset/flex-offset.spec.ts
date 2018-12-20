@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
 import {
   MockMatchMediaProvider,
@@ -208,7 +208,7 @@ describe('flex-offset directive', () => {
       });
     });
 
-    it('should set flex offset not to input', async(() => {
+    it('should set flex offset not to input', () => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div fxFlexOffset="25"></div>
@@ -217,7 +217,7 @@ describe('flex-offset directive', () => {
       fixture.detectChanges();
       let element = queryFor(fixture, '[fxFlexOffset]')[0];
       expectEl(element).toHaveStyle({'margin-top': '10px'}, styler);
-    }));
+    });
   });
 
 });

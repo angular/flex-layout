@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {TestBed, inject, async} from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
 import {MatchMedia} from '../../match-media/match-media';
 import {MediaChange} from '../../media-change';
@@ -24,38 +24,35 @@ describe('mock-match-media', () => {
       providers: [MockMatchMediaProvider]
     });
   });
-  beforeEach(async(inject([MatchMedia, BreakPointRegistry],
-    (_matchMedia: MockMatchMedia, _breakPoints: BreakPointRegistry) => {
-    // Single async inject to save references; which are used in all tests below
-    matchMedia = _matchMedia;
-    breakPoints = _breakPoints;
 
-    breakPoints.items.forEach((bp: BreakPoint) => {
-      matchMedia.observe(bp.mediaQuery);
-    });
-  })));
+  beforeEach(inject([MatchMedia, BreakPointRegistry],
+      (_matchMedia: MockMatchMedia, _breakPoints: BreakPointRegistry) => {
+        matchMedia = _matchMedia;
+        breakPoints = _breakPoints;
+
+        breakPoints.items.forEach((bp: BreakPoint) => {
+          matchMedia.observe([bp.mediaQuery]);
+        });
+      }));
+
   afterEach(() => {
     matchMedia.clearAll();
   });
 
   it('can observe custom mediaQuery ranges', () => {
-    let current: MediaChange;
+    let current: MediaChange = new MediaChange();
     let customQuery = 'screen and (min-width: 610px) and (max-width: 620px';
-    let subscription = matchMedia.observe(customQuery)
-      .subscribe((change: MediaChange) => {
-        current = change;
-      });
+    let subscription = matchMedia.observe([customQuery])
+        .subscribe((change: MediaChange) => {
+          current = change;
+        });
 
     let activated = matchMedia.activate(customQuery);
     expect(activated).toEqual(true);
+    expect(current.mediaQuery).toEqual(customQuery);
 
-    async(() => {
-      expect(current.mediaQuery).toEqual(customQuery);
-
-      subscription.unsubscribe();
-    });
+    subscription.unsubscribe();
   });
-
 
   it('can observe a media query change for each breakpoint', () => {
     let current: MediaChange;
@@ -73,10 +70,10 @@ describe('mock-match-media', () => {
   });
 
   it('can observe ALL media query changes', () => {
-    let current: MediaChange,
-      mqcGtSM: MediaChange,
-      bpGtSM = breakPoints.findByAlias('gt-sm'),
-      bpLg = breakPoints.findByAlias('lg');
+    let current: MediaChange = new MediaChange(),
+        mqcGtSM: MediaChange = new MediaChange(),
+        bpGtSM = breakPoints.findByAlias('gt-sm'),
+        bpLg = breakPoints.findByAlias('lg');
 
     let subscription = matchMedia.observe().subscribe((change: MediaChange) => {
       current = change;
@@ -84,49 +81,48 @@ describe('mock-match-media', () => {
 
     matchMedia.activate(bpGtSM!.mediaQuery);
 
-    async(() => {
-      expect(current).not.toBeFalsy();
-      expect(current.mediaQuery).toEqual(bpGtSM!.mediaQuery);
-      expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeTruthy();
+    expect(current).not.toBeFalsy();
+    expect(current.mediaQuery).toEqual(bpGtSM!.mediaQuery);
+    expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeTruthy();
 
-      mqcGtSM = current;
+    mqcGtSM = current;
 
-      matchMedia.activate(bpLg!.mediaQuery);
-      expect(current.mediaQuery).not.toEqual(mqcGtSM.mediaQuery);
-      expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
-      expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeFalsy();
+    matchMedia.activate(bpLg!.mediaQuery);
+    expect(current.mediaQuery).not.toEqual(mqcGtSM.mediaQuery);
+    expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
+    expect(matchMedia.isActive(bpGtSM!.mediaQuery)).toBeFalsy();
 
-      subscription.unsubscribe();
-    });
+    subscription.unsubscribe();
   });
 
   it('can observe only a specific media query changes', () => {
-    let current: MediaChange,
-      bpGtSM = breakPoints.findByAlias('gt-sm'),
-      bpLg = breakPoints.findByAlias('lg');
+    let current: MediaChange = new MediaChange(),
+        bpGtSM = breakPoints.findByAlias('gt-sm'),
+        bpLg = breakPoints.findByAlias('lg');
+    let subscription = matchMedia
+        .observe([bpLg!.mediaQuery])
+        .subscribe((change: MediaChange) => {
+          current = change;
+        });
 
-    let subscription = matchMedia.observe(bpLg!.mediaQuery).subscribe((change: MediaChange) => {
-      current = change;
-    });
+    expect(current.matches).toBeTruthy(); // Match 'all'
 
     matchMedia.activate(bpGtSM!.mediaQuery);
 
-    async(() => {
-      expect(current).toBeFalsy();
+    expect(current.matches).toBeTruthy();
 
-      matchMedia.activate(bpLg!.mediaQuery);
-      expect(current).toBeTruthy();
-      expect(current.mediaQuery).toEqual(bpLg!.mediaQuery);
-      expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
+    matchMedia.activate(bpLg!.mediaQuery);
+    expect(current).toBeTruthy();
+    expect(current.mediaQuery).toEqual(bpLg!.mediaQuery);
+    expect(matchMedia.isActive(bpLg!.mediaQuery)).toBeTruthy();
 
-      subscription.unsubscribe();
-    });
+    subscription.unsubscribe();
   });
 
   it('can observe both activation and deactivation changes', () => {
     let activates = 0, deactivates = 0;
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
-      bpLg = breakPoints.findByAlias('lg');
+        bpLg = breakPoints.findByAlias('lg');
 
     // By default the 'all' is initially active.
     let subscription = matchMedia.observe().subscribe((change: MediaChange) => {
@@ -157,15 +153,17 @@ describe('mock-match-media', () => {
   it('can observe both activated & deactivated changes for specific mediaQueries', () => {
     let activates = 0, deactivates = 0;
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
-      bpLg = breakPoints.findByAlias('lg');
+        bpLg = breakPoints.findByAlias('lg');
 
-    let subscription = matchMedia.observe(bpGtSM!.mediaQuery).subscribe((change: MediaChange) => {
-      if (change.matches) {
-        ++activates;
-      } else {
-        ++deactivates;
-      }
-    });
+    let subscription = matchMedia
+        .observe([bpGtSM!.mediaQuery], true)
+        .subscribe((change: MediaChange) => {
+          if (change.matches) {
+            ++activates;
+          } else {
+            ++deactivates;
+          }
+        });
 
     expect(activates).toEqual(0);   // from alias == '' == 'all'
     matchMedia.activate(bpGtSM!.mediaQuery);
@@ -186,7 +184,7 @@ describe('mock-match-media', () => {
   it('can activate with either a mediaQuery or an alias', () => {
     let activates = 0;
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
-      bpLg = breakPoints.findByAlias('lg');
+        bpLg = breakPoints.findByAlias('lg');
 
     let subscription = matchMedia.observe().subscribe((change: MediaChange) => {
       if (change.matches) {
@@ -212,12 +210,12 @@ describe('mock-match-media', () => {
 
   it('can check if a range is active', () => {
     let bpXs = breakPoints.findByAlias('xs'),
-      bpGtXs = breakPoints.findByAlias('gt-xs'),
-      bpSm = breakPoints.findByAlias('sm'),
-      bpGtSm = breakPoints.findByAlias('gt-sm'),
-      bpMd = breakPoints.findByAlias('md'),
-      bpGtMd = breakPoints.findByAlias('gt-md'),
-      bpLg = breakPoints.findByAlias('lg');
+        bpGtXs = breakPoints.findByAlias('gt-xs'),
+        bpSm = breakPoints.findByAlias('sm'),
+        bpGtSm = breakPoints.findByAlias('gt-sm'),
+        bpMd = breakPoints.findByAlias('md'),
+        bpGtMd = breakPoints.findByAlias('gt-md'),
+        bpLg = breakPoints.findByAlias('lg');
     let subscription = matchMedia.observe().subscribe(() => {
     });
 
@@ -242,21 +240,19 @@ describe('mock-match-media', () => {
   });
 
   it('can observe a startup activation of XS', () => {
-    let current: MediaChange,
-      bpXS = breakPoints.findByAlias('xs');
+    let current: MediaChange = new MediaChange(),
+        bpXS = breakPoints.findByAlias('xs');
 
     matchMedia.activate(bpXS!.mediaQuery);
-    let subscription = matchMedia.observe(bpXS!.mediaQuery)
-      .subscribe((change: MediaChange) => {
-        current = change;
-      });
+    let subscription = matchMedia.observe([bpXS!.mediaQuery])
+        .subscribe((change: MediaChange) => {
+          current = change;
+        });
 
-    async(() => {
-      expect(current).toBeTruthy();
-      expect(current.mediaQuery).toEqual(bpXS!.mediaQuery);
-      expect(matchMedia.isActive(bpXS!.mediaQuery)).toBeTruthy();
+    expect(current).toBeTruthy();
+    expect(current.mediaQuery).toEqual(bpXS!.mediaQuery);
+    expect(matchMedia.isActive(bpXS!.mediaQuery)).toBeTruthy();
 
-      subscription.unsubscribe();
-    });
+    subscription.unsubscribe();
   });
 });

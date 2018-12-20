@@ -9,7 +9,9 @@ import {Injectable, Inject} from '@angular/core';
 
 import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from './break-points-token';
+import {sortAscendingPriority} from './breakpoint-tools';
 
+type OptionalBreakPoint = BreakPoint | null;
 
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -18,40 +20,21 @@ import {BREAKPOINTS} from './break-points-token';
  */
 @Injectable({providedIn: 'root'})
 export class BreakPointRegistry {
+  readonly items: BreakPoint[];
 
-  constructor(@Inject(BREAKPOINTS) private _registry: BreakPoint[]) {
-  }
-
-  /**
-   * Accessor to raw list
-   */
-  get items(): BreakPoint[] {
-    return [...this._registry];
-  }
-
-  /**
-   * Accessor to sorted list used for registration with matchMedia API
-   *
-   * NOTE: During breakpoint registration, we want to register the overlaps FIRST
-   *       so the non-overlaps will trigger the MatchMedia:BehaviorSubject last!
-   *       And the largest, non-overlap, matching breakpoint should be the lastReplay value
-   */
-  get sortedItems(): BreakPoint[] {
-    let overlaps = this._registry.filter(it => it.overlapping === true);
-    let nonOverlaps = this._registry.filter(it => it.overlapping !== true);
-
-    return [...overlaps, ...nonOverlaps];
+  constructor(@Inject(BREAKPOINTS) list: BreakPoint[]) {
+    this.items = [...list].sort(sortAscendingPriority);
   }
 
   /**
    * Search breakpoints by alias (e.g. gt-xs)
    */
-  findByAlias(alias: string): BreakPoint | null {
-    return this._registry.find(bp => bp.alias == alias) || null;
+  findByAlias(alias: string): OptionalBreakPoint {
+    return this.findWithPredicate(alias, (bp) => bp.alias == alias);
   }
 
-  findByQuery(query: string): BreakPoint | null {
-    return this._registry.find(bp => bp.mediaQuery == query) || null;
+  findByQuery(query: string): OptionalBreakPoint {
+    return this.findWithPredicate(query, (bp) => bp.mediaQuery == query);
   }
 
   /**
@@ -59,14 +42,14 @@ export class BreakPointRegistry {
    * e.g. gt-sm overlaps md, lg, and xl
    */
   get overlappings(): BreakPoint[] {
-    return this._registry.filter(it => it.overlapping == true);
+    return this.items.filter(it => it.overlapping == true);
   }
 
   /**
    * Get list of all registered (non-empty) breakpoint aliases
    */
   get aliases(): string[] {
-    return this._registry.map(it => it.alias);
+    return this.items.map(it => it.alias);
   }
 
   /**
@@ -75,6 +58,26 @@ export class BreakPointRegistry {
    * for property layoutGtSM.
    */
   get suffixes(): string[] {
-    return this._registry.map(it => !!it.suffix ? it.suffix : '');
+    return this.items.map(it => !!it.suffix ? it.suffix : '');
   }
+
+  /**
+   * Memoized lookup using custom predicate function
+   */
+  private findWithPredicate(key: string,
+      searchFn: (bp: BreakPoint) => boolean): OptionalBreakPoint {
+    let response = this.findByMap.get(key);
+    if (!response) {
+      response = this.items.find(searchFn) || null;
+      this.findByMap.set(key, response);
+    }
+    return response || null;
+
+  }
+
+  /**
+   * Memoized BreakPoint Lookups
+   */
+  private readonly findByMap = new Map<String, OptionalBreakPoint>();
 }
+

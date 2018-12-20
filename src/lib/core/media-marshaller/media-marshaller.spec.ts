@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {async, fakeAsync, inject, TestBed} from '@angular/core/testing';
+import {inject, TestBed} from '@angular/core/testing';
 import {Subject} from 'rxjs';
 
 import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
@@ -25,12 +25,11 @@ describe('media-marshaller', () => {
     spyOn(MediaMarshaller.prototype, 'updateStyles').and.callThrough();
   });
 
-  // Single async inject to save references; which are used in all tests below
-  beforeEach(async(inject([MatchMedia, MediaMarshaller],
-    (service: MockMatchMedia, marshal: MediaMarshaller) => {
-    matchMedia = service;      // inject only to manually activate mediaQuery ranges
-    mediaMarshaller = marshal;
-  })));
+  beforeEach(inject([MatchMedia, MediaMarshaller],
+      (service: MockMatchMedia, marshal: MediaMarshaller) => {
+        matchMedia = service;      // inject only to manually activate mediaQuery ranges
+        mediaMarshaller = marshal;
+      }));
   afterEach(() => {
     matchMedia.clearAll();
   });
@@ -73,7 +72,8 @@ describe('media-marshaller', () => {
     const builder = () => {
       triggered = true;
     };
-    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {}, [obs]);
+    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {
+    }, [obs]);
     subject.next();
     expect(triggered).toBeTruthy();
   });
@@ -101,15 +101,17 @@ describe('media-marshaller', () => {
   });
 
   it('should get the right value', () => {
-    const builder = () => {};
+    const builder = () => {
+    };
     mediaMarshaller.init(fakeElement, fakeKey, builder);
     mediaMarshaller.setValue(fakeElement, fakeKey, 0, '');
     const value = mediaMarshaller.getValue(fakeElement, fakeKey);
     expect(value).toEqual(0);
   });
 
-  it('should track changes', fakeAsync(() => {
-    const builder = () => {};
+  it('should track changes', () => {
+    const builder = () => {
+    };
     let triggered = false;
     mediaMarshaller.init(fakeElement, fakeKey, builder);
     mediaMarshaller.trackValue(fakeElement, fakeKey).subscribe(() => {
@@ -117,7 +119,7 @@ describe('media-marshaller', () => {
     });
     mediaMarshaller.setValue(fakeElement, fakeKey, 0, '');
     expect(triggered).toBeTruthy();
-  }));
+  });
 
   it('should release', () => {
     let triggered = false;
@@ -126,7 +128,8 @@ describe('media-marshaller', () => {
     const builder = () => {
       triggered = true;
     };
-    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {}, [obs]);
+    mediaMarshaller.init(fakeElement, fakeKey, builder, () => {
+    }, [obs]);
     mediaMarshaller.releaseElement(fakeElement);
     subject.next();
     expect(triggered).toBeFalsy();
