@@ -28,7 +28,7 @@ describe('break-point-provider', () => {
     it('has the standard breakpoints', () => {
       expect(breakPoints.length).toEqual(DEFAULT_BREAKPOINTS.length);
       expect(breakPoints[0].alias).toEqual('xs');
-      expect(breakPoints[breakPoints.length - 1].alias).toEqual('xl');
+      expect(breakPoints[breakPoints.length - 1].alias).toEqual('lt-xl');
     });
   });
 

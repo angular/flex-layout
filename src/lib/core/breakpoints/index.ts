@@ -12,4 +12,8 @@ export * from './data/orientation-break-points';
 export * from './break-point';
 export * from './break-point-registry';
 export * from './break-points-token';
-export {prioritySort} from './breakpoint-tools';
+
+export {
+  sortDescendingPriority,
+  sortAscendingPriority
+} from './breakpoint-tools';

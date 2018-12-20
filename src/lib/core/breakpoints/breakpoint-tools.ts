@@ -65,8 +65,14 @@ export function mergeByAlias(defaults: BreakPoint[], custom: BreakPoint[] = []):
 }
 
 /** HOF to sort the breakpoints by priority */
-export function prioritySort(a: BreakPoint, b: BreakPoint): number {
+export function sortDescendingPriority(a: BreakPoint, b: BreakPoint): number {
   const priorityA = a.priority || 0;
   const priorityB = b.priority || 0;
   return priorityB - priorityA;
+}
+
+export function sortAscendingPriority(a: BreakPoint, b: BreakPoint): number {
+  const pA = a.priority || 0;
+  const pB = b.priority || 0;
+  return pA - pB;
 }

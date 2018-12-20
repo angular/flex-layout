@@ -31,7 +31,7 @@ describe('mock-match-media', () => {
     breakPoints = _breakPoints;
 
     breakPoints.items.forEach((bp: BreakPoint) => {
-      matchMedia.observe(bp.mediaQuery);
+      matchMedia.observe([bp.mediaQuery]);
     });
   })));
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('mock-match-media', () => {
   it('can observe custom mediaQuery ranges', () => {
     let current: MediaChange;
     let customQuery = 'screen and (min-width: 610px) and (max-width: 620px';
-    let subscription = matchMedia.observe(customQuery)
+    let subscription = matchMedia.observe([customQuery])
       .subscribe((change: MediaChange) => {
         current = change;
       });
@@ -105,7 +105,7 @@ describe('mock-match-media', () => {
       bpGtSM = breakPoints.findByAlias('gt-sm'),
       bpLg = breakPoints.findByAlias('lg');
 
-    let subscription = matchMedia.observe(bpLg!.mediaQuery).subscribe((change: MediaChange) => {
+    let subscription = matchMedia.observe([bpLg!.mediaQuery]).subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -159,7 +159,7 @@ describe('mock-match-media', () => {
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
       bpLg = breakPoints.findByAlias('lg');
 
-    let subscription = matchMedia.observe(bpGtSM!.mediaQuery).subscribe((change: MediaChange) => {
+    let subscription = matchMedia.observe([bpGtSM!.mediaQuery]).subscribe((change: MediaChange) => {
       if (change.matches) {
         ++activates;
       } else {
@@ -246,7 +246,7 @@ describe('mock-match-media', () => {
       bpXS = breakPoints.findByAlias('xs');
 
     matchMedia.activate(bpXS!.mediaQuery);
-    let subscription = matchMedia.observe(bpXS!.mediaQuery)
+    let subscription = matchMedia.observe([bpXS!.mediaQuery])
       .subscribe((change: MediaChange) => {
         current = change;
       });

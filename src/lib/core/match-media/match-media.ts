@@ -7,7 +7,7 @@
  */
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, merge, Observer} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
 import {MediaChange} from '../media-change';
@@ -40,20 +40,41 @@ export class MatchMedia {
 
   /**
    * External observers can watch for all (or a specific) mql changes.
+   *
+   * If a mediaQuery is not specified, then ALL mediaQuery activations will
+   * be announced.
+   */
+  observe(): Observable<MediaChange>;
+  observe(mediaQueries: string[]): Observable<MediaChange>;
+
+  /**
+   * External observers can watch for all (or a specific) mql changes.
    * Typically used by the MediaQueryAdaptor; optionally available to components
    * who wish to use the MediaMonitor as mediaMonitor$ observable service.
    *
-   * NOTE: if a mediaQuery is not specified, then ALL mediaQuery activations will
-   *       be announced.
+   * Use deferred registration process to register breakpoints only on subscription
+   * This logic also enforces logic to register all mediaQueries BEFORE notify
+   * subscribers of notifications.
    */
-  observe(mediaQuery?: string): Observable<MediaChange> {
-    if (mediaQuery) {
-      this.registerQuery(mediaQuery);
+  observe(mqList?: string[]): Observable<MediaChange> {
+    if (mqList) {
+      const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
+          filter(change => mqList.indexOf(change.mediaQuery) > -1)
+      );
+      const registration$: Observable<MediaChange> = new Observable((observer: Observer<MediaChange>) => {  // tslint:disable-line:max-line-length
+        const matches: Array<MediaChange> = this.registerQuery(mqList);
+        if (matches.length) {
+          const lastChange = matches.pop()!;
+
+          matches.forEach(observer.next);
+          this._source.next(lastChange); // last match is cached
+        }
+        observer.complete();
+      });
+      return merge(registration$, matchMedia$);
     }
 
-    return this._observable$.pipe(
-      filter(change => (mediaQuery ? (change.mediaQuery === mediaQuery) : true))
-    );
+    return this._observable$;
   }
 
   /**
@@ -61,36 +82,36 @@ export class MatchMedia {
    * mediaQuery. Each listener emits specific MediaChange data to observers
    */
   registerQuery(mediaQuery: string | string[]) {
-    const list = Array.isArray(mediaQuery) ? Array.from(new Set(mediaQuery)) : [mediaQuery];
+    const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
+    const matches: MediaChange[] = [];
 
-    if (list.length > 0) {
-      buildQueryCss(list, this._document);
-    }
+    buildQueryCss(list, this._document);
 
-    list.forEach(query => {
+    list.forEach((query: string) => {
       const onMQLEvent = (e: MediaQueryListEvent) => {
         this._zone.run(() => this._source.next(new MediaChange(e.matches, query)));
       };
 
       let mql = this._registry.get(query);
-
       if (!mql) {
-        mql = this._buildMQL(query);
+        mql = this.buildMQL(query);
         mql.addListener(onMQLEvent);
         this._registry.set(query, mql);
       }
 
       if (mql.matches) {
-        onMQLEvent(mql as unknown as MediaQueryListEvent);
+        matches.push(new MediaChange(true, query));
       }
     });
+
+    return matches;
   }
 
   /**
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected _buildMQL(query: string): MediaQueryList {
+  protected buildMQL(query: string): MediaQueryList {
     return constructMql(query, isPlatformBrowser(this._platformId));
   }
 }
@@ -99,7 +120,7 @@ export class MatchMedia {
  * Private global registry for all dynamically-created, injected style tags
  * @see prepare(query)
  */
-const ALL_STYLES: {[key: string]: any} = {};
+const ALL_STYLES: { [key: string]: any } = {};
 
 /**
  * For Webkit engines that only trigger the MediaQueryList Listener
@@ -124,7 +145,7 @@ function buildQueryCss(mediaQueries: string[], _document: Document) {
   see http://bit.ly/2sd4HMP
 */
 @media ${query} {.fx-query-test{ }}
-` ;
+`;
         styleEl.appendChild(_document.createTextNode(cssText));
       }
 

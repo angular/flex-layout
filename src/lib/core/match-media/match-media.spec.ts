@@ -8,7 +8,6 @@
 import {TestBed, inject, async} from '@angular/core/testing';
 
 import {MediaChange} from '../media-change';
-import {BreakPoint} from '../breakpoints/break-point';
 import {MockMatchMedia, MockMatchMediaProvider} from './mock/mock-match-media';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from './match-media';
@@ -51,11 +50,8 @@ describe('match-media', () => {
     let query1 = 'screen and (min-width: 610px) and (max-width: 620px)';
     let query2 = '(min-width: 730px) and (max-width: 950px)';
 
-    matchMedia.registerQuery(query1);
-    matchMedia.registerQuery(query2);
-
-    let media$ = matchMedia.observe();
-    let subscription = media$.subscribe((change: MediaChange) => {
+    const queries = [query1, query2];
+    let subscription = matchMedia.observe(queries).subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -83,7 +79,7 @@ describe('match-media', () => {
 
     matchMedia.registerQuery([query1, query2]);
 
-    let subscription = matchMedia.observe(query1).subscribe((change: MediaChange) => {
+    let subscription = matchMedia.observe([query1]).subscribe((change: MediaChange) => {
       current = change;
     });
 
@@ -128,11 +124,6 @@ describe('match-media-observable', () => {
       matchMedia = _matchMedia;      // inject only to manually activate mediaQuery ranges
       breakPoints = _breakPoints;
       mediaObserver = _mediaObserver;
-
-      // Quick register all breakpoint mediaQueries
-      breakPoints.items.forEach((bp: BreakPoint) => {
-        matchMedia.observe(bp.mediaQuery);
-      });
     })));
   afterEach(() => {
     matchMedia.clearAll();
@@ -206,6 +197,8 @@ describe('match-media-observable', () => {
   it('ignores mediaQuery de-activations', () => {
     let activationCount = 0;
     let deactivationCount = 0;
+
+    mediaObserver.filterOverlaps = false;
     let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
       if (change.matches) {
         ++activationCount;
