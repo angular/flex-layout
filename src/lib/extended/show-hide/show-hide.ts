@@ -67,7 +67,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
     this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
     this.marshal.trackValue(this.nativeElement, 'layout')
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(this.updateWithValue.bind(this));
+      .subscribe(this.onLayoutChange.bind(this));
 
     const children = Array.from(this.nativeElement.children);
     for (let i = 0; i < children.length; i++) {
@@ -128,6 +128,11 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   protected getDisplayStyle(): string {
     return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
       'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
+  }
+
+  /** Respond to layout changes on host element by reactivating show-hide */
+  protected onLayoutChange() {
+    this.updateWithValue(this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY));
   }
 
   /** Validate the visibility value and then update the host's inline display style */
