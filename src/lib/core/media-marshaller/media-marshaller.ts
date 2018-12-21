@@ -108,11 +108,10 @@ export class MediaMarshaller {
     if (bpMap) {
       const values = bp !== undefined ? bpMap.get(bp) : this.getFallback(bpMap, key);
       if (values) {
-        const value = values.get(key);
-        return value !== undefined ? value : '';
+        return values.get(key);
       }
     }
-    return '';
+    return undefined;
   }
 
   /**
@@ -148,7 +147,10 @@ export class MediaMarshaller {
       bpMap.set(bp, values);
       this.elementMap.set(element, bpMap);
     }
-    this.updateElement(element, key, this.getValue(element, key));
+    const value = this.getValue(element, key);
+    if (value !== undefined) {
+      this.updateElement(element, key, value);
+    }
   }
 
   /** Track element value changes for a specific key */
@@ -286,7 +288,8 @@ export class MediaMarshaller {
         }
       }
     }
-    return bpMap.get('');
+    const lastHope = bpMap.get('');
+    return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
   }
 
   private registerBreakpoints() {

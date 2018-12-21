@@ -108,7 +108,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   /** Force trigger style updates on DOM element */
   protected triggerUpdate() {
     const val = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-    this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+    if (val !== undefined) {
+      this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, val);
+    }
   }
 
   /**

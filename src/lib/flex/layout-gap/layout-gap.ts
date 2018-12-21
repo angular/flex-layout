@@ -168,9 +168,6 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
    *
    */
   protected updateWithValue(value: string) {
-    if (!value) {
-      value = this.marshal.getValue(this.nativeElement, this.DIRECTIVE_KEY);
-    }
     // Gather all non-hidden Element nodes
     const items = this.childrenNodes
       .filter(el => el.nodeType === 1 && this.willDisplay(el))
@@ -204,7 +201,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
   protected willDisplay(source: HTMLElement): boolean {
     const value = this.marshal.getValue(source, 'show-hide');
     return value === true ||
-      (value === '' && this.styleUtils.lookupStyle(source, 'display') !== 'none');
+      (value === undefined && this.styleUtils.lookupStyle(source, 'display') !== 'none');
   }
 
   protected buildChildObservable(): void {

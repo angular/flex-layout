@@ -35,7 +35,7 @@ import {
 export class StyleDirective extends BaseDirective2 implements DoCheck {
 
   protected DIRECTIVE_KEY = 'ngStyle';
-  protected fallbackStyles: NgStyleMap = {};
+  protected fallbackStyles: NgStyleMap;
 
   constructor(protected elementRef: ElementRef,
               protected styler: StyleUtils,
@@ -55,9 +55,16 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
     this.fallbackStyles = this.buildStyleMap(styles);
   }
 
+  /** Add generated styles */
   protected updateWithValue(value: any) {
     const styles = this.buildStyleMap(value);
     this.ngStyleInstance.ngStyle = {...this.fallbackStyles, ...styles};
+    this.ngStyleInstance.ngDoCheck();
+  }
+
+  /** Remove generated styles */
+  protected clearStyles() {
+    this.ngStyleInstance.ngStyle = this.fallbackStyles;
     this.ngStyleInstance.ngDoCheck();
   }
 
