@@ -73,7 +73,7 @@ export class MyAppModule {
 }
 ```
 
-With the above changes, when printing on mobile-sized viewports the **`xs.print`** mediaQuery will activate. Please note
+With the above changes, when printing on mobile-sized viewports the **`xs.print`** mediaQuery will onMediaChange. Please note
 that the provider is a **multi-provider**, meaning it can be provided multiple times and in a variety of
 presentations. The type signature of `BREAKPOINT` is the following:
 

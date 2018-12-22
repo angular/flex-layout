@@ -219,7 +219,7 @@ export class MockMediaQueryList implements MediaQueryList {
     return this;
   }
 
-  /** Add a listener to our internal list to activate later */
+  /** Add a listener to our internal list to onMediaChange later */
   addListener(listener: MediaQueryListListener) {
     if (this._listeners.indexOf(listener) === -1) {
       this._listeners.push(listener);
