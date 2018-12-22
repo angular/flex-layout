@@ -6,6 +6,4 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-export * from './base';
-export * from './base-adapter';
 export * from './base2';
