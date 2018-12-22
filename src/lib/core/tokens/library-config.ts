@@ -15,6 +15,7 @@ export interface LayoutConfigOptions {
   disableVendorPrefixes?: boolean;
   serverLoaded?: boolean;
   useColumnBasisZero?: boolean;
+  printWithBreakpoints?: string[];
 }
 
 export const DEFAULT_CONFIG: LayoutConfigOptions = {
@@ -24,6 +25,7 @@ export const DEFAULT_CONFIG: LayoutConfigOptions = {
   disableVendorPrefixes: false,
   serverLoaded: false,
   useColumnBasisZero: true,
+  printWithBreakpoints: []
 };
 
 export const LAYOUT_CONFIG = new InjectionToken<LayoutConfigOptions>(

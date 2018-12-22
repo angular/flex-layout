@@ -36,15 +36,15 @@ export const ScreenTypes = {
  * Extended Breakpoints for handset/tablets with landscape or portrait orientations
  */
 export const ORIENTATION_BREAKPOINTS : BreakPoint[] = [
-  {'alias': 'handset',            priority: 10000, 'mediaQuery': ScreenTypes.HANDSET},
-  {'alias': 'handset.landscape',  priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE},
-  {'alias': 'handset.portrait',   priority: 10000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT},
+  {'alias': 'handset',            priority: 2000, 'mediaQuery': ScreenTypes.HANDSET},
+  {'alias': 'handset.landscape',  priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_LANDSCAPE},
+  {'alias': 'handset.portrait',   priority: 2000, 'mediaQuery': ScreenTypes.HANDSET_PORTRAIT},
 
-  {'alias': 'tablet',             priority: 8000, 'mediaQuery': ScreenTypes.TABLET},
-  {'alias': 'tablet.landscape',   priority: 8000, 'mediaQuery': ScreenTypes.TABLET},
-  {'alias': 'tablet.portrait',    priority: 8000, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT},
+  {'alias': 'tablet',             priority: 2100, 'mediaQuery': ScreenTypes.TABLET},
+  {'alias': 'tablet.landscape',   priority: 2100, 'mediaQuery': ScreenTypes.TABLET},
+  {'alias': 'tablet.portrait',    priority: 2100, 'mediaQuery': ScreenTypes.TABLET_PORTRAIT},
 
-  {'alias': 'web',                priority: 9000, 'mediaQuery': ScreenTypes.WEB, overlapping : true },
-  {'alias': 'web.landscape',      priority: 9000, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping : true },
-  {'alias': 'web.portrait',       priority: 9000, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping : true }
+  {'alias': 'web',                priority: 2200, 'mediaQuery': ScreenTypes.WEB, overlapping : true },
+  {'alias': 'web.landscape',      priority: 2200, 'mediaQuery': ScreenTypes.WEB_LANDSCAPE, overlapping : true },
+  {'alias': 'web.portrait',       priority: 2200, 'mediaQuery': ScreenTypes.WEB_PORTRAIT, overlapping : true }
 ];

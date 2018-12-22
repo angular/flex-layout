@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import {OptionalBreakPoint} from './break-point-registry';
 import {BreakPoint} from './break-point';
 import {extendObject} from '../../utils/object-extend';
 
@@ -65,9 +66,9 @@ export function mergeByAlias(defaults: BreakPoint[], custom: BreakPoint[] = []):
 }
 
 /** HOF to sort the breakpoints by priority */
-export function sortDescendingPriority(a: BreakPoint, b: BreakPoint): number {
-  const priorityA = a.priority || 0;
-  const priorityB = b.priority || 0;
+export function sortDescendingPriority(a: OptionalBreakPoint, b: OptionalBreakPoint): number {
+  const priorityA = a ? a.priority || 0 : 0;
+  const priorityB = b ? b.priority || 0 : 0;
   return priorityB - priorityA;
 }
 

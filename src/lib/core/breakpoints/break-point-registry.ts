@@ -11,7 +11,7 @@ import {BreakPoint} from './break-point';
 import {BREAKPOINTS} from './break-points-token';
 import {sortAscendingPriority} from './breakpoint-tools';
 
-type OptionalBreakPoint = BreakPoint | null;
+export type OptionalBreakPoint = BreakPoint | null;
 
 /**
  * Registry of 1..n MediaQuery breakpoint ranges
@@ -30,7 +30,7 @@ export class BreakPointRegistry {
    * Search breakpoints by alias (e.g. gt-xs)
    */
   findByAlias(alias: string): OptionalBreakPoint {
-    return this.findWithPredicate(alias, (bp) => bp.alias == alias);
+    return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias == alias);
   }
 
   findByQuery(query: string): OptionalBreakPoint {

@@ -225,7 +225,6 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('green');
   });
 
-
   it('should work with material buttons', () => {
     createTestComponent(`
           <button mat-raised-button

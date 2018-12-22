@@ -16,8 +16,8 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
-
 import {FlexLayoutModule} from '../../module';
+
 import {customMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent,
@@ -54,13 +54,15 @@ describe('show directive', () => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
-        FlexLayoutModule,
         MatFormFieldModule,
+        FlexLayoutModule,
         FormsModule,
         MatSelectModule,
         NoopAnimationsModule,
       ],
-      declarations: [TestShowComponent],
+      declarations: [
+        TestShowComponent,
+      ],
       providers: [
         MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true}
@@ -203,11 +205,32 @@ describe('show directive', () => {
 
   });
 
+  describe('with fxShow.print features', () => {
+
+    it('should support print', () => {
+      createTestComponent(`
+          <div [fxShow]="false" fxShow.print style="display: block;">
+            This content to be shown ONLY when printing
+          </div>
+        `);
+
+      matchMedia.useOverlaps = true;
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('print');
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
+
+      matchMedia.activate('sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
+
+  });
+
   describe('with fxHide features', () => {
 
     it('should support hide and show', () => {
       createTestComponent(`
-        <div fxHide fxShow.gt-md>
+        <div fxHide fxShow.gt-md fxShow.print style="display: block;">
           This content to be shown ONLY when gt-sm
         </div>
       `);
@@ -220,6 +243,9 @@ describe('show directive', () => {
 
       matchMedia.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('print');
+      expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
     });
 
     it('should work with responsive and adding flex to parent', () => {
@@ -321,6 +347,9 @@ describe('show directive', () => {
           MockMatchMediaProvider,
         ]
       });
+    });
+    afterEach(() => {
+      matchMedia.clearAll();
     });
 
     it('should respond to custom breakpoint', () => {

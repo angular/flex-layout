@@ -42,7 +42,7 @@ import {BREAKPOINT} from '@angular/flex-layout';
 const PRINT_BREAKPOINTS = [{
   alias: 'xs.print',
   suffix: 'XsPrint',
-  mediaQuery: 'print and (max-width: 297px)',
+  mediaQuery: 'screen and (max-width: 297px)',
   overlapping: false
 }];
 
@@ -73,7 +73,7 @@ export class MyAppModule {
 }
 ```
 
-With the above changes, when printing on mobile-sized viewports the **`xs.print`** mediaQuery will activate. Please note
+With the above changes, when printing on mobile-sized viewports the **`xs.print`** mediaQuery will onMediaChange. Please note
 that the provider is a **multi-provider**, meaning it can be provided multiple times and in a variety of
 presentations. The type signature of `BREAKPOINT` is the following:
 

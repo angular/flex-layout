@@ -286,14 +286,14 @@ describe('align directive', () => {
         'justify-self': 'start'
       }, styler);
 
-      matchMedia.activate('md');
-      expectNativeEl(fixture).toHaveStyle({
-        'justify-self': 'center'
-      }, styler);
-
       matchMedia.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'start'
+      }, styler);
+
+      matchMedia.activate('md');
+      expectNativeEl(fixture).toHaveStyle({
+        'justify-self': 'center'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default

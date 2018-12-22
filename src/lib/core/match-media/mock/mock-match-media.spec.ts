@@ -181,7 +181,7 @@ describe('mock-match-media', () => {
     subscription.unsubscribe();
   });
 
-  it('can activate with either a mediaQuery or an alias', () => {
+  it('can onMediaChange with either a mediaQuery or an alias', () => {
     let activates = 0;
     let bpGtSM = breakPoints.findByAlias('gt-sm'),
         bpLg = breakPoints.findByAlias('lg');

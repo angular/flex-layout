@@ -37,7 +37,7 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   }
   set activatedValue(value: string) {
     this.marshal.setValue(this.nativeElement, this.DIRECTIVE_KEY, value,
-      this.marshal.activatedBreakpoint);
+      this.marshal.activatedAlias);
   }
 
   /** Cache map for style computation */
