@@ -10,7 +10,6 @@ import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   MatchMedia,
-  CoreModule,
   MockMatchMedia,
   MockMatchMediaProvider,
   MediaObserver,
@@ -22,7 +21,7 @@ import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-mat
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
 } from '../../utils/testing/helpers';
-import {DefaultShowHideDirective} from './show-hide';
+import {FlexLayoutModule} from '../../module';
 
 
 describe('hide directive', () => {
@@ -59,8 +58,8 @@ describe('hide directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, CoreModule],
-      declarations: [TestHideComponent, DefaultShowHideDirective],
+      imports: [CommonModule, FlexLayoutModule],
+      declarations: [TestHideComponent],
       providers: [
         MockMatchMediaProvider,
         {provide: SERVER_TOKEN, useValue: true},
@@ -111,7 +110,12 @@ describe('hide directive', () => {
       expectNativeEl(fixture, {isHidden: false}).not.toHaveStyle({'display': 'none'}, styler);
     });
 
-
+    it('should use "flex" display style when the element also has an fxLayoutAlign', () => {
+      createTestComponent(`<div fxLayout fxLayoutAlign="start center" fxHide.xs></div>`);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+      matchMedia.activate('xs');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
   });
 
   describe('with responsive features', () => {
@@ -255,6 +259,22 @@ describe('hide directive', () => {
 
     matchMedia.activate('xs', true);
     expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
+  });
+
+  it('should support fxHide and fxLayout', () => {
+    createTestComponent(`
+      <div fxLayout [fxHide.xs]="true">
+        This content to be shown ONLY when gt-sm
+      </div>
+    `);
+    matchMedia.activate('xs');
+    expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+    matchMedia.activate('sm');
+    expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+
+    matchMedia.activate('xs');
+    expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
   });
 
 });
