@@ -275,7 +275,7 @@ export class FlexDirective extends BaseDirective2 {
   /** Trigger a style reflow, usually based on a shrink/grow input event */
   protected triggerReflow() {
     const activatedValue = this.activatedValue;
-    if (activatedValue) {
+    if (activatedValue !== undefined) {
       const parts = validateBasis(activatedValue, this.flexGrow, this.flexShrink);
       this.marshal.updateElement(this.nativeElement, this.DIRECTIVE_KEY, parts.join(' '));
     }
