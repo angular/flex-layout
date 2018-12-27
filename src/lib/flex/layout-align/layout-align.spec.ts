@@ -363,6 +363,35 @@ describe('layout-align directive', () => {
       }, styler);
     });
 
+    it('should not fallback to value not registered with fxLayout', () => {
+      createTestComponent(`
+         <section fxLayout="row"
+                  fxLayoutAlign.lt-md="center center">
+         </section>
+      `);
+
+      matchMedia.activate('lt-md');
+      expectNativeEl(fixture).toHaveStyle({
+        'justify-content': 'center',
+        'align-items': 'center',
+        'align-content': 'center'
+      }, styler);
+
+      matchMedia.activate('md');
+      expectNativeEl(fixture).not.toHaveStyle({
+        'justify-content': 'center',
+        'align-items': 'center',
+        'align-content': 'center'
+      }, styler);
+
+      matchMedia.activate('lt-md');
+      expectNativeEl(fixture).toHaveStyle({
+        'justify-content': 'center',
+        'align-items': 'center',
+        'align-content': 'center'
+      }, styler);
+    });
+
     it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       createTestComponent(`
           <div  fxLayout
