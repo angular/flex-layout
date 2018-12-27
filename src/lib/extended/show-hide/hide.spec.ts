@@ -110,7 +110,12 @@ describe('hide directive', () => {
       expectNativeEl(fixture, {isHidden: false}).not.toHaveStyle({'display': 'none'}, styler);
     });
 
-
+    it('should use "flex" display style when the element also has an fxLayoutAlign', () => {
+      createTestComponent(`<div fxLayout fxLayoutAlign="start center" fxHide.xs></div>`);
+      expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
+      matchMedia.activate('xs');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+    });
   });
 
   describe('with responsive features', () => {
