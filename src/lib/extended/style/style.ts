@@ -9,15 +9,22 @@ import {
   Directive,
   DoCheck,
   ElementRef,
+  Inject,
   KeyValueDiffers,
   Optional,
+  PLATFORM_ID,
   Renderer2,
   SecurityContext,
   Self,
 } from '@angular/core';
-import {NgStyle} from '@angular/common';
+import {isPlatformServer, NgStyle} from '@angular/common';
 import {DomSanitizer} from '@angular/platform-browser';
-import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/core';
+import {
+  BaseDirective2,
+  StyleUtils,
+  MediaMarshaller,
+  SERVER_TOKEN,
+} from '@angular/flex-layout/core';
 
 import {
   NgStyleRawList,
@@ -36,6 +43,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
 
   protected DIRECTIVE_KEY = 'ngStyle';
   protected fallbackStyles: NgStyleMap;
+  protected isServer: boolean;
 
   constructor(protected elementRef: ElementRef,
               protected styler: StyleUtils,
@@ -43,7 +51,9 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
               protected keyValueDiffers: KeyValueDiffers,
               protected renderer: Renderer2,
               protected sanitizer: DomSanitizer,
-              @Optional() @Self() private readonly ngStyleInstance: NgStyle) {
+              @Optional() @Self() private readonly ngStyleInstance: NgStyle,
+              @Optional() @Inject(SERVER_TOKEN) serverLoaded: boolean,
+              @Inject(PLATFORM_ID) platformId: Object) {
     super(elementRef, null!, styler, marshal);
     if (!this.ngStyleInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
@@ -53,12 +63,16 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
     this.init();
     const styles = this.nativeElement.getAttribute('style') || '';
     this.fallbackStyles = this.buildStyleMap(styles);
+    this.isServer = serverLoaded && isPlatformServer(platformId);
   }
 
   /** Add generated styles */
   protected updateWithValue(value: any) {
     const styles = this.buildStyleMap(value);
     this.ngStyleInstance.ngStyle = {...this.fallbackStyles, ...styles};
+    if (this.isServer) {
+      this.applyStyleToElement(styles);
+    }
     this.ngStyleInstance.ngDoCheck();
   }
 
