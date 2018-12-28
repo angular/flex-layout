@@ -8,9 +8,11 @@
 import {
   Directive,
   DoCheck,
-  ElementRef, Inject,
+  ElementRef,
+  Inject,
   KeyValueDiffers,
-  Optional, PLATFORM_ID,
+  Optional,
+  PLATFORM_ID,
   Renderer2,
   SecurityContext,
   Self,

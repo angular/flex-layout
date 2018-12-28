@@ -82,7 +82,7 @@ task('prerender:clear:deps', [], execTask(
 ));
 
 task('prerender:clear:lock', [], execTask(
-    'rm', ['package-lock.json'], {
+    'rm', ['-f', 'package-lock.json'], {
       failOnStderr: false,
       silent: true,
       cwd: universalAppSource
