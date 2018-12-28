@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('universal-app App', () => {
+describe('workspace-project App', () => {
   let page: AppPage;
 
   beforeEach(() => {
@@ -9,6 +9,6 @@ describe('universal-app App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to responsive!');
+    expect(page.getTitleText()).toEqual('Welcome to universal-app!');
   });
 });
