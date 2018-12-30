@@ -7,7 +7,7 @@
  */
 import {Component, Directive, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformBrowser} from '@angular/common';
-import {ComponentFixture, TestBed, inject, async} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   MatchMedia,
   MockMatchMedia,
@@ -323,7 +323,7 @@ describe('show directive', () => {
       });
     });
 
-    it('should respond to custom breakpoint', async(() => {
+    it('should respond to custom breakpoint', () => {
       createTestComponent(`
         <p fxFlex="100%" fxHide="true" fxShow.sm-md="true" fxShow.sm.lg="true"></p>
       `);
@@ -341,7 +341,7 @@ describe('show directive', () => {
       matchMedia.activate('sm.lg');
 
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
-    }));
+    });
   });
 
 });

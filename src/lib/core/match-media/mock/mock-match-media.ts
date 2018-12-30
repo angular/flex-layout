@@ -129,7 +129,7 @@ export class MockMatchMedia extends MatchMedia {
   private _activateByQuery(mediaQuery: string) {
     const mql = this._registry.get(mediaQuery);
     const alreadyAdded = this._actives
-      .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
+        .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
 
     if (mql && !alreadyAdded) {
       this._actives.push(mql.activate());
@@ -160,7 +160,7 @@ export class MockMatchMedia extends MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected _buildMQL(query: string): MediaQueryList {
+  protected buildMQL(query: string): MediaQueryList {
     return new MockMediaQueryList(query);
   }
 
@@ -188,7 +188,8 @@ export class MockMediaQueryList implements MediaQueryList {
     return this._mediaQuery;
   }
 
-  constructor(private _mediaQuery: string) {}
+  constructor(private _mediaQuery: string) {
+  }
 
   /**
    * Destroy the current list by deactivating the
@@ -238,24 +239,28 @@ export class MockMediaQueryList implements MediaQueryList {
   removeListener(_: EventListenerOrEventListenerObject | null) {
   }
 
-  addEventListener<K extends keyof
-    MediaQueryListEventMap>(_: K,
-                            __: (this: MediaQueryList,
-                                 ev: MediaQueryListEventMap[K]) => any,
-                            ___?: boolean | AddEventListenerOptions): void;
-  addEventListener(_: string,
-                   __: EventListenerOrEventListenerObject,
-                   ___?: boolean | AddEventListenerOptions) {
+  addEventListener<K extends keyof MediaQueryListEventMap>(
+      _: K,
+      __: (this: MediaQueryList,
+      ev: MediaQueryListEventMap[K]) => any,
+      ___?: boolean | AddEventListenerOptions): void;
+
+  addEventListener(
+      _: string,
+      __: EventListenerOrEventListenerObject,
+      ___?: boolean | AddEventListenerOptions) {
   }
 
-  removeEventListener<K extends keyof
-    MediaQueryListEventMap>(_: K,
-                            __: (this: MediaQueryList,
-                                  ev: MediaQueryListEventMap[K]) => any,
-                            ___?: boolean | EventListenerOptions): void;
-  removeEventListener(_: string,
-                      __: EventListenerOrEventListenerObject,
-                      ___?: boolean | EventListenerOptions) {
+  removeEventListener<K extends keyof MediaQueryListEventMap>(
+      _: K,
+      __: (this: MediaQueryList,
+      ev: MediaQueryListEventMap[K]) => any,
+      ___?: boolean | EventListenerOptions): void;
+
+  removeEventListener(
+      _: string,
+      __: EventListenerOrEventListenerObject,
+      ___?: boolean | EventListenerOptions) {
   }
 
   dispatchEvent(_: Event): boolean {

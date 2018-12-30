@@ -17,6 +17,7 @@ node_modules
 
 # misc
 .DS_Store
+/.firebase
 /.sass-cache
 /connect.lock
 /coverage/*

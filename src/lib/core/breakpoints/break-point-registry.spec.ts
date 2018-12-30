@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {TestBed, inject, async} from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
 
 import {BreakPoint} from './break-point';
 import {BreakPointRegistry} from './break-point-registry';
@@ -52,11 +52,11 @@ describe('break-points', () => {
       });
     });
 
-    it('has the custom breakpoints', async(inject([BREAKPOINTS], (list: BreakPoint[]) => {
+    it('has the custom breakpoints', inject([BREAKPOINTS], (list: BreakPoint[]) => {
       expect(list.length).toEqual(CUSTOM_BPS.length);
       expect(list[0].alias).toEqual('ab');
       expect(list[list.length - 1].suffix).toEqual('Cd');
-    })));
+    }));
   });
 
 });

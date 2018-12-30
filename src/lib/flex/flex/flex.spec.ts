@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, PLATFORM_ID, ViewChild} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {ComponentFixture, TestBed, async, inject} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject, fakeAsync} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
 import {
   MatchMedia,
@@ -379,7 +379,7 @@ describe('flex directive', () => {
       }
     });
 
-    it('should work with non-direct-parent fxLayouts', async(() => {
+    it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div class='test'>
@@ -387,18 +387,17 @@ describe('flex directive', () => {
           </div>
         </div>
       `);
+
       fixture.detectChanges();
       let element = queryFor(fixture, '[fxFlex]')[0];
       let parent = queryFor(fixture, '.test')[0];
 
-      setTimeout(() => {
         // The parent flex-direction not found;
         // A flex-direction should have been auto-injected to the parent...
         // fallback to 'row' and set child width styles accordingly
         expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
         expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
         expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
-      });
 
     }));
 
@@ -453,19 +452,17 @@ describe('flex directive', () => {
       }
     });
 
-    it('should work with calc without internal whitespaces', async(() => {
+    it('should work with calc without internal whitespaces', fakeAsync(() => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate('<div fxFlex="calc(75%-10px)"></div>');
       if (!(platform.FIREFOX || platform.EDGE)) {
         fixture.detectChanges();
-        setTimeout(() => {
-          expectNativeEl(fixture).toHaveStyle({
-            'box-sizing': 'border-box',
-            'flex-grow': '1',
-            'flex-shrink': '1',
-            'flex-basis': 'calc(75% - 10px)' // correct version has whitespace
-          }, styler);
-        });
+        expectNativeEl(fixture).toHaveStyle({
+          'box-sizing': 'border-box',
+          'flex-grow': '1',
+          'flex-shrink': '1',
+          'flex-basis': 'calc(75% - 10px)' // correct version has whitespace
+        }, styler);
       }
     }));
 
@@ -629,7 +626,7 @@ describe('flex directive', () => {
 
   describe('with responsive features', () => {
 
-    it('should initialize the component with the largest matching breakpoint', () => {
+    it('should initialize the component with the largest gt-xxx matching breakpoint', () => {
       componentWithTemplate(`
         <div  fxFlex='auto'
               fxFlex.gt-xs='33%'
@@ -652,6 +649,38 @@ describe('flex directive', () => {
         'flex': '1 1 100%',
         'max-width': '33%'
       }, styler);
+    });
+
+    it('should initialize the component with the smallest lt-xxx matching breakpoint', () => {
+      componentWithTemplate(`
+        <div fxFlex="25px" fxFlex.lt-sm='33%' fxFlex.lt-lg='50%' >
+        </div>
+      `);
+
+      matchMedia.activate('xl', true);
+      fixture.detectChanges();
+
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 25px',
+        'max-width': '25px'
+      }, styler);
+
+      matchMedia.activate('md', true);
+      fixture.detectChanges();
+
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 100%',
+        'max-width': '50%'
+      }, styler);
+
+      matchMedia.activate('xs', true);
+      fixture.detectChanges();
+
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 100%',
+        'max-width': '33%'
+      }, styler);
+
     });
 
     it('should fallback properly to default flex values', () => {
@@ -868,7 +897,7 @@ describe('flex directive', () => {
       });
     });
 
-    it('should work with non-direct-parent fxLayouts', async(() => {
+    it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div class='test'>
@@ -880,14 +909,12 @@ describe('flex directive', () => {
       let element = queryFor(fixture, '[fxFlex]')[0];
       let parent = queryFor(fixture, '.test')[0];
 
-      setTimeout(() => {
-        // The parent flex-direction not found;
-        // A flex-direction should have been auto-injected to the parent...
-        // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
-        expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
-        expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
-      });
+      // The parent flex-direction not found;
+      // A flex-direction should have been auto-injected to the parent...
+      // fallback to 'row' and set child width styles accordingly
+      expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
+      expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
+      expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
 
     }));
   });
@@ -910,7 +937,7 @@ describe('flex directive', () => {
       });
     });
 
-    it('should work with non-direct-parent fxLayouts', async(() => {
+    it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div class='test'>
@@ -922,14 +949,12 @@ describe('flex directive', () => {
       let element = queryFor(fixture, '[fxFlex]')[0];
       let parent = queryFor(fixture, '.test')[0];
 
-      setTimeout(() => {
-        // The parent flex-direction not found;
-        // A flex-direction should have been auto-injected to the parent...
-        // fallback to 'row' and set child width styles accordingly
-        expect(parent.nativeElement.getAttribute('style')).not.toContain('-webkit-flex-direction');
-        expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
-        expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
-      });
+      // The parent flex-direction not found;
+      // A flex-direction should have been auto-injected to the parent...
+      // fallback to 'row' and set child width styles accordingly
+      expect(parent.nativeElement.getAttribute('style')).not.toContain('-webkit-flex-direction');
+      expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
+      expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
 
     }));
   });
@@ -993,7 +1018,7 @@ describe('flex directive', () => {
       });
     });
 
-    it('should set flex basis to input', async(() => {
+    it('should set flex basis to input', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
           <div fxFlex="25"></div>

@@ -16,7 +16,7 @@ import {
   MatchMedia,
   StylesheetMap,
   ServerMatchMedia,
-  prioritySort,
+  sortAscendingPriority
 } from '@angular/flex-layout/core';
 
 
@@ -36,15 +36,12 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
   // be referenced in the static media queries
   const classMap = new Map<HTMLElement, string>();
 
-  // Get the initial stylings for all of the directives, and initialize
-  // the fallback block of stylings, then reverse the breakpoints list
-  // to traverse in the proper order
+  // Get the initial stylings for all of the directives,
+  // and initialize the fallback block of stylings
   const defaultStyles = new Map(serverSheet.stylesheet);
   let styleText = generateCss(defaultStyles, 'all', classMap);
 
-  breakpoints.sort(prioritySort);
-  breakpoints.reverse();
-  breakpoints.forEach((bp, i) => {
+  [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
     serverSheet.clearStyles();
     (matchMedia as ServerMatchMedia).activateBreakpoint(bp);
     const stylesheet = new Map(serverSheet.stylesheet);
@@ -165,3 +162,4 @@ function getClassName(element: HTMLElement, classMap: Map<HTMLElement, string>) 
 
   return className;
 }
+

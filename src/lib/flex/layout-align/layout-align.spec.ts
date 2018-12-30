@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, inject, async} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
 import {
   MatchMedia,
@@ -34,11 +34,11 @@ describe('layout-align directive', () => {
     fixture = makeCreateTestComponent(() => TestLayoutAlignComponent)(template);
 
     inject([MatchMedia, Platform, StyleUtils],
-      (_matchMedia: MockMatchMedia, _platform: Platform, _styler: StyleUtils) => {
-      matchMedia = _matchMedia;
-      platform = _platform;
-      styler = _styler;
-    })();
+        (_matchMedia: MockMatchMedia, _platform: Platform, _styler: StyleUtils) => {
+          matchMedia = _matchMedia;
+          platform = _platform;
+          styler = _styler;
+        })();
   };
 
   beforeEach(() => {
@@ -150,11 +150,11 @@ describe('layout-align directive', () => {
       it('should add correct styles for `fxLayoutAlign="start start"` usage', () => {
         createTestComponent(`<div fxLayoutAlign='start start'></div>`);
         expectNativeEl(fixture).toHaveStyle(
-          extendObject(MAINAXIS_DEFAULTS, {
-            'align-items': 'flex-start',
-            'align-content': 'flex-start'
-          }),
-          styler
+            extendObject(MAINAXIS_DEFAULTS, {
+              'align-items': 'flex-start',
+              'align-content': 'flex-start'
+            }),
+            styler
         );
       });
       it('should add correct styles for `fxLayoutAlign="start center"` usage', () => {
@@ -468,14 +468,14 @@ describe('layout-align directive', () => {
       });
     });
 
-    it('should set flex offset not to input', async(() => {
+    it('should set flex offset not to input', () => {
       createTestComponent(`
         <div fxLayoutAlign='start start'>
           <div fxFlexOffset="25"></div>
         </div>
       `);
       expectNativeEl(fixture).toHaveStyle({'justify-content': 'flex-end'}, styler);
-    }));
+    });
   });
 
 });
@@ -483,11 +483,11 @@ describe('layout-align directive', () => {
 @Injectable({providedIn: FlexModule})
 export class MockLayoutAlignStyleBuilder extends StyleBuilder {
   shouldCache = false;
+
   buildStyles(_input: string) {
     return {'justify-content': 'flex-end'};
   }
 }
-
 
 // *****************************************************************
 // Template Component
@@ -518,7 +518,6 @@ class TestLayoutAlignComponent implements OnInit {
   ngOnInit() {
   }
 }
-
 
 // *****************************************************************
 // Template Component

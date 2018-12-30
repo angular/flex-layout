@@ -10,14 +10,15 @@ import {merge, Observable, Subject, Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 
 import {BreakPoint} from '../breakpoints/break-point';
-import {prioritySort} from '../breakpoints/breakpoint-tools';
+import {sortDescendingPriority} from '../breakpoints/breakpoint-tools';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaChange} from '../media-change';
 
-type Builder = Function;
 type ClearCallback = () => void;
 type UpdateCallback = (val: any) => void;
+type Builder = UpdateCallback | ClearCallback;
+
 type ValueMap = Map<string, string>;
 type BreakpointMap = Map<string, ValueMap>;
 type ElementMap = Map<HTMLElement, BreakpointMap>;
@@ -53,10 +54,7 @@ export class MediaMarshaller {
 
   constructor(protected matchMedia: MatchMedia,
               protected breakpoints: BreakPointRegistry) {
-    this.matchMedia
-      .observe()
-      .subscribe(this.activate.bind(this));
-    this.registerBreakpoints();
+    this.observeActivations();
   }
 
   /**
@@ -68,7 +66,7 @@ export class MediaMarshaller {
     if (bp) {
       if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
         this.activatedBreakpoints.push(bp);
-        this.activatedBreakpoints.sort(prioritySort);
+        this.activatedBreakpoints.sort(sortDescendingPriority);
         this.updateStyles();
       } else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
         // Remove the breakpoint when it's deactivated
@@ -156,7 +154,7 @@ export class MediaMarshaller {
   /** Track element value changes for a specific key */
   trackValue(element: HTMLElement, key: string): Observable<ElementMatcher> {
     return this.subject.asObservable()
-      .pipe(filter(v => v.element === element && v.key === key));
+        .pipe(filter(v => v.element === element && v.key === key));
   }
 
   /** update all styles for all elements on the current breakpoint */
@@ -190,9 +188,9 @@ export class MediaMarshaller {
   clearElement(element: HTMLElement, key: string): void {
     const builders = this.clearBuilderMap.get(element);
     if (builders) {
-      const builder: Builder | undefined = builders.get(key);
-      if (builder) {
-        builder();
+      const clearFn: ClearCallback = builders.get(key) as ClearCallback;
+      if (!!clearFn) {
+        clearFn();
         this.subject.next({element, key, value: ''});
       }
     }
@@ -207,9 +205,9 @@ export class MediaMarshaller {
   updateElement(element: HTMLElement, key: string, value: any): void {
     const builders = this.builderMap.get(element);
     if (builders) {
-      const builder: Builder | undefined = builders.get(key);
-      if (builder) {
-        builder(value);
+      const updateFn: UpdateCallback = builders.get(key) as UpdateCallback;
+      if (!!updateFn) {
+        updateFn(value);
         this.subject.next({element, key, value});
       }
     }
@@ -292,9 +290,14 @@ export class MediaMarshaller {
     return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
   }
 
-  private registerBreakpoints() {
-    const queries = this.breakpoints.sortedItems.map(bp => bp.mediaQuery);
-    this.matchMedia.registerQuery(queries);
+  /**
+   * Watch for mediaQuery breakpoint activations
+   */
+  private observeActivations() {
+    const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
+    this.matchMedia
+        .observe(queries)
+        .subscribe(this.activate.bind(this));
   }
 }
 

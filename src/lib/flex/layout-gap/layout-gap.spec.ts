@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {TestBed, ComponentFixture, async, inject} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, async} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
 import {
   MatchMedia,
@@ -172,7 +172,6 @@ describe('layout-gap directive', () => {
         nodes = queryFor(fixture, '[fxFlex]');
         expect(nodes.length).toEqual(3);
 
-        // TODO(CaerusKaru): MutationObserver is not implemented in domino
         if (typeof MutationObserver !== 'undefined') {
           expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
           expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
@@ -208,8 +207,6 @@ describe('layout-gap directive', () => {
         nodes = queryFor(fixture, '[fxFlex]');
 
         expect(nodes.length).toEqual(1);
-
-        // TODO(CaerusKaru): MutationObserver is not implemented in domino
         if (typeof MutationObserver !== 'undefined') {
           expectEl(nodes[0]).not.toHaveStyle({'margin-right': '13px'}, styler);
         }
@@ -529,14 +526,14 @@ describe('layout-gap directive', () => {
       });
     });
 
-    it('should set gap not to input', async(() => {
+    it('should set gap not to input', () => {
       createTestComponent(`
         <div fxLayoutGap='10px'>
           <div fxFlexOffset="25"></div>
         </div>
       `);
       expectNativeEl(fixture).toHaveStyle({'margin-top': '12px'}, styler);
-    }));
+    });
   });
 
 });

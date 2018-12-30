@@ -5,7 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {TestBed, inject, async} from '@angular/core/testing';
+import {TestBed, inject} from '@angular/core/testing';
+import {sortDescendingPriority} from '../breakpoint-tools';
 
 import {BreakPoint} from '../break-point';
 import {BREAKPOINTS} from '../break-points-token';
@@ -21,14 +22,14 @@ describe('break-point-provider', () => {
         providers: [{provide: BREAKPOINTS, useValue: DEFAULT_BREAKPOINTS}]
       });
     });
-    beforeEach(async(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
-      breakPoints = bps;
-    })));
+    beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
+      breakPoints = [...bps].sort(sortDescendingPriority);
+    }));
 
     it('has the standard breakpoints', () => {
       expect(breakPoints.length).toEqual(DEFAULT_BREAKPOINTS.length);
       expect(breakPoints[0].alias).toEqual('xs');
-      expect(breakPoints[breakPoints.length - 1].alias).toEqual('xl');
+      expect(breakPoints[breakPoints.length - 1].alias).toEqual('gt-xs');
     });
   });
 
@@ -57,9 +58,9 @@ describe('break-point-provider', () => {
       });
     });
     // tslint:disable-next-line:no-shadowed-variable
-    beforeEach(async(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
+    beforeEach(inject([BREAKPOINTS], (breakPoints: BreakPoint[]) => {
       bpList = breakPoints;
-    })));
+    }));
 
     it('has the custom breakpoints', () => {
       expect(bpList.length).toEqual(CUSTOM_BPS.length);

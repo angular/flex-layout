@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ComponentFixture, TestBed, inject, async} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   MatchMedia,
   MockMatchMedia,
@@ -351,14 +351,14 @@ describe('layout directive', () => {
       });
     });
 
-    it('should set layout not to input', async(() => {
+    it('should set layout not to input', () => {
       createTestComponent(`
         <div fxLayout='column'>
           <div fxFlexOffset="25"></div>
         </div>
       `);
       expectNativeEl(fixture).toHaveStyle({'display': 'inline-flex'}, styler);
-    }));
+    });
   });
 
 });
