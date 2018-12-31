@@ -67,8 +67,8 @@ describe('hide directive', () => {
     });
   });
   afterEach(() => {
-    matchMedia.clearAll();
-  });
+     matchMedia && matchMedia.clearAll();
+    });
 
   describe('without `responsive` features', () => {
 

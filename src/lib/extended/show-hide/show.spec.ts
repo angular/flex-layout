@@ -349,7 +349,7 @@ describe('show directive', () => {
       });
     });
     afterEach(() => {
-      matchMedia.clearAll();
+     matchMedia && matchMedia.clearAll();
     });
 
     it('should respond to custom breakpoint', () => {

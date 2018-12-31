@@ -33,7 +33,7 @@ describe('media-marshaller', () => {
           mediaMarshaller = marshal;
         }));
     afterEach(() => {
-      matchMedia.clearAll();
+     matchMedia && matchMedia.clearAll();
     });
 
     it('activates when match-media activates', () => {
@@ -164,7 +164,7 @@ describe('media-marshaller', () => {
         }));
 
     afterEach(() => {
-      matchMedia.clearAll();
+     matchMedia && matchMedia.clearAll();
     });
 
     it('call onMediaChange when breakpoint activates', () => {

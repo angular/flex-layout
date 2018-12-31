@@ -25,7 +25,7 @@
     "no-trailing-whitespace": true,
     "no-bitwise": true,
     "no-shadowed-variable": true,
-    "no-unused-expression": true,
+    "no-unused-expression": [true, "allow-fast-null-checks"],
     "no-var-keyword": true,
     "member-access": [true, "no-public"],
     "no-debugger": true,

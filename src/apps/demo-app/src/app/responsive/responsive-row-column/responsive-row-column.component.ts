@@ -20,8 +20,8 @@ export class ResponsiveRowColumnComponent implements OnDestroy {
   private activeMQC: MediaChange;
   private subscription: Subscription;
 
-  constructor(mediaObserver: MediaObserver) {
-    this.subscription = mediaObserver.media$
+  constructor(mediaService: MediaObserver) {
+    this.subscription = mediaService.asObservable()
       .subscribe((e: MediaChange) => {
         this.activeMQC = e;
       });

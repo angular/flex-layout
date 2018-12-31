@@ -36,7 +36,7 @@ describe('mock-match-media', () => {
       }));
 
   afterEach(() => {
-    matchMedia.clearAll();
+    matchMedia && matchMedia.clearAll();
   });
 
   it('can observe custom mediaQuery ranges', () => {

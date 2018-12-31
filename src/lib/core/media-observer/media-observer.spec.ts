@@ -58,7 +58,7 @@ describe('media-observer', () => {
       [MediaObserver, MatchMedia],
       (mediaService: MediaObserver, matchMedia: MockMatchMedia) => {
         let count = 0,
-          subscription = mediaService.media$.pipe(
+          subscription = mediaService.asObservable().pipe(
             filter((change: MediaChange) => change.mqAlias == 'md'),
             map((change: MediaChange) => change.mqAlias)
           ).subscribe(_ => {
@@ -92,7 +92,7 @@ describe('media-observer', () => {
       [MediaObserver, MatchMedia],
       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
         let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
           current = change;
         });
 
@@ -130,7 +130,7 @@ describe('media-observer', () => {
       [MediaObserver, MatchMedia],
       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
         let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
           current = change;
         });
 
@@ -154,7 +154,7 @@ describe('media-observer', () => {
       [MediaObserver, MatchMedia],
       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
         let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
           current = change;
         });
 
@@ -196,7 +196,7 @@ describe('media-observer', () => {
       [MediaObserver, MatchMedia],
       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
         let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
           current = change;
         });
 
@@ -241,7 +241,7 @@ describe('media-observer', () => {
        [MediaObserver, MatchMedia],
        (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
          let current: MediaChange = new MediaChange(true);
-         let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+         let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
            current = change;
          });
 
@@ -281,7 +281,7 @@ describe('media-observer', () => {
        [MediaObserver, MatchMedia],
        (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
          let current: MediaChange = new MediaChange(true);
-         let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+         let subscription = mediaObserver.asObservable().subscribe((change: MediaChange) => {
            current = change;
          });
 

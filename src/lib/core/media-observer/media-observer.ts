@@ -30,7 +30,7 @@ import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point
  *
  * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
  * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * `.media$` with syntax like mediaObserver.asObservable().map(....).
  *
  *  @usage
  *
@@ -42,15 +42,15 @@ import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point
  *  export class AppComponent {
  *    status: string = '';
  *
- *    constructor(mediaObserver: MediaObserver) {
+ *    constructor(media: MediaObserver) {
  *      const onChange = (change: MediaChange) => {
  *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
  *      };
  *
  *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      // e.g. media.asObservable().subscribe(onChange);
  *
- *      mediaObserver.media$()
+ *      media.asObservable()
  *        .pipe(
  *          filter((change: MediaChange) => true)   // silly noop filter
  *        ).subscribe(onChange);
@@ -63,12 +63,24 @@ export class MediaObserver {
    * Whether to announce gt-<xxx> breakpoint activations
    */
   filterOverlaps = true;
-  readonly media$: Observable<MediaChange>;
+
+  /**
+   * @deprecated Use `asObservable()` instead.
+   * @deletion-target v7.0.0-beta.23
+   * @breaking-change 7.0.0-beta.23
+   */
+  get media$(): Observable<MediaChange> {
+    return this._media$;
+  }
 
   constructor(protected breakpoints: BreakPointRegistry,
       protected mediaWatcher: MatchMedia,
       protected hook: PrintHook) {
-    this.media$ = this.watchActivations();
+    this._media$ = this.watchActivations();
+  }
+
+  asObservable(): Observable<MediaChange> {
+    return this._media$;
   }
 
   /**
@@ -142,4 +154,6 @@ export class MediaObserver {
     const bp = locator.findByAlias(query) || locator.findByQuery(query);
     return bp ? bp.mediaQuery : query;
   }
+
+  readonly _media$: Observable<MediaChange>;
 }
