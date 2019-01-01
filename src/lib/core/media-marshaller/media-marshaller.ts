@@ -63,7 +63,7 @@ export class MediaMarshaller {
   }
 
   /**
-   * onMediaChange or deactivate a given breakpoint
+   * Update styles on breakpoint activates or deactivates
    * @param mc
    */
   onMediaChange(mc: MediaChange) {
@@ -74,7 +74,6 @@ export class MediaMarshaller {
       if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
         this.activatedBreakpoints.push(bp);
         this.activatedBreakpoints.sort(sortDescendingPriority);
-        // logActivations(this.activatedBreakpoints)
 
         this.updateStyles();
 
@@ -337,11 +336,3 @@ function initBuilderMap(map: BuilderMap,
   }
 }
 
-
-
-export function logActivations(list: BreakPoint[]) {
-  const aliases = list.reduce((seed, it: BreakPoint) => {
-    return seed ? `${seed}, ${it.alias}` : it.alias;
-  }, '');
-  console.log(`Update styles with: (${aliases})`);
-}

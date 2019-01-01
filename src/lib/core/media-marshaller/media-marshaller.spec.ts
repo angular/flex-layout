@@ -157,7 +157,6 @@ describe('media-marshaller', () => {
       spyOn(MediaMarshaller.prototype, 'updateStyles').and.callThrough();
     });
 
-    // Single async inject to save references; which are used in all tests below
     beforeEach(inject([MatchMedia, MediaMarshaller],
         (service: MockMatchMedia, marshal: MediaMarshaller) => {
           matchMedia = service;      // inject only to manually onMediaChange mediaQuery ranges
@@ -269,7 +268,7 @@ describe('media-marshaller', () => {
       expect(triggered).toBeFalsy();
     });
 
-    it('will not propagate "print" events to onMediaChange', () => {
+    it('will not propagate "print" events to activate', () => {
       // const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959px)';
       matchMedia.activate('print');
       expect(mediaMarshaller.onMediaChange).not.toHaveBeenCalledWith({mediaQuery: 'print'});
