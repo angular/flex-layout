@@ -19,24 +19,34 @@ export class WatermarkComponent {
   /* tslint:disable:max-line-length */
   get backgroundImage() {
     const rawSVG = `
-    <svg id="diagonalWatermark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             width="100%" height="100%">
-          <style type="text/css">text { fill: gray; font-family: Avenir, Arial, Helvetica, sans-serif;
-            opacity: 0.25; }
+       <svg id="diagonalWatermark"
+         width="100%" height="100%"
+         xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" >
+          <style type="text/css">
+            text {
+              fill: currentColor;
+              font-family: Avenir, Arial, Helvetica, sans-serif;
+              opacity: 0.25;
+            }
           </style>
           <defs>
-            <pattern id="titlePattern" patternUnits="userSpaceOnUse" width="400" height="200">
-              <text y="30" font-size="40" id="title">${this.title}</text>
+            <pattern id="titlePattern" patternUnits="userSpaceOnUse" width="350" height="150">
+              <text y="30" font-size="30" id="title">
+               ${this.title}
+              </text>
             </pattern>
             <pattern xlink:href="#titlePattern">
-              <text y="120" x="200" font-size="30" id="message">${this.message}</text>
+              <text y="60" x="0" font-size="16" id="message" width="350" height="150">
+                ${this.message}
+              </text>
             </pattern>
-            <pattern id="combo" xlink:href="#titlePattern" patternTransform="rotate(-45)">
+            <pattern id="combo" xlink:href="#titlePattern" patternTransform="rotate(-30)">
               <use xlink:href="#title"/>
               <use xlink:href="#message"/>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#combo)"/>
+          	<rect width="100%" height="100%" fill="url(#combo)"/>
         </svg>
     `;
     const bkgrndImageUrl = `data:image/svg+xml;base64,${window.btoa(rawSVG)}`;

@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, PLATFORM_ID, ViewChild} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {ComponentFixture, TestBed, inject, fakeAsync, async} from '@angular/core/testing';
+import {ComponentFixture, TestBed, inject, fakeAsync} from '@angular/core/testing';
 import {Platform} from '@angular/cdk/platform';
 import {
   MatchMedia,
@@ -48,7 +48,7 @@ describe('flex directive', () => {
     })();
   };
 
-  beforeEach(async (() => {
+  beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
     // Configure testbed to prepare services
@@ -60,7 +60,7 @@ describe('flex directive', () => {
       declarations: [TestFlexComponent, TestQueryWithFlexComponent],
       providers: [MockMatchMediaProvider]
     });
-  }));
+  });
 
   afterEach(() => {
     matchMedia.clearAll();
