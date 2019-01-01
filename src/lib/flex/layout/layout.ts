@@ -14,7 +14,7 @@ import {
   MediaMarshaller,
 } from '@angular/flex-layout/core';
 
-import {buildLayoutCSS} from '../../utils/layout-validator';
+import {buildLayoutCSS} from '../utils/layout-validator';
 
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder extends StyleBuilder {

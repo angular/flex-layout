@@ -19,13 +19,13 @@ import {
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect} from '../../core/testing/custom-matchers';
 import {
   expectEl,
   expectNativeEl,
   makeCreateTestComponent,
   queryFor,
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 import {FlexModule} from '../module';
 import {LayoutGapStyleBuilder} from './layout-gap';
 

@@ -16,9 +16,9 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../core/testing/custom-matchers';
 import {FlexLayoutModule} from '../../module';
-import {expectNativeEl, makeCreateTestComponent} from '../../utils/testing/helpers';
+import {expectNativeEl, makeCreateTestComponent} from '../../core/testing/helpers';
 
 describe('flex-order', () => {
   let fixture: ComponentFixture<any>;

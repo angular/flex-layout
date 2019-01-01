@@ -1,0 +1,20 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module")
+
+ng_module(
+  name = "server",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  module_name = "@angular/flex-layout/server",
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/core",
+    "@angular//packages/platform-server",
+    "//src/lib/core",
+  ],
+)
+
+filegroup(
+  name = "source-files",
+  srcs = glob(["**/*.ts"]),
+)

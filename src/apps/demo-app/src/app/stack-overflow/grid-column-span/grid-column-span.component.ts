@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'demo-grid-column-span',
   templateUrl: './grid-column-span.component.html',
-  styleUrls: ['./grid-column-span.component.scss']
+  styleUrls: ['./grid-column-span.component.css']
 })
 export class GridColumnSpanComponent {
   calc2Cols = '2 2 calc(10em + 10px);';

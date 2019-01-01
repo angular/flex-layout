@@ -8,7 +8,7 @@
 import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
-import {applyCssPrefixes} from '../../utils/auto-prefixer';
+import {applyCssPrefixes} from '../utils/auto-prefixer';
 import {StylesheetMap} from '../stylesheet-map/stylesheet-map';
 import {SERVER_TOKEN} from '../tokens/server-token';
 import {LAYOUT_CONFIG, LayoutConfigOptions} from '../tokens/library-config';

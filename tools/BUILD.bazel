@@ -1,0 +1,25 @@
+package(default_visibility=["//visibility:public"])
+load("//tools:defaults.bzl", "ts_library")
+load("@build_bazel_rules_nodejs//:defs.bzl", "nodejs_binary")
+
+
+ts_library(
+  name = "sass_bundle_lib",
+  srcs = ["sass-bundle.ts"],
+  deps = [
+    "@layoutdeps//@types/node",
+    "@layoutdeps//scss-bundle",
+  ],
+  tsconfig = "bazel-tools-tsconfig.json",
+)
+
+# Executable for the custom sass_bundle rule (see sass_bundle.bzl).
+nodejs_binary(
+  name = "sass_bundle",
+  data = [
+   "@layoutdeps//scss-bundle",
+   "@layoutdeps//source-map-support",
+    ":sass_bundle_lib",
+  ],
+  entry_point = "angular_layout/tools/sass-bundle.js",
+)

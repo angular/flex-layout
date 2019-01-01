@@ -108,5 +108,11 @@
       "src/lib/**/*.ts"
     ],
     "deletion-target": true
+  },
+  "linterOptions": {
+    "exclude": [
+      // Exclude the API golden files
+      "tools/public_api_guard/**/*.d.ts"
+    ]
   }
 }

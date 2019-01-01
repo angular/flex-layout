@@ -3,7 +3,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'watermark',
-  styleUrls: ['watermark.component.scss'],
+  styleUrls: ['watermark.component.css'],
   template: `
     <div [style.background]="backgroundImage">
     </div>

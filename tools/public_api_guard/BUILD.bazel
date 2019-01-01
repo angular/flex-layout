@@ -1,0 +1,6 @@
+package(default_visibility=["//visibility:public"])
+
+load(":generate-guard-tests.bzl", "generate_test_targets")
+
+# Generate the API guard test targets for each golden file in the current package.
+generate_test_targets(glob(["**/*.d.ts"]))

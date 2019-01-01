@@ -1,0 +1,140 @@
+package(default_visibility = ["//visibility:public"])
+
+load("//tools:defaults.bzl", "ng_module", "ts_library", "ts_web_test_suite")
+load("@build_bazel_rules_nodejs//:defs.bzl", "rollup_bundle", "history_server")
+load("@build_bazel_rules_nodejs//internal/web_package:web_package.bzl", "web_package")
+load("@build_bazel_rules_typescript//:defs.bzl", "ts_devserver")
+# load("//tools:sass_generate_binaries.bzl", "sass_generate_binaries")
+
+# Generate sass binaries for all nested SCSS files.
+# sass_generate_binaries("demo_app_scss", ["styles.scss"])
+
+ng_module(
+    name = "src",
+    srcs = glob(["**/*.ts"], exclude = ["**/*.spec.ts", "main.ts"]),
+    assets = [":app/app.component.html", ":app/watermark.component.css"],
+    tsconfig = "//src/apps/demo-app:tsconfig.json",
+    deps = [
+        "@angular//packages/core",
+        "@angular//packages/platform-browser",
+        "@angular//packages/router",
+        "@layoutdeps//@types",
+        "@angular_material//src/lib:material",
+        "//src/lib:layout",
+        "//src/apps/demo-app/src/app/github-issues",
+        "//src/apps/demo-app/src/app/grid",
+        "//src/apps/demo-app/src/app/layout",
+        "//src/apps/demo-app/src/app/responsive",
+        "//src/apps/demo-app/src/app/stack-overflow",
+    ],
+)
+# Needed because the prodserver only loads static files that appear under this
+# package.
+genrule(
+    name = "zonejs",
+    srcs = ["@layoutdeps//node_modules/zone.js:dist/zone.min.js"],
+    outs = ["zone.min.js"],
+    cmd = "cp $< $@",
+)
+
+history_server(
+    name = "prodserver",
+    data = [
+        "index.html",
+        ":bundle",
+        ":zonejs",
+    ],
+)
+
+# We always strip these paths off the front of any assets we serve
+_ROOT_DIRS = [
+    "layoutdeps/node_modules/zone.js/dist",
+    "layoutdeps/node_modules/@angular/material/prebuilt-themes",
+]
+
+ts_devserver(
+    name = "devserver",
+    port = 4200,
+    additional_root_paths = _ROOT_DIRS,
+    entry_module = "angular_layout/src/apps/demo-app/src/main.dev",
+    # These scripts will be included in the JS bundle after require.js
+    # They should have only named UMD modules, or require.js will throw.
+    scripts = [
+        ":module-id.js",
+        "@layoutdeps//node_modules/tslib:tslib.js",
+    ],
+    serving_path = "/bundle.min.js",
+    static_files = [
+        "@layoutdeps//node_modules/zone.js:dist/zone.min.js",
+        "@layoutdeps//node_modules/tslib:tslib.js",
+        "@layoutdeps//node_modules/@angular/material:prebuilt-themes/indigo-pink.css",
+        "favicon.ico",
+        "index.html",
+        "styles.css",
+    ],
+    deps = [":src"],
+)
+
+ts_library(
+    name = "test_lib",
+    testonly = 1,
+    srcs = glob(["**/*.spec.ts"]),
+    deps = [
+        ":src",
+        "@angular//packages/core/testing",
+        "@angular//packages/platform-browser-dynamic/testing",
+        "@layoutdeps//@types",
+    ],
+)
+
+ts_web_test_suite(
+    name = "test",
+    srcs = [],
+    # do not sort
+    bootstrap = [
+        "@layoutdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
+        "@layoutdeps//node_modules/reflect-metadata:Reflect.js",
+    ],
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+        # TODO(gregmagolan): re-enable firefox testing once fixed
+        # See https://github.com/bazelbuild/rules_typescript/issues/296
+        # "@io_bazel_rules_webtesting//browsers:firefox-local",
+    ],
+    deps = [
+        ":test_lib",
+        "@layoutdeps//karma-jasmine",
+    ],
+)
+
+web_package(
+    name = "prodapp",
+    additional_root_paths = _ROOT_DIRS + ["npm/node_modules/systemjs/dist"],
+    # do not sort
+    assets = [
+        "@layoutdeps//node_modules/@angular/material:prebuilt-themes/indigo-pink.css",
+        "@layoutdeps//node_modules/zone.js:dist/zone.min.js",
+        # We load system.js here as it is required in prodmode for code-splitting support.
+        "@layoutdeps//node_modules/systemjs:dist/system.js",
+        ":demo_app_scss",
+        ":bundle.min.js",
+    ],
+    data = [
+        ":bundle",
+    ],
+    # <script> and <link> tags will be automatically injected into this index.
+    index_html = "index.html",
+)
+
+rollup_bundle(
+    name = "bundle",
+    additional_entry_points = [
+        "app/github-issues/github-issues.module.ngfactory",
+        "app/grid/grid.module.ngfactory",
+        "app/layout/layout.module.ngfactory",
+        "app/responsive/responsive.module.ngfactory",
+        "app/stack-overflow/stack-overflow.module.ngfactory",
+    ],
+    entry_point = "src/main.prod",
+    deps = [":src"],
+)

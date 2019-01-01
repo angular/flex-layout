@@ -25,7 +25,7 @@ const EXTRA_BREAKPOINTS = [{
     WatermarkComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule,
     BrowserAnimationsModule,
     RoutingModule,
     DemoMaterialModule,
@@ -42,6 +42,7 @@ const EXTRA_BREAKPOINTS = [{
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [AppComponent],
 })
 export class AppModule { }

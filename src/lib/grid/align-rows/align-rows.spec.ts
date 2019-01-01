@@ -13,11 +13,11 @@ import {
   ɵMockMatchMedia as MockMatchMedia,
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   StyleUtils,
+  extendObject,
 } from '@angular/flex-layout/core';
 
-import {extendObject} from '../../utils/object-extend';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpers';
+import {customMatchers} from '../../core/testing/custom-matchers';
+import {makeCreateTestComponent, expectNativeEl} from '../../core/testing/helpers';
 
 import {GridModule} from '../module';
 import {Platform} from '@angular/cdk/platform';

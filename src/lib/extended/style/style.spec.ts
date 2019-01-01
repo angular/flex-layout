@@ -18,10 +18,10 @@ import {
 import {DefaultLayoutDirective} from '@angular/flex-layout/flex';
 
 import {DefaultStyleDirective} from './style';
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../core/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;

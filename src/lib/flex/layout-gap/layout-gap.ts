@@ -26,7 +26,7 @@ import {
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {LAYOUT_VALUES} from '../../utils/layout-validator';
+import {LAYOUT_VALUES} from '../utils/layout-validator';
 
 export interface LayoutGapParent {
   directionality: string;

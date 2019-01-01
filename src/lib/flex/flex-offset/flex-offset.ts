@@ -15,14 +15,14 @@ import {
 import {Directionality} from '@angular/cdk/bidi';
 import {
   MediaMarshaller,
-  BaseDirective2,
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {takeUntil} from 'rxjs/operators';
 
-import {isFlowHorizontal} from '../../utils/layout-validator';
+import {BaseFlexFlowDirective} from '../base/base';
+import {isFlowHorizontal} from '../utils/layout-validator';
 
 export interface FlexOffsetParent {
   layout: string;
@@ -65,7 +65,7 @@ const selector = `
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
-export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
+export class FlexOffsetDirective extends BaseFlexFlowDirective implements OnChanges {
   protected DIRECTIVE_KEY = 'flex-offset';
 
   constructor(protected elRef: ElementRef,
@@ -80,7 +80,7 @@ export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
     // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
     if (this.parentElement) {
       this.marshal
-        .trackValue(this.parentElement, 'layout-gap')
+        .trackValue(this.parentElement!, 'layout-gap')
         .pipe(takeUntil(this.destroySubject))
         .subscribe(this.triggerUpdate.bind(this));
     }

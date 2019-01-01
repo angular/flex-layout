@@ -17,10 +17,10 @@ import {
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {expectEl, makeCreateTestComponent, queryFor} from '../../utils/testing/helpers';
-import {expect} from '../../utils/testing/custom-matchers';
-import {_dom as _} from '../../utils/testing/dom-tools';
+import {customMatchers} from '../../core/testing/custom-matchers';
+import {expectEl, makeCreateTestComponent, queryFor} from '../../core/testing/helpers';
+import {expect} from '../../core/testing/custom-matchers';
+import {_dom as _} from '../../core/testing/dom-tools';
 
 const SRC_URLS = {
   'xs': [

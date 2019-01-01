@@ -1,0 +1,57 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "jasmine_node_test", "ng_module", "ng_test_library", "ng_web_test_suite")
+
+ng_module(
+  name = "extended",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  module_name = "@angular/flex-layout/extended",
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/core",
+    "@angular//packages/platform-browser",
+    "@angular_material//src/cdk/coercion",
+    "//src/lib/core",
+  ],
+)
+
+ng_test_library(
+  name = "extended_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/platform-browser",
+    "@angular//packages/platform-browser/animations",
+    "@angular//packages/forms",
+    "@rxjs",
+    "@rxjs//operators",
+    "@angular_material//src/lib/button",
+    "@angular_material//src/lib/form-field",
+    "@angular_material//src/lib/select",
+    "//src/lib:layout",
+    "//src/lib/core",
+    "//src/lib/flex",
+    "//src/lib/core:core_testing",
+    ":extended",
+  ]
+)
+
+ng_web_test_suite(
+  name = "unit_tests",
+  deps = [":extended_test_sources"],
+)
+
+jasmine_node_test(
+    name = "test",
+    bootstrap = ["angular_layout/test/angular-test-init-node-spec.js"],
+    deps = [
+        ":extended_test_sources",
+        "//test:angular_test_init_node",
+    ],
+    tags = ["manual"],
+)
+
+filegroup(
+  name = "source-files",
+  srcs = glob(["**/*.ts"]),
+)

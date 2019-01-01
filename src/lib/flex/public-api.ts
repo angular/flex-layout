@@ -8,6 +8,7 @@
 
 export * from './module';
 
+export * from './base/base';
 export * from './flex/flex';
 export * from './flex-align/flex-align';
 export * from './flex-fill/flex-fill';

@@ -17,11 +17,10 @@ import {
   StyleUtils
 } from '@angular/flex-layout/core';
 
-
-import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect, NgMatchers} from '../../core/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 import {FlexLayoutModule} from '../../module';
 
 

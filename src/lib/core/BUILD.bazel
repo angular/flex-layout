@@ -1,0 +1,63 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "jasmine_node_test", "ng_module", "ng_test_library", "ng_web_test_suite", "ts_library")
+
+exports_files(["sass/_layout-bp.scss"])
+
+ng_module(
+  name = "core",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts", "testing/**"]),
+  module_name = "@angular/flex-layout/core",
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/core",
+    "@rxjs",
+    "@rxjs//operators",
+  ],
+)
+
+ts_library(
+  name = "core_testing",
+  srcs = glob(["testing/**"]),
+  deps = [
+    ":core",
+    "@angular//packages/core",
+    "@angular//packages/core/testing",
+    "@angular//packages/platform-browser",
+    "@layoutdeps//@types/jasmine",
+  ],
+)
+
+ng_test_library(
+  name = "core_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/platform-browser",
+    "@rxjs",
+    "@rxjs//operators",
+    "//src/lib:layout",
+    ":core",
+    ":core_testing",
+  ]
+)
+
+jasmine_node_test(
+    name = "test",
+    bootstrap = ["angular_layout/test/angular-test-init-node-spec.js"],
+    deps = [
+        ":core_test_sources",
+        "//test:angular_test_init_node",
+    ],
+    tags = ["manual"],
+)
+
+ng_web_test_suite(
+  name = "unit_tests",
+  deps = [":core_test_sources"],
+)
+
+filegroup(
+  name = "source-files",
+  srcs = glob(["**/*.ts"]),
+)

@@ -1,0 +1,51 @@
+load("//tools:defaults.bzl", "ng_module", "ts_library", "ts_web_test_suite")
+
+package(default_visibility = ["//visibility:public"])
+
+ng_module(
+    name = "grid",
+    srcs = glob(["**/*.ts"], exclude = ["**/*.spec.ts"]),
+    assets = glob(["**/*.html", "**/*.css"]),
+    tsconfig = "//src/apps/demo-app:tsconfig.json",
+    deps = [
+        "//src/lib:layout",
+        "@layoutdeps//@types",
+        "@angular_material//src/lib:material",
+        "@angular//packages/core",
+        "@angular//packages/forms",
+        "@angular//packages/router",
+    ],
+)
+
+ts_library(
+    name = "test_lib",
+    testonly = 1,
+    srcs = glob(["*.spec.ts"]),
+    deps = [
+        ":grid",
+        "@angular//packages/core",
+        "@angular//packages/core/testing",
+        "@angular//packages/platform-browser",
+        "@angular//packages/platform-browser-dynamic/testing",
+        "@angular//packages/platform-browser/animations",
+    ],
+)
+
+ts_web_test_suite(
+    name = "test",
+    srcs = [],
+    # do not sort
+    bootstrap = [
+        "@layoutdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
+        "@layoutdeps//node_modules/reflect-metadata:Reflect.js",
+    ],
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+        # TODO(gregmagolan): re-enable firefox testing once fixed
+        # See https://github.com/bazelbuild/rules_typescript/issues/296
+        #"@io_bazel_rules_webtesting//browsers:firefox-local",
+    ],
+    deps = [
+        ":test_lib",
+    ],
+)

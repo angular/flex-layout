@@ -2,9 +2,9 @@ import {task} from 'gulp';
 import {join} from 'path';
 import {buildConfig} from 'lib-build-tools';
 import {register} from 'tsconfig-paths';
+import {patchTestBedToDestroyFixturesAfterEveryTest} from '../../../test/patch-testbed';
 
 const {projectDir} = buildConfig;
-const {patchTestBed} = require(join(projectDir, 'test/patch-testbed'));
 
 
 /**
@@ -35,7 +35,7 @@ task('test:ssr', [':test:build'], (done: () => void) => {
     platformServerTesting()
   );
 
-  patchTestBed(testBed);
+  patchTestBedToDestroyFixturesAfterEveryTest(testBed);
   jasmine.loadConfigFile('test/jasmine-ssr.json');
   jasmine.execute();
   done();

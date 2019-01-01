@@ -23,7 +23,10 @@
     "lib:test": "gulp test",
     "lib:test:ssr": "gulp test:ssr",
     "universal:build": "gulp ci:prerender",
-    "universal:serve": "gulp universal:serve"
+    "universal:serve": "gulp universal:serve",
+    "gulp": "gulp",
+    "bazel": "bazel",
+    "preinstall": "node ./tools/npm/check-npm.js"
   },
   "version": "7.0.0-beta.23",
   "requiredAngularVersion": ">=7.0.0-rc.0",
@@ -43,6 +46,7 @@
   },
   "devDependencies": {
     "@angular/animations": "^7.0.3",
+    "@angular/bazel": "^7.1.4",
     "@angular/compiler-cli": "^7.0.3",
     "@angular/forms": "^7.0.3",
     "@angular/http": "^7.0.3",
@@ -50,6 +54,9 @@
     "@angular/platform-browser-dynamic": "^7.0.3",
     "@angular/platform-server": "^7.0.3",
     "@angular/router": "^7.0.3",
+    "@bazel/ibazel": "^0.9.0",
+    "@bazel/karma": "0.22.0",
+    "@bazel/typescript": "0.22.0",
     "@google-cloud/storage": "^1.7.0",
     "@types/chalk": "^0.4.31",
     "@types/fs-extra": "^4.0.5",
@@ -67,6 +74,7 @@
     "cli-color": "^1.4.0",
     "dgeni": "^0.4.10",
     "dgeni-packages": "^0.26.12",
+    "domino": "^2.1.1",
     "firebase": "^5.5.8",
     "firebase-admin": "^5.13.1",
     "firebase-tools": "^4.2.1",
@@ -116,12 +124,14 @@
     "scss-bundle": "^2.4.0",
     "selenium-webdriver": "^3.6.0",
     "sorcery": "^0.10.0",
+    "source-map-support": "^0.5.9",
     "stylelint": "^9.8.0",
     "temp": "0.8.3",
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.3.0",
     "tslint": "^5.11.0",
     "typescript": "~3.2.2",
-    "uglify-js": "^2.8.14"
+    "uglify-js": "^2.8.14",
+    "xhr2": "^0.1.4"
   }
 }

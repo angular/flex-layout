@@ -20,13 +20,13 @@ import {
 import {FlexLayoutModule} from '../../module';
 import {DefaultFlexDirective, FlexStyleBuilder} from './flex';
 import {DefaultLayoutDirective} from '../layout/layout';
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
+import {customMatchers, expect} from '../../core/testing/custom-matchers';
 import {
   makeCreateTestComponent,
   expectNativeEl,
   queryFor,
   expectEl,
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;

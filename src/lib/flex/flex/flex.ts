@@ -7,7 +7,6 @@
  */
 import {Directive, ElementRef, Inject, Injectable, Input} from '@angular/core';
 import {
-  BaseDirective2,
   LayoutConfigOptions,
   LAYOUT_CONFIG,
   StyleUtils,
@@ -16,11 +15,12 @@ import {
   StyleDefinition,
   MediaMarshaller,
   ElementMatcher,
+  extendObject,
 } from '@angular/flex-layout/core';
 import {takeUntil} from 'rxjs/operators';
 
-import {extendObject} from '../../utils/object-extend';
-import {isFlowHorizontal} from '../../utils/layout-validator';
+import {BaseFlexFlowDirective} from '../base/base';
+import {isFlowHorizontal} from '../utils/layout-validator';
 
 interface FlexBuilderParent {
   direction: string;
@@ -199,7 +199,7 @@ const selector = `
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-export class FlexDirective extends BaseDirective2 {
+export class FlexDirective extends BaseFlexFlowDirective {
 
   protected DIRECTIVE_KEY = 'flex';
   protected direction = '';

@@ -1,0 +1,51 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "jasmine_node_test", "ng_module", "ng_test_library", "ng_web_test_suite")
+
+ng_module(
+  name = "grid",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  module_name = "@angular/flex-layout/grid",
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/core",
+    "@angular_material//src/cdk/coercion",
+    "//src/lib/core",
+  ],
+)
+
+ng_test_library(
+  name = "grid_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    "@angular//packages/common",
+    "@angular//packages/platform-browser",
+    "@rxjs",
+    "@rxjs//operators",
+    "@angular_material//src/cdk/platform",
+    "//src/lib:layout",
+    "//src/lib/core",
+    "//src/lib/core:core_testing",
+    ":grid",
+  ]
+)
+
+jasmine_node_test(
+    name = "test",
+    bootstrap = ["angular_layout/test/angular-test-init-node-spec.js"],
+    deps = [
+        ":grid_test_sources",
+        "//test:angular_test_init_node",
+    ],
+    tags = ["manual"],
+)
+
+ng_web_test_suite(
+  name = "unit_tests",
+  deps = [":grid_test_sources"],
+)
+
+filegroup(
+  name = "source-files",
+  srcs = glob(["**/*.ts"]),
+)

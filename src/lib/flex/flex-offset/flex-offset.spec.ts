@@ -17,13 +17,13 @@ import {
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../core/testing/custom-matchers';
 import {
   makeCreateTestComponent,
   queryFor,
   expectEl,
   expectNativeEl,
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 import {FlexModule} from '../module';
 import {FlexOffsetStyleBuilder} from './flex-offset';
 

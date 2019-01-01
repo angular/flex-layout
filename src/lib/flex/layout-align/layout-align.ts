@@ -13,11 +13,11 @@ import {
   StyleUtils,
   MediaMarshaller,
   ElementMatcher,
+  extendObject,
 } from '@angular/flex-layout/core';
 import {takeUntil} from 'rxjs/operators';
 
-import {extendObject} from '../../utils/object-extend';
-import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
+import {LAYOUT_VALUES, isFlowHorizontal} from '../utils/layout-validator';
 
 export interface LayoutAlignParent {
   layout: string;

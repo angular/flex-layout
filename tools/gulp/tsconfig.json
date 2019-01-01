@@ -16,7 +16,8 @@
     "target": "es5",
     "removeComments": true,
     "types": [
-      "node"
+      "node",
+      "jasmine"
     ],
     "baseUrl": ".",
     "paths": {

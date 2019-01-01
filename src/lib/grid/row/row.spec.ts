@@ -17,12 +17,12 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
-import {customMatchers} from '../../utils/testing/custom-matchers';
+import {customMatchers} from '../../core/testing/custom-matchers';
 import {
   expectEl,
   queryFor,
   makeCreateTestComponent,
-} from '../../utils/testing/helpers';
+} from '../../core/testing/helpers';
 
 import {GridModule} from '../module';
 

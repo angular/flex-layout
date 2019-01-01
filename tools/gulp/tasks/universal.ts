@@ -31,7 +31,7 @@ task('prerender:pre', sequenceTask(
 );
 
 task('prerender:deps', [], execTask(
-  'npm', ['install'], {cwd: universalAppSource}
+  'yarn', ['--cwd', universalAppSource]
 ));
 
 /**
@@ -41,7 +41,7 @@ task('prerender:deps', [], execTask(
  * benefit of better simulating the install process for Flex Layout in a CLI app
  */
 task('prerender:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: universalAppSource}
+  'yarn', ['--cwd', universalAppSource, 'add', genericTar]
 ));
 
 task('prerender:bundle', [], execTask(
@@ -54,12 +54,12 @@ task('prerender:bundle:rename', [], execTask(
 
 /** Task that builds the universal-app in server mode */
 task('prerender:build', execTask(
-  'npm', ['run', 'build:ssr:bundle'],
-  {cwd: universalAppSource, failOnStderr: true}
+  'yarn', ['--cwd', universalAppSource, 'build:ssr:bundle'],
+  {failOnStderr: true}
 ));
 
 task('prerender:webpack', execTask(
-  'npm', ['run', 'build:server'],
+  'yarn', ['build:server'],
   {cwd: universalAppSource}
 ));
 

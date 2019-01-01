@@ -11,7 +11,6 @@ import {Observable, Subject} from 'rxjs';
 import {StyleDefinition, StyleUtils} from '../style-utils/style-utils';
 import {StyleBuilder} from '../style-builder/style-builder';
 import {MediaMarshaller} from '../media-marshaller/media-marshaller';
-import {buildLayoutCSS} from '../../utils/layout-validator';
 
 export abstract class BaseDirective2 implements OnChanges, OnDestroy {
 
@@ -108,28 +107,6 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   /** Force trigger style updates on DOM element */
   protected triggerUpdate() {
     this.marshal.triggerUpdate(this.nativeElement, this.DIRECTIVE_KEY);
-  }
-
-  /**
-   * Determine the DOM element's Flexbox flow (flex-direction).
-   *
-   * Check inline style first then check computed (stylesheet) style.
-   * And optionally add the flow value to element's inline style.
-   */
-  protected getFlexFlowDirection(target: HTMLElement, addIfMissing = false): string {
-    if (target) {
-      const [value, hasInlineValue] = this.styler.getFlowDirection(target);
-
-      if (!hasInlineValue && addIfMissing) {
-        const style = buildLayoutCSS(value);
-        const elements = [target];
-        this.styler.applyStyleToElements(style, elements);
-      }
-
-      return value.trim();
-    }
-
-    return 'row';
   }
 
   /** Applies styles given via string pair or object map to the directive element */

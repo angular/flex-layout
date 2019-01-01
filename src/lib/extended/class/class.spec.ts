@@ -16,8 +16,8 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
 } from '@angular/flex-layout/core';
 
-import {customMatchers, expect} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../utils/testing/helpers';
+import {customMatchers, expect} from '../../core/testing/custom-matchers';
+import {makeCreateTestComponent, expectNativeEl, queryFor} from '../../core/testing/helpers';
 import {DefaultClassDirective} from './class';
 
 

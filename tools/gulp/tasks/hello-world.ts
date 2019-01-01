@@ -27,7 +27,7 @@ task('hw:pre', sequenceTask(
 );
 
 task('hw:deps', [], execTask(
-  'npm', ['install'], {cwd: helloWorldSource}));
+  'yarn', ['--cwd', helloWorldSource]));
 
 
 /**
@@ -37,7 +37,7 @@ task('hw:deps', [], execTask(
  * benefit of better simulating the install process for Flex Layout in a CLI app
  */
 task('hw:add:tar', [], execTask(
-  'npm', ['install', genericTar], {cwd: helloWorldSource}
+  'yarn', ['--cwd', helloWorldSource, 'add', genericTar]
 ));
 
 task('hw:bundle', [], execTask(
@@ -49,8 +49,8 @@ task('hw:bundle:rename', [], execTask(
 ));
 
 task('hw:cli', execTask(
-  'yarn', ['ng', 'build', '--prod'],
-  {cwd: helloWorldSource, failOnStderr: true}
+  'yarn', ['--cwd', helloWorldSource, 'ng', 'build', '--prod'],
+  {failOnStderr: true}
 ));
 
 task('hw:clean', sequenceTask('hw:clear:mods', 'hw:clear:lock', 'hw:clear:dist'));

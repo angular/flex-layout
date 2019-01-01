@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'demo-moz-holy-grail',
   templateUrl: './moz-holy-grail.component.html',
-  styleUrls: ['./moz-holy-grail.component.scss']
+  styleUrls: ['./moz-holy-grail.component.css']
 })
 export class MozHolyGrailComponent {
   direction = 'row';

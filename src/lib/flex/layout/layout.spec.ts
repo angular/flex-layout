@@ -18,9 +18,9 @@ import {
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '../../utils/testing/custom-matchers';
-import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../utils/testing/helpers';
-import {queryFor} from '../../utils/testing/helpers';
+import {customMatchers} from '../../core/testing/custom-matchers';
+import {makeCreateTestComponent, expectNativeEl, expectEl} from '../../core/testing/helpers';
+import {queryFor} from '../../core/testing/helpers';
 import {FlexModule} from '../module';
 import {LayoutStyleBuilder} from './layout';
 
