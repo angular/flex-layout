@@ -91,10 +91,21 @@ def ng_test_library(deps = [], tsconfig = None, **kwargs):
     **kwargs
   )
 
-def ts_web_test_suite(srcs = [], **kwargs):
+def ts_web_test_suite(srcs = [], bootstrap = [], browsers = [], **kwargs):
   _ts_web_test_suite(
     # Required for running the compiled ng modules that use TypeScript import helpers.
     srcs = ["@layoutdeps//node_modules/tslib:tslib.js"] + srcs,
+    # do not sort
+    bootstrap = [
+        "@layoutdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
+        "@layoutdeps//node_modules/reflect-metadata:Reflect.js",
+    ] + bootstrap,
+    browsers = [
+        "@io_bazel_rules_webtesting//browsers:chromium-local",
+        # TODO(gregmagolan): re-enable firefox testing once fixed
+        # See https://github.com/bazelbuild/rules_typescript/issues/296
+        #"@io_bazel_rules_webtesting//browsers:firefox-local",
+    ] + browsers,
     **kwargs
   )
 

@@ -4,10 +4,6 @@ load("//tools:defaults.bzl", "ng_module", "ts_library", "ts_web_test_suite")
 load("@build_bazel_rules_nodejs//:defs.bzl", "rollup_bundle", "history_server")
 load("@build_bazel_rules_nodejs//internal/web_package:web_package.bzl", "web_package")
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_devserver")
-# load("//tools:sass_generate_binaries.bzl", "sass_generate_binaries")
-
-# Generate sass binaries for all nested SCSS files.
-# sass_generate_binaries("demo_app_scss", ["styles.scss"])
 
 ng_module(
     name = "src",
@@ -89,18 +85,6 @@ ts_library(
 
 ts_web_test_suite(
     name = "test",
-    srcs = [],
-    # do not sort
-    bootstrap = [
-        "@layoutdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
-        "@layoutdeps//node_modules/reflect-metadata:Reflect.js",
-    ],
-    browsers = [
-        "@io_bazel_rules_webtesting//browsers:chromium-local",
-        # TODO(gregmagolan): re-enable firefox testing once fixed
-        # See https://github.com/bazelbuild/rules_typescript/issues/296
-        # "@io_bazel_rules_webtesting//browsers:firefox-local",
-    ],
     deps = [
         ":test_lib",
         "@layoutdeps//karma-jasmine",
