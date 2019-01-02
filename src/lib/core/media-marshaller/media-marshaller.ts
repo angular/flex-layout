@@ -8,7 +8,7 @@
 import {Injectable} from '@angular/core';
 
 import {merge, Observable, Subject, Subscription} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {filter, tap} from 'rxjs/operators';
 
 import {BreakPoint} from '../breakpoints/break-point';
 import {sortDescendingPriority} from '../breakpoints/breakpoint-tools';
@@ -316,7 +316,10 @@ export class MediaMarshaller {
 
     this.matchMedia
         .observe(this.hook.withPrintQuery(queries))
-        .pipe(filter(this.hook.interceptEvents(target)))
+        .pipe(
+            tap(this.hook.interceptEvents(target)),
+            filter(this.hook.blockPropagation())
+        )
         .subscribe(this.onMediaChange.bind(this));
   }
 

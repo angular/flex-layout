@@ -27,7 +27,7 @@ const EXTRA_BREAKPOINT = [{
     DemoMaterialModule,
     FlexLayoutModule.withConfig({
       useColumnBasisZero: false,
-      // printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
+      printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
     }),
   ],
   providers: [{provide: BREAKPOINT, useValue: EXTRA_BREAKPOINT, multi: true}],

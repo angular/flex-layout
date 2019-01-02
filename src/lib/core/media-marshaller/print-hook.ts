@@ -88,7 +88,7 @@ export class PrintHook {
    * @return pipeable filter predicate
    */
   interceptEvents(target: HookTarget) {
-    return (event: MediaChange): boolean => {
+    return (event: MediaChange) => {
       if (this.isPrintEvent(event)) {
         if (event.matches && !this.isPrinting) {
           this.startPrinting(target, this.getEventBreakpoints(event));
@@ -101,8 +101,12 @@ export class PrintHook {
       } else {
         this.collectActivations(event);
       }
+    };
+  }
 
-      // Stop event propagation ?
+  /** Stop mediaChange event propagation in event streams */
+  blockPropagation() {
+    return (event: MediaChange): boolean => {
       return !(this.isPrinting || this.isPrintEvent(event));
     };
   }
