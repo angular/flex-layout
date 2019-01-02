@@ -3,7 +3,8 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'demo-docs-responsive',
   template: `
-    <demo-responsive-layout-direction  class='small-demo'>  </demo-responsive-layout-direction>
+    <demo-responsive-layout-direction  class='small-demo' fxHide.print>
+    </demo-responsive-layout-direction>
     <demo-responsive-row-column class='small-demo'>  </demo-responsive-row-column>
     <demo-responsive-flex-directive  class='small-demo'>  </demo-responsive-flex-directive>
     <demo-responsive-flex-order  class='small-demo'>  </demo-responsive-flex-order>

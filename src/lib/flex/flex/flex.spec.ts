@@ -62,6 +62,10 @@ describe('flex directive', () => {
     });
   });
 
+  afterEach(() => {
+    matchMedia.clearAll();
+  });
+
   describe('with static features', () => {
 
     it('should add correct styles for default `fxFlex` usage', () => {
@@ -626,6 +630,48 @@ describe('flex directive', () => {
 
   describe('with responsive features', () => {
 
+    it('should initialize the component with the smallest lt-xxx matching breakpoint', () => {
+       componentWithTemplate(`
+         <div fxFlex="25px"  fxFlex.lt-lg='50%' fxFlex.lt-sm='33%'>
+         </div>
+       `);
+
+       fixture.detectChanges();
+
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 25px',
+        'max-width': '25px'
+      }, styler);
+
+
+       matchMedia.activate('xl', true);
+       fixture.detectChanges();
+
+       expectNativeEl(fixture).toHaveStyle({
+         'flex': '1 1 25px',
+         'max-width': '25px'
+       }, styler);
+
+       matchMedia.activate('md', true);
+       fixture.detectChanges();
+
+       expectNativeEl(fixture).toHaveStyle({
+         'flex': '1 1 100%',
+         'max-width': '50%'
+       }, styler);
+
+      matchMedia.activate('xs', true);
+      fixture.detectChanges();
+
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 100%',
+        'max-width': '33%'
+      }, styler);
+
+
+     });
+
+
     it('should initialize the component with the largest gt-xxx matching breakpoint', () => {
       componentWithTemplate(`
         <div  fxFlex='auto'
@@ -649,38 +695,6 @@ describe('flex directive', () => {
         'flex': '1 1 100%',
         'max-width': '33%'
       }, styler);
-    });
-
-    it('should initialize the component with the smallest lt-xxx matching breakpoint', () => {
-      componentWithTemplate(`
-        <div fxFlex="25px" fxFlex.lt-sm='33%' fxFlex.lt-lg='50%' >
-        </div>
-      `);
-
-      matchMedia.activate('xl', true);
-      fixture.detectChanges();
-
-      expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 25px',
-        'max-width': '25px'
-      }, styler);
-
-      matchMedia.activate('md', true);
-      fixture.detectChanges();
-
-      expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
-        'max-width': '50%'
-      }, styler);
-
-      matchMedia.activate('xs', true);
-      fixture.detectChanges();
-
-      expectNativeEl(fixture).toHaveStyle({
-        'flex': '1 1 100%',
-        'max-width': '33%'
-      }, styler);
-
     });
 
     it('should fallback properly to default flex values', () => {
@@ -884,8 +898,6 @@ describe('flex directive', () => {
 
   describe('with flex token enabled', () => {
     beforeEach(() => {
-      jasmine.addMatchers(customMatchers);
-
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         imports: [
@@ -895,6 +907,10 @@ describe('flex directive', () => {
         declarations: [TestFlexComponent, TestQueryWithFlexComponent],
         providers: [MockMatchMediaProvider]
       });
+    });
+
+    afterEach(() => {
+      matchMedia.clearAll();
     });
 
     it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
@@ -921,8 +937,6 @@ describe('flex directive', () => {
 
   describe('with prefixes disabled', () => {
     beforeEach(() => {
-      jasmine.addMatchers(customMatchers);
-
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         imports: [
@@ -962,8 +976,6 @@ describe('flex directive', () => {
   describe('with column basis zero disabled', () => {
     let styleBuilder: FlexStyleBuilder;
     beforeEach(() => {
-      jasmine.addMatchers(customMatchers);
-
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         imports: [
@@ -996,8 +1008,6 @@ describe('flex directive', () => {
 
   describe('with custom builder', () => {
     beforeEach(() => {
-      jasmine.addMatchers(customMatchers);
-
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         imports: [

@@ -14,7 +14,7 @@ import {extendObject} from '../utils/object-extend';
  * and suffix (if available).
  */
 export function mergeAlias(dest: MediaChange, source: BreakPoint | null): MediaChange {
-  return extendObject(dest, source ? {
+  return extendObject(dest || {}, source ? {
         mqAlias: source.alias,
         suffix: source.suffix
       } : {});

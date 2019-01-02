@@ -24,7 +24,7 @@ e.g.
 
 ### Using Responsive API
 
-When a mediaQuery range activates, the directive instances will be notified. If the current activate mediaQuery range 
+When a mediaQuery range activates, the directive instances will be notified. If the current activated mediaQuery range 
 (and its associated alias) are not used, then the static API value is restored as the fallback value.
 
 The *fallback* solution uses a **`largest_range-to-smallest_range`** search algorithm. Consider the following:

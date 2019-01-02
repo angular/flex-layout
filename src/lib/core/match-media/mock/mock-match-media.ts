@@ -68,7 +68,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   /**
-   * Manually activate any overlapping mediaQueries to simulate
+   * Manually onMediaChange any overlapping mediaQueries to simulate
    * similar functionality in the window.matchMedia()
    */
   private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean): boolean {
@@ -92,7 +92,7 @@ export class MockMatchMedia extends MatchMedia {
           break;
       }
 
-      // Simulate activate of overlapping gt-<xxxx> mediaQuery ranges
+      // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
       switch (alias) {
         case 'xl'   :
           this._activateByAlias('gt-lg, gt-md, gt-sm, gt-xs');
@@ -137,15 +137,10 @@ export class MockMatchMedia extends MatchMedia {
     return this.hasActivated;
   }
 
-  /** Deactivate all current Mock MQLs */
+  /** Deactivate all current MQLs and reset the buffer */
   private _deactivateAll() {
-    if (this._actives.length) {
-      // Deactivate all current MQLs and reset the buffer
-      for (const it of this._actives) {
-        it.deactivate();
-      }
-      this._actives = [];
-    }
+    this._actives.forEach(it => it.deactivate());
+    this._actives = [];
     return this;
   }
 

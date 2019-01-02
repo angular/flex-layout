@@ -171,7 +171,7 @@ describe('match-media-observable', () => {
   });
 
   /**
-   * Only the ObservableMedia ignores de-activations;
+   * Only the MediaObserver ignores de-activations;
    * MediaMonitor and MatchMedia report both activations and de-activations!
    */
   it('ignores mediaQuery de-activations', () => {
@@ -189,9 +189,10 @@ describe('match-media-observable', () => {
 
     matchMedia.activate(breakPoints.findByAlias('md')!.mediaQuery);
     matchMedia.activate(breakPoints.findByAlias('gt-md')!.mediaQuery);
+    matchMedia.activate(breakPoints.findByAlias('lg')!.mediaQuery);
 
     // 'all' mediaQuery is already active; total count should be (3)
-    expect(activationCount).toEqual(3);
+    expect(activationCount).toEqual(4);
     expect(deactivationCount).toEqual(0);
 
     subscription.unsubscribe();

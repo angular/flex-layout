@@ -9,10 +9,11 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 
-import {BreakPointRegistry} from '../breakpoints/break-point-registry';
+import {mergeAlias} from '../add-alias';
 import {MediaChange} from '../media-change';
 import {MatchMedia} from '../match-media/match-media';
-import {mergeAlias} from '../add-alias';
+import {PrintHook} from '../media-marshaller/print-hook';
+import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
 
 /**
  * Class internalizes a MatchMedia service and exposes an Observable interface.
@@ -64,7 +65,9 @@ export class MediaObserver {
   filterOverlaps = true;
   readonly media$: Observable<MediaChange>;
 
-  constructor(private breakpoints: BreakPointRegistry, private mediaWatcher: MatchMedia) {
+  constructor(protected breakpoints: BreakPointRegistry,
+      protected mediaWatcher: MatchMedia,
+      protected hook: PrintHook) {
     this.media$ = this.watchActivations();
   }
 
@@ -98,23 +101,36 @@ export class MediaObserver {
    */
   private buildObservable(mqList: string[]): Observable<MediaChange> {
     const locator = this.breakpoints;
+    const onlyActivations = (change: MediaChange) => change.matches;
+    const excludeUnknown = (change: MediaChange) => change.mediaQuery !== '';
+    const excludeCustomPrints = (change: MediaChange) => !change.mediaQuery.startsWith('print');
     const excludeOverlaps = (change: MediaChange) => {
       const bp = locator.findByQuery(change.mediaQuery);
       return !bp ? true : !(this.filterOverlaps && bp.overlapping);
     };
+    const replaceWithPrintAlias = (change: MediaChange) => {
+      if (this.hook.isPrintEvent(change)) {
+        // replace with aliased substitute (if configured)
+        return this.hook.updateEvent(change);
+      }
+      let bp: OptionalBreakPoint = locator.findByQuery(change.mediaQuery);
+      return mergeAlias(change, bp);
+    };
 
     /**
      * Only pass/announce activations (not de-activations)
+     *
      * Inject associated (if any) alias information into the MediaChange event
-     * Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+     * - Exclude print activations that do not have an associated mediaQuery
      */
-    return this.mediaWatcher.observe(mqList)
+    return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
         .pipe(
-            filter(change => change.matches),
+            filter(onlyActivations),
             filter(excludeOverlaps),
-            map((change: MediaChange) => {
-              return mergeAlias(change, locator.findByQuery(change.mediaQuery));
-            })
+            map(replaceWithPrintAlias),
+            filter(excludeCustomPrints),
+            filter(excludeUnknown)
         );
   }
 

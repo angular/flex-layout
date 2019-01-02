@@ -17,6 +17,7 @@ import {
   StyleUtils,
 } from '@angular/flex-layout/core';
 
+
 import {customMatchers, expect, NgMatchers} from '../../utils/testing/custom-matchers';
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
@@ -55,7 +56,6 @@ describe('hide directive', () => {
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
-
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [CommonModule, FlexLayoutModule],
@@ -65,6 +65,9 @@ describe('hide directive', () => {
         {provide: SERVER_TOKEN, useValue: true},
       ]
     });
+  });
+  afterEach(() => {
+    matchMedia.clearAll();
   });
 
   describe('without `responsive` features', () => {
@@ -246,9 +249,30 @@ describe('hide directive', () => {
     });
   });
 
+  describe('with fxHide.print features', () => {
+
+    it('should hide element during print', () => {
+      createTestComponent(`
+          <div fxHide.print style="display: inline-block;">
+            This content to be hidden ONLY when printing
+          </div>
+        `);
+
+      matchMedia.useOverlaps = true;
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
+
+      matchMedia.activate('print');
+      expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+      matchMedia.activate('sm');
+      expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
+    });
+
+  });
+
   it('should support hide and show', () => {
     createTestComponent(`
-      <div fxShow fxHide.gt-sm style="display: inline-block;">
+      <div fxShow fxHide.gt-sm fxHide.print style="display: inline-block;">
         This content to be shown ONLY when gt-sm
       </div>
     `);
@@ -257,8 +281,33 @@ describe('hide directive', () => {
     matchMedia.activate('md', true);
     expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
+    matchMedia.activate('sm', true);
+    expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
+
     matchMedia.activate('xs', true);
     expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
+
+    matchMedia.activate('print', false);
+    expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+  });
+
+  it('should support hide and show with fxLayoutAlign', () => {
+    createTestComponent(`
+      <div style="height:40px; min-height:40px; display: flex;"
+           fxLayout="row" fxLayoutAlign="start center"
+           fxHide.print>
+      </div>
+    `);
+    expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
+
+    matchMedia.activate('md', true);
+    expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
+
+    matchMedia.activate('print', false);
+    expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
+
+    matchMedia.activate('xs', true);
+    expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
   });
 
   it('should support fxHide and fxLayout', () => {

@@ -64,13 +64,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   // *********************************************
 
   ngAfterViewInit() {
-    this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
-    this.marshal.trackValue(this.nativeElement, 'layout')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(this.triggerUpdate.bind(this));
-    this.marshal.trackValue(this.nativeElement, 'layout-align')
-      .pipe(takeUntil(this.destroySubject))
-      .subscribe(this.triggerUpdate.bind(this));
+    this.trackExtraTriggers();
 
     const children = Array.from(this.nativeElement.children);
     for (let i = 0; i < children.length; i++) {
@@ -109,8 +103,8 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
         const bp = inputKey.slice(1).join('.');
         const inputValue = changes[key].currentValue;
         let shouldShow = inputValue !== '' ?
-          inputValue !== 0 ? coerceBooleanProperty(inputValue) : false
-          : true;
+            inputValue !== 0 ? coerceBooleanProperty(inputValue) : false
+            : true;
         if (inputKey[0] === 'fxHide') {
           shouldShow = !shouldShow;
         }
@@ -124,17 +118,31 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   // *********************************************
 
   /**
+   *  Watch for these extra triggers to update fxShow, fxHide stylings
+   */
+  protected trackExtraTriggers() {
+    this.hasLayout = this.marshal.hasValue(this.nativeElement, 'layout');
+
+    ['layout', 'layout-align'].forEach(key => {
+      this.marshal
+          .trackValue(this.nativeElement, key)
+          .pipe(takeUntil(this.destroySubject))
+          .subscribe(this.triggerUpdate.bind(this));
+    });
+  }
+
+  /**
    * Override accessor to the current HTMLElement's `display` style
    * Note: Show/Hide will not change the display to 'flex' but will set it to 'block'
    * unless it was already explicitly specified inline or in a CSS stylesheet.
    */
   protected getDisplayStyle(): string {
     return (this.hasLayout || (this.hasFlexChild && this.layoutConfig.addFlexToParent)) ?
-      'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
+        'flex' : this.styler.lookupStyle(this.nativeElement, 'display', true);
   }
 
   /** Validate the visibility value and then update the host's inline display style */
-  protected updateWithValue(value: boolean|string = true) {
+  protected updateWithValue(value: boolean | string = true) {
     if (value === '') {
       return;
     }
@@ -148,22 +156,22 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
 const DISPLAY_MAP: WeakMap<HTMLElement, string> = new WeakMap();
 
 const inputs = [
-  'fxShow',
+  'fxShow', 'fxShow.print',
   'fxShow.xs', 'fxShow.sm', 'fxShow.md', 'fxShow.lg', 'fxShow.xl',
   'fxShow.lt-sm', 'fxShow.lt-md', 'fxShow.lt-lg', 'fxShow.lt-xl',
   'fxShow.gt-xs', 'fxShow.gt-sm', 'fxShow.gt-md', 'fxShow.gt-lg',
-  'fxHide',
+  'fxHide', 'fxHide.print',
   'fxHide.xs', 'fxHide.sm', 'fxHide.md', 'fxHide.lg', 'fxHide.xl',
   'fxHide.lt-sm', 'fxHide.lt-md', 'fxHide.lt-lg', 'fxHide.lt-xl',
   'fxHide.gt-xs', 'fxHide.gt-sm', 'fxHide.gt-md', 'fxHide.gt-lg'
 ];
 
 const selector = `
-  [fxShow],
+  [fxShow], [fxShow.print],
   [fxShow.xs], [fxShow.sm], [fxShow.md], [fxShow.lg], [fxShow.xl],
   [fxShow.lt-sm], [fxShow.lt-md], [fxShow.lt-lg], [fxShow.lt-xl],
   [fxShow.gt-xs], [fxShow.gt-sm], [fxShow.gt-md], [fxShow.gt-lg],
-  [fxHide],
+  [fxHide], [fxHide.print],
   [fxHide.xs], [fxHide.sm], [fxHide.md], [fxHide.lg], [fxHide.xl],
   [fxHide.lt-sm], [fxHide.lt-md], [fxHide.lt-lg], [fxHide.lt-xl],
   [fxHide.gt-xs], [fxHide.gt-sm], [fxHide.gt-md], [fxHide.gt-lg]

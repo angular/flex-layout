@@ -6,26 +6,31 @@ import {FlexLayoutModule, BREAKPOINT} from '@angular/flex-layout';
 import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';
 import {DemoMaterialModule} from './material.module';
+import {WatermarkComponent} from './watermark.component';
 
-const PRINT_BREAKPOINTS = [{
-  alias: 'xs.print',
-  suffix: 'XsPrint',
-  mediaQuery: 'print and (max-width: 297px)',
+const EXTRA_BREAKPOINT = [{
+  alias: 'xs.landscape',
+  suffix: 'XsLandscape',
+  mediaQuery: 'screen and (orientation: landscape) and (max-width: 559px)',
+  priority: 1000,
   overlapping: false
 }];
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent, WatermarkComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     RoutingModule,
     DemoMaterialModule,
-    FlexLayoutModule.withConfig({useColumnBasisZero: false}),
+    FlexLayoutModule.withConfig({
+      useColumnBasisZero: false,
+      printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
+    }),
   ],
-  providers: [{provide: BREAKPOINT, useValue: PRINT_BREAKPOINTS, multi: true}],
+  providers: [{provide: BREAKPOINT, useValue: EXTRA_BREAKPOINT, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

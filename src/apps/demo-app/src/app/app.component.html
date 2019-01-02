@@ -13,8 +13,8 @@
     </span>
   </div>
   <div fxLayout="row"
-       fxLayoutAlign="start center"
        fxLayoutGap="20px"
+       fxHide.print
        style="height:40px; min-height:40px;">
     <button mat-raised-button color="primary" [routerLink]="['']">
       Static
@@ -30,4 +30,8 @@
 
 <div class="demo-content">
   <router-outlet></router-outlet>
+  <watermark
+      title="@angular/layout"
+      message="HTML Layouts w/ Flex and Grid CSS"
+      fxHide fxShow.print></watermark>
 </div>
