@@ -36,27 +36,27 @@
     "@angular-devkit/core" "7.2.1"
     rxjs "6.3.3"
 
-"@angular/animations@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-7.2.1.tgz#10cdca8b68ce9a91d81b77348146d1db608fc25f"
+"@angular/animations@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-7.2.0.tgz#5b774ced10aeee0a7d4a0bfd9efe94963f7735c9"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/bazel@^7.1.4":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/bazel/-/bazel-7.2.1.tgz#69c208e01478adc4feb7eaf9e49ca13aa07173a4"
+"@angular/bazel@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/bazel/-/bazel-7.2.0.tgz#f66a31c91e2e03b6217747211c8d3b6d06eacbd3"
   dependencies:
     "@angular-devkit/architect" "^0.10.6"
     "@angular-devkit/core" "^7.0.4"
     "@angular-devkit/schematics" "^7.0.4"
-    "@bazel/typescript" "^0.22.1"
+    "@bazel/typescript" "^0.21.0"
     "@schematics/angular" "^7.0.4"
     "@types/node" "6.0.84"
     semver "^5.6.0"
     shelljs "0.8.2"
     tsickle "0.34.0"
 
-"@angular/cdk@^7.0.3":
+"@angular/cdk@^7.2.1":
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-7.2.1.tgz#f3673d026a0a38f93629bbd67039bbbb50a36f1c"
   dependencies:
@@ -64,15 +64,15 @@
   optionalDependencies:
     parse5 "^5.0.0"
 
-"@angular/common@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/common/-/common-7.2.1.tgz#2b5a54834af4cd9b2e1f4381b74f01df70291834"
+"@angular/common@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/common/-/common-7.2.0.tgz#0bf0f6fd98ef4528854a3ca7f1f1b75f9d39cd34"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/compiler-cli@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-7.2.1.tgz#2a5b32d6e829dbf44e0f46d0a883112e44bbf3dc"
+"@angular/compiler-cli@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler-cli/-/compiler-cli-7.2.0.tgz#7bb93e37b6b30ef4464713a1abd5666f8e71dd56"
   dependencies:
     canonical-path "1.0.0"
     chokidar "^1.4.2"
@@ -86,59 +86,59 @@
     tslib "^1.9.0"
     yargs "9.0.1"
 
-"@angular/compiler@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-7.2.1.tgz#625fc70136dd2d8bc6a2a9f0b608cc201a6002ea"
+"@angular/compiler@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-7.2.0.tgz#bcaf682f71d501db6057e53f044ab85d41b648f0"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/core@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/core/-/core-7.2.1.tgz#1ca79a42eec58690ad281c1c3cb260297501f761"
+"@angular/core@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/core/-/core-7.2.0.tgz#79573fe66be28a047ca4348e870566e32e4ff8e2"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/forms@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-7.2.1.tgz#0515af60668c380602aa820c0df29767002a576a"
+"@angular/forms@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-7.2.0.tgz#8094d79547cc1d9dae0542cd427d8c70956504c2"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/http@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/http/-/http-7.2.1.tgz#11035e29086a7d850c0df95a20f2e7e41969b9c6"
+"@angular/http@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/http/-/http-7.2.0.tgz#aa3a81214f9b3526caaf591b897f105be32720ec"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/material@^7.0.3":
+"@angular/material@^7.2.1":
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/@angular/material/-/material-7.2.1.tgz#b2820ed32bcbfad4db9498689ee7afc523da2e59"
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser-dynamic@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-7.2.1.tgz#1210f6145dbdb93bb5a88f6cf673b5a0ac9cf771"
+"@angular/platform-browser-dynamic@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-7.2.0.tgz#9528df44211185d382b02dcfc5612d092aa6b67d"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/platform-browser@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-7.2.1.tgz#57171b1e6d8995951e1b9563384344d58a657472"
+"@angular/platform-browser@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-browser/-/platform-browser-7.2.0.tgz#f2fd73c10e2133996ac575dc6f715e2e410c9fba"
   dependencies:
     tslib "^1.9.0"
 
-"@angular/platform-server@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-7.2.1.tgz#36ff92e253b35fd02469398ba8852e1baee1a895"
+"@angular/platform-server@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/platform-server/-/platform-server-7.2.0.tgz#16096cf56abcf1e76222cadd4fbb1d8a19f69384"
   dependencies:
     domino "^2.1.0"
     tslib "^1.9.0"
     xhr2 "^0.1.4"
 
-"@angular/router@^7.0.3":
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/@angular/router/-/router-7.2.1.tgz#c81d5347bdc8077c037562e28d0b601a800c0e3f"
+"@angular/router@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-7.2.0.tgz#7b1a355e51975bfa49f3e6e3ffb60e9e4099b9f7"
   dependencies:
     tslib "^1.9.0"
 
@@ -287,7 +287,17 @@
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@firebase/app-types/-/app-types-0.3.2.tgz#a92dc544290e2893bd8c02a81e684dae3d8e7c85"
 
-"@firebase/app@0.3.6", "@firebase/app@^0.3.1":
+"@firebase/app@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.3.5.tgz#7011ab5a16604d6c1b2964d513b88c61a0a5387c"
+  dependencies:
+    "@firebase/app-types" "0.3.2"
+    "@firebase/util" "0.2.3"
+    dom-storage "2.1.0"
+    tslib "1.9.0"
+    xmlhttprequest "1.8.0"
+
+"@firebase/app@^0.3.1":
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/@firebase/app/-/app-0.3.6.tgz#8d48749463a6bd9450ab96f68dc76c9eb6dbed48"
   dependencies:
@@ -311,13 +321,23 @@
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@firebase/database-types/-/database-types-0.3.2.tgz#70611a64dd460e0e253c7427f860d56a1afd86fe"
 
-"@firebase/database@0.3.9", "@firebase/database@^0.3.1":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.3.9.tgz#0357f4c04c0cc37e16226932051e62421feed26c"
+"@firebase/database@0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.3.8.tgz#1ed903aa6efa778f81dab5b01bd6ea33b5c5bc20"
   dependencies:
     "@firebase/database-types" "0.3.2"
-    "@firebase/logger" "0.1.3"
-    "@firebase/util" "0.2.4"
+    "@firebase/logger" "0.1.2"
+    "@firebase/util" "0.2.3"
+    faye-websocket "0.11.1"
+    tslib "1.9.0"
+
+"@firebase/database@^0.3.1":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@firebase/database/-/database-0.3.7.tgz#7cc9a83b2adff06137157e37d7f27545166afe74"
+  dependencies:
+    "@firebase/database-types" "0.3.2"
+    "@firebase/logger" "0.1.2"
+    "@firebase/util" "0.2.3"
     faye-websocket "0.11.1"
     tslib "1.9.0"
 
@@ -325,12 +345,12 @@
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@firebase/firestore-types/-/firestore-types-0.8.0.tgz#a40b2ed03eda9c189af145acdff408e562976345"
 
-"@firebase/firestore@0.9.3":
-  version "0.9.3"
-  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.9.3.tgz#08bc444988b36ee253a212187eba4af5e27953ae"
+"@firebase/firestore@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@firebase/firestore/-/firestore-0.9.2.tgz#5ed92050dd6630df145b270a5634ee5c7c5bd05f"
   dependencies:
     "@firebase/firestore-types" "0.8.0"
-    "@firebase/logger" "0.1.3"
+    "@firebase/logger" "0.1.2"
     "@firebase/webchannel-wrapper" "0.2.11"
     grpc "1.16.1"
     tslib "1.9.0"
@@ -339,14 +359,18 @@
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@firebase/functions-types/-/functions-types-0.2.1.tgz#9135e1b1ccb46a0cd740851ba138915ad1b550e8"
 
-"@firebase/functions@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@firebase/functions/-/functions-0.3.4.tgz#56e5196ad3041cb99a2999622288dc32c684bd27"
+"@firebase/functions@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@firebase/functions/-/functions-0.3.3.tgz#f62ed0c307bde6e7a058fe6fd0afe4b50d1e84f1"
   dependencies:
     "@firebase/functions-types" "0.2.1"
     "@firebase/messaging-types" "0.2.3"
     isomorphic-fetch "2.2.1"
     tslib "1.9.0"
+
+"@firebase/logger@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@firebase/logger/-/logger-0.1.2.tgz#b8f11c855ce20db792cac583da0b8b8b01418f3a"
 
 "@firebase/logger@0.1.3":
   version "0.1.3"
@@ -356,17 +380,17 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@firebase/messaging-types/-/messaging-types-0.2.3.tgz#ed2949129dc5b3b0adff23ae1e1010bc7806f974"
 
-"@firebase/messaging@0.3.8":
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.3.8.tgz#095a0d38252826320bd16eba2feb5807a6ed080d"
+"@firebase/messaging@0.3.7":
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/@firebase/messaging/-/messaging-0.3.7.tgz#812e4344400e9d1db68b8d59933610c0d8bcb319"
   dependencies:
     "@firebase/messaging-types" "0.2.3"
-    "@firebase/util" "0.2.4"
+    "@firebase/util" "0.2.3"
     tslib "1.9.0"
 
-"@firebase/polyfill@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@firebase/polyfill/-/polyfill-0.3.4.tgz#88e6b2afbf8aa6aec38a787294e40d91fce19c10"
+"@firebase/polyfill@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@firebase/polyfill/-/polyfill-0.3.3.tgz#9c882429762d99ba70ffe2074523e30ea03524ee"
   dependencies:
     core-js "2.5.5"
     promise-polyfill "7.1.2"
@@ -376,11 +400,17 @@
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@firebase/storage-types/-/storage-types-0.2.3.tgz#09e7ce30eb0d713733e0193cb5c0c3ac157bf330"
 
-"@firebase/storage@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@firebase/storage/-/storage-0.2.5.tgz#4a4e72706ff67e707614d20aba4f04012e281ea1"
+"@firebase/storage@0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@firebase/storage/-/storage-0.2.4.tgz#8393822d29cdba2a4993d643273c104ad9a033f3"
   dependencies:
     "@firebase/storage-types" "0.2.3"
+    tslib "1.9.0"
+
+"@firebase/util@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@firebase/util/-/util-0.2.3.tgz#ad5513cb35eeecabae5169e439d4e200f0d180ae"
+  dependencies:
     tslib "1.9.0"
 
 "@firebase/util@0.2.4":
@@ -707,7 +737,7 @@
   version "2.0.36"
   resolved "https://registry.yarnpkg.com/@types/hammerjs/-/hammerjs-2.0.36.tgz#17ce0a235e9ffbcdcdf5095646b374c2bf615a4c"
 
-"@types/jasmine@^2.8.11":
+"@types/jasmine@^2.8.14":
   version "2.8.14"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.8.14.tgz#42a87032418b7d70f427d1df16a9921fca28d8c7"
 
@@ -1531,8 +1561,8 @@ browserslist@^4.4.0:
     node-releases "^1.1.3"
 
 browserstack@^1.5.1, browserstack@~1.5.1:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/browserstack/-/browserstack-1.5.2.tgz#17d8bb76127a1cc0ea416424df80d218f803673f"
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/browserstack/-/browserstack-1.5.1.tgz#e2dfa66ffee940ebad0a07f7e00fd4687c455d66"
   dependencies:
     https-proxy-agent "^2.2.1"
 
@@ -2402,9 +2432,13 @@ core-js@2.5.5:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.5.5.tgz#b14dde936c640c0579a6b50cabcc132dd6127e3b"
 
-core-js@^2.0.0, core-js@^2.2.0, core-js@^2.5.7:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.2.tgz#267988d7268323b349e20b4588211655f0e83944"
+core-js@^2.0.0, core-js@^2.2.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.0.tgz#1e30793e9ee5782b307e37ffa22da0eacddd84d4"
+
+core-js@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.1.tgz#87416ae817de957a3f249b3b5ca475d4aaed6042"
 
 core-js@~2.3.0:
   version "2.3.0"
@@ -2745,9 +2779,23 @@ dgeni-packages@^0.26.12:
     typescript "~2.7.1"
     urlencode "^1.1.0"
 
-dgeni@^0.4.10, dgeni@^0.4.9:
+dgeni@^0.4.11:
   version "0.4.11"
   resolved "https://registry.yarnpkg.com/dgeni/-/dgeni-0.4.11.tgz#5fe416801cef1f2ae759fda8330b2fbdd0459341"
+  dependencies:
+    canonical-path "~0.0.2"
+    dependency-graph "^0.7.0"
+    di "0.0.1"
+    lodash "^4.17.10"
+    objectdiff "^1.1.0"
+    optimist "~0.6.1"
+    q "^1.5.1"
+    validate.js "^0.12.0"
+    winston "^2.1.1"
+
+dgeni@^0.4.9:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/dgeni/-/dgeni-0.4.10.tgz#5f68ed1033192e672494de0d4e39954fd5cfe8f8"
   dependencies:
     canonical-path "~0.0.2"
     dependency-graph "^0.7.0"
@@ -3563,18 +3611,18 @@ firebase@2.x.x:
   dependencies:
     faye-websocket ">=0.6.0"
 
-firebase@^5.5.8:
-  version "5.7.3"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.7.3.tgz#e6d1cccf85e65705876f714820532eb88a36bb45"
+firebase@^5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-5.7.2.tgz#53593b4b507a3045f75feca620491cfb8a54518b"
   dependencies:
-    "@firebase/app" "0.3.6"
+    "@firebase/app" "0.3.5"
     "@firebase/auth" "0.9.1"
-    "@firebase/database" "0.3.9"
-    "@firebase/firestore" "0.9.3"
-    "@firebase/functions" "0.3.4"
-    "@firebase/messaging" "0.3.8"
-    "@firebase/polyfill" "0.3.4"
-    "@firebase/storage" "0.2.5"
+    "@firebase/database" "0.3.8"
+    "@firebase/firestore" "0.9.2"
+    "@firebase/functions" "0.3.3"
+    "@firebase/messaging" "0.3.7"
+    "@firebase/polyfill" "0.3.3"
+    "@firebase/storage" "0.2.4"
 
 first-chunk-stream@^1.0.0:
   version "1.0.0"
@@ -5648,7 +5696,7 @@ jws@^3.0.0, jws@^3.1.4, jws@^3.1.5:
     jwa "^1.1.5"
     safe-buffer "^5.0.1"
 
-karma-browserstack-launcher@^1.3.0:
+karma-browserstack-launcher@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/karma-browserstack-launcher/-/karma-browserstack-launcher-1.4.0.tgz#22f92e969d2db6cfc00e578708bda39378d5f2ab"
   dependencies:
@@ -5719,7 +5767,7 @@ karma-sourcemap-loader@0.3.7, karma-sourcemap-loader@^0.3.7:
   dependencies:
     graceful-fs "^4.1.2"
 
-karma@^3.1.1:
+karma@^3.1.4:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/karma/-/karma-3.1.4.tgz#3890ca9722b10d1d14b726e1335931455788499e"
   dependencies:
@@ -5752,7 +5800,7 @@ karma@^3.1.1:
     tmp "0.0.33"
     useragent "2.3.0"
 
-"karma@github:alexeagle/karma#fa1a84ac881485b5657cb669e9b4e5da77b79f0a":
+karma@alexeagle/karma#fa1a84ac881485b5657cb669e9b4e5da77b79f0a:
   version "1.7.1"
   resolved "https://codeload.github.com/alexeagle/karma/tar.gz/fa1a84ac881485b5657cb669e9b4e5da77b79f0a"
   dependencies:
@@ -7791,7 +7839,7 @@ protochain@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/protochain/-/protochain-1.0.5.tgz#991c407e99de264aadf8f81504b5e7faf7bfa260"
 
-protractor@^5.4.0:
+protractor@^5.4.2:
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/protractor/-/protractor-5.4.2.tgz#329efe37f48b2141ab9467799be2d4d12eb48c13"
   dependencies:
@@ -8406,7 +8454,7 @@ rimraf@~2.2.6:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.2.8.tgz#e439be2aaee327321952730f99a8929e4fc50582"
 
-rollup-plugin-alias@^1.4.0:
+rollup-plugin-alias@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-alias/-/rollup-plugin-alias-1.5.1.tgz#80cce3a967befda5b09c86abc14a043a78035b46"
   dependencies:
@@ -9765,9 +9813,9 @@ tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
-tslint@^5.11.0:
-  version "5.12.1"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.12.1.tgz#8cec9d454cf8a1de9b0a26d7bdbad6de362e52c1"
+tslint@^5.12.0:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.12.0.tgz#47f2dba291ed3d580752d109866fb640768fca36"
   dependencies:
     babel-code-frame "^6.22.0"
     builtin-modules "^1.1.1"

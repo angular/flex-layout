@@ -19,8 +19,8 @@ http_archive(
 # Add Angular source and Bazel rules.
 http_archive(
   name = "angular",
-  url = "https://github.com/angular/angular/archive/7.1.3.zip",
-  strip_prefix = "angular-7.1.3",
+  url = "https://github.com/angular/angular/archive/7.2.0.zip",
+  strip_prefix = "angular-7.2.0",
 )
 
 # Add RxJS as repository because those are needed in order to build Angular from source.
@@ -36,17 +36,10 @@ http_archive(
 )
 
 # Angular material
-# NOTE: using a `7.1.1-compat-ng-7.1.3` branch of material2 on a fork here
-# since Angular and rules_typescript version under Bazel checking is too strict
-# at the moment.
-# https://github.com/gregmagolan/material2/commit/e2090864cddf926445eefd39c7e90eada107013d
-# TODO(gregmagolan): update the next release of material that is compatible with
-#   Angular 7.1.3 under Bazel
 http_archive(
     name = "angular_material",
-    sha256 = "75bec457885ddf084219a9da152ff79831d84909bb036552141ca3aadee64a04",
-    strip_prefix = "material2-7.1.1-compat-ng-7.1.3",
-    url = "https://github.com/gregmagolan/material2/archive/7.1.1-compat-ng-7.1.3.zip",
+    strip_prefix = "material2-dd28ec10f6f3c19f91a9935468d71c959ad32203",
+    url = "https://github.com/angular/material2/archive/dd28ec10f6f3c19f91a9935468d71c959ad32203.zip",
 )
 
 # We need to create a local repository called "npm" because currently Angular Layout
