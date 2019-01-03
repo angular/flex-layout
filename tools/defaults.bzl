@@ -113,9 +113,6 @@ def ng_web_test_suite(deps = [], static_css = [], bootstrap = [], **kwargs):
   ts_web_test_suite(
     # Depend on our custom test initialization script. This needs to be the first dependency.
     deps = ["//test:angular_test_init"] + deps,
-    bootstrap = [
-      "@layoutdeps//node_modules/zone.js:dist/zone-testing-bundle.js",
-      "@layoutdeps//node_modules/reflect-metadata:Reflect.js",
-    ] + bootstrap,
+    bootstrap = bootstrap,
     **kwargs
   )

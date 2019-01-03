@@ -27,7 +27,7 @@ task('aot:pre', sequenceTask(
 );
 
 task('aot:deps', [], execTask(
-  'yarn', ['--cwd', demoAppSource]));
+  'yarn', [], {cwd: demoAppSource}));
 
 
 /**
@@ -37,7 +37,7 @@ task('aot:deps', [], execTask(
  * benefit of better simulating the install process for Flex Layout in a CLI app
  */
 task('aot:add:tar', [], execTask(
-  'yarn', ['--cwd', demoAppSource, 'add', genericTar]
+  'yarn', ['add', genericTar], {cwd: demoAppSource}
 ));
 
 task('aot:bundle', [], execTask(
@@ -49,8 +49,8 @@ task('aot:bundle:rename', [], execTask(
 ));
 
 task('aot:cli', execTask(
-  'yarn', ['--cwd', demoAppSource, 'ng', 'build', '--prod'],
-  {failOnStderr: true}
+  'yarn', ['ng', 'build', '--prod'],
+  {cwd: demoAppSource, failOnStderr: true}
 ));
 
 task('aot:clean', sequenceTask('aot:clear:mods', 'aot:clear:lock', 'aot:clear:dist'));
