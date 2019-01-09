@@ -18,7 +18,7 @@
     "@angular/common": "file:../../../node_modules/@angular/common",
     "@angular/compiler": "file:../../../node_modules/@angular/compiler",
     "@angular/core": "file:../../../node_modules/@angular/core",
-    "@angular/flex-layout": "/Users/main/flex-layout/dist/releases/flex-layout/angular-flex-layout.tgz",
+    "@angular/flex-layout": "../../../dist/releases/flex-layout/angular-flex-layout.tgz",
     "@angular/forms": "file:../../../node_modules/@angular/forms",
     "@angular/http": "file:../../../node_modules/@angular/http",
     "@angular/material": "file:../../../node_modules/@angular/material",
