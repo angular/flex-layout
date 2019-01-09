@@ -4,6 +4,15 @@ load("//tools:defaults.bzl", "ng_module", "ts_library", "ts_web_test_suite")
 load("@build_bazel_rules_nodejs//:defs.bzl", "rollup_bundle", "history_server")
 load("@build_bazel_rules_nodejs//internal/web_package:web_package.bzl", "web_package")
 load("@build_bazel_rules_typescript//:defs.bzl", "ts_devserver")
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary")
+
+exports_files(["blank.css"])
+
+sass_binary(
+    name = "demo_app_scss",
+    src = "styles.scss",
+    deps = [],
+)
 
 ng_module(
     name = "src",
@@ -33,19 +42,10 @@ genrule(
     cmd = "cp $< $@",
 )
 
-history_server(
-    name = "prodserver",
-    data = [
-        "index.html",
-        ":bundle",
-        ":zonejs",
-    ],
-)
-
 # We always strip these paths off the front of any assets we serve
 _ROOT_DIRS = [
     "layoutdeps/node_modules/zone.js/dist",
-    "layoutdeps/node_modules/@angular/material/prebuilt-themes",
+    # "layoutdeps/node_modules/@angular/material/prebuilt-themes",
 ]
 
 ts_devserver(
@@ -53,6 +53,7 @@ ts_devserver(
     port = 4200,
     additional_root_paths = _ROOT_DIRS,
     entry_module = "angular_layout/src/apps/demo-app/src/main.dev",
+    index_html = "index.html",
     # These scripts will be included in the JS bundle after require.js
     # They should have only named UMD modules, or require.js will throw.
     scripts = [
@@ -61,12 +62,10 @@ ts_devserver(
     ],
     serving_path = "/bundle.min.js",
     static_files = [
-        "@layoutdeps//node_modules/zone.js:dist/zone.min.js",
-        "@layoutdeps//node_modules/tslib:tslib.js",
-        "@layoutdeps//node_modules/@angular/material:prebuilt-themes/indigo-pink.css",
         "favicon.ico",
-        "index.html",
-        "styles.css",
+        "//src/apps/demo-app/src:styles.css",
+        "@layoutdeps//node_modules/@angular/material:prebuilt-themes/indigo-pink.css",
+        "@layoutdeps//node_modules/zone.js:dist/zone.min.js",
     ],
     deps = [":src"],
 )
@@ -91,9 +90,22 @@ ts_web_test_suite(
     ],
 )
 
+rollup_bundle(
+    name = "bundle",
+    additional_entry_points = [
+        "src/apps/demo-app/src/app/github-issues/github-issues.module.ngfactory",
+        "src/apps/demo-app/src/app/grid/grid.module.ngfactory",
+        "src/apps/demo-app/src/app/layout/layout.module.ngfactory",
+        "src/apps/demo-app/src/app/responsive/responsive.module.ngfactory",
+        "src/apps/demo-app/src/app/stack-overflow/stack-overflow.module.ngfactory",
+    ],
+    entry_point = "src/apps/demo-app/src/main.prod",
+    deps = [":src"],
+)
+
 web_package(
     name = "prodapp",
-    additional_root_paths = _ROOT_DIRS + ["npm/node_modules/systemjs/dist"],
+    additional_root_paths = _ROOT_DIRS + ["layoutdeps/node_modules/systemjs/dist"],
     # do not sort
     assets = [
         "@layoutdeps//node_modules/@angular/material:prebuilt-themes/indigo-pink.css",
@@ -110,15 +122,8 @@ web_package(
     index_html = "index.html",
 )
 
-rollup_bundle(
-    name = "bundle",
-    additional_entry_points = [
-        "app/github-issues/github-issues.module.ngfactory",
-        "app/grid/grid.module.ngfactory",
-        "app/layout/layout.module.ngfactory",
-        "app/responsive/responsive.module.ngfactory",
-        "app/stack-overflow/stack-overflow.module.ngfactory",
-    ],
-    entry_point = "src/main.prod",
-    deps = [":src"],
+history_server(
+    name = "prodserver",
+    data = [":prodapp"],
+    templated_args = ["src/apps/demo-app/src/prodapp"],
 )

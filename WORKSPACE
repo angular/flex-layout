@@ -5,15 +5,16 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/bazelbuild/rules_nodejs/archive/616ee38684dc46cba39635f03dd158ac6a931f48.zip",
-  strip_prefix = "rules_nodejs-616ee38684dc46cba39635f03dd158ac6a931f48",
+  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.5.zip",
+  strip_prefix = "rules_nodejs-0.16.5",
 )
 
 # Add TypeScript rules
 http_archive(
-  name = "build_bazel_rules_typescript",
-  url = "https://github.com/bazelbuild/rules_typescript/archive/0.22.0.zip",
-  strip_prefix = "rules_typescript-0.22.0",
+    name = "build_bazel_rules_typescript",
+    sha256 = "5a31a67550d2a92270599e90a221afe229f6e1863bf2eff22e9750c6ecf45978",
+    strip_prefix = "rules_typescript-2963b55370b21d545d0ac0f30fca9dc74a0f5538",
+    url = "https://github.com/bazelbuild/rules_typescript/archive/2963b55370b21d545d0ac0f30fca9dc74a0f5538.zip",
 )
 
 # Add Angular source and Bazel rules.

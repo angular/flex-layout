@@ -1,3 +1,5 @@
 node_modules
-**/package.json
-**/node_modules
+src/apps/demo-app/node_modules
+src/apps/demo-app/package.json
+src/apps/universal-app/package.json
+src/apps/universal-app/node_modules
