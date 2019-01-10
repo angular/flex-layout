@@ -1,3 +1,41 @@
+<a name="7.0.0-beta.23"></a>
+# [7.0.0-beta.23](https://github.com/angular/flex-layout/compare/7.0.0-beta.22...7.0.0-beta.23) (2019-01-04)
+
+In this release, we have improved the prioritization of standard breakpoints and added support for `print` mediaQueries.
+
+When printing developers can now configure how layouts should render. Default print will use the current layout and current elements shown/visible. By specifying 1..n mediaQuery aliases, developers can specify alternate layouts with alternate breakpoints to be used for printing. And now DOM elements can also be shown and hidden for printing-only; use fxShow.print and fxHide.print support to show/hide elements during printing.
+
+>  These enhancements allow totally different print outputs without modifying the current browser layout.
+
+Using the new `printWithBreakpoints` allows developers to specify a breakpoint that should be used to render layouts only during printing. With the configuration below, the breakpoint associated with the **`md`** alias will be used.
+
+```ts
+    FlexLayoutModule.withConfig({
+      useColumnBasisZero: false,
+      printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
+    })
+```
+Shown below is the print layout rendered in floating dialog over the normal layout that is currently using 'lg' breakpoints.
+
+![angular-layout-printing](https://user-images.githubusercontent.com/210413/50407211-2e04ca00-0798-11e9-8f35-b4e9e2fca864.jpg)
+
+
+### Features
+
+* **core:** add print support with mediaQuery override ([#954](https://github.com/angular/flex-layout/issues/954)) ([0c9e9cb](https://github.com/angular/flex-layout/commit/0c9e9cb)), closes [#603](https://github.com/angular/flex-layout/issues/603)
+
+
+### Bug Fixes
+
+* **core:** correctly handle lack of fallback values ([#949](https://github.com/angular/flex-layout/issues/949)) ([01c4148](https://github.com/angular/flex-layout/commit/01c4148)), closes [#947](https://github.com/angular/flex-layout/issues/947)
+* **core:** improve use of breakpoint priorities ([#955](https://github.com/angular/flex-layout/issues/955)) ([d57b293](https://github.com/angular/flex-layout/commit/d57b293)), closes [#648](https://github.com/angular/flex-layout/issues/648) [#426](https://github.com/angular/flex-layout/issues/426)
+* **show-hide:** account for fxLayout on same element ([#948](https://github.com/angular/flex-layout/issues/948)) ([c922ae3](https://github.com/angular/flex-layout/commit/c922ae3)), closes [#945](https://github.com/angular/flex-layout/issues/945)
+* **style:** add SSR capabilities ([#962](https://github.com/angular/flex-layout/issues/962)) ([f82bbc1](https://github.com/angular/flex-layout/commit/f82bbc1)), closes [#813](https://github.com/angular/flex-layout/issues/813)
+
+
+BREAKING CHANGES:
+* This version requires an upgrade to TypeScript 3.2 due to a change in how the DOM spec is typed
+
 <a name="7.0.0-beta.22"></a>
 # [7.0.0-beta.22](https://github.com/angular/flex-layout/compare/7.0.0-beta.21...7.0.0-beta.22) (2018-12-19)
 
