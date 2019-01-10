@@ -231,7 +231,7 @@ export class MockMediaQueryList implements MediaQueryList {
   }
 
   /** Don't need to remove listeners in the testing environment */
-  removeListener(_: EventListenerOrEventListenerObject | null) {
+  removeListener(_: MediaQueryListListener | null) {
   }
 
   addEventListener<K extends keyof MediaQueryListEventMap>(
