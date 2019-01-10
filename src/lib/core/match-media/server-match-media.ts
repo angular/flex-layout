@@ -75,7 +75,7 @@ export class ServerMediaQueryList implements MediaQueryList {
   }
 
   /** Don't need to remove listeners in the server environment */
-  removeListener(_: EventListenerOrEventListenerObject | null) {
+  removeListener(_: MediaQueryListListener | null) {
   }
 
   addEventListener<K extends keyof

@@ -39,7 +39,7 @@
     "systemjs": "0.19.43",
     "tsickle": "^0.32.0",
     "tslib": "^1.9.3",
-    "zone.js": "https://github.com/CaerusKaru/zone.js#adam/27"
+    "zone.js": "CaerusKaru/zone.js#adam/27"
   },
   "devDependencies": {
     "@angular/animations": "^7.0.3",
@@ -121,7 +121,7 @@
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.3.0",
     "tslint": "^5.11.0",
-    "typescript": "~3.1.1",
+    "typescript": "~3.2.2",
     "uglify-js": "^2.8.14"
   }
 }
