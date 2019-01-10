@@ -62,7 +62,7 @@ export function composeRelease(buildPackage: BuildPackage) {
   if (buildPackage.exportsSecondaryEntryPointsAtRoot) {
     // Add re-exports to the root d.ts file to prevent errors of the form
     // "@angular/material/material has no exported member 'MATERIAL_SANITY_CHECKS."
-    const es2015Exports = buildPackage.secondaryEntryPoints
+    const es2015Exports = buildPackage.reexportedSecondaryEntryPoints
         .map(p => `export * from './${p}';`).join('\n');
     appendFileSync(join(releasePath, `${name}.d.ts`), es2015Exports, 'utf-8');
 
@@ -70,7 +70,7 @@ export function composeRelease(buildPackage: BuildPackage) {
     // re-exports everything.
     createMetadataReexportFile(
         releasePath,
-        buildPackage.secondaryEntryPoints.concat(['typings/index']).map(p => `./${p}`),
+        buildPackage.reexportedSecondaryEntryPoints.concat(['typings/index']).map(p => `./${p}`),
         name,
         importAsName);
   }

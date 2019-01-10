@@ -29,6 +29,9 @@ export class BuildPackage {
   /** Whether this package will re-export its secondary-entry points at the root module. */
   exportsSecondaryEntryPointsAtRoot = false;
 
+  /** List of secondary entry points that should not be re-exported in the primary entry point. */
+  exportsSecondaryEntryPointsAtRootExcludes: string[] = [];
+
   /** Whether the secondary entry-point styles should be copied to the release output. */
   copySecondaryEntryPointStylesToRoot = false;
 
@@ -51,6 +54,12 @@ export class BuildPackage {
     return this._secondaryEntryPoints!;
   }
   private _secondaryEntryPoints?: string[];
+
+  /** Secondary entry points that should be re-exported in the primary entry point. */
+  get reexportedSecondaryEntryPoints(): string[] {
+    return this.secondaryEntryPoints
+      .filter(p => !this.exportsSecondaryEntryPointsAtRootExcludes.includes(p));
+  }
 
   constructor(readonly name: string, readonly dependencies: BuildPackage[] = []) {
     this.sourceDir = join(packagesDir, name);
