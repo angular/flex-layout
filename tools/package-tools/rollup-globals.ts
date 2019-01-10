@@ -12,6 +12,7 @@ const flexLayoutSecondaryEntryPoints = getSubdirectoryNames(join(buildConfig.pac
 /** Object with all flex layout entry points in the format of Rollup globals. */
 const rollupFlexLayoutEntryPoints = flexLayoutSecondaryEntryPoints
   .reduce((globals: any, entryPoint: string) => {
+    // Note that this needs to be in sync with the UMD module name format in "build-bundles.ts".
     globals[`@angular/flex-layout/${entryPoint}`] =
       `ng.flexLayout.${dashCaseToCamelCase(entryPoint)}`;
     return globals;
@@ -42,6 +43,7 @@ export const rollupGlobals = {
   '@angular/cdk/platform': 'ng.cdk.platform',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.
+  // Note that this needs to be in sync with the UMD module name format in "build-bundles.ts".
   '@angular/flex-layout': 'ng.flexLayout',
 
   // Include secondary entry-points of the cdk and material packages
