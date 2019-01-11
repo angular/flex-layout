@@ -11175,6 +11175,7 @@ zip-stream@^1.2.0:
     lodash "^4.8.0"
     readable-stream "^2.0.0"
 
-zone.js@CaerusKaru/zone.js#adam/27:
+zone.js@~0.8.27:
   version "0.8.27"
-  resolved "https://codeload.github.com/CaerusKaru/zone.js/tar.gz/0990f82f25affe4d2c133dbc2797de7fa0fbdeb3"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.8.27.tgz#ef9576e9548cf53904f32f3970a12ffae2b54b21"
+  integrity sha512-Gbv0wmh0paF4Q60zzcF28+qBWIxtMVuRKBCBm0hvLupZsN/SX7TYYcgYWoVH8MkP+yl0jHlyGHy4dIYUgZvBqA==
