@@ -30,16 +30,16 @@ import {GridModule} from '../module';
 describe('grid area child directive', () => {
   let fixture: ComponentFixture<any>;
   let styler: StyleUtils;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let platform: Platform;
   let shouldRun = true;
   let createTestComponent = (template: string, styles?: any) => {
     shouldRun = true;
     fixture = makeCreateTestComponent(() => TestGridAreaComponent)(template, styles);
     inject([StyleUtils, MatchMedia, Platform],
-      (_styler: StyleUtils, _matchMedia: MockMatchMedia, _platform: Platform) => {
+      (_styler: StyleUtils, _mediaController: MockMatchMedia, _platform: Platform) => {
       styler = _styler;
-      matchMedia = _matchMedia;
+      mediaController = _mediaController;
       platform = _platform;
 
       // TODO(CaerusKaru): Grid tests won't work with Edge 14
@@ -171,7 +171,7 @@ describe('grid area child directive', () => {
         expect(correctArea).toBe(true);
       }
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       if (platform.WEBKIT) {
         expectNativeEl(fixture).toHaveStyle({
           'grid-row-start': 'footer',
@@ -187,7 +187,7 @@ describe('grid area child directive', () => {
         expect(correctArea).toBe(true);
       }
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       if (platform.WEBKIT) {
         expectNativeEl(fixture).toHaveStyle({
           'grid-row-start': 'sidebar',

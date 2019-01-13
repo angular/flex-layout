@@ -23,13 +23,13 @@ import {DefaultClassDirective} from './class';
 
 describe('class directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let platformId: Object;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestClassComponent)(template);
 
-    inject([MatchMedia, PLATFORM_ID], (_matchMedia: MockMatchMedia, _platformId: Object) => {
-      matchMedia = _matchMedia;
+    inject([MatchMedia, PLATFORM_ID], (_mediaController: MockMatchMedia, _platformId: Object) => {
+      mediaController = _mediaController;
       platformId = _platformId;
     })();
   };
@@ -54,7 +54,7 @@ describe('class directive', () => {
 
     it(`should apply '${selector}' with '${mq}' media query`, () => {
       createTestComponent(`<div ngClass.${mq}="${selector}"></div>`);
-      matchMedia.activate(mq);
+      mediaController.activate(mq);
       expectNativeEl(fixture).toHaveCssClass(selector);
     });
   });
@@ -76,12 +76,12 @@ describe('class directive', () => {
 
       // the CSS classes listed in the string (space delimited) are added,
       // See https://angular.io/api/common/NgClass
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveCssClass('class0');
       expectNativeEl(fixture).toHaveCssClass('what');
       expectNativeEl(fixture).toHaveCssClass('class2');
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).toHaveCssClass('class0');
       expectNativeEl(fixture).not.toHaveCssClass('what');
       expectNativeEl(fixture).not.toHaveCssClass('class2');
@@ -98,12 +98,12 @@ describe('class directive', () => {
 
       // Object keys are CSS classes that get added when the expression given in
       // the value evaluates to a truthy value, otherwise they are removed.
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).not.toHaveCssClass('class0');
       expectNativeEl(fixture).toHaveCssClass('what');
       expectNativeEl(fixture).toHaveCssClass('class2');
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).toHaveCssClass('class0');
       expectNativeEl(fixture).not.toHaveCssClass('what');
       expectNativeEl(fixture).not.toHaveCssClass('class2');
@@ -118,12 +118,12 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).toHaveCssClass('class1');
 
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).not.toHaveCssClass('class1');
 
-    matchMedia.activate('lg');
+    mediaController.activate('lg');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).toHaveCssClass('class1');
@@ -139,11 +139,11 @@ describe('class directive', () => {
     `);
 
     expectNativeEl(fixture).toHaveCssClass('existing-class');
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).not.toHaveCssClass('existing-class');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
 
-    matchMedia.activate('lg');
+    mediaController.activate('lg');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
   });
@@ -160,12 +160,12 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('always');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
 
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveCssClass('always');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
 
-    matchMedia.activate('lg');
+    mediaController.activate('lg');
     expectNativeEl(fixture).toHaveCssClass('always');
     expectNativeEl(fixture).toHaveCssClass('existing-class');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
@@ -173,10 +173,10 @@ describe('class directive', () => {
 
   it('should support more than one responsive breakpoint on one element', () => {
     createTestComponent(`<div ngClass.xs="xs-class" ngClass.md="mat-class"></div>`);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-class');
     expectNativeEl(fixture).not.toHaveCssClass('mat-class');
-    matchMedia.activate('md');
+    mediaController.activate('md');
     expectNativeEl(fixture).not.toHaveCssClass('xs-class');
     expectNativeEl(fixture).toHaveCssClass('mat-class');
   });
@@ -191,12 +191,12 @@ describe('class directive', () => {
     expectNativeEl(fixture, {hasX1: true, hasX2: true, hasX3: true}).not.toHaveCssClass('x2');
     expectNativeEl(fixture, {hasX1: true, hasX2: true, hasX3: true}).toHaveCssClass('x3');
 
-    matchMedia.activate('X');
+    mediaController.activate('X');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: false}).toHaveCssClass('x1');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: false}).not.toHaveCssClass('x2');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: false}).not.toHaveCssClass('x3');
 
-    matchMedia.activate('md');
+    mediaController.activate('md');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: true}).toHaveCssClass('x1');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: true}).not.toHaveCssClass('x2');
     expectNativeEl(fixture, {hasX1: true, hasX2: false, hasX3: true}).toHaveCssClass('x3');
@@ -204,7 +204,7 @@ describe('class directive', () => {
 
   it('should work with ngClass array notation', () => {
     createTestComponent(`<div [ngClass.xs]="['xs-1', 'xs-2']"></div>`);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveCssClass('xs-1');
     expectNativeEl(fixture).toHaveCssClass('xs-2');
   });
@@ -215,13 +215,13 @@ describe('class directive', () => {
 
     expectNativeEl(fixture).toHaveCssClass('white');
 
-    matchMedia.activate('xs', true);
+    mediaController.activate('xs', true);
     expectNativeEl(fixture).toHaveCssClass('green');
 
-    matchMedia.activate('sm', true);
+    mediaController.activate('sm', true);
     expectNativeEl(fixture).toHaveCssClass('blue');
 
-    matchMedia.activate('xs', true);
+    mediaController.activate('xs', true);
     expectNativeEl(fixture).toHaveCssClass('green');
   });
 

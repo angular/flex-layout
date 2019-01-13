@@ -52,7 +52,7 @@ const DEFAULT_SRC = 'https://dummyimage.com/300x300/c72538/ffffff.png';
 
 describe('img-src directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let platformId: Object;
   let styler: StyleUtils;
 
@@ -60,8 +60,8 @@ describe('img-src directive', () => {
     fixture = makeCreateTestComponent(() => TestSrcComponent)(template);
 
     inject([MatchMedia, PLATFORM_ID, StyleUtils],
-        (_matchMedia: MockMatchMedia, _platformId: Object, _styler: StyleUtils) => {
-          matchMedia = _matchMedia;
+        (_mediaController: MockMatchMedia, _platformId: Object, _styler: StyleUtils) => {
+          mediaController = _mediaController;
           platformId = _platformId;
           styler = _styler;
         })();
@@ -191,7 +191,7 @@ describe('img-src directive', () => {
           'content': `url(https://dummyimage.com/300x300/c72538/ffffff.png)`
         }, styler);
 
-        matchMedia.activate('md');
+        mediaController.activate('md');
         fixture.detectChanges();
         expectEl(img).toHaveStyle({
           'content': `url(${SRC_URLS['md'][0]})`
@@ -209,7 +209,7 @@ describe('img-src directive', () => {
       let img = queryFor(fixture, 'img')[0];
       let imgEl = img.nativeElement;
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       fixture.detectChanges();
       expect(imgEl).toBeDefined();
       if (isPlatformServer(platformId)) {
@@ -218,7 +218,7 @@ describe('img-src directive', () => {
         }, styler);
 
         // When activating an unused breakpoint, fallback to default [src] value
-        matchMedia.activate('xl');
+        mediaController.activate('xl');
         fixture.detectChanges();
         expectEl(img).toHaveStyle({
           'content': `url(${SRC_URLS['xs'][0]})`
@@ -229,7 +229,7 @@ describe('img-src directive', () => {
         });
 
         // When activating an unused breakpoint, fallback to default [src] value
-        matchMedia.activate('xl');
+        mediaController.activate('xl');
         fixture.detectChanges();
         expect(imgEl).toHaveAttributes({
           src: SRC_URLS['xs'][0]
@@ -242,7 +242,7 @@ describe('img-src directive', () => {
          <img [src.md]="mdSrc">
        `);
       fixture.detectChanges();
-      matchMedia.activate('md');
+      mediaController.activate('md');
       fixture.detectChanges();
 
       let img = queryFor(fixture, 'img')[0];
@@ -257,7 +257,7 @@ describe('img-src directive', () => {
         }, styler);
 
         // When activating an unused breakpoint, fallback to default [src] value
-        matchMedia.activate('xl');
+        mediaController.activate('xl');
         fixture.detectChanges();
         expectEl(img).not.toHaveStyle({
           'content': `url(${SRC_URLS['md'][0]})`
@@ -271,7 +271,7 @@ describe('img-src directive', () => {
         });
 
         // When activating an unused breakpoint, fallback to default [src] value
-        matchMedia.activate('xl');
+        mediaController.activate('xl');
         fixture.detectChanges();
         expect(imgEl).toHaveAttributes({
           src: ''

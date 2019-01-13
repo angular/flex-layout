@@ -61,7 +61,7 @@ export class MatchMedia {
    */
   observe(mqList?: string[], filterOthers = false): Observable<MediaChange> {
     if (mqList) {
-      const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
+      const mediaController$: Observable<MediaChange> = this._observable$.pipe(
           filter((change: MediaChange) => {
             return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
           })
@@ -77,7 +77,7 @@ export class MatchMedia {
         }
         observer.complete();
       });
-      return merge(registration$, matchMedia$);
+      return merge(registration$, mediaController$);
     }
 
     return this._observable$;
@@ -167,9 +167,9 @@ function buildQueryCss(mediaQueries: string[], _document: Document) {
 }
 
 function constructMql(query: string, isBrowser: boolean): MediaQueryList {
-  const canListen = isBrowser && !!(<any>window).matchMedia('all').addListener;
+  const canListen = isBrowser && !!(<Window>window).matchMedia('all').addListener;
 
-  return canListen ? (<any>window).matchMedia(query) : {
+  return canListen ? (<Window>window).matchMedia(query) : {
     matches: query === 'all' || query === '',
     media: query,
     addListener: () => {

@@ -25,11 +25,11 @@ import {
  * retrieve the associated stylings from the virtual stylesheet
  * @param serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param matchMedia the service to activate/deactivate breakpoints
+ * @param mediaController the service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
  */
 export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
-                                               matchMedia: MatchMedia,
+                                               mediaController: MatchMedia,
                                                breakpoints: BreakPoint[]) {
   // Store the custom classes in the following map, that way only
   // one class gets allocated per HTMLElement, and each class can
@@ -43,12 +43,12 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
 
   [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
     serverSheet.clearStyles();
-    (matchMedia as ServerMatchMedia).activateBreakpoint(bp);
+    (mediaController as ServerMatchMedia).activateBreakpoint(bp);
     const stylesheet = new Map(serverSheet.stylesheet);
     if (stylesheet.size > 0) {
       styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
     }
-    (matchMedia as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
+    (mediaController as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
   });
 
   return styleText;
@@ -59,14 +59,14 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
  * components and attach it to the head of the DOM
  */
 export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
-                                            matchMedia: MatchMedia,
+                                            mediaController: MatchMedia,
                                             _document: Document,
                                             breakpoints: BreakPoint[]) {
   return () => {
     // This is the style tag that gets inserted into the head of the DOM,
     // populated with the manual media queries
     const styleTag = _document.createElement('style');
-    const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+    const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints);
     styleTag.classList.add(`${CLASS_NAME}ssr`);
     styleTag.textContent = styleText;
     _document.head!.appendChild(styleTag);

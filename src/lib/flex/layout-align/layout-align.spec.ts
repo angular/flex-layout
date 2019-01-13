@@ -27,15 +27,15 @@ import {LayoutAlignStyleBuilder} from './layout-align';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let platform: Platform;
   let styler: StyleUtils;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestLayoutAlignComponent)(template);
 
     inject([MatchMedia, Platform, StyleUtils],
-        (_matchMedia: MockMatchMedia, _platform: Platform, _styler: StyleUtils) => {
-          matchMedia = _matchMedia;
+        (_mediaController: MockMatchMedia, _platform: Platform, _styler: StyleUtils) => {
+          mediaController = _mediaController;
           platform = _platform;
           styler = _styler;
         })();
@@ -264,7 +264,7 @@ describe('layout-align directive', () => {
     it('should ignore responsive changes when not configured', () => {
       createTestComponent(`<div fxLayoutAlign='center center'></div>`);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'center',
@@ -284,7 +284,7 @@ describe('layout-align directive', () => {
         'align-content': 'center'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'flex-end',
@@ -307,7 +307,7 @@ describe('layout-align directive', () => {
         'max-height': '100%'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'flex-end',
@@ -327,7 +327,7 @@ describe('layout-align directive', () => {
         'max-height': '100%'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).not.toHaveStyle({
         'max-height': '100%'
@@ -348,14 +348,14 @@ describe('layout-align directive', () => {
         'max-height': '100%'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'flex-end',
         'max-width': '100%'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'center',
@@ -370,21 +370,21 @@ describe('layout-align directive', () => {
          </section>
       `);
 
-      matchMedia.activate('lt-md');
+      mediaController.activate('lt-md');
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'center',
         'align-items': 'center',
         'align-content': 'center'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).not.toHaveStyle({
         'justify-content': 'center',
         'align-items': 'center',
         'align-content': 'center'
       }, styler);
 
-      matchMedia.activate('lt-md');
+      mediaController.activate('lt-md');
       expectNativeEl(fixture).toHaveStyle({
         'justify-content': 'center',
         'align-items': 'center',
@@ -402,40 +402,40 @@ describe('layout-align directive', () => {
           </div>
       `);
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
 
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'column',
         'justify-content': 'center'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-end'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-start'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('xl', true);
+      mediaController.activate('xl', true);
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row',
         'justify-content': 'flex-end'

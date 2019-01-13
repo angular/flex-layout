@@ -34,12 +34,12 @@ describe('layout-gap directive', () => {
   let fakeDocument: {body: {dir?: string}, documentElement: {dir?: string}};
   let styler: StyleUtils;
   let platformId: Object;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let createTestComponent = (template: string, styles?: any) => {
     fixture = makeCreateTestComponent(() => TestLayoutGapComponent)(template, styles);
     inject([MatchMedia, StyleUtils, PLATFORM_ID],
-      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
-      matchMedia = _matchMedia;
+      (_mediaController: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
+      mediaController = _mediaController;
       styler = _styler;
       platformId = _platformId;
     })();
@@ -353,7 +353,7 @@ describe('layout-gap directive', () => {
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '13px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       fixture.detectChanges();
       expectEl(nodes[0]).toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[1]).toHaveStyle({'margin-right': '24px'}, styler);
@@ -378,7 +378,7 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       fixture.detectChanges();
       expectEl(nodes[0]).toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[1]).toHaveStyle({'margin-right': '24px'}, styler);
@@ -403,7 +403,7 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       fixture.detectChanges();
       expectEl(nodes[0]).toHaveStyle({'margin-bottom': '24px'}, styler);
       expectEl(nodes[1]).toHaveStyle({'margin-bottom': '24px'}, styler);
@@ -427,13 +427,13 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       fixture.detectChanges();
       expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
       expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       fixture.detectChanges();
       expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
       expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);

@@ -26,13 +26,13 @@ import {LayoutStyleBuilder} from './layout';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestLayoutComponent)(template);
 
-    inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
-      matchMedia = _matchMedia;
+    inject([MatchMedia, StyleUtils], (_mediaController: MockMatchMedia, _styler: StyleUtils) => {
+      mediaController = _mediaController;
       styler = _styler;
     })();
   };
@@ -224,7 +224,7 @@ describe('layout directive', () => {
 
     it('should ignore responsive changes when not configured', () => {
       createTestComponent(`<div fxLayout='column'></div>`);
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'display': 'flex',
         'flex-direction': 'column',
@@ -240,7 +240,7 @@ describe('layout directive', () => {
         'box-sizing': 'border-box'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'display': 'flex',
         'flex-direction': 'column',
@@ -248,7 +248,7 @@ describe('layout directive', () => {
         'flex-wrap': 'wrap-reverse'
       }, styler);
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).not.toHaveStyle({
         'flex-wrap': 'reverse-wrap'
       }, styler);
@@ -260,11 +260,11 @@ describe('layout directive', () => {
         'flex-direction': 'row'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'column'
       }, styler);
-      matchMedia.activate('all');
+      mediaController.activate('all');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row'
       }, styler);
@@ -278,7 +278,7 @@ describe('layout directive', () => {
        `);
       expectNativeEl(fixture).toHaveStyle({'flex-direction': 'row'}, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({'flex-direction': 'column'}, styler);
 
       fixture.componentInstance.direction = 'row';
@@ -293,11 +293,11 @@ describe('layout directive', () => {
         'flex-direction': 'row'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'column'
       }, styler);
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row'
       }, styler);
@@ -310,17 +310,17 @@ describe('layout directive', () => {
         'flex-direction': 'row'
       }, styler);
 
-      matchMedia.activate('gt-sm');
+      mediaController.activate('gt-sm');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'column'
       }, styler);
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'row'
       }, styler);
 
       // Should fallback to value for 'gt-sm'
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       expectNativeEl(fixture).toHaveStyle({
         'flex-direction': 'column'
       }, styler);

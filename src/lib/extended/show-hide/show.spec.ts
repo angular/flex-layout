@@ -33,15 +33,15 @@ import {ShowHideDirective} from './show-hide';
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let platformId: Object;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestShowComponent)(template);
 
     inject([MatchMedia, StyleUtils, PLATFORM_ID],
-      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
-      matchMedia = _matchMedia;
+      (_mediaController: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
+      mediaController = _mediaController;
       styler = _styler;
       platformId = _platformId;
     })();
@@ -117,10 +117,10 @@ describe('show directive', () => {
       createTestComponent(`<div fxShow fxShow.xs="false"></div>`);
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
@@ -128,20 +128,20 @@ describe('show directive', () => {
       createTestComponent(`<div fxShow fxShow.gt-xs="false"></div>`);
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('md', true);
+      mediaController.activate('md', true);
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
     });
 
     it('should support use of the `media` observable in templates ', () => {
       createTestComponent(`<div [fxShow]="media.isActive('xs')"></div>`);
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('gt-md');
+      mediaController.activate('gt-md');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
     });
 
@@ -152,7 +152,7 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle({'display': 'inline-block'}, styler);
 
       // should hide with this activation and setting
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       fixture.componentInstance.isHidden = true;
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
     });
@@ -164,7 +164,7 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
 
       // mqActivation but the isHidden == false, so show it
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
 
       // should hide with this activation
@@ -179,11 +179,11 @@ describe('show directive', () => {
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
 
       // should hide with this activation
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
       // should reset to original display style
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle(visibleStyle, styler);
     });
 
@@ -193,13 +193,13 @@ describe('show directive', () => {
           Shown on devices larger than 1200px wide only.
         </div>`);
 
-      matchMedia.activate('gt-lg');
+      mediaController.activate('gt-lg');
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('gt-lg');
+      mediaController.activate('gt-lg');
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });
 
@@ -214,13 +214,13 @@ describe('show directive', () => {
           </div>
         `);
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('print');
+      mediaController.activate('print');
       expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
     });
 
@@ -235,16 +235,16 @@ describe('show directive', () => {
         </div>
       `);
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('print');
+      mediaController.activate('print');
       expectNativeEl(fixture).toHaveStyle({'display': 'block'}, styler);
     });
 
@@ -257,13 +257,13 @@ describe('show directive', () => {
         </div>
       `);
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('gt-sm');
+      mediaController.activate('gt-sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
     });
 
@@ -282,7 +282,7 @@ describe('show directive', () => {
 
       const elSelector = '[el]';
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
       fixture.detectChanges();
 
       // NOTE: platform-server can't compute display for unknown elements
@@ -296,13 +296,13 @@ describe('show directive', () => {
         }, styler);
       }
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       fixture.detectChanges();
       expectEl(queryFor(fixture, elSelector)[0]).toHaveStyle({
         'display': 'none'
       }, styler);
 
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       fixture.detectChanges();
       // NOTE: platform-server can't compute display for unknown elements
       if (isPlatformBrowser(platformId)) {
@@ -349,7 +349,7 @@ describe('show directive', () => {
       });
     });
     afterEach(() => {
-      matchMedia.clearAll();
+      mediaController.clearAll();
     });
 
     it('should respond to custom breakpoint', () => {
@@ -359,15 +359,15 @@ describe('show directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('sm-md');
+      mediaController.activate('sm-md');
 
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
 
       expectNativeEl(fixture).toHaveStyle({'display': 'none'}, styler);
 
-      matchMedia.activate('sm.lg');
+      mediaController.activate('sm.lg');
 
       expectNativeEl(fixture).not.toHaveStyle({'display': 'none'}, styler);
     });

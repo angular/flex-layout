@@ -25,13 +25,13 @@ import {
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestStyleComponent)(template);
 
-    inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
-      matchMedia = _matchMedia;
+    inject([MatchMedia, StyleUtils], (_mediaController: MockMatchMedia, _styler: StyleUtils) => {
+      mediaController = _mediaController;
       styler = _styler;
     })();
   };
@@ -59,7 +59,7 @@ describe('style directive', () => {
         <div [ngStyle.${testData.mq}]="${testData.styleStr}">
         </div>
     `);
-      matchMedia.activate(testData.mq);
+      mediaController.activate(testData.mq);
       expectNativeEl(fixture).toHaveStyle(testData.styleObj, styler);
     });
   });
@@ -70,7 +70,7 @@ describe('style directive', () => {
         </div>
     `);
     expectNativeEl(fixture).toHaveStyle({color: 'blue'}, styler);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveStyle({color: 'blue', 'font-size': '15px'}, styler);
   });
 
@@ -82,7 +82,7 @@ describe('style directive', () => {
         </div>
     `);
     expectNativeEl(fixture).toHaveStyle({color: 'blue'}, styler);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
 
     expectNativeEl(fixture).toHaveStyle({
       'color': 'blue',
@@ -110,16 +110,16 @@ describe('style directive', () => {
 
     fixture.detectChanges();
 
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveStyle({'display': 'flex'}, styler);
     expectNativeEl(fixture).toHaveStyle({'font-size': '16px'}, styler);
     expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'}, styler);
 
-    matchMedia.activate('md');
+    mediaController.activate('md');
     expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'}, styler);
     expectNativeEl(fixture).toHaveStyle({'font-size': '12px'}, styler);
 
-    matchMedia.activate('lg');
+    mediaController.activate('lg');
     expectNativeEl(fixture).not.toHaveStyle({'font-size': '12px'}, styler);
     expectNativeEl(fixture).not.toHaveStyle({'font-size': '16px'}, styler);
     expectNativeEl(fixture).toHaveStyle({'font-size': '10px'}, styler);  // original is gone
@@ -132,7 +132,7 @@ describe('style directive', () => {
         <div [ngStyle.xs]="{'font-size.px': 15}">
         </div>
     `);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture).toHaveStyle({'font-size': '15px'}, styler);
   });
 
@@ -141,7 +141,7 @@ describe('style directive', () => {
         <div [ngStyle.xs]="{'font-size.px': fontSize}">
         </div>
     `);
-    matchMedia.activate('xs');
+    mediaController.activate('xs');
     expectNativeEl(fixture, {fontSize: 19}).toHaveStyle({'font-size': '19px'}, styler);
   });
 

@@ -22,13 +22,13 @@ import {expectNativeEl, makeCreateTestComponent} from '../../utils/testing/helpe
 
 describe('flex-order', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestOrderComponent)(template);
 
-    inject([MatchMedia, StyleUtils], (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
-      matchMedia = _matchMedia;
+    inject([MatchMedia, StyleUtils], (_mediaController: MockMatchMedia, _styler: StyleUtils) => {
+      mediaController = _mediaController;
       styler = _styler;
     })();
   };
@@ -60,11 +60,11 @@ describe('flex-order', () => {
       expectNativeEl(fixture).not.toHaveStyle({
         'order': '1',
       }, styler);
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'order': '1',
       }, styler);
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       expectNativeEl(fixture).not.toHaveStyle({
         'order': '1',
       }, styler);

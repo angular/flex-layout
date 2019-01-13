@@ -25,16 +25,16 @@ import {GridModule} from '../module';
 describe('grid rows parent directive', () => {
   let fixture: ComponentFixture<any>;
   let styler: StyleUtils;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let platform: Platform;
   let shouldRun = true;
   let createTestComponent = (template: string, styles?: any) => {
     shouldRun = true;
     fixture = makeCreateTestComponent(() => TestGridRowsComponent)(template, styles);
     inject([StyleUtils, MatchMedia, Platform],
-      (_styler: StyleUtils, _matchMedia: MockMatchMedia, _platform: Platform) => {
+      (_styler: StyleUtils, _mediaController: MockMatchMedia, _platform: Platform) => {
       styler = _styler;
-      matchMedia = _matchMedia;
+      mediaController = _mediaController;
       platform = _platform;
 
       // TODO(CaerusKaru): Grid tests won't work with Edge 14
@@ -164,13 +164,13 @@ describe('grid rows parent directive', () => {
         'grid-template-rows': '100px 1fr'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-template-rows': '50px 1fr'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-template-rows': '100px 1fr'

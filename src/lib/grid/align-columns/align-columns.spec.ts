@@ -24,7 +24,7 @@ import {GridModule} from '../module';
 
 describe('align columns directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let shouldRun = true;
   let createTestComponent = (template: string) => {
@@ -32,8 +32,8 @@ describe('align columns directive', () => {
     fixture = makeCreateTestComponent(() => TestAlignComponent)(template);
 
     inject([MatchMedia, StyleUtils, Platform],
-      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform) => {
-        matchMedia = _matchMedia;
+      (_mediaController: MockMatchMedia, _styler: StyleUtils, _platform: Platform) => {
+        mediaController = _mediaController;
         styler = _styler;
 
         // TODO(CaerusKaru): Grid tests won't work with Edge 14
@@ -252,7 +252,7 @@ describe('align columns directive', () => {
         return;
       }
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'center',
@@ -274,7 +274,7 @@ describe('align columns directive', () => {
         'align-items': 'center'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'end',
@@ -298,14 +298,14 @@ describe('align columns directive', () => {
         'align-items': 'stretch'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'end',
         'align-items': 'stretch'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
 
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'center',
@@ -325,35 +325,35 @@ describe('align columns directive', () => {
         return;
       }
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
 
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'start'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'center'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'start'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'end'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'start'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('xl', true);
+      mediaController.activate('xl', true);
       expectNativeEl(fixture).toHaveStyle({
         'align-content': 'end'
       }, styler);
