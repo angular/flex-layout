@@ -22,18 +22,16 @@ import {SplitAreaDirective} from './split-area.directive';
   }
 })
 export class SplitDirective implements AfterContentInit, OnDestroy {
-  watcher: Subscription;
-
-  @Input('ngxSplit')
-  direction = 'row';
-
+  @Input('ngxSplit') direction = 'row';
   @ContentChild(SplitHandleDirective) handle: SplitHandleDirective;
   @ContentChildren(SplitAreaDirective) areas: QueryList<SplitAreaDirective>;
+
+  private watcher: Subscription;
 
   constructor(private elementRef: ElementRef) {}
 
   ngAfterContentInit(): void {
-    this.watcher = this.handle.drag.subscribe(pos => this.onDrag(pos));
+    this.watcher = this.handle.drag.subscribe(this.onDrag.bind(this));
   }
 
   ngOnDestroy() {
@@ -62,24 +60,17 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
    * Use the pixel delta change to recalculate the area size (%)
    * Note: flex value may be '', %, px, or '<grow> <shrink> <basis>'
    */
-  calculateSize(value: string|number, delta: number) {
+  calculateSize(value: string, delta: number): number {
     const containerSizePx = this.elementRef.nativeElement.clientWidth;
-    const elementSizePx = Math.round(this.valueToPixel(value, containerSizePx));
+    const elementSizePx = Math.round(valueToPixel(value, containerSizePx));
 
     const elementSize = ((elementSizePx + delta) / containerSizePx) * 100;
     return Math.round(elementSize * 100) / 100;
   }
+}
 
-  /**
-   * Convert the pixel or percentage value to a raw
-   * pixel float value.
-   */
-  valueToPixel(value: string | number, parentWidth: number): number {
-    const isPercent = () => String(value).indexOf('px') < 0;
-    let size = parseFloat(String(value));
-    if (isPercent()) {
-      size = parentWidth * (size / 100);  // Convert percentage to actual pixel float value
-    }
-    return size;
-  }
+/** Convert the pixel or percentage value to a raw pixel float value */
+function valueToPixel(value: string, parentWidth: number): number {
+  const size = parseFloat(value);
+  return !value.includes('px') ? parentWidth * (size / 100) : size;
 }
