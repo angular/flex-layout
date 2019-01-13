@@ -29,20 +29,20 @@ $breakpoints: (
 // Material Design breakpoints
 // @type map
 $overlapping-gt: (
-  xs: 600px,
-  sm: 960px,
-  md: 1280px,
-  lg: 1920px,
+  gt-xs: 600px,
+  gt-sm: 960px,
+  gt-md: 1280px,
+  gt-lg: 1920px,
 ) !default;
 
 // Overlapping breakpoints that are less than defined
 // Material Design breakpoints
 // @type map
 $overlapping-lt: (
-  sm: 599px,
-  md: 959px,
-  lg: 1279px,
-  xl: 1919px,
+  lt-sm: 599px,
+  lt-md: 959px,
+  lt-lg: 1279px,
+  lt-xl: 1919px,
 ) !default;
 
 
