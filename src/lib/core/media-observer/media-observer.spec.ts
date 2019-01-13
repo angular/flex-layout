@@ -18,158 +18,156 @@ import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-m
 import {DEFAULT_CONFIG, LAYOUT_CONFIG} from '../tokens/library-config';
 
 describe('media-observer', () => {
+  let knownBreakPoints: BreakPoint[] = [];
+  let mediaObserver: MediaObserver;
+  let mediaController: MockMatchMedia;
 
   describe('with default BreakPoints', () => {
-    let knownBreakPoints: BreakPoint[] = [];
-    let findMediaQuery: (alias: string) => string = (alias) => {
-      const NOT_FOUND = `${alias} not found`;
-      return knownBreakPoints.reduce((mediaQuery: string | null, bp) => {
-        return mediaQuery || ((bp.alias === alias) ? bp.mediaQuery : null);
-      }, null) as string || NOT_FOUND;
-    };
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
         providers: [MockMatchMediaProvider]
       });
     });
-    beforeEach(inject([BREAKPOINTS], (breakpoints: BreakPoint[]) => {
-      // Cache reference to list for easy testing...
+
+    beforeEach(inject([MediaObserver, MatchMedia, BREAKPOINTS],
+        (_mediaObserver: MediaObserver, _mediaController: MockMatchMedia, breakpoints: BreakPoint[]) => { // tslint:disable-line:max-line-length
       knownBreakPoints = breakpoints;
+      mediaObserver = _mediaObserver;
+      mediaController = _mediaController;
     }));
 
-    it('can supports the `.isActive()` API', inject(
-      [MediaObserver, MatchMedia],
-      (media: MediaObserver, matchMedia: MockMatchMedia) => {
-        expect(media).toBeDefined();
+    afterEach(() => {
+      mediaController.clearAll();
+    });
 
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('md');
-        expect(media.isActive('md')).toBeTruthy();
+    let findMediaQuery: (alias: string) => string = (alias) => {
+      const NOT_FOUND = `${alias} not found`;
+      return knownBreakPoints.reduce((mediaQuery: string | null, bp) => {
+        return mediaQuery || ((bp.alias === alias) ? bp.mediaQuery : null);
+      }, null) as string || NOT_FOUND;
+    };
+    it('can supports the `.isActive()` API', () => {
+      expect(mediaObserver).toBeDefined();
 
-        matchMedia.activate('lg');
-        expect(media.isActive('lg')).toBeTruthy();
-        expect(media.isActive('md')).toBeFalsy();
+      // Activate mediaQuery associated with 'md' alias
+      mediaController.activate('md');
+      expect(mediaObserver.isActive('md')).toBeTruthy();
 
-        matchMedia.clearAll();
-      }));
+      mediaController.activate('lg');
+      expect(mediaObserver.isActive('lg')).toBeTruthy();
+      expect(mediaObserver.isActive('md')).toBeFalsy();
 
-    it('can supports RxJS operators', inject(
-      [MediaObserver, MatchMedia],
-      (mediaService: MediaObserver, matchMedia: MockMatchMedia) => {
-        let count = 0,
-          subscription = mediaService.media$.pipe(
-            filter((change: MediaChange) => change.mqAlias == 'md'),
-            map((change: MediaChange) => change.mqAlias)
+      mediaController.clearAll();
+    });
+
+    it('can supports RxJS operators', () => {
+      let count = 0,
+          subscription = mediaObserver.media$.pipe(
+              filter((change: MediaChange) => change.mqAlias == 'md'),
+              map((change: MediaChange) => change.mqAlias)
           ).subscribe(_ => {
             count += 1;
           });
 
+      // Activate mediaQuery associated with 'md' alias
+      mediaController.activate('sm');
+      expect(count).toEqual(0);
+
+      mediaController.activate('md');
+      expect(count).toEqual(1);
+
+      mediaController.activate('lg');
+      expect(count).toEqual(1);
+
+      mediaController.activate('md');
+      expect(count).toEqual(2);
+
+      mediaController.activate('gt-md');
+      mediaController.activate('gt-lg');
+      mediaController.activate('invalid');
+      expect(count).toEqual(2);
+
+      subscription.unsubscribe();
+      mediaController.clearAll();
+    });
+
+    it('can subscribe to built-in mediaQueries', () => {
+      let current: MediaChange = new MediaChange(true);
+      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        current = change;
+      });
+
+      expect(mediaObserver).toBeDefined();
+
+      // Confirm initial match is for 'all'
+      expect(current).toBeDefined();
+      expect(current.matches).toBeTruthy();
+      expect(current.mediaQuery).toEqual('all');
+
+      try {
+        // Allow overlapping activations to be announced to observers
+        mediaController.autoRegisterQueries = false;
+        mediaObserver.filterOverlaps = false;
 
         // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('sm');
-        expect(count).toEqual(0);
-
-        matchMedia.activate('md');
-        expect(count).toEqual(1);
-
-        matchMedia.activate('lg');
-        expect(count).toEqual(1);
-
-        matchMedia.activate('md');
-        expect(count).toEqual(2);
-
-        matchMedia.activate('gt-md');
-        matchMedia.activate('gt-lg');
-        matchMedia.activate('invalid');
-        expect(count).toEqual(2);
-
-        subscription.unsubscribe();
-        matchMedia.clearAll();
-      }));
-
-    it('can subscribe to built-in mediaQueries', inject(
-      [MediaObserver, MatchMedia],
-      (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
-        let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-          current = change;
-        });
-
-        expect(mediaObserver).toBeDefined();
-
-        // Confirm initial match is for 'all'
-        expect(current).toBeDefined();
-        expect(current.matches).toBeTruthy();
-        expect(current.mediaQuery).toEqual('all');
-
-        try {
-          // Allow overlapping activations to be announced to observers
-          matchMedia.autoRegisterQueries = false;
-          mediaObserver.filterOverlaps = false;
-
-          // Activate mediaQuery associated with 'md' alias
-          matchMedia.activate('md');
-          expect(current.mediaQuery).toEqual(findMediaQuery('md'));
-
-          matchMedia.activate('gt-lg');
-          expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
-          matchMedia.activate('unknown');
-          expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
-        } finally {
-          matchMedia.autoRegisterQueries = true;
-          subscription.unsubscribe();
-
-          matchMedia.clearAll();
-        }
-      }));
-
-    it('can `.unsubscribe()` properly', inject(
-      [MediaObserver, MatchMedia],
-      (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
-        let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-          current = change;
-        });
-
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('md');
+        mediaController.activate('md');
         expect(current.mediaQuery).toEqual(findMediaQuery('md'));
 
-        // Un-subscribe
+        mediaController.activate('gt-lg');
+        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+        mediaController.activate('unknown');
+        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+
+      } finally {
+        mediaController.autoRegisterQueries = true;
         subscription.unsubscribe();
 
-        matchMedia.activate('lg');
-        expect(current.mqAlias).toBe('md');
+        mediaController.clearAll();
+      }
+    });
 
-        matchMedia.activate('xs');
-        expect(current.mqAlias).toBe('md');
+    it('can `.unsubscribe()` properly', () => {
+      let current: MediaChange = new MediaChange(true);
+      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        current = change;
+      });
 
-        matchMedia.clearAll();
-      }));
+      // Activate mediaQuery associated with 'md' alias
+      mediaController.activate('md');
+      expect(current.mediaQuery).toEqual(findMediaQuery('md'));
 
-    it('can observe a startup activation of XS', inject(
-      [MediaObserver, MatchMedia],
-      (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
-        let current: MediaChange = new MediaChange(true);
-        let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-          current = change;
-        });
+      // Un-subscribe
+      subscription.unsubscribe();
 
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('xs');
-        expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
+      mediaController.activate('lg');
+      expect(current.mqAlias).toBe('md');
 
-        // Un-subscribe
-        subscription.unsubscribe();
+      mediaController.activate('xs');
+      expect(current.mqAlias).toBe('md');
 
-        matchMedia.activate('lg');
-        expect(current.mqAlias).toBe('xs');
+       mediaController.clearAll();
+    });
 
-        matchMedia.clearAll();
-      }));
+    it('can observe a startup activation of XS', () => {
+      let current: MediaChange = new MediaChange(true);
+      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        current = change;
+      });
+
+      // Activate mediaQuery associated with 'md' alias
+      mediaController.activate('xs');
+      expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
+
+      // Un-subscribe
+      subscription.unsubscribe();
+
+      mediaController.activate('lg');
+      expect(current.mqAlias).toBe('xs');
+
+       mediaController.clearAll();
+    });
   });
 
   describe('with custom BreakPoints', () => {
@@ -192,117 +190,140 @@ describe('media-observer', () => {
       });
     });
 
-    it('can activate custom alias with custom mediaQueries', inject(
-      [MediaObserver, MatchMedia],
-      (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
+    beforeEach(inject([MediaObserver, MatchMedia, BREAKPOINTS],
+        (_mediaObserver: MediaObserver, _mediaController: MockMatchMedia, breakpoints: BreakPoint[]) => { // tslint:disable-line:max-line-length
+          knownBreakPoints = breakpoints;
+          mediaObserver = _mediaObserver;
+          mediaController = _mediaController;
+        }));
+
+    afterEach(() => {
+      mediaController.clearAll();
+    });
+
+    it('can activate custom alias with custom mediaQueries', () => {
+      let current: MediaChange = new MediaChange(true);
+      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        current = change;
+      });
+
+      // Activate mediaQuery associated with 'md' alias
+      mediaController.activate('sm');
+      expect(current.mediaQuery).toEqual(smMediaQuery);
+
+      // MediaObserver will not announce print events
+      // unless a printAlias layout has been configured.
+      mediaController.activate('slate.xl');
+      expect(current.mediaQuery).toEqual(superXLQuery);
+
+      mediaController.activate('tablet-gt-xs');
+      expect(current.mqAlias).toBe('tablet-gt-xs');
+      expect(current.mediaQuery).toBe(gtXsMediaQuery);
+
+      subscription.unsubscribe();
+       mediaController.clearAll();
+    });
+  });
+
+  describe('with layout "print" configured', () => {
+    const mdMediaQuery = 'screen and (min-width: 960px) and (max-width: 1279px)';
+
+    beforeEach(() => {
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        providers: [
+          MockMatchMediaProvider,
+          {
+            provide: LAYOUT_CONFIG,
+            useValue: {
+              ...DEFAULT_CONFIG,
+              ...{printWithBreakpoints: ['md']}
+            }
+          }
+        ]
+      });
+    });
+
+    beforeEach(inject([MediaObserver, MatchMedia, BREAKPOINTS],
+    (_mediaObserver: MediaObserver, _mediaController: MockMatchMedia, breakpoints: BreakPoint[]) => { // tslint:disable-line:max-line-length
+      knownBreakPoints = breakpoints;
+      mediaObserver = _mediaObserver;
+      mediaController = _mediaController;
+    }));
+
+    it('can activate when configured with "md" alias', () => {
         let current: MediaChange = new MediaChange(true);
         let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
           current = change;
         });
 
-        // Activate mediaQuery associated with 'md' alias
-        matchMedia.activate('sm');
-        expect(current.mediaQuery).toEqual(smMediaQuery);
+        try {
 
-        // MediaObserver will not announce print events
-        // unless a printAlias layout has been configured.
-        matchMedia.activate('slate.xl');
-        expect(current.mediaQuery).toEqual(superXLQuery);
+          mediaController.activate('lg');
 
-        matchMedia.activate('tablet-gt-xs');
-        expect(current.mqAlias).toBe('tablet-gt-xs');
-        expect(current.mediaQuery).toBe(gtXsMediaQuery);
+          // Activate mediaQuery associated with 'md' alias
+          mediaController.activate('print');
+          expect(current.mqAlias).toBe('md');
+          expect(current.mediaQuery).toEqual(mdMediaQuery);
 
-        subscription.unsubscribe();
-        matchMedia.clearAll();
-      }));
+          mediaController.activate('sm');
+          expect(current.mqAlias).toBe('sm');
+
+        } finally {
+           mediaController.clearAll();
+          subscription.unsubscribe();
+        }
+
+      });
   });
 
-  describe('with layout "print" configured', () => {
-     const mdMediaQuery = 'screen and (min-width: 960px) and (max-width: 1279px)';
-
-     beforeEach(() => {
-       // Configure testbed to prepare services
-       TestBed.configureTestingModule({
-         providers: [
-           MockMatchMediaProvider,
-           {
-             provide: LAYOUT_CONFIG,
-             useValue: {
-               ...DEFAULT_CONFIG,
-               ...{ printWithBreakpoints : ['md']}
-             }
-           }
-         ]
-       });
-     });
-
-     it('can activate when configured with "md" alias', inject(
-       [MediaObserver, MatchMedia],
-       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
-         let current: MediaChange = new MediaChange(true);
-         let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-           current = change;
-         });
-
-         try {
-
-           matchMedia.activate('lg');
-
-           // Activate mediaQuery associated with 'md' alias
-           matchMedia.activate('print');
-           expect(current.mqAlias).toBe('md');
-           expect(current.mediaQuery).toEqual(mdMediaQuery);
-
-           matchMedia.activate('sm');
-           expect(current.mqAlias).toBe('sm');
-
-         } finally {
-           matchMedia.clearAll();
-            subscription.unsubscribe();
-         }
-
-       }));
-   });
-
   describe('with layout print NOT configured', () => {
-     const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959px)';
+    const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959px)';
 
-     beforeEach(() => {
-       // Configure testbed to prepare services
-       TestBed.configureTestingModule({
-         providers: [
-           MockMatchMediaProvider
-         ]
-       });
-     });
+    beforeEach(() => {
+      // Configure testbed to prepare services
+      TestBed.configureTestingModule({
+        providers: [
+          MockMatchMediaProvider
+        ]
+      });
+    });
 
-     it('will skip print activation without alias', inject(
-       [MediaObserver, MatchMedia],
-       (mediaObserver: MediaObserver, matchMedia: MockMatchMedia) => {
-         let current: MediaChange = new MediaChange(true);
-         let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-           current = change;
-         });
+    beforeEach(inject([MediaObserver, MatchMedia, BREAKPOINTS],
+        (_mediaObserver: MediaObserver, _mediaController: MockMatchMedia, breakpoints: BreakPoint[]) => { // tslint:disable-line:max-line-length
+          knownBreakPoints = breakpoints;
+          mediaObserver = _mediaObserver;
+          mediaController = _mediaController;
+        }));
 
-         try {
+    afterEach(() => {
+      mediaController.clearAll();
+    });
 
-           matchMedia.activate('sm');
-           expect(current.mqAlias).toBe('sm');
+    it('will skip print activation without alias', () => {
+      let current: MediaChange = new MediaChange(true);
+      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+        current = change;
+      });
 
-           // Activate mediaQuery associated with 'md' alias
-           matchMedia.activate('print');
-           expect(current.mqAlias).toBe('sm');
-           expect(current.mediaQuery).toEqual(smMediaQuery);
+      try {
 
-           matchMedia.activate('xl');
-           expect(current.mqAlias).toBe('xl');
+        mediaController.activate('sm');
+        expect(current.mqAlias).toBe('sm');
 
-         } finally {
-            subscription.unsubscribe();
-            matchMedia.clearAll();
-         }
+        // Activate mediaQuery associated with 'md' alias
+        mediaController.activate('print');
+        expect(current.mqAlias).toBe('sm');
+        expect(current.mediaQuery).toEqual(smMediaQuery);
 
-       }));
-   });
+        mediaController.activate('xl');
+        expect(current.mqAlias).toBe('xl');
+
+      } finally {
+        subscription.unsubscribe();
+         mediaController.clearAll();
+      }
+
+    });
+  });
 });

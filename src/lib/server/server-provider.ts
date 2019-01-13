@@ -25,11 +25,11 @@ import {
  * retrieve the associated stylings from the virtual stylesheet
  * @param serverSheet the virtual stylesheet that stores styles for each
  *        element
- * @param matchMedia the service to activate/deactivate breakpoints
+ * @param mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
  */
 export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
-                                               matchMedia: MatchMedia,
+                                               mediaController: MatchMedia,
                                                breakpoints: BreakPoint[]) {
   // Store the custom classes in the following map, that way only
   // one class gets allocated per HTMLElement, and each class can
@@ -43,12 +43,12 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
 
   [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
     serverSheet.clearStyles();
-    (matchMedia as ServerMatchMedia).activateBreakpoint(bp);
+    (mediaController as ServerMatchMedia).activateBreakpoint(bp);
     const stylesheet = new Map(serverSheet.stylesheet);
     if (stylesheet.size > 0) {
       styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
     }
-    (matchMedia as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
+    (mediaController as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
   });
 
   return styleText;
