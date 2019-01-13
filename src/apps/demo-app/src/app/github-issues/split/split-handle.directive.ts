@@ -23,7 +23,10 @@ export class SplitHandleDirective {
     };
 
     const mousedown$ = fromEvent(ref.nativeElement, 'mousedown').pipe(map(scanPositionDelta));
-    const mousemove$ = fromEvent(window, 'mousemove').pipe(throttleTime(50), map(scanPositionDelta));
+    const mousemove$ = fromEvent(window, 'mousemove').pipe(
+      throttleTime(50),
+      map(scanPositionDelta)
+    );
     const mouseup$ = fromEvent(window, 'mouseup');
 
     this.drag = mousedown$.pipe(switchMap(() => mousemove$.pipe(takeUntil(mouseup$))));
