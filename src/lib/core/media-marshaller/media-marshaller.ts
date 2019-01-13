@@ -257,7 +257,11 @@ export class MediaMarshaller {
     if (bpMap) {
       const valueMap = this.getActivatedValues(bpMap, key);
       if (valueMap) {
-        valueMap.forEach((v, k) => this.updateElement(element, k, v));
+        if (key) {
+          this.updateElement(element, key, valueMap.get(key));
+        } else {
+          valueMap.forEach((v, k) => this.updateElement(element, k, v));
+        }
       }
     }
   }
