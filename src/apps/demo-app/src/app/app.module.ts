@@ -6,9 +6,12 @@ import {FlexLayoutModule, BREAKPOINT} from '@angular/flex-layout';
 import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';
 import {DemoMaterialModule} from './material.module';
+import {
+  YBA_BREAKPOINT_PROVIDER
+} from './stack-overflow/hide-custom-bp/hide-with-custom-bp.component';
 import {WatermarkComponent} from './watermark.component';
 
-const EXTRA_BREAKPOINT = [{
+const EXTRA_BREAKPOINTS = [{
   alias: 'xs.landscape',
   suffix: 'XsLandscape',
   mediaQuery: 'screen and (orientation: landscape) and (max-width: 559px)',
@@ -18,7 +21,8 @@ const EXTRA_BREAKPOINT = [{
 
 @NgModule({
   declarations: [
-    AppComponent, WatermarkComponent
+    AppComponent,
+    WatermarkComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -30,7 +34,14 @@ const EXTRA_BREAKPOINT = [{
       printWithBreakpoints: ['md', 'lt-lg', 'lt-xl', 'gt-sm', 'gt-xs']
     }),
   ],
-  providers: [{provide: BREAKPOINT, useValue: EXTRA_BREAKPOINT, multi: true}],
+  providers: [
+    YBA_BREAKPOINT_PROVIDER,
+    {
+      provide: BREAKPOINT,
+      useValue: EXTRA_BREAKPOINTS,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
