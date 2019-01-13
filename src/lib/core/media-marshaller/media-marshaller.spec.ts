@@ -102,6 +102,17 @@ describe('media-marshaller', () => {
       expect(triggered).toBeTruthy();
     });
 
+    it('should triggerUpdate', () => {
+      let triggered = false;
+      const builder = () => {
+        triggered = true;
+      };
+      mediaMarshaller.init(fakeElement, fakeKey, builder);
+      mediaMarshaller.setValue(fakeElement, fakeKey, 0, '');
+      mediaMarshaller.triggerUpdate(fakeElement, fakeKey);
+      expect(triggered).toBeTruthy();
+    });
+
     it('should get the right value', () => {
       const builder = () => {
       };
@@ -230,6 +241,17 @@ describe('media-marshaller', () => {
       };
       mediaMarshaller.init(fakeElement, fakeKey, builder);
       mediaMarshaller.updateElement(fakeElement, fakeKey, 0);
+      expect(triggered).toBeTruthy();
+    });
+
+    it('should triggerUpdate', () => {
+      let triggered = false;
+      const builder = () => {
+        triggered = true;
+      };
+      mediaMarshaller.init(fakeElement, fakeKey, builder);
+      mediaMarshaller.setValue(fakeElement, fakeKey, 0, '');
+      mediaMarshaller.triggerUpdate(fakeElement, fakeKey);
       expect(triggered).toBeTruthy();
     });
 

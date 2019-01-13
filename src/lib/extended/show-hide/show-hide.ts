@@ -150,6 +150,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
     if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
       this.nativeElement.style.setProperty('display', '');
     }
+    this.marshal.triggerUpdate(this.parentElement!, 'layout-gap');
   }
 }
 
