@@ -247,6 +247,21 @@ export class MediaMarshaller {
     }
   }
 
+  /**
+   * trigger an update for a given element and key (e.g. layout)
+   * @param element
+   * @param key
+   */
+  triggerUpdate(element: HTMLElement, key?: string): void {
+    const bpMap = this.elementMap.get(element);
+    if (bpMap) {
+      const valueMap = this.getActivatedValues(bpMap, key);
+      if (valueMap) {
+        valueMap.forEach((v, k) => this.updateElement(element, k, v));
+      }
+    }
+  }
+
   /** Cross-reference for HTMLElement with directive key */
   private buildElementKeyMap(element: HTMLElement, key: string) {
     let keyMap = this.elementKeyMap.get(element);

@@ -412,11 +412,9 @@ describe('layout-gap directive', () => {
 
     it('should work with dynamic fxHide', () => {
       let template = `
-        <div fxLayout="column">
-          <div class="parent-box" fxLayout="row" fxLayoutGap="10px">
-            <div class="child-box" fxFlex>A</div>
-            <div class="child-box" fxFlex [fxHide]="shouldHide">B</div>
-          </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <div fxFlex>A</div>
+          <div fxFlex [fxHide]="shouldHide">B</div>
         </div>
       `;
       createTestComponent(template);

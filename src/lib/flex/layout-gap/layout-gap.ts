@@ -66,7 +66,7 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
       const paddingStyles = buildGridPadding(gapValue, parent.directionality);
       this._styler.applyStyleToElements(paddingStyles, parent.items);
     } else {
-      const lastItem = items.pop();
+      const lastItem = items.pop()!;
 
       // For each `element` children EXCEPT the last,
       // set the margin right/bottom styles...
@@ -74,7 +74,7 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
       this._styler.applyStyleToElements(gapCss, items);
 
       // Clear all gaps for all visible elements
-      this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem!]);
+      this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
     }
   }
 }
