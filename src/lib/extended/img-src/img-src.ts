@@ -30,7 +30,7 @@ export class ImgSrcDirective extends BaseDirective2 {
   @Input('src')
   set src(val: string) {
     this.defaultSrc = val;
-    this.setValue('', this.defaultSrc);
+    this.setValue(this.defaultSrc, '');
   }
 
   constructor(protected elementRef: ElementRef,
@@ -41,7 +41,7 @@ export class ImgSrcDirective extends BaseDirective2 {
               @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
     super(elementRef, styleBuilder, styler, marshal);
     this.init();
-    this.setValue('', this.nativeElement.getAttribute('src') || '');
+    this.setValue(this.nativeElement.getAttribute('src') || '', '');
     if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
       this.nativeElement.setAttribute('src', '');
     }
@@ -55,12 +55,12 @@ export class ImgSrcDirective extends BaseDirective2 {
    * Do nothing to standard `<img src="">` usages, only when responsive
    * keys are present do we actually call `setAttribute()`
    */
-  protected updateWithValue() {
-    let url = this.activatedValue || this.defaultSrc;
+  protected updateWithValue(value?: string) {
+    const url = value || this.defaultSrc;
     if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
       this.addStyles(url);
     } else {
-      this.nativeElement.setAttribute('src', String(url));
+      this.nativeElement.setAttribute('src', url);
     }
   }
 

@@ -237,6 +237,52 @@ describe('img-src directive', () => {
       }
     });
 
+    it('should work with responsive srcs, starting and ending with fallback', () => {
+      const defaultSrc = 'https://www.gstatic.com/webp/gallery2/1.png';
+      const xsSrc = 'https://www.gstatic.com/webp/gallery3/1.png';
+      componentWithTemplate(`
+        <img src="${defaultSrc}" src.xs="${xsSrc}">
+      `);
+      fixture.detectChanges();
+
+      let img = queryFor(fixture, 'img')[0];
+      let imgEl = img.nativeElement;
+      expect(imgEl).toBeDefined();
+      if (isPlatformServer(platformId)) {
+        expectEl(img).toHaveStyle({
+          'content': `url(${defaultSrc})`
+        }, styler);
+
+        matchMedia.activate('xs');
+        fixture.detectChanges();
+        expectEl(img).toHaveStyle({
+          'content': `url(${xsSrc})`
+        }, styler);
+
+        matchMedia.activate('lg');
+        fixture.detectChanges();
+        expectEl(img).toHaveStyle({
+          'content': `url(${defaultSrc})`
+        }, styler);
+      } else {
+        expect(imgEl).toHaveAttributes({
+          src: defaultSrc
+        });
+
+        matchMedia.activate('xs');
+        fixture.detectChanges();
+        expect(imgEl).toHaveAttributes({
+          src: xsSrc
+        });
+
+        matchMedia.activate('lg');
+        fixture.detectChanges();
+        expect(imgEl).toHaveAttributes({
+          src: defaultSrc
+        });
+      }
+    });
+
     it('should work if default [src] is not defined', () => {
       componentWithTemplate(`
          <img [src.md]="mdSrc">
