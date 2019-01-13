@@ -410,6 +410,31 @@ describe('layout-gap directive', () => {
       expectEl(nodes[2]).not.toHaveStyle({'margin-bottom': '*'}, styler);
     });
 
+    it('should work with dynamic fxHide', () => {
+      let template = `
+        <div fxLayout="column">
+          <div class="parent-box" fxLayout="row" fxLayoutGap="10px">
+            <div class="child-box" fxFlex>A</div>
+            <div class="child-box" fxFlex [fxHide]="shouldHide">B</div>
+          </div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(2);
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
+
+      let instance = fixture.componentInstance;
+      instance.shouldHide = false;
+      fixture.detectChanges();
+
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '10px'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
+    });
+
     it('should work with responsive fxHide', () => {
       let template = `
         <div fxLayoutAlign="center center" fxLayoutGap="13px">
@@ -557,6 +582,7 @@ export class MockLayoutGapStyleBuilder extends StyleBuilder {
 class TestLayoutGapComponent implements OnInit {
   direction = 'column';
   gap = '8px';
+  shouldHide = true;
   rows = new Array(4);
 
   constructor() {
