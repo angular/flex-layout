@@ -17,13 +17,13 @@ export class ResponsiveRowColumnComponent implements OnDestroy {
   };
   isVisible = true;
 
-  private activeMQC: MediaChange;
+  private activeMQC: MediaChange[];
   private subscription: Subscription;
 
-  constructor(mediaObserver: MediaObserver) {
-    this.subscription = mediaObserver.media$
-      .subscribe((e: MediaChange) => {
-        this.activeMQC = e;
+  constructor(mediaService: MediaObserver) {
+    this.subscription = mediaService.asObservable()
+      .subscribe((events: MediaChange[]) => {
+        this.activeMQC = events;
       });
   }
 
@@ -32,16 +32,18 @@ export class ResponsiveRowColumnComponent implements OnDestroy {
   }
 
   toggleLayoutFor(col: number) {
-    switch (col) {
-      case 1:
-        const set1 = `firstCol${this.activeMQC ? this.activeMQC.suffix : ''}`;
-        this.cols[set1] = (this.cols[set1] === 'column') ? 'row' : 'column';
-        break;
+    this.activeMQC.forEach((change: MediaChange) => {
+      switch (col) {
+        case 1:
+            const set1 = `firstCol${change ? change.suffix : ''}`;
+            this.cols[set1] = (this.cols[set1] === 'column') ? 'row' : 'column';
+          break;
 
-      case 2:
-        const set2 = 'secondCol';
-        this.cols[set2] = (this.cols[set2] === 'row') ? 'column' : 'row';
-        break;
-    }
+        case 2:
+          const set2 = 'secondCol';
+          this.cols[set2] = (this.cols[set2] === 'row') ? 'column' : 'row';
+          break;
+      }
+    });
   }
 }

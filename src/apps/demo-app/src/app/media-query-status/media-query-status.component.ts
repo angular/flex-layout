@@ -1,25 +1,25 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Observable} from 'rxjs';
+import {Observable} from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'media-query-status',
   template: `
-    <div class="mqInfo" *ngIf="media$ | async as event">
-      <span title="Active MediaQuery">{{  extractQuery(event) }}</span>
+    <div class="mqInfo">
+      Active MediaQuery(s):
+      <ul>
+        <li *ngFor="let change of (media$ | async) as changes">
+          {{change.mqAlias}} = {{change.mediaQuery}}
+        </li>
+      </ul>
     </div>
   `,
   styleUrls: ['./media-query-status.component.scss'],
-  changeDetection : ChangeDetectionStrategy.OnPush
 })
 export class MediaQueryStatusComponent {
-  media$: Observable<MediaChange>;
+  media$: Observable<MediaChange[]>;
 
-  constructor(mediaObserver: MediaObserver) {
-    this.media$ = mediaObserver.media$;
-  }
-
-  extractQuery(change: MediaChange): string {
-    return change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
+  constructor(media: MediaObserver) {
+    this.media$ = media.asObservable();
   }
 }

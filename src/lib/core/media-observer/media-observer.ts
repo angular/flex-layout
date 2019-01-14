@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {filter, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {debounceTime, filter, map, switchMap} from 'rxjs/operators';
 
 import {mergeAlias} from '../add-alias';
 import {MediaChange} from '../media-change';
@@ -16,21 +16,19 @@ import {PrintHook} from '../media-marshaller/print-hook';
 import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
 
 /**
- * Class internalizes a MatchMedia service and exposes an Observable interface.
-
- * This exposes an Observable with a feature to subscribe to mediaQuery
- * changes and a validator method (`isActive(<alias>)`) to test if a mediaQuery (or alias) is
- * currently active.
+ * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
+ * if a mediaQuery is currently activated.
  *
- * !! Only mediaChange activations (not de-activations) are announced by the MediaObserver
+ * Since a breakpoint change will first deactivate 1...n mediaQueries and then possibly activate
+ * 1..n mediaQueries, the MediaObserver will debounce notifications and report ALL *activations*
+ * in 1 event notification. The reported activations will be sorted in descending priority order.
  *
  * This class uses the BreakPoint Registry to inject alias information into the raw MediaChange
  * notification. For custom mediaQuery notifications, alias information will not be injected and
  * those fields will be ''.
  *
- * !! This is not an actual Observable. It is a wrapper of an Observable used to publish additional
- * methods like `isActive(<alias>). To access the Observable and use RxJS operators, use
- * `.media$` with syntax like mediaObserver.media$.map(....).
+ * Note: Developers should note that only mediaChange activations (not de-activations)
+ *       are announced by the MediaObserver.
  *
  *  @usage
  *
@@ -43,40 +41,66 @@ import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point
  *    status: string = '';
  *
  *    constructor(mediaObserver: MediaObserver) {
- *      const onChange = (change: MediaChange) => {
- *        this.status = change ? `'${change.mqAlias}' = (${change.mediaQuery})` : '';
- *      };
+ *      const media$ = mediaObserver.asObservable().pipe(
+ *        filter((changes: MediaChange[]) => true)   // silly noop filter
+ *      );
  *
- *      // Subscribe directly or access observable to use filter/map operators
- *      // e.g. mediaObserver.media$.subscribe(onChange);
+ *      media$.subscribe((changes: MediaChange[]) => {
+ *        let status = '';
+ *        changes.forEach( change => {
+ *          status += `'${change.mqAlias}' = (${change.mediaQuery}) <br/>` ;
+ *        });
+ *        this.status = status;
+ *     });
  *
- *      mediaObserver.media$()
- *        .pipe(
- *          filter((change: MediaChange) => true)   // silly noop filter
- *        ).subscribe(onChange);
  *    }
  *  }
  */
 @Injectable({providedIn: 'root'})
 export class MediaObserver {
+
   /**
-   * Whether to announce gt-<xxx> breakpoint activations
+   * @deprecated Use `asObservable()` instead.
+   * @deletion-target v7.0.0-beta.24
+   * @breaking-change 7.0.0-beta.24
    */
-  filterOverlaps = true;
-  readonly media$: Observable<MediaChange>;
+  get media$(): Observable<MediaChange[]> {
+    return this._media$;
+  }
+
+  /** Filter MediaChange notifications for overlapping breakpoints */
+  filterOverlaps = false;
 
   constructor(protected breakpoints: BreakPointRegistry,
-      protected mediaWatcher: MatchMedia,
-      protected hook: PrintHook) {
-    this.media$ = this.watchActivations();
+              protected matchMedia: MatchMedia,
+              protected hook: PrintHook) {
+    this._media$ = this.watchActivations();
+  }
+
+
+  // ************************************************
+  // Public Methods
+  // ************************************************
+
+  /**
+   * Observe changes to current activation 'list'
+   */
+  asObservable(): Observable<MediaChange[]> {
+    return this._media$;
   }
 
   /**
-   * Test if specified query/alias is active.
+   * Allow programmatic query to determine if specified query/alias is active.
    */
   isActive(alias: string): boolean {
-    return this.mediaWatcher.isActive(this.toMediaQuery(alias));
+    const query = toMediaQuery(alias, this.breakpoints);
+    return this.matchMedia.isActive(query);
   }
+
+  /**
+   * Subscribers to activation list can use this function to easily exclude overlaps
+   */
+
 
   // ************************************************
   // Internal Methods
@@ -93,53 +117,79 @@ export class MediaObserver {
   }
 
   /**
-   * Prepare internal observable
+   * Only pass/announce activations (not de-activations)
+   *
+   * Since multiple-mediaQueries can be activation in a cycle,
+   * gather all current activations into a single list of changes to observers
+   *
+   * Inject associated (if any) alias information into the MediaChange event
+   * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
+   * - Exclude print activations that do not have an associated mediaQuery
    *
    * NOTE: the raw MediaChange events [from MatchMedia] do not
    *       contain important alias information; as such this info
    *       must be injected into the MediaChange
    */
-  private buildObservable(mqList: string[]): Observable<MediaChange> {
-    const locator = this.breakpoints;
-    const onlyActivations = (change: MediaChange) => change.matches;
-    const excludeUnknown = (change: MediaChange) => change.mediaQuery !== '';
-    const excludeCustomPrints = (change: MediaChange) => !change.mediaQuery.startsWith('print');
-    const excludeOverlaps = (change: MediaChange) => {
-      const bp = locator.findByQuery(change.mediaQuery);
-      return !bp ? true : !(this.filterOverlaps && bp.overlapping);
+  private buildObservable(mqList: string[]): Observable<MediaChange[]> {
+    const hasChanges = (changes: MediaChange[]) => {
+      const isValidQuery = (change: MediaChange) => (change.mediaQuery.length > 0);
+      return (changes.filter(isValidQuery).length > 0);
     };
-    const replaceWithPrintAlias = (change: MediaChange) => {
-      if (this.hook.isPrintEvent(change)) {
-        // replace with aliased substitute (if configured)
-        return this.hook.updateEvent(change);
-      }
-      let bp: OptionalBreakPoint = locator.findByQuery(change.mediaQuery);
-      return mergeAlias(change, bp);
+    const excludeOverlaps = (changes: MediaChange[]) => {
+      return !this.filterOverlaps ? changes : changes.filter(change => {
+        const bp = this.breakpoints.findByQuery(change.mediaQuery);
+        return !bp ? true : !bp.overlapping;
+      });
     };
 
     /**
-     * Only pass/announce activations (not de-activations)
-     *
-     * Inject associated (if any) alias information into the MediaChange event
-     * - Exclude mediaQuery activations for overlapping mQs. List bounded mQ ranges only
-     * - Exclude print activations that do not have an associated mediaQuery
      */
-    return this.mediaWatcher.observe(this.hook.withPrintQuery(mqList))
+    return this.matchMedia
+        .observe(this.hook.withPrintQuery(mqList))
         .pipe(
-            filter(onlyActivations),
-            filter(excludeOverlaps),
-            map(replaceWithPrintAlias),
-            filter(excludeCustomPrints),
-            filter(excludeUnknown)
+            filter((change: MediaChange) => change.matches),
+            debounceTime(10),
+            switchMap(_ => of(this.findAllActivations())),
+            map(excludeOverlaps),
+            filter(hasChanges)
         );
   }
 
   /**
-   * Find associated breakpoint (if any)
+   * Find all current activations and prepare single list of activations
+   * sorted by descending priority.
    */
-  private toMediaQuery(query: string) {
-    const locator = this.breakpoints;
-    const bp = locator.findByAlias(query) || locator.findByQuery(query);
-    return bp ? bp.mediaQuery : query;
+  private findAllActivations(): MediaChange[] {
+    const mergeMQAlias = (change: MediaChange) => {
+      let bp: OptionalBreakPoint = this.breakpoints.findByQuery(change.mediaQuery);
+      return mergeAlias(change, bp);
+    };
+    const replaceWithPrintAlias = (change: MediaChange) => {
+      return this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
+    };
+
+    return this.matchMedia
+        .activations
+        .map(query => new MediaChange(true, query))
+        .map(replaceWithPrintAlias)
+        .map(mergeMQAlias)
+        .sort(sortChangesByPriority);
   }
+
+  private _media$: Observable<MediaChange[]>;
+}
+
+/**
+ * Find associated breakpoint (if any)
+ */
+function toMediaQuery(query: string, locator: BreakPointRegistry) {
+  const bp = locator.findByAlias(query) || locator.findByQuery(query);
+  return bp ? bp.mediaQuery : query;
+}
+
+/** HOF to sort the breakpoints by priority */
+export function sortChangesByPriority(a: MediaChange, b: MediaChange): number {
+  const priorityA = a ? a.priority || 0 : 0;
+  const priorityB = b ? b.priority || 0 : 0;
+  return priorityB - priorityA;
 }
