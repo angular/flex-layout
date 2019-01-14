@@ -60,11 +60,11 @@ describe('img-src directive', () => {
     fixture = makeCreateTestComponent(() => TestSrcComponent)(template);
 
     inject([MatchMedia, PLATFORM_ID, StyleUtils],
-        (_matchMedia: MockMatchMedia, _platformId: Object, _styler: StyleUtils) => {
-          mediaController = _matchMedia;
-          platformId = _platformId;
-          styler = _styler;
-        })();
+    (_matchMedia: MockMatchMedia, _platformId: Object, _styler: StyleUtils) => {
+      mediaController = _matchMedia;
+      platformId = _platformId;
+      styler = _styler;
+    })();
   };
 
   beforeEach(() => {
@@ -253,13 +253,13 @@ describe('img-src directive', () => {
           'content': `url(${defaultSrc})`
         }, styler);
 
-        matchMedia.activate('xs');
+        mediaController.activate('xs');
         fixture.detectChanges();
         expectEl(img).toHaveStyle({
           'content': `url(${xsSrc})`
         }, styler);
 
-        matchMedia.activate('lg');
+        mediaController.activate('lg');
         fixture.detectChanges();
         expectEl(img).toHaveStyle({
           'content': `url(${defaultSrc})`
@@ -269,13 +269,13 @@ describe('img-src directive', () => {
           src: defaultSrc
         });
 
-        matchMedia.activate('xs');
+        mediaController.activate('xs');
         fixture.detectChanges();
         expect(imgEl).toHaveAttributes({
           src: xsSrc
         });
 
-        matchMedia.activate('lg');
+        mediaController.activate('lg');
         fixture.detectChanges();
         expect(imgEl).toHaveAttributes({
           src: defaultSrc
