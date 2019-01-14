@@ -14,10 +14,11 @@ import {DEFAULT_CONFIG, LAYOUT_CONFIG} from '../tokens/library-config';
 import {MockMatchMedia, MockMatchMediaProvider} from '../match-media/mock/mock-match-media';
 
 describe('media-marshaller', () => {
-  let matchMedia: MockMatchMedia;
-  let mediaMarshaller: MediaMarshaller;
 
   describe('with layout printing NOT configured', () => {
+    let mediaController: MockMatchMedia;
+    let mediaMarshaller: MediaMarshaller;
+
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
@@ -28,30 +29,31 @@ describe('media-marshaller', () => {
     });
 
     beforeEach(inject([MatchMedia, MediaMarshaller],
-        (service: MockMatchMedia, marshal: MediaMarshaller) => {
-          matchMedia = service;      // inject only to manually activate mediaQuery ranges
-          mediaMarshaller = marshal;
-        }));
+    (service: MockMatchMedia, marshal: MediaMarshaller) => {
+      mediaController = service;      // inject only to manually activate mediaQuery ranges
+      mediaMarshaller = marshal;
+    }));
+
     afterEach(() => {
-      matchMedia.clearAll();
+      mediaController.clearAll();
     });
 
     it('activates when match-media activates', () => {
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expect(mediaMarshaller.onMediaChange).toHaveBeenCalled();
     });
 
     it('doesn\'t trigger onMediaChange for same breakpoint activations', () => {
-      matchMedia.activate('xs');
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
+      mediaController.activate('xs');
       expect(mediaMarshaller.updateStyles).toHaveBeenCalledTimes(1);
     });
 
     it('should set correct activated breakpoint', () => {
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expect(mediaMarshaller.activatedAlias).toBe('lg');
 
-      matchMedia.activate('gt-md');
+      mediaController.activate('gt-md');
       expect(mediaMarshaller.activatedAlias).toBe('gt-md');
     });
 
@@ -63,7 +65,7 @@ describe('media-marshaller', () => {
       mediaMarshaller.init(fakeElement, fakeKey, builder);
       mediaMarshaller.setValue(fakeElement, fakeKey, 0, 'xs');
       triggered = false;
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expect(triggered).toBeTruthy();
     });
 
@@ -150,6 +152,9 @@ describe('media-marshaller', () => {
   });
 
   describe('with layout "print" configured', () => {
+    let mediaController: MockMatchMedia;
+    let mediaMarshaller: MediaMarshaller;
+
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
@@ -169,31 +174,31 @@ describe('media-marshaller', () => {
     });
 
     beforeEach(inject([MatchMedia, MediaMarshaller],
-        (service: MockMatchMedia, marshal: MediaMarshaller) => {
-          matchMedia = service;      // inject only to manually onMediaChange mediaQuery ranges
-          mediaMarshaller = marshal;
-        }));
+    (service: MockMatchMedia, marshal: MediaMarshaller) => {
+      mediaController = service;      // inject only to manually onMediaChange mediaQuery ranges
+      mediaMarshaller = marshal;
+    }));
 
     afterEach(() => {
-      matchMedia.clearAll();
+      mediaController.clearAll();
     });
 
     it('call onMediaChange when breakpoint activates', () => {
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expect(mediaMarshaller.onMediaChange).toHaveBeenCalled();
     });
 
     it('doesn\'t call updateStyles() when match-media activates the same breakpoint twice', () => {
-      matchMedia.activate('xs');
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
+      mediaController.activate('xs');
       expect(mediaMarshaller.updateStyles).toHaveBeenCalledTimes(1);
     });
 
     it('should set correct activated breakpoint', () => {
-      matchMedia.activate('lg');
+      mediaController.activate('lg');
       expect(mediaMarshaller.activatedAlias).toBe('lg');
 
-      matchMedia.activate('gt-md');
+      mediaController.activate('gt-md');
       expect(mediaMarshaller.activatedAlias).toBe('gt-md');
     });
 
@@ -205,7 +210,7 @@ describe('media-marshaller', () => {
       mediaMarshaller.init(fakeElement, fakeKey, builder);
       mediaMarshaller.setValue(fakeElement, fakeKey, 0, 'xs');
       triggered = false;
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expect(triggered).toBeTruthy();
     });
 
@@ -292,7 +297,7 @@ describe('media-marshaller', () => {
 
     it('will not propagate "print" events to activate', () => {
       // const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959px)';
-      matchMedia.activate('print');
+      mediaController.activate('print');
       expect(mediaMarshaller.onMediaChange).not.toHaveBeenCalledWith({mediaQuery: 'print'});
     });
 

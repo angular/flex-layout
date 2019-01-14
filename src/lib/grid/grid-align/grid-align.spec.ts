@@ -24,7 +24,7 @@ import {makeCreateTestComponent, expectNativeEl} from '../../utils/testing/helpe
 
 describe('align directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let shouldRun = true;
   let createTestComponent = (template: string) => {
@@ -33,7 +33,7 @@ describe('align directive', () => {
 
     inject([MatchMedia, StyleUtils, Platform],
       (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform) => {
-      matchMedia = _matchMedia;
+      mediaController = _matchMedia;
       styler = _styler;
 
       // TODO(CaerusKaru): Grid tests won't work with Edge 14
@@ -207,7 +207,7 @@ describe('align directive', () => {
         return;
       }
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'center',
@@ -229,7 +229,7 @@ describe('align directive', () => {
         'align-self': 'center'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'end',
@@ -253,14 +253,14 @@ describe('align directive', () => {
         'align-self': 'stretch'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'end',
         'align-self': 'stretch'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'center',
@@ -280,35 +280,35 @@ describe('align directive', () => {
         return;
       }
 
-      matchMedia.useOverlaps = true;
+      mediaController.useOverlaps = true;
 
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'start'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'start'
       }, styler);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'center'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'end'
       }, styler);
 
-      matchMedia.activate('xs');
+      mediaController.activate('xs');
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'start'
       }, styler);
 
       // Should fallback to value for 'gt-xs' or default
-      matchMedia.activate('xl', true);
+      mediaController.activate('xl', true);
       expectNativeEl(fixture).toHaveStyle({
         'justify-self': 'end'
       }, styler);

@@ -50,7 +50,7 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        imports: [FlexLayoutModule.withConfig({}, EXTRAS)]
+        imports: [FlexLayoutModule.withConfig({serverLoaded: true}, EXTRAS)]
       });
     });
     beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {
@@ -86,7 +86,12 @@ describe('break-point-provider', () => {
     beforeEach(async (() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        imports: [FlexLayoutModule.withConfig({addOrientationBps: true}, EXTRAS)]
+        imports: [
+          FlexLayoutModule.withConfig({
+            addOrientationBps: true,
+            serverLoaded: true,
+          }, EXTRAS)
+        ]
       });
     }));
     // tslint:disable-next-line:no-shadowed-variable
@@ -127,7 +132,12 @@ describe('break-point-provider', () => {
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
-        imports: [FlexLayoutModule.withConfig({disableDefaultBps: true}, EXTRAS)]
+        imports: [
+          FlexLayoutModule.withConfig({
+            disableDefaultBps: true,
+            serverLoaded: true,
+          }, EXTRAS)
+        ]
       });
     });
     beforeEach(inject([BREAKPOINTS], (bps: BreakPoint[]) => {

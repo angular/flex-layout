@@ -28,30 +28,33 @@ import {
   expectEl,
 } from '../../utils/testing/helpers';
 
-
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
-  let matchMedia: MockMatchMedia;
+  let mediaController: MockMatchMedia;
   let styler: StyleUtils;
   let platform: Platform;
   let platformId: Object;
   let componentWithTemplate = (template: string) => {
     fixture = makeCreateTestComponent(() => TestFlexComponent)(template);
 
-    inject([MatchMedia, StyleUtils, Platform, PLATFORM_ID],
-      (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform,
-       _platformId: Object) => {
-      matchMedia = _matchMedia;
+    // Can only Inject() AFTER TestBed.override(...)
+    inject(
+        [MatchMedia, StyleUtils, Platform, PLATFORM_ID],
+        (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform,
+     _platformId: Object) => {
+      mediaController = _matchMedia;
       styler = _styler;
       platform = _platform;
       platformId = _platformId;
+
     })();
+
+    return fixture;
   };
 
   beforeEach(() => {
     jasmine.addMatchers(customMatchers);
 
-    // Configure testbed to prepare services
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
@@ -63,10 +66,13 @@ describe('flex directive', () => {
   });
 
   afterEach(() => {
-    matchMedia.clearAll();
+    mediaController.clearAll();
   });
 
   describe('with static features', () => {
+    afterEach(() => {
+      mediaController.clearAll();
+    });
 
     it('should add correct styles for default `fxFlex` usage', () => {
       componentWithTemplate(`<div fxFlex></div>`);
@@ -85,7 +91,7 @@ describe('flex directive', () => {
         </div>
       `);
       fixture.detectChanges();
-      matchMedia.activate('sm', true);
+      mediaController.activate('sm', true);
       let element = queryFor(fixture, '[fxFlex]')[0];
       expectEl(element).toHaveStyle({'width': '15px'}, styler);
       expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
@@ -100,7 +106,7 @@ describe('flex directive', () => {
         </div>
       `);
       fixture.detectChanges();
-      matchMedia.activate('sm', true);
+      mediaController.activate('sm', true);
       let element = queryFor(fixture, '[fxFlex]')[0];
       expectEl(element).toHaveStyle({'width': '15px'}, styler);
       expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
@@ -185,7 +191,7 @@ describe('flex directive', () => {
           <div fxFlex="10 1 auto" [ngStyle.lt-md]="{'width.px': 15}" *ngIf="true"></div>
         </div>
       `);
-      matchMedia.activate('sm', true);
+      mediaController.activate('sm', true);
       fixture.detectChanges();
 
       let element = queryFor(fixture, '[fxFlex]')[0];
@@ -193,7 +199,7 @@ describe('flex directive', () => {
       expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
       expectEl(element).toHaveStyle({'flex': '10 1 auto'}, styler);
 
-      matchMedia.activate('md', true);
+      mediaController.activate('md', true);
       fixture.detectChanges();
 
       expectEl(element).not.toHaveStyle({'width': '15px'}, styler);
@@ -322,7 +328,6 @@ describe('flex directive', () => {
       expectEl(element).not.toHaveStyle({'min-width': '30px'}, styler);
     });
 
-
     it('should work fxLayout parents default in column mode', () => {
       componentWithTemplate(`
         <div fxLayout='column' class='test'>
@@ -358,7 +363,6 @@ describe('flex directive', () => {
         }, styler);
       }
     });
-
 
     it('should CSS stylesheet and not inject flex-direction on parent', () => {
       componentWithTemplate(`
@@ -396,12 +400,12 @@ describe('flex directive', () => {
       let element = queryFor(fixture, '[fxFlex]')[0];
       let parent = queryFor(fixture, '.test')[0];
 
-        // The parent flex-direction not found;
-        // A flex-direction should have been auto-injected to the parent...
-        // fallback to 'row' and set child width styles accordingly
-        expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
-        expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
-        expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
+      // The parent flex-direction not found;
+      // A flex-direction should have been auto-injected to the parent...
+      // fallback to 'row' and set child width styles accordingly
+      expectEl(parent).toHaveStyle({'flex-direction': 'row'}, styler);
+      expectEl(element).toHaveStyle({'min-width': '40px'}, styler);
+      expectEl(element).not.toHaveStyle({'min-height': '40px'}, styler);
 
     }));
 
@@ -531,7 +535,6 @@ describe('flex directive', () => {
       }, styler);
     });
 
-
     it('should not set max-width to 69px when fxFlex="1 0 69px"', () => {
       componentWithTemplate(`<div fxFlex='1 0 69px'></div>`);
       expectNativeEl(fixture).not.toHaveStyle({
@@ -603,10 +606,10 @@ describe('flex directive', () => {
         componentWithTemplate(template);
         fixture.detectChanges();
         expectEl(queryFor(fixture, '[fxFlex]')[0])
-          .toHaveStyle({
-            'flex': '1 1 100%',
-            'max-height': '37%',
-          }, styler);
+            .toHaveStyle({
+              'flex': '1 1 100%',
+              'max-height': '37%',
+            }, styler);
       });
 
       it('should set max-width for `fxFlex="<%val>"`', () => {
@@ -629,38 +632,40 @@ describe('flex directive', () => {
   });
 
   describe('with responsive features', () => {
+    afterEach(() => {
+      mediaController.clearAll();
+    });
 
     it('should initialize the component with the smallest lt-xxx matching breakpoint', () => {
-       componentWithTemplate(`
+      componentWithTemplate(`
          <div fxFlex="25px"  fxFlex.lt-lg='50%' fxFlex.lt-sm='33%'>
          </div>
        `);
 
-       fixture.detectChanges();
+      fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
         'flex': '1 1 25px',
         'max-width': '25px'
       }, styler);
 
+      mediaController.activate('xl', true);
+      fixture.detectChanges();
 
-       matchMedia.activate('xl', true);
-       fixture.detectChanges();
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 25px',
+        'max-width': '25px'
+      }, styler);
 
-       expectNativeEl(fixture).toHaveStyle({
-         'flex': '1 1 25px',
-         'max-width': '25px'
-       }, styler);
+      mediaController.activate('md', true);
+      fixture.detectChanges();
 
-       matchMedia.activate('md', true);
-       fixture.detectChanges();
+      expectNativeEl(fixture).toHaveStyle({
+        'flex': '1 1 100%',
+        'max-width': '50%'
+      }, styler);
 
-       expectNativeEl(fixture).toHaveStyle({
-         'flex': '1 1 100%',
-         'max-width': '50%'
-       }, styler);
-
-      matchMedia.activate('xs', true);
+      mediaController.activate('xs', true);
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
@@ -668,9 +673,7 @@ describe('flex directive', () => {
         'max-width': '33%'
       }, styler);
 
-
-     });
-
+    });
 
     it('should initialize the component with the largest gt-xxx matching breakpoint', () => {
       componentWithTemplate(`
@@ -680,7 +683,7 @@ describe('flex directive', () => {
         </div>
       `);
 
-      matchMedia.activate('xl', true);
+      mediaController.activate('xl', true);
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
@@ -688,7 +691,7 @@ describe('flex directive', () => {
         'max-width': '50%'
       }, styler);
 
-      matchMedia.activate('sm', true);
+      mediaController.activate('sm', true);
       fixture.detectChanges();
 
       expectNativeEl(fixture).toHaveStyle({
@@ -706,8 +709,8 @@ describe('flex directive', () => {
         </div>
       `);
 
-      matchMedia.useOverlaps = true;
-      matchMedia.activate('sm');
+      mediaController.useOverlaps = true;
+      mediaController.activate('sm');
       fixture.detectChanges();
 
       let nodes = queryFor(fixture, '[fxFlex]');
@@ -716,7 +719,7 @@ describe('flex directive', () => {
       expectEl(nodes[1]).toHaveStyle({'flex': '1 1 auto'}, styler);
       expectEl(nodes[2]).toHaveStyle({'flex': '1 1 auto'}, styler);
 
-      matchMedia.activate('xl');
+      mediaController.activate('xl');
       fixture.detectChanges();
 
       nodes = queryFor(fixture, '[fxFlex]');
@@ -724,7 +727,7 @@ describe('flex directive', () => {
       expectEl(nodes[1]).toHaveStyle({'flex': '1 1 100%', 'max-height': '24.4%'}, styler);
       expectEl(nodes[2]).toHaveStyle({'flex': '1 1 100%', 'max-height': '25.6%'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       fixture.detectChanges();
 
       nodes = queryFor(fixture, '[fxFlex]');
@@ -750,7 +753,7 @@ describe('flex directive', () => {
         </div>
       `);
 
-      matchMedia.activate('md');
+      mediaController.activate('md');
       fixture.detectChanges();
       let nodes = queryFor(fixture, '[fxFlex]');
 
@@ -759,7 +762,7 @@ describe('flex directive', () => {
       expectEl(nodes[1]).toHaveStyle({'flex': '1 1 auto'}, styler);
       expectEl(nodes[2]).toHaveStyle({'flex': '1 1 auto'}, styler);
 
-      matchMedia.activate('sm');
+      mediaController.activate('sm');
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
@@ -767,7 +770,7 @@ describe('flex directive', () => {
       expectEl(nodes[1]).toHaveStyle({'flex': '1 1 auto'}, styler);
       expectEl(nodes[2]).toHaveStyle({'flex': '1 1 auto'}, styler);
 
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
@@ -783,14 +786,14 @@ describe('flex directive', () => {
         </div>
       `);
 
-      matchMedia.activate('md', true);
+      mediaController.activate('md', true);
       fixture.detectChanges();
       let nodes = queryFor(fixture, '[fxFlex]');
 
       expect(nodes.length).toEqual(1);
       expectEl(nodes[0]).toHaveStyle({'flex': '1 1 auto'}, styler);
 
-      matchMedia.activate('sm', true);
+      mediaController.activate('sm', true);
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
@@ -799,7 +802,7 @@ describe('flex directive', () => {
         'max-height': '50%'
       }, styler);
 
-      matchMedia.activate('lg', true);
+      mediaController.activate('lg', true);
       fixture.detectChanges();
       nodes = queryFor(fixture, '[fxFlex]');
 
@@ -808,92 +811,103 @@ describe('flex directive', () => {
   });
 
   describe('with API directive queries', () => {
-    it('should query the ViewChild `fxLayout` directive properly', inject([StyleUtils],
-      (_styler: StyleUtils) => {
-        fixture = TestBed.createComponent(TestQueryWithFlexComponent);
-        fixture.detectChanges();
+    beforeEach(inject(
+        [MatchMedia, StyleUtils, Platform, PLATFORM_ID],
+        (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platform: Platform,
+     _platformId: Object) => {
 
-        const layout: DefaultLayoutDirective = fixture.debugElement.componentInstance.layout;
+      mediaController = _matchMedia;
+      styler = _styler;
+      platform = _platform;
+      platformId = _platformId;
 
-        expect(layout).toBeDefined();
-        expect(layout.activatedValue).toBe('');
-        expectNativeEl(fixture).toHaveStyle({
-          'flex-direction': 'row'
-        }, _styler);
+    }));
 
-        layout.activatedValue = 'column';
-        expect(layout.activatedValue).toBe('column');
-        expectNativeEl(fixture).toHaveStyle({
-          'flex-direction': 'column'
-        }, _styler);
-      })
-    );
-    it('should query the ViewChild `fxFlex` directive properly', inject([StyleUtils],
-      (_styler: StyleUtils) => {
-        fixture = TestBed.createComponent(TestQueryWithFlexComponent);
-        fixture.detectChanges();
+    afterEach(() => {
+      mediaController.clearAll();
+    });
 
-        const flex: DefaultFlexDirective = fixture.debugElement.componentInstance.flex;
+    it('should query the ViewChild `fxLayout` directive properly', () => {
+      fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+      fixture.detectChanges();
 
-        // Test for percentage value assignments
-        expect(flex).toBeDefined();
-        expect(flex.activatedValue).toBe('50%');
+      const layout: DefaultLayoutDirective = fixture.debugElement.componentInstance.layout;
 
-        let nodes = queryFor(fixture, '[fxFlex]');
-        expect(nodes.length).toEqual(1);
-        expectEl(nodes[0]).toHaveStyle({'max-width': '50%'}, _styler);
+      expect(layout).toBeDefined();
+      expect(layout.activatedValue).toBe('');
+      expectNativeEl(fixture).toHaveStyle({
+        'flex-direction': 'row'
+      }, styler);
 
-        // Test for raw value assignments that are converted to percentages
-        flex.activatedValue = '35';
-        expect(flex.activatedValue).toBe('35');
+      layout.activatedValue = 'column';
+      expect(layout.activatedValue).toBe('column');
+      expectNativeEl(fixture).toHaveStyle({
+        'flex-direction': 'column'
+      }, styler);
+    });
 
-        nodes = queryFor(fixture, '[fxFlex]');
-        expect(nodes.length).toEqual(1);
-        expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, _styler);
+    it('should query the ViewChild `fxFlex` directive properly', () => {
+      fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+      fixture.detectChanges();
 
-        // Test for pixel value assignments
-        flex.activatedValue = '27.5px';
-        expect(flex.activatedValue).toBe('27.5px');
+      const flex: DefaultFlexDirective = fixture.debugElement.componentInstance.flex;
 
-        nodes = queryFor(fixture, '[fxFlex]');
-        expect(nodes.length).toEqual(1);
-        expectEl(nodes[0]).toHaveStyle({'max-width': '27.5px'}, _styler);
-      })
-    );
-    it('should restore `fxFlex` value after breakpoint activations',
-      inject([MatchMedia, StyleUtils],
-        (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
-          fixture = TestBed.createComponent(TestQueryWithFlexComponent);
-          fixture.detectChanges();
+      // Test for percentage value assignments
+      expect(flex).toBeDefined();
+      expect(flex.activatedValue).toBe('50%');
 
-          const flex: DefaultFlexDirective = fixture.debugElement.componentInstance.flex;
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(1);
+      expectEl(nodes[0]).toHaveStyle({'max-width': '50%'}, styler);
 
-          // Test for raw value assignments that are converted to percentages
-          expect(flex).toBeDefined();
-          flex.activatedValue = '35';
-          expect(flex.activatedValue).toBe('35');
+      // Test for raw value assignments that are converted to percentages
+      flex.activatedValue = '35';
+      expect(flex.activatedValue).toBe('35');
 
-          let nodes = queryFor(fixture, '[fxFlex]');
-          expect(nodes.length).toEqual(1);
-          expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, _styler);
+      nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(1);
+      expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, styler);
 
-          _matchMedia.activate('sm');
-          fixture.detectChanges();
+      // Test for pixel value assignments
+      flex.activatedValue = '27.5px';
+      expect(flex.activatedValue).toBe('27.5px');
 
-          // Test for breakpoint value changes
-          expect(flex.activatedValue).toBe('71%');
-          nodes = queryFor(fixture, '[fxFlex]');
-          expectEl(nodes[0]).toHaveStyle({'max-width': '71%'}, _styler);
+      nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(1);
+      expectEl(nodes[0]).toHaveStyle({'max-width': '27.5px'}, styler);
+    });
 
-          _matchMedia.activate('lg');
-          fixture.detectChanges();
+    it('should restore `fxFlex` value after breakpoint activations', () => {
+      fixture = TestBed.createComponent(TestQueryWithFlexComponent);
+      fixture.detectChanges();
 
-          // Confirm activatedValue was restored properly when `sm` deactivated
-          expect(flex.activatedValue).toBe('35');
-          nodes = queryFor(fixture, '[fxFlex]');
-          expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, _styler);
-        })
-    );
+      const flex: DefaultFlexDirective = fixture.debugElement.componentInstance.flex;
+
+      // Test for raw value assignments that are converted to percentages
+      expect(flex).toBeDefined();
+      flex.activatedValue = '35';
+      expect(flex.activatedValue).toBe('35');
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(1);
+      expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, styler);
+
+      mediaController.activate('sm');
+      fixture.detectChanges();
+
+      // Test for breakpoint value changes
+      expect(flex.activatedValue).toBe('71%');
+      nodes = queryFor(fixture, '[fxFlex]');
+      expectEl(nodes[0]).toHaveStyle({'max-width': '71%'}, styler);
+
+      mediaController.activate('lg');
+      fixture.detectChanges();
+
+      // Confirm activatedValue was restored properly when `sm` deactivated
+      expect(flex.activatedValue).toBe('35');
+      nodes = queryFor(fixture, '[fxFlex]');
+      expectEl(nodes[0]).toHaveStyle({'max-width': '35%'}, styler);
+    });
   });
 
   describe('with flex token enabled', () => {
@@ -910,7 +924,7 @@ describe('flex directive', () => {
     });
 
     afterEach(() => {
-      matchMedia.clearAll();
+      mediaController.clearAll();
     });
 
     it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
@@ -951,6 +965,10 @@ describe('flex directive', () => {
       });
     });
 
+    afterEach(() => {
+      mediaController.clearAll();
+    });
+
     it('should work with non-direct-parent fxLayouts', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
@@ -975,6 +993,7 @@ describe('flex directive', () => {
 
   describe('with column basis zero disabled', () => {
     let styleBuilder: FlexStyleBuilder;
+
     beforeEach(() => {
       // Configure testbed to prepare services
       TestBed.configureTestingModule({
@@ -988,6 +1007,10 @@ describe('flex directive', () => {
         declarations: [TestFlexComponent, TestQueryWithFlexComponent],
         providers: [MockMatchMediaProvider]
       });
+    });
+
+    afterEach(() => {
+      mediaController.clearAll();
     });
 
     it('should set flex basis to auto', () => {
@@ -1028,6 +1051,10 @@ describe('flex directive', () => {
       });
     });
 
+    afterEach(() => {
+      mediaController.clearAll();
+    });
+
     it('should set flex basis to input', fakeAsync(() => {
       componentWithTemplate(`
         <div fxLayout='column'>
@@ -1045,11 +1072,11 @@ describe('flex directive', () => {
 @Injectable()
 export class MockFlexStyleBuilder extends StyleBuilder {
   shouldCache = false;
+
   buildStyles(_input: string) {
     return {'flex': '1 1 30%'};
   }
 }
-
 
 // *****************************************************************
 // Template Component
