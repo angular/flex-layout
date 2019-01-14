@@ -23,7 +23,8 @@ export class MediaChange {
   constructor(public matches = false,
               public mediaQuery = 'all',
               public mqAlias = '',
-              public suffix = '') {
+              public suffix = '',
+              public priority = 0) {
   }
 
   /** Create an exact copy of the MediaChange */

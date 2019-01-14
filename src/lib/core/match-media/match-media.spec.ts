@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {TestBed, inject} from '@angular/core/testing';
+import {BreakPoint} from '@angular/flex-layout/core';
+import {Subscription} from 'rxjs';
 
 import {MediaChange} from '../media-change';
 import {MockMatchMedia, MockMatchMediaProvider} from './mock/mock-match-media';
@@ -16,7 +18,6 @@ import {MediaObserver} from '../media-observer/media-observer';
 describe('match-media', () => {
   let breakPoints: BreakPointRegistry;
   let mediaController: MockMatchMedia;
-  let mediaObserver: MediaObserver;
 
   beforeEach(() => {
     // Configure testbed to prepare services
@@ -31,11 +32,11 @@ describe('match-media', () => {
        _breakPoints: BreakPointRegistry) => {
         breakPoints = _breakPoints;
         mediaController = _matchMedia;      // inject only to manually activate mediaQuery ranges
-        mediaObserver = _mediaObserver;
       }));
 
   afterEach(() => {
-     mediaController.clearAll();
+    mediaController.clearAll();
+    mediaController.useOverlaps = false;
   });
 
   it('can observe the initial, default activation for mediaQuery == "all". ', () => {
@@ -101,24 +102,27 @@ describe('match-media', () => {
   });
 
   describe('match-media-observable', () => {
+    const watchMedia = (alias: string, observer: (value: MediaChange) => void): Subscription => {
+      return mediaController
+          .observe(alias ? [alias] : [])
+          .subscribe(observer);
+    };
 
     it('can observe an existing activation', () => {
       let current: MediaChange = new MediaChange();
       let bp = breakPoints.findByAlias('md')!;
-      mediaController.activate(bp.mediaQuery);
-      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-        current = change;
-      });
+      const onChange = (change: MediaChange) => current = change;
+      const subscription = watchMedia('md', onChange);
 
+      mediaController.activate(bp.mediaQuery);
       expect(current.mediaQuery).toEqual(bp.mediaQuery);
       subscription.unsubscribe();
     });
 
     it('can observe the initial, default activation for mediaQuery == "all". ', () => {
       let current: MediaChange = new MediaChange();
-      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-        current = change;
-      });
+      const onChange = (change: MediaChange) => current = change;
+      const subscription = watchMedia('', onChange);
 
       expect(current.mediaQuery).toEqual('all');
       subscription.unsubscribe();
@@ -126,13 +130,13 @@ describe('match-media', () => {
 
     it('can observe custom mediaQuery ranges', () => {
       let current: MediaChange = new MediaChange();
-      let customQuery = 'screen and (min-width: 610px) and (max-width: 620px)';
-      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-        current = change;
-      });
+      const customQuery = 'screen and (min-width: 610px) and (max-width: 620px)';
+      const onChange = (change: MediaChange) => current = change;
+      const subscription = watchMedia(customQuery, onChange);
 
       mediaController.useOverlaps = true;
-      let activated = mediaController.activate(customQuery);
+      const activated = mediaController.activate(customQuery);
+
       expect(activated).toEqual(true);
       expect(current.mediaQuery).toEqual(customQuery);
 
@@ -141,46 +145,47 @@ describe('match-media', () => {
 
     it('can observe registered breakpoint activations', () => {
       let current: MediaChange = new MediaChange();
+      const onChange = (change: MediaChange) => current = change;
+      const subscription = watchMedia('md', onChange);
+
       let bp = breakPoints.findByAlias('md') !;
-      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
-        current = change;
-      });
-
       let activated = mediaController.activate(bp.mediaQuery);
-      expect(activated).toEqual(true);
 
+      expect(activated).toEqual(true);
       expect(current.mediaQuery).toEqual(bp.mediaQuery);
 
       subscription.unsubscribe();
     });
 
     /**
-     * Only the MediaObserver ignores de-activations;
      * MediaMonitor and MatchMedia report both activations and de-activations!
+     * Only the MediaObserver ignores de-activations;
      */
-    it('ignores mediaQuery de-activations', () => {
-      let activationCount = 0;
-      let deactivationCount = 0;
-
-      mediaObserver.filterOverlaps = false;
-      let subscription = mediaObserver.media$.subscribe((change: MediaChange) => {
+    it('reports mediaQuery de-activations', () => {
+      const lookupMediaQuery = (alias: string) => {
+        const bp: BreakPoint = breakPoints.findByAlias(alias) as BreakPoint;
+        return bp.mediaQuery;
+      };
+      let activationCount = 0, deactivationCount = 0;
+      let subscription = watchMedia('', (change: MediaChange) => {
         if (change.matches) {
-          ++activationCount;
+          activationCount += 1;
         } else {
-          ++deactivationCount;
+          deactivationCount += 1;
         }
       });
 
-      mediaController.activate(breakPoints.findByAlias('md')!.mediaQuery);
-      mediaController.activate(breakPoints.findByAlias('gt-md')!.mediaQuery);
-      mediaController.activate(breakPoints.findByAlias('lg')!.mediaQuery);
+      mediaController.activate(lookupMediaQuery('md'));
+      mediaController.activate(lookupMediaQuery('gt-md'));
+      mediaController.activate(lookupMediaQuery('lg'));
 
       // 'all' mediaQuery is already active; total count should be (3)
       expect(activationCount).toEqual(4);
-      expect(deactivationCount).toEqual(0);
+      expect(deactivationCount).toEqual(2);
 
       subscription.unsubscribe();
     });
 
   });
 });
+

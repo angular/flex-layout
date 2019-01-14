@@ -7,15 +7,18 @@
  */
 import {MediaChange} from './media-change';
 import {BreakPoint} from './breakpoints/break-point';
-import {extendObject} from '../utils/object-extend';
 
 /**
  * For the specified MediaChange, make sure it contains the breakpoint alias
  * and suffix (if available).
  */
 export function mergeAlias(dest: MediaChange, source: BreakPoint | null): MediaChange {
-  return extendObject(dest || {}, source ? {
-        mqAlias: source.alias,
-        suffix: source.suffix
-      } : {});
+  dest = dest ? dest.clone() : new MediaChange();
+  if (source) {
+    dest.mqAlias = source.alias;
+    dest.mediaQuery = source.mediaQuery;
+    dest.suffix = source.suffix as string;
+    dest.priority = source.priority as number;
+  }
+  return dest;
 }
