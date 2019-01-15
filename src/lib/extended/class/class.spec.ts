@@ -87,6 +87,23 @@ describe('class directive', () => {
       expectNativeEl(fixture).not.toHaveCssClass('class2');
     });
 
+  it('should use responsive ngClass string and remove without fallback', () => {
+    createTestComponent(`<div [ngClass.xs]="'what class2'"></div>`);
+
+    expectNativeEl(fixture).not.toHaveCssClass('what');
+    expectNativeEl(fixture).not.toHaveCssClass('class2');
+
+    // the CSS classes listed in the string (space delimited) are added,
+    // See https://angular.io/api/common/NgClass
+    mediaController.activate('xs');
+    expectNativeEl(fixture).toHaveCssClass('what');
+    expectNativeEl(fixture).toHaveCssClass('class2');
+
+    mediaController.activate('lg');
+    expectNativeEl(fixture).not.toHaveCssClass('what');
+    expectNativeEl(fixture).not.toHaveCssClass('class2');
+  });
+
   it('should override base `class` values with responsive ngClass map', () => {
       createTestComponent(`
         <div class="class0" [ngClass.xs]="{'what':true, 'class2':true, 'class0':false}"></div>
