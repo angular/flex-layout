@@ -21,6 +21,7 @@ export {
   MockMatchMediaProvider as ɵMockMatchMediaProvider,
 } from './match-media/index';
 export * from './media-observer/index';
+export * from './media-trigger/index';
 export * from './utils/index';
 
 export * from './style-utils/style-utils';
