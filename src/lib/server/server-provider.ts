@@ -15,7 +15,9 @@ import {
   BreakPoint,
   ɵMatchMedia as MatchMedia,
   StylesheetMap,
-  sortAscendingPriority
+  sortAscendingPriority,
+  LayoutConfigOptions,
+  LAYOUT_CONFIG,
 } from '@angular/flex-layout/core';
 
 import {ServerMatchMedia} from './server-match-media';
@@ -27,10 +29,12 @@ import {ServerMatchMedia} from './server-match-media';
  *        element
  * @param mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
+ * @param layoutConfig the library config, and specifically the breakpoints to activate
  */
 export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
-                                               mediaController: MatchMedia,
-                                               breakpoints: BreakPoint[]) {
+                                               mediaController: ServerMatchMedia,
+                                               breakpoints: BreakPoint[],
+                                               layoutConfig: LayoutConfigOptions) {
   // Store the custom classes in the following map, that way only
   // one class gets allocated per HTMLElement, and each class can
   // be referenced in the static media queries
@@ -51,6 +55,13 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
     (mediaController as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
   });
 
+  const serverBps = layoutConfig.serverBreakpoints;
+  if (serverBps) {
+    breakpoints
+      .filter(bp => serverBps.find(serverBp => serverBp === bp.alias))
+      .forEach(mediaController.activateBreakpoint);
+  }
+
   return styleText;
 }
 
@@ -59,14 +70,16 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
  * components and attach it to the head of the DOM
  */
 export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
-                                            matchMedia: MatchMedia,
+                                            matchMedia: ServerMatchMedia,
                                             _document: Document,
-                                            breakpoints: BreakPoint[]) {
+                                            breakpoints: BreakPoint[],
+                                            layoutConfig: LayoutConfigOptions) {
   return () => {
     // This is the style tag that gets inserted into the head of the DOM,
     // populated with the manual media queries
     const styleTag = _document.createElement('style');
-    const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints);
+    const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints,
+      layoutConfig);
     styleTag.classList.add(`${CLASS_NAME}ssr`);
     styleTag.textContent = styleText;
     _document.head!.appendChild(styleTag);
@@ -85,6 +98,7 @@ export const SERVER_PROVIDERS = [
       MatchMedia,
       DOCUMENT,
       BREAKPOINTS,
+      LAYOUT_CONFIG,
     ],
     multi: true
   },
