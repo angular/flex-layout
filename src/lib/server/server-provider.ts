@@ -47,12 +47,12 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
 
   [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
     serverSheet.clearStyles();
-    (mediaController as ServerMatchMedia).activateBreakpoint(bp);
+    mediaController.activateBreakpoint(bp);
     const stylesheet = new Map(serverSheet.stylesheet);
     if (stylesheet.size > 0) {
       styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
     }
-    (mediaController as ServerMatchMedia).deactivateBreakpoint(breakpoints[i]);
+    mediaController.deactivateBreakpoint(breakpoints[i]);
   });
 
   const serverBps = layoutConfig.serverBreakpoints;
@@ -70,7 +70,7 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
  * components and attach it to the head of the DOM
  */
 export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
-                                            matchMedia: ServerMatchMedia,
+                                            mediaController: ServerMatchMedia,
                                             _document: Document,
                                             breakpoints: BreakPoint[],
                                             layoutConfig: LayoutConfigOptions) {
@@ -78,7 +78,7 @@ export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
     // This is the style tag that gets inserted into the head of the DOM,
     // populated with the manual media queries
     const styleTag = _document.createElement('style');
-    const styleText = generateStaticFlexLayoutStyles(serverSheet, matchMedia, breakpoints,
+    const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints,
       layoutConfig);
     styleTag.classList.add(`${CLASS_NAME}ssr`);
     styleTag.textContent = styleText;
@@ -131,7 +131,8 @@ export type ClassMap = Map<HTMLElement, string>;
 function generateCss(stylesheet: StyleSheet, mediaQuery: string, classMap: ClassMap) {
   let css = '';
   stylesheet.forEach((styles, el) => {
-    let keyVals = '', className = getClassName(el, classMap);
+    let keyVals = '';
+    let className = getClassName(el, classMap);
 
     styles.forEach((v, k) => {
       keyVals += v ? format(`${k}:${v};`) : '';
@@ -152,13 +153,13 @@ function generateCss(stylesheet: StyleSheet, mediaQuery: string, classMap: Class
 function format(...list: string[]): string {
   let result = '';
   list.forEach((css, i) => {
-    result += IS_DEBUG_MODE ? formatSegment(css, i != 0) : css;
+    result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
   });
   return result;
 }
 
 function formatSegment(css: string, asPrefix: boolean = true): string {
-  return asPrefix ? '\n' + css : css + '\n';
+  return asPrefix ? `\n${css}` : `${css}\n`;
 }
 
 /**
@@ -176,4 +177,3 @@ function getClassName(element: HTMLElement, classMap: Map<HTMLElement, string>) 
 
   return className;
 }
-
