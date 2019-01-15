@@ -10,10 +10,10 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, TestBed, fakeAsync, flush, inject} from '@angular/core/testing';
 import {MatButtonModule} from '@angular/material/button';
 import {
-  MatchMedia,
+  ɵMatchMedia as MatchMedia,
   CoreModule,
-  MockMatchMedia,
-  MockMatchMediaProvider,
+  ɵMockMatchMedia as MockMatchMedia,
+  ɵMockMatchMediaProvider as MockMatchMediaProvider,
 } from '@angular/flex-layout/core';
 
 import {customMatchers, expect} from '../../utils/testing/custom-matchers';

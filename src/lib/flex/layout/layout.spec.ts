@@ -9,9 +9,9 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  MatchMedia,
-  MockMatchMedia,
-  MockMatchMediaProvider,
+  ɵMatchMedia as MatchMedia,
+  ɵMockMatchMedia as MockMatchMedia,
+  ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,

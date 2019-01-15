@@ -7,9 +7,7 @@
  */
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
-
-import {BreakPoint} from '../breakpoints/break-point';
-import {MatchMedia} from './match-media';
+import {BreakPoint, ɵMatchMedia as MatchMedia} from '@angular/flex-layout/core';
 
 /**
  * Special server-only class to simulate a MediaQueryList and
