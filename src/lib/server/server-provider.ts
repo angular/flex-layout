@@ -13,12 +13,12 @@ import {
   CLASS_NAME,
   SERVER_TOKEN,
   BreakPoint,
-  MatchMedia,
+  ɵMatchMedia as MatchMedia,
   StylesheetMap,
-  ServerMatchMedia,
   sortAscendingPriority
 } from '@angular/flex-layout/core';
 
+import {ServerMatchMedia} from './server-match-media';
 
 /**
  * Activate all of the registered breakpoints in sequence, and then

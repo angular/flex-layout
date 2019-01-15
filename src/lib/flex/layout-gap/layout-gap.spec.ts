@@ -10,9 +10,9 @@ import {CommonModule, isPlatformServer} from '@angular/common';
 import {TestBed, ComponentFixture, inject, async} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
 import {
-  MatchMedia,
-  MockMatchMedia,
-  MockMatchMediaProvider,
+  ɵMatchMedia as MatchMedia,
+  ɵMockMatchMedia as MockMatchMedia,
+  ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,

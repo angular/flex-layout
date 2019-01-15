@@ -8,4 +8,3 @@
 
 export * from './match-media';
 export * from './mock/mock-match-media';
-export * from './server-match-media';

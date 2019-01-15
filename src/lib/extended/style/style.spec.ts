@@ -9,10 +9,10 @@ import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
-  MatchMedia,
+  ɵMatchMedia as MatchMedia,
   CoreModule,
-  MockMatchMedia,
-  MockMatchMediaProvider,
+  ɵMockMatchMedia as MockMatchMedia,
+  ɵMockMatchMediaProvider as MockMatchMediaProvider,
   StyleUtils,
 } from '@angular/flex-layout/core';
 import {DefaultLayoutDirective} from '@angular/flex-layout/flex';
