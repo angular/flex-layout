@@ -33,6 +33,19 @@ export class MatchMedia {
   }
 
   /**
+   * Publish list of all current activations
+   */
+  get activations(): string[] {
+    const results: string[] = [];
+    this._registry.forEach((mql: MediaQueryList, key: string) => {
+      if (mql.matches) {
+        results.push(key);
+      }
+    });
+    return results;
+  }
+
+  /**
    * For the specified mediaQuery?
    */
   isActive(mediaQuery: string): boolean {
@@ -60,7 +73,7 @@ export class MatchMedia {
    * subscribers of notifications.
    */
   observe(mqList?: string[], filterOthers = false): Observable<MediaChange> {
-    if (mqList) {
+    if (mqList && mqList.length) {
       const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
           filter((change: MediaChange) => {
             return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
