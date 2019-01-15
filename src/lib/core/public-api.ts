@@ -17,6 +17,7 @@ export * from './base/index';
 export * from './breakpoints/index';
 export * from './match-media/index';
 export * from './media-observer/index';
+export * from './utils/index';
 
 export * from './style-utils/style-utils';
 export * from './style-builder/style-builder';
