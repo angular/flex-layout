@@ -21,11 +21,9 @@ import {MediaChange} from '../media-change';
  */
 @Injectable({providedIn: 'root'})
 export class MatchMedia {
-  /** Initialize with 'all' so all non-responsive APIs trigger style updates */
-  protected _source = new BehaviorSubject<MediaChange>(new MediaChange(true));
-
-  protected _registry = new Map<string, MediaQueryList>();
-  protected _observable$ = this._source.asObservable();
+  /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
+  readonly source = new BehaviorSubject<MediaChange>(new MediaChange(true));
+  registry = new Map<string, MediaQueryList>();
 
   constructor(protected _zone: NgZone,
               @Inject(PLATFORM_ID) protected _platformId: Object,
@@ -37,7 +35,7 @@ export class MatchMedia {
    */
   get activations(): string[] {
     const results: string[] = [];
-    this._registry.forEach((mql: MediaQueryList, key: string) => {
+    this.registry.forEach((mql: MediaQueryList, key: string) => {
       if (mql.matches) {
         results.push(key);
       }
@@ -49,7 +47,7 @@ export class MatchMedia {
    * For the specified mediaQuery?
    */
   isActive(mediaQuery: string): boolean {
-    const mql = this._registry.get(mediaQuery);
+    const mql = this.registry.get(mediaQuery);
     return !!mql ? mql.matches : false;
   }
 
@@ -86,7 +84,7 @@ export class MatchMedia {
           matches.forEach((e: MediaChange) => {
             observer.next(e);
           });
-          this._source.next(lastChange); // last match is cached
+          this.source.next(lastChange); // last match is cached
         }
         observer.complete();
       });
@@ -108,14 +106,14 @@ export class MatchMedia {
 
     list.forEach((query: string) => {
       const onMQLEvent = (e: MediaQueryListEvent) => {
-        this._zone.run(() => this._source.next(new MediaChange(e.matches, query)));
+        this._zone.run(() => this.source.next(new MediaChange(e.matches, query)));
       };
 
-      let mql = this._registry.get(query);
+      let mql = this.registry.get(query);
       if (!mql) {
         mql = this.buildMQL(query);
         mql.addListener(onMQLEvent);
-        this._registry.set(query, mql);
+        this.registry.set(query, mql);
       }
 
       if (mql.matches) {
@@ -133,6 +131,8 @@ export class MatchMedia {
   protected buildMQL(query: string): MediaQueryList {
     return constructMql(query, isPlatformBrowser(this._platformId));
   }
+
+  protected _observable$ = this.source.asObservable();
 }
 
 /**

@@ -19,16 +19,9 @@ import {BreakPointRegistry} from '../../breakpoints/break-point-registry';
 @Injectable()
 export class MockMatchMedia extends MatchMedia {
 
-  /** Special flag used to test BreakPoint registrations with MatchMedia */
-  autoRegisterQueries = true;
 
-  /**
-   * Allow fallback to overlapping mediaQueries to determine
-   * activatedInput(s).
-   */
-  useOverlaps = false;
-
-  protected _registry: Map<string, MockMediaQueryList> = new Map();
+  autoRegisterQueries = true;   // Used for testing BreakPoint registrations
+  useOverlaps = false;          // Allow fallback to overlapping mediaQueries
 
   constructor(_zone: NgZone,
               @Inject(PLATFORM_ID) _platformId: Object,
@@ -39,10 +32,10 @@ export class MockMatchMedia extends MatchMedia {
 
   /** Easy method to clear all listeners for all mediaQueries */
   clearAll() {
-    this._registry.forEach((mql: MockMediaQueryList) => {
-      mql.destroy();
+    this.registry.forEach((mql: MediaQueryList) => {
+      (mql as MockMediaQueryList).destroy();
     });
-    this._registry.clear();
+    this.registry.clear();
     this.useOverlaps = false;
   }
 
@@ -127,26 +120,25 @@ export class MockMatchMedia extends MatchMedia {
    *
    */
   private _activateByQuery(mediaQuery: string) {
-    const mql = this._registry.get(mediaQuery);
-    const alreadyAdded = this._actives
-        .reduce((found, it) => (found || (mql ? (it.media === mql.media) : false)), false);
+    const mql: MockMediaQueryList = this.registry.get(mediaQuery) as MockMediaQueryList;
 
-    if (mql && !alreadyAdded) {
-      this._actives.push(mql.activate());
+    if (mql && !this.isActive(mediaQuery)) {
+      this.registry.set(mediaQuery, mql.activate());
     }
     return this.hasActivated;
   }
 
   /** Deactivate all current MQLs and reset the buffer */
   private _deactivateAll() {
-    this._actives.forEach(it => it.deactivate());
-    this._actives = [];
+    this.registry.forEach((it: MediaQueryList) => {
+      (it as MockMediaQueryList).deactivate();
+    });
     return this;
   }
 
   /** Insure the mediaQuery is registered with MatchMedia */
   private _registerMediaQuery(mediaQuery: string) {
-    if (!this._registry.has(mediaQuery) && this.autoRegisterQueries) {
+    if (!this.registry.has(mediaQuery) && this.autoRegisterQueries) {
       this.registerQuery(mediaQuery);
     }
   }
@@ -160,10 +152,9 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   protected get hasActivated() {
-    return this._actives.length > 0;
+    return this.activations.length > 0;
   }
 
-  private _actives: MockMediaQueryList[] = [];
 }
 
 /**

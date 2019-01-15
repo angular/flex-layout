@@ -111,8 +111,6 @@ export class ServerMediaQueryList implements MediaQueryList {
  */
 @Injectable()
 export class ServerMatchMedia extends MatchMedia {
-  protected _registry: Map<string, ServerMediaQueryList> = new Map();
-
   constructor(protected _zone: NgZone,
               @Inject(PLATFORM_ID) protected _platformId: Object,
               @Inject(DOCUMENT) protected _document: any) {
@@ -121,7 +119,7 @@ export class ServerMatchMedia extends MatchMedia {
 
   /** Activate the specified breakpoint if we're on the server, no-op otherwise */
   activateBreakpoint(bp: BreakPoint) {
-    const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+    const lookupBreakpoint = this.registry.get(bp.mediaQuery) as ServerMediaQueryList;
     if (lookupBreakpoint) {
       lookupBreakpoint.activate();
     }
@@ -129,7 +127,7 @@ export class ServerMatchMedia extends MatchMedia {
 
   /** Deactivate the specified breakpoint if we're on the server, no-op otherwise */
   deactivateBreakpoint(bp: BreakPoint) {
-    const lookupBreakpoint = this._registry.get(bp.mediaQuery);
+    const lookupBreakpoint = this.registry.get(bp.mediaQuery) as ServerMediaQueryList;
     if (lookupBreakpoint) {
       lookupBreakpoint.deactivate();
     }
