@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {TestBed, inject} from '@angular/core/testing';
-import {sortDescendingPriority} from '../breakpoint-tools';
+import {sortDescendingPriority} from '../../utils/sort';
 
 import {BreakPoint} from '../break-point';
 import {BREAKPOINTS} from '../break-points-token';

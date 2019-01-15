@@ -11,7 +11,7 @@ import {merge, Observable, Subject, Subscription} from 'rxjs';
 import {filter, tap} from 'rxjs/operators';
 
 import {BreakPoint} from '../breakpoints/break-point';
-import {sortDescendingPriority} from '../breakpoints/breakpoint-tools';
+import {sortDescendingPriority} from '../utils/sort';
 import {BreakPointRegistry} from '../breakpoints/break-point-registry';
 import {MatchMedia} from '../match-media/match-media';
 import {MediaChange} from '../media-change';

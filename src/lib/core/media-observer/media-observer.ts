@@ -14,6 +14,7 @@ import {MediaChange} from '../media-change';
 import {MatchMedia} from '../match-media/match-media';
 import {PrintHook} from '../media-marshaller/print-hook';
 import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
+import {sortDescendingPriority} from '../utils/sort';
 
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -64,12 +65,7 @@ export class MediaObserver {
    * @breaking-change 7.0.0-beta.24
    * @deletion-target v7.0.0-beta.25
    */
-  get media$(): Observable<MediaChange> {
-    return this._media$.pipe(
-      filter((changes: MediaChange[]) => changes.length > 0),
-      map((changes: MediaChange[]) => changes[0])
-    );
-  }
+  readonly media$: Observable<MediaChange>;
 
   /** Filter MediaChange notifications for overlapping breakpoints */
   filterOverlaps = false;
@@ -78,6 +74,10 @@ export class MediaObserver {
               protected matchMedia: MatchMedia,
               protected hook: PrintHook) {
     this._media$ = this.watchActivations();
+    this.media$ = this._media$.pipe(
+      filter((changes: MediaChange[]) => changes.length > 0),
+      map((changes: MediaChange[]) => changes[0])
+    );
   }
 
 
@@ -176,10 +176,10 @@ export class MediaObserver {
         .map(query => new MediaChange(true, query))
         .map(replaceWithPrintAlias)
         .map(mergeMQAlias)
-        .sort(sortChangesByPriority);
+        .sort(sortDescendingPriority);
   }
 
-  private _media$: Observable<MediaChange[]>;
+  private readonly _media$: Observable<MediaChange[]>;
 }
 
 /**
@@ -190,9 +190,3 @@ function toMediaQuery(query: string, locator: BreakPointRegistry) {
   return bp ? bp.mediaQuery : query;
 }
 
-/** HOF to sort the breakpoints by priority */
-export function sortChangesByPriority(a: MediaChange, b: MediaChange): number {
-  const priorityA = a ? a.priority || 0 : 0;
-  const priorityB = b ? b.priority || 0 : 0;
-  return priorityB - priorityA;
-}

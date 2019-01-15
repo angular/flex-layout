@@ -12,7 +12,7 @@ import {MediaChange} from '../media-change';
 import {BreakPoint} from '../breakpoints/break-point';
 import {LAYOUT_CONFIG, LayoutConfigOptions} from '../tokens/library-config';
 import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
-import {sortDescendingPriority} from '../breakpoints/breakpoint-tools';
+import {sortDescendingPriority} from '../utils/sort';
 
 /**
  * Interface to apply PrintHook to call anonymous `target.updateStyles()`
