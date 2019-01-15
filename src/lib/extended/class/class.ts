@@ -49,6 +49,7 @@ export class ClassDirective extends BaseDirective2 implements DoCheck {
       );
     }
     this.init();
+    this.setValue('', '');
   }
 
   protected updateWithValue(value: any) {
