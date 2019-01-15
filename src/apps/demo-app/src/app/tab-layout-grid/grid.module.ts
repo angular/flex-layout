@@ -7,7 +7,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {DocsGridComponent} from './docs-grid/docs-grid.component';
 import {GridLayoutComponent} from './grid-layout/grid-layout.component';
-import {RoutingModule} from './routing.module';
+import {GridRoutingModule} from './grid-routing.module';
 import {GridNestedComponent} from './grid-nested/grid-nested.component';
 import {GridMinmaxComponent} from './grid-minmax/grid-minmax.component';
 import {GridPositionComponent} from './grid-position/grid-position.component';
@@ -21,7 +21,7 @@ import {GridOverlayComponent} from './grid-overlay/grid-overlay.component';
     MatCardModule,
     MatRadioModule,
     FlexLayoutModule,
-    RoutingModule,
+    GridRoutingModule,
   ],
   declarations: [
     DocsGridComponent,

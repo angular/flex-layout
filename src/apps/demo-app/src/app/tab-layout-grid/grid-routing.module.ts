@@ -14,4 +14,4 @@ import {DocsGridComponent} from './docs-grid/docs-grid.component';
   ],
   exports: [RouterModule]
 })
-export class RoutingModule {}
+export class GridRoutingModule {}

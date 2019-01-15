@@ -1,6 +1,7 @@
 :host {
   display: block;
   position: absolute;
+  pointer-events: none;
 
   width: 100vw;
   min-height: 100vh;

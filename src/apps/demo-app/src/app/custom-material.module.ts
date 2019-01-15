@@ -24,4 +24,4 @@ import {ObserversModule} from '@angular/cdk/observers';
     PlatformModule
   ]
 })
-export class DemoMaterialModule {}
+export class CustomMaterialModule {}

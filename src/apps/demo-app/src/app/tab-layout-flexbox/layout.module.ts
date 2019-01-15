@@ -15,7 +15,7 @@ import {
 } from './flex-attribute-values/flex-attribute-values.component';
 import {FlexOffsetValuesComponent} from './flex-offset-values/flex-offset-values.component';
 import {FlexAlignSelfComponent} from './flex-align-self/flex-align-self.component';
-import {RoutingModule} from './routing.module';
+import {LayoutRoutingModule} from './layout-routing.module';
 import {
   LayoutWithDirectionComponent
 } from './layout-with-direction/layout-with-direction.component';
@@ -28,7 +28,7 @@ import {LayoutGapComponent} from './layout-gap/layout-gap.component';
     MatCardModule,
     MatRadioModule,
     FlexLayoutModule,
-    RoutingModule
+    LayoutRoutingModule
   ],
   declarations: [
     DocsLayoutComponent,

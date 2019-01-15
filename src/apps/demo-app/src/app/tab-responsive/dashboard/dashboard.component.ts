@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 
 @Component({
-  selector: 'demo-docs-responsive',
+  selector: 'dashboard',
   template: `
+    <media-trigger-bar></media-trigger-bar>
     <demo-responsive-layout-direction  class='small-demo' fxHide.print>
     </demo-responsive-layout-direction>
     <demo-responsive-row-column class='small-demo'>  </demo-responsive-row-column>
@@ -12,4 +13,4 @@ import {Component} from '@angular/core';
     <demo-responsive-style  class='small-demo'>  </demo-responsive-style>
   `
 })
-export class DocsResponsiveComponent {}
+export class DashboardComponent {}

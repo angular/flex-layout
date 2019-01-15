@@ -14,4 +14,4 @@ import {StackOverflowComponent} from './stack-overflow/stack-overflow.component'
   ],
   exports: [RouterModule]
 })
-export class RoutingModule {}
+export class StackOverflowRoutingModule {}

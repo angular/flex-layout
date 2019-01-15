@@ -5,7 +5,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
-import {DocsResponsiveComponent} from './docs-responsive/docs-responsive.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 import {
   ResponsiveLayoutDirectionComponent
 } from './responsive-layout-direction/responsive-layout-direction.component';
@@ -20,8 +20,8 @@ import {
 } from './responsive-flex-order/responsive-flex-order.component';
 import {ResponsiveShowHideComponent} from './responsive-show-hide/responsive-show-hide.component';
 import {ResponsiveStyleComponent} from './responsive-style/responsive-style.component';
-import {RoutingModule} from './routing.module';
-import {MediaQueryStatusModule} from '../media-query-status/media-query-status.module';
+import {ResponsiveRoutingModule} from './responsive-routing.module';
+import {DemoUtilsModule} from '../utils/demo-utils.module';
 
 @NgModule({
   imports: [
@@ -30,11 +30,11 @@ import {MediaQueryStatusModule} from '../media-query-status/media-query-status.m
     FlexLayoutModule,
     MatCardModule,
     MatCheckboxModule,
-    RoutingModule,
-    MediaQueryStatusModule,
+    ResponsiveRoutingModule,
+    DemoUtilsModule,
   ],
   declarations: [
-    DocsResponsiveComponent,
+    DashboardComponent,
     ResponsiveLayoutDirectionComponent,
     ResponsiveRowColumnComponent,
     ResponsiveFlexDirectiveComponent,

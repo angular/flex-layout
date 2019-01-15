@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
-import {DocsLayoutComponent} from './docs-layout/docs-layout.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: '',
-        component: DocsLayoutComponent
+        component: DashboardComponent
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class RoutingModule {}
+export class ResponsiveRoutingModule {}

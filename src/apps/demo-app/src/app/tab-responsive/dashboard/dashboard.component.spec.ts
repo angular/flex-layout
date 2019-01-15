@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MediaQueryStatusComponent } from './media-query-status.component';
+import { DashboardResponsiveComponent } from './dashboard.component';
 
-describe('MediaQueryStatusComponent', () => {
-  let component: MediaQueryStatusComponent;
-  let fixture: ComponentFixture<MediaQueryStatusComponent>;
+describe('DocsResponsiveComponent', () => {
+  let component: DashboardResponsiveComponent;
+  let fixture: ComponentFixture<DashboardResponsiveComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MediaQueryStatusComponent ]
+      declarations: [ DashboardResponsiveComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MediaQueryStatusComponent);
+    fixture = TestBed.createComponent(DashboardResponsiveComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

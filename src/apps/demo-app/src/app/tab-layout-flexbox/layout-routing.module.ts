@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 
-import {GithubIssuesComponent} from './github-issues/github-issues.component';
+import {DocsLayoutComponent} from './docs-layout/docs-layout.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
         path: '',
-        component: GithubIssuesComponent
+        component: DocsLayoutComponent
       }
     ])
   ],
   exports: [RouterModule]
 })
-export class RoutingModule {}
+export class LayoutRoutingModule {}

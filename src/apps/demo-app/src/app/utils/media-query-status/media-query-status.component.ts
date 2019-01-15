@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
+import {Observable} from 'rxjs';
 import {MediaChange, MediaObserver} from '@angular/flex-layout';
-import {Observable} from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'media-query-status',
+  styleUrls: ['./media-query-status.component.scss'],
   template: `
     <div class="mqInfo">
       Active MediaQuery(s):
@@ -14,7 +15,6 @@ import {Observable} from 'rxjs/internal/Observable';
       </ul>
     </div>
   `,
-  styleUrls: ['./media-query-status.component.scss'],
 })
 export class MediaQueryStatusComponent {
   media$: Observable<MediaChange[]>;

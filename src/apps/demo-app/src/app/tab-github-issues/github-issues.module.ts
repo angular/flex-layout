@@ -6,14 +6,14 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
 import {GithubIssuesComponent} from './github-issues/github-issues.component';
 import {Issue266Component} from './issue-266/issue-266.component';
-import {SplitModule} from './split/split.module';
+import {SplitModule} from '../utils';
 import {Issue5345Component} from './issue-5345/issue-5345.component';
 import {Issue9897Component} from './issue-9897/issue-9897.component';
 import {Issue135Component} from './issue-135/issue-135.component';
 import {Issue181Component} from './issue-181/issue-181.component';
 import {Issue197Component} from './issue-197/issue-197.component';
-import {RoutingModule} from './routing.module';
-import {MediaQueryStatusModule} from '../media-query-status/media-query-status.module';
+import {GithubIssuesRoutingModule} from './github-issues-routing.module';
+import {DemoUtilsModule} from '../utils/demo-utils.module';
 
 @NgModule({
   imports: [
@@ -21,9 +21,10 @@ import {MediaQueryStatusModule} from '../media-query-status/media-query-status.m
     FlexLayoutModule,
     MatCardModule,
     FormsModule,
+
+    GithubIssuesRoutingModule,
     SplitModule,
-    RoutingModule,
-    MediaQueryStatusModule,
+    DemoUtilsModule,
   ],
   declarations: [
     GithubIssuesComponent,
