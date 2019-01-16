@@ -61,7 +61,7 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
       .reduce((acc: BreakPoint[], serverBp: string) => {
         const foundBp = breakpoints.find(bp => serverBp === bp.alias);
         if (!foundBp) {
-          console.warn(`FlexLayoutServerModule: breakpoint with alias "${serverBp}`);
+          console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
         } else {
           acc.push(foundBp);
         }
