@@ -17,7 +17,7 @@ export interface LayoutConfigOptions {
   useColumnBasisZero?: boolean;
   printWithBreakpoints?: string[];
   mediaTriggerAutoRestore?: boolean;
-  serverBreakpoints?: string[];
+  ssrObserveBreakpoints?: string[];
 }
 
 export const DEFAULT_CONFIG: LayoutConfigOptions = {
@@ -29,7 +29,7 @@ export const DEFAULT_CONFIG: LayoutConfigOptions = {
   useColumnBasisZero: true,
   printWithBreakpoints: [],
   mediaTriggerAutoRestore: true,
-  serverBreakpoints: [],
+  ssrObserveBreakpoints: [],
 };
 
 export const LAYOUT_CONFIG = new InjectionToken<LayoutConfigOptions>(
