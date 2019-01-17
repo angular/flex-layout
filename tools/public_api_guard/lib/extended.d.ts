@@ -44,7 +44,7 @@ export declare class ImgSrcDirective extends BaseDirective2 {
     protected styleCache: Map<string, StyleDefinition>;
     protected styler: StyleUtils;
     constructor(elementRef: ElementRef, styleBuilder: ImgSrcStyleBuilder, styler: StyleUtils, marshal: MediaMarshaller, platformId: Object, serverModuleLoaded: boolean);
-    protected updateWithValue(): void;
+    protected updateWithValue(value?: string): void;
 }
 
 export declare class ImgSrcStyleBuilder extends StyleBuilder {

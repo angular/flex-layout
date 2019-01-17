@@ -87,35 +87,22 @@ export interface LayoutConfigOptions {
     addOrientationBps?: boolean;
     disableDefaultBps?: boolean;
     disableVendorPrefixes?: boolean;
+    mediaTriggerAutoRestore?: boolean;
     printWithBreakpoints?: string[];
     serverLoaded?: boolean;
+    ssrObserveBreakpoints?: string[];
     useColumnBasisZero?: boolean;
-}
-
-export declare class MatchMedia {
-    protected _document: any;
-    protected _observable$: Observable<MediaChange>;
-    protected _platformId: Object;
-    protected _registry: Map<string, MediaQueryList>;
-    protected _source: BehaviorSubject<MediaChange>;
-    protected _zone: NgZone;
-    constructor(_zone: NgZone, _platformId: Object, _document: any);
-    protected buildMQL(query: string): MediaQueryList;
-    isActive(mediaQuery: string): boolean;
-    observe(): Observable<MediaChange>;
-    observe(mediaQueries: string[]): Observable<MediaChange>;
-    observe(mediaQueries: string[], filterOthers: boolean): Observable<MediaChange>;
-    registerQuery(mediaQuery: string | string[]): MediaChange[];
 }
 
 export declare class MediaChange {
     matches: boolean;
     mediaQuery: string;
     mqAlias: string;
+    priority: number;
     property: string;
     suffix: string;
     value: any;
-    constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string);
+    constructor(matches?: boolean, mediaQuery?: string, mqAlias?: string, suffix?: string, priority?: number);
     clone(): MediaChange;
 }
 
@@ -133,6 +120,7 @@ export declare class MediaMarshaller {
     releaseElement(element: HTMLElement): void;
     setValue(element: HTMLElement, key: string, val: any, bp: string): void;
     trackValue(element: HTMLElement, key: string): Observable<ElementMatcher>;
+    triggerUpdate(element: HTMLElement, key?: string): void;
     updateElement(element: HTMLElement, key: string, value: any): void;
     updateStyles(): void;
 }
@@ -141,45 +129,27 @@ export declare class MediaObserver {
     protected breakpoints: BreakPointRegistry;
     filterOverlaps: boolean;
     protected hook: PrintHook;
+    protected matchMedia: MatchMedia;
     readonly media$: Observable<MediaChange>;
-    protected mediaWatcher: MatchMedia;
-    constructor(breakpoints: BreakPointRegistry, mediaWatcher: MatchMedia, hook: PrintHook);
+    constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
+    asObservable(): Observable<MediaChange[]>;
     isActive(alias: string): boolean;
 }
 
 export declare type MediaQuerySubscriber = (changes: MediaChange) => void;
 
-export declare class MockMatchMedia extends MatchMedia {
-    protected _registry: Map<string, MockMediaQueryList>;
-    autoRegisterQueries: boolean;
-    protected readonly hasActivated: boolean;
-    useOverlaps: boolean;
-    constructor(_zone: NgZone, _platformId: Object, _document: any, _breakpoints: BreakPointRegistry);
-    _validateQuery(queryOrAlias: string): string;
-    activate(mediaQuery: string, useOverlaps?: boolean): boolean;
-    protected buildMQL(query: string): MediaQueryList;
-    clearAll(): void;
+export declare class MediaTrigger {
+    protected _document: any;
+    protected _platformId: Object;
+    protected breakpoints: BreakPointRegistry;
+    protected layoutConfig: LayoutConfigOptions;
+    protected matchMedia: MatchMedia;
+    constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, layoutConfig: LayoutConfigOptions, _platformId: Object, _document: any);
+    activate(list: string[]): void;
+    restore(): void;
 }
 
-export declare const MockMatchMediaProvider: {
-    provide: typeof MatchMedia;
-    useClass: typeof MockMatchMedia;
-};
-
-export declare class MockMediaQueryList implements MediaQueryList {
-    readonly matches: boolean;
-    readonly media: string;
-    onchange: MediaQueryListListener;
-    constructor(_mediaQuery: string);
-    activate(): MockMediaQueryList;
-    addEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | AddEventListenerOptions): void;
-    addListener(listener: MediaQueryListListener): void;
-    deactivate(): MockMediaQueryList;
-    destroy(): void;
-    dispatchEvent(_: Event): boolean;
-    removeEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | EventListenerOptions): void;
-    removeListener(_: EventListenerOrEventListenerObject | null): void;
-}
+export declare function mergeAlias(dest: MediaChange, source: BreakPoint | null): MediaChange;
 
 export declare type OptionalBreakPoint = BreakPoint | null;
 
@@ -218,35 +188,9 @@ export declare const ScreenTypes: {
 
 export declare const SERVER_TOKEN: InjectionToken<boolean>;
 
-export declare class ServerMatchMedia extends MatchMedia {
-    protected _document: any;
-    protected _platformId: Object;
-    protected _registry: Map<string, ServerMediaQueryList>;
-    protected _zone: NgZone;
-    constructor(_zone: NgZone, _platformId: Object, _document: any);
-    activateBreakpoint(bp: BreakPoint): void;
-    protected buildMQL(query: string): ServerMediaQueryList;
-    deactivateBreakpoint(bp: BreakPoint): void;
-}
+export declare function sortAscendingPriority<T extends WithPriority>(a: T, b: T): number;
 
-export declare class ServerMediaQueryList implements MediaQueryList {
-    readonly matches: boolean;
-    readonly media: string;
-    onchange: MediaQueryListListener;
-    constructor(_mediaQuery: string);
-    activate(): ServerMediaQueryList;
-    addEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | AddEventListenerOptions): void;
-    addListener(listener: MediaQueryListListener): void;
-    deactivate(): ServerMediaQueryList;
-    destroy(): void;
-    dispatchEvent(_: Event): boolean;
-    removeEventListener<K extends keyof MediaQueryListEventMap>(_: K, __: (this: MediaQueryList, ev: MediaQueryListEventMap[K]) => any, ___?: boolean | EventListenerOptions): void;
-    removeListener(_: EventListenerOrEventListenerObject | null): void;
-}
-
-export declare function sortAscendingPriority(a: BreakPoint, b: BreakPoint): number;
-
-export declare function sortDescendingPriority(a: OptionalBreakPoint, b: OptionalBreakPoint): number;
+export declare function sortDescendingPriority<T extends WithPriority>(a: T | null, b: T | null): number;
 
 export declare abstract class StyleBuilder {
     shouldCache: boolean;
