@@ -5,23 +5,23 @@
 $breakpoints: (
   xs: (
     begin: 0,
-    end: 599px
+    end: 599.9999px
   ),
   sm: (
     begin: 600px,
-    end: 959px
+    end: 959.9999px
   ),
   md: (
     begin: 960px,
-    end: 1279px
+    end: 1279.9999px
   ),
   lg: (
     begin: 1280px,
-    end: 1919px
+    end: 1919.9999px
   ),
   xl: (
     begin: 1920px,
-    end: 5000px
+    end: 4999.9999px
   ),
 ) !default;
 
@@ -39,10 +39,10 @@ $overlapping-gt: (
 // Material Design breakpoints
 // @type map
 $overlapping-lt: (
-  lt-sm: 599px,
-  lt-md: 959px,
-  lt-lg: 1279px,
-  lt-xl: 1919px,
+  lt-sm: 599.9999px,
+  lt-md: 959.9999px,
+  lt-lg: 1279.9999px,
+  lt-xl: 1919.9999px,
 ) !default;
 
 
