@@ -9,11 +9,11 @@
 import {BreakPoint} from '../break-point';
 
 /* tslint:disable */
-const HANDSET_PORTRAIT  = '(orientation: portrait) and (max-width: 599px)';
-const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959px)';
+const HANDSET_PORTRAIT  = '(orientation: portrait) and (max-width: 599.99px)';
+const HANDSET_LANDSCAPE = '(orientation: landscape) and (max-width: 959.99px)';
 
-const TABLET_LANDSCAPE  = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279px)';
-const TABLET_PORTRAIT   = '(orientation: portrait) and (min-width: 600px) and (max-width: 839px)';
+const TABLET_PORTRAIT   = '(orientation: portrait) and (min-width: 600px) and (max-width: 839.99px)';
+const TABLET_LANDSCAPE  = '(orientation: landscape) and (min-width: 960px) and (max-width: 1279.99px)';
 
 const WEB_PORTRAIT      = '(orientation: portrait) and (min-width: 840px)';
 const WEB_LANDSCAPE     = '(orientation: landscape) and (min-width: 1280px)';
