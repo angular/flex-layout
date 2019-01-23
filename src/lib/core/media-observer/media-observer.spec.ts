@@ -181,7 +181,7 @@ describe('media-observer', () => {
   describe('with custom BreakPoints', () => {
     const gtXsMediaQuery = 'screen and (min-width:120px) and (orientation:landscape)';
     const superXLQuery = 'screen and (min-width:10000px)';
-    const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959.9999px)';
+    const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959.99px)';
 
     const CUSTOM_BREAKPOINTS = [
       {alias: 'slate.xl', priority: 11000, mediaQuery: superXLQuery},
@@ -236,7 +236,7 @@ describe('media-observer', () => {
   });
 
   describe('with layout "print" configured', () => {
-    const mdMediaQuery = 'screen and (min-width: 960px) and (max-width: 1279.9999px)';
+    const mdMediaQuery = 'screen and (min-width: 960px) and (max-width: 1279.99px)';
 
     beforeEach(() => {
       // Configure testbed to prepare services
@@ -288,7 +288,7 @@ describe('media-observer', () => {
   });
 
   describe('with layout print NOT configured', () => {
-    const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959.9999px)';
+    const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959.99px)';
 
     beforeEach(() => {
       // Configure testbed to prepare services

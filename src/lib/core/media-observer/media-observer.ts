@@ -5,16 +5,19 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {debounceTime, filter, map, switchMap} from 'rxjs/operators';
+import {Injectable, OnDestroy} from '@angular/core';
+import {Subject, asapScheduler, Observable, of} from 'rxjs';
+import {debounceTime, filter, map, switchMap, takeUntil} from 'rxjs/operators';
 
 import {mergeAlias} from '../add-alias';
 import {MediaChange} from '../media-change';
 import {MatchMedia} from '../match-media/match-media';
 import {PrintHook} from '../media-marshaller/print-hook';
 import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
+
 import {sortDescendingPriority} from '../utils/sort';
+import {coerceArray} from '../utils/array';
+
 
 /**
  * MediaObserver enables applications to listen for 1..n mediaQuery activations and to determine
@@ -58,7 +61,7 @@ import {sortDescendingPriority} from '../utils/sort';
  *  }
  */
 @Injectable({providedIn: 'root'})
-export class MediaObserver {
+export class MediaObserver implements OnDestroy {
 
   /**
    * @deprecated Use `asObservable()` instead.
@@ -80,6 +83,14 @@ export class MediaObserver {
     );
   }
 
+  /**
+   * Completes the active subject, signalling to all complete for all
+   * MediaObserver subscribers
+   */
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
   // ************************************************
   // Public Methods
@@ -93,17 +104,18 @@ export class MediaObserver {
   }
 
   /**
-   * Allow programmatic query to determine if specified query/alias is active.
+   * Allow programmatic query to determine if one or more media query/alias match
+   * the current viewport size.
+   * @param value One or more media queries (or aliases) to check.
+   * @returns Whether any of the media queries match.
    */
-  isActive(alias: string): boolean {
-    const query = toMediaQuery(alias, this.breakpoints);
-    return this.matchMedia.isActive(query);
+  isActive(value: string | string[]): boolean {
+    const aliases = splitQueries(coerceArray(value));
+    return aliases.some(alias => {
+      const query = toMediaQuery(alias, this.breakpoints);
+      return this.matchMedia.isActive(query);
+    });
   }
-
-  /**
-   * Subscribers to activation list can use this function to easily exclude overlaps
-   */
-
 
   // ************************************************
   // Internal Methods
@@ -151,10 +163,11 @@ export class MediaObserver {
         .observe(this.hook.withPrintQuery(mqList))
         .pipe(
             filter((change: MediaChange) => change.matches),
-            debounceTime(10),
+            debounceTime(0, asapScheduler),
             switchMap(_ => of(this.findAllActivations())),
             map(excludeOverlaps),
-            filter(hasChanges)
+            filter(hasChanges),
+            takeUntil(this.destroyed$)
         );
   }
 
@@ -180,6 +193,7 @@ export class MediaObserver {
   }
 
   private readonly _media$: Observable<MediaChange[]>;
+  private readonly destroyed$ = new Subject<void>();
 }
 
 /**
@@ -190,3 +204,12 @@ function toMediaQuery(query: string, locator: BreakPointRegistry) {
   return bp ? bp.mediaQuery : query;
 }
 
+/**
+ * Split each query string into separate query strings if two queries are provided as comma
+ * separated.
+ */
+function splitQueries(queries: string[]): string[] {
+  return queries.map((query: string) => query.split(','))
+                .reduce((a1: string[], a2: string[]) => a1.concat(a2))
+                .map(query => query.trim());
+}
