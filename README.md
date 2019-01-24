@@ -17,17 +17,17 @@ The **real** power of Flex Layout, however, is its **responsive** engine. The
 different layouts, sizing, visibilities for different viewport sizes and display devices.
 
 ---
-### Getting started
+### Getting Started
 
-Start by installing the Angular Flex Layout library from `npm`
+Start by installing the Angular Layout library from `npm`
 
-`npm i -s @angular/flex-layout@latest @angular/cdk@latest`
+`npm i -s @angular/flex-layout @angular/cdk`
 
-Next, you'll need to import the flex-layout module in your app's module.
+Next, you'll need to import the Layout module in your app's module.
 
 **app.module.ts**
 
-```
+```ts
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 ...
@@ -39,13 +39,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 });
 ```
 
-After that is configured, you can use the attributes on your HTML tags for flex layout:
-```
+After that is configured, you can use the Angular Layout attributes in your HTML tags for flex layout:
+```html
 <div fxLayout="row" fxLayoutAlign="space-between">
 </div>
 ```
 
-Check out [all the available options](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) for using layout in your application.
+Check out [all of the available options](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) for using Angular Layout in your application.
 
 ---
 
