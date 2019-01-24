@@ -52,26 +52,25 @@ Check out [all of the available options](https://github.com/angular/flex-layout/
 ### Quick Links
 
 *  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
-*  [Gitter Room](https://gitter.im/angular/flex-layout)
-*  [Discussion Forum](https://groups.google.com/forum/#!forum/angular-flex-layout)
 *  [Wiki Documentation](https://github.com/angular/flex-layout/wiki)
 
-Developers
+### Demos
+
+*  [Explore Examples Online](https://tburleson-layouts-demos.firebaseapp.com/)
+*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
+
+### StackBlitz Templates
+
+  *  [Flex-Layout Template](https://stackblitz.com/edit/angular-flex-layout-seed?file=app%2Fapp.component.ts)
+  *  [Flex-Layout + Material](https://stackblitz.com/edit/angular-material-flex-layout-seed?file=app%2Fapp.module.ts)
+
+### Developers
 
 *  [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
 *  [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
 *  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts)
 *  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Using-Angular-CLI)
 
-Demos
-
-*  [Explore Online](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Source Code](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
-
-* StackBlitz Templates
-
-  *  [Flex-Layout Template](https://stackblitz.com/edit/angular-flex-layout-seed)
-  *  [Flex-Layout + Material](https://stackblitz.com/edit/angular-material-flex-layout-seed?file=app%2Fapp.module.ts)
 
 ----
 
