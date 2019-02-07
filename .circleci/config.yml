@@ -101,9 +101,10 @@ jobs:
       - *checkout_code
       - *restore_cache
       - *copy_bazel_config
+      - *yarn_install
 
-      - run: bazel build src/lib/...
-      - run: bazel test src/lib/...
+      - run: yarn bazel build src/lib/...
+      - run: yarn bazel test src/lib/...
 
       # Note: We want to save the cache in this job because the workspace cache also
       # includes the Bazel repository cache that will be updated in this job.
@@ -119,8 +120,9 @@ jobs:
     steps:
     - *checkout_code
     - *restore_cache
+    - *yarn_install
 
-    - run: bazel test tools/public_api_guard/...
+    - run: yarn bazel test tools/public_api_guard/...
 
   # ------------------------------------------------------------------------------------------
   # Job that runs the unit tests on locally installed browsers (Chrome and Firefox headless).
