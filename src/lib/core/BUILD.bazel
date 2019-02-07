@@ -52,7 +52,6 @@ jasmine_node_test(
         ":core_test_sources",
         "//test:angular_test_init_node",
     ],
-    tags = ["manual"],
 )
 
 ng_web_test_suite(

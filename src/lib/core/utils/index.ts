@@ -7,4 +7,3 @@
  */
 export * from './sort';
 export * from './array';
-export * from '../../utils/auto-prefixer';

@@ -32,6 +32,9 @@ jasmineCore.boot = function() {
 };
 // 5) Patch jasmine ENV with code which understands ProxyZone.
 import 'zone.js/dist/jasmine-patch.js';
+// 6) Save the patched `jasmineCore` into global so that
+// `@build_bazel_rules_nodejs//internal/jasmine_node_test/jasmine_runner.js` can get a hold of it
+(global as any)['jasmineCore'] = jasmineCore;
 
 (global as any).isNode = true;
 (global as any).isBrowser = false;
@@ -43,5 +46,3 @@ import {patchTestBedToDestroyFixturesAfterEveryTest} from './patch-testbed';
 
 const testBed = TestBed.initTestEnvironment(ServerTestingModule, platformServerTesting());
 patchTestBedToDestroyFixturesAfterEveryTest(testBed);
-console.log('patched!');
-process.exit(1);

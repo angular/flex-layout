@@ -9,8 +9,8 @@
 # To validate changes, use an online parser, eg.
 # http://yaml-online-parser.appspot.com/
 
-var_1: &docker_image angular/ngcontainer:0.7.0
-var_2: &cache_key v2-ng-layout-{{ .Branch }}-{{ checksum "yarn.lock" }}-0.7.0
+var_1: &docker_image circleci/node:10.12
+var_2: &cache_key v2-ng-layout-{{ checksum "WORKSPACE" }}-{{ checksum "yarn.lock" }}-0.7.0
 
 # Settings common to each job
 var_3: &job_defaults

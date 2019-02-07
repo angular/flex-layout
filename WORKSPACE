@@ -5,16 +5,15 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.8.zip",
-  strip_prefix = "rules_nodejs-0.16.8",
+  url = "https://github.com/gregmagolan/rules_nodejs/archive/c8b92cee7e7ed404d7daf49d2379cd6feda799b8.zip",
+  strip_prefix = "rules_nodejs-c8b92cee7e7ed404d7daf49d2379cd6feda799b8",
 )
 
 # Add TypeScript rules
 http_archive(
     name = "build_bazel_rules_typescript",
-    sha256 = "5a31a67550d2a92270599e90a221afe229f6e1863bf2eff22e9750c6ecf45978",
-    strip_prefix = "rules_typescript-2963b55370b21d545d0ac0f30fca9dc74a0f5538",
-    url = "https://github.com/bazelbuild/rules_typescript/archive/2963b55370b21d545d0ac0f30fca9dc74a0f5538.zip",
+    strip_prefix = "rules_typescript-0.22.1",
+    url = "https://github.com/bazelbuild/rules_typescript/archive/0.22.1.zip",
 )
 
 # Add Angular source and Bazel rules.
@@ -67,6 +66,11 @@ http_archive(
 # its transitive dependencies in case those haven't been fetched yet.
 load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
 rules_typescript_dependencies()
+
+# Since we are explitly fetching @build_bazel_rules_nodejs, we should explicitly ask for
+# its transitive dependencies in case those haven't been fetched yet.
+load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
+rules_nodejs_dependencies()
 
 # Fetch transitive dependencies which are needed by the Angular build targets.
 load("@angular//packages/bazel:package.bzl", "rules_angular_dependencies")
