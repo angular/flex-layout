@@ -96,6 +96,7 @@ jobs:
   # -----------------------------------
   build:
     <<: *job_defaults
+    docker: *docker-firefox-image
     resource_class: xlarge
     steps:
       - *checkout_code
