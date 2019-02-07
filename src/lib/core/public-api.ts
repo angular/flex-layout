@@ -29,5 +29,3 @@ export * from './style-builder/style-builder';
 export * from './basis-validator/basis-validator';
 export * from './media-marshaller/media-marshaller';
 export * from './media-marshaller/print-hook';
-
-export * from './utils/object-extend';

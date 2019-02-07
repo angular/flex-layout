@@ -16,7 +16,6 @@ import {
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,
-  extendObject,
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
@@ -24,6 +23,7 @@ import {customMatchers} from '../../core/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../core/testing/helpers';
 import {FlexModule} from '../module';
 import {LayoutAlignStyleBuilder} from './layout-align';
+import {extendObject} from '../../utils/object-extend';
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;

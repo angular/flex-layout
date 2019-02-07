@@ -1,0 +1,32 @@
+package(default_visibility=["//visibility:public"])
+
+load("//tools:defaults.bzl", "jasmine_node_test", "ng_module", "ng_test_library", "ng_web_test_suite", "ts_library")
+
+ts_library(
+  name = "utils",
+  srcs = glob(["**/*.ts"], exclude=["**/*.spec.ts"]),
+  deps = [],
+)
+
+ng_test_library(
+  name = "utils_test_sources",
+  srcs = glob(["**/*.spec.ts"]),
+  deps = [
+    ":utils",
+  ]
+)
+
+jasmine_node_test(
+    name = "test",
+    bootstrap = ["angular_layout/test/angular-test-init-node-spec.js"],
+    deps = [
+        ":utils_test_sources",
+        "//test:angular_test_init_node",
+    ],
+    tags = ["manual"],
+)
+
+ng_web_test_suite(
+  name = "utils_tests",
+  deps = [":utils_test_sources"],
+)

@@ -12,8 +12,8 @@ const _global = <any>(typeof window === 'undefined' ? global : window);
 
 import {_dom as _} from './dom-tools';
 
-import {applyCssPrefixes} from '../utils/auto-prefixer';
-import {extendObject} from '../utils/object-extend';
+import {applyCssPrefixes} from '../../utils/auto-prefixer';
+import {extendObject} from '../../utils/object-extend';
 
 export const expect: (actual: any) => NgMatchers = <any> _global.expect;
 

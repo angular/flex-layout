@@ -5,7 +5,7 @@ const DIRECTIONS = ['column', 'column-reverse'];
 @Component({
   selector: 'demo-complex-column-ordering',
   templateUrl: './complex-column-ordering.component.html',
-  styleUrls: ['./complex-column-ordering.component.css']
+  styleUrls: ['./complex-column-ordering.component.scss']
 })
 export class ComplexColumnOrderingComponent {
   direction = 'column';

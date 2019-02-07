@@ -1,11 +1,43 @@
 load("//tools:defaults.bzl", "ng_module", "ts_library", "ts_web_test_suite")
+load("@io_bazel_rules_sass//:defs.bzl", "sass_binary", "sass_library")
 
 package(default_visibility = ["//visibility:public"])
+
+sass_binary(
+  name = "complex_column_ordering_scss",
+  src = "complex-column-ordering/complex-column-ordering.component.scss",
+)
+
+sass_binary(
+  name = "grid_area_row_span_scss",
+  src = "grid-area-row-span/grid-area-row-span.component.scss",
+)
+
+sass_binary(
+  name = "grid_column_span_scss",
+  src = "grid-column-span/grid-column-span.component.scss",
+)
+
+sass_binary(
+  name = "hide_custom_bp_scss",
+  src = "hide-custom-bp/hide-custom-bp.component.scss",
+)
+
+sass_binary(
+  name = "mox_holy_grail_scss",
+  src = "moz-holy-grail/moz-holy-grail.component.scss",
+)
 
 ng_module(
     name = "stack-overflow",
     srcs = glob(["**/*.ts"], exclude = ["**/*.spec.ts"]),
-    assets = glob(["**/*.html", "**/*.css"]),
+    assets = glob(["**/*.html"]) + [
+        ":complex-column-ordering/complex-column-ordering.component.css",
+        ":grid-area-row-span/grid-area-row-span.component.css",
+        ":grid-column-span/grid-column-span.component.css",
+        ":hide-custom-bp/hide-custom-bp.component.css",
+        ":moz-holy-grail/moz-holy-grail.component.css",
+    ],
     tsconfig = "//src/apps/demo-app:tsconfig.json",
     deps = [
         "//src/lib:layout",

@@ -15,12 +15,12 @@ import {
   StyleDefinition,
   MediaMarshaller,
   ElementMatcher,
-  extendObject,
 } from '@angular/flex-layout/core';
 import {takeUntil} from 'rxjs/operators';
 
 import {BaseFlexFlowDirective} from '../base/base';
 import {isFlowHorizontal} from '../utils/layout-validator';
+import {extendObject} from '../../utils/object-extend';
 
 interface FlexBuilderParent {
   direction: string;

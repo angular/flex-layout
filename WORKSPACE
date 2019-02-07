@@ -5,8 +5,8 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 # Add NodeJS rules (explicitly used for sass bundle rules)
 http_archive(
   name = "build_bazel_rules_nodejs",
-  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.5.zip",
-  strip_prefix = "rules_nodejs-0.16.5",
+  url = "https://github.com/bazelbuild/rules_nodejs/archive/0.16.8.zip",
+  strip_prefix = "rules_nodejs-0.16.8",
 )
 
 # Add TypeScript rules
@@ -20,8 +20,8 @@ http_archive(
 # Add Angular source and Bazel rules.
 http_archive(
   name = "angular",
-  url = "https://github.com/angular/angular/archive/7.2.1.zip",
-  strip_prefix = "angular-7.2.1",
+  url = "https://github.com/angular/angular/archive/7.2.4.zip",
+  strip_prefix = "angular-7.2.4",
 )
 
 # Add RxJS as repository because those are needed in order to build Angular from source.
@@ -39,8 +39,8 @@ http_archive(
 # Angular material
 http_archive(
     name = "angular_material",
-    strip_prefix = "material2-dd28ec10f6f3c19f91a9935468d71c959ad32203",
-    url = "https://github.com/angular/material2/archive/dd28ec10f6f3c19f91a9935468d71c959ad32203.zip",
+    strip_prefix = "material2-7.3.1",
+    url = "https://github.com/angular/material2/archive/7.3.1.zip",
 )
 
 # We need to create a local repository called "npm" because currently Angular Layout
@@ -67,11 +67,6 @@ http_archive(
 # its transitive dependencies in case those haven't been fetched yet.
 load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dependencies")
 rules_typescript_dependencies()
-
-# Since we are explitly fetching @build_bazel_rules_nodejs, we should explicitly ask for
-# its transitive dependencies in case those haven't been fetched yet.
-load("@build_bazel_rules_nodejs//:package.bzl", "rules_nodejs_dependencies")
-rules_nodejs_dependencies()
 
 # Fetch transitive dependencies which are needed by the Angular build targets.
 load("@angular//packages/bazel:package.bzl", "rules_angular_dependencies")

@@ -25,6 +25,7 @@ ng_test_library(
     "@angular_material//src/cdk/platform",
     "//src/lib:layout",
     "//src/lib/core",
+    "//src/lib/utils",
     "//src/lib/core:core_testing",
     ":grid",
   ]

@@ -60,6 +60,8 @@ export declare const BROWSER_PROVIDER: {
 
 export declare const CLASS_NAME = "flex-layout-";
 
+export declare function coerceArray<T>(value: T | T[]): T[];
+
 export declare class CoreModule {
 }
 
@@ -72,8 +74,6 @@ export interface ElementMatcher {
     key: string;
     value: any;
 }
-
-export declare function extendObject(dest: any, ...sources: any[]): any;
 
 export interface HookTarget {
     activatedBreakpoints: BreakPoint[];
@@ -125,7 +125,7 @@ export declare class MediaMarshaller {
     updateStyles(): void;
 }
 
-export declare class MediaObserver {
+export declare class MediaObserver implements OnDestroy {
     protected breakpoints: BreakPointRegistry;
     filterOverlaps: boolean;
     protected hook: PrintHook;
@@ -133,7 +133,8 @@ export declare class MediaObserver {
     readonly media$: Observable<MediaChange>;
     constructor(breakpoints: BreakPointRegistry, matchMedia: MatchMedia, hook: PrintHook);
     asObservable(): Observable<MediaChange[]>;
-    isActive(alias: string): boolean;
+    isActive(value: string | string[]): boolean;
+    ngOnDestroy(): void;
 }
 
 export declare type MediaQuerySubscriber = (changes: MediaChange) => void;

@@ -15,12 +15,12 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
-  extendObject,
 } from '@angular/flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
 import {customMatchers} from '../../core/testing/custom-matchers';
 import {makeCreateTestComponent, expectNativeEl} from '../../core/testing/helpers';
+import {extendObject} from '../../utils/object-extend';
 
 describe('align directive', () => {
   let fixture: ComponentFixture<any>;

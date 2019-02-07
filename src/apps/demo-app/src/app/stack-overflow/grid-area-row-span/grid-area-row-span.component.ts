@@ -5,7 +5,7 @@ const DIRECTIONS = ['', '-reverse'];
 @Component({
   selector: 'demo-grid-area-row-span',
   templateUrl: './grid-area-row-span.component.html',
-  styleUrls: ['./grid-area-row-span.component.css']
+  styleUrls: ['./grid-area-row-span.component.scss']
 })
 export class GridAreaRowSpanComponent {
   direction = '';
