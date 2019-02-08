@@ -66,11 +66,11 @@ $overlapping-lt: (
     @media (min-width: $min) and (max-width: $max) { @content; }
   }
   @else if map-has-key($overlapping-gt, $bp) {
-    $min: map-get($breakpoints, $bp);
+    $min: map-get($overlapping-gt, $bp);
     @media (min-width: $min) { @content; }
   }
   @else if map-has-key($overlapping-lt, $bp) {
-    $max: map-get($breakpoints, $bp);
+    $max: map-get($overlapping-lt, $bp);
     @media (max-width: $max) { @content; }
   }
 }
