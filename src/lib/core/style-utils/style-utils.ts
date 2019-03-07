@@ -98,7 +98,7 @@ export class StyleUtils {
 
     // Note: 'inline' is the default of all elements, unless UA stylesheet overrides;
     //       in which case getComputedStyle() should determine a valid value.
-    return value.trim();
+    return value ? value.trim() : '';
   }
 
   /**
