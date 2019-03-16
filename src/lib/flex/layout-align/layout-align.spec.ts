@@ -55,7 +55,7 @@ describe('layout-align directive', () => {
     });
   });
 
-  fdescribe('with static features', () => {
+  describe('with static features', () => {
 
     it('should add work without a peer `fxLayout` directive', () => {
       createTestComponent(`<div fxLayoutAlign></div>`);
