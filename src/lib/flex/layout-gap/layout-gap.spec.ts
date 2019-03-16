@@ -374,6 +374,7 @@ describe('layout-gap directive', () => {
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
+      mediaController.activate('sm');
       expectEl(nodes[0]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
@@ -384,6 +385,11 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
+
+      mediaController.activate('sm');
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
     });
 
     it('should set gap with responsive layout change', () => {
