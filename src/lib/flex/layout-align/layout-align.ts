@@ -147,13 +147,21 @@ export class LayoutAlignDirective extends BaseDirective2 {
   protected updateWithValue(value: string) {
     const layout = this.layout || 'row';
     const inline = this.inline;
-    if (layout === 'row') {
+    if (layout === 'row' && inline) {
+      this.styleCache = layoutAlignHorizontalInlineCache;
+    } else if (layout === 'row' && !inline) {
       this.styleCache = layoutAlignHorizontalCache;
-    } else if (layout === 'row-reverse') {
+    } else if (layout === 'row-reverse' && inline) {
+      this.styleCache = layoutAlignHorizontalRevInlineCache;
+    } else if (layout === 'row-reverse' && !inline) {
       this.styleCache = layoutAlignHorizontalRevCache;
-    } else if (layout === 'column') {
+    } else if (layout === 'column' && inline) {
+      this.styleCache = layoutAlignVerticalInlineCache;
+    } else if (layout === 'column' && !inline) {
       this.styleCache = layoutAlignVerticalCache;
-    } else if (layout === 'column-reverse') {
+    } else if (layout === 'column-reverse' && inline) {
+      this.styleCache = layoutAlignVerticalRevInlineCache;
+    } else if (layout === 'column-reverse' && !inline) {
       this.styleCache = layoutAlignVerticalRevCache;
     }
     this.addStyles(value, {layout, inline});
@@ -164,6 +172,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
    */
   protected onLayoutChange(matcher: ElementMatcher) {
     const layoutKeys: string[] = matcher.value.split(' ');
+    console.log({v: matcher.value});
     this.layout = layoutKeys[0];
     this.inline = matcher.value.includes('inline');
     if (!LAYOUT_VALUES.find(x => x === this.layout)) {
@@ -182,3 +191,7 @@ const layoutAlignHorizontalCache: Map<string, StyleDefinition> = new Map();
 const layoutAlignVerticalCache: Map<string, StyleDefinition> = new Map();
 const layoutAlignHorizontalRevCache: Map<string, StyleDefinition> = new Map();
 const layoutAlignVerticalRevCache: Map<string, StyleDefinition> = new Map();
+const layoutAlignHorizontalInlineCache: Map<string, StyleDefinition> = new Map();
+const layoutAlignVerticalInlineCache: Map<string, StyleDefinition> = new Map();
+const layoutAlignHorizontalRevInlineCache: Map<string, StyleDefinition> = new Map();
+const layoutAlignVerticalRevInlineCache: Map<string, StyleDefinition> = new Map();
