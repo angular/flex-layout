@@ -21,6 +21,7 @@ import {LAYOUT_VALUES, isFlowHorizontal} from '../../utils/layout-validator';
 
 export interface LayoutAlignParent {
   layout: string;
+  inline: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -85,7 +86,7 @@ export class LayoutAlignStyleBuilder extends StyleBuilder {
     }
 
     return extendObject(css, {
-      'display' : 'flex',
+      'display' : parent.inline ? 'inline-flex' : 'flex',
       'flex-direction' : parent.layout,
       'box-sizing' : 'border-box',
       'max-width': crossAxis === 'stretch' ?
@@ -121,6 +122,7 @@ const selector = `
 export class LayoutAlignDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'layout-align';
   protected layout = 'row';  // default flex-direction
+  protected inline = false;  // default inline value
 
   constructor(protected elRef: ElementRef,
               protected styleUtils: StyleUtils,
@@ -144,6 +146,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
    */
   protected updateWithValue(value: string) {
     const layout = this.layout || 'row';
+    const inline = this.inline;
     if (layout === 'row') {
       this.styleCache = layoutAlignHorizontalCache;
     } else if (layout === 'row-reverse') {
@@ -153,15 +156,16 @@ export class LayoutAlignDirective extends BaseDirective2 {
     } else if (layout === 'column-reverse') {
       this.styleCache = layoutAlignVerticalRevCache;
     }
-    this.addStyles(value, {layout});
+    this.addStyles(value, {layout, inline});
   }
 
   /**
    * Cache the parent container 'flex-direction' and update the 'flex' styles
    */
   protected onLayoutChange(matcher: ElementMatcher) {
-    const layout: string = matcher.value;
-    this.layout = layout.split(' ')[0];
+    const layoutKeys: string[] = matcher.value.split(' ');
+    this.layout = layoutKeys[0];
+    this.inline = matcher.value.includes('inline');
     if (!LAYOUT_VALUES.find(x => x === this.layout)) {
       this.layout = 'row';
     }
