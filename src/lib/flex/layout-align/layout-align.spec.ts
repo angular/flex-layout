@@ -84,6 +84,17 @@ describe('layout-align directive', () => {
         'align-content': 'stretch'
       }, styler);
     });
+    it('should add preserve fxLayout in inline mode', () => {
+      createTestComponent(`<div fxLayout='column inline' fxLayoutAlign></div>`);
+      expectNativeEl(fixture).toHaveStyle({
+        'display': 'inline-flex',
+        'flex-direction': 'column',
+        'box-sizing': 'border-box',
+        'justify-content': 'flex-start',
+        'align-items': 'stretch',
+        'align-content': 'stretch'
+      }, styler);
+    });
 
     describe('for "main-axis" testing', () => {
       it('should add correct styles for `fxLayoutAlign="start"` usage', () => {
