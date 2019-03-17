@@ -304,6 +304,28 @@ describe('layout-align directive', () => {
       }, styler);
     });
 
+    it('should add responsive styles with fxFlex', () => {
+      createTestComponent(`
+        <div fxFlex.gt-sm="25%" fxFlex.lt-md="100%" fxLayoutAlign="center end"></div>
+      `);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-width': '25%',
+      }, styler);
+
+      mediaController.activate('md', true);
+
+      expectNativeEl(fixture).toHaveStyle({
+        'max-width': '25%',
+      }, styler);
+
+      mediaController.activate('sm', true);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'max-width': '25%',
+      }, styler);
+    });
+
     it('should update responsive styles when the layout direction changes', () => {
       createTestComponent(`
         <div fxLayout

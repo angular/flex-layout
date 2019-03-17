@@ -234,6 +234,9 @@ export class FlexDirective extends BaseDirective2 {
       this.marshal.trackValue(this.parentElement, 'layout')
         .pipe(takeUntil(this.destroySubject))
         .subscribe(this.onLayoutChange.bind(this));
+      this.marshal.trackValue(this.nativeElement, 'layout-align')
+        .pipe(takeUntil(this.destroySubject))
+        .subscribe(this.triggerReflow.bind(this));
     }
   }
 
