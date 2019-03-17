@@ -374,6 +374,7 @@ describe('layout-gap directive', () => {
 
       let nodes = queryFor(fixture, '[fxFlex]');
       expect(nodes.length).toEqual(3);
+      mediaController.activate('sm');
       expectEl(nodes[0]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
@@ -384,6 +385,11 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '24px'}, styler);
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
+
+      mediaController.activate('sm');
+      expectEl(nodes[0]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'margin-right': '*'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '*'}, styler);
     });
 
     it('should set gap with responsive layout change', () => {
@@ -501,6 +507,36 @@ describe('layout-gap directive', () => {
       expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
       expectEl(nodes[2]).toHaveStyle(expectedPadding, styler);
       expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
+    });
+
+    it('should set gap without fallback', () => {
+      let template = `
+        <div fxLayoutAlign='center center' fxLayoutGap.md="24px grid">
+          <div fxFlex></div>
+          <div fxFlex></div>
+          <div fxFlex></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(3);
+      mediaController.activate('sm');
+      expectEl(nodes[0]).not.toHaveStyle({'padding': '*'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'padding': '*'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'padding': '*'}, styler);
+
+      mediaController.activate('md');
+      fixture.detectChanges();
+      expectEl(nodes[0]).toHaveStyle({'padding': '0px 24px 24px 0px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'padding': '0px 24px 24px 0px'}, styler);
+      expectEl(nodes[2]).toHaveStyle({'padding': '0px 24px 24px 0px'}, styler);
+
+      mediaController.activate('sm');
+      expectEl(nodes[0]).not.toHaveStyle({'padding': '*'}, styler);
+      expectEl(nodes[1]).not.toHaveStyle({'padding': '*'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'padding': '*'}, styler);
     });
 
     it('should add gap styles correctly for rtl', () => {

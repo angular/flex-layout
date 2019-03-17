@@ -197,6 +197,21 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     }
   }
 
+  /** We need to override clearStyles because in most cases mru isn't populated */
+  protected clearStyles() {
+    const gridMode = Object.keys(this.mru).length > 0;
+    const childrenStyle = gridMode ? 'padding' :
+      getMarginType(this.directionality.value, this.layout);
+
+    // If there are styles on the parent remove them
+    if (gridMode) {
+      super.clearStyles();
+    }
+
+    // Then remove the children styles too
+    this.styleUtils.applyStyleToElements({[childrenStyle]: ''}, this.childrenNodes);
+  }
+
   /** Determine if an element will show or hide based on current activation */
   protected willDisplay(source: HTMLElement): boolean {
     const value = this.marshal.getValue(source, 'show-hide');
@@ -262,28 +277,25 @@ function buildGridMargin(value: string, directionality: string): StyleDefinition
   return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
 }
 
+function getMarginType(directionality: string, layout: string) {
+  switch (layout) {
+    case 'column':
+      return 'margin-bottom';
+    case 'column-reverse':
+      return 'margin-top';
+    case 'row':
+      return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+    case 'row-reverse':
+      return directionality === 'rtl' ? 'margin-right' : 'margin-left';
+    default :
+      return directionality === 'rtl' ? 'margin-left' : 'margin-right';
+  }
+}
+
 function buildGapCSS(gapValue: string,
                      parent: {directionality: string, layout: string}): StyleDefinition {
-  let key, margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
-
-  switch (parent.layout) {
-    case 'column':
-      key = 'margin-bottom';
-      break;
-    case 'column-reverse':
-      key = 'margin-top';
-      break;
-    case 'row':
-      key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-      break;
-    case 'row-reverse':
-      key = parent.directionality === 'rtl' ? 'margin-right' : 'margin-left';
-      break;
-    default :
-      key = parent.directionality === 'rtl' ? 'margin-left' : 'margin-right';
-      break;
-  }
+  const key = getMarginType(parent.directionality, parent.layout);
+  const margins: {[key: string]: string | null} = {...CLEAR_MARGIN_CSS};
   margins[key] = gapValue;
-
   return margins;
 }
