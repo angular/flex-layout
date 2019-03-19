@@ -1,3 +1,44 @@
+<a name="7.0.0-beta.24"></a>
+# [7.0.0-beta.24](https://github.com/angular/flex-layout/compare/7.0.0-beta.23...7.0.0-beta.24) (2019-03-17)
+
+
+### Bug Fixes
+
+* **core:** align breakpoints with those used in CDK ([#1006](https://github.com/angular/flex-layout/issues/1006)) ([6f43cf6](https://github.com/angular/flex-layout/commit/6f43cf6)), closes [#685](https://github.com/angular/flex-layout/issues/685) [#1001](https://github.com/angular/flex-layout/issues/1001)
+* **core:** fail-safe check of nullable value ([#1031](https://github.com/angular/flex-layout/issues/1031)) ([5112a47](https://github.com/angular/flex-layout/commit/5112a47)), closes [#958](https://github.com/angular/flex-layout/issues/958)
+* **core:** update breakpoint ranges to remove subpixel gaps ([#1004](https://github.com/angular/flex-layout/issues/1004)) ([1154fae](https://github.com/angular/flex-layout/commit/1154fae)), closes [#1001](https://github.com/angular/flex-layout/issues/1001)
+* **core:** update layout-bp mixin to use right overlapping maps ([#1020](https://github.com/angular/flex-layout/issues/1020)) ([af15a61](https://github.com/angular/flex-layout/commit/af15a61))
+* **docs:** make splitter demo work in IE ([#982](https://github.com/angular/flex-layout/issues/982)) ([0ba4bac](https://github.com/angular/flex-layout/commit/0ba4bac))
+* **fxFlex:** restore correct styles after fxLayoutAlign is applied ([#1038](https://github.com/angular/flex-layout/issues/1038)) ([b245229](https://github.com/angular/flex-layout/commit/b245229))
+* **fxLayoutGap:** correctly handle lack of fallback value ([#1037](https://github.com/angular/flex-layout/issues/1037)) ([ce9b989](https://github.com/angular/flex-layout/commit/ce9b989)), closes [#1011](https://github.com/angular/flex-layout/issues/1011)
+* **fxLayoutGap:** not working with dynamic fxHide ([#983](https://github.com/angular/flex-layout/issues/983)) ([0eccec4](https://github.com/angular/flex-layout/commit/0eccec4))
+* **img-src:** correctly initialize fallback value ([#986](https://github.com/angular/flex-layout/issues/986)) ([c1fc857](https://github.com/angular/flex-layout/commit/c1fc857))
+* **layout-align:** respect inline-flex on sibling fxLayout ([#1036](https://github.com/angular/flex-layout/issues/1036)) ([c23621c](https://github.com/angular/flex-layout/commit/c23621c)), closes [#1009](https://github.com/angular/flex-layout/issues/1009)
+* **ngClass:** should properly remove classes without fallback ([#995](https://github.com/angular/flex-layout/issues/995)) ([47248b1](https://github.com/angular/flex-layout/commit/47248b1)), closes [#992](https://github.com/angular/flex-layout/issues/992)
+* **sass:** update stylesheet with correct keys ([#987](https://github.com/angular/flex-layout/issues/987)) ([002eb66](https://github.com/angular/flex-layout/commit/002eb66))
+
+
+### Features
+
+* **core:** implement MediaTrigger to allow manual breakpoint activations ([#997](https://github.com/angular/flex-layout/issues/997)) ([66e7463](https://github.com/angular/flex-layout/commit/66e7463))
+* **core:** MediaObserver can report 1..n activations ([#994](https://github.com/angular/flex-layout/issues/994)) ([8307655](https://github.com/angular/flex-layout/commit/8307655))
+* **core:** move MatchMedia to internal scope ([#998](https://github.com/angular/flex-layout/issues/998)) ([53a6ebb](https://github.com/angular/flex-layout/commit/53a6ebb))
+* **demo:** add demo to show fxHide with used with custom breakpoint ([#969](https://github.com/angular/flex-layout/issues/969)) ([f4eb901](https://github.com/angular/flex-layout/commit/f4eb901)), closes [#961](https://github.com/angular/flex-layout/issues/961)
+* **server:** add ability to specify breakpoints for MediaObserver ([#999](https://github.com/angular/flex-layout/issues/999)) ([1c136bc](https://github.com/angular/flex-layout/commit/1c136bc)), closes [#991](https://github.com/angular/flex-layout/issues/991)
+
+
+### BREAKING CHANGES
+
+* **core:** `MediaObserver` is the only supported mechanism to watch breakpoint activations outside the library. Developers should not use `MatchMedia`.
+
+*  MatchMedia is no longer exported as a public utility. 
+*  ServerMatchMedia is no longer exported at all
+* **core:** The stream data type for `asObservable` is now **MediaChange[]** instead of *MediaChange* and `media$` is deprecated in favor of `asObservable()`. 
+
+* `filterOverlaps` now defaults to `false`
+
+
+
 <a name="7.0.0-beta.23"></a>
 # [7.0.0-beta.23](https://github.com/angular/flex-layout/compare/7.0.0-beta.22...7.0.0-beta.23) (2019-01-04)
 
