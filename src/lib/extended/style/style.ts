@@ -10,14 +10,12 @@ import {
   DoCheck,
   ElementRef,
   Inject,
-  KeyValueDiffers,
   Optional,
   PLATFORM_ID,
-  Renderer2,
   SecurityContext,
   Self,
 } from '@angular/core';
-import {isPlatformServer, NgStyle} from '@angular/common';
+import {isPlatformServer, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl} from '@angular/common';
 import {DomSanitizer} from '@angular/platform-browser';
 import {
   BaseDirective2,
@@ -48,8 +46,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
   constructor(protected elementRef: ElementRef,
               protected styler: StyleUtils,
               protected marshal: MediaMarshaller,
-              protected keyValueDiffers: KeyValueDiffers,
-              protected renderer: Renderer2,
+              protected delegate: ɵNgStyleImpl,
               protected sanitizer: DomSanitizer,
               @Optional() @Self() private readonly ngStyleInstance: NgStyle,
               @Optional() @Inject(SERVER_TOKEN) serverLoaded: boolean,
@@ -58,7 +55,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
     if (!this.ngStyleInstance) {
       // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
       // defined on the same host element; since the responsive variations may be defined...
-      this.ngStyleInstance = new NgStyle(this.keyValueDiffers, this.elementRef, this.renderer);
+      this.ngStyleInstance = new NgStyle(this.delegate);
     }
     this.init();
     const styles = this.nativeElement.getAttribute('style') || '';
@@ -129,11 +126,17 @@ const selector = `
   [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
 `;
 
+// tslint:disable-next-line:variable-name
+export const LayoutNgStyleImplProvider = {
+  provide: ɵNgStyleImpl,
+  useClass: ɵNgStyleR2Impl
+};
+
 /**
  * Directive to add responsive support for ngStyle.
  *
  */
-@Directive({selector, inputs})
+@Directive({selector, inputs, providers: [LayoutNgStyleImplProvider]})
 export class DefaultStyleDirective extends StyleDirective implements DoCheck {
   protected inputs = inputs;
 }
