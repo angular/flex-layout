@@ -1,3 +1,8 @@
+<a name="8.0.0-beta.25"></a>
+# [8.0.0-beta.25](https://github.com/angular/flex-layout/compare/7.0.0-beta.24...8.0.0-beta.25) (2019-05-19)
+
+This release is solely for compatibility with Angular and Components v8, with a minor Bazel fix as well.
+
 <a name="7.0.0-beta.24"></a>
 # [7.0.0-beta.24](https://github.com/angular/flex-layout/compare/7.0.0-beta.23...7.0.0-beta.24) (2019-03-17)
 
