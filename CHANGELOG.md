@@ -1,3 +1,8 @@
+<a name="8.0.0-beta.26"></a>
+# [8.0.0-beta.26](https://github.com/angular/flex-layout/compare/7.0.0-beta.24...8.0.0-beta.26) (2019-05-24)
+
+This release adds compatibility for Angular v8 final, which contained a breaking change from previous RCs.
+
 <a name="8.0.0-beta.25"></a>
 # [8.0.0-beta.25](https://github.com/angular/flex-layout/compare/7.0.0-beta.24...8.0.0-beta.25) (2019-05-19)
 

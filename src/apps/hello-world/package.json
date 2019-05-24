@@ -31,7 +31,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.800.0-rc.4",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "^8.0.0-rc.4",
+    "@angular/language-service": "^8.0.0-rc.5",
     "typescript": "file:../../../node_modules/typescript"
   }
 }
