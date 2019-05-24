@@ -28,7 +28,7 @@ export class SplitDirective implements AfterContentInit, OnDestroy {
   @Input('ngxSplit')
   direction = 'row';
 
-  @ContentChild(SplitHandleDirective) handle: SplitHandleDirective;
+  @ContentChild(SplitHandleDirective, {static: true}) handle: SplitHandleDirective;
   @ContentChildren(SplitAreaDirective) areas: QueryList<SplitAreaDirective>;
 
   constructor(private elementRef: ElementRef,
