@@ -13,6 +13,7 @@ import {BreakPoint} from '../breakpoints/break-point';
 import {LAYOUT_CONFIG, LayoutConfigOptions} from '../tokens/library-config';
 import {BreakPointRegistry, OptionalBreakPoint} from '../breakpoints/break-point-registry';
 import {sortDescendingPriority} from '../utils/sort';
+import {DOCUMENT} from '@angular/common';
 
 /**
  * Interface to apply PrintHook to call anonymous `target.updateStyles()`
@@ -39,7 +40,8 @@ export const BREAKPOINT_PRINT = {
 export class PrintHook {
   constructor(
       protected breakpoints: BreakPointRegistry,
-      @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
+      @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
+      @Inject(DOCUMENT) protected _document: any) {
   }
 
   /** Add 'print' mediaQuery: to listen for matchMedia activations */
@@ -83,18 +85,66 @@ export class PrintHook {
     return mergeAlias(event, bp);
   }
 
+
+  // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
+  //  and `afterprint` event listeners.
+  private registeredBeforeAfterPrintHooks: boolean = false;
+
+  // isPrintingBeforeAfterEvent is used to track if we are printing from within
+  // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+  // form `interceptEvents` so that printing is not stopped while the dialog
+  // is still open. This is an extension of the `isPrinting` property on
+  // browsers which support `beforeprint` and `afterprint` events.
+  private isPrintingBeforeAfterEvent: boolean = false;
+
+  // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
+  // trigger print styles synchronously and apply proper layout styles.
+  // It is a noop if the hooks have already been registered or if the document's
+  // `defaultView` is not available.
+  private registerBeforeAfterPrintHooks(target: HookTarget) {
+    // `defaultView` may be null when rendering on the server or in other contexts.
+    if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
+      return;
+    }
+
+    this.registeredBeforeAfterPrintHooks = true;
+
+    // Could we have teardown logic to remove if there are no print listeners being used?
+    this._document.defaultView.addEventListener('beforeprint', () => {
+      // If we aren't already printing, start printing and update the styles as
+      // if there was a regular print `MediaChange`(from matchMedia).
+      if (!this.isPrinting) {
+        this.isPrintingBeforeAfterEvent = true;
+        this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
+        target.updateStyles();
+      }
+    });
+
+    this._document.defaultView.addEventListener('afterprint', () => {
+      // If we aren't already printing, start printing and update the styles as
+      // if there was a regular print `MediaChange`(from matchMedia).
+      this.isPrintingBeforeAfterEvent = false;
+      if (this.isPrinting) {
+        this.stopPrinting(target);
+        target.updateStyles();
+      }
+    });
+  }
+
   /**
    * Prepare RxJs filter operator with partial application
    * @return pipeable filter predicate
    */
   interceptEvents(target: HookTarget) {
+    this.registerBeforeAfterPrintHooks(target);
+
     return (event: MediaChange) => {
       if (this.isPrintEvent(event)) {
         if (event.matches && !this.isPrinting) {
           this.startPrinting(target, this.getEventBreakpoints(event));
           target.updateStyles();
 
-        } else if (!event.matches && this.isPrinting) {
+        } else if (!event.matches && this.isPrinting && !this.isPrintingBeforeAfterEvent) {
           this.stopPrinting(target);
           target.updateStyles();
         }
@@ -131,7 +181,8 @@ export class PrintHook {
   /**
    * To restore pre-Print Activations, we must capture the proper
    * list of breakpoint activations BEFORE print starts. OnBeforePrint()
-   * is not supported; so 'print' mediaQuery activations must be used.
+   * is supported; so 'print' mediaQuery activations are used as a fallback
+   * in browsers without `beforeprint` support.
    *
    * >  But activated breakpoints are deactivated BEFORE 'print' activation.
    *
@@ -146,14 +197,17 @@ export class PrintHook {
    *    - restore as activatedTargets and clear when stop printing
    */
   collectActivations(event: MediaChange) {
-    if (!this.isPrinting) {
+    if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
       if (!event.matches) {
         const bp = this.breakpoints.findByQuery(event.mediaQuery);
         if (bp) {   // Deactivating a breakpoint
           this.deactivations.push(bp);
           this.deactivations.sort(sortDescendingPriority);
         }
-      } else {
+      } else if (!this.isPrintingBeforeAfterEvent) {
+        // Only clear deactivations if we aren't printing from a `beforeprint` event.
+        // Otherwise this will clear before `stopPrinting()` is called to restore
+        // the pre-Print Activations.
         this.deactivations = [];
       }
     }
