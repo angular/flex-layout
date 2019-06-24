@@ -7,7 +7,13 @@
  */
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
-import {BreakPoint, ɵMatchMedia as MatchMedia} from '@angular/flex-layout/core';
+import {
+  BreakPoint,
+  ɵMatchMedia as MatchMedia,
+  BREAKPOINTS,
+  LAYOUT_CONFIG,
+  LayoutConfigOptions
+} from '@angular/flex-layout/core';
 
 /**
  * Special server-only class to simulate a MediaQueryList and
@@ -15,7 +21,6 @@ import {BreakPoint, ɵMatchMedia as MatchMedia} from '@angular/flex-layout/core'
  * - manages listeners
  */
 export class ServerMediaQueryList implements MediaQueryList {
-  private _isActive = false;
   private _listeners: MediaQueryListListener[] = [];
 
   get matches(): boolean {
@@ -26,7 +31,7 @@ export class ServerMediaQueryList implements MediaQueryList {
     return this._mediaQuery;
   }
 
-  constructor(private _mediaQuery: string) {}
+  constructor(private _mediaQuery: string, private _isActive = false) {}
 
   /**
    * Destroy the current list by deactivating the
@@ -111,10 +116,28 @@ export class ServerMediaQueryList implements MediaQueryList {
  */
 @Injectable()
 export class ServerMatchMedia extends MatchMedia {
+  private _activeBreakpoints: BreakPoint[] = [];
+
   constructor(protected _zone: NgZone,
               @Inject(PLATFORM_ID) protected _platformId: Object,
-              @Inject(DOCUMENT) protected _document: any) {
+              @Inject(DOCUMENT) protected _document: any,
+              @Inject(BREAKPOINTS) protected breakpoints: BreakPoint[],
+              @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
     super(_zone, _platformId, _document);
+
+    const serverBps = layoutConfig.ssrObserveBreakpoints;
+    if (serverBps) {
+      this._activeBreakpoints = serverBps
+        .reduce((acc: BreakPoint[], serverBp: string) => {
+          const foundBp = breakpoints.find(bp => serverBp === bp.alias);
+          if (!foundBp) {
+            console.warn(`FlexLayoutServerModule: unknown breakpoint alias "${serverBp}"`);
+          } else {
+            acc.push(foundBp);
+          }
+          return acc;
+        }, []);
+    }
   }
 
   /** Activate the specified breakpoint if we're on the server, no-op otherwise */
@@ -138,7 +161,9 @@ export class ServerMatchMedia extends MatchMedia {
    * supports 0..n listeners for activation/deactivation
    */
   protected buildMQL(query: string): ServerMediaQueryList {
-    return new ServerMediaQueryList(query);
+    const isActive = this._activeBreakpoints.some(ab => ab.mediaQuery === query);
+
+    return new ServerMediaQueryList(query, isActive);
   }
 }
 
