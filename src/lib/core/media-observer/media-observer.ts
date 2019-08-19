@@ -163,7 +163,7 @@ export class MediaObserver implements OnDestroy {
         .observe(this.hook.withPrintQuery(mqList))
         .pipe(
             filter((change: MediaChange) => change.matches),
-            debounceTime(0, asapScheduler),
+            debounceTime(10, asapScheduler),
             switchMap(_ => of(this.findAllActivations())),
             map(excludeOverlaps),
             filter(hasChanges),
