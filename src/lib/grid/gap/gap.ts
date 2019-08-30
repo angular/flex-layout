@@ -31,6 +31,7 @@ export class GridGapStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'grid-gap-directive'})
 export class GridGapDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'grid-gap';
 

@@ -8,17 +8,20 @@
 import {NgModule} from '@angular/core';
 import {CoreModule} from '@angular/flex-layout/core';
 
-import {DefaultGridAlignDirective} from './grid-align/grid-align';
-import {DefaultGridAlignColumnsDirective} from './align-columns/align-columns';
-import {DefaultGridAlignRowsDirective} from './align-rows/align-rows';
-import {DefaultGridAreaDirective} from './area/area';
-import {DefaultGridAreasDirective} from './areas/areas';
-import {DefaultGridAutoDirective} from './auto/auto';
-import {DefaultGridColumnDirective} from './column/column';
-import {DefaultGridColumnsDirective} from './columns/columns';
-import {DefaultGridGapDirective} from './gap/gap';
-import {DefaultGridRowDirective} from './row/row';
-import {DefaultGridRowsDirective} from './rows/rows';
+import {DefaultGridAlignDirective, GridAlignDirective} from './grid-align/grid-align';
+import {
+  DefaultGridAlignColumnsDirective,
+  GridAlignColumnsDirective,
+} from './align-columns/align-columns';
+import {DefaultGridAlignRowsDirective, GridAlignRowsDirective} from './align-rows/align-rows';
+import {DefaultGridAreaDirective, GridAreaDirective} from './area/area';
+import {DefaultGridAreasDirective, GridAreasDirective} from './areas/areas';
+import {DefaultGridAutoDirective, GridAutoDirective} from './auto/auto';
+import {DefaultGridColumnDirective, GridColumnDirective} from './column/column';
+import {DefaultGridColumnsDirective, GridColumnsDirective} from './columns/columns';
+import {DefaultGridGapDirective, GridGapDirective} from './gap/gap';
+import {DefaultGridRowDirective, GridRowDirective} from './row/row';
+import {DefaultGridRowsDirective, GridRowsDirective} from './rows/rows';
 
 
 const ALL_DIRECTIVES = [
@@ -33,6 +36,17 @@ const ALL_DIRECTIVES = [
   DefaultGridGapDirective,
   DefaultGridRowDirective,
   DefaultGridRowsDirective,
+  GridAlignColumnsDirective,
+  GridAlignRowsDirective,
+  GridAreaDirective,
+  GridAreasDirective,
+  GridAutoDirective,
+  GridColumnDirective,
+  GridColumnsDirective,
+  GridGapDirective,
+  GridAlignDirective,
+  GridRowDirective,
+  GridRowsDirective,
 ];
 
 /**

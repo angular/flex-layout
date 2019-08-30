@@ -119,6 +119,7 @@ const selector = `
  *  @see https://css-tricks.com/almanac/properties/a/align-items/
  *  @see https://css-tricks.com/almanac/properties/a/align-content/
  */
+@Directive({selector: 'layout-align-directive'})
 export class LayoutAlignDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'layout-align';
   protected layout = 'row';  // default flex-direction

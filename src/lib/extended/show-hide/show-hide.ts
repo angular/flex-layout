@@ -41,6 +41,7 @@ export class ShowHideStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'show-hide-directive'})
 export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, OnChanges {
   protected DIRECTIVE_KEY = 'show-hide';
 

@@ -38,6 +38,7 @@ export class GridAutoStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: `grid-auto-directive`})
 export class GridAutoDirective extends BaseDirective2 {
   @Input('gdInline')
   get inline(): boolean { return this._inline; }

@@ -23,6 +23,7 @@ export class ImgSrcStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'img-src-directive'})
 export class ImgSrcDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'img-src';
   protected defaultSrc = '';

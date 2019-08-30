@@ -65,6 +65,7 @@ const selector = `
  * 'flex-offset' flexbox styling directive
  * Configures the 'margin-left' of the element in a layout container
  */
+@Directive({selector: 'flex-offset-directive'})
 export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
   protected DIRECTIVE_KEY = 'flex-offset';
 

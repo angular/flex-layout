@@ -24,6 +24,7 @@ export class GridAlignStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'grid-align-directive'})
 export class GridAlignDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-align';
