@@ -1,3 +1,17 @@
+<a name="8.0.0-beta.27"></a>
+# [8.0.0-beta.27](https://github.com/angular/flex-layout/compare/8.0.0-beta.26...8.0.0-beta.27) (2019-08-30)
+
+This release fixes compatibility issues for the next version of the Angular rendering engine, while
+maintaining compatibility with Angular v8.
+
+### Bug Fixes
+
+* **core:** update breakpoints ranges to avoid overlapping ([#1075](https://github.com/angular/flex-layout/issues/1075)) ([31cb34e](https://github.com/angular/flex-layout/commit/31cb34e)), closes [angular/flex-layout#1052](https://github.com/angular/flex-layout/issues/1052) [angular/flex-layout#1001](https://github.com/angular/flex-layout/issues/1001)
+* **fxFlex:** use correct type for basis validation in reflow case ([#1095](https://github.com/angular/flex-layout/issues/1095)) ([d02377a](https://github.com/angular/flex-layout/commit/d02377a)), closes [#1089](https://github.com/angular/flex-layout/issues/1089)
+* **server:** breakpoints can be used by MediaObserver ([#1087](https://github.com/angular/flex-layout/issues/1087)) ([6bbfe23](https://github.com/angular/flex-layout/commit/6bbfe23))
+
+
+
 <a name="8.0.0-beta.26"></a>
 # [8.0.0-beta.26](https://github.com/angular/flex-layout/compare/7.0.0-beta.24...8.0.0-beta.26) (2019-05-24)
 
