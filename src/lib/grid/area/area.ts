@@ -23,6 +23,7 @@ export class GridAreaStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'grid-area-directive'})
 export class GridAreaDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-area';

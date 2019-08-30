@@ -39,6 +39,7 @@ const selector = `
  * Configures the positional ordering of the element in a sorted layout container
  * @see https://css-tricks.com/almanac/properties/o/order/
  */
+@Directive({selector: 'flex-order-directive'})
 export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
 
   protected DIRECTIVE_KEY = 'flex-order';

@@ -9,6 +9,7 @@ import {Directive, DoCheck, ElementRef, Input, Optional, Self} from '@angular/co
 import {NgClass, ɵNgClassImpl, ɵNgClassR2Impl} from '@angular/common';
 import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/core';
 
+@Directive({selector: 'class-directive'})
 export class ClassDirective extends BaseDirective2 implements DoCheck {
 
   protected DIRECTIVE_KEY = 'ngClass';

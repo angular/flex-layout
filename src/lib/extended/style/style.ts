@@ -37,6 +37,7 @@ import {
   keyValuesToMap,
 } from './style-transforms';
 
+@Directive({selector: 'style-directive'})
 export class StyleDirective extends BaseDirective2 implements DoCheck {
 
   protected DIRECTIVE_KEY = 'ngStyle';

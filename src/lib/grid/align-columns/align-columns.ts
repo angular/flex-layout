@@ -29,6 +29,7 @@ export class GridAlignColumnsStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'grid-align-columns-directive'})
 export class GridAlignColumnsDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-align-columns';

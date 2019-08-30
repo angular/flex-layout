@@ -23,6 +23,7 @@ export class GridColumnStyleBuilder extends StyleBuilder {
   }
 }
 
+@Directive({selector: 'grid-column-directive'})
 export class GridColumnDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'grid-column';
 
