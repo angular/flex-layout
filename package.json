@@ -68,7 +68,7 @@
     "dgeni-packages": "^0.26.12",
     "firebase": "^5.5.8",
     "firebase-admin": "^5.13.1",
-    "firebase-tools": "^4.2.1",
+    "firebase-tools": "^7.3.2",
     "fs-extra": "^3.0.1",
     "git-semver-tags": "^2.0.2",
     "glob": "^7.1.3",
