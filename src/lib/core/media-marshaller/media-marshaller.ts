@@ -5,7 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Injectable} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {isPlatformServer} from '@angular/common';
 
 import {merge, Observable, Subject, Subscription} from 'rxjs';
 import {filter, tap} from 'rxjs/operators';
@@ -58,7 +59,8 @@ export class MediaMarshaller {
 
   constructor(protected matchMedia: MatchMedia,
               protected breakpoints: BreakPointRegistry,
-              protected hook: PrintHook) {
+              protected hook: PrintHook,
+              @Inject(PLATFORM_ID) private platformId: Object) {
     this.observeActivations();
   }
 
@@ -175,7 +177,8 @@ export class MediaMarshaller {
   updateStyles(): void {
     this.elementMap.forEach((bpMap, el) => {
       const keyMap = new Set(this.elementKeyMap.get(el)!);
-      let valueMap = this.getActivatedValues(bpMap);
+      let valueMap = isPlatformServer(this.platformId) ?
+          this.getServerActivatedValues(bpMap) : this.getActivatedValues(bpMap);
 
       if (valueMap) {
         valueMap.forEach((v, k) => {
@@ -185,11 +188,12 @@ export class MediaMarshaller {
       }
 
       keyMap.forEach(k => {
-        valueMap = this.getActivatedValues(bpMap, k);
+        valueMap = isPlatformServer(this.platformId) ?
+            this.getServerActivatedValues(bpMap, k) : this.getActivatedValues(bpMap, k);
         if (valueMap) {
           const value = valueMap.get(k);
           this.updateElement(el, k, value);
-        } else {
+        } else if (!isPlatformServer(this.platformId)) {
           this.clearElement(el, k);
         }
       });
@@ -324,6 +328,22 @@ export class MediaMarshaller {
     }
     const lastHope = bpMap.get('');
     return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
+  }
+
+  /**
+   * get the bpMap's value for the current breakpoint on the server
+   * @param bpMap
+   * @param key
+   */
+  private getServerActivatedValues(bpMap: BreakpointMap, key?: string): ValueMap | undefined {
+    // Unlike on the browser, only the currently activated breakpoint should be used on the server
+    // to generate styles, otherwise all possible breakpoint styles will be present on Universal's
+    // render and break responsive layouts.
+    const valueMap = bpMap.get(this.activatedAlias);
+    if (valueMap && (key === undefined || valueMap.has(key))) {
+      return valueMap;
+    }
+    return undefined;
   }
 
   /**

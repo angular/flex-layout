@@ -41,4 +41,26 @@
       </div>
     </div>
   </div>
+
+  <h2>Responsive layout demo 1</h2>
+  <p>
+    Disable JS to see page as rendered by Universal.
+    You should see for xs & sm: a column, md & lg: 1 and 2 in a row with 3 below, xl: a row.
+  </p>
+  <div fxLayout="row wrap" fxLayoutAlign="center start">
+    <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-lg="33.33%" class="box box1">1</div>
+    <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-lg="33.33%" class="box box2">2</div>
+    <div fxFlex="100%" fxFlex.gt-sm="50%" fxFlex.gt-lg="33.33%" class="box box3">3</div>
+  </div>
+
+  <h2>Responsive layout demo 2</h2>
+  <p>
+    Disable JS to see page as rendered by Universal.
+    You should see for xs: a column, sm: 1 and 2 in a row with 3 below, md+: a row.
+  </p>
+  <div fxLayout="row wrap" fxLayoutAlign="center start">
+    <div fxFlex="100%" fxFlex.gt-xs="50%" fxFlex.gt-sm="33.33%" class="box box1">1</div>
+    <div fxFlex="100%" fxFlex.gt-xs="50%" fxFlex.gt-sm="33.33%" class="box box2">2</div>
+    <div fxFlex="100%" fxFlex.gt-xs="50%" fxFlex.gt-sm="33.33%" class="box box3">3</div>
+  </div>
 </div>

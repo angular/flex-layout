@@ -82,3 +82,23 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.box {
+  color: #000;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 16px;
+  text-align: center;
+
+  &.box1 {
+    background: #666;
+  }
+
+  &.box2 {
+    background: #aaa;
+  }
+
+  &.box3 {
+    background: #eee;
+  }
+}
