@@ -27,10 +27,8 @@
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/platform-browser": "0.0.0-NG",
-    "rxjs": "^6.0.0"
-  },
-  "dependencies": {
-    "tslib": "^1.7.1"
+    "rxjs": "^6.0.0",
+    "tslib": "^1.9.0"
   },
   "sideEffects": false
 }
