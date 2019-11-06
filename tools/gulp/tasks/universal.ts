@@ -54,12 +54,12 @@ task('prerender:bundle:rename', [], execTask(
 
 /** Task that builds the universal-app in server mode */
 task('prerender:build', execTask(
-  'npm', ['run', 'build:ssr:bundle'],
+  'yarn', ['build:ssr:bundle'],
   {cwd: universalAppSource, failOnStderr: true}
 ));
 
 task('prerender:webpack', execTask(
-  'npm', ['run', 'build:server'],
+  'yarn', ['build:server'],
   {cwd: universalAppSource}
 ));
 

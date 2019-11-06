@@ -9,7 +9,7 @@
 # To validate changes, use an online parser, eg.
 # http://yaml-online-parser.appspot.com/
 
-var_1: &docker_image angular/ngcontainer:0.7.0
+var_1: &docker_image circleci/node:12.9.1
 var_2: &cache_key v2-ng-layout-{{ .Branch }}-{{ checksum "yarn.lock" }}-0.7.0
 
 # Settings common to each job
@@ -53,13 +53,21 @@ var_8: &docker-firefox-image
   # TODO(devversion): Temporarily use a image that includes Firefox 62 because the
   # ngcontainer image does include an old Firefox version that does not support headless.
   # See the PR that fixes this: https://github.com/angular/angular/pull/26435
-  - image: circleci/node:10.12-browsers
+  - image: circleci/node:12.9.1-browsers
 
 # Attaches the release output which has been stored in the workspace to the current job.
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
 var_9: &attach_release_output
   attach_workspace:
     at: dist/releases
+
+# Anchor that can be used to download and install Yarn globally in the bash environment.
+var_10: &yarn_download
+  run:
+    name: "Downloading and installing Yarn"
+    command: |
+      touch $BASH_ENV
+      curl -o- -L https://yarnpkg.com/install.sh | PROFILE=$BASH_ENV bash -s -- --version "1.19.1"
 
 # -----------------------------
 # Container version of CircleCI
@@ -80,6 +88,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp :publish:build-releases
@@ -97,6 +106,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-local-browser-tests.sh
@@ -113,6 +123,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-browserstack-tests.sh
@@ -132,6 +143,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-saucelabs-tests.sh
@@ -144,6 +156,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:ssr
@@ -157,6 +170,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:prerender
@@ -169,6 +183,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:hw
@@ -181,6 +196,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:aot
@@ -193,6 +209,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:lint
@@ -206,6 +223,7 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:build-release-packages
@@ -251,6 +269,7 @@ jobs:
 
       - *checkout_code
       - *restore_cache
+      - *yarn_download
       - *yarn_install
       - *attach_release_output
 
