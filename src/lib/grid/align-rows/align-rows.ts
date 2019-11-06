@@ -29,7 +29,7 @@ export class GridAlignRowsStyleBuilder extends StyleBuilder {
   }
 }
 
-@Directive({selector: 'grid-align-rows-directive'})
+@Directive()
 export class GridAlignRowsDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-align-rows';

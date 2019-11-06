@@ -9,14 +9,14 @@ import {NgModule} from '@angular/core';
 import {BidiModule} from '@angular/cdk/bidi';
 import {CoreModule} from '@angular/flex-layout/core';
 
-import {DefaultLayoutDirective, LayoutDirective} from './layout/layout';
-import {DefaultLayoutGapDirective, LayoutGapDirective} from './layout-gap/layout-gap';
-import {DefaultFlexDirective, FlexDirective} from './flex/flex';
-import {DefaultFlexOrderDirective, FlexOrderDirective} from './flex-order/flex-order';
-import {DefaultFlexOffsetDirective, FlexOffsetDirective} from './flex-offset/flex-offset';
-import {DefaultFlexAlignDirective, FlexAlignDirective} from './flex-align/flex-align';
+import {DefaultLayoutDirective} from './layout/layout';
+import {DefaultLayoutGapDirective} from './layout-gap/layout-gap';
+import {DefaultFlexDirective} from './flex/flex';
+import {DefaultFlexOrderDirective} from './flex-order/flex-order';
+import {DefaultFlexOffsetDirective} from './flex-offset/flex-offset';
+import {DefaultFlexAlignDirective} from './flex-align/flex-align';
 import {FlexFillDirective} from './flex-fill/flex-fill';
-import {DefaultLayoutAlignDirective, LayoutAlignDirective} from './layout-align/layout-align';
+import {DefaultLayoutAlignDirective} from './layout-align/layout-align';
 
 
 const ALL_DIRECTIVES = [
@@ -28,13 +28,6 @@ const ALL_DIRECTIVES = [
   FlexFillDirective,
   DefaultFlexAlignDirective,
   DefaultFlexDirective,
-  FlexDirective,
-  FlexAlignDirective,
-  FlexOffsetDirective,
-  FlexOrderDirective,
-  LayoutDirective,
-  LayoutAlignDirective,
-  LayoutGapDirective,
 ];
 
 /**
