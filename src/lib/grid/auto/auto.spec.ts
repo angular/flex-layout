@@ -155,7 +155,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': (platform.FIREFOX || platform.EDGE) ? 'row dense' : 'dense'
+        'grid-auto-flow': platform.EDGE ? 'row dense' : 'dense'
       }, styler);
     });
 
@@ -175,7 +175,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': (platform.FIREFOX || platform.EDGE) ? 'row dense' : 'dense'
+        'grid-auto-flow': platform.EDGE ? 'row dense' : 'dense'
       }, styler);
     });
 
@@ -215,7 +215,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': 'row dense'
+        'grid-auto-flow': platform.FIREFOX ? 'dense' : 'row dense',
       }, styler);
     });
 
@@ -235,7 +235,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': 'row dense'
+        'grid-auto-flow': platform.FIREFOX ? 'dense' : 'row dense'
       }, styler);
     });
 

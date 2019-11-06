@@ -10,7 +10,8 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">= 5.4.1"
+    "node": "^12.0.0",
+    "yarn": ">= 1.19.1"
   },
   "scripts": {
     "demo:serve": "gulp serve:devapp",
@@ -49,7 +50,7 @@
     "@angular/platform-browser-dynamic": "^8.0.0-rc.5",
     "@angular/platform-server": "^8.0.0-rc.5",
     "@angular/router": "^8.0.0-rc.5",
-    "@google-cloud/storage": "^1.7.0",
+    "@firebase/app-types": "^0.3.2",
     "@types/chalk": "^0.4.31",
     "@types/fs-extra": "^4.0.5",
     "@types/glob": "^5.0.33",
@@ -66,8 +67,6 @@
     "cli-color": "^1.4.0",
     "dgeni": "^0.4.10",
     "dgeni-packages": "^0.26.12",
-    "firebase": "^5.5.8",
-    "firebase-admin": "^5.13.1",
     "firebase-tools": "^4.2.1",
     "fs-extra": "^3.0.1",
     "git-semver-tags": "^2.0.2",
@@ -122,5 +121,9 @@
     "tslint": "^5.11.0",
     "typescript": "~3.4.5",
     "uglify-js": "^2.8.14"
+  },
+  "// Gulp": "Overwrite graceful-fs to a version that does not rely on the 'natives' package. This fixes gulp for >= 10.13, more information: #28213",
+  "resolutions": {
+    "**/graceful-fs": "4.2.2"
   }
 }

@@ -26,7 +26,7 @@
     "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
     "@angular/platform-server": "file:../../../node_modules/@angular/platform-server",
     "@angular/router": "file:../../../node_modules/@angular/router",
-    "@nguniversal/express-engine": "^8.0.0-rc.0",
+    "@nguniversal/express-engine": "^8.1.1",
     "core-js": "^2.5.4",
     "express": "^4.16.2",
     "rxjs": "~6.5.2",
@@ -34,10 +34,10 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.800.0-rc.4",
-    "@angular/cli": "~8.0.0-rc.4",
+    "@angular-devkit/build-angular": "~0.803.17",
+    "@angular/cli": "~8.3.17",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "~8.0.0-rc.5",
+    "@angular/language-service": "~8.2.13",
     "@types/node": "~8.9.4",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
