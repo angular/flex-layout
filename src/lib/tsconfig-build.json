@@ -38,6 +38,7 @@
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
+    "enableIvy": false,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "@angular/flex-layout",
