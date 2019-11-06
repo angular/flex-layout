@@ -44,7 +44,7 @@ export class GridColumnsStyleBuilder extends StyleBuilder {
   }
 }
 
-@Directive({selector: 'grid-columns-directive'})
+@Directive()
 export class GridColumnsDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'grid-columns';
 

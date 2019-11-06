@@ -199,7 +199,7 @@ const selector = `
  *
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
-@Directive({selector: 'flex-directive'})
+@Directive()
 export class FlexDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'flex';

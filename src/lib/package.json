@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "peerDependencies": {
-    "@angular/cdk": "^8.0.0-rc.0",
+    "@angular/cdk": "^9.0.0-rc.0",
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/platform-browser": "0.0.0-NG",

@@ -23,7 +23,7 @@ export class GridRowStyleBuilder extends StyleBuilder {
   }
 }
 
-@Directive({selector: 'grid-row-directive'})
+@Directive()
 export class GridRowDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'grid-row';
 

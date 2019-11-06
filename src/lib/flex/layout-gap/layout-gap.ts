@@ -96,7 +96,7 @@ const selector = `
  * 'layout-padding' styling directive
  *  Defines padding of child elements in a layout container
  */
-@Directive({selector: 'layout-gap-directive'})
+@Directive()
 export class LayoutGapDirective extends BaseDirective2 implements AfterContentInit, OnDestroy {
   protected layout = 'row';  // default flex-direction
   protected DIRECTIVE_KEY = 'layout-gap';
