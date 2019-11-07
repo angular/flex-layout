@@ -56,8 +56,6 @@
     "ts-loader": "^5.2.1",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "file:../../../node_modules/typescript",
-    "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "typescript": "file:../../../node_modules/typescript"
   }
 }
