@@ -25,7 +25,6 @@
     "@angular/platform-browser-dynamic": "file:../../../node_modules/@angular/platform-browser-dynamic",
     "@angular/platform-server": "file:../../../node_modules/@angular/platform-server",
     "@angular/router": "file:../../../node_modules/@angular/router",
-    "core-js": "file:../../../node_modules/core-js",
     "rxjs": "file:../../../node_modules/rxjs",
     "zone.js": "file:../../../node_modules/zone.js"
   },

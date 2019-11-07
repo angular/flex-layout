@@ -29,7 +29,6 @@
     "@angular/platform-server": "file:../../../node_modules/@angular/platform-server",
     "@angular/router": "file:../../../node_modules/@angular/router",
     "@nguniversal/express-engine": "^9.0.0-next.6",
-    "core-js": "^2.5.4",
     "express": "^4.16.2",
     "rxjs": "~6.5.3",
     "tslib": "^1.10.0",
