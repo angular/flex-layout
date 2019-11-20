@@ -24,7 +24,8 @@
     "lib:test": "gulp test",
     "lib:test:ssr": "gulp test:ssr",
     "universal:build": "gulp ci:prerender",
-    "universal:serve": "gulp universal:serve"
+    "universal:serve": "gulp universal:serve",
+    "postinstall": "ngcc --properties es2015 browser module main --create-ivy-entry-points"
   },
   "version": "8.0.0-beta.27",
   "requiredAngularVersion": ">=9.0.0-rc.2",
