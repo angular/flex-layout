@@ -54,7 +54,7 @@ task('prerender:bundle:rename', [], execTask(
 /** Task that builds the universal-app in server mode */
 task('prerender:build', execTask(
   'yarn', ['build:ssr'],
-  {cwd: universalAppSource, failOnStderr: true}
+  {cwd: universalAppSource, failOnStderr: false}
 ));
 
 task('prerender:run:server', execTask(

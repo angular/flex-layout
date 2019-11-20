@@ -50,7 +50,7 @@ task('hw:bundle:rename', [], execTask(
 
 task('hw:cli', execTask(
   'yarn', ['ng', 'build', '--prod'],
-  {cwd: helloWorldSource, failOnStderr: true}
+  {cwd: helloWorldSource, failOnStderr: false}
 ));
 
 task('hw:clean', sequenceTask('hw:clear:mods', 'hw:clear:lock', 'hw:clear:dist'));

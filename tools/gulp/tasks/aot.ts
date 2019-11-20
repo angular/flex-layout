@@ -50,7 +50,7 @@ task('aot:bundle:rename', [], execTask(
 
 task('aot:cli', execTask(
   'yarn', ['ng', 'build', '--prod'],
-  {cwd: demoAppSource, failOnStderr: true}
+  {cwd: demoAppSource, failOnStderr: false}
 ));
 
 task('aot:clean', sequenceTask('aot:clear:mods', 'aot:clear:lock', 'aot:clear:dist'));
