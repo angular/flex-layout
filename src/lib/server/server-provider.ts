@@ -40,6 +40,9 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
   // Get the initial stylings for all of the directives,
   // and initialize the fallback block of stylings
   const defaultStyles = new Map(serverSheet.stylesheet);
+  // Reset the class counter, otherwise class numbers will
+  // increase with each server render
+  nextId = 0;
   let styleText = generateCss(defaultStyles, 'all', classMap);
 
   [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
