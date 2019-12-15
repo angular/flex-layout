@@ -37,7 +37,7 @@ import {
   keyValuesToMap,
 } from './style-transforms';
 
-@Directive({selector: 'style-directive'})
+@Directive()
 export class StyleDirective extends BaseDirective2 implements DoCheck {
 
   protected DIRECTIVE_KEY = 'ngStyle';
@@ -54,7 +54,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
               @Inject(PLATFORM_ID) platformId: Object) {
     super(elementRef, null!, styler, marshal);
     if (!this.ngStyleInstance) {
-      // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been
+      // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
       // defined on the same host element; since the responsive variations may be defined...
       this.ngStyleInstance = new NgStyle(this.delegate);
     }

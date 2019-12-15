@@ -68,7 +68,8 @@ export function execTask(binPath: string, args: string[], options: ExecTaskOptio
 
     if (!options.silent || options.failOnStderr) {
       childProcess.stderr.on('data', (data: string) => {
-        options.failOnStderr ? stderrData.push(data) : process.stderr.write(data);
+        options.failOnStderr && !data.includes('Compiling') ?
+          stderrData.push(data) : process.stderr.write(data);
       });
     }
 
