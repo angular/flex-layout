@@ -37,7 +37,7 @@ export interface ShowHideParent {
 export class ShowHideStyleBuilder extends StyleBuilder {
   buildStyles(show: string, parent: ShowHideParent) {
     const shouldShow = show === 'true';
-    return {'display': shouldShow ? parent.display : 'none'};
+    return {'display': shouldShow ? parent.display || 'initial' : 'none'};
   }
 }
 
