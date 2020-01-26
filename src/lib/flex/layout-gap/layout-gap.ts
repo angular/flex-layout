@@ -8,7 +8,6 @@
 import {
   Directive,
   ElementRef,
-  Optional,
   OnDestroy,
   NgZone,
   Injectable,
@@ -114,14 +113,12 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     return buffer;
   }
 
-  constructor(protected elRef: ElementRef,
+  constructor(elRef: ElementRef,
               protected zone: NgZone,
               protected directionality: Directionality,
               protected styleUtils: StyleUtils,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: LayoutGapStyleBuilder,
-              protected marshal: MediaMarshaller) {
+              styleBuilder: LayoutGapStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     const extraTriggers = [this.directionality.change, this.observerSubject.asObservable()];
     this.init(extraTriggers);

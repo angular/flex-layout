@@ -37,10 +37,10 @@ export class FlexFillStyleBuilder extends StyleBuilder {
  */
 @Directive({selector: `[fxFill], [fxFlexFill]`})
 export class FlexFillDirective extends BaseDirective2 {
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              protected styleBuilder: FlexFillStyleBuilder,
-              protected marshal: MediaMarshaller) {
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
+              styleBuilder: FlexFillStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.addStyles('');
   }

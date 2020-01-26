@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Optional, Injectable} from '@angular/core';
+import {Directive, ElementRef, Injectable} from '@angular/core';
 import {
   BaseDirective2,
   StyleUtils,
@@ -27,12 +27,10 @@ export class GridColumnStyleBuilder extends StyleBuilder {
 export class GridColumnDirective extends BaseDirective2 {
   protected DIRECTIVE_KEY = 'grid-column';
 
-  constructor(protected elementRef: ElementRef,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridColumnStyleBuilder,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller) {
+  constructor(elementRef: ElementRef,
+              styleBuilder: GridColumnStyleBuilder,
+              styler: StyleUtils,
+              marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
     this.init();
   }

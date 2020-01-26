@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Input, Optional, Injectable} from '@angular/core';
+import {Directive, ElementRef, Input, Injectable} from '@angular/core';
 import {
   BaseDirective2,
   StyleUtils,
@@ -40,12 +40,10 @@ export class GridGapDirective extends BaseDirective2 {
   set inline(val: boolean) { this._inline = coerceBooleanProperty(val); }
   protected _inline = false;
 
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridGapStyleBuilder,
-              protected marshal: MediaMarshaller) {
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
+              styleBuilder: GridGapStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }

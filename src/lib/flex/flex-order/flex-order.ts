@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, OnChanges, Injectable, Optional} from '@angular/core';
+import {Directive, ElementRef, OnChanges, Injectable} from '@angular/core';
 import {
   BaseDirective2,
   StyleBuilder,
@@ -44,12 +44,10 @@ export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
 
   protected DIRECTIVE_KEY = 'flex-order';
 
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: FlexOrderStyleBuilder,
-              protected marshal: MediaMarshaller) {
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
+              styleBuilder: FlexOrderStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }

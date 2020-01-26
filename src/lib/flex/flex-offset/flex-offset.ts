@@ -5,13 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  Directive,
-  ElementRef,
-  OnChanges,
-  Optional,
-  Injectable,
-} from '@angular/core';
+import {Directive, ElementRef, OnChanges, Injectable} from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   MediaMarshaller,
@@ -69,13 +63,11 @@ const selector = `
 export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
   protected DIRECTIVE_KEY = 'flex-offset';
 
-  constructor(protected elRef: ElementRef,
+  constructor(elRef: ElementRef,
               protected directionality: Directionality,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: FlexOffsetStyleBuilder,
-              protected marshal: MediaMarshaller,
-              protected styler: StyleUtils) {
+              styleBuilder: FlexOffsetStyleBuilder,
+              marshal: MediaMarshaller,
+              styler: StyleUtils) {
     super(elRef, styleBuilder, styler, marshal);
     this.init([this.directionality.change]);
     // Parent DOM `layout-gap` with affect the nested child with `flex-offset`

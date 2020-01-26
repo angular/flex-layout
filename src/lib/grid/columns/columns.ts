@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Input, Injectable, Optional} from '@angular/core';
+import {Directive, ElementRef, Input, Injectable} from '@angular/core';
 import {
   MediaMarshaller,
   BaseDirective2,
@@ -53,12 +53,10 @@ export class GridColumnsDirective extends BaseDirective2 {
   set inline(val: boolean) { this._inline = coerceBooleanProperty(val); }
   protected _inline = false;
 
-  constructor(protected elementRef: ElementRef,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridColumnsStyleBuilder,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller) {
+  constructor(elementRef: ElementRef,
+              styleBuilder: GridColumnsStyleBuilder,
+              styler: StyleUtils,
+              marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
     this.init();
   }

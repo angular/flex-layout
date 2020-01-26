@@ -5,13 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {
-  Inject,
-  ModuleWithProviders,
-  NgModule,
-  Optional,
-  PLATFORM_ID,
-} from '@angular/core';
+import {Inject, ModuleWithProviders, NgModule, PLATFORM_ID} from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 
 import {
@@ -58,7 +52,7 @@ export class FlexLayoutModule {
     };
   }
 
-  constructor(@Optional() @Inject(SERVER_TOKEN) serverModuleLoaded: boolean,
+  constructor(@Inject(SERVER_TOKEN) serverModuleLoaded: boolean,
               @Inject(PLATFORM_ID) platformId: Object) {
     if (isPlatformServer(platformId) && !serverModuleLoaded) {
       console.warn('Warning: Flex Layout loaded on the server without FlexLayoutServerModule');

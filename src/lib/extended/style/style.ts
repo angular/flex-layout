@@ -10,12 +10,14 @@ import {
   DoCheck,
   ElementRef,
   Inject,
+  KeyValueDiffers,
   Optional,
   PLATFORM_ID,
+  Renderer2,
   SecurityContext,
   Self,
 } from '@angular/core';
-import {isPlatformServer, NgStyle, ɵNgStyleImpl, ɵNgStyleR2Impl} from '@angular/common';
+import {isPlatformServer, NgStyle} from '@angular/common';
 import {DomSanitizer} from '@angular/platform-browser';
 import {
   BaseDirective2,
@@ -44,19 +46,20 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
   protected fallbackStyles: NgStyleMap;
   protected isServer: boolean;
 
-  constructor(protected elementRef: ElementRef,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller,
-              protected delegate: ɵNgStyleImpl,
+  constructor(elementRef: ElementRef,
+              styler: StyleUtils,
+              marshal: MediaMarshaller,
               protected sanitizer: DomSanitizer,
+              differs: KeyValueDiffers,
+              renderer2: Renderer2,
               @Optional() @Self() private readonly ngStyleInstance: NgStyle,
-              @Optional() @Inject(SERVER_TOKEN) serverLoaded: boolean,
+              @Inject(SERVER_TOKEN) serverLoaded: boolean,
               @Inject(PLATFORM_ID) platformId: Object) {
     super(elementRef, null!, styler, marshal);
     if (!this.ngStyleInstance) {
       // Create an instance NgStyle Directive instance only if `ngStyle=""` has NOT been
       // defined on the same host element; since the responsive variations may be defined...
-      this.ngStyleInstance = new NgStyle(this.delegate);
+      this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
     }
     this.init();
     const styles = this.nativeElement.getAttribute('style') || '';
@@ -127,17 +130,11 @@ const selector = `
   [ngStyle.gt-xs], [ngStyle.gt-sm], [ngStyle.gt-md], [ngStyle.gt-lg]
 `;
 
-// tslint:disable-next-line:variable-name
-export const LayoutNgStyleImplProvider = {
-  provide: ɵNgStyleImpl,
-  useClass: ɵNgStyleR2Impl
-};
-
 /**
  * Directive to add responsive support for ngStyle.
  *
  */
-@Directive({selector, inputs, providers: [LayoutNgStyleImplProvider]})
+@Directive({selector, inputs})
 export class DefaultStyleDirective extends StyleDirective implements DoCheck {
   protected inputs = inputs;
 }

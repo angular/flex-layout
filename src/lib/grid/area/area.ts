@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Injectable, Optional} from '@angular/core';
+import {Directive, ElementRef, Injectable} from '@angular/core';
 import {
   BaseDirective2,
   StyleUtils,
@@ -28,12 +28,10 @@ export class GridAreaDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-area';
 
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridAreaStyleBuilder,
-              protected marshal: MediaMarshaller) {
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
+              styleBuilder: GridAreaStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }
