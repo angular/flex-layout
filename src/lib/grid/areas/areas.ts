@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Injectable, Input, Optional} from '@angular/core';
+import {Directive, ElementRef, Injectable, Input} from '@angular/core';
 import {
   BaseDirective2,
   StyleUtils,
@@ -44,12 +44,10 @@ export class GridAreasDirective extends BaseDirective2 {
   set inline(val: boolean) { this._inline = coerceBooleanProperty(val); }
   protected _inline = false;
 
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridAreasStyleBuiler,
-              protected marshal: MediaMarshaller) {
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
+              styleBuilder: GridAreasStyleBuiler,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }

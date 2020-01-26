@@ -224,11 +224,11 @@ export class FlexDirective extends BaseDirective2 {
   protected flexGrow = '1';
   protected flexShrink = '1';
 
-  constructor(protected elRef: ElementRef,
-              protected styleUtils: StyleUtils,
+  constructor(elRef: ElementRef,
+              styleUtils: StyleUtils,
               @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
-              protected styleBuilder: FlexStyleBuilder,
-              protected marshal: MediaMarshaller) {
+              styleBuilder: FlexStyleBuilder,
+              marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
     if (this.parentElement) {

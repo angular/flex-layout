@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Input, Optional, Injectable} from '@angular/core';
+import {Directive, ElementRef, Input, Injectable} from '@angular/core';
 import {
   BaseDirective2,
   StyleUtils,
@@ -47,12 +47,10 @@ export class GridAutoDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-auto';
 
-  constructor(protected elementRef: ElementRef,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridAutoStyleBuilder,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller) {
+  constructor(elementRef: ElementRef,
+              styleBuilder: GridAutoStyleBuilder,
+              styler: StyleUtils,
+              marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
     this.init();
   }

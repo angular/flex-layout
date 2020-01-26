@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, Optional, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
 import {applyCssPrefixes} from '../../utils/auto-prefixer';
@@ -16,8 +16,8 @@ import {LAYOUT_CONFIG, LayoutConfigOptions} from '../tokens/library-config';
 @Injectable({providedIn: 'root'})
 export class StyleUtils {
 
-  constructor(@Optional() private _serverStylesheet: StylesheetMap,
-              @Optional() @Inject(SERVER_TOKEN) private _serverModuleLoaded: boolean,
+  constructor(private _serverStylesheet: StylesheetMap,
+              @Inject(SERVER_TOKEN) private _serverModuleLoaded: boolean,
               @Inject(PLATFORM_ID) private _platformId: Object,
               @Inject(LAYOUT_CONFIG) private layoutConfig: LayoutConfigOptions) {}
 

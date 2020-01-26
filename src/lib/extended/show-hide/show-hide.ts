@@ -10,7 +10,6 @@ import {
   ElementRef,
   OnChanges,
   SimpleChanges,
-  Optional,
   Inject,
   PLATFORM_ID,
   Injectable,
@@ -50,13 +49,13 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   protected hasLayout = false;
   protected hasFlexChild = false;
 
-  constructor(protected elementRef: ElementRef,
-              protected styleBuilder: ShowHideStyleBuilder,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller,
+  constructor(elementRef: ElementRef,
+              styleBuilder: ShowHideStyleBuilder,
+              styler: StyleUtils,
+              marshal: MediaMarshaller,
               @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
               @Inject(PLATFORM_ID) protected platformId: Object,
-              @Optional() @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
+              @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
     super(elementRef, styleBuilder, styler, marshal);
   }
 

@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Injectable, Optional} from '@angular/core';
+import {Directive, ElementRef, Injectable} from '@angular/core';
 import {
   MediaMarshaller,
   BaseDirective2,
@@ -29,12 +29,10 @@ export class GridAlignDirective extends BaseDirective2 {
 
   protected DIRECTIVE_KEY = 'grid-align';
 
-  constructor(protected elementRef: ElementRef,
-              // NOTE: not actually optional, but we need to force DI without a
-              // constructor call
-              @Optional() protected styleBuilder: GridAlignStyleBuilder,
-              protected styler: StyleUtils,
-              protected marshal: MediaMarshaller) {
+  constructor(elementRef: ElementRef,
+              styleBuilder: GridAlignStyleBuilder,
+              styler: StyleUtils,
+              marshal: MediaMarshaller) {
     super(elementRef, styleBuilder, styler, marshal);
     this.init();
   }
