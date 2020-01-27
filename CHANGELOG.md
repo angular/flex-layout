@@ -1,3 +1,32 @@
+<a name="9.0.0-beta.28"></a>
+# [9.0.0-beta.28](https://github.com/angular/flex-layout/compare/8.0.0-beta.27...9.0.0-beta.28) (2020-01-27)
+
+This release adds compatibility for Angular v9, which removed some private APIs this library depended on.
+
+### Bug Fixes
+
+* **ssr:** reset class counter to zero before each render ([#1153](https://github.com/angular/flex-layout/issues/1153)) ([d062708](https://github.com/angular/flex-layout/commit/d062708))
+
+
+### Features
+
+* **core:** support beforeprint and afterprint hooks ([#1080](https://github.com/angular/flex-layout/issues/1080)) ([8302998](https://github.com/angular/flex-layout/commit/8302998)), closes [#603](https://github.com/angular/flex-layout/issues/603)
+* change tslib from direct dependency to peerDependency ([#1132](https://github.com/angular/flex-layout/issues/1132)) ([06268b8](https://github.com/angular/flex-layout/commit/06268b8))
+
+
+### BREAKING CHANGES
+
+* We no longer directly have a direct depedency on `tslib`. Instead it is now listed a `peerDependency`.
+
+Users not using the CLI will need to manually install `tslib` via;
+```
+yarn add tslib
+```
+or
+```
+npm install tslib --save
+```
+
 <a name="8.0.0-beta.27"></a>
 # [8.0.0-beta.27](https://github.com/angular/flex-layout/compare/8.0.0-beta.26...8.0.0-beta.27) (2019-08-30)
 
