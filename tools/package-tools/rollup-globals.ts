@@ -40,6 +40,7 @@ export const rollupGlobals = {
   '@angular/material/form-field': 'ng.material.formField',
   '@angular/cdk/bidi': 'ng.cdk.bidi',
   '@angular/cdk/coercion': 'ng.cdk.coercion',
+  '@angular/cdk/layout': 'ng.cdk.layout',
   '@angular/cdk/platform': 'ng.cdk.platform',
 
   // Some packages are not really needed for the UMD bundles, but for the missingRollupGlobals rule.

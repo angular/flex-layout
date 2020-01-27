@@ -44,6 +44,7 @@ System.config({
     '@angular/cdk/coercion': 'node:@angular/cdk/bundles/cdk-coercion.umd.js',
     '@angular/cdk/collections': 'node:@angular/cdk/bundles/cdk-collections.umd.js',
     '@angular/cdk/keycodes': 'node:@angular/cdk/bundles/cdk-keycodes.umd.js',
+    '@angular/cdk/layout': 'node:@angular/cdk/bundles/cdk-layout.umd.js',
     '@angular/cdk/observers': 'node:@angular/cdk/bundles/cdk-observers.umd.js',
     '@angular/cdk/overlay': 'node:@angular/cdk/bundles/cdk-overlay.umd.js',
     '@angular/cdk/platform': 'node:@angular/cdk/bundles/cdk-platform.umd.js',
@@ -57,6 +58,7 @@ System.config({
     '@angular/flex-layout/flex': 'dist/packages/flex-layout/flex/index.js',
     '@angular/flex-layout/grid': 'dist/packages/flex-layout/grid/index.js',
     '@angular/flex-layout/server': 'dist/packages/flex-layout/server/index.js',
+    '@angular/flex-layout/uni': 'dist/packages/flex-layout/uni/index.js',
   },
   packages: {
     // Thirdparty barrels.
