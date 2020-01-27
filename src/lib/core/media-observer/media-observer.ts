@@ -66,7 +66,7 @@ export class MediaObserver implements OnDestroy {
   /**
    * @deprecated Use `asObservable()` instead.
    * @breaking-change 8.0.0-beta.25
-   * @deletion-target v8.0.0-beta.26
+   * @deletion-target 10.0.0
    */
   readonly media$: Observable<MediaChange>;
 
