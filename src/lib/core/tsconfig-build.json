@@ -9,6 +9,7 @@
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "@angular/flex-layout/core",
+    "flatModulePrivateSymbolPrefix": "core_private",
     "skipTemplateCodegen": true,
     "fullTemplateTypeCheck": true
   }
