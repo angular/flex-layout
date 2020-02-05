@@ -1,11 +1,7 @@
 import {join} from 'path';
 import {PackageBundler} from './build-bundles';
 import {buildConfig} from './build-config';
-import {
-  addImportAsToAllMetadata,
-  compileEntryPoint,
-  renamePrivateReExportsToBeUnique,
-} from './compile-entry-point';
+import {addImportAsToAllMetadata, compileEntryPoint} from './compile-entry-point';
 import {getSecondaryEntryPointsForPackage} from './secondary-entry-points';
 
 const {packagesDir, outputDir} = buildConfig;
@@ -97,8 +93,7 @@ export class BuildPackage {
   /** Compiles TS into both ES2015 and ES5, then updates exports. */
   private async _compileBothTargets(p = '') {
     return compileEntryPoint(this, buildTsconfigName, p)
-        .then(() => compileEntryPoint(this, buildTsconfigName, p, this.esm5OutputDir))
-        .then(() => renamePrivateReExportsToBeUnique(this, p));
+        .then(() => compileEntryPoint(this, buildTsconfigName, p, this.esm5OutputDir));
   }
 
   /** Stores the secondary entry-points for this package if they haven't been computed already. */
