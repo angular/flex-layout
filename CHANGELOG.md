@@ -1,3 +1,8 @@
+<a name="9.0.0-beta.29"></a>
+# [9.0.0-beta.29](https://github.com/angular/flex-layout/compare/9.0.0-beta.28...9.0.0-beta.29) (2020-02-06)
+
+This release adds support for projects using Angular v9 without Ivy.
+
 <a name="9.0.0-beta.28"></a>
 # [9.0.0-beta.28](https://github.com/angular/flex-layout/compare/8.0.0-beta.27...9.0.0-beta.28) (2020-01-27)
 
