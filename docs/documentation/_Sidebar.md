@@ -20,7 +20,7 @@
 
 * Learning FlexBox
   * [CSS Flexbox Reference](http://cssreference.io/flexbox/)
-  * [How Flexbox Works - Explained](https://medium.freecodecamp.com/even-more-about-how-flexbox-works-explained-in-big-colorful-animated-gifs-a5a74812b053#.dfi1sit87)
+  * [How Flexbox Works - Explained](https://www.freecodecamp.org/news/even-more-about-how-flexbox-works-explained-in-big-colorful-animated-gifs-a5a74812b053/)
   * [Complete Guide to FlexBox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
   
 * History
