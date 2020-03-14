@@ -192,7 +192,7 @@ export class MediaTrigger {
     this.matchMedia.source.next(new MediaChange(matches, query));
   }
 
-  private get currentActivations() {
+  private get currentActivations(): string[] {
     return this.matchMedia.activations;
   }
 
