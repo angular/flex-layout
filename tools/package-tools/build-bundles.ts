@@ -9,7 +9,6 @@ import {remapSourcemap} from './sourcemap-remap';
 // There are no type definitions available for these imports.
 const rollup = require('rollup');
 const rollupNodeResolutionPlugin = require('rollup-plugin-node-resolve');
-const rollupAlias = require('rollup-plugin-alias');
 
 /** Directory where all bundles will be created in. */
 const bundlesDir = join(buildConfig.outputDir, 'bundles');
@@ -150,41 +149,10 @@ export class PackageBundler {
       // it is inlined into the bundle.
       let external = Object.keys(rollupGlobals);
       external.splice(external.indexOf('tslib'), 1);
-
-      // If each secondary entry-point is re-exported at the root, we want to exlclude those
-      // secondary entry-points from the rollup globals because we want the UMD for this package
-      // to include *all* of the sources for those entry-points.
-      if (this.buildPackage.exportsSecondaryEntryPointsAtRoot &&
-          config.moduleName === this.primaryAmdModuleName) {
-
-        const importRegex = new RegExp(`@angular/${this.buildPackage.name}/.+`);
-        external = external.filter(e => !importRegex.test(e));
-
-        // Use the rollup-alias plugin to map imports of the form `@angular/material/button`
-        // to the actual file location so that rollup can resolve the imports (otherwise they
-        // will be treated as external dependencies and not included in the bundle).
-        bundleOptions.plugins.push(
-            rollupAlias(this.getResolvedSecondaryEntryPointImportPaths(config.dest)));
-      }
-
       bundleOptions.external = external;
     }
 
     return rollup.rollup(bundleOptions).then((bundle: any) => bundle.write(writeOptions));
-  }
-
-  /**
-   * Gets mapping of import aliases (e.g. `@angular/material/button`) to the path of the es5
-   * bundle output.
-   * @param bundleOutputDir Path to the bundle output directory.
-   * @returns Map of alias to resolved path.
-   */
-  private getResolvedSecondaryEntryPointImportPaths(bundleOutputDir: string) {
-    return this.buildPackage.secondaryEntryPoints.reduce((map, p) => {
-      map[`@angular/${this.buildPackage.name}/${p}`] =
-          join(dirname(bundleOutputDir), this.buildPackage.name, `${p}.es5.js`);
-      return map;
-    }, {} as {[key: string]: string});
   }
 
   /** Gets the AMD module name for a package and an optional entry point. */
