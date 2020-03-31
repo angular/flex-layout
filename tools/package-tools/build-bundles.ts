@@ -1,4 +1,4 @@
-import {join, dirname} from 'path';
+import {join} from 'path';
 import {uglifyJsFile} from './minify-sources';
 import {buildConfig} from './build-config';
 import {BuildPackage} from './build-package';
