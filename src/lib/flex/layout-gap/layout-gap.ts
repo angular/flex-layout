@@ -252,27 +252,32 @@ const layoutGapCacheColumnLtr: Map<string, StyleDefinition> = new Map();
 const GRID_SPECIFIER = ' grid';
 
 function buildGridPadding(value: string, directionality: string): StyleDefinition {
-  let paddingTop = '0px', paddingRight = '0px', paddingBottom = value, paddingLeft = '0px';
+  const [between, below] = value.split(' ');
+  const bottom = below || between;
+  let paddingRight = '0px', paddingBottom = bottom, paddingLeft = '0px';
 
   if (directionality === 'rtl') {
-    paddingLeft = value;
+    paddingLeft = between;
   } else {
-    paddingRight = value;
+    paddingRight = between;
   }
 
-  return {'padding': `${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft}`};
+  return {'padding': `0px ${paddingRight} ${paddingBottom} ${paddingLeft}`};
 }
 
 function buildGridMargin(value: string, directionality: string): StyleDefinition {
-  let marginTop = '0px', marginRight = '0px', marginBottom = '-' + value, marginLeft = '0px';
+  const [between, below] = value.split(' ');
+  const bottom = below || between;
+  const minus = (str: string) => `-${str}`;
+  let marginRight = '0px', marginBottom = minus(bottom), marginLeft = '0px';
 
   if (directionality === 'rtl') {
-    marginLeft = '-' + value;
+    marginLeft = minus(between);
   } else {
-    marginRight = '-' + value;
+    marginRight = minus(between);
   }
 
-  return {'margin': `${marginTop} ${marginRight} ${marginBottom} ${marginLeft}`};
+  return {'margin': `0px ${marginRight} ${marginBottom} ${marginLeft}`};
 }
 
 function getMarginType(directionality: string, layout: string) {
