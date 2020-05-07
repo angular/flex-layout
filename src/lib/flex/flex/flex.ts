@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Inject, Injectable, Input} from '@angular/core';
+import {Directive, ElementRef, Inject, Injectable, Input, OnInit} from '@angular/core';
 import {
   BaseDirective2,
   LayoutConfigOptions,
@@ -200,11 +200,11 @@ const selector = `
  * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
 @Directive()
-export class FlexDirective extends BaseDirective2 {
+export class FlexDirective extends BaseDirective2 implements OnInit {
 
   protected DIRECTIVE_KEY = 'flex';
-  protected direction = '';
-  protected wrap = false;
+  protected direction?: string = undefined;
+  protected wrap?: boolean = undefined;
 
 
   @Input('fxShrink')
@@ -228,9 +228,12 @@ export class FlexDirective extends BaseDirective2 {
               styleUtils: StyleUtils,
               @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
               styleBuilder: FlexStyleBuilder,
-              marshal: MediaMarshaller) {
+              protected marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
+  }
+
+  ngOnInit() {
     if (this.parentElement) {
       this.marshal.trackValue(this.parentElement, 'layout')
         .pipe(takeUntil(this.destroySubject))
@@ -256,8 +259,11 @@ export class FlexDirective extends BaseDirective2 {
   /** Input to this is exclusively the basis input value */
   protected updateWithValue(value: string) {
     const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
-    if (!this.direction) {
+    if (this.direction === undefined) {
       this.direction = this.getFlexFlowDirection(this.parentElement!, addFlexToParent);
+    }
+    if (this.wrap === undefined) {
+      this.wrap = this.hasWrap(this.parentElement!);
     }
     const direction = this.direction;
     const isHorizontal = direction.startsWith('row');

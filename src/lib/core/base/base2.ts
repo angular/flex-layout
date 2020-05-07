@@ -132,6 +132,10 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     return 'row';
   }
 
+  protected hasWrap(target: HTMLElement): boolean {
+    return this.styler.hasWrap(target);
+  }
+
   /** Applies styles given via string pair or object map to the directive element */
   protected applyStyleToElement(style: StyleDefinition,
                                 value?: string | number,

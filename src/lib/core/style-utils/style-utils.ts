@@ -60,6 +60,11 @@ export class StyleUtils {
     return [value || 'row', hasInlineValue];
   }
 
+  hasWrap(target: HTMLElement): boolean {
+    const query = 'flex-wrap';
+    return this.lookupStyle(target, query) === 'wrap';
+  }
+
   /**
    * Find the DOM element's raw attribute value (if any)
    */

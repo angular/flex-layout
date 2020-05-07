@@ -98,6 +98,26 @@ describe('flex directive', () => {
       expectEl(element).toHaveStyle({'flex': '10 1 auto'}, styler);
     });
 
+    it('should add correct styles for `fxFlex` with NgForOf', () => {
+      componentWithTemplate(`
+        <div [fxLayout]="direction">
+          <div *ngFor="let el of els" fxFlex="50"></div>
+        </div>
+      `);
+      fixture.componentInstance.direction = 'row';
+      fixture.detectChanges();
+      let element = queryFor(fixture, '[fxFlex]')[0];
+      expectEl(element).toHaveStyle({'max-width': '50%'}, styler);
+      expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
+      expectEl(element).toHaveStyle({'flex': '1 1 100%'}, styler);
+      fixture.componentInstance.direction = 'column';
+      fixture.detectChanges();
+      element = queryFor(fixture, '[fxFlex]')[0];
+      expectEl(element).toHaveStyle({'max-height': '50%'}, styler);
+      expectEl(element).toHaveStyle({'box-sizing': 'border-box'}, styler);
+      expectEl(element).toHaveStyle({'flex': '1 1 100%'}, styler);
+    });
+
     it('should add correct styles for `fxFlex` and ngStyle without layout change', () => {
       // NOTE: the presence of ngIf on the child element is imperative for detecting issue 700
       componentWithTemplate(`
@@ -119,6 +139,7 @@ describe('flex directive', () => {
           <div fxFlex="30"></div>
         </div>
       `);
+      fixture.debugElement.componentInstance.direction = 'column';
       fixture.detectChanges();
       let element = queryFor(fixture, '[fxFlex]')[0];
       expectNativeEl(fixture).toHaveStyle({'flex-direction': 'column'}, styler);
@@ -1088,6 +1109,7 @@ export class MockFlexStyleBuilder extends StyleBuilder {
 })
 class TestFlexComponent {
   direction = 'column';
+  els = new Array(5);
 }
 
 @Component({
