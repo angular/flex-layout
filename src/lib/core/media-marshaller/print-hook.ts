@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, OnDestroy} from '@angular/core';
 
 import {mergeAlias} from '../add-alias';
 import {MediaChange} from '../media-change';
@@ -37,7 +37,7 @@ export const BREAKPOINT_PRINT = {
  * Used in MediaMarshaller and MediaObserver
  */
 @Injectable({providedIn: 'root'})
-export class PrintHook {
+export class PrintHook implements OnDestroy {
   constructor(
       protected breakpoints: BreakPointRegistry,
       @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
@@ -97,6 +97,9 @@ export class PrintHook {
   // browsers which support `beforeprint` and `afterprint` events.
   private isPrintingBeforeAfterEvent: boolean = false;
 
+  private beforePrintEventListeners: Function[] = [];
+  private afterPrintEventListeners: Function[] = [];
+
   // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
   // trigger print styles synchronously and apply proper layout styles.
   // It is a noop if the hooks have already been registered or if the document's
@@ -109,8 +112,7 @@ export class PrintHook {
 
     this.registeredBeforeAfterPrintHooks = true;
 
-    // Could we have teardown logic to remove if there are no print listeners being used?
-    this._document.defaultView.addEventListener('beforeprint', () => {
+    const beforePrintListener = () => {
       // If we aren't already printing, start printing and update the styles as
       // if there was a regular print `MediaChange`(from matchMedia).
       if (!this.isPrinting) {
@@ -118,9 +120,9 @@ export class PrintHook {
         this.startPrinting(target, this.getEventBreakpoints(new MediaChange(true, PRINT)));
         target.updateStyles();
       }
-    });
+    };
 
-    this._document.defaultView.addEventListener('afterprint', () => {
+    const afterPrintListener = () => {
       // If we aren't already printing, start printing and update the styles as
       // if there was a regular print `MediaChange`(from matchMedia).
       this.isPrintingBeforeAfterEvent = false;
@@ -128,11 +130,18 @@ export class PrintHook {
         this.stopPrinting(target);
         target.updateStyles();
       }
-    });
+    };
+
+    // Could we have teardown logic to remove if there are no print listeners being used?
+    this._document.defaultView.addEventListener('beforeprint', beforePrintListener);
+    this._document.defaultView.addEventListener('afterprint', afterPrintListener);
+
+    this.beforePrintEventListeners.push(beforePrintListener);
+    this.afterPrintEventListeners.push(afterPrintListener);
   }
 
   /**
-   * Prepare RxJs filter operator with partial application
+   * Prepare RxJS filter operator with partial application
    * @return pipeable filter predicate
    */
   interceptEvents(target: HookTarget) {
@@ -211,6 +220,12 @@ export class PrintHook {
         this.deactivations = [];
       }
     }
+  }
+
+  /** Teardown logic for the service. */
+  ngOnDestroy() {
+    this.beforePrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('beforeprint', l));
+    this.afterPrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('afterprint', l));
   }
 
   /** Is this service currently in Print-mode ? */
