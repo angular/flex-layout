@@ -136,7 +136,7 @@ The notation
 
 ```html
 <div fxLayout="row">
-   <div fxFlex><div>
+   <div fxFlex></div>
 </div>
 ```
 
@@ -151,9 +151,9 @@ The notation:
 
 ```html
 <div fxLayout="row">
-   <div fxFlex><div>
-   <div fxFlex><div>
-   <div fxFlex><div>
+   <div fxFlex></div>
+   <div fxFlex></div>
+   <div fxFlex></div>
 </div>
 ```
 
