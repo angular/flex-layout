@@ -509,6 +509,27 @@ describe('layout-gap directive', () => {
       expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
     });
 
+    it('should add gap styles correctly between option', () => {
+      let template = `
+        <div fxLayoutGap='13px 12px grid'>
+          <div fxFlex></div>
+          <div fxFlex></div>
+          <div fxFlex></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      let expectedMargin = {'margin': '0px -13px -12px 0px'};
+      let expectedPadding = {'padding': '0px 13px 12px 0px'};
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[2]).toHaveStyle(expectedPadding, styler);
+      expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
+    });
+
     it('should set gap without fallback', () => {
       let template = `
         <div fxLayoutAlign='center center' fxLayoutGap.md="24px grid">

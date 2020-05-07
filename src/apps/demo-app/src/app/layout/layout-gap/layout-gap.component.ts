@@ -13,7 +13,7 @@ const DIRECTIONS = ['row', 'row-reverse', 'column', 'column-reverse'];
         <div fxFlexFill>
           <div fxFlexFill
                [fxLayout]="direction + ' wrap'"
-               fxLayoutGap="10px grid"
+               fxLayoutGap="10px 5px grid"
                style="cursor: pointer;"
                (click)="toggleDirection()">
             <div fxFlex="25">
