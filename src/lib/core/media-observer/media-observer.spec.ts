@@ -59,6 +59,7 @@ describe('media-observer', () => {
     it('can supports the `.isActive()` API', () => {
       expect(media$).toBeDefined();
 
+      mediaController.autoRegisterQueries = false;
       // Activate mediaQuery associated with 'md' alias
       mediaController.activate('md');
       expect(mediaObserver.isActive('md')).toBeTruthy();
@@ -126,10 +127,6 @@ describe('media-observer', () => {
 
         activateQuery('gt-lg');
         expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
-        activateQuery('unknown');
-        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
-
       } finally {
         mediaController.autoRegisterQueries = true;
         subscription.unsubscribe();
