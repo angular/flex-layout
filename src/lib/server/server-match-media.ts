@@ -48,7 +48,7 @@ export class ServerMediaQueryList implements MediaQueryList {
       this._isActive = true;
       this._listeners.forEach((callback) => {
         const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = callback!;
-        cb.call(null, this);
+        cb.call(this, {matches: this.matches, media: this.media} as MediaQueryListEvent);
       });
     }
     return this;
@@ -60,7 +60,7 @@ export class ServerMediaQueryList implements MediaQueryList {
       this._isActive = false;
       this._listeners.forEach((callback) => {
         const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = callback!;
-        cb.call(null, this);
+        cb.call(this, {matches: this.matches, media: this.media} as MediaQueryListEvent);
       });
     }
     return this;
@@ -73,7 +73,7 @@ export class ServerMediaQueryList implements MediaQueryList {
     }
     if (this._isActive) {
       const cb: ((this: MediaQueryList, ev: MediaQueryListEvent) => any) = listener!;
-      cb.call(null, this);
+      cb.call(this, {matches: this.matches, media: this.media} as MediaQueryListEvent);
     }
   }
 
