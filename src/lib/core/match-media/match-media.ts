@@ -48,7 +48,7 @@ export class MatchMedia {
    */
   isActive(mediaQuery: string): boolean {
     const mql = this.registry.get(mediaQuery);
-    return !!mql ? mql.matches : false;
+    return !!mql ? mql.matches : this.registerQuery(mediaQuery).some(m => m.matches);
   }
 
   /**

@@ -113,7 +113,7 @@ export class MediaObserver implements OnDestroy {
     const aliases = splitQueries(coerceArray(value));
     return aliases.some(alias => {
       const query = toMediaQuery(alias, this.breakpoints);
-      return this.matchMedia.isActive(query);
+      return query !== null && this.matchMedia.isActive(query);
     });
   }
 
@@ -201,7 +201,7 @@ export class MediaObserver implements OnDestroy {
  */
 function toMediaQuery(query: string, locator: BreakPointRegistry) {
   const bp = locator.findByAlias(query) || locator.findByQuery(query);
-  return bp ? bp.mediaQuery : query;
+  return bp ? bp.mediaQuery : null;
 }
 
 /**
