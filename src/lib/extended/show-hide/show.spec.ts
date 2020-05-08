@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Component, Directive, OnInit, PLATFORM_ID} from '@angular/core';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {Component, Directive, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ComponentFixture, TestBed, inject} from '@angular/core/testing';
 import {
   ɵMatchMedia as MatchMedia,
@@ -35,17 +35,15 @@ describe('show directive', () => {
   let fixture: ComponentFixture<any>;
   let mediaController: MockMatchMedia;
   let styler: StyleUtils;
-  let platformId: Object;
   let createTestComponent = (template: string) => {
     fixture = makeCreateTestComponent(() => TestShowComponent)(template);
 
     // Can only Inject() AFTER TestBed.override(...)
     inject(
-        [MatchMedia, StyleUtils, PLATFORM_ID],
-        (_matchMedia: MockMatchMedia, _styler: StyleUtils, _platformId: Object) => {
+        [MatchMedia, StyleUtils],
+        (_matchMedia: MockMatchMedia, _styler: StyleUtils) => {
        mediaController = _matchMedia;
        styler = _styler;
-       platformId = _platformId;
     })();
 
     return fixture;
@@ -294,15 +292,9 @@ describe('show directive', () => {
       fixture.detectChanges();
 
       // NOTE: platform-server can't compute display for unknown elements
-      if (isPlatformBrowser(platformId)) {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
-          'display': 'inline'
-        }, styler);
-      } else {
-        expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
-          'display': '*'
-        }, styler);
-      }
+      expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
+        'display': 'initial'
+      }, styler);
 
       mediaController.activate('xs');
       fixture.detectChanges();
@@ -313,15 +305,9 @@ describe('show directive', () => {
       mediaController.activate('lg');
       fixture.detectChanges();
       // NOTE: platform-server can't compute display for unknown elements
-      if (isPlatformBrowser(platformId)) {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
-          'display': 'inline'
-        }, styler);
-      } else {
-        expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
-          'display': '*'
-        }, styler);
-      }
+      expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
+        'display': 'initial'
+      }, styler);
     });
   });
 
