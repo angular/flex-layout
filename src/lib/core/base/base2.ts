@@ -20,6 +20,7 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   /** The most recently used styles for the builder */
   protected mru: StyleDefinition = {};
   protected destroySubject: Subject<void> = new Subject();
+  protected currentValue: any;
 
   /** Access to host element's parent DOM node */
   protected get parentElement(): HTMLElement | null {
@@ -148,6 +149,9 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
   }
 
   protected updateWithValue(input: string) {
-    this.addStyles(input);
+    if (this.currentValue !== input) {
+      this.addStyles(input);
+      this.currentValue = input;
+    }
   }
 }
