@@ -198,6 +198,12 @@ describe('class directive', () => {
     expectNativeEl(fixture).toHaveCssClass('mat-class');
   });
 
+  it('should support more than one responsive breakpoint on one element with undefined', () => {
+    createTestComponent(`<div ngClass.lt-lg="mat-class" [ngClass.md]="undefined"></div>`);
+    mediaController.activate('md', true);
+    expectNativeEl(fixture).toHaveCssClass('mat-class');
+  });
+
   it('should work with ngClass object notation', () => {
     createTestComponent(`
       <div [ngClass]="{'x1': hasX1, 'x3': hasX3}"
