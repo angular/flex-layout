@@ -55,11 +55,9 @@ export class MediaTrigger {
       const extractQuery = (change: MediaChange) => change.mediaQuery;
       const list = this.originalActivations.map(extractQuery);
       try {
-
         this.deactivateAll();
         this.restoreRegistryMatches();
         this.setActivations(list);
-
       } finally {
         this.originalActivations = [];
         if (this.resizeSubscription) {
@@ -151,7 +149,7 @@ export class MediaTrigger {
   private forceRegistryMatches(queries: string[], matches: boolean) {
     const registry = new Map<string, MediaQueryList>();
     queries.forEach(query => {
-      registry.set(query, {matches: matches} as MediaQueryList);
+      registry.set(query, {matches} as MediaQueryList);
     });
 
     this.matchMedia.registry = registry;

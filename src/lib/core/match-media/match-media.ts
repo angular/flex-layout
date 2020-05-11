@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID} from '@angular/core';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import {BehaviorSubject, Observable, merge, Observer} from 'rxjs';
 import {filter} from 'rxjs/operators';
@@ -20,10 +20,11 @@ import {MediaChange} from '../media-change';
  * NOTE: both mediaQuery activations and de-activations are announced in notifications
  */
 @Injectable({providedIn: 'root'})
-export class MatchMedia {
+export class MatchMedia implements OnDestroy {
   /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
   readonly source = new BehaviorSubject<MediaChange>(new MediaChange(true));
   registry = new Map<string, MediaQueryList>();
+  private readonly pendingRemoveListenerFns: Array<() => void> = [];
 
   constructor(protected _zone: NgZone,
               @Inject(PLATFORM_ID) protected _platformId: Object,
@@ -73,9 +74,8 @@ export class MatchMedia {
   observe(mqList?: string[], filterOthers = false): Observable<MediaChange> {
     if (mqList && mqList.length) {
       const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
-          filter((change: MediaChange) => {
-            return !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1);
-          })
+          filter((change: MediaChange) =>
+            !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))
       );
       const registration$: Observable<MediaChange> = new Observable((observer: Observer<MediaChange>) => {  // tslint:disable-line:max-line-length
         const matches: Array<MediaChange> = this.registerQuery(mqList);
@@ -113,6 +113,7 @@ export class MatchMedia {
       if (!mql) {
         mql = this.buildMQL(query);
         mql.addListener(onMQLEvent);
+        this.pendingRemoveListenerFns.push(() => mql!.removeListener(onMQLEvent));
         this.registry.set(query, mql);
       }
 
@@ -122,6 +123,13 @@ export class MatchMedia {
     });
 
     return matches;
+  }
+
+  ngOnDestroy(): void {
+    let fn;
+    while (fn = this.pendingRemoveListenerFns.pop()) {
+      fn();
+    }
   }
 
   /**
@@ -188,6 +196,14 @@ function constructMql(query: string, isBrowser: boolean): MediaQueryList {
     addListener: () => {
     },
     removeListener: () => {
+    },
+    onchange: null,
+    addEventListener() {
+    },
+    removeEventListener() {
+    },
+    dispatchEvent() {
+      return false;
     }
-  } as unknown as MediaQueryList;
+  } as MediaQueryList;
 }
