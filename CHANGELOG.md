@@ -1,3 +1,30 @@
+<a name="9.0.0-beta.30"></a>
+# [9.0.0-beta.30](https://github.com/angular/flex-layout/compare/9.0.0-beta.29...9.0.0-beta.30) (2020-05-11)
+
+This will be the last release with support for Angular v9. The next release will be for Angular v10.
+
+### Bug Fixes
+
+* **core:** ignore null values in breakpoint fallback mechanism ([#1247](https://github.com/angular/flex-layout/issues/1247)) ([5085909](https://github.com/angular/flex-layout/commit/5085909))
+* **core:** only trigger style updates when value changes ([#1246](https://github.com/angular/flex-layout/issues/1246)) ([a96ef13](https://github.com/angular/flex-layout/commit/a96ef13))
+* **flex:** wait for parent element until template is initialized ([#1237](https://github.com/angular/flex-layout/issues/1237)) ([93a426a](https://github.com/angular/flex-layout/commit/93a426a))
+* **match-media:** unregister media query event listeners on destroy ([#1236](https://github.com/angular/flex-layout/issues/1236)) ([2ca7848](https://github.com/angular/flex-layout/commit/2ca7848))
+* **media-marshaller:** do not propagate undefined value ([#1245](https://github.com/angular/flex-layout/issues/1245)) ([b05d51a](https://github.com/angular/flex-layout/commit/b05d51a))
+* **media-observer:** return correct value for isActive on init ([#1244](https://github.com/angular/flex-layout/issues/1244)) ([bf069af](https://github.com/angular/flex-layout/commit/bf069af))
+* **orientation:** use tablet landscape screen type ([#1220](https://github.com/angular/flex-layout/issues/1220)) ([dd772d7](https://github.com/angular/flex-layout/commit/dd772d7))
+* **print-hook:** unregister event listeners on destroy ([#1235](https://github.com/angular/flex-layout/issues/1235)) ([6d0cd00](https://github.com/angular/flex-layout/commit/6d0cd00))
+* **show-hide:** use initial value as fallback instead of parent ([#1243](https://github.com/angular/flex-layout/issues/1243)) ([bf2355b](https://github.com/angular/flex-layout/commit/bf2355b))
+
+
+### Features
+
+* **layout-gap:** add x/y options for grid mode ([#1234](https://github.com/angular/flex-layout/issues/1234)) ([990586b](https://github.com/angular/flex-layout/commit/990586b))
+
+
+NOTE: if you consume Angular Layout through UMD, we no longer re-export secondary 
+entrypoints (e.g. @angular/flex-layout/flex) from the top-level (@angular/flex-layout) bundle. Please
+modify your apps accordingly. For users of the Angular CLI, this should not be an issue.
+
 <a name="9.0.0-beta.29"></a>
 # [9.0.0-beta.29](https://github.com/angular/flex-layout/compare/9.0.0-beta.28...9.0.0-beta.29) (2020-02-06)
 
