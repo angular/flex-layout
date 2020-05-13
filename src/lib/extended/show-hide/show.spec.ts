@@ -299,8 +299,8 @@ describe('show directive', () => {
           'display': 'inline'
         }, styler);
       } else {
-        expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
-          'display': '*'
+        expectEl(queryFor(fixture, elSelector)[0]).toHaveStyle({
+          'display': 'initial'
         }, styler);
       }
 
@@ -318,8 +318,8 @@ describe('show directive', () => {
           'display': 'inline'
         }, styler);
       } else {
-        expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
-          'display': '*'
+        expectEl(queryFor(fixture, elSelector)[0]).toHaveStyle({
+          'display': 'initial'
         }, styler);
       }
     });
