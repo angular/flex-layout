@@ -4,8 +4,8 @@
 {
   "extends": "./tsconfig-build",
   "compilerOptions": {
-    "importHelpers": false,
-    "module": "commonjs",
+    "importHelpers": true,
+    "module": "umd",
     "target": "es5",
     "types": ["jasmine"],
     "paths": {
