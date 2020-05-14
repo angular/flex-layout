@@ -61,8 +61,8 @@ Check out [all of the available options](https://github.com/angular/flex-layout/
 
 ### StackBlitz Templates
 
-  *  [Flex-Layout Template](https://stackblitz.com/edit/angular-flex-layout-seed?file=app%2Fapp.component.ts)
-  *  [Flex-Layout + Material](https://stackblitz.com/edit/angular-material-flex-layout-seed?file=app%2Fapp.module.ts)
+  *  [Flex-Layout Template](https://stackblitz.com/edit/flex-layout-seed)
+  *  [Flex-Layout + Material](https://stackblitz.com/edit/flex-layout-material-seed)
 
 ### Developers
 

@@ -240,5 +240,5 @@ changes to be accepted, the CLA must be signed. It's a quick process, we promise
 [gitter]: https://gitter.im/angular/flex-layout
 [individual-cla]: http://code.google.com/legal/individual-cla-v1.0.html
 [js-style-guide]: https://google.github.io/styleguide/jsguide.html
-[stackblitz]: https://stackblitz.com/edit/angular-flex-layout-seed
+[stackblitz]: https://stackblitz.com/edit/flex-layout-seed
 [stackoverflow]: http://stackoverflow.com/
