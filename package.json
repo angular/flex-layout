@@ -27,7 +27,7 @@
     "universal:serve": "gulp universal:serve",
     "postinstall": "ngcc --properties es2015 browser module main --no-async --create-ivy-entry-points"
   },
-  "version": "9.0.0-beta.30",
+  "version": "9.0.0-beta.31",
   "requiredAngularVersion": ">=9.1.5",
   "dependencies": {
     "@angular/cdk": "^9.2.2",

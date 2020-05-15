@@ -1,3 +1,15 @@
+<a name="9.0.0-beta.31"></a>
+# [9.0.0-beta.31](https://github.com/angular/flex-layout/compare/9.0.0-beta.30...9.0.0-beta.31) (2020-05-15)
+
+This is a patch release to address a regression in the ShowHideDirective. The next full release will target
+Angular v10.
+
+### Bug Fixes
+
+* **show-hide:** set explicit display fallback for SSR ([#1252](https://github.com/angular/flex-layout/issues/1252)) ([0c5811d](https://github.com/angular/flex-layout/commit/0c5811d))
+
+
+
 <a name="9.0.0-beta.30"></a>
 # [9.0.0-beta.30](https://github.com/angular/flex-layout/compare/9.0.0-beta.29...9.0.0-beta.30) (2020-05-11)
 
