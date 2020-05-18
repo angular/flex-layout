@@ -37,7 +37,8 @@ export class FlexLayoutModule {
    * which sets the corresponding tokens accordingly
    */
   static withConfig(configOptions: LayoutConfigOptions,
-                    breakpoints: BreakPoint|BreakPoint[] = []): ModuleWithProviders {
+                    // tslint:disable-next-line:max-line-length
+                    breakpoints: BreakPoint|BreakPoint[] = []): ModuleWithProviders<FlexLayoutModule> {
     return {
       ngModule: FlexLayoutModule,
       providers: configOptions.serverLoaded ?
