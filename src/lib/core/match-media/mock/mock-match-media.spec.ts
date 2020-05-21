@@ -255,4 +255,17 @@ describe('mock-match-media', () => {
 
     subscription.unsubscribe();
   });
+
+  it('activates overlapping breakpoints correct', () => {
+    mediaController.activate('xs', true);
+    expect(mediaController
+      .isActive('screen and (min-width: 0px) and (max-width: 599.9px)'))
+      .toBe(true);
+    expect(mediaController
+      .isActive('screen and (min-width: 600px) and (max-width: 959.9px)'))
+      .toBe(false);
+    expect(mediaController
+      .isActive('screen and (max-width: 599.9px)'))
+      .toBe(true);
+  });
 });
