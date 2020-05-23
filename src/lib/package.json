@@ -22,13 +22,15 @@
     "url": "https://github.com/angular/flex-layout/issues"
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
-    "@angular/cdk": "^9.0.0-rc.8",
+    "@angular/cdk": "^10.0.0-next.0",
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/platform-browser": "0.0.0-NG",
-    "rxjs": "^6.0.0",
-    "tslib": "^1.9.0"
+    "rxjs": "^6.0.0"
   },
   "sideEffects": false
 }

@@ -12,6 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
+            "preserveSymlinks": true,
             "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -103,7 +104,8 @@
           "options": {
             "outputPath": "dist/server",
             "main": "src/main.server.ts",
-            "tsConfig": "tsconfig.server.json"
+            "tsConfig": "tsconfig.server.json",
+            "preserveSymlinks": true
           }
         }
       }
