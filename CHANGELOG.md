@@ -1,3 +1,15 @@
+<a name="10.0.0-beta.32"></a>
+# [10.0.0-beta.32](https://github.com/angular/flex-layout/compare/9.0.0-beta.31...10.0.0-beta.32) (2020-06-15)
+
+This release adds support for Angular v10 and Angular CDK v10.
+
+### Bug Fixes
+
+* **core:** add generic type to ModuleWithProviders to support v10 ([#1260](https://github.com/angular/flex-layout/issues/1260)) ([f47da38](https://github.com/angular/flex-layout/commit/f47da38))
+* **mock-match-media:** ensure overlapping breakpoints are activated ([#1265](https://github.com/angular/flex-layout/issues/1265)) ([af92cb0](https://github.com/angular/flex-layout/commit/af92cb0))
+
+
+
 <a name="9.0.0-beta.31"></a>
 # [9.0.0-beta.31](https://github.com/angular/flex-layout/compare/9.0.0-beta.30...9.0.0-beta.31) (2020-05-15)
 
