@@ -115,7 +115,7 @@
     "scss-bundle": "^2.4.0",
     "selenium-webdriver": "^3.6.0",
     "sorcery": "^0.10.0",
-    "stylelint": "^9.8.0",
+    "stylelint": "^13.7.1",
     "temp": "0.8.3",
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.3.0",
