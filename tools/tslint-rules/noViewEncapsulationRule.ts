@@ -9,7 +9,7 @@ const ERROR_MESSAGE = 'Components must turn off view encapsulation.';
 
 /**
  * Rule that enforces that view encapsulation is turned off on all components.
- * Files can be whitelisted via `"no-view-encapsulation": [true, "\.spec\.ts$"]`.
+ * Supports allowing usage in specific files via `"no-view-encapsulation": [true, "\.spec\.ts$"]`.
  */
 export class Rule extends Lint.Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile) {

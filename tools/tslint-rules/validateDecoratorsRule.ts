@@ -5,7 +5,7 @@ import * as minimatch from 'minimatch';
 
 /**
  * Rule that enforces certain decorator properties to be defined and to match a pattern.
- * Supports whitelisting via the third argument. E.g.
+ * Supports allowing usage in specific files via the third argument. E.g.
  *
  * ```
  * "validate-decorators": [true, {
