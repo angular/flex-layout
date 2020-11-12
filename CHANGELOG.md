@@ -1,3 +1,14 @@
+<a name="11.0.0-beta.33"></a>
+# [11.0.0-beta.33](https://github.com/angular/flex-layout/compare/10.0.0-beta.32...11.0.0-beta.33) (2020-11-12)
+
+This release adds support for Angular v11 and Angular CDK v11, along with TypeScript v4.0.
+
+### Bug Fixes
+
+* **core:** set fractional breakpoints to .98 instead of .9 ([#1308](https://github.com/angular/flex-layout/issues/1308)) ([c1c545c](https://github.com/angular/flex-layout/commit/c1c545c))
+
+
+
 <a name="10.0.0-beta.32"></a>
 # [10.0.0-beta.32](https://github.com/angular/flex-layout/compare/9.0.0-beta.31...10.0.0-beta.32) (2020-06-15)
 
