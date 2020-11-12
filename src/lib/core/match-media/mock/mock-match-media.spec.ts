@@ -259,13 +259,13 @@ describe('mock-match-media', () => {
   it('activates overlapping breakpoints correct', () => {
     mediaController.activate('xs', true);
     expect(mediaController
-      .isActive('screen and (min-width: 0px) and (max-width: 599.9px)'))
+      .isActive('screen and (min-width: 0px) and (max-width: 599.98px)'))
       .toBe(true);
     expect(mediaController
-      .isActive('screen and (min-width: 600px) and (max-width: 959.9px)'))
+      .isActive('screen and (min-width: 600px) and (max-width: 959.98px)'))
       .toBe(false);
     expect(mediaController
-      .isActive('screen and (max-width: 599.9px)'))
+      .isActive('screen and (max-width: 599.98px)'))
       .toBe(true);
   });
 });
