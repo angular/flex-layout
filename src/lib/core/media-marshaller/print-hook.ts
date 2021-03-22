@@ -224,8 +224,10 @@ export class PrintHook implements OnDestroy {
 
   /** Teardown logic for the service. */
   ngOnDestroy() {
-    this.beforePrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('beforeprint', l));
-    this.afterPrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('afterprint', l));
+    if (this._document.defaultView) {
+      this.beforePrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('beforeprint', l));
+      this.afterPrintEventListeners.forEach(l => this._document.defaultView.removeEventListener('afterprint', l));
+    }
   }
 
   /** Is this service currently in Print-mode ? */
