@@ -135,8 +135,8 @@ jobs:
   tests_saucelabs:
     <<: *job_defaults
     environment:
-      SAUCE_USERNAME: "angular-ci"
-      SAUCE_ACCESS_KEY: "9b988f434ff8-fbca-8aa4-4ae3-35442987"
+      SAUCE_USERNAME: "angular-flex-layout"
+      SAUCE_ACCESS_KEY: "fa20eb1f457c-1f1a-c4c4-41ea-ef9e7f13"
       # Note: This number should not be too high because otherwise we might run into
       # a rate limit exception.
       KARMA_PARALLEL_BROWSERS: 2
