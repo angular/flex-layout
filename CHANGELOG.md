@@ -1,3 +1,13 @@
+<a name="12.0.0-beta.34"></a>
+# [12.0.0-beta.34](https://github.com/angular/flex-layout/compare/11.0.0-beta.33...12.0.0-beta.34) (2021-05-18)
+
+
+### Bug Fixes
+
+* **ssr:** check null _document.defaultView ([#1337](https://github.com/angular/flex-layout/issues/1337)) ([b43681c](https://github.com/angular/flex-layout/commit/b43681c))
+
+
+
 <a name="11.0.0-beta.33"></a>
 # [11.0.0-beta.33](https://github.com/angular/flex-layout/compare/10.0.0-beta.32...11.0.0-beta.33) (2020-11-12)
 
