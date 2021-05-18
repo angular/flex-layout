@@ -117,7 +117,7 @@ function _execNpmPublish(tag: string, packageName: string): Promise<{}> | undefi
   return new Promise((resolve, reject) => {
     console.log(grey(`Executing: ${command} ${args.join(' ')}`));
     if (argv['dry']) {
-      resolve();
+      resolve({});
       return;
     }
 
@@ -131,7 +131,7 @@ function _execNpmPublish(tag: string, packageName: string): Promise<{}> | undefi
 
     childProcess.on('close', (code: number) => {
       if (code == 0) {
-        resolve();
+        resolve({});
       } else {
         reject(new Error(`Could not publish ${packageName}, status: ${code}.`));
       }

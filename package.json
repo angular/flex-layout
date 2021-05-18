@@ -10,8 +10,9 @@
   },
   "license": "MIT",
   "engines": {
-    "node": "^12.0.0",
-    "yarn": ">= 1.19.1"
+    "node": ">=12.0.0 <16.0.0",
+    "yarn": ">= 1.0.0",
+    "npm": "Please use Yarn instead of NPM to install dependencies. See: https://yarnpkg.com/lang/en/docs/install/"
   },
   "scripts": {
     "demo:serve": "gulp serve:devapp",
@@ -27,30 +28,30 @@
     "universal:serve": "gulp universal:serve",
     "postinstall": "ngcc --properties es2015 browser module main --no-async --create-ivy-entry-points"
   },
-  "version": "11.0.0-beta.33",
-  "requiredAngularVersion": ">=11.0.0",
+  "version": "12.0.0-beta.34",
+  "requiredAngularVersion": ">=12.0.0",
   "dependencies": {
-    "@angular/cdk": "^11.0.0",
-    "@angular/common": "^11.0.0",
-    "@angular/compiler": "^11.0.0",
-    "@angular/core": "^11.0.0",
-    "@angular/platform-browser": "^11.0.0",
+    "@angular/cdk": "^12.0.0",
+    "@angular/common": "^12.0.0",
+    "@angular/compiler": "^12.0.0",
+    "@angular/core": "^12.0.0",
+    "@angular/platform-browser": "^12.0.0",
     "core-js": "^2.5.7",
     "karma-parallel": "^0.3.1",
     "rxjs": "^6.5.1",
     "systemjs": "0.19.43",
     "tsickle": "^0.39.1",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.11.3"
+    "tslib": "^2.1.0",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular/animations": "^11.0.0",
-    "@angular/compiler-cli": "^11.0.0",
-    "@angular/forms": "^11.0.0",
-    "@angular/material": "^11.0.0",
-    "@angular/platform-browser-dynamic": "^11.0.0",
-    "@angular/platform-server": "^11.0.0",
-    "@angular/router": "^11.0.0",
+    "@angular/animations": "^12.0.0",
+    "@angular/compiler-cli": "^12.0.0",
+    "@angular/forms": "^12.0.0",
+    "@angular/material": "^12.0.0",
+    "@angular/platform-browser-dynamic": "^12.0.0",
+    "@angular/platform-server": "^12.0.0",
+    "@angular/router": "^12.0.0",
     "@firebase/app-types": "^0.3.2",
     "@types/chalk": "^0.4.31",
     "@types/fs-extra": "^4.0.5",
@@ -120,7 +121,7 @@
     "ts-node": "^3.0.4",
     "tsconfig-paths": "^2.3.0",
     "tslint": "^5.11.0",
-    "typescript": "~4.0.5",
+    "typescript": "~4.2.3",
     "uglify-js": "^2.8.14"
   },
   "// Gulp": "Overwrite graceful-fs to a version that does not rely on the 'natives' package. This fixes gulp for >= 10.13, more information: angular/angular#28213",

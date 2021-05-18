@@ -7,7 +7,7 @@ import {red} from 'chalk';
  * @param flags Command-line flags to be passed to ngc.
  * @returns Promise that resolves/rejects when the child process exits.
  */
-export function ngcCompile(flags: string[]) {
+export function ngcCompile(flags: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
     const ngcPath = resolvePath('./node_modules/.bin/ngc');
     const childProcess = spawn(ngcPath, flags, {shell: true});
