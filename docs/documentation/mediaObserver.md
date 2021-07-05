@@ -33,22 +33,20 @@ Use the `.asObservable()` accessor method to access the **Observable** and use *
 > Do not forget to **import** the specific RxJS operators you wish to use!
 
 ```typescript
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { MediaChange, MediaObserver } from "@angular/flex-layout";
-import { Subscription } from "rxjs";
-import { distinctUntilChanged } from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"],
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = "Angular Flex-Layout";
-
   constructor(private mediaObserver: MediaObserver) {}
   private mediaSubscription!: Subscription;
-  private activeMediaQuery: string = "";
+  private activeMediaQuery: string = '';
 
   ngOnInit(): void {
     this.mediaSubscription = this.mediaObserver
@@ -57,11 +55,11 @@ export class AppComponent implements OnInit, OnDestroy {
         change.forEach((item) => {
           this.activeMediaQuery = item
             ? `'${item.mqAlias}' = (${item.mediaQuery})`
-            : "";
-          if (item.mqAlias === "xs") {
+            : '';
+          if (item.mqAlias === 'xs') {
             this.loadMobileContent();
           }
-          console.log("activeMediaQuery", this.activeMediaQuery);
+          console.log('activeMediaQuery', this.activeMediaQuery);
         });
       });
   }
@@ -86,14 +84,14 @@ those fields will be an empty string [''].
 #### 2. **`MediaObserver::asObservable()`**
 
 ```typescript
-import { Component } from "@angular/core";
-import { Subscription } from "rxjs/Subscription";
-import { filter } from "rxjs/operators/filter";
+import { Component } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { filter } from 'rxjs/operators/filter';
 
-import { MediaChange, MediaObserver } from "@angular/flex-layout";
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
 @Component({
-  selector: "responsive-component",
+  selector: 'responsive-component',
 })
 export class MyDemo {
   constructor(media: MediaObserver) {
@@ -122,15 +120,15 @@ For example:
 - `xs` is an alias associated with the mediaQuery for mobile viewport sizes.
 
 ```typescript
-import { Component, OnInit } from "@angular/core";
-import { MediaChange, MediaObserver } from "@angular/flex-layout";
+import { Component, OnInit } from '@angular/core';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
 
-const PRINT_MOBILE = "print and (max-width: 600px)";
+const PRINT_MOBILE = 'print and (max-width: 600px)';
 
 @Component({
-  selector: "responsive-component",
+  selector: 'responsive-component',
   template: `
-    <div class="ad-content" *ngIf="media.isActive('xs')">
+    <div class='ad-content' *ngIf='media.isActive('xs')'>
       Only shown if on mobile viewport sizes
     </div>
   `,
@@ -139,7 +137,7 @@ export class MyDemo implements OnInit {
   constructor(public media: MediaObserver) {}
 
   ngOnInit() {
-    if (this.media.isActive("xs") && !this.media.isActive(PRINT_MOBILE)) {
+    if (this.media.isActive('xs') && !this.media.isActive(PRINT_MOBILE)) {
       this.loadMobileContent();
     }
   }
