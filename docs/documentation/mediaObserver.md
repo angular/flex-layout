@@ -46,7 +46,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private mediaObserver: MediaObserver) {}
   private mediaSubscription!: Subscription;
-  private activeMediaQuery: string = '';
+  private activeMediaQuery: = '';
 
   ngOnInit(): void {
     this.mediaSubscription = this.mediaObserver
@@ -128,7 +128,7 @@ const PRINT_MOBILE = 'print and (max-width: 600px)';
 @Component({
   selector: 'responsive-component',
   template: `
-    <div class='ad-content' *ngIf='media.isActive('xs')'>
+    <div class="ad-content" *ngIf="media.isActive('xs')">
       Only shown if on mobile viewport sizes
     </div>
   `,
