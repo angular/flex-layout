@@ -46,7 +46,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
   constructor(private mediaObserver: MediaObserver) {}
   private mediaSubscription!: Subscription;
-  private activeMediaQuery: = '';
+  private activeMediaQuery = '';
 
   ngOnInit(): void {
     this.mediaSubscription = this.mediaObserver
