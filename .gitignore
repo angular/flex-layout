@@ -9,6 +9,7 @@ dist
 # dependencies
 node_modules
 /bower_components
+.prettierrc.js
 
 # IDEs
 /.idea
