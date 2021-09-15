@@ -1,3 +1,8 @@
+<a name="12.0.0-beta.35"></a>
+# [12.0.0-beta.35](https://github.com/angular/flex-layout/compare/12.0.0-beta.34...12.0.0-beta.35) (2021-09-15)
+
+Allow usage of RxJS v7 with the v12 release.
+
 <a name="12.0.0-beta.34"></a>
 # [12.0.0-beta.34](https://github.com/angular/flex-layout/compare/11.0.0-beta.33...12.0.0-beta.34) (2021-05-18)
 
