@@ -1,19 +1,19 @@
-import * as path from 'path';
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import * as minimatch from 'minimatch';
+import path from 'path';
+import ts from 'typescript';
+import {IOptions, Rules, RuleWalker} from 'tslint';
+import minimatch from 'minimatch';
 
 /**
  * Rule that enforces that the specified external packages have been included in our Rollup config.
  * Usage: [true, './path/to/rollup/config.json']
  */
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile) {
     return this.applyWithWalker(new Walker(sourceFile, this.getOptions()));
   }
 }
 
-class Walker extends Lint.RuleWalker {
+class Walker extends RuleWalker {
 
   /** Path to the rollup globals configuration file. */
   private _configPath: string;
@@ -24,7 +24,7 @@ class Walker extends Lint.RuleWalker {
   /** Whether the walker should check the current source file. */
   private _enabled: boolean;
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
+  constructor(sourceFile: ts.SourceFile, options: IOptions) {
     super(sourceFile, options);
 
     if (!options.ruleArguments.length) {

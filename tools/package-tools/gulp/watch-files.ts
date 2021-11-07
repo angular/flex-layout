@@ -1,4 +1,4 @@
-import {watch} from 'gulp';
+import {series, watch} from 'gulp';
 import {triggerLivereload} from './trigger-livereload';
 
 /**
@@ -6,6 +6,6 @@ import {triggerLivereload} from './trigger-livereload';
  * By default the livereload server will be also called on file change.
  */
 export function watchFiles(fileGlob: string | string[], tasks: string[], livereload = true,
-                            debounceDelay = 700) {
-  watch(fileGlob, {debounceDelay}, [...tasks, () => livereload && triggerLivereload()]);
+                            delay = 700) {
+  watch(fileGlob, {delay}, series(...tasks, () => livereload && triggerLivereload()));
 }

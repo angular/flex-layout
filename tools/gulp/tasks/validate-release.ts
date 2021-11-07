@@ -1,10 +1,14 @@
-import {task} from 'gulp';
+import {series, task} from 'gulp';
 import {readFileSync} from 'fs';
 import {join} from 'path';
 import {green, red} from 'chalk';
-import {releasePackages} from './publish';
 import {sync as glob} from 'glob';
-import {buildConfig, sequenceTask} from 'lib-build-tools';
+import {buildConfig} from 'lib-build-tools';
+
+/** Packages that will be published to NPM by the release task. */
+const releasePackages = [
+  'flex-layout'
+];
 
 /** Path to the directory where all releases are created. */
 const releasesDir = join(buildConfig.outputDir, 'releases');
@@ -14,8 +18,6 @@ const inlineStylesSourcemapRegex = /styles: ?\[["'].*sourceMappingURL=.*["']/;
 
 /** RegExp that matches Angular component metadata properties that refer to external resources. */
 const externalReferencesRegex = /(templateUrl|styleUrls): *["'[]/;
-
-task('validate-release', sequenceTask(':publish:build-releases', 'validate-release:check-bundles'));
 
 /** Task that checks the release bundles for any common mistakes before releasing to the public. */
 task('validate-release:check-bundles', () => {
@@ -34,6 +36,8 @@ task('validate-release:check-bundles', () => {
     console.log(green('Release output has been checked and everything looks fine.'));
   }
 });
+
+task('validate-release', series(':publish:build-releases', 'validate-release:check-bundles'));
 
 /** Task that validates the given release package before releasing. */
 function checkReleasePackage(packageName: string): string[] {

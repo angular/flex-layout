@@ -1,14 +1,11 @@
 import {join} from 'path';
-import {task, watch} from 'gulp';
-import {buildConfig, sequenceTask} from 'lib-build-tools';
-
-// There are no type definitions available for these imports.
-const runSequence = require('run-sequence');
+import {series, task, watch} from 'gulp';
+import {buildConfig} from 'lib-build-tools';
 
 const {packagesDir, projectDir} = buildConfig;
 
 /** Builds everything that is necessary for karma. */
-task(':test:build', sequenceTask(
+task(':test:build', series(
   'clean',
   // Build ESM output of Flex-Layout that also includes all test files.
   'flex-layout:build-no-bundles',
@@ -18,7 +15,7 @@ task(':test:build', sequenceTask(
  * Runs the unit tests. Does not watch for changes.
  * This task should be used when running tests on the CI server.
  */
-task('test:single-run', [':test:build'], (done: () => void) => {
+task('test:single-run', series(':test:build', (done: () => void) => {
   // Load karma not outside. Karma pollutes Promise with a different implementation.
   let karma = require('karma');
 
@@ -30,7 +27,7 @@ task('test:single-run', [':test:build'], (done: () => void) => {
     // potential still running tunnel-browsers gulp won't exit properly.
     exitCode === 0 ? done() : process.exit(exitCode);
   }).start();
-});
+}));
 
 /**
  * [Watch task] Runs the unit tests, rebuilding and re-testing when sources change.
@@ -43,7 +40,7 @@ task('test:single-run', [':test:build'], (done: () => void) => {
  *
  * This task should be used when running unit tests locally.
  */
-task('test', [':test:build'], () => {
+task('test', series(':test:build', () => {
   let patternRoot = join(packagesDir, 'lib', '**/*');
   // Load karma not outside. Karma pollutes Promise with a different implementation.
   let karma = require('karma');
@@ -57,10 +54,8 @@ task('test', [':test:build'], () => {
 
   // Refreshes Karma's file list and schedules a test run.
   // Tests will only run if TypeScript compilation was successful.
-  let runTests = (err?: Error) => {
-    if (!err) {
-      server.refreshFiles().then(() => server._injector.get('executor').schedule());
-    }
+  let runTests = () => {
+    server.refreshFiles().then(() => server._injector.get('executor').schedule());
   };
 
   // Boot up the test server and run the tests whenever a new browser connects.
@@ -68,5 +63,5 @@ task('test', [':test:build'], () => {
   server.on('browser_register', () => runTests());
 
   // Whenever a file change has been recognized, rebuild and re-run the tests.
-  watch(patternRoot + '.+(ts|scss|html)', () => runSequence(':test:build', runTests));
-});
+  watch(patternRoot + '.+(ts|scss|html)', series(':test:build', runTests));
+}));

@@ -1,4 +1,4 @@
-// TypeScript config file that is used to compile the library into ES2015.
+// TypeScript config file that is used to compile the library into ES2020.
 {
   "compilerOptions": {
     "declaration": true,
@@ -14,8 +14,9 @@
     "noImplicitThis": true,
     "importHelpers": true,
     "strictBindCallApply": true,
+    "esModuleInterop": true,
     "newLine": "lf",
-    "module": "es2015",
+    "module": "es2020",
     "moduleResolution": "node",
     "outDir": "../../dist/packages/flex-layout",
     "rootDir": ".",
@@ -25,8 +26,8 @@
     ],
     "sourceMap": true,
     "inlineSources": true,
-    "target": "es2015",
-    "lib": ["es2015", "dom"],
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "types": [],
     "baseUrl": ".",
@@ -39,9 +40,10 @@
     "typings.d.ts"
   ],
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
-    "enableIvy": false,
+    "compilationMode": "partial",
     "strictMetadataEmit": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
     "flatModuleOutFile": "index.js",
     "flatModuleId": "@angular/flex-layout",
     "flatModulePrivateSymbolPrefix": "flex_layout_private",

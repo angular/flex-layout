@@ -5,8 +5,8 @@
     "../typings.d.ts"
   ],
   "angularCompilerOptions": {
-    "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
+    "compilationMode": "partial",
     "flatModuleOutFile": "index.js",
     "flatModuleId": "@angular/flex-layout/flex",
     "flatModulePrivateSymbolPrefix": "flex_private",

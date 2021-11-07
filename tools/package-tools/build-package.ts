@@ -1,12 +1,12 @@
 import {join} from 'path';
 import {PackageBundler} from './build-bundles';
 import {buildConfig} from './build-config';
-import {addImportAsToAllMetadata, compileEntryPoint} from './compile-entry-point';
+import {compileEntryPoint} from './compile-entry-point';
 import {getSecondaryEntryPointsForPackage} from './secondary-entry-points';
 
 const {packagesDir, outputDir} = buildConfig;
 
-/** Name of the tsconfig file that is responsible for building an ES2015 package. */
+/** Name of the tsconfig file that is responsible for building an ES2020 package. */
 const buildTsconfigName = 'tsconfig-build.json';
 
 /** Name of the tsconfig file that is responsible for building the tests. */
@@ -16,11 +16,11 @@ export class BuildPackage {
   /** Path to the package sources. */
   sourceDir: string;
 
-  /** Path to the ES2015 package output. */
+  /** Path to the ES2020 package output. */
   outputDir: string;
 
-  /** Path to the ES5 package output. */
-  esm5OutputDir: string;
+  /** Path to the ES2015 package output. */
+  esm2015OutputDir: string;
 
   /** Whether this package will re-export its secondary-entry points at the root module. */
   exportsSecondaryEntryPointsAtRoot = false;
@@ -60,7 +60,7 @@ export class BuildPackage {
   constructor(readonly name: string, readonly dependencies: BuildPackage[] = []) {
     this.sourceDir = join(packagesDir, name);
     this.outputDir = join(outputDir, 'packages', name);
-    this.esm5OutputDir = join(outputDir, 'packages', name, 'esm5');
+    this.esm2015OutputDir = join(outputDir, 'packages', name, 'esm2015');
     this.entryFilePath = join(this.outputDir, 'index.js');
   }
 
@@ -81,8 +81,7 @@ export class BuildPackage {
 
   /** Compiles the TypeScript test source files for the package. */
   async compileTests() {
-    return compileEntryPoint(this, testsTsconfigName)
-      .then(() => addImportAsToAllMetadata(this));
+    return compileEntryPoint(this, testsTsconfigName);
   }
 
   /** Creates all bundles for the package and all associated entry points. */
@@ -90,10 +89,10 @@ export class BuildPackage {
     await this.bundler.createBundles();
   }
 
-  /** Compiles TS into both ES2015 and ES5, then updates exports. */
+  /** Compiles TS into both ES2015 and ES2020, then updates exports. */
   private async _compileBothTargets(p = '') {
     return compileEntryPoint(this, buildTsconfigName, p)
-        .then(() => compileEntryPoint(this, buildTsconfigName, p, this.esm5OutputDir));
+        .then(() => compileEntryPoint(this, buildTsconfigName, p, this.esm2015OutputDir));
   }
 
   /** Stores the secondary entry-points for this package if they haven't been computed already. */

@@ -61,14 +61,6 @@ var_9: &attach_release_output
   attach_workspace:
     at: dist/releases
 
-# Anchor that can be used to download and install Yarn globally in the bash environment.
-var_10: &yarn_download
-  run:
-    name: "Downloading and installing Yarn"
-    command: |
-      touch $BASH_ENV
-      curl -o- -L https://yarnpkg.com/install.sh | PROFILE=$BASH_ENV bash -s -- --version "1.19.1"
-
 # -----------------------------
 # Container version of CircleCI
 # -----------------------------
@@ -88,7 +80,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp :publish:build-releases
@@ -106,7 +97,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-local-browser-tests.sh
@@ -123,7 +113,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-browserstack-tests.sh
@@ -143,7 +132,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-saucelabs-tests.sh
@@ -156,7 +144,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:ssr
@@ -170,7 +157,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:prerender
@@ -183,7 +169,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:hw
@@ -196,7 +181,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:aot
@@ -209,7 +193,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:lint
@@ -223,7 +206,6 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: yarn gulp ci:build-release-packages
@@ -234,25 +216,6 @@ jobs:
           root: dist/releases
           paths:
             - "**/*"
-
-      # Since there is no UMD bundle that includes everything, we need to move
-      # all bundles into a directory. This allows us to store all UMD bundles as job
-      # artifacts that can be picked up by the Angular Github bot.
-      - run:
-          name: Prepare artifacts for publish.
-          command: |
-            mkdir -p /tmp/layout-umd-minified-bundles
-            cp dist/releases/flex-layout/bundles/*.umd.min.js /tmp/layout-umd-minified-bundles
-      # Publish bundle artifacts which will be used to calculate the size change.
-      # Note: Make sure that the size plugin from the Angular robot fetches the artifacts
-      # from this CircleCI job (see .github/angular-robot.yml). Additionally any artifacts need to
-      # be stored with the following path format: "{projectName}/{context}/{fileName}"
-      # This format is necessary because otherwise the bot is not able to pick up the
-      # artifacts from CircleCI. See:
-      # https://github.com/angular/github-robot/blob/master/functions/src/plugins/size.ts#L392-L394
-      - store_artifacts:
-          path: /tmp/layout-umd-minified-bundles
-          destination: /angular_layout/layout_release_output/
 
   # ----------------------------------------
   # Job that publishes the build snapshots
@@ -269,7 +232,6 @@ jobs:
 
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
       - *attach_release_output
 

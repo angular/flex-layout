@@ -5,15 +5,14 @@ import {buildConfig} from './build-config';
 import {BuildPackage} from './build-package';
 import {copyFiles} from './copy-files';
 import {createEntryPointPackageJson} from './entry-point-package-json';
-import {inlinePackageMetadataFiles} from './metadata-inlining';
-import {createMetadataReexportFile} from './metadata-reexport';
 import {createTypingsReexportFile} from './typings-reexport';
 import {replaceVersionPlaceholders} from './version-placeholders';
 
 const {packagesDir, outputDir, projectDir} = buildConfig;
 
 /** Directory where all bundles will be created in. */
-const bundlesDir = join(outputDir, 'bundles');
+const fesm2015Dir = join(outputDir, 'fesm2015');
+const fesm2020Dir = join(outputDir, 'fesm2020');
 
 /**
  * Copies different output files into a folder structure that follows the `angular/angular`
@@ -24,23 +23,21 @@ export function composeRelease(buildPackage: BuildPackage) {
   const {name, sourceDir} = buildPackage;
   const packageOut = buildPackage.outputDir;
   const releasePath = join(outputDir, 'releases', name);
-  const importAsName = `@angular/${name}`;
 
-  inlinePackageMetadataFiles(packageOut);
+  // Copy all d.ts files to the `typings/` directory
+  copyFiles(packageOut, '**/*.+d.ts', join(releasePath, 'typings'));
 
-  // Copy all d.ts and metadata files to the `typings/` directory
-  copyFiles(packageOut, '**/*.+(d.ts|metadata.json)', join(releasePath, 'typings'));
-
-  // Copy UMD bundles.
-  copyFiles(bundlesDir, `${name}?(-*).umd?(.min).js?(.map)`, join(releasePath, 'bundles'));
-
-  // Copy ES5 bundles.
-  copyFiles(bundlesDir, `${name}.es5.js?(.map)`, join(releasePath, 'esm5'));
-  copyFiles(join(bundlesDir, name), `*.es5.js?(.map)`, join(releasePath, 'esm5'));
+  // Copy ES2020 bundles.
+  copyFiles(fesm2020Dir, `${name}.mjs?(.map)`, join(releasePath, 'fesm2020'));
+  copyFiles(join(fesm2020Dir, name), `*.mjs?(.map)`, join(releasePath, 'fesm2020'));
 
   // Copy ES2015 bundles
-  copyFiles(bundlesDir, `${name}.js?(.map)`, join(releasePath, 'esm2015'));
-  copyFiles(join(bundlesDir, name), `!(*.es5|*.umd).js?(.map)`, join(releasePath, 'esm2015'));
+  copyFiles(fesm2015Dir, `${name}.mjs?(.map)`, join(releasePath, 'fesm2015'));
+  copyFiles(join(fesm2015Dir, name), `*.mjs?(.map)`, join(releasePath, 'fesm2015'));
+
+  // Copy ESM2020 files.
+  copyFiles(packageOut, `*.js`, join(releasePath, 'esm2020'), '.mjs');
+  copyFiles(packageOut, `!(esm2015)**/*.js`, join(releasePath, 'esm2020'), '.mjs');
 
   // Copy any additional files that belong in the package.
   copyFiles(projectDir, 'LICENSE', releasePath);
@@ -49,7 +46,6 @@ export function composeRelease(buildPackage: BuildPackage) {
 
   replaceVersionPlaceholders(releasePath);
   createTypingsReexportFile(releasePath, './typings/index', name);
-  createMetadataReexportFile(releasePath, './typings/index', name, importAsName);
 
   if (buildPackage.secondaryEntryPoints.length) {
     createFilesForSecondaryEntryPoint(buildPackage, releasePath);
@@ -65,14 +61,6 @@ export function composeRelease(buildPackage: BuildPackage) {
     const es2015Exports = buildPackage.reexportedSecondaryEntryPoints
         .map(p => `export * from './${p}';`).join('\n');
     appendFileSync(join(releasePath, `${name}.d.ts`), es2015Exports, 'utf-8');
-
-    // When re-exporting secondary entry-points, we need to manually create a metadata file that
-    // re-exports everything.
-    createMetadataReexportFile(
-        releasePath,
-        buildPackage.reexportedSecondaryEntryPoints.concat(['typings/index']).map(p => `./${p}`),
-        name,
-        importAsName);
   }
 }
 
@@ -87,27 +75,22 @@ function createFilesForSecondaryEntryPoint(buildPackage: BuildPackage, releasePa
     // * An index.d.ts file that re-exports the index.d.ts from the typings/ directory
     // * A metadata.json re-export for this entry-point's metadata.
     const entryPointDir = join(releasePath, entryPointName);
-    const importAsName = `@angular/${name}/${entryPointName}`;
 
     mkdirpSync(entryPointDir);
     createEntryPointPackageJson(entryPointDir, name, entryPointName);
 
-    // Copy typings and metadata from tsc output location into the entry-point.
+    // Copy typings from tsc output location into the entry-point.
     copyFiles(
         join(packageOut, entryPointName),
-        '**/*.+(d.ts|metadata.json)',
+        '**/*.+(d.ts)',
         join(entryPointDir, 'typings'));
 
-    // Create a typings and a metadata re-export within the entry-point to point to the
-    // typings we just copied.
+    // Create a typings within the entry-point to point to the typings we just copied.
     createTypingsReexportFile(entryPointDir, `./typings/index`, 'index');
-    createMetadataReexportFile(entryPointDir, `./typings/index`, 'index', importAsName);
 
-    // Finally, create both a d.ts and metadata file for this entry-point in the root of
+    // Finally, create both a d.ts for this entry-point in the root of
     // the package that re-exports from the entry-point's directory.
     createTypingsReexportFile(releasePath, `./${entryPointName}/index`, entryPointName);
-    createMetadataReexportFile(releasePath, `./${entryPointName}/index`, entryPointName,
-        importAsName);
   });
 }
 

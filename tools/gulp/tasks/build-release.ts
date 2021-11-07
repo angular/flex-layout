@@ -1,6 +1,6 @@
-import {task} from 'gulp';
+import {series, task} from 'gulp';
 import {mkdirpSync, writeFileSync} from 'fs-extra';
-import {buildConfig, composeRelease, sequenceTask} from 'lib-build-tools';
+import {buildConfig, composeRelease} from 'lib-build-tools';
 import {join} from 'path';
 import {Bundler} from 'scss-bundle';
 import {flexLayoutPackage} from '../packages';
@@ -24,23 +24,6 @@ const themingEntryPointPath = join(sourceDir, 'core', 'sass', '_layout-bp.scss')
 // Output path for the scss theming bundle.
 const themingBundlePath = join(releasePath, '_mq.scss');
 
-/**
- * Overwrite the release task for the Flex-Layout package. The Flex-Layout release
- * will include special files, like a bundled theming SCSS file or all prebuilt themes.
- */
-task('flex-layout:build-release', ['flex-layout:prepare-release'], () => {
-  composeRelease(flexLayoutPackage);
-});
-
-/**
- * Task that will build the Flex-Layout package. It will also copy all prebuilt themes and build
- * a bundled SCSS file for theming
- */
-task('flex-layout:prepare-release', sequenceTask(
-  ['flex-layout:build'],
-  ['flex-layout:bundle-theming-scss'],
-));
-
 /** Bundles all scss requires for theming into a single scss file in the root of the package. */
 task('flex-layout:bundle-theming-scss', () => {
   // Instantiates the SCSS bundler and bundles all imports of the specified entry point SCSS file.
@@ -53,3 +36,21 @@ task('flex-layout:bundle-theming-scss', () => {
     writeFileSync(themingBundlePath, result.bundledContent);
   });
 });
+
+/**
+ * Task that will build the Flex-Layout package. It will also copy all prebuilt themes and build
+ * a bundled SCSS file for theming
+ */
+task('flex-layout:prepare-release', series(
+  'flex-layout:build',
+  'flex-layout:bundle-theming-scss',
+));
+
+/**
+ * Overwrite the release task for the Flex-Layout package. The Flex-Layout release
+ * will include special files, like a bundled theming SCSS file or all prebuilt themes.
+ */
+task('flex-layout:build-release', series('flex-layout:prepare-release', (done) => {
+  composeRelease(flexLayoutPackage);
+  done();
+}));

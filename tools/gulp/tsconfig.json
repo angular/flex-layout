@@ -2,9 +2,10 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "noUnusedParameters": true,
-    "lib": ["es2015", "dom", "es2016.array.include"],
+    "lib": ["es2020", "dom"],
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "outDir": "../../dist/tools/gulp",
     "noUnusedLocals": true,
     "strictNullChecks": true,
@@ -13,7 +14,7 @@
     "noImplicitThis": true,
     "noEmitOnError": true,
     "noImplicitAny": true,
-    "target": "es5",
+    "target": "es2020",
     "removeComments": true,
     "types": [
       "node"

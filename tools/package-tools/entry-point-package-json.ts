@@ -7,9 +7,11 @@ export function createEntryPointPackageJson(destDir: string, packageName: string
   const content = {
     name: `@angular/${packageName}/${entryPointName}`,
     typings: `../${entryPointName}.d.ts`,
-    main: `../bundles/${packageName}-${entryPointName}.umd.js`,
-    module: `../esm5/${entryPointName}.es5.js`,
-    es2015: `../esm2015/${entryPointName}.js`,
+    module: `../fesm2015/${entryPointName}.mjs`,
+    es2020: `../fesm2020/${entryPointName}.mjs`,
+    esm2020: `../esm2020/${entryPointName}/index.mjs`,
+    fesm2020: `../fesm2020/${entryPointName}.mjs`,
+    fesm2015: `../fesm2015/${entryPointName}.mjs`,
     sideEffects: false,
   };
 

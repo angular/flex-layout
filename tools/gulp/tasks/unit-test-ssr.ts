@@ -1,10 +1,9 @@
-import {task} from 'gulp';
+import {series, task} from 'gulp';
 import {join} from 'path';
 import {buildConfig} from 'lib-build-tools';
 import {register} from 'tsconfig-paths';
 
 const {projectDir} = buildConfig;
-const {patchTestBed} = require(join(projectDir, 'test/patch-testbed'));
 
 
 /**
@@ -12,7 +11,7 @@ const {patchTestBed} = require(join(projectDir, 'test/patch-testbed'));
  * This sets the PLATFORM_ID flag to the server and
  * sets the DOCUMENT value to the Domino instance
  */
-task('test:ssr', [':test:build'], (done: () => void) => {
+task('test:ssr', series(':test:build', async () => {
   const baseUrl = join(projectDir, 'dist', 'packages', 'flex-layout');
   const paths = {
     '@angular/flex-layout/*': ['./*']
@@ -28,15 +27,13 @@ task('test:ssr', [':test:build'], (done: () => void) => {
   require('reflect-metadata/Reflect');
   const jasmine = new (require('jasmine'))({projectBaseDir: projectDir});
   require('zone.js/dist/jasmine-patch.js');
-  const {TestBed} = require('@angular/core/testing');
-  const {ServerTestingModule, platformServerTesting} = require('@angular/platform-server/testing');
-  let testBed = TestBed.initTestEnvironment(
+  const {TestBed} = await import('@angular/core/testing');
+  const {ServerTestingModule, platformServerTesting} = await import('@angular/platform-server/testing');
+  TestBed.initTestEnvironment(
     ServerTestingModule,
     platformServerTesting()
   );
 
-  patchTestBed(testBed);
   jasmine.loadConfigFile('test/jasmine-ssr.json');
   jasmine.execute();
-  done();
-});
+}));

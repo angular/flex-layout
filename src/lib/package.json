@@ -2,10 +2,72 @@
   "name": "@angular/flex-layout",
   "version": "0.0.0-PLACEHOLDER",
   "description": "Angular Flex-Layout",
-  "main": "./bundles/flex-layout.umd.js",
-  "module": "./esm5/flex-layout.es5.js",
-  "es2015": "./esm2015/flex-layout.js",
-  "typings": "./flex-layout.d.ts",
+  "fesm2020": "./fesm2020/flex-layout.mjs",
+  "fesm2015": "./fesm2015/flex-layout.mjs",
+  "esm2020": "./esm2020/index.mjs",
+  "typings": "./index.d.ts",
+  "module": "./fesm2015/flex-layout.mjs",
+  "es2020": "./fesm2020/flex-layout.mjs",
+  "type": "module",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    "./mq": {
+      "sass": "./_mq.scss"
+    },
+    "./_mq": {
+      "sass": "./_mq.scss"
+    },
+    ".": {
+      "types": "./flex-layout.d.ts",
+      "esm2020": "./esm2020/flex-layout.mjs",
+      "es2020": "./fesm2020/flex-layout.mjs",
+      "es2015": "./fesm2015/flex-layout.mjs",
+      "node": "./fesm2015/flex-layout.mjs",
+      "default": "./fesm2020/flex-layout.mjs"
+    },
+    "./core": {
+      "types": "./core.d.ts",
+      "esm2020": "./esm2020/core/core.mjs",
+      "es2020": "./fesm2020/core.mjs",
+      "es2015": "./fesm2015/core.mjs",
+      "node": "./fesm2015/core.mjs",
+      "default": "./fesm2020/core.mjs"
+    },
+    "./extended": {
+      "types": "./extended.d.ts",
+      "esm2020": "./esm2020/extended/extended.mjs",
+      "es2020": "./fesm2020/extended.mjs",
+      "es2015": "./fesm2015/extended.mjs",
+      "node": "./fesm2015/extended.mjs",
+      "default": "./fesm2020/extended.mjs"
+    },
+    "./flex": {
+      "types": "./flex.d.ts",
+      "esm2020": "./esm2020/flex/flex.mjs",
+      "es2020": "./fesm2020/flex.mjs",
+      "es2015": "./fesm2015/flex.mjs",
+      "node": "./fesm2015/flex.mjs",
+      "default": "./fesm2020/flex.mjs"
+    },
+    "./grid": {
+      "types": "./grid.d.ts",
+      "esm2020": "./esm2020/grid/grid.mjs",
+      "es2020": "./fesm2020/grid.mjs",
+      "es2015": "./fesm2015/grid.mjs",
+      "node": "./fesm2015/grid.mjs",
+      "default": "./fesm2020/grid.mjs"
+    },
+    "./server": {
+      "types": "./server.d.ts",
+      "esm2020": "./esm2020/server/server.mjs",
+      "es2020": "./fesm2020/server.mjs",
+      "es2015": "./fesm2015/server.mjs",
+      "node": "./fesm2015/server.mjs",
+      "default": "./fesm2020/server.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/angular/flex-layout.git"
@@ -23,14 +85,14 @@
   },
   "homepage": "https://github.com/angular/flex-layout#readme",
   "dependencies": {
-    "tslib": "^2.1.0"
+    "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/cdk": "^12.0.0",
+    "@angular/cdk": "^13.0.0",
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/platform-browser": "0.0.0-NG",
-    "rxjs": "^6.0.0 || ^7.0.0"
+    "rxjs": "^6.5.3 || ^7.4.0"
   },
   "sideEffects": false
 }

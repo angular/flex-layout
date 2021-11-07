@@ -1,7 +1,7 @@
-import {task} from 'gulp';
+import {series, task} from 'gulp';
 import {execTask} from '../util/task-helpers';
 import {join} from 'path';
-import {buildConfig, sequenceTask} from 'lib-build-tools';
+import {buildConfig} from 'lib-build-tools';
 
 const genericName = 'angular-flex-layout.tgz';
 const {outputDir, packagesDir, projectVersion} = buildConfig;
@@ -10,26 +10,7 @@ const distDir = join(outputDir, 'releases', 'flex-layout');
 const genericTar = join(distDir, genericName);
 const universalAppSource = join(packagesDir, 'apps', 'universal-app');
 
-task('universal:serve', sequenceTask(
-  'prerender',
-  'prerender:run:server'
-));
-
-task('prerender', sequenceTask(
-  'prerender:pre',
-  'prerender:build')
-);
-task('prerender:pre', sequenceTask(
-  'clean',
-  'flex-layout:build-release',
-  'prerender:bundle',
-  'prerender:bundle:rename',
-  'prerender:clean',
-  'prerender:deps',
-  'prerender:add:tar')
-);
-
-task('prerender:deps', [], execTask(
+task('prerender:deps', execTask(
   'npm', ['install'], {cwd: universalAppSource}
 ));
 
@@ -39,15 +20,15 @@ task('prerender:deps', [], execTask(
  * that npm introduces, like Angular functionality impairment. This also has the
  * benefit of better simulating the install process for Flex Layout in a CLI app
  */
-task('prerender:add:tar', [], execTask(
+task('prerender:add:tar', execTask(
   'npm', ['install', genericTar], {cwd: universalAppSource}
 ));
 
-task('prerender:bundle', [], execTask(
+task('prerender:bundle', execTask(
   'npm', ['pack'], {cwd: distDir}
 ));
 
-task('prerender:bundle:rename', [], execTask(
+task('prerender:bundle:rename', execTask(
   'mv', [tarName, genericName], {cwd: distDir}
 ));
 
@@ -62,20 +43,14 @@ task('prerender:run:server', execTask(
   {cwd: universalAppSource, failOnStderr: true}
 ));
 
-task('prerender:clean', sequenceTask(
-  'prerender:clear:deps',
-  'prerender:clear:lock',
-  'prerender:clear:dist'
-));
-
-task('prerender:clear:deps', [], execTask(
+task('prerender:clear:deps', execTask(
   'rm', ['-rf', 'node_modules'], {
     failOnStderr: true,
     cwd: universalAppSource
   }
 ));
 
-task('prerender:clear:lock', [], execTask(
+task('prerender:clear:lock', execTask(
     'rm', ['-f', 'package-lock.json'], {
       failOnStderr: false,
       silent: true,
@@ -84,9 +59,40 @@ task('prerender:clear:lock', [], execTask(
   )
 );
 
-task('prerender:clear:dist', [], execTask(
+task('prerender:clear:dist', execTask(
   'rm', ['-rf', 'dist'], {
     failOnStderr: true,
     cwd: universalAppSource
   }
 ));
+
+task('prerender:clean', series(
+  'prerender:clear:deps',
+  'prerender:clear:lock',
+  'prerender:clear:dist'
+));
+
+task('prerender:pre', series(
+  'clean',
+  'flex-layout:build-release',
+  'prerender:bundle',
+  'prerender:bundle:rename',
+  'prerender:clean',
+  'prerender:deps',
+  'prerender:add:tar')
+);
+
+task('prerender', series(
+  'prerender:pre',
+  'prerender:build')
+);
+
+task('universal:serve', series(
+  'prerender',
+  'prerender:run:server'
+));
+
+
+
+
+
