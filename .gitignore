@@ -1,37 +1,46 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-dist
+/dist
 /tmp
-/deploy
-/screenshots
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
 
 # dependencies
-node_modules
-/bower_components
-.prettierrc.js
+/node_modules
 
-# IDEs
+# profiling files
+chrome-profiler-events*.json
+
+# IDEs and editors
 /.idea
-/.vscode
-/*.iml
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
 # misc
-.DS_Store
-/.firebase
+/.angular/cache
 /.sass-cache
 /connect.lock
-/coverage/*
+/coverage
 /libpeerconnection.log
 npm-debug.log
-testem.log
-/.chrome
-!/test/karma.conf.js
-
-src/apps/universal-app/package-lock.json
-src/apps/universal-app/yarn.lock
-src/apps/demo-app/yarn.lock
-src/apps/demo-app/package-lock.json
-src/apps/hello-world/package-lock.json
-src/apps/hello-world/yarn.lock
 yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db

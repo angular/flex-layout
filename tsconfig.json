@@ -1,30 +1,58 @@
-// TypeScript config file that matches all source files in the project. This file is read by
-// IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/packages/all",
+    "paths": {
+      "@angular/flex-layout": [
+        "dist/angular/flex-layout/angular-flex-layout",
+        "dist/angular/flex-layout"
+      ],
+      "@angular/flex-layout/core": [
+        "dist/angular/flex-layout/angular-flex-layout/core",
+        "dist/angular/flex-layout/core"
+      ],
+      "@angular/flex-layout/extended": [
+        "dist/angular/flex-layout/angular-flex-layout/extended",
+        "dist/angular/flex-layout/extended"
+      ],
+      "@angular/flex-layout/flex": [
+        "dist/angular/flex-layout/angular-flex-layout/flex",
+        "dist/angular/flex-layout/flex"
+      ],
+      "@angular/flex-layout/grid": [
+        "dist/angular/flex-layout/angular-flex-layout/grid",
+        "dist/angular/flex-layout/grid"
+      ],
+      "@angular/flex-layout/server": [
+        "dist/angular/flex-layout/angular-flex-layout/server",
+        "dist/angular/flex-layout/server"
+      ]
+    },
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "module": "es2015",
     "moduleResolution": "node",
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "skipLibCheck": true,
-    "target": "es2015",
-    "lib": ["es5", "es2015", "dom"],
-    "types": ["jasmine"]
+    "importHelpers": true,
+    "target": "es2020",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ]
   },
-  "include": [
-    "src/**/*.ts",
-    "tools/**/*.ts"
-  ],
-  "exclude": [
-    // IDEs should not type-check the different node_modules directories of the different packages.
-    // This would cause the IDEs to be slower and also linters would check the node_modules.
-    "node_modules/"
-  ]
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

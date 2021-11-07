@@ -1,5 +1,5 @@
 # Configuration file for https://circleci.com/gh/angular/flex-layout
-# based on the configuration for https://circleci.com/gh/angular/material2
+# based on the configuration for https://circleci.com/gh/angular/components
 # Credit for file goes to Paul Gschwendtner (@DevVersion)
 
 # Note: YAML anchors allow an object to be re-used, reducing duplication.
@@ -9,22 +9,19 @@
 # To validate changes, use an online parser, eg.
 # http://yaml-online-parser.appspot.com/
 
-var_1: &docker_image circleci/node:14.16.1
-var_2: &cache_key v2-ng-layout-{{ .Branch }}-{{ checksum "yarn.lock" }}-0.7.0
+var_1: &docker_image circleci/node:16.10.0
+var_2: &docker-browser-image circleci/node:16.10.0-browsers
+# **Note**: When updating the beginning of the cache key, also update the cache key to match
+# the new cache key prefix. This allows us to take advantage of CircleCI's fallback caching.
+# Read more here: https://circleci.com/docs/2.0/caching/#restoring-cache.
+var_3: &cache_key v9-ng-layout-{{ checksum "yarn.lock" }}
+
 
 # Settings common to each job
-var_3: &job_defaults
+var_4: &job_defaults
   working_directory: ~/ng
   docker:
     - image: *docker_image
-
-# Job step for checking out the source code from GitHub. This also ensures that the source code
-# is rebased on top of master.
-var_4: &checkout_code
-  checkout:
-    # After checkout, rebase on top of master. By default, PRs are not rebased on top of master,
-    # which we want. See https://discuss.circleci.com/t/1662
-    post: git pull --ff-only origin "refs/pull/${CI_PULL_REQUEST//*pull\//}/merge"
 
 # Restores the cache that could be available for the current Yarn lock file. The cache usually
 # includes the node modules and the build cache.
@@ -45,34 +42,73 @@ var_6: &save_cache
 # in sync. Unlike in Travis, we don't need to manually purge the node modules if stale because
 # CircleCI automatically discards the cache if the checksum of the lock file has changed.
 var_7: &yarn_install
-  run: yarn install --frozen-lockfile --non-interactive
-
-# Sets up a different Docker image that includes a moe recent Firefox version which
-# is needed for headless testing.
-var_8: &docker-firefox-image
-  # TODO(devversion): Temporarily use a image that includes Firefox 62 because the
-  # ngcontainer image does include an old Firefox version that does not support headless.
-  # See the PR that fixes this: https://github.com/angular/angular/pull/26435
-  - image: circleci/node:14.16.1-browsers
+  run:
+    name: "Installing project dependencies"
+    command: yarn install --frozen-lockfile --non-interactive8
 
 # Attaches the release output which has been stored in the workspace to the current job.
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
-var_9: &attach_release_output
+var_8: &attach_release_output
   attach_workspace:
-    at: dist/releases
+    at: dist/
 
-# Anchor that can be used to download and install Yarn globally in the bash environment.
-var_10: &yarn_download
-  run:
-    name: "Downloading and installing Yarn"
-    command: |
-      touch $BASH_ENV
-      curl -o- -L https://yarnpkg.com/install.sh | PROFILE=$BASH_ENV bash -s -- --version "1.19.1"
+# Branch filter that we can specify for jobs that should only run on publish branches. This filter
+# is used to ensure that not all upstream branches will be published as Github builds
+# (e.g. revert branches, feature branches)
+var_9: &publish_branches_filter
+  branches:
+    only:
+      - master
+      # 6.0.x, 7.1.x, etc.
+      - /\d+\.\d+\.x/
+      # 6.x, 7.x, 8.x etc
+      - /\d+\.x/
+
+# Filter which ensures that jobs only run for pull requests.
+var_19: &only_on_pull_requests_filter
+  branches:
+    only:
+      - /pull\/\d+/
+
+# Branch filter that only matches the main branch.
+var_21: &only_main_branch_filter
+  branches:
+    only:
+      - master
 
 # -----------------------------
 # Container version of CircleCI
 # -----------------------------
-version: 2
+version: 2.1
+
+# Configures CircleCI orbs for this pipeline. Orbs allow consumption of publicly shared
+# CircleCI commands, jobs, configuration elements or executors. Read more about orbs here:
+# https://circleci.com/docs/2.0/orb-intro/
+orbs:
+  # Set up the `queue` orb that allows us to queue up builds across jobs. We use it
+  # to make sure that snapshot builds are not deployed out of order, resulting in Git
+  # push conflicts.
+  queue: eddiewebb/queue@1.5.0
+
+
+commands:
+  checkout_and_rebase:
+    description: Checkout and rebase the repository
+    steps:
+      - checkout
+      # After checkout, rebase on top of target branch.
+      - run:
+          name: Rebase PR on target branch
+          environment:
+            CIRCLE_GIT_BASE_REVISION: << pipeline.git.base_revision >>
+            CIRCLE_GIT_REVISION: << pipeline.git.revision >>
+          command: |
+            if [ -n "$CIRCLE_PR_NUMBER" ]; then
+              # User is required for rebase.
+              git config user.name "angular-ci"
+              git config user.email "angular-ci"
+              node .circleci/rebase-pr.js
+            fi
 
 # -----------------------------------------------------------------------------------------
 # Job definitions. Jobs which are defined just here, will not run automatically. Each job
@@ -81,17 +117,14 @@ version: 2
 jobs:
 
   # -----------------------------------
-  # Build job
+  # Setup job
   # -----------------------------------
   build:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
-
-      - run: yarn gulp :publish:build-releases
 
       # Note: We want to save the cache in this job because the workspace cache also
       # includes the build cache that will be updated in this job.
@@ -102,11 +135,12 @@ jobs:
   # The available browsers are installed through the angular/ngcontainer Docker image.
   # ------------------------------------------------------------------------------------------
   tests_local_browsers:
-    docker: *docker-firefox-image
+    docker:
+      - image: *docker-browser-image
+    resource_class: xlarge
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-local-browser-tests.sh
@@ -121,9 +155,8 @@ jobs:
       BROWSER_STACK_USERNAME: "adamplumer1"
       BROWSER_STACK_ACCESS_KEY: "WgLjxoB2zQ3tqmsznKnz"
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-browserstack-tests.sh
@@ -141,9 +174,8 @@ jobs:
       # a rate limit exception.
       KARMA_PARALLEL_BROWSERS: 2
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
       - run: ./scripts/circleci/run-saucelabs-tests.sh
@@ -154,12 +186,11 @@ jobs:
   tests_ssr:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:ssr
+      - run: TODO
 
   # -------------------------------------------------------------------------
   # Job that pre-render's the universal app with `@angular/platform-server`.
@@ -168,12 +199,11 @@ jobs:
   prerender_build:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:prerender
+      - run: npm run build universal
 
   # -------------------------------------------------------------------------
   # Job that makes sure Angular Layout can be integrated with a basic app
@@ -181,12 +211,11 @@ jobs:
   hello_world_build:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:hw
+      - run: npm run build hello-world
 
   # -------------------------------------------------------------------------
   # Job that makes sure Angular Layout can be integrated with the demo app
@@ -194,12 +223,11 @@ jobs:
   aot_build:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:aot
+      - run: npm run build demo-app
 
   # ----------------------------------
   # Lint job. Runs the gulp lint task.
@@ -207,12 +235,11 @@ jobs:
   lint:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:lint
+      - run: TODO
 
   # -------------------------------------------------------------------------------------------
   # Job that builds all release packages with Gulp. The built packages can be then used in the
@@ -221,38 +248,18 @@ jobs:
   build_release_packages:
     <<: *job_defaults
     steps:
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:build-release-packages
+      - run: npm run build @angular/flex-layout
 
       # Store the release output in the workspace storage. This means that other jobs
       # in the same workflow can attach the release output to their job.
       - persist_to_workspace:
-          root: dist/releases
+          root: dist/
           paths:
             - "**/*"
-
-      # Since there is no UMD bundle that includes everything, we need to move
-      # all bundles into a directory. This allows us to store all UMD bundles as job
-      # artifacts that can be picked up by the Angular Github bot.
-      - run:
-          name: Prepare artifacts for publish.
-          command: |
-            mkdir -p /tmp/layout-umd-minified-bundles
-            cp dist/releases/flex-layout/bundles/*.umd.min.js /tmp/layout-umd-minified-bundles
-      # Publish bundle artifacts which will be used to calculate the size change.
-      # Note: Make sure that the size plugin from the Angular robot fetches the artifacts
-      # from this CircleCI job (see .github/angular-robot.yml). Additionally any artifacts need to
-      # be stored with the following path format: "{projectName}/{context}/{fileName}"
-      # This format is necessary because otherwise the bot is not able to pick up the
-      # artifacts from CircleCI. See:
-      # https://github.com/angular/github-robot/blob/master/functions/src/plugins/size.ts#L392-L394
-      - store_artifacts:
-          path: /tmp/layout-umd-minified-bundles
-          destination: /angular_layout/layout_release_output/
 
   # ----------------------------------------
   # Job that publishes the build snapshots
@@ -260,16 +267,8 @@ jobs:
   publish_snapshots:
     <<: *job_defaults
     steps:
-      # Since CircleCI currently does not have any way to easily restrict jobs to only run
-      # for push builds, we need to manually skip publishing if the jobs runs for a PR.
-      # https://discuss.circleci.com/t/workflows-pull-request-filter/14396/11
-      - run:
-          name: Check whether this job should be skipped.
-          command: '[[ -n ${CIRCLE_PR_NUMBER} ]] && circleci step halt || true'
-
-      - *checkout_code
+      - checkout_and_rebase
       - *restore_cache
-      - *yarn_download
       - *yarn_install
       - *attach_release_output
 
@@ -313,6 +312,7 @@ workflows:
     jobs:
       - build_release_packages
       - publish_snapshots:
+          filters: *publish_branches_filter
           requires:
             - build_release_packages
 
@@ -320,15 +320,3 @@ workflows:
   lint:
     jobs:
       - lint
-
-# ---------------------------
-# General setup for CircleCI
-# ---------------------------
-general:
-  branches:
-    only:
-      - master
-      # 5.2.x, 6.0.x, etc
-      - /\d+\.\d+\.x/
-      # 5.x, 6.x, etc
-      - /\d+\.x/

@@ -1,0 +1,6 @@
+{
+  "ngPackage": {},
+  "peerDependencies": {
+    "@angular/platform-server": "^13.0.0"
+  }
+}
