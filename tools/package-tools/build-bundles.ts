@@ -73,7 +73,7 @@ export class PackageBundler {
       importName: config.importName,
       moduleName: config.moduleName,
       entry: config.entryFile,
-      dest: config.esm2015Dest,
+      dest: config.esm2020Dest,
       format: 'es',
     });
 
@@ -82,13 +82,13 @@ export class PackageBundler {
       importName: config.importName,
       moduleName: config.moduleName,
       entry: config.esm2015EntryFile,
-      dest: config.esm2020Dest,
+      dest: config.esm2015Dest,
       format: 'es',
     });
 
     // Remaps the sourcemaps to be based on top of the original TypeScript source files.
-    await remapSourcemap(config.esm2015Dest);
     await remapSourcemap(config.esm2020Dest);
+    await remapSourcemap(config.esm2015Dest);
   }
 
   /** Creates a rollup bundle of a specified JavaScript file.*/

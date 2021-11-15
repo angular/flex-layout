@@ -25,7 +25,7 @@ export function composeRelease(buildPackage: BuildPackage) {
   const releasePath = join(outputDir, 'releases', name);
 
   // Copy all d.ts files to the `typings/` directory
-  copyFiles(packageOut, '**/*.+d.ts', join(releasePath, 'typings'));
+  copyFiles(packageOut, '**/*.d.ts', join(releasePath, 'typings'));
 
   // Copy ES2020 bundles.
   copyFiles(fesm2020Dir, `${name}.mjs?(.map)`, join(releasePath, 'fesm2020'));

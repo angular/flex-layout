@@ -89,7 +89,7 @@ export class BuildPackage {
     await this.bundler.createBundles();
   }
 
-  /** Compiles TS into both ES2015 and ES2020, then updates exports. */
+  /** Compiles TS into both ES2020 and ES2015, then updates exports. */
   private async _compileBothTargets(p = '') {
     return compileEntryPoint(this, buildTsconfigName, p)
         .then(() => compileEntryPoint(this, buildTsconfigName, p, this.esm2015OutputDir));
