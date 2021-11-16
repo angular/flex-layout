@@ -52,7 +52,7 @@ task('hw:clear:lock', existsSync(join(helloWorldSource, 'package-lock.json')) ?
     'rm', ['package-lock.json'], {
       failOnStderr: false,
       cwd: helloWorldSource
-    }) : () => {}
+    }) : (done) => { done(); }
 );
 
 task('hw:clear:dist', execTask(

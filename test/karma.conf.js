@@ -24,22 +24,16 @@ module.exports = config => {
       {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
       {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
 
-      // Include all Angular dependencies
-      {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
-      {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
-
-      {pattern: 'test/karma-system-config.js', included: true, watched: false},
-      {pattern: 'test/karma-test-shim.js', included: true, watched: false},
-
       // Includes all package tests and source files into karma. Those files will be watched.
       // This pattern also matches all sourcemap files and TypeScript files for debugging.
-      {pattern: 'dist/packages/**/*', included: false, watched: true},
+      {pattern: 'dist/**/!(*.spec).js', included: false, watched: true},
+      {pattern: 'dist/**/*.spec.js', included: true, watched: false},
     ],
 
     customLaunchers: customLaunchers,
 
     preprocessors: {
-      'dist/packages/**/*.js': ['sourcemap']
+      'dist/*.js': ['sourcemap']
     },
 
     reporters: ['dots'],
