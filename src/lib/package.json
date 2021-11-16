@@ -21,7 +21,7 @@
     },
     ".": {
       "types": "./flex-layout.d.ts",
-      "esm2020": "./esm2020/flex-layout.mjs",
+      "esm2020": "./esm2020/index.mjs",
       "es2020": "./fesm2020/flex-layout.mjs",
       "es2015": "./fesm2015/flex-layout.mjs",
       "node": "./fesm2015/flex-layout.mjs",

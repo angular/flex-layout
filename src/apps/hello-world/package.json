@@ -25,10 +25,10 @@
     "zone.js": "file:../../../node_modules/zone.js"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~12.0.0",
-    "@angular/cli": "^12.0.0",
+    "@angular-devkit/build-angular": "~13.0.2",
+    "@angular/cli": "^13.0.2",
     "@angular/compiler-cli": "file:../../../node_modules/@angular/compiler-cli",
-    "@angular/language-service": "^12.0.0",
-    "typescript": "file:../../../node_modules/typescript"
+    "@angular/language-service": "^13.0.0",
+    "typescript": "~4.4.4"
   }
 }

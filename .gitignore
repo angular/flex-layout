@@ -35,3 +35,4 @@ src/apps/demo-app/package-lock.json
 src/apps/hello-world/package-lock.json
 src/apps/hello-world/yarn.lock
 yarn-error.log
+.angular
