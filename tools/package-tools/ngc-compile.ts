@@ -9,8 +9,8 @@ import {red} from 'chalk';
  */
 export function ngcCompile(flags: string[]): Promise<void> {
   return new Promise((resolve, reject) => {
-    const ngcPath = resolvePath('./node_modules/.bin/ngc');
-    const childProcess = spawn(ngcPath, flags, {shell: true});
+    const ngcPath = resolvePath('./node_modules/@angular/compiler-cli/bundles/src/bin/ngc.js');
+    const childProcess = spawn('node', [ngcPath, ...flags], {shell: true});
 
     // Pipe stdout and stderr from the child process.
     childProcess.stdout.on('data', (data: string|Buffer) => console.log(`${data}`));

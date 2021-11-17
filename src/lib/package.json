@@ -5,7 +5,7 @@
   "fesm2020": "./fesm2020/flex-layout.mjs",
   "fesm2015": "./fesm2015/flex-layout.mjs",
   "esm2020": "./esm2020/index.mjs",
-  "typings": "./index.d.ts",
+  "typings": "./flex-layout.d.ts",
   "module": "./fesm2015/flex-layout.mjs",
   "es2020": "./fesm2020/flex-layout.mjs",
   "type": "module",

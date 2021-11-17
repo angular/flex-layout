@@ -33,7 +33,7 @@ export interface ExecTaskOptions {
 export function execTask(binPath: string, args: string[], options: ExecTaskOptions = {}) {
   return (done: (err?: string) => void) => {
     const env = {...process.env, ...options.env};
-    const childProcess = child_process.spawn(binPath, args, {env, cwd: options.cwd});
+    const childProcess = child_process.spawn(binPath, args, {env, cwd: options.cwd, shell: true});
     const stderrData: string[] = [];
 
     if (!options.silentStdout && !options.silent) {
