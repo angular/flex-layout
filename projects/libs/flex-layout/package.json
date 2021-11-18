@@ -1,0 +1,38 @@
+{
+  "name": "@angular/flex-layout",
+  "version": "0.0.0-PLACEHOLDER",
+  "exports": {
+    "./mq": {
+      "sass": "./core/sass/_layout-bp.scss"
+    },
+    "./_mq": {
+      "sass": "./core/sass/_layout-bp.scss"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/angular/flex-layout.git"
+  },
+  "keywords": [
+    "angular",
+    "flex-layout",
+    "flexbox css",
+    "media query",
+    "breakpoints"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/angular/flex-layout/issues"
+  },
+  "homepage": "https://github.com/angular/flex-layout#readme",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "@angular/cdk": "^13.0.0",
+    "@angular/core": "0.0.0-NG",
+    "@angular/common": "0.0.0-NG",
+    "@angular/platform-browser": "0.0.0-NG",
+    "rxjs": "^6.5.3 || ^7.4.0"
+  }
+}

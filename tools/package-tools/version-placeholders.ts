@@ -58,3 +58,5 @@ function buildPlaceholderFindCommand(packageDir: string) {
     };
   }
 }
+
+replaceVersionPlaceholders('./dist/releases/flex-layout');

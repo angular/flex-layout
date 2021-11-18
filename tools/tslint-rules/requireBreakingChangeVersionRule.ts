@@ -1,6 +1,6 @@
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import * as utils from 'tsutils';
+import ts from 'typescript';
+import {Rules, RuleFailure, WalkContext} from 'tslint';
+import {forEachComment} from 'tsutils';
 
 /** Doc tag that can be used to indicate a breaking change. */
 const BREAKING_CHANGE = '@breaking-change';
@@ -12,10 +12,10 @@ const DELETION_TARGET = '@deletion-target';
  * Rule that ensures that comments, indicating a deprecation
  * or a breaking change, have a valid version.
  */
-export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
-    return this.applyWithFunction(sourceFile, (ctx: Lint.WalkContext<any>) => {
-      utils.forEachComment(ctx.sourceFile, (file, {pos, end}) => {
+export class Rule extends Rules.AbstractRule {
+  apply(sourceFile: ts.SourceFile): RuleFailure[] {
+    return this.applyWithFunction(sourceFile, (ctx: WalkContext<any>) => {
+      forEachComment(ctx.sourceFile, (file, {pos, end}) => {
         const commentText = file.substring(pos, end);
 
         // TODO(crisbeto): remove this check once most of the pending

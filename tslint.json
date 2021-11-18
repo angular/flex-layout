@@ -101,12 +101,6 @@
     "no-rxjs-patch-imports": [
       true,
       "src/lib/**/*.ts"
-    ],
-    "missing-rollup-globals": [
-      true,
-      "./tools/package-tools/rollup-globals.ts",
-      "src/lib/**/*.ts"
-    ],
-    "deletion-target": true
+    ]
   }
 }

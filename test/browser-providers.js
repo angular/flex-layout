@@ -10,29 +10,8 @@
 const browserConfig = {
   'ChromeHeadlessCI':  { unitTest: {target: 'local', }},
   'FirefoxHeadless':   { unitTest: {target: 'local', }},
-  'ChromeBeta':        { unitTest: {target: null, }},
-  'FirefoxBeta':       { unitTest: {target: null, }},
-  'ChromeDev':         { unitTest: {target: null, }},
-  'FirefoxDev':        { unitTest: {target: null, }},
-  'IE9':               { unitTest: {target: null, }},
-  'IE10':              { unitTest: {target: null, }},
-  'IE11':              { unitTest: {target: null, }},
-  'Edge':              { unitTest: {target: 'browserstack', }},
-  'Android4.1':        { unitTest: {target: null, }},
-  'Android4.2':        { unitTest: {target: null, }},
-  'Android4.3':        { unitTest: {target: null, }},
-  'Android4.4':        { unitTest: {target: null, }},
-  'Android5':          { unitTest: {target: null, }},
-  'Safari7':           { unitTest: {target: null, }},
-  'Safari8':           { unitTest: {target: null, }},
-  'Safari9':           { unitTest: {target: null, }},
-  'Safari10':          { unitTest: {target: 'browserstack', }},
-  'iOS7':              { unitTest: {target: null, }},
-  'iOS8':              { unitTest: {target: null, }},
-  'iOS9':              { unitTest: {target: null, }},
-  'iOS10':             { unitTest: {target: null, }},
-  'iOS11':             { unitTest: {target: 'saucelabs', }},
-  'WindowsPhone':      { unitTest: {target: null, }}
+  'iOS14': {unitTest: {target: 'saucelabs'}},
+  'Safari13': {unitTest: {target: 'browserstack'}}
 };
 
 /** Exports all available custom Karma browsers. */

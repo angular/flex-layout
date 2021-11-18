@@ -1,7 +1,7 @@
-import * as path from 'path';
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import * as minimatch from 'minimatch';
+import path from 'path';
+import ts from 'typescript';
+import {IOptions, Rules, RuleWalker} from 'tslint';
+import minimatch from 'minimatch';
 
 /**
  * Rule that enforces certain decorator properties to be defined and to match a pattern.
@@ -15,7 +15,7 @@ import * as minimatch from 'minimatch';
  * }, "src/lib"]
  * ```
  */
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile) {
     return this.applyWithWalker(new Walker(sourceFile, this.getOptions()));
   }
@@ -24,14 +24,14 @@ export class Rule extends Lint.Rules.AbstractRule {
 /** Rules that can be used to validate the decorators in a file. */
 type DecoratorRules = {[key: string]: {[key: string]: RegExp}};
 
-class Walker extends Lint.RuleWalker {
+class Walker extends RuleWalker {
   // Whether the file should be checked at all.
   private _enabled: boolean;
 
   // Rules that will be used to validate the decorators.
   private _rules: DecoratorRules;
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
+  constructor(sourceFile: ts.SourceFile, options: IOptions) {
     super(sourceFile, options);
 
     // Globs that are used to determine which files to lint.

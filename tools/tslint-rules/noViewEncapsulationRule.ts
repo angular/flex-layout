@@ -1,7 +1,7 @@
-import * as path from 'path';
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import * as minimatch from 'minimatch';
+import path from 'path';
+import ts from 'typescript';
+import {IOptions, Rules, RuleWalker} from 'tslint';
+import minimatch from 'minimatch';
 
 const ERROR_MESSAGE = 'Components must turn off view encapsulation.';
 
@@ -11,18 +11,18 @@ const ERROR_MESSAGE = 'Components must turn off view encapsulation.';
  * Rule that enforces that view encapsulation is turned off on all components.
  * Supports allowing usage in specific files via `"no-view-encapsulation": [true, "\.spec\.ts$"]`.
  */
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Rules.AbstractRule {
   apply(sourceFile: ts.SourceFile) {
     return this.applyWithWalker(new Walker(sourceFile, this.getOptions()));
   }
 }
 
-class Walker extends Lint.RuleWalker {
+class Walker extends RuleWalker {
 
   /** Whether the walker should check the current source file. */
   private _enabled: boolean;
 
-  constructor(sourceFile: ts.SourceFile, options: Lint.IOptions) {
+  constructor(sourceFile: ts.SourceFile, options: IOptions) {
     super(sourceFile, options);
 
     // Globs that are used to determine which files to lint.

@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../../dist/releases/flex-layout",
+  "assets": [
+    "./core/sass/_layout-bp.scss"
+  ],
+  "lib": {
+    "entryFile": "public-api.ts"
+  }
+}
