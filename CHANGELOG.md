@@ -1,3 +1,17 @@
+# [13.0.0-beta.36](https://github.com/angular/flex-layout/compare/12.0.0-beta.35...13.0.0-beta.36) (2021-11-24)
+
+This version adds compatibility with Angular v13, in addition to shifting our publishing practices.
+In line with the framework and other Angular libraries, Angular Layout will now publish artifacts in
+accordance with Angular Package Format (APF) v13, meaning that we no longer distribute UMD bundles, in
+favor of ESM. We also now publish our artifacts using Ivy partial compilation, in an effort to improve
+the build experience of our users.
+
+You can read more about this new format on the [Angular docs page](https://angular.io/guide/angular-package-format)
+about it.
+
+Many thanks to the contributors of this release, Paul Gschwendtner (@DevVersion), Alan Agius (@alan-agius4),
+and Andrew Kushnir (@AndrewKushnir).
+
 <a name="12.0.0-beta.35"></a>
 # [12.0.0-beta.35](https://github.com/angular/flex-layout/compare/12.0.0-beta.34...12.0.0-beta.35) (2021-09-15)
 
