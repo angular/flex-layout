@@ -16,31 +16,22 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {GridModule} from '@angular/flex-layout/grid';
+import {customMatchers, expectNativeEl, makeCreateTestComponent} from '@angular/flex-layout/_private-utils/testing';
 
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
-import {expectNativeEl, makeCreateTestComponent} from '@angular/flex-layout/_private-utils/testing';
-
-import {GridModule} from '../module';
 
 describe('grid auto parent directive', () => {
   let fixture: ComponentFixture<any>;
   let styler: StyleUtils;
   let mediaController: MockMatchMedia;
   let platform: Platform;
-  let shouldRun = true;
   let createTestComponent = (template: string, styles?: any) => {
-    shouldRun = true;
     fixture = makeCreateTestComponent(() => TestGridAutoComponent)(template, styles);
     inject([StyleUtils, MatchMedia, Platform],
       (_styler: StyleUtils, _matchMedia: MockMatchMedia, _platform: Platform) => {
       styler = _styler;
       mediaController = _matchMedia;
       platform = _platform;
-
-      // TODO(CaerusKaru): Grid tests won't work with Edge 14
-      if (_platform.EDGE) {
-        shouldRun = false;
-      }
     })();
   };
 
@@ -69,10 +60,6 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-auto-flow': 'row'
@@ -88,10 +75,6 @@ describe('grid auto parent directive', () => {
               </div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'inline-grid',
@@ -109,10 +92,6 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-auto-flow': 'row'
@@ -128,10 +107,6 @@ describe('grid auto parent directive', () => {
               </div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
@@ -149,13 +124,9 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': platform.EDGE ? 'row dense' : 'dense'
+        'grid-auto-flow': 'dense'
       }, styler);
     });
 
@@ -169,13 +140,9 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': platform.EDGE ? 'row dense' : 'dense'
+        'grid-auto-flow': 'dense'
       }, styler);
     });
 
@@ -188,10 +155,6 @@ describe('grid auto parent directive', () => {
               </div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
@@ -209,10 +172,6 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-auto-flow': platform.FIREFOX ? 'dense' : 'row dense',
@@ -228,10 +187,6 @@ describe('grid auto parent directive', () => {
               </div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
@@ -249,10 +204,6 @@ describe('grid auto parent directive', () => {
           `;
       createTestComponent(template);
 
-      if (!shouldRun) {
-        return;
-      }
-
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
         'grid-auto-flow': 'column'
@@ -264,10 +215,6 @@ describe('grid auto parent directive', () => {
             <div [gdAuto]='auto'></div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
@@ -290,10 +237,6 @@ describe('grid auto parent directive', () => {
                    gdAuto.xs="column"></div>
           `;
       createTestComponent(template);
-
-      if (!shouldRun) {
-        return;
-      }
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',

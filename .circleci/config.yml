@@ -190,7 +190,7 @@ jobs:
 
       - *checkout_code
       - *attach_release_output
-      - yarn stamp
+      - run: yarn stamp
 
       # CircleCI has a config setting to enforce SSH for all github connections.
       # This is not compatible with our mechanism of using a Personal Access Token

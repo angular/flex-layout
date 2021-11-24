@@ -17,13 +17,11 @@ import {
   StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {extendObject} from '@angular/flex-layout/_private-utils';
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
-import {makeCreateTestComponent, expectNativeEl} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule} from '../module';
-import {LayoutAlignStyleBuilder} from './layout-align';
+import {customMatchers, makeCreateTestComponent, expectNativeEl} from '@angular/flex-layout/_private-utils/testing';
+import {FlexModule, LayoutAlignStyleBuilder} from '@angular/flex-layout/flex';
+
 
 describe('layout-align directive', () => {
   let fixture: ComponentFixture<any>;

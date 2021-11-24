@@ -17,17 +17,17 @@ import {
   StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
-import {customMatchers, expect} from '@angular/flex-layout/_private-utils/testing';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {
+  customMatchers,
+  expect,
   expectEl,
   expectNativeEl,
   makeCreateTestComponent,
   queryFor,
 } from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule} from '../module';
-import {LayoutGapStyleBuilder} from './layout-gap';
+import {FlexModule, LayoutGapStyleBuilder} from '@angular/flex-layout/flex';
+
 
 describe('layout-gap directive', () => {
   let fixture: ComponentFixture<any>;

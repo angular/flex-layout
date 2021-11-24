@@ -16,17 +16,17 @@ import {
   StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
-import {DefaultFlexDirective, FlexStyleBuilder} from './flex';
-import {DefaultLayoutDirective} from '../layout/layout';
-import {customMatchers, expect} from '@angular/flex-layout/_private-utils/testing';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {DefaultFlexDirective, DefaultLayoutDirective, FlexStyleBuilder} from '@angular/flex-layout/flex';
 import {
+  customMatchers,
+  expect,
   makeCreateTestComponent,
   expectNativeEl,
   queryFor,
   expectEl,
 } from '@angular/flex-layout/_private-utils/testing';
+
 
 describe('flex directive', () => {
   let fixture: ComponentFixture<any>;
@@ -367,7 +367,7 @@ describe('flex directive', () => {
           'flex': '1 1 1e-09px',
           'box-sizing': 'border-box',
         }, styler);
-      } else if (platform.FIREFOX) {
+      } else if (platform.FIREFOX || platform.WEBKIT || platform.IOS) {
         expectEl(element).toHaveStyle({
           'flex': '1 1 1e-9px',
           'box-sizing': 'border-box',
@@ -471,7 +471,14 @@ describe('flex directive', () => {
     it('should work with calc values', () => {
       // @see http://caniuse.com/#feat=calc for IE issues with calc()
       componentWithTemplate(`<div fxFlex='calc(30vw - 10px)'></div>`);
-      if (!(platform.FIREFOX || platform.EDGE)) {
+      if (platform.WEBKIT || platform.IOS) {
+        expectNativeEl(fixture).toHaveStyle({
+          'box-sizing': 'border-box',
+          'flex-grow': '1',
+          'flex-shrink': '1',
+          'flex-basis': 'calc(-10px + 30vw)'
+        }, styler);
+      } else if (!(platform.FIREFOX || platform.EDGE)) {
         expectNativeEl(fixture).toHaveStyle({
           'box-sizing': 'border-box',
           'flex-grow': '1',

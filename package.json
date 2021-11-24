@@ -20,7 +20,7 @@
     "build": "ng build",
     "stamp": "ts-node tools/package-tools/version-placeholders.ts --module=commonjs",
     "build:universal-demo-app": "ng run universal-demo-app:build:production && ng run universal-demo-app:server",
-    "test": "ng test",
+    "test": "ng test @angular/flex-layout",
     "test:ssr": "webpack --config test/webpack-spec-ssr-bundle.js && jasmine --config=test/jasmine-ssr.json",
     "lint": "stylelint projects/libs/**/*.scss --config=stylelint-config.json && tslint --project ./tsconfig.json --config tslint.json"
   },

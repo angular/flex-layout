@@ -16,10 +16,9 @@ import {
   SERVER_TOKEN,
   StyleUtils,
 } from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '../../module';
-
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {
+  customMatchers,
   makeCreateTestComponent,
   expectNativeEl,
   expectEl,
@@ -29,7 +28,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ShowHideDirective} from './show-hide';
+import {ShowHideDirective} from '@angular/flex-layout/extended';
+
 
 describe('show directive', () => {
   let fixture: ComponentFixture<any>;

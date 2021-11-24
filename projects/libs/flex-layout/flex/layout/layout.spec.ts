@@ -16,13 +16,10 @@ import {
   StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {customMatchers, makeCreateTestComponent, expectNativeEl, expectEl, queryFor} from '@angular/flex-layout/_private-utils/testing';
+import {FlexModule, LayoutStyleBuilder} from '@angular/flex-layout/flex';
 
-import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
-import {makeCreateTestComponent, expectNativeEl, expectEl} from '@angular/flex-layout/_private-utils/testing';
-import {queryFor} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule} from '../module';
-import {LayoutStyleBuilder} from './layout';
 
 describe('layout directive', () => {
   let fixture: ComponentFixture<any>;

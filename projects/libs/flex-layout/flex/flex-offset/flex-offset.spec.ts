@@ -15,17 +15,16 @@ import {
   StyleBuilder,
   StyleUtils,
 } from '@angular/flex-layout/core';
-
-import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {FlexLayoutModule} from '@angular/flex-layout';
 import {
+  customMatchers,
   makeCreateTestComponent,
   queryFor,
   expectEl,
   expectNativeEl,
 } from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule} from '../module';
-import {FlexOffsetStyleBuilder} from './flex-offset';
+import {FlexModule, FlexOffsetStyleBuilder} from '@angular/flex-layout/flex';
+
 
 describe('flex-offset directive', () => {
   let fixture: ComponentFixture<any>;
