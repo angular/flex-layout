@@ -1,0 +1,84 @@
+.night-theme {
+  background: #1c2029;
+  color: #cfcfcf;
+}
+
+.handle {
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
+  z-index: 9999;
+  height: 5px;
+  display: block;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  line-height: 0;
+}
+
+.handle-row {
+  width: 15px;
+  top: 50%;
+  left: -2px;
+  transform: translateX(-50%) rotate(270deg);
+  cursor: col-resize;;
+}
+
+.handle-column {
+  height: 15px;
+  left: 50%;
+  top: -4px;
+  cursor: row-resize;
+}
+
+.c2r1_header, .c2r2_header, .c1r1_header {
+  background: #13141b;
+  padding: 10px;
+  height: 50px;
+  margin: -8px -8px -9px -9px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ffdb86;
+}
+
+.c1r1 {
+  background: #3949ab;
+  padding: 10px;
+}
+
+.c1r1_header {
+  background: #2c3c7a;
+}
+
+.c2r2_header {
+  margin-top: -9px;
+}
+
+.c1r1_header {
+  margin: -7px -9px -8px -9px;
+}
+
+.c2r1_body {
+  background: #009688;
+  padding: 10px;
+}
+
+.c2r1_header {
+  background: #00695d;
+}
+
+.c2r2 {
+  background: #9c27b0;
+  padding: 10px;
+}
+
+.c2r2_header {
+  background: #5f1b6d;
+}
+
+.c1r1 > *, .c2r1_header, .c2r1_body > *, .c2r2 > * {
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
+
+import {VERSION} from '@angular/flex-layout';
 
 @Component({
-  selector: 'app-root',
+  selector: 'demo-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  title = 'demo-app';
+  version = VERSION.full;
 }
