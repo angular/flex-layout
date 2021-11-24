@@ -1,0 +1,33 @@
+.containerX {
+  padding: 5px;
+  border: solid 1px #b6b6b6;
+  box-sizing: content-box !important;
+}
+
+.flexitem {
+  text-align: center;
+  line-height: 100px;
+  margin: 2px;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.short {
+  line-height: 40px;
+}
+
+.markup {
+  font-size: 0.7em;
+  margin-top: -80px;
+  font-weight: bold;
+}
+
+.card-demo mat-card,
+.card-demo mat-card-content {
+  margin-bottom: 24px;
+}
+
+.card-demo mat-card-footer {
+  left: 24px;
+  margin-bottom: 24px;
+}

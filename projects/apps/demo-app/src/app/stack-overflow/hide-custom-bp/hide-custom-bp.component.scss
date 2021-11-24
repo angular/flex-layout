@@ -1,0 +1,33 @@
+.bounds {
+      background-color:#ddd;
+      height :800px;
+    }
+
+    .sec1 {
+      background: red;
+      color:white;
+      text-transform: uppercase;
+      padding: 20px;
+    }
+
+    .sec2 {
+      background: yellow;
+      color:blue;
+      padding: 20px;
+    }
+
+    .sec3 {
+      background: blue;
+      color:white;
+      text-transform: uppercase;
+      padding: 20px;
+    }
+
+    .sec1, .sec2, .sec3 {
+      padding-top:20px;
+      text-align:center
+    }
+
+    .content {
+      min-width: 300px;
+    }

@@ -1,0 +1,35 @@
+.colorNested, .containerX {
+  min-height: 384px;
+  background: #999999;
+}
+
+article, nav, aside, header, footer {
+  margin: 4px;
+  padding: 5px;
+  border: 1px solid #cccc33;
+  border-radius: 7px;
+}
+
+.main > article {
+  border-color: #cccc33;
+  background: #dddd88;
+  cursor: pointer;
+}
+
+.main > nav, .main > aside {
+  border-color: #8888bb;
+  background: #ccccff;
+}
+
+header, footer {
+  border-color: #eebb55;
+  background: #ffeebb;
+}
+
+mat-card > mat-card-actions:last-child {
+  padding-bottom: 16px;
+}
+
+mat-card > mat-card-actions > button {
+  margin-left: 10px;
+}

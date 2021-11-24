@@ -237,6 +237,13 @@
     tslib "^2.3.0"
     xhr2 "^0.2.0"
 
+"@angular/router@~13.0.0":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@angular/router/-/router-13.0.2.tgz#08f80a55d594fdc1c3e75f8fffacff6d4121a5ce"
+  integrity sha512-AfmT845dcYPvNbUdV2ALlf++szZP3ie2d0eu7JyGWe3anV1fbDcg76RhjxFK8yVUxryrCQtEnot1VEEVlhGkyw==
+  dependencies:
+    tslib "^2.3.0"
+
 "@assemblyscript/loader@^0.10.1":
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.10.1.tgz#70e45678f06c72fa2e350e8553ec4a4d72b92e06"
@@ -6770,6 +6777,15 @@ postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2, postcss@^7.0.32, postcss@^7.0.
     picocolors "^0.2.1"
     source-map "^0.6.1"
 
+postcss@^8.3.3:
+  version "8.4.0"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.0.tgz#cd4c33af00a00ba93ccf6ae1219f57c5e5ab5234"
+  integrity sha512-BRMNx3Wy7UI89jN8H4ZVS5lQMPM2OSMkOkvDCSjwXa7PWTs24k7Lm55NXLbMbs070LvraXaxN5l1npSOS6wMVw==
+  dependencies:
+    nanoid "^3.1.30"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.1"
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -7552,6 +7568,11 @@ source-map-js@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-0.6.2.tgz#0bb5de631b41cfbda6cfba8bd05a80efdfd2385e"
   integrity sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug==
+
+source-map-js@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/source-map-js/-/source-map-js-1.0.1.tgz#a1741c131e3c77d048252adfa24e23b908670caf"
+  integrity sha512-4+TN2b3tqOCd/kaGRJ/sTYA0tR0mdXx26ipdolxcwtJVqEnqNYvlCAt1q3ypy4QMlYus+Zh34RNtYLoq2oQ4IA==
 
 source-map-loader@3.0.0:
   version "3.0.0"
