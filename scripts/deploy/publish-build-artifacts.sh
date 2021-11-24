@@ -49,7 +49,7 @@ publishPackage() {
 
   if [[ ! ${COMMAND_ARGS} == *--no-build* ]]; then
     # Create a release of the current repository.
-    $(npm bin)/gulp ${packageName}:build-release:clean
+    $(npm bin)/ng build
   fi
 
   # Prepare cloning the builds repository

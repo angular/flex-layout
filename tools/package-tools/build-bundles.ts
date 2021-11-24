@@ -1,5 +1,4 @@
 import {join} from 'path';
-import {uglifyJsFile} from './minify-sources';
 import {buildConfig} from './build-config';
 import {BuildPackage} from './build-package';
 import {rollupRemoveLicensesPlugin} from './rollup-remove-licenses';
@@ -8,10 +7,10 @@ import {remapSourcemap} from './sourcemap-remap';
 
 // There are no type definitions available for these imports.
 const rollup = require('rollup');
-const rollupNodeResolutionPlugin = require('rollup-plugin-node-resolve');
 
 /** Directory where all bundles will be created in. */
-const bundlesDir = join(buildConfig.outputDir, 'bundles');
+const fesm2015Dir = join(buildConfig.outputDir, 'fesm2015');
+const fesm2020Dir = join(buildConfig.outputDir, 'fesm2020');
 
 
 /** Utility for creating bundles from raw ngc output. */
@@ -39,13 +38,11 @@ export class PackageBundler {
 
     return this.bundleEntryPoint({
       entryFile: this.buildPackage.entryFilePath,
-      esm5EntryFile: join(this.buildPackage.esm5OutputDir, 'index.js'),
+      esm2015EntryFile: join(this.buildPackage.esm2015OutputDir, 'index.js'),
       importName: `@angular/${this.buildPackage.name}`,
       moduleName: this.primaryAmdModuleName,
-      esm2015Dest: join(bundlesDir, `${packageName}.js`),
-      esm5Dest: join(bundlesDir, `${packageName}.es5.js`),
-      umdDest: join(bundlesDir, `${packageName}.umd.js`),
-      umdMinDest: join(bundlesDir, `${packageName}.umd.min.js`),
+      esm2015Dest: join(fesm2015Dir, `${packageName}.mjs`),
+      esm2020Dest: join(fesm2020Dir, `${packageName}.mjs`),
     });
   }
 
@@ -53,17 +50,15 @@ export class PackageBundler {
   private async bundleSecondaryEntryPoint(entryPointName: string) {
     const packageName = this.buildPackage.name;
     const entryFile = join(this.buildPackage.outputDir, entryPointName, 'index.js');
-    const esm5EntryFile = join(this.buildPackage.esm5OutputDir, entryPointName, 'index.js');
+    const esm2015EntryFile = join(this.buildPackage.esm2015OutputDir, entryPointName, 'index.js');
 
     return this.bundleEntryPoint({
       entryFile,
-      esm5EntryFile,
+      esm2015EntryFile,
       importName: `@angular/${this.buildPackage.name}/${entryPointName}`,
       moduleName: this.getAmdModuleName(packageName, entryPointName),
-      esm2015Dest: join(bundlesDir, `${packageName}`, `${entryPointName}.js`),
-      esm5Dest: join(bundlesDir, `${packageName}`, `${entryPointName}.es5.js`),
-      umdDest: join(bundlesDir, `${packageName}-${entryPointName}.umd.js`),
-      umdMinDest: join(bundlesDir, `${packageName}-${entryPointName}.umd.min.js`),
+      esm2015Dest: join(fesm2015Dir, `${packageName}`, `${entryPointName}.mjs`),
+      esm2020Dest: join(fesm2020Dir, `${packageName}`, `${entryPointName}.mjs`),
     });
   }
 
@@ -73,41 +68,27 @@ export class PackageBundler {
    *     bundle paths.
    */
   private async bundleEntryPoint(config: BundlesConfig) {
-    // Build FESM-2015 bundle file.
+    // Build FESM-2020 bundle file.
     await this.createRollupBundle({
       importName: config.importName,
       moduleName: config.moduleName,
       entry: config.entryFile,
+      dest: config.esm2020Dest,
+      format: 'es',
+    });
+
+    // Build FESM-2015 bundle file.
+    await this.createRollupBundle({
+      importName: config.importName,
+      moduleName: config.moduleName,
+      entry: config.esm2015EntryFile,
       dest: config.esm2015Dest,
       format: 'es',
     });
 
-    // Build FESM-5 bundle file.
-    await this.createRollupBundle({
-      importName: config.importName,
-      moduleName: config.moduleName,
-      entry: config.esm5EntryFile,
-      dest: config.esm5Dest,
-      format: 'es',
-    });
-
-    // Create UMD bundle of ES5 output.
-    await this.createRollupBundle({
-      importName: config.importName,
-      moduleName: config.moduleName,
-      entry: config.esm5Dest,
-      dest: config.umdDest,
-      format: 'umd'
-    });
-
-    // Create a minified UMD bundle using UglifyJS
-    uglifyJsFile(config.umdDest, config.umdMinDest);
-
     // Remaps the sourcemaps to be based on top of the original TypeScript source files.
+    await remapSourcemap(config.esm2020Dest);
     await remapSourcemap(config.esm2015Dest);
-    await remapSourcemap(config.esm5Dest);
-    await remapSourcemap(config.umdDest);
-    await remapSourcemap(config.umdMinDest);
   }
 
   /** Creates a rollup bundle of a specified JavaScript file.*/
@@ -140,18 +121,6 @@ export class PackageBundler {
       sourcemap: true
     };
 
-    // For UMD bundles, we need to adjust the `external` bundle option in order to include
-    // all necessary code in the bundle.
-    if (config.format === 'umd') {
-      bundleOptions.plugins.push(rollupNodeResolutionPlugin());
-
-      // For all UMD bundles, we want to exclude tslib from the `external` bundle option so that
-      // it is inlined into the bundle.
-      let external = Object.keys(rollupGlobals);
-      external.splice(external.indexOf('tslib'), 1);
-      bundleOptions.external = external;
-    }
-
     return rollup.rollup(bundleOptions).then((bundle: any) => bundle.write(writeOptions));
   }
 
@@ -170,13 +139,11 @@ export class PackageBundler {
 /** Configuration for creating library bundles. */
 interface BundlesConfig {
   entryFile: string;
-  esm5EntryFile: string;
+  esm2015EntryFile: string;
   importName: string;
   moduleName: string;
   esm2015Dest: string;
-  esm5Dest: string;
-  umdDest: string;
-  umdMinDest: string;
+  esm2020Dest: string;
 }
 
 /** Configuration for creating a bundle via rollup. */

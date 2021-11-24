@@ -1,52 +1,34 @@
-const path = require('path');
+// Karma configuration file, see link for more information
+// https://karma-runner.github.io/1.0/config/configuration-file.html
+
 const {customLaunchers, platformMap} = require('./browser-providers');
 
-module.exports = config => {
+module.exports = function (config) {
   config.set({
-    basePath: path.join(__dirname, '..'),
-    frameworks: ['jasmine'],
+    basePath: "",
+    frameworks: ["jasmine", "@angular-devkit/build-angular"],
     plugins: [
-      require('karma-jasmine'),
-      require('karma-browserstack-launcher'),
-      require('karma-sauce-launcher'),
-      require('karma-chrome-launcher'),
+      require("karma-jasmine"),
+      require("karma-browserstack-launcher"),
       require('karma-firefox-launcher'),
-      require('karma-sourcemap-loader'),
+      require("karma-sauce-launcher"),
+      require("karma-chrome-launcher"),
+      require("karma-jasmine-html-reporter"),
+      require("@angular-devkit/build-angular/plugins/karma"),
     ],
-    files: [
-      {pattern: 'node_modules/core-js/client/core.min.js', included: true, watched: false},
-      {pattern: 'node_modules/tslib/tslib.js', included: true, watched: false},
-      {pattern: 'node_modules/systemjs/dist/system.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/zone.min.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/proxy.min.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/sync-test.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/jasmine-patch.min.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/async-test.js', included: true, watched: false},
-      {pattern: 'node_modules/zone.js/dist/fake-async-test.js', included: true, watched: false},
-
-      // Include all Angular dependencies
-      {pattern: 'node_modules/@angular/**/*', included: false, watched: false},
-      {pattern: 'node_modules/rxjs/**/*', included: false, watched: false},
-
-      {pattern: 'test/karma-system-config.js', included: true, watched: false},
-      {pattern: 'test/karma-test-shim.js', included: true, watched: false},
-
-      // Includes all package tests and source files into karma. Those files will be watched.
-      // This pattern also matches all sourcemap files and TypeScript files for debugging.
-      {pattern: 'dist/packages/**/*', included: false, watched: true},
-    ],
-
-    customLaunchers: customLaunchers,
-
-    preprocessors: {
-      'dist/packages/**/*.js': ['sourcemap']
+    client: {
+      jasmine: {
+        // TODO(jelbourn): re-enable random test order once we can de-flake existing issues.
+        random: false,
+      },
+      clearContext: false, // leave Jasmine Spec Runner output visible in browser
     },
-
-    reporters: ['dots'],
-    autoWatch: false,
-
+    customLaunchers,
+    jasmineHtmlReporter: {
+      suppressAll: true, // removes the duplicated traces
+    },
     sauceLabs: {
-      testName: 'Angular Layout Unit Tests',
+      testName: "Angular Layout Unit Tests",
       startConnect: false,
       recordVideo: false,
       recordScreenshots: false,
@@ -56,71 +38,67 @@ module.exports = config => {
     },
 
     browserStack: {
-      project: 'Angular Layout Unit Tests',
+      project: "Angular Layout Unit Tests",
       startTunnel: false,
       retryLimit: 3,
       timeout: 1800,
       video: false,
     },
 
+    // Try Websocket for a faster transmission first. Fallback to polling if necessary.
+    transports: ["websocket", "polling"],
     browserDisconnectTimeout: 180000,
     browserDisconnectTolerance: 3,
     browserNoActivityTimeout: 300000,
     captureTimeout: 180000,
-
     browsers: ['ChromeHeadlessLocal'],
+    reporters: ["progress", "kjhtml"],
+    port: 9876,
+    colors: true,
+    logLevel: config.LOG_INFO,
+    autoWatch: true,
     singleRun: false,
-
-    // Try Websocket for a faster transmission first. Fallback to polling if necessary.
-    transports: ['websocket', 'polling'],
-
-    browserConsoleLogOptions: {
-      terminal: true,
-      level: 'log'
-    },
-
-    client: {
-      jasmine: {
-        // TODO(jelbourn): re-enable random test order once we can de-flake existing issues.
-        random: false
-      }
-    },
+    restartOnFileChange: true,
   });
 
-  if (process.env['CIRCLECI']) {
-    const containerInstanceIndex = Number(process.env['CIRCLE_NODE_INDEX']);
-    const maxParallelContainerInstances = Number(process.env['CIRCLE_NODE_TOTAL']);
-    const tunnelIdentifier =
-      `angular-layout-${process.env['CIRCLE_BUILD_NUM']}-${containerInstanceIndex}`;
+  if (process.env["CIRCLECI"]) {
+    const containerInstanceIndex = Number(process.env["CIRCLE_NODE_INDEX"]);
+    const maxParallelContainerInstances = Number(
+      process.env["CIRCLE_NODE_TOTAL"]
+    );
+    const tunnelIdentifier = `angular-layout-${process.env["CIRCLE_BUILD_NUM"]}-${containerInstanceIndex}`;
     const buildIdentifier = `circleci-${tunnelIdentifier}`;
-    const testPlatform = process.env['TEST_PLATFORM'];
+    const testPlatform = process.env["TEST_PLATFORM"];
 
     // This defines how often a given browser should be launched in the same CircleCI
     // container. This is helpful if we want to shard tests across the same browser.
-    const parallelBrowserInstances = Number(process.env['KARMA_PARALLEL_BROWSERS']) || 1;
+    const parallelBrowserInstances =
+      Number(process.env["KARMA_PARALLEL_BROWSERS"]) || 1;
 
     // In case there should be multiple instances of the browsers, we need to set up the
     // the karma-parallel plugin.
     if (parallelBrowserInstances > 1) {
-      config.frameworks.unshift('parallel');
-      config.plugins.push(require('karma-parallel'));
+      config.frameworks.unshift("parallel");
+      config.plugins.push(require("karma-parallel"));
       config.parallelOptions = {
         executors: parallelBrowserInstances,
-        shardStrategy: 'round-robin',
-      }
+        shardStrategy: "round-robin",
+      };
     }
 
-    if (testPlatform === 'browserstack') {
+    if (testPlatform === "browserstack") {
       config.browserStack.build = buildIdentifier;
       config.browserStack.tunnelIdentifier = tunnelIdentifier;
-    } else if (testPlatform === 'saucelabs') {
+    } else if (testPlatform === "saucelabs") {
       config.sauceLabs.build = buildIdentifier;
       config.sauceLabs.tunnelIdentifier = tunnelIdentifier;
     }
 
     const platformBrowsers = platformMap[testPlatform];
     const browserInstanceChunks = splitBrowsersIntoInstances(
-      platformBrowsers, maxParallelContainerInstances);
+      platformBrowsers,
+      maxParallelContainerInstances
+    );
 
     // Configure Karma to launch the browsers that belong to the given test platform and
     // container instance.
@@ -138,7 +116,9 @@ function splitBrowsersIntoInstances(browsers, maxInstances) {
   let assignedBrowsers = 0;
 
   for (let i = 0; i < maxInstances; i++) {
-    const chunkSize = Math.floor((browsers.length - assignedBrowsers) / (maxInstances - i));
+    const chunkSize = Math.floor(
+      (browsers.length - assignedBrowsers) / (maxInstances - i)
+    );
     chunks[i] = browsers.slice(assignedBrowsers, assignedBrowsers + chunkSize);
     assignedBrowsers += chunkSize;
   }

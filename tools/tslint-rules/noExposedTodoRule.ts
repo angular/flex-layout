@@ -1,6 +1,6 @@
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
-import * as utils from 'tsutils';
+import ts from 'typescript';
+import {Rules, RuleWalker} from 'tslint';
+import {forEachComment} from 'tsutils';
 
 const ERROR_MESSAGE =
     'A TODO may only appear in inline (//) style comments. ' +
@@ -11,17 +11,17 @@ const ERROR_MESSAGE =
  * detects TODO's inside of multi-line comments. TODOs need to be placed inside of single-line
  * comments.
  */
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Rules.AbstractRule {
 
   apply(sourceFile: ts.SourceFile) {
     return this.applyWithWalker(new NoExposedTodoWalker(sourceFile, this.getOptions()));
   }
 }
 
-class NoExposedTodoWalker extends Lint.RuleWalker {
+class NoExposedTodoWalker extends RuleWalker {
 
   visitSourceFile(sourceFile: ts.SourceFile) {
-    utils.forEachComment(sourceFile, (text, commentRange) => {
+    forEachComment(sourceFile, (text, commentRange) => {
       const isTodoComment = text.substring(commentRange.pos, commentRange.end).includes('TODO:');
 
       if (commentRange.kind === ts.SyntaxKind.MultiLineCommentTrivia && isTodoComment) {

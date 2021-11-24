@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "lib": ["es2020", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "outDir": "../../dist/tools/gulp",
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "target": "es2020",
+    "removeComments": true,
+    "types": [
+      "node"
+    ],
+    "baseUrl": ".",
+  }
+}

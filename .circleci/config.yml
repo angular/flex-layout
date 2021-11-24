@@ -38,7 +38,7 @@ var_6: &save_cache
   save_cache:
     key: *cache_key
     paths:
-      - "node_modules"
+      - ~/.cache/yarn
 
 # Job step that ensures that the node module dependencies are installed and up-to-date. We use
 # Yarn with the frozen lockfile option in order to make sure that lock file and package.json are
@@ -59,15 +59,7 @@ var_8: &docker-firefox-image
 # https://circleci.com/docs/2.0/workflows/#using-workspaces-to-share-data-among-jobs
 var_9: &attach_release_output
   attach_workspace:
-    at: dist/releases
-
-# Anchor that can be used to download and install Yarn globally in the bash environment.
-var_10: &yarn_download
-  run:
-    name: "Downloading and installing Yarn"
-    command: |
-      touch $BASH_ENV
-      curl -o- -L https://yarnpkg.com/install.sh | PROFILE=$BASH_ENV bash -s -- --version "1.19.1"
+    at: .
 
 # -----------------------------
 # Container version of CircleCI
@@ -79,7 +71,6 @@ version: 2
 # must be part of a workflow definition in order to run for PRs and push builds.
 # -----------------------------------------------------------------------------------------
 jobs:
-
   # -----------------------------------
   # Build job
   # -----------------------------------
@@ -88,15 +79,21 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp :publish:build-releases
+      - run: yarn build
 
       # Note: We want to save the cache in this job because the workspace cache also
       # includes the build cache that will be updated in this job.
       - *save_cache
 
+      # Store the release output in the workspace storage. This means that other jobs
+      # in the same workflow can attach the release output to their job.
+      - persist_to_workspace:
+          root: '.'
+          paths:
+            - node_modules
+            - dist/releases
   # ------------------------------------------------------------------------------------------
   # Job that runs the unit tests on locally installed browsers (Chrome and Firefox headless).
   # The available browsers are installed through the angular/ngcontainer Docker image.
@@ -105,10 +102,7 @@ jobs:
     docker: *docker-firefox-image
     steps:
       - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
-
+      - *attach_release_output
       - run: ./scripts/circleci/run-local-browser-tests.sh
 
   # ----------------------------------------------------------------------------
@@ -118,14 +112,12 @@ jobs:
   tests_browserstack:
     <<: *job_defaults
     environment:
-      BROWSER_STACK_USERNAME: "adamplumer1"
-      BROWSER_STACK_ACCESS_KEY: "WgLjxoB2zQ3tqmsznKnz"
+      BROWSER_STACK_USERNAME: 'adamplumer1'
+      BROWSER_STACK_ACCESS_KEY: 'WgLjxoB2zQ3tqmsznKnz'
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
-      - *yarn_install
-
+      - *attach_release_output
       - run: ./scripts/circleci/run-browserstack-tests.sh
 
   # ----------------------------------------------------------------------------
@@ -135,16 +127,14 @@ jobs:
   tests_saucelabs:
     <<: *job_defaults
     environment:
-      SAUCE_USERNAME: "angular-flex-layout"
-      SAUCE_ACCESS_KEY: "fa20eb1f457c-1f1a-c4c4-41ea-ef9e7f13"
+      SAUCE_USERNAME: 'angular-flex-layout'
+      SAUCE_ACCESS_KEY: 'fa20eb1f457c-1f1a-c4c4-41ea-ef9e7f13'
       # Note: This number should not be too high because otherwise we might run into
       # a rate limit exception.
       KARMA_PARALLEL_BROWSERS: 2
     steps:
       - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
+      - *attach_release_output
 
       - run: ./scripts/circleci/run-saucelabs-tests.sh
 
@@ -156,50 +146,22 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
-      - *yarn_install
+      - *attach_release_output
 
-      - run: yarn gulp ci:ssr
+      - run: yarn test:ssr
 
   # -------------------------------------------------------------------------
   # Job that pre-render's the universal app with `@angular/platform-server`.
   # This verifies that Angular Layout can be rendered within Node.
   # -------------------------------------------------------------------------
-  prerender_build:
+  integration_tests:
     <<: *job_defaults
     steps:
       - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
+      - *attach_release_output
 
-      - run: yarn gulp ci:prerender
-
-  # -------------------------------------------------------------------------
-  # Job that makes sure Angular Layout can be integrated with a basic app
-  # -------------------------------------------------------------------------
-  hello_world_build:
-    <<: *job_defaults
-    steps:
-      - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
-
-      - run: yarn gulp ci:hw
-
-  # -------------------------------------------------------------------------
-  # Job that makes sure Angular Layout can be integrated with the demo app
-  # -------------------------------------------------------------------------
-  aot_build:
-    <<: *job_defaults
-    steps:
-      - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
-
-      - run: yarn gulp ci:aot
+      - run: yarn ng build demo-app
+      - run: yarn build:universal-demo-app
 
   # ----------------------------------
   # Lint job. Runs the gulp lint task.
@@ -209,50 +171,9 @@ jobs:
     steps:
       - *checkout_code
       - *restore_cache
-      - *yarn_download
       - *yarn_install
 
-      - run: yarn gulp ci:lint
-
-  # -------------------------------------------------------------------------------------------
-  # Job that builds all release packages with Gulp. The built packages can be then used in the
-  # same workflow to publish snapshot builds or test the dev-app with the release packages.
-  # -------------------------------------------------------------------------------------------
-  build_release_packages:
-    <<: *job_defaults
-    steps:
-      - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
-
-      - run: yarn gulp ci:build-release-packages
-
-      # Store the release output in the workspace storage. This means that other jobs
-      # in the same workflow can attach the release output to their job.
-      - persist_to_workspace:
-          root: dist/releases
-          paths:
-            - "**/*"
-
-      # Since there is no UMD bundle that includes everything, we need to move
-      # all bundles into a directory. This allows us to store all UMD bundles as job
-      # artifacts that can be picked up by the Angular Github bot.
-      - run:
-          name: Prepare artifacts for publish.
-          command: |
-            mkdir -p /tmp/layout-umd-minified-bundles
-            cp dist/releases/flex-layout/bundles/*.umd.min.js /tmp/layout-umd-minified-bundles
-      # Publish bundle artifacts which will be used to calculate the size change.
-      # Note: Make sure that the size plugin from the Angular robot fetches the artifacts
-      # from this CircleCI job (see .github/angular-robot.yml). Additionally any artifacts need to
-      # be stored with the following path format: "{projectName}/{context}/{fileName}"
-      # This format is necessary because otherwise the bot is not able to pick up the
-      # artifacts from CircleCI. See:
-      # https://github.com/angular/github-robot/blob/master/functions/src/plugins/size.ts#L392-L394
-      - store_artifacts:
-          path: /tmp/layout-umd-minified-bundles
-          destination: /angular_layout/layout_release_output/
+      - run: yarn lint
 
   # ----------------------------------------
   # Job that publishes the build snapshots
@@ -268,10 +189,8 @@ jobs:
           command: '[[ -n ${CIRCLE_PR_NUMBER} ]] && circleci step halt || true'
 
       - *checkout_code
-      - *restore_cache
-      - *yarn_download
-      - *yarn_install
       - *attach_release_output
+      - run: yarn stamp
 
       # CircleCI has a config setting to enforce SSH for all github connections.
       # This is not compatible with our mechanism of using a Personal Access Token
@@ -289,37 +208,33 @@ jobs:
 # ----------------------------------------------------------------------------------------
 workflows:
   version: 2
-
-  # Build and test workflow. A workflow includes multiple jobs that run in parallel. All jobs
-  # that build and test source code should be part of this workflow
-  build:
+  default_workflow:
     jobs:
+      # Build and test workflow. A workflow includes multiple jobs that run in parallel. All jobs
+      # that build and test source code should be part of this workflow
       - build
-
-  unit_tests:
-    jobs:
-      - tests_local_browsers
-      - tests_browserstack
-      - tests_saucelabs
-      - tests_ssr
-
-  integration_tests:
-    jobs:
-      - prerender_build
-      - hello_world_build
-      - aot_build
-
-  release_output:
-    jobs:
-      - build_release_packages
+      - lint
+      - tests_local_browsers:
+          requires:
+           - build
+      - tests_browserstack:
+          requires:
+            - build
+      - tests_saucelabs:
+          requires:
+            - build
+      - tests_ssr:
+          requires:
+            - build
+      - integration_tests:
+          requires:
+            - build
       - publish_snapshots:
           requires:
-            - build_release_packages
-
-  # Lint workflow. As we want to lint in one job, this is a workflow with just one job.
-  lint:
-    jobs:
-      - lint
+            - tests_browserstack
+            - tests_saucelabs
+            - tests_local_browsers
+            - integration_tests
 
 # ---------------------------
 # General setup for CircleCI
