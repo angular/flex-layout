@@ -135,7 +135,7 @@ export class MediaMarshaller {
     if (bpMap) {
       const values = this.getActivatedValues(bpMap, key);
       if (values) {
-        return values.get(key) !== undefined ?? false;
+        return values.get(key) !== undefined || false;
       }
     }
     return false;

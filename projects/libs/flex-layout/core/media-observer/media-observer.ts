@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable, OnDestroy} from '@angular/core';
-import {Subject, asapScheduler, Observable, of} from 'rxjs';
+import {Subject, asapScheduler, Observable, of, distinctUntilChanged} from 'rxjs';
 import {debounceTime, filter, map, switchMap, takeUntil} from 'rxjs/operators';
 
 import {mergeAlias} from '../add-alias';
@@ -153,8 +153,19 @@ export class MediaObserver implements OnDestroy {
     const excludeOverlaps = (changes: MediaChange[]) => {
       return !this.filterOverlaps ? changes : changes.filter(change => {
         const bp = this.breakpoints.findByQuery(change.mediaQuery);
-        return !bp ? true : !bp.overlapping;
+        return bp?.overlapping ?? true;
       });
+    };
+    const ignoreDuplicates = (previous: MediaChange[], current: MediaChange[]): boolean => {
+      if (previous.length !== current.length) {
+        return false;
+      }
+
+      const previousMqs = previous.map(mc => mc.mediaQuery);
+      const currentMqs = new Set(current.map(mc => mc.mediaQuery));
+      const difference = new Set(previousMqs.filter(mq => !currentMqs.has(mq)));
+
+      return difference.size === 0;
     };
 
     /**
@@ -167,6 +178,7 @@ export class MediaObserver implements OnDestroy {
             switchMap(_ => of(this.findAllActivations())),
             map(excludeOverlaps),
             filter(hasChanges),
+            distinctUntilChanged(ignoreDuplicates),
             takeUntil(this.destroyed$)
         );
   }
@@ -177,7 +189,7 @@ export class MediaObserver implements OnDestroy {
    */
   private findAllActivations(): MediaChange[] {
     const mergeMQAlias = (change: MediaChange) => {
-      let bp: OptionalBreakPoint = this.breakpoints.findByQuery(change.mediaQuery);
+      const bp: OptionalBreakPoint = this.breakpoints.findByQuery(change.mediaQuery);
       return mergeAlias(change, bp);
     };
     const replaceWithPrintAlias = (change: MediaChange) => {
@@ -199,9 +211,9 @@ export class MediaObserver implements OnDestroy {
 /**
  * Find associated breakpoint (if any)
  */
-function toMediaQuery(query: string, locator: BreakPointRegistry) {
-  const bp = locator.findByAlias(query) || locator.findByQuery(query);
-  return bp ? bp.mediaQuery : null;
+function toMediaQuery(query: string, locator: BreakPointRegistry): string | null {
+  const bp = locator.findByAlias(query) ?? locator.findByQuery(query);
+  return bp?.mediaQuery ?? null;
 }
 
 /**

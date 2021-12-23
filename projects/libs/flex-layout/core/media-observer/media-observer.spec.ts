@@ -23,8 +23,8 @@ describe('media-observer', () => {
   let media$: Observable<MediaChange>;
   let mediaObserver: MediaObserver;
   let mediaController: MockMatchMedia;
-  const activateQuery = (alias: string) => {
-      mediaController.activate(alias);
+  const activateQuery = (alias: string, useOverlaps?: boolean) => {
+      mediaController.activate(alias, useOverlaps);
       tick(100);  // Since MediaObserver has 50ms debounceTime
   };
 
@@ -97,6 +97,27 @@ describe('media-observer', () => {
       activateQuery('gt-lg');
       activateQuery('invalid');
       expect(count).toEqual(2);
+
+      subscription.unsubscribe();
+    }));
+
+    it('only gets one substantive update per media change set', fakeAsync(() => {
+      let count = 0;
+      const subscription = mediaObserver.asObservable()
+        .subscribe(_changes => {
+          count += 1;
+        });
+
+      // Not a duplicate. This is intentional.
+      activateQuery('sm', true);
+      activateQuery('sm', true);
+      expect(count).toEqual(1);
+
+      activateQuery('md', true);
+      expect(count).toEqual(2);
+
+      activateQuery('xl', true);
+      expect(count).toEqual(3);
 
       subscription.unsubscribe();
     }));

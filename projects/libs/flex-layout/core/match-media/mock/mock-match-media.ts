@@ -40,8 +40,7 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   /** Feature to support manual, simulated activation of a mediaQuery. */
-  activate(mediaQuery: string, useOverlaps = false): boolean {
-    useOverlaps = useOverlaps || this.useOverlaps;
+  activate(mediaQuery: string, useOverlaps = this.useOverlaps): boolean {
     mediaQuery = this._validateQuery(mediaQuery);
 
     if (useOverlaps || !this.isActive(mediaQuery)) {
@@ -55,9 +54,9 @@ export class MockMatchMedia extends MatchMedia {
   }
 
   /** Converts an optional mediaQuery alias to a specific, valid mediaQuery */
-  _validateQuery(queryOrAlias: string) {
+  _validateQuery(queryOrAlias: string): string {
     const bp = this._breakpoints.findByAlias(queryOrAlias);
-    return (bp && bp.mediaQuery) || queryOrAlias;
+    return bp?.mediaQuery ?? queryOrAlias;
   }
 
   /**
@@ -67,36 +66,36 @@ export class MockMatchMedia extends MatchMedia {
   private _activateWithOverlaps(mediaQuery: string, useOverlaps: boolean): boolean {
     if (useOverlaps) {
       const bp = this._breakpoints.findByQuery(mediaQuery);
-      const alias = bp ? bp.alias : 'unknown';
+      const alias = bp?.alias ?? 'unknown';
 
       // Simulate activation of overlapping lt-<XXX> ranges
       switch (alias) {
-        case 'lg'   :
+        case 'lg':
           this._activateByAlias(['lt-xl']);
           break;
-        case 'md'   :
+        case 'md':
           this._activateByAlias(['lt-xl', 'lt-lg']);
           break;
-        case 'sm'   :
+        case 'sm':
           this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md']);
           break;
-        case 'xs'   :
+        case 'xs':
           this._activateByAlias(['lt-xl', 'lt-lg', 'lt-md', 'lt-sm']);
           break;
       }
 
       // Simulate activation of overlapping gt-<xxxx> mediaQuery ranges
       switch (alias) {
-        case 'xl'   :
+        case 'xl':
           this._activateByAlias(['gt-lg', 'gt-md', 'gt-sm', 'gt-xs']);
           break;
-        case 'lg'   :
+        case 'lg':
           this._activateByAlias(['gt-md', 'gt-sm', 'gt-xs']);
           break;
-        case 'md'   :
+        case 'md':
           this._activateByAlias(['gt-sm', 'gt-xs']);
           break;
-        case 'sm'   :
+        case 'sm':
           this._activateByAlias(['gt-xs']);
           break;
       }
@@ -112,7 +111,7 @@ export class MockMatchMedia extends MatchMedia {
   private _activateByAlias(aliases: string[]) {
     const activate = (alias: string) => {
       const bp = this._breakpoints.findByAlias(alias);
-      this._activateByQuery(bp ? bp.mediaQuery : alias);
+      this._activateByQuery(bp?.mediaQuery ?? alias);
     };
     aliases.forEach(activate);
   }
