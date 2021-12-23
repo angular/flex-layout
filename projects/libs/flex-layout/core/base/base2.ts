@@ -105,6 +105,7 @@ export abstract class BaseDirective2 implements OnChanges, OnDestroy {
     });
     this.applyStyleToElement(this.mru);
     this.mru = {};
+    this.currentValue = undefined;
   }
 
   /** Force trigger style updates on DOM element */

@@ -300,6 +300,30 @@ describe('layout directive', () => {
       }, styler);
 
     });
+
+    it('should fallback to default styles after multiple state changes', () => { // tslint:disable-line:max-line-length
+      createTestComponent(`<div fxLayout.md='column'></div>`);
+
+      expectNativeEl(fixture).not.toHaveStyle({
+        'flex-direction': 'column'
+      }, styler);
+
+      mediaController.activate('md');
+      expectNativeEl(fixture).toHaveStyle({
+        'flex-direction': 'column'
+      }, styler);
+
+      mediaController.activate('lg');
+      expectNativeEl(fixture).not.toHaveStyle({
+        'flex-direction': 'column'
+      }, styler);
+
+      mediaController.activate('md');
+      expectNativeEl(fixture).toHaveStyle({
+        'flex-direction': 'column'
+      }, styler);
+    });
+
     it('should fallback to closest overlapping value when the active mediaQuery change is not configured', () => { // tslint:disable-line:max-line-length
       createTestComponent(`<div fxLayout fxLayout.gt-sm='column' fxLayout.md='row'></div>`);
 
