@@ -30,11 +30,11 @@ export class BreakPointRegistry {
    * Search breakpoints by alias (e.g. gt-xs)
    */
   findByAlias(alias: string): OptionalBreakPoint {
-    return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias == alias);
+    return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias === alias);
   }
 
   findByQuery(query: string): OptionalBreakPoint {
-    return this.findWithPredicate(query, (bp) => bp.mediaQuery == query);
+    return this.findWithPredicate(query, (bp) => bp.mediaQuery === query);
   }
 
   /**
@@ -42,7 +42,7 @@ export class BreakPointRegistry {
    * e.g. gt-sm overlaps md, lg, and xl
    */
   get overlappings(): BreakPoint[] {
-    return this.items.filter(it => it.overlapping == true);
+    return this.items.filter(it => it.overlapping);
   }
 
   /**
@@ -58,7 +58,7 @@ export class BreakPointRegistry {
    * for property layoutGtSM.
    */
   get suffixes(): string[] {
-    return this.items.map(it => !!it.suffix ? it.suffix : '');
+    return this.items.map(it => it?.suffix ?? '');
   }
 
   /**
@@ -68,10 +68,10 @@ export class BreakPointRegistry {
       searchFn: (bp: BreakPoint) => boolean): OptionalBreakPoint {
     let response = this.findByMap.get(key);
     if (!response) {
-      response = this.items.find(searchFn) || null;
+      response = this.items.find(searchFn) ?? null;
       this.findByMap.set(key, response);
     }
-    return response || null;
+    return response ?? null;
 
   }
 

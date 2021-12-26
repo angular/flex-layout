@@ -43,6 +43,7 @@ export interface ElementMatcher {
  */
 @Injectable({providedIn: 'root'})
 export class MediaMarshaller {
+  private _useFallbacks = true;
   private activatedBreakpoints: BreakPoint[] = [];
   private elementMap: ElementMap = new Map();
   private elementKeyMap: ElementKeyMap = new WeakMap();
@@ -53,7 +54,11 @@ export class MediaMarshaller {
   private subject: Subject<ElementMatcher> = new Subject();
 
   get activatedAlias(): string {
-    return this.activatedBreakpoints[0] ? this.activatedBreakpoints[0].alias : '';
+    return this.activatedBreakpoints[0]?.alias ?? '';
+  }
+
+  set useFallbacks(value: boolean) {
+    this._useFallbacks = value;
   }
 
   constructor(protected matchMedia: MatchMedia,
@@ -68,18 +73,20 @@ export class MediaMarshaller {
    */
   onMediaChange(mc: MediaChange) {
     const bp: BreakPoint | null = this.findByQuery(mc.mediaQuery);
+
     if (bp) {
       mc = mergeAlias(mc, bp);
 
-      if (mc.matches && this.activatedBreakpoints.indexOf(bp) === -1) {
+      const bpIndex = this.activatedBreakpoints.indexOf(bp);
+
+      if (mc.matches && bpIndex === -1) {
         this.activatedBreakpoints.push(bp);
         this.activatedBreakpoints.sort(sortDescendingPriority);
 
         this.updateStyles();
-
-      } else if (!mc.matches && this.activatedBreakpoints.indexOf(bp) !== -1) {
+      } else if (!mc.matches && bpIndex !== -1) {
         // Remove the breakpoint when it's deactivated
-        this.activatedBreakpoints.splice(this.activatedBreakpoints.indexOf(bp), 1);
+        this.activatedBreakpoints.splice(bpIndex, 1);
         this.activatedBreakpoints.sort(sortDescendingPriority);
 
         this.updateStyles();
@@ -193,7 +200,6 @@ export class MediaMarshaller {
           this.clearElement(el, k);
         }
       });
-
     });
   }
 
@@ -204,6 +210,7 @@ export class MediaMarshaller {
    */
   clearElement(element: HTMLElement, key: string): void {
     const builders = this.clearMap.get(element);
+
     if (builders) {
       const clearFn: ClearCallback = builders.get(key) as ClearCallback;
       if (!!clearFn) {
@@ -316,12 +323,20 @@ export class MediaMarshaller {
     for (let i = 0; i < this.activatedBreakpoints.length; i++) {
       const activatedBp = this.activatedBreakpoints[i];
       const valueMap = bpMap.get(activatedBp.alias);
+
       if (valueMap) {
         if (key === undefined || (valueMap.has(key) && valueMap.get(key) != null)) {
           return valueMap;
         }
       }
     }
+
+    // On the server, we explicitly have an "all" section filled in to begin with.
+    // So we don't need to aggressively find a fallback if no explicit value exists.
+    if (!this._useFallbacks) {
+      return undefined;
+    }
+
     const lastHope = bpMap.get('');
     return (key === undefined || lastHope && lastHope.has(key)) ? lastHope : undefined;
   }
@@ -347,14 +362,11 @@ export class MediaMarshaller {
 function initBuilderMap(map: BuilderMap,
                         element: HTMLElement,
                         key: string,
-                        input?: UpdateCallback | ClearCallback): void {
+                        input?: Builder): void {
   if (input !== undefined) {
-    let oldMap = map.get(element);
-    if (!oldMap) {
-      oldMap = new Map();
-      map.set(element, oldMap);
-    }
+    const oldMap = map.get(element) ?? new Map();
     oldMap.set(key, input);
+    map.set(element, oldMap);
   }
 }
 

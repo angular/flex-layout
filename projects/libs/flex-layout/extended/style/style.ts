@@ -62,7 +62,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
       this.ngStyleInstance = new NgStyle(elementRef, differs, renderer2);
     }
     this.init();
-    const styles = this.nativeElement.getAttribute('style') || '';
+    const styles = this.nativeElement.getAttribute('style') ?? '';
     this.fallbackStyles = this.buildStyleMap(styles);
     this.isServer = serverLoaded && isPlatformServer(platformId);
   }
@@ -92,7 +92,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
   protected buildStyleMap(styles: NgStyleType): NgStyleMap {
     // Always safe-guard (aka sanitize) style property values
     const sanitizer: NgStyleSanitizer = (val: any) =>
-      this.sanitizer.sanitize(SecurityContext.STYLE, val) || '';
+      this.sanitizer.sanitize(SecurityContext.STYLE, val) ?? '';
     if (styles) {
       switch (getType(styles)) {
         case 'string':  return buildMapFromList(buildRawList(styles),
