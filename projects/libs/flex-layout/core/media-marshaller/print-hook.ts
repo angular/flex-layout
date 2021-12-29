@@ -56,7 +56,7 @@ export class PrintHook implements OnDestroy {
 
   /** What is the desired mqAlias to use while printing? */
   get printAlias(): string[] {
-    return this.layoutConfig.printWithBreakpoints ?? [];
+    return [...(this.layoutConfig.printWithBreakpoints ?? [])];
   }
 
   /** Lookup breakpoints associated with print aliases. */
@@ -77,11 +77,13 @@ export class PrintHook implements OnDestroy {
   /** Update event with printAlias mediaQuery information */
   updateEvent(event: MediaChange): MediaChange {
     let bp: OptionalBreakPoint = this.breakpoints.findByQuery(event.mediaQuery);
+
     if (this.isPrintEvent(event)) {
       // Reset from 'print' to first (highest priority) print breakpoint
       bp = this.getEventBreakpoints(event)[0];
       event.mediaQuery = bp?.mediaQuery ?? '';
     }
+
     return mergeAlias(event, bp);
   }
 
@@ -100,11 +102,13 @@ export class PrintHook implements OnDestroy {
   private beforePrintEventListeners: Function[] = [];
   private afterPrintEventListeners: Function[] = [];
 
+  private formerActivations: Array<BreakPoint> | null = null;
+
   // registerBeforeAfterPrintHooks registers a `beforeprint` event hook so we can
   // trigger print styles synchronously and apply proper layout styles.
   // It is a noop if the hooks have already been registered or if the document's
   // `defaultView` is not available.
-  private registerBeforeAfterPrintHooks(target: HookTarget) {
+  registerBeforeAfterPrintHooks(target: HookTarget) {
     // `defaultView` may be null when rendering on the server or in other contexts.
     if (!this._document.defaultView || this.registeredBeforeAfterPrintHooks) {
       return;
@@ -145,8 +149,6 @@ export class PrintHook implements OnDestroy {
    * @return pipeable tap predicate
    */
   interceptEvents(target: HookTarget) {
-    this.registerBeforeAfterPrintHooks(target);
-
     return (event: MediaChange) => {
       if (this.isPrintEvent(event)) {
         if (event.matches && !this.isPrinting) {
@@ -156,9 +158,11 @@ export class PrintHook implements OnDestroy {
           this.stopPrinting(target);
           target.updateStyles();
         }
-      } else {
-        this.collectActivations(event);
+
+        return;
       }
+
+      this.collectActivations(target, event);
     };
   }
 
@@ -175,6 +179,7 @@ export class PrintHook implements OnDestroy {
    */
   protected startPrinting(target: HookTarget, bpList: OptionalBreakPoint[]) {
     this.isPrinting = true;
+    this.formerActivations = target.activatedBreakpoints;
     target.activatedBreakpoints = this.queue.addPrintBreakpoints(bpList);
   }
 
@@ -182,6 +187,7 @@ export class PrintHook implements OnDestroy {
   protected stopPrinting(target: HookTarget) {
     target.activatedBreakpoints = this.deactivations;
     this.deactivations = [];
+    this.formerActivations = null;
     this.queue.clear();
     this.isPrinting = false;
   }
@@ -204,20 +210,29 @@ export class PrintHook implements OnDestroy {
    *    - sort and save when starting print
    *    - restore as activatedTargets and clear when stop printing
    */
-  collectActivations(event: MediaChange) {
+  collectActivations(target: HookTarget, event: MediaChange) {
     if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
-      if (!event.matches) {
-        const bp = this.breakpoints.findByQuery(event.mediaQuery);
-        // Deactivating a breakpoint
-        if (bp) {
-          this.deactivations.push(bp);
-          this.deactivations.sort(sortDescendingPriority);
-        }
-      } else if (!this.isPrintingBeforeAfterEvent) {
+      if (!this.isPrintingBeforeAfterEvent) {
         // Only clear deactivations if we aren't printing from a `beforeprint` event.
         // Otherwise, this will clear before `stopPrinting()` is called to restore
         // the pre-Print Activations.
         this.deactivations = [];
+
+        return;
+      }
+
+      if (!event.matches) {
+        const bp = this.breakpoints.findByQuery(event.mediaQuery);
+        // Deactivating a breakpoint
+        if (bp) {
+          const hasFormerBp = this.formerActivations && this.formerActivations.includes(bp);
+          const wasActivated = !this.formerActivations && target.activatedBreakpoints.includes(bp);
+          const shouldDeactivate = hasFormerBp || wasActivated;
+          if (shouldDeactivate) {
+            this.deactivations.push(bp);
+            this.deactivations.sort(sortDescendingPriority);
+          }
+        }
       }
     }
   }

@@ -355,6 +355,7 @@ export class MediaMarshaller {
   private observeActivations() {
     const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
 
+    this.hook.registerBeforeAfterPrintHooks(this);
     this.matchMedia
         .observe(this.hook.withPrintQuery(queries))
         .pipe(
