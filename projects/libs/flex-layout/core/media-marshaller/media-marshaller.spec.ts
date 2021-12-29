@@ -301,8 +301,17 @@ describe('media-marshaller', () => {
       expect(mediaMarshaller.onMediaChange).not.toHaveBeenCalledWith({mediaQuery: 'print'} as any);
     });
 
-  });
+    it('"print" events restore breakpoints correctly', () => {
+      mediaController.activate('xs');
+      const activatedBps = mediaMarshaller.activatedBreakpoints;
+      // const smMediaQuery = 'screen and (min-width: 600px) and (max-width: 959px)';
+      mediaController.activate('print');
+      mediaController.activate('xs');
+      const secondActivatedBps = mediaMarshaller.activatedBreakpoints;
 
+      expect(activatedBps).toEqual(secondActivatedBps);
+    });
+  });
 });
 
 const fakeElement = {} as HTMLElement;
