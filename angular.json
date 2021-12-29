@@ -185,7 +185,7 @@
           "builder": "@angular-devkit/build-angular:server",
           "options": {
             "outputPath": "dist/universal-demo-app/server",
-            "main": "projects/apps/universal-demo-app/src/main.server.ts",
+            "main": "projects/apps/universal-demo-app/server.ts",
             "tsConfig": "projects/apps/universal-demo-app/tsconfig.server.json",
             "preserveSymlinks": true,
             "sourceMap": true,
@@ -200,6 +200,17 @@
                   "with": "projects/apps/universal-demo-app/src/environments/environment.prod.ts"
                 }
               ]
+            }
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "defaultConfiguration": "production",
+          "options": {},
+          "configurations": {
+            "production": {
+              "browserTarget": "universal-demo-app:build:production",
+              "serverTarget": "universal-demo-app:server:production"
             }
           }
         },

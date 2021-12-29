@@ -78,27 +78,13 @@ export class ServerMediaQueryList implements MediaQueryList {
   }
 
   /** Don't need to remove listeners in the server environment */
-  removeListener(_: MediaQueryListListener | null) {
+  removeListener() {
   }
 
-  addEventListener<K extends keyof
-    MediaQueryListEventMap>(_: K,
-                            __: (this: MediaQueryList,
-                                 ev: MediaQueryListEventMap[K]) => any,
-                            ___?: boolean | AddEventListenerOptions): void;
-  addEventListener(_: string,
-                   __: EventListenerOrEventListenerObject,
-                   ___?: boolean | AddEventListenerOptions) {
+  addEventListener() {
   }
 
-  removeEventListener<K extends keyof
-    MediaQueryListEventMap>(_: K,
-                            __: (this: MediaQueryList,
-                                 ev: MediaQueryListEventMap[K]) => any,
-                            ___?: boolean | EventListenerOptions): void;
-  removeEventListener(_: string,
-                      __: EventListenerOrEventListenerObject,
-                      ___?: boolean | EventListenerOptions) {
+  removeEventListener() {
   }
 
   dispatchEvent(_: Event): boolean {

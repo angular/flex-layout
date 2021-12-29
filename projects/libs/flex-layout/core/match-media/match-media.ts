@@ -49,7 +49,7 @@ export class MatchMedia implements OnDestroy {
    */
   isActive(mediaQuery: string): boolean {
     const mql = this.registry.get(mediaQuery);
-    return !!mql ? mql.matches : this.registerQuery(mediaQuery).some(m => m.matches);
+    return mql?.matches ?? this.registerQuery(mediaQuery).some(m => m.matches);
   }
 
   /**

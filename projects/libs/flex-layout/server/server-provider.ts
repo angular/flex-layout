@@ -5,7 +5,6 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {InjectionToken} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {BEFORE_APP_SERIALIZED} from '@angular/platform-server';
 import {
@@ -15,47 +14,48 @@ import {
   BreakPoint,
   ɵMatchMedia as MatchMedia,
   StylesheetMap,
-  sortAscendingPriority
+  sortAscendingPriority,
+  MediaMarshaller,
 } from '@angular/flex-layout/core';
 
 import {ServerMatchMedia} from './server-match-media';
 
 /**
- * Activate all of the registered breakpoints in sequence, and then
+ * Activate all the registered breakpoints in sequence, and then
  * retrieve the associated stylings from the virtual stylesheet
  * @param serverSheet the virtual stylesheet that stores styles for each
  *        element
  * @param mediaController the MatchMedia service to activate/deactivate breakpoints
  * @param breakpoints the registered breakpoints to activate/deactivate
- * @param layoutConfig the library config, and specifically the breakpoints to activate
+ * @param mediaMarshaller the MediaMarshaller service to disable fallback styles dynamically
  */
 export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
                                                mediaController: ServerMatchMedia,
-                                               breakpoints: BreakPoint[]) {
+                                               breakpoints: BreakPoint[],
+                                               mediaMarshaller: MediaMarshaller) {
   // Store the custom classes in the following map, that way only
   // one class gets allocated per HTMLElement, and each class can
   // be referenced in the static media queries
   const classMap = new Map<HTMLElement, string>();
 
-  // Get the initial stylings for all of the directives,
-  // and initialize the fallback block of stylings
+  // Get the initial stylings for all the directives,
+  // and initialize the fallback block of stylings.
   const defaultStyles = new Map(serverSheet.stylesheet);
   // Reset the class counter, otherwise class numbers will
-  // increase with each server render
+  // increase with each server render.
   nextId = 0;
   let styleText = generateCss(defaultStyles, 'all', classMap);
+  mediaMarshaller.useFallbacks = false;
 
-  [...breakpoints].sort(sortAscendingPriority).forEach((bp, i) => {
+  [...breakpoints].sort(sortAscendingPriority).forEach((bp) => {
     serverSheet.clearStyles();
     mediaController.activateBreakpoint(bp);
     const stylesheet = new Map(serverSheet.stylesheet);
     if (stylesheet.size > 0) {
       styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
     }
-    mediaController.deactivateBreakpoint(breakpoints[i]);
+    mediaController.deactivateBreakpoint(bp);
   });
-
-
 
   return styleText;
 }
@@ -67,12 +67,14 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
 export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
                                             mediaController: ServerMatchMedia,
                                             _document: Document,
-                                            breakpoints: BreakPoint[]) {
+                                            breakpoints: BreakPoint[],
+                                            mediaMarshaller: MediaMarshaller) {
   return () => {
     // This is the style tag that gets inserted into the head of the DOM,
     // populated with the manual media queries
     const styleTag = _document.createElement('style');
-    const styleText = generateStaticFlexLayoutStyles(serverSheet, mediaController, breakpoints);
+    const styleText = generateStaticFlexLayoutStyles(
+      serverSheet, mediaController, breakpoints, mediaMarshaller);
     styleTag.classList.add(`${CLASS_NAME}ssr`);
     styleTag.textContent = styleText;
     _document.head!.appendChild(styleTag);
@@ -84,15 +86,16 @@ export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
  */
 export const SERVER_PROVIDERS = [
   {
-    provide: <InjectionToken<() => void>>BEFORE_APP_SERIALIZED,
+    provide: BEFORE_APP_SERIALIZED,
     useFactory: FLEX_SSR_SERIALIZER_FACTORY,
     deps: [
       StylesheetMap,
       MatchMedia,
       DOCUMENT,
-      BREAKPOINTS
+      BREAKPOINTS,
+      MediaMarshaller,
     ],
-    multi: true
+    multi: true,
   },
   {
     provide: SERVER_TOKEN,
@@ -130,8 +133,10 @@ function generateCss(stylesheet: StyleSheet, mediaQuery: string, classMap: Class
       keyVals += v ? format(`${k}:${v};`) : '';
     });
 
-    // Build list of CSS styles; each with a className
-    css += format(`.${className} {`, keyVals, '}');
+    if (keyVals) {
+      // Build list of CSS styles; each with a className
+      css += format(`.${className} {`, keyVals, '}');
+    }
   });
 
   // Group 1 or more styles (each with className) in a specific mediaQuery
