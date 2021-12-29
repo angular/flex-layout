@@ -50,13 +50,13 @@ export class PrintHook implements OnDestroy {
   }
 
   /** Is the MediaChange event for any 'print' @media */
-  isPrintEvent(e: MediaChange): Boolean {
+  isPrintEvent(e: MediaChange): boolean {
     return e.mediaQuery.startsWith(PRINT);
   }
 
   /** What is the desired mqAlias to use while printing? */
   get printAlias(): string[] {
-    return this.layoutConfig.printWithBreakpoints || [];
+    return this.layoutConfig.printWithBreakpoints ?? [];
   }
 
   /** Lookup breakpoints associated with print aliases. */
@@ -80,7 +80,7 @@ export class PrintHook implements OnDestroy {
     if (this.isPrintEvent(event)) {
       // Reset from 'print' to first (highest priority) print breakpoint
       bp = this.getEventBreakpoints(event)[0];
-      event.mediaQuery = bp ? bp.mediaQuery : '';
+      event.mediaQuery = bp?.mediaQuery ?? '';
     }
     return mergeAlias(event, bp);
   }
@@ -88,14 +88,14 @@ export class PrintHook implements OnDestroy {
 
   // registeredBeforeAfterPrintHooks tracks if we registered the `beforeprint`
   //  and `afterprint` event listeners.
-  private registeredBeforeAfterPrintHooks: boolean = false;
+  private registeredBeforeAfterPrintHooks = false;
 
   // isPrintingBeforeAfterEvent is used to track if we are printing from within
-  // a `beforeprint` event handler. This prevents the typicall `stopPrinting`
+  // a `beforeprint` event handler. This prevents the typical `stopPrinting`
   // form `interceptEvents` so that printing is not stopped while the dialog
   // is still open. This is an extension of the `isPrinting` property on
   // browsers which support `beforeprint` and `afterprint` events.
-  private isPrintingBeforeAfterEvent: boolean = false;
+  private isPrintingBeforeAfterEvent = false;
 
   private beforePrintEventListeners: Function[] = [];
   private afterPrintEventListeners: Function[] = [];
@@ -141,8 +141,8 @@ export class PrintHook implements OnDestroy {
   }
 
   /**
-   * Prepare RxJS filter operator with partial application
-   * @return pipeable filter predicate
+   * Prepare RxJS tap operator with partial application
+   * @return pipeable tap predicate
    */
   interceptEvents(target: HookTarget) {
     this.registerBeforeAfterPrintHooks(target);
@@ -152,7 +152,6 @@ export class PrintHook implements OnDestroy {
         if (event.matches && !this.isPrinting) {
           this.startPrinting(target, this.getEventBreakpoints(event));
           target.updateStyles();
-
         } else if (!event.matches && this.isPrinting && !this.isPrintingBeforeAfterEvent) {
           this.stopPrinting(target);
           target.updateStyles();
@@ -209,13 +208,14 @@ export class PrintHook implements OnDestroy {
     if (!this.isPrinting || this.isPrintingBeforeAfterEvent) {
       if (!event.matches) {
         const bp = this.breakpoints.findByQuery(event.mediaQuery);
-        if (bp) {   // Deactivating a breakpoint
+        // Deactivating a breakpoint
+        if (bp) {
           this.deactivations.push(bp);
           this.deactivations.sort(sortDescendingPriority);
         }
       } else if (!this.isPrintingBeforeAfterEvent) {
         // Only clear deactivations if we aren't printing from a `beforeprint` event.
-        // Otherwise this will clear before `stopPrinting()` is called to restore
+        // Otherwise, this will clear before `stopPrinting()` is called to restore
         // the pre-Print Activations.
         this.deactivations = [];
       }
@@ -230,11 +230,10 @@ export class PrintHook implements OnDestroy {
     }
   }
 
-  /** Is this service currently in Print-mode ? */
+  // Is this service currently in print mode
   private isPrinting = false;
-  private queue: PrintQueue = new PrintQueue();
+  private queue = new PrintQueue();
   private deactivations: BreakPoint[] = [];
-
 }
 
 // ************************************************************************
@@ -261,6 +260,7 @@ class PrintQueue {
   addBreakpoint(bp: OptionalBreakPoint) {
     if (!!bp) {
       const bpInList = this.printBreakpoints.find(it => it.mediaQuery === bp.mediaQuery);
+
       if (bpInList === undefined) {
         // If this is a `printAlias` breakpoint, then append. If a true 'print' breakpoint,
         // register as highest priority in the queue
@@ -281,6 +281,6 @@ class PrintQueue {
 // ************************************************************************
 
 /** Only support intercept queueing if the Breakpoint is a print @media query */
-function isPrintBreakPoint(bp: OptionalBreakPoint) {
-  return bp ? bp.mediaQuery.startsWith(PRINT) : false;
+function isPrintBreakPoint(bp: OptionalBreakPoint): boolean {
+  return bp?.mediaQuery.startsWith(PRINT) ?? false;
 }

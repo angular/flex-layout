@@ -44,7 +44,7 @@ export interface ElementMatcher {
 @Injectable({providedIn: 'root'})
 export class MediaMarshaller {
   private _useFallbacks = true;
-  private activatedBreakpoints: BreakPoint[] = [];
+  private _activatedBreakpoints: BreakPoint[] = [];
   private elementMap: ElementMap = new Map();
   private elementKeyMap: ElementKeyMap = new WeakMap();
   private watcherMap: WatcherMap = new WeakMap();     // special triggers to update elements
@@ -55,6 +55,14 @@ export class MediaMarshaller {
 
   get activatedAlias(): string {
     return this.activatedBreakpoints[0]?.alias ?? '';
+  }
+
+  set activatedBreakpoints(bps: BreakPoint[]) {
+    this._activatedBreakpoints = [...bps];
+  }
+
+  get activatedBreakpoints(): BreakPoint[] {
+    return [...this._activatedBreakpoints];
   }
 
   set useFallbacks(value: boolean) {
@@ -80,14 +88,14 @@ export class MediaMarshaller {
       const bpIndex = this.activatedBreakpoints.indexOf(bp);
 
       if (mc.matches && bpIndex === -1) {
-        this.activatedBreakpoints.push(bp);
-        this.activatedBreakpoints.sort(sortDescendingPriority);
+        this._activatedBreakpoints.push(bp);
+        this._activatedBreakpoints.sort(sortDescendingPriority);
 
         this.updateStyles();
       } else if (!mc.matches && bpIndex !== -1) {
         // Remove the breakpoint when it's deactivated
-        this.activatedBreakpoints.splice(bpIndex, 1);
-        this.activatedBreakpoints.sort(sortDescendingPriority);
+        this._activatedBreakpoints.splice(bpIndex, 1);
+        this._activatedBreakpoints.sort(sortDescendingPriority);
 
         this.updateStyles();
       }
@@ -345,13 +353,12 @@ export class MediaMarshaller {
    * Watch for mediaQuery breakpoint activations
    */
   private observeActivations() {
-    const target = this as unknown as HookTarget;
     const queries = this.breakpoints.items.map(bp => bp.mediaQuery);
 
     this.matchMedia
         .observe(this.hook.withPrintQuery(queries))
         .pipe(
-            tap(this.hook.interceptEvents(target)),
+            tap(this.hook.interceptEvents(this)),
             filter(this.hook.blockPropagation())
         )
         .subscribe(this.onMediaChange.bind(this));
