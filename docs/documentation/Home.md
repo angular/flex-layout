@@ -27,4 +27,4 @@ Live Demo:
 
 Source Code:
 
-[![Open on stackblitz](./images/gridWithColumnSpansSourceCode.png)]
+[![Featured](./images/gridWithColumnSpansSourceCode.png)]
