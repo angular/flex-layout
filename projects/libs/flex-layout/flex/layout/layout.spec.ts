@@ -39,7 +39,7 @@ describe('layout directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexLayoutModule.withConfig({detectLayoutDisplay: true})],
       declarations: [TestLayoutComponent],
       providers: [
         MockMatchMediaProvider,
@@ -62,6 +62,14 @@ describe('layout directive', () => {
       createTestComponent(`<div fxLayout='row'></div>`);
       expectNativeEl(fixture).toHaveStyle({
         'display': 'flex',
+        'flex-direction': 'row',
+        'box-sizing': 'border-box'
+      }, styler);
+    });
+    it('should not override pre-existing styles', () => {
+      createTestComponent(`<div fxLayout style="display: none;"></div>`);
+      expectNativeEl(fixture).toHaveStyle({
+        'display': 'none',
         'flex-direction': 'row',
         'box-sizing': 'border-box'
       }, styler);
