@@ -12,6 +12,7 @@ import {
   NgZone,
   Injectable,
   AfterContentInit,
+  Inject,
 } from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
@@ -21,11 +22,14 @@ import {
   StyleUtils,
   MediaMarshaller,
   ElementMatcher,
+  LAYOUT_CONFIG,
+  LayoutConfigOptions,
+  ɵmultiply as multiply,
 } from '@angular/flex-layout/core';
+import {LAYOUT_VALUES} from '@angular/flex-layout/_private-utils';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {LAYOUT_VALUES} from '@angular/flex-layout/_private-utils';
 
 export interface LayoutGapParent {
   directionality: string;
@@ -42,13 +46,15 @@ const CLEAR_MARGIN_CSS = {
 
 @Injectable({providedIn: 'root'})
 export class LayoutGapStyleBuilder extends StyleBuilder {
-  constructor(private _styler: StyleUtils) {
+  constructor(private _styler: StyleUtils,
+              @Inject(LAYOUT_CONFIG) private _config: LayoutConfigOptions) {
     super();
   }
 
   buildStyles(gapValue: string, parent: LayoutGapParent) {
     if (gapValue.endsWith(GRID_SPECIFIER)) {
       gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+      gapValue = multiply(gapValue, this._config.multiplier);
 
       // Add the margin to the host element
       return buildGridMargin(gapValue, parent.directionality);
@@ -61,10 +67,12 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
     const items = parent.items;
     if (gapValue.endsWith(GRID_SPECIFIER)) {
       gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
+      gapValue = multiply(gapValue, this._config.multiplier);
       // For each `element` children, set the padding
       const paddingStyles = buildGridPadding(gapValue, parent.directionality);
       this._styler.applyStyleToElements(paddingStyles, parent.items);
     } else {
+      gapValue = multiply(gapValue, this._config.multiplier);
       const lastItem = items.pop()!;
 
       // For each `element` children EXCEPT the last,
@@ -253,7 +261,7 @@ const GRID_SPECIFIER = ' grid';
 
 function buildGridPadding(value: string, directionality: string): StyleDefinition {
   const [between, below] = value.split(' ');
-  const bottom = below || between;
+  const bottom = below ?? between;
   let paddingRight = '0px', paddingBottom = bottom, paddingLeft = '0px';
 
   if (directionality === 'rtl') {
@@ -267,7 +275,7 @@ function buildGridPadding(value: string, directionality: string): StyleDefinitio
 
 function buildGridMargin(value: string, directionality: string): StyleDefinition {
   const [between, below] = value.split(' ');
-  const bottom = below || between;
+  const bottom = below ?? between;
   const minus = (str: string) => `-${str}`;
   let marginRight = '0px', marginBottom = minus(bottom), marginLeft = '0px';
 

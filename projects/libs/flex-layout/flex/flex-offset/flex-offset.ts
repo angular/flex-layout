@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, OnChanges, Injectable} from '@angular/core';
+import {Directive, ElementRef, OnChanges, Injectable, Inject} from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
   MediaMarshaller,
@@ -13,10 +13,13 @@ import {
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
+  ɵmultiply as multiply,
+  LAYOUT_CONFIG,
+  LayoutConfigOptions,
 } from '@angular/flex-layout/core';
+import {isFlowHorizontal} from '@angular/flex-layout/_private-utils';
 import {takeUntil} from 'rxjs/operators';
 
-import {isFlowHorizontal} from '@angular/flex-layout/_private-utils';
 
 export interface FlexOffsetParent {
   layout: string;
@@ -25,18 +28,21 @@ export interface FlexOffsetParent {
 
 @Injectable({providedIn: 'root'})
 export class FlexOffsetStyleBuilder extends StyleBuilder {
+  constructor(@Inject(LAYOUT_CONFIG) private _config: LayoutConfigOptions) {
+    super();
+  }
+
   buildStyles(offset: string, parent: FlexOffsetParent) {
-    if (offset === '') {
-      offset = '0';
-    }
+    offset ||= '0';
+    offset = multiply(offset, this._config.multiplier);
     const isPercent = String(offset).indexOf('%') > -1;
     const isPx = String(offset).indexOf('px') > -1;
     if (!isPx && !isPercent && !isNaN(+offset)) {
-      offset = offset + '%';
+      offset = `${offset}%`;
     }
     const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
     const styles: StyleDefinition = isFlowHorizontal(parent.layout) ?
-      {[horizontalLayoutKey]: `${offset}`} : {'margin-top': `${offset}`};
+      {[horizontalLayoutKey]: offset} : {'margin-top': offset};
 
     return styles;
   }

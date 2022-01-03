@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {InjectionToken} from '@angular/core';
+import {Multiplier} from '../multiply/multiplier';
 
 /** a set of configuration options for FlexLayoutModule */
 export interface LayoutConfigOptions {
@@ -18,9 +19,10 @@ export interface LayoutConfigOptions {
   printWithBreakpoints?: string[];
   mediaTriggerAutoRestore?: boolean;
   ssrObserveBreakpoints?: string[];
+  multiplier?: Multiplier;
 }
 
-export const DEFAULT_CONFIG: LayoutConfigOptions = {
+export const DEFAULT_CONFIG: Required<LayoutConfigOptions> = {
   addFlexToParent: true,
   addOrientationBps: false,
   disableDefaultBps: false,
@@ -30,6 +32,10 @@ export const DEFAULT_CONFIG: LayoutConfigOptions = {
   printWithBreakpoints: [],
   mediaTriggerAutoRestore: true,
   ssrObserveBreakpoints: [],
+  // This is disabled by default because otherwise the multiplier would
+  // run for all users, regardless of whether they're using this feature.
+  // Instead, we disable it by default, which requires this ugly cast.
+  multiplier: undefined as unknown as Multiplier,
 };
 
 export const LAYOUT_CONFIG = new InjectionToken<LayoutConfigOptions>(

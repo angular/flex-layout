@@ -7,7 +7,7 @@
  */
 import {Component, Injectable, OnInit, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
-import {TestBed, ComponentFixture, inject, async} from '@angular/core/testing';
+import {TestBed, ComponentFixture, inject, waitForAsync} from '@angular/core/testing';
 import {DIR_DOCUMENT} from '@angular/cdk/bidi';
 import {
   ɵMatchMedia as MatchMedia,
@@ -51,7 +51,12 @@ describe('layout-gap directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexLayoutModule.withConfig({
+        multiplier: {
+          value: 4,
+          unit: 'px',
+        }
+      })],
       declarations: [TestLayoutGapComponent],
       providers: [
         MockMatchMediaProvider,
@@ -111,6 +116,25 @@ describe('layout-gap directive', () => {
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
+    it('should add gap styles to all children except the 1st child w/ multiplier', () => {
+      let template = `
+              <div fxLayoutAlign='center center' fxLayoutGap='13x'>
+                  <div fxFlex></div>
+                  <div fxFlex></div>
+                  <div fxFlex></div>
+              </div>
+          `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '52px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '52px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '52px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
+    });
+
     it('should add gap styles in proper order when order style is applied', () => {
       let template = `
         <div fxLayoutAlign='center center' fxLayoutGap='13px'>
@@ -149,7 +173,7 @@ describe('layout-gap directive', () => {
       expectEl(nodes[3]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
-    it('should add update gap styles when row items are removed', async(() => {
+    it('should add update gap styles when row items are removed', waitForAsync(() => {
       let template = `
               <div fxLayoutAlign='center center' fxLayoutGap='13px'>
                   <div fxFlex *ngFor='let row of rows'></div>
@@ -181,7 +205,7 @@ describe('layout-gap directive', () => {
 
     }));
 
-    it('should add update gap styles when only 1 row is remaining', async(() => {
+    it('should add update gap styles when only 1 row is remaining', waitForAsync(() => {
       let template = `
               <div fxLayoutAlign='center center' fxLayoutGap='13px'>
                   <div fxFlex *ngFor='let row of rows'></div>
@@ -502,6 +526,27 @@ describe('layout-gap directive', () => {
       let nodes = queryFor(fixture, '[fxFlex]');
       let expectedMargin = {'margin': '0px -13px -13px 0px'};
       let expectedPadding = {'padding': '0px 13px 13px 0px'};
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
+      expectEl(nodes[2]).toHaveStyle(expectedPadding, styler);
+      expectNativeEl(fixture).toHaveStyle(expectedMargin, styler);
+    });
+
+    it('should add gap styles correctly w/ multiplier', () => {
+      let template = `
+        <div fxLayoutGap='13x grid'>
+          <div fxFlex></div>
+          <div fxFlex></div>
+          <div fxFlex></div>
+        </div>
+      `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      let expectedMargin = {'margin': '0px -52px -52px 0px'};
+      let expectedPadding = {'padding': '0px 52px 52px 0px'};
       expect(nodes.length).toEqual(3);
       expectEl(nodes[0]).toHaveStyle(expectedPadding, styler);
       expectEl(nodes[1]).toHaveStyle(expectedPadding, styler);
