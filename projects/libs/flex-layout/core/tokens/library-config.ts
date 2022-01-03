@@ -21,6 +21,7 @@ export interface LayoutConfigOptions {
   ssrObserveBreakpoints?: string[];
   multiplier?: Multiplier;
   defaultUnit?: string;
+  detectLayoutDisplay?: boolean;
 }
 
 export const DEFAULT_CONFIG: Required<LayoutConfigOptions> = {
@@ -38,6 +39,7 @@ export const DEFAULT_CONFIG: Required<LayoutConfigOptions> = {
   // Instead, we disable it by default, which requires this ugly cast.
   multiplier: undefined as unknown as Multiplier,
   defaultUnit: 'px',
+  detectLayoutDisplay: false,
 };
 
 export const LAYOUT_CONFIG = new InjectionToken<LayoutConfigOptions>(

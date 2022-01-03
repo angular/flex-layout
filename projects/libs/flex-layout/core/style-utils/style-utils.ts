@@ -69,7 +69,7 @@ export class StyleUtils {
    * Find the DOM element's raw attribute value (if any)
    */
   lookupAttributeValue(element: HTMLElement, attribute: string): string {
-    return element.getAttribute(attribute) || '';
+    return element.getAttribute(attribute) ?? '';
   }
 
   /**
@@ -77,7 +77,7 @@ export class StyleUtils {
    */
   lookupInlineStyle(element: HTMLElement, styleName: string): string {
     return isPlatformBrowser(this._platformId) ?
-      element.style.getPropertyValue(styleName) : this._getServerStyle(element, styleName);
+      element.style.getPropertyValue(styleName) : getServerStyle(element, styleName);
   }
 
   /**
@@ -121,56 +121,56 @@ export class StyleUtils {
         value = value ? value + '' : '';
         if (isPlatformBrowser(this._platformId) || !this._serverModuleLoaded) {
           isPlatformBrowser(this._platformId) ?
-            element.style.setProperty(key, value) : this._setServerStyle(element, key, value);
+            element.style.setProperty(key, value) : setServerStyle(element, key, value);
         } else {
           this._serverStylesheet.addStyleToElement(element, key, value);
         }
       }
     });
   }
+}
 
-  private _setServerStyle(element: any, styleName: string, styleValue?: string|null) {
-    styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-    const styleMap = this._readStyleAttribute(element);
-    styleMap[styleName] = styleValue || '';
-    this._writeStyleAttribute(element, styleMap);
+function getServerStyle(element: any, styleName: string): string {
+  const styleMap = readStyleAttribute(element);
+  return styleMap[styleName] ?? '';
+}
+
+function setServerStyle(element: any, styleName: string, styleValue?: string|null) {
+  styleName = styleName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  const styleMap = readStyleAttribute(element);
+  styleMap[styleName] = styleValue ?? '';
+  writeStyleAttribute(element, styleMap);
+}
+
+function writeStyleAttribute(element: any, styleMap: {[name: string]: string}) {
+  let styleAttrValue = '';
+  for (const key in styleMap) {
+    const newValue = styleMap[key];
+    if (newValue) {
+      styleAttrValue += `${key}:${styleMap[key]};`;
+    }
   }
+  element.setAttribute('style', styleAttrValue);
+}
 
-  private _getServerStyle(element: any, styleName: string): string {
-    const styleMap = this._readStyleAttribute(element);
-    return styleMap[styleName] || '';
-  }
-
-  private _readStyleAttribute(element: any): {[name: string]: string} {
-    const styleMap: {[name: string]: string} = {};
-    const styleAttribute = element.getAttribute('style');
-    if (styleAttribute) {
-      const styleList = styleAttribute.split(/;+/g);
-      for (let i = 0; i < styleList.length; i++) {
-        const style = styleList[i].trim();
-        if (style.length > 0) {
-          const colonIndex = style.indexOf(':');
-          if (colonIndex === -1) {
-            throw new Error(`Invalid CSS style: ${style}`);
-          }
-          const name = style.substr(0, colonIndex).trim();
-          styleMap[name] = style.substr(colonIndex + 1).trim();
+function readStyleAttribute(element: any): {[name: string]: string} {
+  const styleMap: {[name: string]: string} = {};
+  const styleAttribute = element.getAttribute('style');
+  if (styleAttribute) {
+    const styleList = styleAttribute.split(/;+/g);
+    for (let i = 0; i < styleList.length; i++) {
+      const style = styleList[i].trim();
+      if (style.length > 0) {
+        const colonIndex = style.indexOf(':');
+        if (colonIndex === -1) {
+          throw new Error(`Invalid CSS style: ${style}`);
         }
+        const name = style.substr(0, colonIndex).trim();
+        styleMap[name] = style.substr(colonIndex + 1).trim();
       }
     }
-    return styleMap;
   }
-
-  private _writeStyleAttribute(element: any, styleMap: {[name: string]: string}) {
-    let styleAttrValue = '';
-    for (const key in styleMap) {
-      const newValue = styleMap[key];
-      if (newValue) {
-        styleAttrValue += key + ':' + styleMap[key] + ';';
-      }
-    }
-    element.setAttribute('style', styleAttrValue);
-  }
+  return styleMap;
 }
 
 /**

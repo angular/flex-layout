@@ -14,14 +14,14 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
 export function buildLayoutCSS(value: string) {
   let [direction, wrap, isInline] = validateValue(value);
   return buildCSS(direction, wrap, isInline);
- }
+}
 
 /**
   * Validate the value to be one of the acceptable value options
   * Use default fallback of 'row'
   */
 export function validateValue(value: string): [string, string, boolean] {
-  value = value ? value.toLowerCase() : '';
+  value = value?.toLowerCase() ?? '';
   let [direction, wrap, inline] = value.split(' ');
 
   // First value must be the `flex-direction`
@@ -84,9 +84,9 @@ export function validateWrapValue(value: string) {
  */
 function buildCSS(direction: string, wrap: string | null = null, inline = false) {
   return {
-    'display': inline ? 'inline-flex' : 'flex',
+    display: inline ? 'inline-flex' : 'flex',
     'box-sizing': 'border-box',
     'flex-direction': direction,
-    'flex-wrap': !!wrap ? wrap : null
+    'flex-wrap': wrap || null,
   };
 }

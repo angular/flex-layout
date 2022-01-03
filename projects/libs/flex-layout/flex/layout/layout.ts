@@ -5,21 +5,31 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, OnChanges, Injectable} from '@angular/core';
+import {Directive, ElementRef, OnChanges, Injectable, Inject} from '@angular/core';
 import {
   BaseDirective2,
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
   MediaMarshaller,
+  LAYOUT_CONFIG,
+  LayoutConfigOptions,
 } from '@angular/flex-layout/core';
 
 import {buildLayoutCSS} from '@angular/flex-layout/_private-utils';
 
+export interface LayoutStyleDisplay {
+  readonly display: string;
+}
+
 @Injectable({providedIn: 'root'})
 export class LayoutStyleBuilder extends StyleBuilder {
-  buildStyles(input: string) {
-    return buildLayoutCSS(input);
+  buildStyles(input: string, {display}: LayoutStyleDisplay) {
+    const css = buildLayoutCSS(input);
+    return {
+      ...css,
+      display: display === 'none' ? display : css.display,
+    };
   }
 }
 
@@ -51,12 +61,23 @@ export class LayoutDirective extends BaseDirective2 implements OnChanges {
   constructor(elRef: ElementRef,
               styleUtils: StyleUtils,
               styleBuilder: LayoutStyleBuilder,
-              marshal: MediaMarshaller) {
+              marshal: MediaMarshaller,
+              @Inject(LAYOUT_CONFIG) private _config: LayoutConfigOptions) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }
 
-  protected styleCache = layoutCache;
+  protected updateWithValue(input: string) {
+    const detectLayoutDisplay = this._config.detectLayoutDisplay;
+    const display = detectLayoutDisplay ? this.styler.lookupStyle(this.nativeElement, 'display') : '';
+    this.styleCache = cacheMap.get(display) ?? new Map();
+    cacheMap.set(display, this.styleCache);
+
+    if (this.currentValue !== input) {
+      this.addStyles(input, {display});
+      this.currentValue = input;
+    }
+  }
 }
 
 @Directive({selector, inputs})
@@ -64,4 +85,5 @@ export class DefaultLayoutDirective extends LayoutDirective {
   protected inputs = inputs;
 }
 
-const layoutCache: Map<string, StyleDefinition> = new Map();
+type CacheMap = Map<string, StyleDefinition>;
+const cacheMap = new Map<string, CacheMap>();
