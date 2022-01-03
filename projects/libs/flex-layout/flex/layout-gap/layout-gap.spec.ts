@@ -135,6 +135,25 @@ describe('layout-gap directive', () => {
       expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
     });
 
+    it('should add gap styles to all children except the 1st child w/o unit', () => {
+      let template = `
+              <div fxLayoutAlign='center center' fxLayoutGap='13'>
+                  <div fxFlex></div>
+                  <div fxFlex></div>
+                  <div fxFlex></div>
+              </div>
+          `;
+      createTestComponent(template);
+      fixture.detectChanges();
+
+      let nodes = queryFor(fixture, '[fxFlex]');
+      expect(nodes.length).toEqual(3);
+      expectEl(nodes[0]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[1]).toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '13px'}, styler);
+      expectEl(nodes[2]).not.toHaveStyle({'margin-right': '0px'}, styler);
+    });
+
     it('should add gap styles in proper order when order style is applied', () => {
       let template = `
         <div fxLayoutAlign='center center' fxLayoutGap='13px'>

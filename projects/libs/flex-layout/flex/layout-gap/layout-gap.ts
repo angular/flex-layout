@@ -73,6 +73,8 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
       this._styler.applyStyleToElements(paddingStyles, parent.items);
     } else {
       gapValue = multiply(gapValue, this._config.multiplier);
+      gapValue = this.addFallbackUnit(gapValue);
+
       const lastItem = items.pop()!;
 
       // For each `element` children EXCEPT the last,
@@ -83,6 +85,10 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
       // Clear all gaps for all visible elements
       this._styler.applyStyleToElements(CLEAR_MARGIN_CSS, [lastItem]);
     }
+  }
+
+  private addFallbackUnit(value: string) {
+    return !isNaN(+value) ? `${value}${this._config.defaultUnit}` : value;
   }
 }
 
