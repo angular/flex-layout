@@ -20,6 +20,7 @@ export interface LayoutConfigOptions {
   mediaTriggerAutoRestore?: boolean;
   ssrObserveBreakpoints?: string[];
   multiplier?: Multiplier;
+  defaultUnit?: string;
 }
 
 export const DEFAULT_CONFIG: Required<LayoutConfigOptions> = {
@@ -36,6 +37,7 @@ export const DEFAULT_CONFIG: Required<LayoutConfigOptions> = {
   // run for all users, regardless of whether they're using this feature.
   // Instead, we disable it by default, which requires this ugly cast.
   multiplier: undefined as unknown as Multiplier,
+  defaultUnit: 'px',
 };
 
 export const LAYOUT_CONFIG = new InjectionToken<LayoutConfigOptions>(
