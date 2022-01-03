@@ -47,7 +47,12 @@ describe('flex-offset directive', () => {
 
     // Configure testbed to prepare services
     TestBed.configureTestingModule({
-      imports: [CommonModule, FlexLayoutModule],
+      imports: [CommonModule, FlexLayoutModule.withConfig({
+        multiplier: {
+          value: 4,
+          unit: 'px',
+        },
+      })],
       declarations: [TestFlexComponent],
       providers: [
         {provide: DIR_DOCUMENT, useValue: fakeDocument},
@@ -60,6 +65,15 @@ describe('flex-offset directive', () => {
 
     it('should add correct styles for default `fxFlexOffset` usage', () => {
       componentWithTemplate(`<div fxFlexOffset='32px' fxFlex></div>`);
+      fixture.detectChanges();
+
+      let dom = fixture.debugElement.children[0];
+      expectEl(dom).toHaveStyle({'margin-left': '32px'}, styler);
+      expectEl(dom).toHaveStyle({'flex': '1 1 0%'}, styler);
+    });
+
+    it('should add correct styles for default `fxFlexOffset` usage w/ mulitplier', () => {
+      componentWithTemplate(`<div fxFlexOffset='8x' fxFlex></div>`);
       fixture.detectChanges();
 
       let dom = fixture.debugElement.children[0];
