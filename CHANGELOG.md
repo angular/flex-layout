@@ -1,3 +1,22 @@
+# [13.0.0-beta.37](https://github.com/angular/flex-layout/compare/13.0.0-beta.36...13.0.0-beta.37) (2022-01-28)
+
+
+### Bug Fixes
+
+* **core:** correctly set and restore breakpoints during print ([#1379](https://github.com/angular/flex-layout/issues/1379)) ([edca0d4](https://github.com/angular/flex-layout/commit/edca0d4661b960d948380d60bf2fdc96d885d149))
+* **core:** only emit changed events from MediaObserver ([#1377](https://github.com/angular/flex-layout/issues/1377)) ([51b6ebf](https://github.com/angular/flex-layout/commit/51b6ebf230ad8c4490288d50b75dd38b4d589347))
+* **core:** properly collect deactivated breakpoints before print ([#1380](https://github.com/angular/flex-layout/issues/1380)) ([d73a3e4](https://github.com/angular/flex-layout/commit/d73a3e4acbd8f42136b46acf5ca3ab1878ba92e5))
+* **core:** reset current value when directive is cleared ([#1376](https://github.com/angular/flex-layout/issues/1376)) ([c4f9fe2](https://github.com/angular/flex-layout/commit/c4f9fe2a19b28787a4100baa7aa1fe6fd8ee1998))
+* **server:** disable breakpoints correctly and avoid style overuse ([#1378](https://github.com/angular/flex-layout/issues/1378)) ([5874498](https://github.com/angular/flex-layout/commit/58744986b011cf3dab17e33b6198f06484545e94))
+
+
+### Features
+
+* **core:** add support for default unit for unitless values ([#1384](https://github.com/angular/flex-layout/issues/1384)) ([80b4e5a](https://github.com/angular/flex-layout/commit/80b4e5af9291c02e9092de46407f2f79fe7170b1))
+* **core:** add value multiplication suffix feature ([#1383](https://github.com/angular/flex-layout/issues/1383)) ([4d36b74](https://github.com/angular/flex-layout/commit/4d36b74db8f4855b5210a2f329166e3037ff74a2))
+
+
+
 # [13.0.0-beta.36](https://github.com/angular/flex-layout/compare/12.0.0-beta.35...13.0.0-beta.36) (2021-11-24)
 
 This version adds compatibility with Angular v13, in addition to shifting our publishing practices.
