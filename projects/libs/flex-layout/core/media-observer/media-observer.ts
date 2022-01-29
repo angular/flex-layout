@@ -6,8 +6,15 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {Injectable, OnDestroy} from '@angular/core';
-import {Subject, asapScheduler, Observable, of, distinctUntilChanged} from 'rxjs';
-import {debounceTime, filter, map, switchMap, takeUntil} from 'rxjs/operators';
+import {Subject, asapScheduler, Observable, of} from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  takeUntil,
+} from 'rxjs/operators';
 
 import {mergeAlias} from '../add-alias';
 import {MediaChange} from '../media-change';
