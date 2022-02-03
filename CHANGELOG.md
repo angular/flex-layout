@@ -1,3 +1,12 @@
+# [13.0.0-beta.38](https://github.com/angular/flex-layout/compare/13.0.0-beta.37...13.0.0-beta.38) (2022-02-03)
+
+
+### Bug Fixes
+
+* **core:** import distinctUntilChanged from rxjs/operators ([#1390](https://github.com/angular/flex-layout/issues/1390)) ([e8e172b](https://github.com/angular/flex-layout/commit/e8e172bf2bb9e0a45152a7ccbcbaf02b4c603b03))
+
+
+
 # [13.0.0-beta.37](https://github.com/angular/flex-layout/compare/13.0.0-beta.36...13.0.0-beta.37) (2022-01-28)
 
 
