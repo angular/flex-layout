@@ -57,7 +57,7 @@ Check out [all of the available options](https://github.com/angular/flex-layout/
 ### Demos
 
 *  [Explore Examples Online](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
+*  [Demo Source Code](https://github.com/angular/flex-layout/tree/master/projects/apps/demo-app/src)
 
 ### StackBlitz Templates
 
