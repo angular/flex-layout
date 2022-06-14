@@ -37,7 +37,7 @@ export class GridAreasStyleBuiler extends StyleBuilder {
 @Directive()
 export class GridAreasDirective extends BaseDirective2 {
 
-  protected DIRECTIVE_KEY = 'grid-areas';
+  protected override DIRECTIVE_KEY = 'grid-areas';
 
   @Input('gdInline')
   get inline(): boolean { return this._inline; }
@@ -56,7 +56,7 @@ export class GridAreasDirective extends BaseDirective2 {
   // Protected methods
   // *********************************************
 
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     this.styleCache = this.inline ? areasInlineCache : areasCache;
     this.addStyles(value, {inline: this.inline});
   }
@@ -86,5 +86,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAreasDirective extends GridAreasDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

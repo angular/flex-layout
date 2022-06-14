@@ -394,7 +394,7 @@ describe('layout directive', () => {
 
 @Injectable({providedIn: FlexModule})
 export class MockLayoutStyleBuilder extends StyleBuilder {
-  shouldCache = false;
+  override shouldCache = false;
   buildStyles(_input: string) {
     return {'display': 'inline-flex', 'flex-direction': 'row'};
   }

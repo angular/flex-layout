@@ -43,7 +43,7 @@ export class ShowHideStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, OnChanges {
-  protected DIRECTIVE_KEY = 'show-hide';
+  protected override DIRECTIVE_KEY = 'show-hide';
 
   /** Original DOM Element CSS display style */
   protected display: string = '';
@@ -97,7 +97,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
    * Default to use the non-responsive Input value ('fxShow')
    * Then conditionally override with the mq-activated Input's current value
    */
-  ngOnChanges(changes: SimpleChanges) {
+  override ngOnChanges(changes: SimpleChanges) {
     Object.keys(changes).forEach(key => {
       if (this.inputs.indexOf(key) !== -1) {
         const inputKey = key.split('.');
@@ -143,7 +143,7 @@ export class ShowHideDirective extends BaseDirective2 implements AfterViewInit, 
   }
 
   /** Validate the visibility value and then update the host's inline display style */
-  protected updateWithValue(value: boolean | string = true) {
+  protected override updateWithValue(value: boolean | string = true) {
     if (value === '') {
       return;
     }
@@ -185,5 +185,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultShowHideDirective extends ShowHideDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

@@ -121,7 +121,7 @@ const selector = `
  */
 @Directive()
 export class LayoutAlignDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'layout-align';
+  protected override DIRECTIVE_KEY = 'layout-align';
   protected layout = 'row';  // default flex-direction
   protected inline = false;  // default inline value
 
@@ -143,7 +143,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
   /**
    *
    */
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     const layout = this.layout || 'row';
     const inline = this.inline;
     if (layout === 'row' && inline) {
@@ -182,7 +182,7 @@ export class LayoutAlignDirective extends BaseDirective2 {
 
 @Directive({selector, inputs})
 export class DefaultLayoutAlignDirective extends LayoutAlignDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 const layoutAlignHorizontalCache: Map<string, StyleDefinition> = new Map();

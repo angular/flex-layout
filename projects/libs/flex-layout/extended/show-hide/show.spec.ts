@@ -386,7 +386,7 @@ const selector = `[fxShow.sm-md], [fxHide.sm-md], [fxShow.sm.lg], [fxHide.sm.lg]
 // Used to test custom breakpoint functionality
 @Directive({inputs, selector})
 class FxShowHideDirective extends ShowHideDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 

@@ -46,7 +46,7 @@ export class GridColumnsStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class GridColumnsDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'grid-columns';
+  protected override DIRECTIVE_KEY = 'grid-columns';
 
   @Input('gdInline')
   get inline(): boolean { return this._inline; }
@@ -65,7 +65,7 @@ export class GridColumnsDirective extends BaseDirective2 {
   // Protected methods
   // *********************************************
 
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     this.styleCache = this.inline ? columnsInlineCache : columnsCache;
     this.addStyles(value, {inline: this.inline});
   }
@@ -96,5 +96,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridColumnsDirective extends GridColumnsDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

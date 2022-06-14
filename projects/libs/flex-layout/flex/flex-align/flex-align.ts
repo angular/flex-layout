@@ -58,7 +58,7 @@ const selector = `
 @Directive()
 export class FlexAlignDirective extends BaseDirective2 {
 
-  protected DIRECTIVE_KEY = 'flex-align';
+  protected override DIRECTIVE_KEY = 'flex-align';
 
   constructor(elRef: ElementRef,
               styleUtils: StyleUtils,
@@ -68,12 +68,12 @@ export class FlexAlignDirective extends BaseDirective2 {
     this.init();
   }
 
-  protected styleCache = flexAlignCache;
+  protected override styleCache = flexAlignCache;
 }
 
 const flexAlignCache: Map<string, StyleDefinition> = new Map();
 
 @Directive({selector, inputs})
 export class DefaultFlexAlignDirective extends FlexAlignDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

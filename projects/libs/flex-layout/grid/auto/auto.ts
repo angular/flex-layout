@@ -45,7 +45,7 @@ export class GridAutoDirective extends BaseDirective2 {
   set inline(val: boolean) { this._inline = coerceBooleanProperty(val); }
   protected _inline = false;
 
-  protected DIRECTIVE_KEY = 'grid-auto';
+  protected override DIRECTIVE_KEY = 'grid-auto';
 
   constructor(elementRef: ElementRef,
               styleBuilder: GridAutoStyleBuilder,
@@ -59,7 +59,7 @@ export class GridAutoDirective extends BaseDirective2 {
   // Protected methods
   // *********************************************
 
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     this.styleCache = this.inline ? autoInlineCache : autoCache;
     this.addStyles(value, {inline: this.inline});
   }
@@ -88,5 +88,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAutoDirective extends GridAutoDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

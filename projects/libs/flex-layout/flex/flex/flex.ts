@@ -202,7 +202,7 @@ const selector = `
 @Directive()
 export class FlexDirective extends BaseDirective2 implements OnInit {
 
-  protected DIRECTIVE_KEY = 'flex';
+  protected override DIRECTIVE_KEY = 'flex';
   protected direction?: string = undefined;
   protected wrap?: boolean = undefined;
 
@@ -228,7 +228,7 @@ export class FlexDirective extends BaseDirective2 implements OnInit {
               styleUtils: StyleUtils,
               @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions,
               styleBuilder: FlexStyleBuilder,
-              protected marshal: MediaMarshaller) {
+              protected override marshal: MediaMarshaller) {
     super(elRef, styleBuilder, styleUtils, marshal);
     this.init();
   }
@@ -257,7 +257,7 @@ export class FlexDirective extends BaseDirective2 implements OnInit {
   }
 
   /** Input to this is exclusively the basis input value */
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     const addFlexToParent = this.layoutConfig.addFlexToParent !== false;
     if (this.direction === undefined) {
       this.direction = this.getFlexFlowDirection(this.parentElement!, addFlexToParent);
@@ -294,7 +294,7 @@ export class FlexDirective extends BaseDirective2 implements OnInit {
 
 @Directive({inputs, selector})
 export class DefaultFlexDirective extends FlexDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 const flexRowCache: Map<string, StyleDefinition> = new Map();
