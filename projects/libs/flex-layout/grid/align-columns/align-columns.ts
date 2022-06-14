@@ -32,7 +32,7 @@ export class GridAlignColumnsStyleBuilder extends StyleBuilder {
 @Directive()
 export class GridAlignColumnsDirective extends BaseDirective2 {
 
-  protected DIRECTIVE_KEY = 'grid-align-columns';
+  protected override DIRECTIVE_KEY = 'grid-align-columns';
 
   @Input('gdInline')
   get inline(): boolean { return this._inline; }
@@ -51,7 +51,7 @@ export class GridAlignColumnsDirective extends BaseDirective2 {
   // Protected methods
   // *********************************************
 
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     this.styleCache = this.inline ? alignColumnsInlineCache : alignColumnsCache;
     this.addStyles(value, {inline: this.inline});
   }
@@ -85,7 +85,7 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAlignColumnsDirective extends GridAlignColumnsDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 function buildCss(align: string, inline: boolean): StyleDefinition {

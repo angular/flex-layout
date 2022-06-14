@@ -26,7 +26,7 @@ export class GridAreaStyleBuilder extends StyleBuilder {
 @Directive()
 export class GridAreaDirective extends BaseDirective2 {
 
-  protected DIRECTIVE_KEY = 'grid-area';
+  protected override DIRECTIVE_KEY = 'grid-area';
 
   constructor(elRef: ElementRef,
               styleUtils: StyleUtils,
@@ -36,7 +36,7 @@ export class GridAreaDirective extends BaseDirective2 {
     this.init();
   }
 
-  protected styleCache = gridAreaCache;
+  protected override styleCache = gridAreaCache;
 }
 
 const gridAreaCache: Map<string, StyleDefinition> = new Map();
@@ -61,5 +61,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAreaDirective extends GridAreaDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

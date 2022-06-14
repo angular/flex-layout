@@ -42,7 +42,7 @@ import {
 @Directive()
 export class StyleDirective extends BaseDirective2 implements DoCheck {
 
-  protected DIRECTIVE_KEY = 'ngStyle';
+  protected override DIRECTIVE_KEY = 'ngStyle';
   protected fallbackStyles: NgStyleMap;
   protected isServer: boolean;
 
@@ -68,7 +68,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
   }
 
   /** Add generated styles */
-  protected updateWithValue(value: any) {
+  protected override updateWithValue(value: any) {
     const styles = this.buildStyleMap(value);
     this.ngStyleInstance.ngStyle = {...this.fallbackStyles, ...styles};
     if (this.isServer) {
@@ -78,7 +78,7 @@ export class StyleDirective extends BaseDirective2 implements DoCheck {
   }
 
   /** Remove generated styles */
-  protected clearStyles() {
+  protected override clearStyles() {
     this.ngStyleInstance.ngStyle = this.fallbackStyles;
     this.ngStyleInstance.ngDoCheck();
   }
@@ -136,7 +136,7 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultStyleDirective extends StyleDirective implements DoCheck {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 /** Build a styles map from a list of styles, while sanitizing bad values first */

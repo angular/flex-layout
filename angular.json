@@ -249,6 +249,5 @@
         }
       }
     }
-  },
-  "defaultProject": "@angular/flex-layout"
+  }
 }

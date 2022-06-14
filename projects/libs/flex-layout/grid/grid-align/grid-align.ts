@@ -27,7 +27,7 @@ export class GridAlignStyleBuilder extends StyleBuilder {
 @Directive()
 export class GridAlignDirective extends BaseDirective2 {
 
-  protected DIRECTIVE_KEY = 'grid-align';
+  protected override DIRECTIVE_KEY = 'grid-align';
 
   constructor(elementRef: ElementRef,
               styleBuilder: GridAlignStyleBuilder,
@@ -37,7 +37,7 @@ export class GridAlignDirective extends BaseDirective2 {
     this.init();
   }
 
-  protected styleCache = alignCache;
+  protected override styleCache = alignCache;
 }
 
 const alignCache: Map<string, StyleDefinition> = new Map();
@@ -66,7 +66,7 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAlignDirective extends GridAlignDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 function buildCss(align: string = '') {

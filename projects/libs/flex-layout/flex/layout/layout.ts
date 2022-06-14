@@ -56,7 +56,7 @@ const selector = `
 @Directive()
 export class LayoutDirective extends BaseDirective2 implements OnChanges {
 
-  protected DIRECTIVE_KEY = 'layout';
+  protected override DIRECTIVE_KEY = 'layout';
 
   constructor(elRef: ElementRef,
               styleUtils: StyleUtils,
@@ -67,7 +67,7 @@ export class LayoutDirective extends BaseDirective2 implements OnChanges {
     this.init();
   }
 
-  protected updateWithValue(input: string) {
+  protected override updateWithValue(input: string) {
     const detectLayoutDisplay = this._config.detectLayoutDisplay;
     const display = detectLayoutDisplay ? this.styler.lookupStyle(this.nativeElement, 'display') : '';
     this.styleCache = cacheMap.get(display) ?? new Map();
@@ -82,7 +82,7 @@ export class LayoutDirective extends BaseDirective2 implements OnChanges {
 
 @Directive({selector, inputs})
 export class DefaultLayoutDirective extends LayoutDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 type CacheMap = Map<string, StyleDefinition>;

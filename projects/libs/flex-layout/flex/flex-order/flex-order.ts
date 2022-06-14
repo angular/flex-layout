@@ -42,7 +42,7 @@ const selector = `
 @Directive()
 export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
 
-  protected DIRECTIVE_KEY = 'flex-order';
+  protected override DIRECTIVE_KEY = 'flex-order';
 
   constructor(elRef: ElementRef,
               styleUtils: StyleUtils,
@@ -52,12 +52,12 @@ export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
     this.init();
   }
 
-  protected styleCache = flexOrderCache;
+  protected override styleCache = flexOrderCache;
 }
 
 const flexOrderCache: Map<string, StyleDefinition> = new Map();
 
 @Directive({selector, inputs})
 export class DefaultFlexOrderDirective extends FlexOrderDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

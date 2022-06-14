@@ -63,7 +63,7 @@ export class LayoutGapStyleBuilder extends StyleBuilder {
     }
   }
 
-  sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent) {
+  override sideEffect(gapValue: string, _styles: StyleDefinition, parent: LayoutGapParent) {
     const items = parent.items;
     if (gapValue.endsWith(GRID_SPECIFIER)) {
       gapValue = gapValue.slice(0, gapValue.indexOf(GRID_SPECIFIER));
@@ -112,7 +112,7 @@ const selector = `
 @Directive()
 export class LayoutGapDirective extends BaseDirective2 implements AfterContentInit, OnDestroy {
   protected layout = 'row';  // default flex-direction
-  protected DIRECTIVE_KEY = 'layout-gap';
+  protected override DIRECTIVE_KEY = 'layout-gap';
   protected observerSubject = new Subject<void>();
 
   /** Special accessor to query for all child 'element' nodes regardless of type, class, etc */
@@ -151,7 +151,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
     this.triggerUpdate();
   }
 
-  ngOnDestroy() {
+  override ngOnDestroy() {
     super.ngOnDestroy();
     if (this.observer) {
       this.observer.disconnect();
@@ -179,7 +179,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
   /**
    *
    */
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     // Gather all non-hidden Element nodes
     const items = this.childrenNodes
       .filter(el => el.nodeType === 1 && this.willDisplay(el))
@@ -210,7 +210,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
   }
 
   /** We need to override clearStyles because in most cases mru isn't populated */
-  protected clearStyles() {
+  protected override clearStyles() {
     const gridMode = Object.keys(this.mru).length > 0;
     const childrenStyle = gridMode ? 'padding' :
       getMarginType(this.directionality.value, this.layout);
@@ -255,7 +255,7 @@ export class LayoutGapDirective extends BaseDirective2 implements AfterContentIn
 
 @Directive({selector, inputs})
 export class DefaultLayoutGapDirective extends LayoutGapDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 const layoutGapCacheRowRtl: Map<string, StyleDefinition> = new Map();

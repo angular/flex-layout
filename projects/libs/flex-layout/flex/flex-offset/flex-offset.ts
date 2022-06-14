@@ -67,7 +67,7 @@ const selector = `
  */
 @Directive()
 export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
-  protected DIRECTIVE_KEY = 'flex-offset';
+  protected override DIRECTIVE_KEY = 'flex-offset';
 
   constructor(elRef: ElementRef,
               protected directionality: Directionality,
@@ -94,7 +94,7 @@ export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
    * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
    *       otherwise `margin-top` is used for the offset.
    */
-  protected updateWithValue(value: string|number = ''): void {
+  protected override updateWithValue(value: string|number = ''): void {
     // The flex-direction of this element's flex container. Defaults to 'row'.
     const layout = this.getFlexFlowDirection(this.parentElement!, true);
     const isRtl = this.directionality.value === 'rtl';
@@ -113,7 +113,7 @@ export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
 
 @Directive({selector, inputs})
 export class DefaultFlexOffsetDirective extends FlexOffsetDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 const flexOffsetCacheRowRtl: Map<string, StyleDefinition> = new Map();

@@ -150,7 +150,7 @@ export class MockMatchMedia extends MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected buildMQL(query: string): MediaQueryList {
+  protected override buildMQL(query: string): MediaQueryList {
     return new MockMediaQueryList(query);
   }
 

@@ -22,7 +22,7 @@ import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/
 @Directive()
 export class ClassDirective extends BaseDirective2 implements DoCheck {
 
-  protected DIRECTIVE_KEY = 'ngClass';
+  protected override DIRECTIVE_KEY = 'ngClass';
 
   /**
    * Capture class assignments so we cache the default classes
@@ -51,7 +51,7 @@ export class ClassDirective extends BaseDirective2 implements DoCheck {
     this.setValue('', '');
   }
 
-  protected updateWithValue(value: any) {
+  protected override updateWithValue(value: any) {
     this.ngClassInstance.ngClass = value;
     this.ngClassInstance.ngDoCheck();
   }
@@ -87,5 +87,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultClassDirective extends ClassDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
