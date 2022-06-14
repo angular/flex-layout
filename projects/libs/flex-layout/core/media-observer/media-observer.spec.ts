@@ -7,7 +7,7 @@
  */
 import {TestBed, inject, fakeAsync, tick} from '@angular/core/testing';
 import {Observable} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 
 import {BreakPoint} from '../breakpoints/break-point';
 import {BREAKPOINTS} from '../breakpoints/break-points-token';
@@ -20,7 +20,7 @@ import {DEFAULT_CONFIG, LAYOUT_CONFIG} from '../tokens/library-config';
 
 describe('media-observer', () => {
   let knownBreakPoints: BreakPoint[] = [];
-  let media$: Observable<MediaChange>;
+  let media$: Observable<MediaChange[]>;
   let mediaObserver: MediaObserver;
   let mediaController: MockMatchMedia;
   const activateQuery = (alias: string, useOverlaps?: boolean) => {
@@ -42,7 +42,7 @@ describe('media-observer', () => {
       mediaObserver = _mediaObserver;
       mediaController = _mediaController;
 
-      media$ = _mediaObserver.media$;
+      media$ = _mediaObserver.asObservable();
     }));
 
     afterEach(() => {
@@ -53,8 +53,8 @@ describe('media-observer', () => {
     let findMediaQuery: (alias: string) => string = (alias) => {
       const NOT_FOUND = `${alias} not found`;
       return knownBreakPoints.reduce((mediaQuery: string | null, bp) => {
-        return mediaQuery || ((bp.alias === alias) ? bp.mediaQuery : null);
-      }, null) as string || NOT_FOUND;
+        return mediaQuery ?? ((bp.alias === alias) ? bp.mediaQuery : null);
+      }, null) as string ?? NOT_FOUND;
     };
     it('can supports the `.isActive()` API', () => {
       expect(media$).toBeDefined();
@@ -75,7 +75,7 @@ describe('media-observer', () => {
       let count = 0,
           onlyMd = (change: MediaChange) => (change.mqAlias == 'md'),
           subscription = media$
-              .pipe(filter(onlyMd))
+              .pipe(switchMap(changes => changes.filter(onlyMd)))
               .subscribe(_ => {
             count += 1;
           });
@@ -123,9 +123,9 @@ describe('media-observer', () => {
     }));
 
     it('can subscribe to built-in mediaQueries',  fakeAsync(() => {
-      let current: MediaChange = new MediaChange(true);
-      let subscription = media$.subscribe((change: MediaChange) => {
-        current = change;
+      let current: MediaChange[] = [new MediaChange(true)];
+      let subscription = media$.subscribe((changes: MediaChange[]) => {
+        current = changes;
       });
 
       expect(media$).toBeDefined();
@@ -134,8 +134,8 @@ describe('media-observer', () => {
 
       // Confirm initial match is for 'all'
       expect(current).toBeDefined();
-      expect(current.matches).toBeTruthy();
-      expect(current.mediaQuery).toEqual('all');
+      expect(current[0].matches).toBeTruthy();
+      expect(current[0].mediaQuery).toEqual('all');
 
       try {
         // Allow overlapping activations to be announced to observers
@@ -144,10 +144,10 @@ describe('media-observer', () => {
 
         // Activate mediaQuery associated with 'md' alias
         activateQuery('md');
-        expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+        expect(current[0].mediaQuery).toEqual(findMediaQuery('md'));
 
         activateQuery('gt-lg');
-        expect(current.mediaQuery).toEqual(findMediaQuery('gt-lg'));
+        expect(current[0].mediaQuery).toEqual(findMediaQuery('gt-lg'));
       } finally {
         mediaController.autoRegisterQueries = true;
         subscription.unsubscribe();
@@ -155,42 +155,42 @@ describe('media-observer', () => {
     }));
 
     it('can `.unsubscribe()` properly', fakeAsync(() => {
-      let current: MediaChange = new MediaChange(true);
-      let subscription = media$.subscribe((change: MediaChange) => {
-        current = change;
+      let current: MediaChange[] = [new MediaChange(true)];
+      let subscription = media$.subscribe((changes: MediaChange[]) => {
+        current = changes;
       });
 
       // Activate mediaQuery associated with 'md' alias
       activateQuery('md');
-      expect(current.mediaQuery).toEqual(findMediaQuery('md'));
+      expect(current[0].mediaQuery).toEqual(findMediaQuery('md'));
 
       // Un-subscribe
       subscription.unsubscribe();
 
       activateQuery('lg');
-      expect(current.mqAlias).toBe('md');
+      expect(current[0].mqAlias).toBe('md');
 
       activateQuery('xs');
-      expect(current.mqAlias).toBe('md');
+      expect(current[0].mqAlias).toBe('md');
 
        mediaController.clearAll();
     }));
 
     it('can observe a startup activation of XS', fakeAsync(() => {
-      let current: MediaChange = new MediaChange(true);
-      let subscription = media$.subscribe((change: MediaChange) => {
-        current = change;
+      let current: MediaChange[] = [new MediaChange(true)];
+      let subscription = media$.subscribe((changes: MediaChange[]) => {
+        current = changes;
       });
 
       // Activate mediaQuery associated with 'md' alias
       activateQuery('xs');
-      expect(current.mediaQuery).toEqual(findMediaQuery('xs'));
+      expect(current[0].mediaQuery).toEqual(findMediaQuery('xs'));
 
       // Un-subscribe
       subscription.unsubscribe();
 
       activateQuery('lg');
-      expect(current.mqAlias).toBe('xs');
+      expect(current[0].mqAlias).toBe('xs');
 
        mediaController.clearAll();
     }));
@@ -222,7 +222,7 @@ describe('media-observer', () => {
           mediaObserver = _mediaObserver;
           mediaController = _mediaController;
 
-          media$ = _mediaObserver.media$;
+          media$ = _mediaObserver.asObservable();
         }));
 
     afterEach(() => {
@@ -278,13 +278,13 @@ describe('media-observer', () => {
       mediaObserver = _mediaObserver;
       mediaController = _mediaController;
 
-      media$ = _mediaObserver.media$;
+      media$ = _mediaObserver.asObservable();
     }));
 
     it('can activate when configured with "md" alias', fakeAsync(() => {
-        let current: MediaChange = new MediaChange(true);
-        let subscription = media$.subscribe((change: MediaChange) => {
-          current = change;
+        let current: MediaChange[] = [new MediaChange(true)];
+        let subscription = media$.subscribe((changes: MediaChange[]) => {
+          current = changes;
         });
 
         try {
@@ -292,11 +292,11 @@ describe('media-observer', () => {
 
           // Activate mediaQuery associated with 'md' alias
           activateQuery('print');
-          expect(current.mqAlias).toBe('md');
-          expect(current.mediaQuery).toEqual(mdMediaQuery);
+          expect(current[0].mqAlias).toBe('md');
+          expect(current[0].mediaQuery).toEqual(mdMediaQuery);
 
           activateQuery('sm');
-          expect(current.mqAlias).toBe('sm');
+          expect(current[0].mqAlias).toBe('sm');
 
         } finally {
           subscription.unsubscribe();
@@ -323,7 +323,7 @@ describe('media-observer', () => {
           mediaObserver = _mediaObserver;
           mediaController = _mediaController;
 
-          media$ = _mediaObserver.media$;
+          media$ = _mediaObserver.asObservable();
         }));
 
     afterEach(() => {
@@ -331,22 +331,22 @@ describe('media-observer', () => {
     });
 
     it('will skip print activation without alias', fakeAsync(() => {
-      let current: MediaChange = new MediaChange(true);
-      let subscription = media$.subscribe((change: MediaChange) => {
-        current = change;
+      let current: MediaChange[] = [new MediaChange(true)];
+      let subscription = media$.subscribe((changes: MediaChange[]) => {
+        current = changes;
       });
 
       try {
         activateQuery('sm');
-        expect(current.mqAlias).toBe('sm');
+        expect(current[0].mqAlias).toBe('sm');
 
         // Activate mediaQuery associated with 'md' alias
         activateQuery('print');
-        expect(current.mqAlias).toBe('sm');
-        expect(current.mediaQuery).toEqual(smMediaQuery);
+        expect(current[0].mqAlias).toBe('sm');
+        expect(current[0].mediaQuery).toEqual(smMediaQuery);
 
         activateQuery('xl');
-        expect(current.mqAlias).toBe('xl');
+        expect(current[0].mqAlias).toBe('xl');
 
       } finally {
         subscription.unsubscribe();

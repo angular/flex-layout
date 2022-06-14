@@ -69,14 +69,6 @@ import {coerceArray} from '../utils/array';
  */
 @Injectable({providedIn: 'root'})
 export class MediaObserver implements OnDestroy {
-
-  /**
-   * @deprecated Use `asObservable()` instead.
-   * @breaking-change 8.0.0-beta.25
-   * @deletion-target 10.0.0
-   */
-  readonly media$: Observable<MediaChange>;
-
   /** Filter MediaChange notifications for overlapping breakpoints */
   filterOverlaps = false;
 
@@ -84,10 +76,6 @@ export class MediaObserver implements OnDestroy {
               protected matchMedia: MatchMedia,
               protected hook: PrintHook) {
     this._media$ = this.watchActivations();
-    this.media$ = this._media$.pipe(
-      filter((changes: MediaChange[]) => changes.length > 0),
-      map((changes: MediaChange[]) => changes[0])
-    );
   }
 
   /**
@@ -199,9 +187,8 @@ export class MediaObserver implements OnDestroy {
       const bp: OptionalBreakPoint = this.breakpoints.findByQuery(change.mediaQuery);
       return mergeAlias(change, bp);
     };
-    const replaceWithPrintAlias = (change: MediaChange) => {
-      return this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
-    };
+    const replaceWithPrintAlias = (change: MediaChange) =>
+      this.hook.isPrintEvent(change) ? this.hook.updateEvent(change) : change;
 
     return this.matchMedia
         .activations
@@ -228,7 +215,6 @@ function toMediaQuery(query: string, locator: BreakPointRegistry): string | null
  * separated.
  */
 function splitQueries(queries: string[]): string[] {
-  return queries.map((query: string) => query.split(','))
-                .reduce((a1: string[], a2: string[]) => a1.concat(a2))
-                .map(query => query.trim());
+  return queries.flatMap(query => query.split(','))
+    .map(query => query.trim());
 }
