@@ -19,7 +19,7 @@
  */
 export function applyCssPrefixes(target: {[key: string]: any | null}) {
   for (let key in target) {
-    let value = target[key] || '';
+    let value = target[key] ?? '';
 
     switch (key) {
       case 'display':
@@ -52,7 +52,6 @@ export function applyCssPrefixes(target: {[key: string]: any | null}) {
         break;
 
       case 'flex-direction':
-        value = value || 'row';
         target['-webkit-flex-direction'] = value;
         target['flex-direction'] = value;
         break;
