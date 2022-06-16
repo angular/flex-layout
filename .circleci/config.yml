@@ -64,7 +64,9 @@ var_9: &attach_release_output
 # -----------------------------
 # Container version of CircleCI
 # -----------------------------
-version: 2
+version: 2.1
+orbs:
+  browser-tools: circleci/browser-tools@1.3.0
 
 # -----------------------------------------------------------------------------------------
 # Job definitions. Jobs which are defined just here, will not run automatically. Each job
@@ -103,6 +105,7 @@ jobs:
     steps:
       - *checkout_code
       - *attach_release_output
+      - browser-tools/install-browser-tools
       - run: ./scripts/circleci/run-local-browser-tests.sh
 
   # ----------------------------------------------------------------------------
@@ -118,6 +121,7 @@ jobs:
       - *checkout_code
       - *restore_cache
       - *attach_release_output
+      - browser-tools/install-browser-tools
       - run: ./scripts/circleci/run-browserstack-tests.sh
 
   # ----------------------------------------------------------------------------
@@ -135,6 +139,7 @@ jobs:
     steps:
       - *checkout_code
       - *attach_release_output
+      - browser-tools/install-browser-tools
 
       - run: ./scripts/circleci/run-saucelabs-tests.sh
 
