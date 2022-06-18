@@ -29,7 +29,7 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/cdk": "^13.0.0 || ^14.0.0",
+    "@angular/cdk": "^14.0.0 || ^15.0.0",
     "@angular/core": "0.0.0-NG",
     "@angular/common": "0.0.0-NG",
     "@angular/platform-browser": "0.0.0-NG",
