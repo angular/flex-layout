@@ -19,3 +19,6 @@ export TEST_PLATFORM="browserstack"
 
 # Run Karma
 yarn ng test @angular/flex-layout
+
+echo "Finished ng test"
+exit 0
