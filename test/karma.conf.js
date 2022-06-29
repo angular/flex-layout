@@ -39,7 +39,7 @@ module.exports = function (config) {
 
     browserStack: {
       project: "Angular Layout Unit Tests",
-      startTunnel: false,
+      startTunnel: true,
       retryLimit: 3,
       timeout: 1800,
       video: false,

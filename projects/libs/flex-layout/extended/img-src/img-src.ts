@@ -25,7 +25,7 @@ export class ImgSrcStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class ImgSrcDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'img-src';
+  protected override DIRECTIVE_KEY = 'img-src';
   protected defaultSrc = '';
 
   @Input('src')
@@ -56,7 +56,7 @@ export class ImgSrcDirective extends BaseDirective2 {
    * Do nothing to standard `<img src="">` usages, only when responsive
    * keys are present do we actually call `setAttribute()`
    */
-  protected updateWithValue(value?: string) {
+  protected override updateWithValue(value?: string) {
     const url = value || this.defaultSrc;
     if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
       this.addStyles(url);
@@ -65,7 +65,7 @@ export class ImgSrcDirective extends BaseDirective2 {
     }
   }
 
-  protected styleCache = imgSrcCache;
+  protected override styleCache = imgSrcCache;
 }
 
 const imgSrcCache: Map<string, StyleDefinition> = new Map();
@@ -93,5 +93,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultImgSrcDirective extends ImgSrcDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

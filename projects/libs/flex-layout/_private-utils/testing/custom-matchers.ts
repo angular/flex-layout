@@ -81,23 +81,9 @@ export const customMatchers: jasmine.CustomMatcherFactories = {
   toEqual: function (util) {
     return {
       compare: function (actual: any, expected: any) {
-        return {pass: util.equals(actual, expected, [compareMap])};
+        return {pass: util.equals(actual, expected)};
       }
     };
-
-    function compareMap(actual: any, expected: any) {
-      if (actual instanceof Map) {
-        let pass = actual.size === expected.size;
-        if (pass) {
-          actual.forEach((v: any, k: any) => {
-            pass = pass && util.equals(v, expected.get(k));
-          });
-        }
-        return pass;
-      } else {
-        return undefined;
-      }
-    }
   },
 
   toHaveText: function () {

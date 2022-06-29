@@ -19,7 +19,7 @@ const selector = `[fxHide], [fxHide.yba]`;
 
 @Directive({selector, inputs})
 export class CustomHideDirective extends ShowHideDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
 
 @Component({

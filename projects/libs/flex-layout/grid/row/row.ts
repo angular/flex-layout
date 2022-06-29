@@ -25,7 +25,7 @@ export class GridRowStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class GridRowDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'grid-row';
+  protected override DIRECTIVE_KEY = 'grid-row';
 
   constructor(elementRef: ElementRef,
               styleBuilder: GridRowStyleBuilder,
@@ -35,7 +35,7 @@ export class GridRowDirective extends BaseDirective2 {
     this.init();
   }
 
-  protected styleCache = rowCache;
+  protected override styleCache = rowCache;
 }
 
 const rowCache: Map<string, StyleDefinition> = new Map();
@@ -61,5 +61,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridRowDirective extends GridRowDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

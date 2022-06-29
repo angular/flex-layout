@@ -25,7 +25,7 @@ export class GridColumnStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class GridColumnDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'grid-column';
+  protected override DIRECTIVE_KEY = 'grid-column';
 
   constructor(elementRef: ElementRef,
               styleBuilder: GridColumnStyleBuilder,
@@ -35,7 +35,7 @@ export class GridColumnDirective extends BaseDirective2 {
     this.init();
   }
 
-  protected styleCache = columnCache;
+  protected override styleCache = columnCache;
 }
 
 const columnCache: Map<string, StyleDefinition> = new Map();
@@ -61,5 +61,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridColumnDirective extends GridColumnDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }

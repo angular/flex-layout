@@ -104,9 +104,9 @@ export class ServerMediaQueryList implements MediaQueryList {
 export class ServerMatchMedia extends MatchMedia {
   private _activeBreakpoints: BreakPoint[] = [];
 
-  constructor(protected _zone: NgZone,
-              @Inject(PLATFORM_ID) protected _platformId: Object,
-              @Inject(DOCUMENT) protected _document: any,
+  constructor(protected override _zone: NgZone,
+              @Inject(PLATFORM_ID) protected override _platformId: Object,
+              @Inject(DOCUMENT) protected override _document: any,
               @Inject(BREAKPOINTS) protected breakpoints: BreakPoint[],
               @Inject(LAYOUT_CONFIG) protected layoutConfig: LayoutConfigOptions) {
     super(_zone, _platformId, _document);
@@ -146,7 +146,7 @@ export class ServerMatchMedia extends MatchMedia {
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected buildMQL(query: string): ServerMediaQueryList {
+  protected override buildMQL(query: string): ServerMediaQueryList {
     const isActive = this._activeBreakpoints.some(ab => ab.mediaQuery === query);
 
     return new ServerMediaQueryList(query, isActive);

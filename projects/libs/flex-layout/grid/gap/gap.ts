@@ -33,7 +33,7 @@ export class GridGapStyleBuilder extends StyleBuilder {
 
 @Directive()
 export class GridGapDirective extends BaseDirective2 {
-  protected DIRECTIVE_KEY = 'grid-gap';
+  protected override DIRECTIVE_KEY = 'grid-gap';
 
   @Input('gdInline')
   get inline(): boolean { return this._inline; }
@@ -52,7 +52,7 @@ export class GridGapDirective extends BaseDirective2 {
   // Protected methods
   // *********************************************
 
-  protected updateWithValue(value: string) {
+  protected override updateWithValue(value: string) {
     this.styleCache = this.inline ? gapInlineCache : gapCache;
     this.addStyles(value, {inline: this.inline});
   }
@@ -83,5 +83,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridGapDirective extends GridGapDirective {
-  protected inputs = inputs;
+  protected override inputs = inputs;
 }
