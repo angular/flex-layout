@@ -19,6 +19,3 @@ export TEST_PLATFORM="browserstack"
 
 # Run Karma
 yarn ng test @angular/flex-layout
-
-# Wait for all sub processes to terminate properly.
-wait
