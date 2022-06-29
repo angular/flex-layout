@@ -114,6 +114,7 @@ jobs:
   # ----------------------------------------------------------------------------
   tests_browserstack:
     <<: *job_defaults
+    resource_class: xlarge
     environment:
       BROWSER_STACK_USERNAME: 'adamplumer1'
       BROWSER_STACK_ACCESS_KEY: 'WgLjxoB2zQ3tqmsznKnz'
@@ -121,7 +122,6 @@ jobs:
       - *checkout_code
       - *restore_cache
       - *attach_release_output
-      - browser-tools/install-browser-tools
       - run: ./scripts/circleci/run-browserstack-tests.sh
 
   # ----------------------------------------------------------------------------
