@@ -1,3 +1,9 @@
+# [14.0.0-beta.40](https://github.com/angular/flex-layout/compare/13.0.0-beta.38...14.0.0-beta.40) (2022-06-30)
+
+
+This release is simply to capture a change in the peer dependencies requirement for Angular.
+
+
 # [14.0.0-beta.39](https://github.com/angular/flex-layout/compare/13.0.0-beta.38...14.0.0-beta.39) (2022-06-30)
 
 

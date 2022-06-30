@@ -1,7 +1,7 @@
 {
   "name": "flex-layout-srcs",
   "description": "Angular Flex Layout",
-  "version": "14.0.0-beta.39",
+  "version": "14.0.0-beta.40",
   "homepage": "https://github.com/angular/flex-layout",
   "bugs": "https://github.com/angular/flex-layout/issues",
   "repository": {
@@ -29,7 +29,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "private": true,
-  "requiredAngularVersion": "^13.0.0",
+  "requiredAngularVersion": "^14.0.0",
   "dependencies": {
     "@angular/animations": "~14.0.0",
     "@angular/common": "~14.0.0",
