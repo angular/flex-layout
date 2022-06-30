@@ -1,3 +1,18 @@
+# [14.0.0-beta.39](https://github.com/angular/flex-layout/compare/13.0.0-beta.38...14.0.0-beta.39) (2022-06-30)
+
+
+### Bug Fixes
+
+* **private:** remove fallback from flex-direction auto-prefixer ([#1408](https://github.com/angular/flex-layout/issues/1408)) ([ee5d93a](https://github.com/angular/flex-layout/commit/ee5d93a328537eb00391a4245af80a9fc3f6a31e)), closes [#1394](https://github.com/angular/flex-layout/issues/1394)
+
+
+### Features
+
+* **core:** remove deprecated MediaObserver::media$ ([#1375](https://github.com/angular/flex-layout/issues/1375)) ([14b8038](https://github.com/angular/flex-layout/commit/14b803892b26e68b0ee88eeb21963cd326f5eb3c))
+
+BREAKING CHANGES:
+* `MediaObserver::media$` has been removed. Please consult the docs for an adequate, supported replacement.
+
 # [13.0.0-beta.38](https://github.com/angular/flex-layout/compare/13.0.0-beta.37...13.0.0-beta.38) (2022-02-03)
 
 
