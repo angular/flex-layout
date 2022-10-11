@@ -20,7 +20,7 @@ import {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-export class ServerMediaQueryList implements MediaQueryList {
+export class ServerMediaQueryList extends EventTarget implements MediaQueryList {
   private _listeners: MediaQueryListListener[] = [];
 
   get matches(): boolean {
@@ -31,7 +31,9 @@ export class ServerMediaQueryList implements MediaQueryList {
     return this._mediaQuery;
   }
 
-  constructor(private _mediaQuery: string, private _isActive = false) {}
+  constructor(private _mediaQuery: string, private _isActive = false) {
+    super();
+  }
 
   /**
    * Destroy the current list by deactivating the
@@ -81,13 +83,13 @@ export class ServerMediaQueryList implements MediaQueryList {
   removeListener() {
   }
 
-  addEventListener() {
+  override addEventListener() {
   }
 
-  removeEventListener() {
+  override removeEventListener() {
   }
 
-  dispatchEvent(_: Event): boolean {
+  override dispatchEvent(_: Event): boolean {
     return false;
   }
 

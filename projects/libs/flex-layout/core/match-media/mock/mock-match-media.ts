@@ -165,7 +165,7 @@ export class MockMatchMedia extends MatchMedia {
  * - supports manual activation to simulate mediaQuery matching
  * - manages listeners
  */
-export class MockMediaQueryList implements MediaQueryList {
+export class MockMediaQueryList extends EventTarget implements MediaQueryList {
   private _isActive = false;
   private _listeners: MediaQueryListListener[] = [];
 
@@ -178,6 +178,7 @@ export class MockMediaQueryList implements MediaQueryList {
   }
 
   constructor(private _mediaQuery: string) {
+    super();
   }
 
   /**
@@ -228,31 +229,7 @@ export class MockMediaQueryList implements MediaQueryList {
   removeListener(_: MediaQueryListListener | null) {
   }
 
-  addEventListener<K extends keyof MediaQueryListEventMap>(
-      _: K,
-      __: (this: MediaQueryList,
-      ev: MediaQueryListEventMap[K]) => any,
-      ___?: boolean | AddEventListenerOptions): void;
-
-  addEventListener(
-      _: string,
-      __: EventListenerOrEventListenerObject,
-      ___?: boolean | AddEventListenerOptions) {
-  }
-
-  removeEventListener<K extends keyof MediaQueryListEventMap>(
-      _: K,
-      __: (this: MediaQueryList,
-      ev: MediaQueryListEventMap[K]) => any,
-      ___?: boolean | EventListenerOptions): void;
-
-  removeEventListener(
-      _: string,
-      __: EventListenerOrEventListenerObject,
-      ___?: boolean | EventListenerOptions) {
-  }
-
-  dispatchEvent(_: Event): boolean {
+  override dispatchEvent(_: Event): boolean {
     return false;
   }
 
