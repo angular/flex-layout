@@ -1,3 +1,7 @@
+# [14.0.0-beta.41](https://github.com/angular/flex-layout/compare/14.0.0-beta.40...14.0.0-beta.41) (2022-10-11)
+
+This release fixes incompatibilities with Node v18 typings.
+
 # [14.0.0-beta.40](https://github.com/angular/flex-layout/compare/13.0.0-beta.38...14.0.0-beta.40) (2022-06-30)
 
 
