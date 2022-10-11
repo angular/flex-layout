@@ -187,23 +187,21 @@ function buildQueryCss(mediaQueries: string[], _document: Document) {
   }
 }
 
+function buildMockMql(query: string) {
+  const et: any = new EventTarget();
+  et.matches = query === 'all' || query === '';
+  et.media = query;
+  et.addListener = () => {};
+  et.removeListener = () => {};
+  et.addEventListener = () => {};
+  et.dispatchEvent = () => false;
+  et.onchange = null;
+
+  return et as MediaQueryList;
+}
+
 function constructMql(query: string, isBrowser: boolean): MediaQueryList {
   const canListen = isBrowser && !!(<Window>window).matchMedia('all').addListener;
 
-  return canListen ? (<Window>window).matchMedia(query) : {
-    matches: query === 'all' || query === '',
-    media: query,
-    addListener: () => {
-    },
-    removeListener: () => {
-    },
-    onchange: null,
-    addEventListener() {
-    },
-    removeEventListener() {
-    },
-    dispatchEvent() {
-      return false;
-    }
-  } as MediaQueryList;
+  return canListen ? (<Window>window).matchMedia(query) : buildMockMql(query);
 }
