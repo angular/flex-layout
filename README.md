@@ -5,7 +5,7 @@
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)
 
 **NOTE: This project has been deprecated. Please review [this blog post](https://blog.angular.io/modern-css-in-angular-layouts-4a259dca9127) 
-for alternatives, and [this article](https://medium.com/@caerus.karu/farewell-flex-layout-aaa567023769) for the exaplanation and next steps.**
+for alternatives, and [this article](https://medium.com/@caerus.karu/farewell-flex-layout-aaa567023769) for the explanation and next steps.**
 
 Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery.
 This module provides Angular developers with component layout features using a
