@@ -10,8 +10,8 @@
 const browserConfig = {
   'ChromeHeadlessCI':  { unitTest: {target: 'local', }},
   'FirefoxHeadless':   { unitTest: {target: 'local', }},
-  'iOS14': {unitTest: {target: 'saucelabs'}},
-  'Safari13': {unitTest: {target: 'browserstack'}}
+  'iOS15': {unitTest: {target: 'saucelabs'}},
+  'Safari15': {unitTest: {target: 'browserstack'}}
 };
 
 /** Exports all available custom Karma browsers. */

@@ -2,7 +2,6 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "outDir": "../out-tsc/app-server",
-    "target": "es2019",
     "types": [
       "node"
     ]

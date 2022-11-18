@@ -174,7 +174,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': (platform.FIREFOX || platform.BLINK) ? 'dense' : 'row dense',
+        'grid-auto-flow': (platform.IOS || !platform.isBrowser) ? 'row dense' : 'dense',
       }, styler);
     });
 
@@ -190,7 +190,7 @@ describe('grid auto parent directive', () => {
 
       expectNativeEl(fixture).toHaveStyle({
         'display': 'grid',
-        'grid-auto-flow': (platform.FIREFOX || platform.BLINK) ? 'dense' : 'row dense'
+        'grid-auto-flow': (platform.IOS || !platform.isBrowser) ? 'row dense' : 'dense',
       }, styler);
     });
 

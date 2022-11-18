@@ -46,8 +46,8 @@ class Walker extends RuleWalker {
   }
 
   visitClassDeclaration(node: ts.ClassDeclaration) {
-    if (this._enabled && node.decorators) {
-      node.decorators
+    if (this._enabled && ts.canHaveDecorators(node)) {
+      ts.getDecorators(node)!
         .map(decorator => decorator.expression as any)
         .filter(expression => expression.arguments.length && expression.arguments[0].properties)
         .forEach(expression => this._validatedDecorator(expression));
