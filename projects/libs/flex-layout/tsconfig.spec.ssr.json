@@ -5,7 +5,8 @@
     "outDir": "../../../out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    "target": "ES2015"
   },
   "files": [
     "test.ssr.ts"

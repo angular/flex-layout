@@ -1,3 +1,7 @@
+# [15.0.0-beta.42](https://github.com/angular/flex-layout/compare/14.0.0-beta.41...15.0.0-beta.42) (2022-11-18)
+
+This release unpins the dependency on Angular and CDK to allow flexibility with future releases.
+
 # [14.0.0-beta.41](https://github.com/angular/flex-layout/compare/14.0.0-beta.40...14.0.0-beta.41) (2022-10-11)
 
 This release fixes incompatibilities with Node v18 typings.

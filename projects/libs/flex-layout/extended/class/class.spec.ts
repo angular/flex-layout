@@ -15,10 +15,10 @@ import {
   ɵMockMatchMedia as MockMatchMedia,
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
 } from '@angular/flex-layout/core';
+import {DefaultClassDirective} from '@angular/flex-layout/extended';
 
 import {customMatchers, expect} from '@angular/flex-layout/_private-utils/testing';
 import {makeCreateTestComponent, expectNativeEl, queryFor} from '@angular/flex-layout/_private-utils/testing';
-import {DefaultClassDirective} from './class';
 
 
 describe('class directive', () => {
@@ -262,7 +262,9 @@ describe('class directive', () => {
     let button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
     if (!isPlatformServer(platformId)) {
-      expect(button).toHaveCssClass('mat-raised-button');
+      expect(button).toHaveAttributes({
+        'mat-raised-button': '',
+      });
     }
     expect(button).toHaveCssClass('btn-xs');
     expect(button).toHaveCssClass('mat-primary');
@@ -272,7 +274,9 @@ describe('class directive', () => {
     button = queryFor(fixture, '[mat-raised-button]')[0].nativeElement;
 
     if (!isPlatformServer(platformId)) {
-      expect(button).toHaveCssClass('mat-raised-button');
+      expect(button).toHaveAttributes({
+        'mat-raised-button': '',
+      });
     }
     expect(button).not.toHaveCssClass('btn-xs');
     expect(button).toHaveCssClass('mat-primary');
