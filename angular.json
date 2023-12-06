@@ -189,7 +189,8 @@
             "tsConfig": "projects/apps/universal-demo-app/tsconfig.server.json",
             "preserveSymlinks": true,
             "sourceMap": true,
-            "optimization": false
+            "optimization": false,
+            "buildOptimizer": false
           },
           "configurations": {
             "production": {
@@ -199,7 +200,8 @@
                   "replace": "projects/apps/universal-demo-app/src/environments/environment.ts",
                   "with": "projects/apps/universal-demo-app/src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "buildOptimizer": true
             }
           }
         },
@@ -249,5 +251,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
