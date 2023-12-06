@@ -1,22 +1,22 @@
+import 'zone.js/dist/zone-node';
 
-import 'zone.js/node';
-
-import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine } from '@angular/ssr';
+import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
-import bootstrap from './src/main.server';
+import { join } from 'path';
+
+import { AppServerModule } from './src/app/app.server.module';
+import { APP_BASE_HREF } from '@angular/common';
+import { existsSync } from 'fs';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
   const distFolder = join(process.cwd(), 'dist/universal-demo-app/browser');
-  const indexHtml = existsSync(join(distFolder, 'index.original.html'))
-    ? join(distFolder, 'index.original.html')
-    : join(distFolder, 'index.html');
+  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-  const commonEngine = new CommonEngine();
+  server.engine('html', ngExpressEngine({
+    bootstrap: AppServerModule,
+  }));
 
   server.set('view engine', 'html');
   server.set('views', distFolder);
@@ -28,21 +28,9 @@ export function app(): express.Express {
     maxAge: '1y'
   }));
 
-  // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
-    const { protocol, originalUrl, baseUrl, headers } = req;
-
-    commonEngine
-      .render({
-        bootstrap,
-        documentFilePath: indexHtml,
-        url: `${protocol}://${headers.host}${originalUrl}`,
-        publicPath: distFolder,
-        providers: [
-          { provide: APP_BASE_HREF, useValue: baseUrl },],
-      })
-      .then((html) => res.send(html))
-      .catch((err) => next(err));
+  // All regular routes use the Universal engine
+  server.get('*', (req, res) => {
+    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
   });
 
   return server;
@@ -68,4 +56,4 @@ if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }
 
-export default bootstrap;
+export * from './src/main.server';
