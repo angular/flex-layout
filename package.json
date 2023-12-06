@@ -52,7 +52,7 @@
     "@angular/cdk": "~17.0.2",
     "@angular/cli": "~17.0.5",
     "@angular/compiler-cli": "~17.0.5",
-    "@ngtools/webpack": "~15.0.5",
+    "@ngtools/webpack": "~17.0.5",
     "@types/express": "^4.17.21",
     "@types/jasmine": "~3.10.18",
     "@types/minimatch": "^3.0.5",
