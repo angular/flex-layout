@@ -47,7 +47,7 @@ specifiers:
   ts-node: ^10.9.1
   tslib: ^2.6.2
   tslint: ^6.1.3
-  typescript: ~5.3.2
+  typescript: ~5.2.2
   webpack: ^5.89.0
   webpack-cli: ^5.1.4
   zone.js: ~0.14.2
@@ -70,11 +70,11 @@ dependencies:
   zone.js: 0.14.2
 
 devDependencies:
-  '@angular-devkit/build-angular': 17.0.5_7zp45fx4rtzq7r2yemnobkdc6m
+  '@angular-devkit/build-angular': 17.0.5_u65iukopbsiw3aps3qogpbwkdy
   '@angular/cdk': 17.0.2_xal7rdylrerll4wdgyuiwlqot4
   '@angular/cli': 17.0.5
-  '@angular/compiler-cli': 17.0.5_f2bjmorg2oxtf4oiv6bjce5h6i
-  '@ngtools/webpack': 17.0.5_b3bjwfws5ggwrinuedntewcrz4
+  '@angular/compiler-cli': 17.0.5_klxea6hkcw44tcyqmvv5e7pmkm
+  '@ngtools/webpack': 17.0.5_yi2k53d4a3naj7op3u7tiol37q
   '@types/express': 4.17.21
   '@types/jasmine': 5.1.4
   '@types/minimatch': 5.1.2
@@ -89,16 +89,16 @@ devDependencies:
   karma-jasmine: 5.1.0_karma@6.4.2
   karma-jasmine-html-reporter: 2.1.0_eijl5f7t7xqa32su77tt4c2z5a
   karma-parallel: 0.3.1_karma@6.4.2
-  karma-sauce-launcher: 4.3.6_typescript@5.3.2
+  karma-sauce-launcher: 4.3.6_typescript@5.2.2
   minimatch: 9.0.3
-  ng-packagr: 17.0.2_ejtu53zrnbglngexh67jo7yxc4
+  ng-packagr: 17.0.2_kptkcf7xhbwcpf7rposqwns6hu
   postcss: 8.4.32
   postcss-scss: 4.0.9_postcss@8.4.32
   protractor: 7.0.0
-  stylelint: 15.11.0_typescript@5.3.2
-  ts-node: 10.9.1_xy5pmmm77qgfdfg5jflxsqkm74
-  tslint: 6.1.3_typescript@5.3.2
-  typescript: 5.3.2
+  stylelint: 15.11.0_typescript@5.2.2
+  ts-node: 10.9.1_wzca6dis3z7cknfurgy25bgd3m
+  tslint: 6.1.3_typescript@5.2.2
+  typescript: 5.2.2
   webpack: 5.89.0_webpack-cli@5.1.4
   webpack-cli: 5.1.4_webpack@5.89.0
 
@@ -132,7 +132,7 @@ packages:
       - chokidar
     dev: true
 
-  /@angular-devkit/build-angular/17.0.5_7zp45fx4rtzq7r2yemnobkdc6m:
+  /@angular-devkit/build-angular/17.0.5_u65iukopbsiw3aps3qogpbwkdy:
     resolution: {integrity: sha1-19kc2gcLQiL0MSdQsVQPw7HzQ+I=}
     engines: {node: ^18.13.0 || >=20.9.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -171,7 +171,7 @@ packages:
       '@angular-devkit/architect': 0.1700.5_chokidar@3.5.3
       '@angular-devkit/build-webpack': 0.1700.5_odcbqwip7aeb6d4lt2bmzm66ku
       '@angular-devkit/core': 17.0.5_chokidar@3.5.3
-      '@angular/compiler-cli': 17.0.5_f2bjmorg2oxtf4oiv6bjce5h6i
+      '@angular/compiler-cli': 17.0.5_klxea6hkcw44tcyqmvv5e7pmkm
       '@angular/platform-server': 17.0.5_6huc7mjwqsckqu777dmkhq5jmu
       '@babel/core': 7.23.2
       '@babel/generator': 7.23.0
@@ -183,7 +183,7 @@ packages:
       '@babel/preset-env': 7.23.2_@babel+core@7.23.2
       '@babel/runtime': 7.23.2
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 17.0.5_b3bjwfws5ggwrinuedntewcrz4
+      '@ngtools/webpack': 17.0.5_yi2k53d4a3naj7op3u7tiol37q
       '@vitejs/plugin-basic-ssl': 1.0.1_vite@4.5.0
       ansi-colors: 4.1.3
       autoprefixer: 10.4.16_postcss@8.4.31
@@ -210,14 +210,14 @@ packages:
       magic-string: 0.30.5
       mini-css-extract-plugin: 2.7.6_webpack@5.89.0
       mrmime: 1.0.1
-      ng-packagr: 17.0.2_ejtu53zrnbglngexh67jo7yxc4
+      ng-packagr: 17.0.2_kptkcf7xhbwcpf7rposqwns6hu
       open: 8.4.2
       ora: 5.4.1
       parse5-html-rewriting-stream: 7.0.0
       picomatch: 3.0.1
       piscina: 4.1.0
       postcss: 8.4.31
-      postcss-loader: 7.3.3_25g44znwgqhzyrgehlevhohyf4
+      postcss-loader: 7.3.3_iwk5sy55rrc5664ce4dbyu5jom
       protractor: 7.0.0
       resolve-url-loader: 5.0.0
       rxjs: 7.8.1
@@ -230,7 +230,7 @@ packages:
       text-table: 0.2.0
       tree-kill: 1.2.2
       tslib: 2.6.2
-      typescript: 5.3.2
+      typescript: 5.2.2
       undici: 5.27.2
       vite: 4.5.0_uwuyr7bta4fmt7y5qvb5hexvoe
       webpack: 5.89.0_khr5fpn3l3k2q5q2f2pvvmie54
@@ -385,7 +385,7 @@ packages:
       rxjs: 7.8.1
       tslib: 2.6.2
 
-  /@angular/compiler-cli/17.0.5_f2bjmorg2oxtf4oiv6bjce5h6i:
+  /@angular/compiler-cli/17.0.5_klxea6hkcw44tcyqmvv5e7pmkm:
     resolution: {integrity: sha1-8Q9bH9yDAEdHCnM69ESCjho+vrA=}
     engines: {node: ^18.13.0 || >=20.9.0}
     hasBin: true
@@ -401,7 +401,7 @@ packages:
       reflect-metadata: 0.1.13
       semver: 7.5.4
       tslib: 2.6.2
-      typescript: 5.3.2
+      typescript: 5.2.2
       yargs: 17.7.2
     transitivePeerDependencies:
       - supports-color
@@ -3204,7 +3204,7 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@ngtools/webpack/17.0.5_b3bjwfws5ggwrinuedntewcrz4:
+  /@ngtools/webpack/17.0.5_yi2k53d4a3naj7op3u7tiol37q:
     resolution: {integrity: sha1-dLP17TVDpvC9OHhIjRZfSAsr63E=}
     engines: {node: ^18.13.0 || >=20.9.0, npm: ^6.11.0 || ^7.5.6 || >=8.0.0, yarn: '>= 1.13.0'}
     peerDependencies:
@@ -3212,8 +3212,8 @@ packages:
       typescript: '>=5.2 <5.3'
       webpack: ^5.54.0
     dependencies:
-      '@angular/compiler-cli': 17.0.5_f2bjmorg2oxtf4oiv6bjce5h6i
-      typescript: 5.3.2
+      '@angular/compiler-cli': 17.0.5_klxea6hkcw44tcyqmvv5e7pmkm
+      typescript: 5.2.2
       webpack: 5.89.0_webpack-cli@5.1.4
     dev: true
 
@@ -3724,10 +3724,10 @@ packages:
     resolution: {integrity: sha1-VuLMJsOXwDj6sOOpF6EtXFkJ6QE=}
     dev: true
 
-  /@types/puppeteer-core/5.4.0_typescript@5.3.2:
+  /@types/puppeteer-core/5.4.0_typescript@5.2.2:
     resolution: {integrity: sha1-iAp5F7Tt6Vy/4tXoGlWM/LBywPs=}
     dependencies:
-      '@types/puppeteer': 7.0.4_typescript@5.3.2
+      '@types/puppeteer': 7.0.4_typescript@5.2.2
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -3736,10 +3736,10 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@types/puppeteer/7.0.4_typescript@5.3.2:
+  /@types/puppeteer/7.0.4_typescript@5.2.2:
     resolution: {integrity: sha1-brQIEyPpB1wfTDU/k+4u1u7ZlIc=}
     dependencies:
-      puppeteer: 21.6.0_typescript@5.3.2
+      puppeteer: 21.6.0_typescript@5.2.2
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -5490,7 +5490,7 @@ packages:
       vary: 1.1.2
     dev: true
 
-  /cosmiconfig/8.3.6_typescript@5.3.2:
+  /cosmiconfig/8.3.6_typescript@5.2.2:
     resolution: {integrity: sha1-Bgorhx1m26bIU46hEYuhrBb1+uM=}
     engines: {node: '>=14'}
     peerDependencies:
@@ -5503,7 +5503,7 @@ packages:
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
-      typescript: 5.3.2
+      typescript: 5.2.2
     dev: true
 
   /crc-32/1.2.2:
@@ -8200,13 +8200,13 @@ packages:
       lodash: 4.17.21
     dev: true
 
-  /karma-sauce-launcher/4.3.6_typescript@5.3.2:
+  /karma-sauce-launcher/4.3.6_typescript@5.2.2:
     resolution: {integrity: sha1-J0+ZnOWjvHZXekOIOcsNu/J0akg=}
     engines: {node: '>= 10.0.0'}
     dependencies:
       global-agent: 2.2.0
       saucelabs: 4.7.8
-      webdriverio: 6.12.1_typescript@5.3.2
+      webdriverio: 6.12.1_typescript@5.2.2
     transitivePeerDependencies:
       - bufferutil
       - encoding
@@ -8978,7 +8978,7 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
-  /ng-packagr/17.0.2_ejtu53zrnbglngexh67jo7yxc4:
+  /ng-packagr/17.0.2_kptkcf7xhbwcpf7rposqwns6hu:
     resolution: {integrity: sha1-5I29d6cK3IUpUci1WieMrKZ9kgY=}
     engines: {node: ^18.13.0 || >=20.9.0}
     hasBin: true
@@ -8991,7 +8991,7 @@ packages:
       tailwindcss:
         optional: true
     dependencies:
-      '@angular/compiler-cli': 17.0.5_f2bjmorg2oxtf4oiv6bjce5h6i
+      '@angular/compiler-cli': 17.0.5_klxea6hkcw44tcyqmvv5e7pmkm
       '@rollup/plugin-json': 6.0.1_rollup@4.6.1
       '@rollup/plugin-node-resolve': 15.2.3_rollup@4.6.1
       '@rollup/wasm-node': 4.6.1
@@ -9017,7 +9017,7 @@ packages:
       rxjs: 7.8.1
       sass: 1.69.5
       tslib: 2.6.2
-      typescript: 5.3.2
+      typescript: 5.2.2
     optionalDependencies:
       esbuild: 0.19.8
       rollup: 4.6.1
@@ -9731,14 +9731,14 @@ packages:
       is-number-like: 1.0.8
     dev: true
 
-  /postcss-loader/7.3.3_25g44znwgqhzyrgehlevhohyf4:
+  /postcss-loader/7.3.3_iwk5sy55rrc5664ce4dbyu5jom:
     resolution: {integrity: sha1-baA+cakY70nfG7S+TIBAHfjiSd0=}
     engines: {node: '>= 14.15.0'}
     peerDependencies:
       postcss: ^7.0.0 || ^8.0.1
       webpack: ^5.0.0
     dependencies:
-      cosmiconfig: 8.3.6_typescript@5.3.2
+      cosmiconfig: 8.3.6_typescript@5.2.2
       jiti: 1.21.0
       postcss: 8.4.31
       semver: 7.5.4
@@ -10025,14 +10025,14 @@ packages:
       - utf-8-validate
     dev: true
 
-  /puppeteer/21.6.0_typescript@5.3.2:
+  /puppeteer/21.6.0_typescript@5.2.2:
     resolution: {integrity: sha1-/3S3dHjbLqr0uKMs9rm0yvkWhSY=}
     engines: {node: '>=16.13.2'}
     hasBin: true
     requiresBuild: true
     dependencies:
       '@puppeteer/browsers': 1.9.0
-      cosmiconfig: 8.3.6_typescript@5.3.2
+      cosmiconfig: 8.3.6_typescript@5.2.2
       puppeteer-core: 21.6.0
     transitivePeerDependencies:
       - bufferutil
@@ -11276,7 +11276,7 @@ packages:
     resolution: {integrity: sha1-eVjHk+R+MuB9K1yv5cC/jhLneQI=}
     dev: true
 
-  /stylelint/15.11.0_typescript@5.3.2:
+  /stylelint/15.11.0_typescript@5.2.2:
     resolution: {integrity: sha1-P/hGb19cRzYrx8jJ04J0HFi8MpI=}
     engines: {node: ^14.13.1 || >=16.0.0}
     hasBin: true
@@ -11287,7 +11287,7 @@ packages:
       '@csstools/selector-specificity': 3.0.0_c3vcbepomgmxc74cgtawpgpkyi
       balanced-match: 2.0.0
       colord: 2.9.3
-      cosmiconfig: 8.3.6_typescript@5.3.2
+      cosmiconfig: 8.3.6_typescript@5.2.2
       css-functions-list: 3.2.1
       css-tree: 2.3.1
       debug: 4.3.4
@@ -11653,7 +11653,7 @@ packages:
       escape-string-regexp: 1.0.5
     dev: true
 
-  /ts-node/10.9.1_xy5pmmm77qgfdfg5jflxsqkm74:
+  /ts-node/10.9.1_wzca6dis3z7cknfurgy25bgd3m:
     resolution: {integrity: sha1-5z3pEClYr54fCxaKb/Mg4lrc/0s=}
     hasBin: true
     peerDependencies:
@@ -11679,7 +11679,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 5.3.2
+      typescript: 5.2.2
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -11691,7 +11691,7 @@ packages:
   /tslib/2.6.2:
     resolution: {integrity: sha1-cDrClCXns3zW/UVukkBNRtHz5K4=}
 
-  /tslint/6.1.3_typescript@5.3.2:
+  /tslint/6.1.3_typescript@5.2.2:
     resolution: {integrity: sha1-XCOy7MwySH1VI706Rw6aoxeJ2QQ=}
     engines: {node: '>=4.8.0'}
     hasBin: true
@@ -11710,17 +11710,17 @@ packages:
       resolve: 1.22.8
       semver: 5.7.2
       tslib: 1.14.1
-      tsutils: 2.29.0_typescript@5.3.2
-      typescript: 5.3.2
+      tsutils: 2.29.0_typescript@5.2.2
+      typescript: 5.2.2
     dev: true
 
-  /tsutils/2.29.0_typescript@5.3.2:
+  /tsutils/2.29.0_typescript@5.2.2:
     resolution: {integrity: sha1-MrSIUBRnrL7dS4VJhnOggSrKC5k=}
     peerDependencies:
       typescript: '>=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev'
     dependencies:
       tslib: 1.14.1
-      typescript: 5.3.2
+      typescript: 5.2.2
     dev: true
 
   /tuf-js/2.1.0:
@@ -11797,8 +11797,8 @@ packages:
     resolution: {integrity: sha1-ivnU+TQyxJcOxxfjAG8z8TWwYhM=}
     dev: true
 
-  /typescript/5.3.2:
-    resolution: {integrity: sha1-ANHHwcRpKMWEXB7o0MwnkQMdTEM=}
+  /typescript/5.2.2:
+    resolution: {integrity: sha1-XrteWlt18IXyK8P4Rg+6MIMQ+ng=}
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
@@ -12084,11 +12084,11 @@ packages:
       lodash.merge: 4.6.2
     dev: true
 
-  /webdriverio/6.12.1_typescript@5.3.2:
+  /webdriverio/6.12.1_typescript@5.2.2:
     resolution: {integrity: sha1-W28RZzc716FUQZ2Kkw7x/9qdBTc=}
     engines: {node: '>=10.0.0'}
     dependencies:
-      '@types/puppeteer-core': 5.4.0_typescript@5.3.2
+      '@types/puppeteer-core': 5.4.0_typescript@5.2.2
       '@wdio/config': 6.12.1
       '@wdio/logger': 6.10.10
       '@wdio/repl': 6.11.0
