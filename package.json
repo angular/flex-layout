@@ -36,7 +36,7 @@
     "@angular/compiler": "~17.0.5",
     "@angular/core": "~17.0.5",
     "@angular/forms": "~17.0.5",
-    "@angular/material": "~16.2.12",
+    "@angular/material": "~17.0.2",
     "@angular/platform-browser": "~17.0.5",
     "@angular/platform-browser-dynamic": "~17.0.5",
     "@angular/platform-server": "~17.0.5",
