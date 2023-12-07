@@ -10,9 +10,9 @@ on:
     branches: [ "master" ]
 
 jobs:
-  cache-and-install:
+  build-publish:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,13 +21,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: https://npm.pkg.github.com/
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           version: 8
           run_install: false
-          registry-url: https://npm.pkg.github.com/
 
       - name: Get pnpm store directory
         shell: bash
