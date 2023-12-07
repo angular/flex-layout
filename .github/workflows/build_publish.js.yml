@@ -27,6 +27,7 @@ jobs:
         with:
           version: 8
           run_install: false
+          registry-url: https://npm.pkg.github.com/
 
       - name: Get pnpm store directory
         shell: bash
@@ -42,7 +43,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
       
       - name: Build lib
         run: pnpm run build
