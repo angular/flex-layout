@@ -13,11 +13,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-          registry-url: 'https://npm.pkg.github.com'
-          # Defaults to the user or organization that owns the workflow file
-          scope: '@octocat'
       - run: npm i
       - run: npm run build
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
