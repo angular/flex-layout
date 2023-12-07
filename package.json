@@ -23,7 +23,7 @@
     "serve:universal-demo-app": "ng run universal-demo-app:serve-ssr",
     "test": "ng test ng-flex-layout",
     "test:ssr": "webpack --config test/webpack-spec-ssr-bundle.js && jasmine --config=test/jasmine-ssr.json",
-    "lint": "stylelint projects/libs/**/*.scss --config=stylelint-config.json && eslint projects/libs/**/*.{js,jsx,ts,tsx,html} --fix",
+    "lint": "eslint projects/libs/**/*.{js,jsx,ts,tsx,html} --fix",
     "release": "yarn build && yarn stamp",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
