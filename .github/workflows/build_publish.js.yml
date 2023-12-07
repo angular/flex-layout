@@ -42,6 +42,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Set github repository
+        run: pnpm config set //https://npm.pkg.github.com//:_authToken ${{secrets.GITHUB_TOKEN}}
+        
       - name: Install dependencies
         run: pnpm install
       
