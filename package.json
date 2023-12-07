@@ -1,35 +1,33 @@
 {
-  "name": "flex-layout-srcs",
-  "description": "Angular Flex Layout",
-  "version": "15.0.0-beta.42",
+  "name": "ng-flex-layout",
+  "description": "Angular Flex Layout (DOIT fork)",
+  "version": "17.0.0-beta.1",
   "homepage": "https://github.com/angular/flex-layout",
   "bugs": "https://github.com/angular/flex-layout/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angular/flex-layout.git"
+    "url": "git+https://github.com/alessiobianchini/flex-layout"
   },
   "license": "MIT",
   "engines": {
-    "node": "^14.20.0 || ^16.13.0 || >=18.10.0",
-    "yarn": ">=1.22.4 <2",
-    "npm": "Please use yarn instead of NPM to install dependencies"
+    "node": "^18.13.0 || ^20.9.0"
   },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build @angular/flex-layout",
+    "build": "ng build ng-flex-layout",
     "demo:serve": "ng serve demo-app",
     "stamp": "ts-node tools/package-tools/version-placeholders.ts --module=commonjs",
     "build:universal-demo-app": "ng run universal-demo-app:build:production && ng run universal-demo-app:server",
     "serve:universal-demo-app": "ng run universal-demo-app:serve-ssr",
-    "test": "ng test @angular/flex-layout",
+    "test": "ng test ng-flex-layout",
     "test:ssr": "webpack --config test/webpack-spec-ssr-bundle.js && jasmine --config=test/jasmine-ssr.json",
     "lint": "stylelint projects/libs/**/*.scss --config=stylelint-config.json && tslint --project ./tsconfig.json --config tslint.json",
     "release": "yarn build && yarn stamp",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "private": true,
-  "requiredAngularVersion": ">=15.0.2",
+  "requiredAngularVersion": ">=17.0.2",
   "dependencies": {
     "@angular/animations": "~17.0.5",
     "@angular/common": "~17.0.5",
@@ -49,6 +47,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~17.0.5",
+    "@angular-eslint/builder": "16.2.0",
+    "@angular-eslint/eslint-plugin": "16.2.0",
+    "@angular-eslint/eslint-plugin-template": "16.2.0",
+    "@angular-eslint/schematics": "16.2.0",
+    "@angular-eslint/template-parser": "16.2.0",
     "@angular/cdk": "~17.0.2",
     "@angular/cli": "~17.0.5",
     "@angular/compiler-cli": "~17.0.5",
@@ -57,7 +60,10 @@
     "@types/jasmine": "~5.1.4",
     "@types/minimatch": "^5.1.2",
     "@types/node": "^20.10.3",
+    "@typescript-eslint/eslint-plugin": "5.62.0",
+    "@typescript-eslint/parser": "5.62.0",
     "conventional-changelog-cli": "^4.1.0",
+    "eslint": "^8.49.0",
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-browserstack-launcher": "^1.6.0",

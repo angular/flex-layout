@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects/apps",
   "projects": {
-    "@angular/flex-layout": {
+    "ng-flex-layout": {
       "projectType": "library",
       "root": "projects/libs/flex-layout",
       "sourceRoot": "projects/libs/flex-layout",

@@ -14,13 +14,13 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 
 import {FlexLayoutModule} from '../../module';
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
-import {expectEl, makeCreateTestComponent, queryFor} from '@angular/flex-layout/_private-utils/testing';
-import {expect} from '@angular/flex-layout/_private-utils/testing';
-import {_dom as _} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers} from 'ng-flex-layout/_private-utils/testing';
+import {expectEl, makeCreateTestComponent, queryFor} from 'ng-flex-layout/_private-utils/testing';
+import {expect} from 'ng-flex-layout/_private-utils/testing';
+import {_dom as _} from 'ng-flex-layout/_private-utils/testing';
 
 const SRC_URLS = {
   'xs': [

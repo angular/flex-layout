@@ -12,7 +12,7 @@ import {
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 
 @Injectable({providedIn: 'root'})
 export class FlexAlignStyleBuilder extends StyleBuilder {

@@ -1,19 +1,19 @@
 ## JavaScript API (Imperative)
 
-Most of the **@angular/flex-layout** functionality is provided via Directives used **declaratively** in template HTML. 
+Most of the **ng-flex-layout** functionality is provided via Directives used **declaratively** in template HTML. 
 There are three (3) programmatic features, however, that are published for programmatic usages:
 
 * **[ObservableMedia](https://github.com/angular/flex-layout/wiki/ObservableMedia)**:  
 Injectable Observable used to subscribe to MediaQuery activation changes.
 ```typescript
-import {ObservableMedia} from '@angular/flex-layout';
+import {ObservableMedia} from 'ng-flex-layout';
 constructor(public media: ObservableMedia ) { ... }
 ```
 
 * **[BREAKPOINTS](https://github.com/angular/flex-layout/wiki/BreakPoints)**:  
 Injection token used to override or extend the default breakpoints with custom MediaQuery breakpoints.
 ```typescript
-import {BREAKPOINTS} from '@angular/flex-layout';
+import {BREAKPOINTS} from 'ng-flex-layout';
 providers: [{provide: BREAKPOINTS, useValue: MY_CUSTOM_BREAKPOINTS }]
 ```
 
@@ -33,7 +33,7 @@ features.
 * **[Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API)**: Introducing Responsive API and 
 BreakPoints details.
 
-As each directive (aka API) within **@angular/flex-layout** has its own constraints and options, 
+As each directive (aka API) within **ng-flex-layout** has its own constraints and options, 
 the links below should be used to navigate to the specific documentation pages for each directive
 
 

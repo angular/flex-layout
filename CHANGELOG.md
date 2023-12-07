@@ -143,7 +143,7 @@ This will be the last release with support for Angular v9. The next release will
 
 
 NOTE: if you consume Angular Layout through UMD, we no longer re-export secondary 
-entrypoints (e.g. @angular/flex-layout/flex) from the top-level (@angular/flex-layout) bundle. Please
+entrypoints (e.g. ng-flex-layout/flex) from the top-level (ng-flex-layout) bundle. Please
 modify your apps accordingly. For users of the Angular CLI, this should not be an issue.
 
 <a name="9.0.0-beta.29"></a>
@@ -311,7 +311,7 @@ NOTE: This feature is marked as experimental and is subject to change unless pos
 the new SASS file as follows:
 
 ```sass
-@import '~@angular/flex-layout/mq';
+@import '~ng-flex-layout/mq';
 
 // This translates to (min-width: 0) and (max-width: 599px) {}
 @include layout-bp(xs) {
@@ -410,7 +410,7 @@ Developers should subscribe to MediaObserver's `media$` property; in place of su
 <a name="6.0.0-beta.16"></a>
 # [6.0.0-beta.16](https://github.com/angular/flex-layout/compare/v6.0.0-beta.15...6.0.0-beta.16) (2018-06-07)
 
-With Beta 16, we have added support + API for CSS Grid. Now @angular/flex-layout supports both Flexbox and CSS Grid layouts. 
+With Beta 16, we have added support + API for CSS Grid. Now ng-flex-layout supports both Flexbox and CSS Grid layouts. 
 
 ### Bug Fixes
 
@@ -476,11 +476,11 @@ FlexLayoutModule.withConfig({useColumnBasisZero: false})
 
 BEFORE:
 
-`import {validateSuffixes} from '@angular/flex-layout';`
+`import {validateSuffixes} from 'ng-flex-layout';`
 
 AFTER:
 
-`import {DEFAULT_BREAKPOINTS_PROVIDER_FACTORY} from '@angular/flex-layout';`
+`import {DEFAULT_BREAKPOINTS_PROVIDER_FACTORY} from 'ng-flex-layout';`
 
 The functions can be called in the exact same manner, as `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY` is simply a wrapper around `validateSuffixes`. Please note that `DEFAULT_BREAKPOINTS_PROVIDER_FACTORY` is deprecated in this release.
 
@@ -513,7 +513,7 @@ The functions can be called in the exact same manner, as `DEFAULT_BREAKPOINTS_PR
 <a name="5.0.0-beta.13"></a>
 # [5.0.0-beta.13](https://github.com/angular/flex-layout/compare/v2.0.0-beta.12...5.0.0-beta.13) (2018-02-22)
 
-This **@angular/flex-layout** release provides full support for Angular 5.x
+This **ng-flex-layout** release provides full support for Angular 5.x
 
 > This release bumps the version for parity with Angular Material and latest builds of Angular.
 
@@ -748,7 +748,7 @@ export class MyComponent {
 <a name="2.0.0-beta.9"></a>
 # [2.0.0-beta.9](https://github.com/angular/flex-layout/compare/v2.0.0-beta.8...2.0.0-beta.9) (2017-08-22)
 
-This **@angular/flex-layout** release provides full support for Angular 4.x; along with a long list of improvements:
+This **ng-flex-layout** release provides full support for Angular 4.x; along with a long list of improvements:
 
 * support for AOT and universal builds,
 * more online demos and samples,
@@ -792,7 +792,7 @@ This **@angular/flex-layout** release provides full support for Angular 4.x; alo
 * **api:** Previously releases used FlexLayoutModule.forRoot(). This has been deprecated and removed.
 
 ```js
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from 'ng-flex-layout';
 
 @NgModule({
   imports: [
@@ -820,7 +820,7 @@ constructor(private media:ObservableMedia) { ... }
 ##### Example
 
 ```js
-import {ObservableMedia, MediaChange} from '@angular/flex-layout';
+import {ObservableMedia, MediaChange} from 'ng-flex-layout';
 
 @Component({ ... })
 export class MyComponent {
@@ -894,7 +894,7 @@ export class MyComponent {
 
 ### BREAKING CHANGES
 
-These changes to **@angular/flex-layout** will require Angular v4.x and will **not** be compatible with Angular v2.x.
+These changes to **ng-flex-layout** will require Angular v4.x and will **not** be compatible with Angular v2.x.
 
 ### Bug Fixes
 
@@ -906,8 +906,8 @@ These changes to **@angular/flex-layout** will require Angular v4.x and will **n
 # [2.0.0-beta.7](https://github.com/angular/flex-layout/compare/v2.0.0-beta.6...v2.0.0-beta.7) (2017-03-17)
 
 > ##### Note: Previous Release
-> We prematurely labeled the previously release **@angular/flex-layout v2.0.0-rc.1**.  
-It should have been a beta release and is therefore renamed to @angular/flex-layout v2.0.0-beta.6.
+> We prematurely labeled the previously release **ng-flex-layout v2.0.0-rc.1**.  
+It should have been a beta release and is therefore renamed to ng-flex-layout v2.0.0-beta.6.
 
 ### Bug Fixes
 
@@ -1028,7 +1028,7 @@ constructor(private media:ObservableMedia) { ... }
 ```js
 // RxJS
 import 'rxjs/add/operator/map';
-import {ObservableMedia} from '@angular/flex-layout';
+import {ObservableMedia} from 'ng-flex-layout';
 
 @Component({ ... })
 export class MyComponent {

@@ -15,10 +15,10 @@ import {
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {customMatchers, makeCreateTestComponent, expectNativeEl, expectEl, queryFor} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule, LayoutStyleBuilder} from '@angular/flex-layout/flex';
+} from 'ng-flex-layout/core';
+import {FlexLayoutModule} from 'ng-flex-layout';
+import {customMatchers, makeCreateTestComponent, expectNativeEl, expectEl, queryFor} from 'ng-flex-layout/_private-utils/testing';
+import {FlexModule, LayoutStyleBuilder} from 'ng-flex-layout/flex';
 
 
 describe('layout directive', () => {

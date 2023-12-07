@@ -16,8 +16,8 @@ import {
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+} from 'ng-flex-layout/core';
+import {FlexLayoutModule} from 'ng-flex-layout';
 import {
   customMatchers,
   expect,
@@ -25,8 +25,8 @@ import {
   expectNativeEl,
   makeCreateTestComponent,
   queryFor,
-} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule, LayoutGapStyleBuilder} from '@angular/flex-layout/flex';
+} from 'ng-flex-layout/_private-utils/testing';
+import {FlexModule, LayoutGapStyleBuilder} from 'ng-flex-layout/flex';
 
 
 describe('layout-gap directive', () => {

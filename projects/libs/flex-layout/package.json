@@ -1,6 +1,6 @@
 {
-  "name": "@angular/flex-layout",
-  "version": "0.0.0-PLACEHOLDER",
+  "name": "ng-flex-layout",
+  "version": "17.0.0-beta.1",
   "exports": {
     "./mq": {
       "sass": "./core/sass/_layout-bp.scss"
@@ -29,10 +29,10 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/cdk": ">=15.0.0",
-    "@angular/core": "0.0.0-NG",
-    "@angular/common": "0.0.0-NG",
-    "@angular/platform-browser": "0.0.0-NG",
+    "@angular/cdk": ">=17.0.0",
+    "@angular/core": ">=17.0.0",
+    "@angular/common": ">=17.0.0",
+    "@angular/platform-browser": ">=17.0.0",
     "rxjs": "^6.5.3 || ^7.4.0"
   },
   "type": "module"

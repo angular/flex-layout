@@ -15,10 +15,10 @@ import {
   DEFAULT_CONFIG,
   BreakPoint,
   BREAKPOINT,
-} from '@angular/flex-layout/core';
-import {ExtendedModule} from '@angular/flex-layout/extended';
-import {FlexModule} from '@angular/flex-layout/flex';
-import {GridModule} from '@angular/flex-layout/grid';
+} from 'ng-flex-layout/core';
+import {ExtendedModule} from 'ng-flex-layout/extended';
+import {FlexModule} from 'ng-flex-layout/flex';
+import {GridModule} from 'ng-flex-layout/grid';
 
 /**
  * FlexLayoutModule -- the main import for all utilities in the Angular Layout library

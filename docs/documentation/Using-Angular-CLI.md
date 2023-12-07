@@ -27,7 +27,7 @@ The new command creates a project with a build system for your Angular app.
 ## Install Flex-Layout
 
 ```bash
-npm install @angular/flex-layout --save
+npm install ng-flex-layout --save
 ```
 
 >  This installs the most recent npm release of Flex-Layout.
@@ -43,7 +43,7 @@ npm install angular/flex-layout-builds --save
 **src/app/app.module.ts**
 ```typescript
 import {NgModule} from '@angular/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from 'ng-flex-layout';
 // other imports 
 @NgModule({
   imports: [FlexLayoutModule],
@@ -53,7 +53,7 @@ export class PizzaPartyAppModule {}
 ```
 
 ## Configuring SystemJS
-If your project is using SystemJS for module loading, you will need to add `@angular/flex-layout` 
+If your project is using SystemJS for module loading, you will need to add `ng-flex-layout` 
 to the SystemJS configuration:
 
 ```js
@@ -61,7 +61,7 @@ System.config({
   // existing configuration options
   map: {
     ...,
-    '@angular/flex-layout': 'npm:@angular/flex-layout-builds/bundles/flex-layout.umd.js'
+    'ng-flex-layout': 'npm:ng-flex-layout-builds/bundles/flex-layout.umd.js'
   }
 });
 ```

@@ -14,14 +14,14 @@ import {
   ɵMockMatchMedia as MockMatchMedia,
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {DefaultLayoutDirective} from '@angular/flex-layout/flex';
+} from 'ng-flex-layout/core';
+import {DefaultLayoutDirective} from 'ng-flex-layout/flex';
 
 import {DefaultStyleDirective} from './style';
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers} from 'ng-flex-layout/_private-utils/testing';
 import {
   makeCreateTestComponent, expectNativeEl
-} from '@angular/flex-layout/_private-utils/testing';
+} from 'ng-flex-layout/_private-utils/testing';
 
 describe('style directive', () => {
   let fixture: ComponentFixture<any>;

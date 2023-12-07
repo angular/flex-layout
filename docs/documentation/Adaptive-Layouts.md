@@ -37,7 +37,7 @@ Here is the current solution to enable responsive/adaptive features with **`*ngI
 
 ```typescript
 import { Component } from '@angular/core';
-import { ObservableMedia, MediaChange } from '@angular/flex-layout';
+import { ObservableMedia, MediaChange } from 'ng-flex-layout';
 
 @Component({
   selector: 'my-mobile-component',

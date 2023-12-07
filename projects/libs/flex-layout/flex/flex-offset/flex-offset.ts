@@ -16,8 +16,8 @@ import {
   ɵmultiply as multiply,
   LAYOUT_CONFIG,
   LayoutConfigOptions,
-} from '@angular/flex-layout/core';
-import {isFlowHorizontal} from '@angular/flex-layout/_private-utils';
+} from 'ng-flex-layout/core';
+import {isFlowHorizontal} from 'ng-flex-layout/_private-utils';
 import {takeUntil} from 'rxjs/operators';
 
 

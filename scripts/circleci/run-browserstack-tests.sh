@@ -18,7 +18,7 @@ export BROWSER_STACK_ACCESS_KEY=`echo ${BROWSER_STACK_ACCESS_KEY} | rev`
 export TEST_PLATFORM="browserstack"
 
 # Run Karma
-yarn ng test @angular/flex-layout
+yarn ng test ng-flex-layout
 
 echo "Finished ng test"
 exit 0

@@ -11,7 +11,7 @@ import {
   QueryList
 } from '@angular/core';
 import {isPlatformBrowser} from '@angular/common';
-import {FlexDirective} from '@angular/flex-layout';
+import {FlexDirective} from 'ng-flex-layout';
 
 import {SplitHandleDirective} from './split-handle.directive';
 import {SplitAreaDirective} from './split-area.directive';

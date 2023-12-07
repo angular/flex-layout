@@ -15,14 +15,14 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers} from 'ng-flex-layout/_private-utils/testing';
 import {
   expectEl,
   queryFor,
   makeCreateTestComponent,
-} from '@angular/flex-layout/_private-utils/testing';
+} from 'ng-flex-layout/_private-utils/testing';
 
 import {GridModule} from '../module';
 

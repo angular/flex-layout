@@ -14,11 +14,11 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers} from 'ng-flex-layout/_private-utils/testing';
 import {FlexLayoutModule} from '../../module';
-import {expectNativeEl, makeCreateTestComponent} from '@angular/flex-layout/_private-utils/testing';
+import {expectNativeEl, makeCreateTestComponent} from 'ng-flex-layout/_private-utils/testing';
 
 describe('flex-order', () => {
   let fixture: ComponentFixture<any>;

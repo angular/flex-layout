@@ -24,7 +24,7 @@ different layouts, sizing, visibilities for different viewport sizes and display
 
 Start by installing the Angular Layout library from `npm`
 
-`npm i -s @angular/flex-layout @angular/cdk`
+`npm i -s ng-flex-layout @angular/cdk`
 
 Next, you'll need to import the Layout module in your app's module.
 
@@ -32,7 +32,7 @@ Next, you'll need to import the Layout module in your app's module.
 
 ```ts
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from 'ng-flex-layout';
 ...
 
 @NgModule({

@@ -11,7 +11,7 @@ import {Observable, Subject} from 'rxjs';
 import {StyleDefinition, StyleUtils} from '../style-utils/style-utils';
 import {StyleBuilder} from '../style-builder/style-builder';
 import {MediaMarshaller} from '../media-marshaller/media-marshaller';
-import {buildLayoutCSS} from '@angular/flex-layout/_private-utils';
+import {buildLayoutCSS} from 'ng-flex-layout/_private-utils';
 
 @Directive()
 export abstract class BaseDirective2 implements OnChanges, OnDestroy {

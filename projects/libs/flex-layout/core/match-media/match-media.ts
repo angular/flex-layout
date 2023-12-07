@@ -168,7 +168,7 @@ function buildQueryCss(mediaQueries: string[], _document: Document) {
       if (!(styleEl as any).styleSheet) {
         const cssText = `
 /*
-  @angular/flex-layout - workaround for possible browser quirk with mediaQuery listeners
+  ng-flex-layout - workaround for possible browser quirk with mediaQuery listeners
   see http://bit.ly/2sd4HMP
 */
 @media ${query} {.fx-query-test{ }}

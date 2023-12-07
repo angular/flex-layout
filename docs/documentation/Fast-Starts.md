@@ -11,7 +11,7 @@ Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
 ```typescript
 import {NgModule}         from '@angular/core';
 import {BrowserModule}    from '@angular/platform-browser';
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {FlexLayoutModule} from "ng-flex-layout";
 
 import {DemoAppComponent}          from './demo-app/demo-app';
 
@@ -30,23 +30,23 @@ export class DemoAppModule {}
 
 ### SystemJS + UMD
 
-If your project is using SystemJS for module loading, you will need to add `@angular/flex-layout` to the SystemJS 
+If your project is using SystemJS for module loading, you will need to add `ng-flex-layout` to the SystemJS 
 configuration.
 
-Here is a example configuration where `@angular/flex-layout` is used:
+Here is a example configuration where `ng-flex-layout` is used:
 ```js
 System.config({
   // Existing configuration options
   map: {
     // ...
-    '@angular/flex-layout': 'npm:@angular/flex-layout/bundles/flex-layout.umd.js',
+    'ng-flex-layout': 'npm:ng-flex-layout/bundles/flex-layout.umd.js',
     // ...
   }
 });
 ```
 ----
 
-### 1) Angular CLI + **`npm`** + `@angular/flex-layout`
+### 1) Angular CLI + **`npm`** + `ng-flex-layout`
 
 If you are using the Angular CLI to bundle and serve your application (using `ng serve`), run the following command:
 
@@ -59,7 +59,7 @@ Next, modify your `app.module.ts` to use the `FlexLayoutModule`:
 ```typescript
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FlexLayoutModule} from "@angular/flex-layout";
+import {FlexLayoutModule} from "ng-flex-layout";
 
 import {DemoAppComponent} from './demo-app/demo-app';
 
@@ -76,7 +76,7 @@ export class DemoAppModule {}
 
 ### Local Builds
 
-Developers can, however, easily install this `@angular/flex-layout` library using a **local repository build** 
+Developers can, however, easily install this `ng-flex-layout` library using a **local repository build** 
 and a directory copy:
 
 ```console

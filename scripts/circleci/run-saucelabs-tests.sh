@@ -19,7 +19,7 @@ export SAUCE_ACCESS_KEY=`echo ${SAUCE_ACCESS_KEY} | rev`
 export TEST_PLATFORM="saucelabs"
 
 # Run the unit tests on Saucelabs with Karma.
-yarn ng test @angular/flex-layout
+yarn ng test ng-flex-layout
 
 # Kill the Saucelabs tunnel. This is necessary in order to avoid rate-limit
 # errors that cause the unit tests to be flaky.

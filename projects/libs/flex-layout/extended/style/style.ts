@@ -24,7 +24,7 @@ import {
   StyleUtils,
   MediaMarshaller,
   SERVER_TOKEN,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 
 import {
   NgStyleRawList,

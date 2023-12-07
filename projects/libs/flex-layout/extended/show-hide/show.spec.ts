@@ -15,20 +15,20 @@ import {
   MediaObserver,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+} from 'ng-flex-layout/core';
+import {FlexLayoutModule} from 'ng-flex-layout';
 import {
   customMatchers,
   makeCreateTestComponent,
   expectNativeEl,
   expectEl,
   queryFor,
-} from '@angular/flex-layout/_private-utils/testing';
+} from 'ng-flex-layout/_private-utils/testing';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ShowHideDirective} from '@angular/flex-layout/extended';
+import {ShowHideDirective} from 'ng-flex-layout/extended';
 
 
 describe('show directive', () => {

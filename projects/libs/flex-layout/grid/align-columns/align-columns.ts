@@ -12,7 +12,7 @@ import {
   StyleBuilder,
   StyleDefinition,
   MediaMarshaller,
-} from '@angular/flex-layout/core';
+} from 'ng-flex-layout/core';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 const DEFAULT_MAIN = 'start';

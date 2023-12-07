@@ -40,12 +40,12 @@ The new CSS Grid directives can be used in concert with the existing Flexbox dir
 Simply import the top-level `FlexLayoutModule`, or both `FlexModule` and `GridModule` as follows:
 
 ```typescript
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from 'ng-flex-layout';
 ```
 
 ```typescript
-import {FlexModule} from '@angular/flex-layout/flex';
-import {GridModule} from '@angular/flex-layout/grid';
+import {FlexModule} from 'ng-flex-layout/flex';
+import {GridModule} from 'ng-flex-layout/grid';
 ```
 
 This allows you to use, for example, Flexbox inside a CSS Grid as follows:

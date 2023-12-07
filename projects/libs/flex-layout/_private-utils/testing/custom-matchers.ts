@@ -10,8 +10,8 @@ const _global = <any>(typeof window === 'undefined' ? global : window);
 
 import {_dom as _} from './dom-tools';
 
-import {applyCssPrefixes, extendObject, } from '@angular/flex-layout/_private-utils';
-import {StyleUtils} from '@angular/flex-layout/core';
+import {applyCssPrefixes, extendObject, } from 'ng-flex-layout/_private-utils';
+import {StyleUtils} from 'ng-flex-layout/core';
 
 export const expect: (actual: any) => NgMatchers = <any> _global.expect;
 
