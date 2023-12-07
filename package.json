@@ -8,6 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/alessiobianchini/flex-layout"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "license": "MIT",
   "engines": {
     "node": "^18.13.0 || ^20.9.0"
