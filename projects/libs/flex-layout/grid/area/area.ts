@@ -7,45 +7,45 @@
  */
 import {Directive, ElementRef, Injectable} from '@angular/core';
 import {
-  BaseDirective2,
-  StyleUtils,
-  MediaMarshaller,
-  StyleBuilder,
-  StyleDefinition,
+    BaseDirective2,
+    StyleUtils,
+    MediaMarshaller,
+    StyleBuilder,
+    StyleDefinition,
 } from 'ng-flex-layout/core';
 
 const DEFAULT_VALUE = 'auto';
 
 @Injectable({providedIn: 'root'})
 export class GridAreaStyleBuilder extends StyleBuilder {
-  buildStyles(input: string) {
-    return {'grid-area': input || DEFAULT_VALUE};
-  }
+    buildStyles(input: string) {
+        return {'grid-area': input || DEFAULT_VALUE};
+    }
 }
 
 @Directive()
 export class GridAreaDirective extends BaseDirective2 {
 
-  protected override DIRECTIVE_KEY = 'grid-area';
+    protected override DIRECTIVE_KEY = 'grid-area';
 
-  constructor(elRef: ElementRef,
-              styleUtils: StyleUtils,
-              styleBuilder: GridAreaStyleBuilder,
-              marshal: MediaMarshaller) {
-    super(elRef, styleBuilder, styleUtils, marshal);
-    this.init();
-  }
+    constructor(elRef: ElementRef,
+        styleUtils: StyleUtils,
+        styleBuilder: GridAreaStyleBuilder,
+        marshal: MediaMarshaller) {
+        super(elRef, styleBuilder, styleUtils, marshal);
+        this.init();
+    }
 
-  protected override styleCache = gridAreaCache;
+    protected override styleCache = gridAreaCache;
 }
 
 const gridAreaCache: Map<string, StyleDefinition> = new Map();
 
 const inputs = [
-  'gdArea',
-  'gdArea.xs', 'gdArea.sm', 'gdArea.md', 'gdArea.lg', 'gdArea.xl',
-  'gdArea.lt-sm', 'gdArea.lt-md', 'gdArea.lt-lg', 'gdArea.lt-xl',
-  'gdArea.gt-xs', 'gdArea.gt-sm', 'gdArea.gt-md', 'gdArea.gt-lg'
+    'gdArea',
+    'gdArea.xs', 'gdArea.sm', 'gdArea.md', 'gdArea.lg', 'gdArea.xl',
+    'gdArea.lt-sm', 'gdArea.lt-md', 'gdArea.lt-lg', 'gdArea.lt-xl',
+    'gdArea.gt-xs', 'gdArea.gt-sm', 'gdArea.gt-md', 'gdArea.gt-lg'
 ];
 const selector = `
   [gdArea],
@@ -61,5 +61,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultGridAreaDirective extends GridAreaDirective {
-  protected override inputs = inputs;
+    protected override inputs = inputs;
 }

@@ -20,15 +20,15 @@ import {LAYOUT_CONFIG} from '../tokens/library-config';
  */
 export const BREAKPOINTS =
   new InjectionToken<BreakPoint[]>('Token (ng-flex-layout) Breakpoints', {
-    providedIn: 'root',
-    factory: () => {
-      const breakpoints: any = inject(BREAKPOINT);
-      const layoutConfig = inject(LAYOUT_CONFIG);
-      const bpFlattenArray: BreakPoint[] = [].concat.apply([], (breakpoints || [])
-        .map((v: BreakPoint | BreakPoint[]) => Array.isArray(v) ? v : [v]));
-      const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
-        .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
+      providedIn: 'root',
+      factory: () => {
+          const breakpoints: any = inject(BREAKPOINT);
+          const layoutConfig = inject(LAYOUT_CONFIG);
+          const bpFlattenArray: BreakPoint[] = [].concat.apply([], (breakpoints || [])
+              .map((v: BreakPoint | BreakPoint[]) => Array.isArray(v) ? v : [v]));
+          const builtIns = (layoutConfig.disableDefaultBps ? [] : DEFAULT_BREAKPOINTS)
+              .concat(layoutConfig.addOrientationBps ? ORIENTATION_BREAKPOINTS : []);
 
-      return mergeByAlias(builtIns, bpFlattenArray);
-    }
+          return mergeByAlias(builtIns, bpFlattenArray);
+      }
   });

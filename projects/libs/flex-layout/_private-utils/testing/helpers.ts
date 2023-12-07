@@ -17,44 +17,44 @@ export type ComponentClazzFn = () => Type<any>;
  * `createTestComponent()` to be reusable for *any* captured Component class.
  */
 export function makeCreateTestComponent(getClass: ComponentClazzFn) {
-  let componentAny: Type<any>;
+    let componentAny: Type<any>;
 
-  // Return actual `createTestComponent()` function
-  return function createTestComponent(template: string, styles?: any): ComponentFixture<Type<any>> {
-    if (!componentAny) {
-      // Defer access to Component class to enable metadata to be configured properly...
-      componentAny = getClass();
-    }
-    return TestBed
-        .overrideComponent(componentAny, {
-          set: {
-            template: template,
-            styles: styles || [],
-          }
-        })
-        .createComponent(componentAny);
-  };
+    // Return actual `createTestComponent()` function
+    return function createTestComponent(template: string, styles?: any): ComponentFixture<Type<any>> {
+        if (!componentAny) {
+            // Defer access to Component class to enable metadata to be configured properly...
+            componentAny = getClass();
+        }
+        return TestBed
+            .overrideComponent(componentAny, {
+                set: {
+                    template: template,
+                    styles: styles || [],
+                }
+            })
+            .createComponent(componentAny);
+    };
 }
 
 /**
  *
  */
-export function expectNativeEl(fixture: ComponentFixture<any>, instanceOptions ?: any): any {
-  extendObject(fixture.componentInstance, instanceOptions || {});
-  fixture.detectChanges();
-  return expect(fixture.debugElement.children[0].nativeElement);
+export function expectNativeEl(fixture: ComponentFixture<any>, instanceOptions?: any): any {
+    extendObject(fixture.componentInstance, instanceOptions || {});
+    fixture.detectChanges();
+    return expect(fixture.debugElement.children[0].nativeElement);
 }
 
 /**
  *
  */
 export function expectEl(debugEl: DebugElement): any {
-  return expect(debugEl.nativeElement);
+    return expect(debugEl.nativeElement);
 }
 
 
 export function queryFor(fixture: ComponentFixture<any>, selector: string): DebugElement[] {
-  return fixture.debugElement.queryAll(By.css(selector));
+    return fixture.debugElement.queryAll(By.css(selector));
 }
 
 

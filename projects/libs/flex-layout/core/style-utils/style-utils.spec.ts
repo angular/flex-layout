@@ -14,68 +14,68 @@ import {makeCreateTestComponent, expectNativeEl} from 'ng-flex-layout/_private-u
 import {StyleUtils} from './style-utils';
 
 describe('styler', () => {
-  let styler: StyleUtils;
-  let fixture: ComponentFixture<any>;
-  let platformId: Object;
+    let styler: StyleUtils;
+    let fixture: ComponentFixture<any>;
+    let platformId: Object;
 
-  let componentWithTemplate = (template: string, styles?: any) => {
-    fixture = makeCreateTestComponent(() => TestLayoutComponent)(template, styles);
+    let componentWithTemplate = (template: string, styles?: any) => {
+        fixture = makeCreateTestComponent(() => TestLayoutComponent)(template, styles);
 
-    inject([StyleUtils, PLATFORM_ID], (_styler: StyleUtils, _platformId: Object) => {
-      styler = _styler;
-      platformId = _platformId;
-    })();
-  };
+        inject([StyleUtils, PLATFORM_ID], (_styler: StyleUtils, _platformId: Object) => {
+            styler = _styler;
+            platformId = _platformId;
+        })();
+    };
 
-  beforeEach(() => {
-    jasmine.addMatchers(customMatchers);
+    beforeEach(() => {
+        jasmine.addMatchers(customMatchers);
 
-    // Configure testbed to prepare services
-    TestBed.configureTestingModule({
-      imports: [CommonModule],
-      declarations: [TestLayoutComponent],
+        // Configure testbed to prepare services
+        TestBed.configureTestingModule({
+            imports: [CommonModule],
+            declarations: [TestLayoutComponent],
+        });
     });
-  });
 
-  describe('testing display styles', () => {
+    describe('testing display styles', () => {
 
-    it('should not have a default for <div></div>', () => {
-      componentWithTemplate(`
+        it('should not have a default for <div></div>', () => {
+            componentWithTemplate(`
         <div></div>
       `);
-      expectNativeEl(fixture).not.toHaveStyle({'display': 'block'}, styler);
-    });
+            expectNativeEl(fixture).not.toHaveStyle({'display': 'block'}, styler);
+        });
 
-    it('should find to "display" for inline style <div></div>', () => {
-      componentWithTemplate(`
+        it('should find to "display" for inline style <div></div>', () => {
+            componentWithTemplate(`
         <div style="display: flex;"></div>
       `);
-      expectNativeEl(fixture).toHaveCSS({'display': 'flex'}, styler);
-    });
+            expectNativeEl(fixture).toHaveCSS({'display': 'flex'}, styler);
+        });
 
-    it('should find `display` from html style element', () => {
-      componentWithTemplate(`
+        it('should find `display` from html style element', () => {
+            componentWithTemplate(`
         <style>
           div.special { display: inline-block; }
         </style>
         <div class="special"></div>
       `);
 
-      // TODO(CaerusKaru): Domino is unable to detect this style
-      if (!isPlatformServer(platformId)) {
-        expectNativeEl(fixture).toHaveCSS({'display': 'inline-block'}, styler);
-      }
-    });
+            // TODO(CaerusKaru): Domino is unable to detect this style
+            if (!isPlatformServer(platformId)) {
+                expectNativeEl(fixture).toHaveCSS({'display': 'inline-block'}, styler);
+            }
+        });
 
-    it('should find `display` from component styles', () => {
-      componentWithTemplate(`<div class="extra"></div>`, ['div.extra { display:table; }']);
+        it('should find `display` from component styles', () => {
+            componentWithTemplate('<div class="extra"></div>', ['div.extra { display:table; }']);
 
-      // TODO(CaerusKaru): Domino is unable to detect this style
-      if (!isPlatformServer(platformId)) {
-        expectNativeEl(fixture).toHaveCSS({'display': 'table'}, styler);
-      }
+            // TODO(CaerusKaru): Domino is unable to detect this style
+            if (!isPlatformServer(platformId)) {
+                expectNativeEl(fixture).toHaveCSS({'display': 'table'}, styler);
+            }
+        });
     });
-  });
 });
 
 
@@ -84,8 +84,8 @@ describe('styler', () => {
 // *****************************************************************
 
 @Component({
-  selector: 'test-style-utils',
-  template: `<span>PlaceHolder Template HTML</span>`
+    selector: 'test-style-utils',
+    template: '<span>PlaceHolder Template HTML</span>'
 })
 class TestLayoutComponent {
 }

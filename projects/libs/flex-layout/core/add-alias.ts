@@ -13,12 +13,12 @@ import {OptionalBreakPoint} from './breakpoints';
  * and suffix (if available).
  */
 export function mergeAlias(dest: MediaChange, source: OptionalBreakPoint): MediaChange {
-  dest = dest?.clone() ?? new MediaChange();
-  if (source) {
-    dest.mqAlias = source.alias;
-    dest.mediaQuery = source.mediaQuery;
-    dest.suffix = source.suffix as string;
-    dest.priority = source.priority as number;
-  }
-  return dest;
+    dest = dest?.clone() ?? new MediaChange();
+    if (source) {
+        dest.mqAlias = source.alias;
+        dest.mediaQuery = source.mediaQuery;
+        dest.suffix = source.suffix as string;
+        dest.priority = source.priority as number;
+    }
+    return dest;
 }

@@ -21,48 +21,48 @@ import {MediaChange} from '../media-change';
  */
 @Injectable({providedIn: 'root'})
 export class MatchMedia implements OnDestroy {
-  /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
-  readonly source = new BehaviorSubject<MediaChange>(new MediaChange(true));
-  registry = new Map<string, MediaQueryList>();
-  private readonly pendingRemoveListenerFns: Array<() => void> = [];
+    /** Initialize source with 'all' so all non-responsive APIs trigger style updates */
+    readonly source = new BehaviorSubject<MediaChange>(new MediaChange(true));
+    registry = new Map<string, MediaQueryList>();
+    private readonly pendingRemoveListenerFns: Array<() => void> = [];
 
-  constructor(protected _zone: NgZone,
-              @Inject(PLATFORM_ID) protected _platformId: Object,
-              @Inject(DOCUMENT) protected _document: any) {
-  }
+    constructor(protected _zone: NgZone,
+        @Inject(PLATFORM_ID) protected _platformId: Object,
+        @Inject(DOCUMENT) protected _document: any) {
+    }
 
-  /**
+    /**
    * Publish list of all current activations
    */
-  get activations(): string[] {
-    const results: string[] = [];
-    this.registry.forEach((mql: MediaQueryList, key: string) => {
-      if (mql.matches) {
-        results.push(key);
-      }
-    });
-    return results;
-  }
+    get activations(): string[] {
+        const results: string[] = [];
+        this.registry.forEach((mql: MediaQueryList, key: string) => {
+            if (mql.matches) {
+                results.push(key);
+            }
+        });
+        return results;
+    }
 
-  /**
+    /**
    * For the specified mediaQuery?
    */
-  isActive(mediaQuery: string): boolean {
-    const mql = this.registry.get(mediaQuery);
-    return mql?.matches ?? this.registerQuery(mediaQuery).some(m => m.matches);
-  }
+    isActive(mediaQuery: string): boolean {
+        const mql = this.registry.get(mediaQuery);
+        return mql?.matches ?? this.registerQuery(mediaQuery).some(m => m.matches);
+    }
 
-  /**
+    /**
    * External observers can watch for all (or a specific) mql changes.
    *
    * If a mediaQuery is not specified, then ALL mediaQuery activations will
    * be announced.
    */
-  observe(): Observable<MediaChange>;
-  observe(mediaQueries: string[]): Observable<MediaChange>;
-  observe(mediaQueries: string[], filterOthers: boolean): Observable<MediaChange>;
+    observe(): Observable<MediaChange>;
+    observe(mediaQueries: string[]): Observable<MediaChange>;
+    observe(mediaQueries: string[], filterOthers: boolean): Observable<MediaChange>;
 
-  /**
+    /**
    * External observers can watch for all (or a specific) mql changes.
    * Typically used by the MediaQueryAdaptor; optionally available to components
    * who wish to use the MediaMonitor as mediaMonitor$ observable service.
@@ -71,76 +71,76 @@ export class MatchMedia implements OnDestroy {
    * This logic also enforces logic to register all mediaQueries BEFORE notify
    * subscribers of notifications.
    */
-  observe(mqList?: string[], filterOthers = false): Observable<MediaChange> {
-    if (mqList && mqList.length) {
-      const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
-          filter((change: MediaChange) =>
-            !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))
-      );
-      const registration$: Observable<MediaChange> = new Observable((observer: Observer<MediaChange>) => {  // tslint:disable-line:max-line-length
-        const matches: Array<MediaChange> = this.registerQuery(mqList);
-        if (matches.length) {
-          const lastChange = matches.pop()!;
-          matches.forEach((e: MediaChange) => {
-            observer.next(e);
-          });
-          this.source.next(lastChange); // last match is cached
+    observe(mqList?: string[], filterOthers = false): Observable<MediaChange> {
+        if (mqList && mqList.length) {
+            const matchMedia$: Observable<MediaChange> = this._observable$.pipe(
+                filter((change: MediaChange) =>
+                    !filterOthers ? true : (mqList.indexOf(change.mediaQuery) > -1))
+            );
+            const registration$: Observable<MediaChange> = new Observable((observer: Observer<MediaChange>) => {  
+                const matches: Array<MediaChange> = this.registerQuery(mqList);
+                if (matches.length) {
+                    const lastChange = matches.pop()!;
+                    matches.forEach((e: MediaChange) => {
+                        observer.next(e);
+                    });
+                    this.source.next(lastChange); // last match is cached
+                }
+                observer.complete();
+            });
+            return merge(registration$, matchMedia$);
         }
-        observer.complete();
-      });
-      return merge(registration$, matchMedia$);
+
+        return this._observable$;
     }
 
-    return this._observable$;
-  }
-
-  /**
+    /**
    * Based on the BreakPointRegistry provider, register internal listeners for each unique
    * mediaQuery. Each listener emits specific MediaChange data to observers
    */
-  registerQuery(mediaQuery: string | string[]) {
-    const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
-    const matches: MediaChange[] = [];
+    registerQuery(mediaQuery: string | string[]) {
+        const list = Array.isArray(mediaQuery) ? mediaQuery : [mediaQuery];
+        const matches: MediaChange[] = [];
 
-    buildQueryCss(list, this._document);
+        buildQueryCss(list, this._document);
 
-    list.forEach((query: string) => {
-      const onMQLEvent = (e: MediaQueryListEvent) => {
-        this._zone.run(() => this.source.next(new MediaChange(e.matches, query)));
-      };
+        list.forEach((query: string) => {
+            const onMQLEvent = (e: MediaQueryListEvent) => {
+                this._zone.run(() => this.source.next(new MediaChange(e.matches, query)));
+            };
 
-      let mql = this.registry.get(query);
-      if (!mql) {
-        mql = this.buildMQL(query);
-        mql.addListener(onMQLEvent);
-        this.pendingRemoveListenerFns.push(() => mql!.removeListener(onMQLEvent));
-        this.registry.set(query, mql);
-      }
+            let mql = this.registry.get(query);
+            if (!mql) {
+                mql = this.buildMQL(query);
+                mql.addListener(onMQLEvent);
+                this.pendingRemoveListenerFns.push(() => mql!.removeListener(onMQLEvent));
+                this.registry.set(query, mql);
+            }
 
-      if (mql.matches) {
-        matches.push(new MediaChange(true, query));
-      }
-    });
+            if (mql.matches) {
+                matches.push(new MediaChange(true, query));
+            }
+        });
 
-    return matches;
-  }
-
-  ngOnDestroy(): void {
-    let fn;
-    while (fn = this.pendingRemoveListenerFns.pop()) {
-      fn();
+        return matches;
     }
-  }
 
-  /**
+    ngOnDestroy(): void {
+        let fn;
+        while (fn = this.pendingRemoveListenerFns.pop()) {
+            fn();
+        }
+    }
+
+    /**
    * Call window.matchMedia() to build a MediaQueryList; which
    * supports 0..n listeners for activation/deactivation
    */
-  protected buildMQL(query: string): MediaQueryList {
-    return constructMql(query, isPlatformBrowser(this._platformId));
-  }
+    protected buildMQL(query: string): MediaQueryList {
+        return constructMql(query, isPlatformBrowser(this._platformId));
+    }
 
-  protected _observable$ = this.source.asObservable();
+    protected _observable$ = this.source.asObservable();
 }
 
 /**
@@ -157,51 +157,51 @@ const ALL_STYLES: { [key: string]: any } = {};
  * @param _document
  */
 function buildQueryCss(mediaQueries: string[], _document: Document) {
-  const list = mediaQueries.filter(it => !ALL_STYLES[it]);
-  if (list.length > 0) {
-    const query = list.join(', ');
+    const list = mediaQueries.filter(it => !ALL_STYLES[it]);
+    if (list.length > 0) {
+        const query = list.join(', ');
 
-    try {
-      const styleEl = _document.createElement('style');
+        try {
+            const styleEl = _document.createElement('style');
 
-      styleEl.setAttribute('type', 'text/css');
-      if (!(styleEl as any).styleSheet) {
-        const cssText = `
+            styleEl.setAttribute('type', 'text/css');
+            if (!(styleEl as any).styleSheet) {
+                const cssText = `
 /*
   ng-flex-layout - workaround for possible browser quirk with mediaQuery listeners
   see http://bit.ly/2sd4HMP
 */
 @media ${query} {.fx-query-test{ }}
 `;
-        styleEl.appendChild(_document.createTextNode(cssText));
-      }
+                styleEl.appendChild(_document.createTextNode(cssText));
+            }
 
-      _document.head!.appendChild(styleEl);
+            _document.head!.appendChild(styleEl);
 
-      // Store in private global registry
-      list.forEach(mq => ALL_STYLES[mq] = styleEl);
+            // Store in private global registry
+            list.forEach(mq => ALL_STYLES[mq] = styleEl);
 
-    } catch (e) {
-      console.error(e);
+        } catch (e) {
+            console.error(e);
+        }
     }
-  }
 }
 
 function buildMockMql(query: string) {
-  const et: any = new EventTarget();
-  et.matches = query === 'all' || query === '';
-  et.media = query;
-  et.addListener = () => {};
-  et.removeListener = () => {};
-  et.addEventListener = () => {};
-  et.dispatchEvent = () => false;
-  et.onchange = null;
+    const et: any = new EventTarget();
+    et.matches = query === 'all' || query === '';
+    et.media = query;
+    et.addListener = () => {};
+    et.removeListener = () => {};
+    et.addEventListener = () => {};
+    et.dispatchEvent = () => false;
+    et.onchange = null;
 
-  return et as MediaQueryList;
+    return et as MediaQueryList;
 }
 
 function constructMql(query: string, isBrowser: boolean): MediaQueryList {
-  const canListen = isBrowser && !!(<Window>window).matchMedia('all').addListener;
+    const canListen = isBrowser && !!(<Window>window).matchMedia('all').addListener;
 
-  return canListen ? (<Window>window).matchMedia(query) : buildMockMql(query);
+    return canListen ? (<Window>window).matchMedia(query) : buildMockMql(query);
 }

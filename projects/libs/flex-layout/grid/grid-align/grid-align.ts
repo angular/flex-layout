@@ -5,48 +5,48 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://angular.io/license
  */
-import {Directive, ElementRef, Injectable} from '@angular/core';
+import { Directive, ElementRef, Injectable } from '@angular/core';
 import {
-  MediaMarshaller,
-  BaseDirective2,
-  StyleBuilder,
-  StyleDefinition,
-  StyleUtils,
+    MediaMarshaller,
+    BaseDirective2,
+    StyleBuilder,
+    StyleDefinition,
+    StyleUtils,
 } from 'ng-flex-layout/core';
 
 const ROW_DEFAULT = 'stretch';
 const COL_DEFAULT = 'stretch';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class GridAlignStyleBuilder extends StyleBuilder {
-  buildStyles(input: string) {
-    return buildCss(input || ROW_DEFAULT);
-  }
+    buildStyles(input: string) {
+        return buildCss(input || ROW_DEFAULT);
+    }
 }
 
 @Directive()
 export class GridAlignDirective extends BaseDirective2 {
 
-  protected override DIRECTIVE_KEY = 'grid-align';
+    protected override DIRECTIVE_KEY = 'grid-align';
 
-  constructor(elementRef: ElementRef,
-              styleBuilder: GridAlignStyleBuilder,
-              styler: StyleUtils,
-              marshal: MediaMarshaller) {
-    super(elementRef, styleBuilder, styler, marshal);
-    this.init();
-  }
+    constructor(elementRef: ElementRef,
+        styleBuilder: GridAlignStyleBuilder,
+        styler: StyleUtils,
+        marshal: MediaMarshaller) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.init();
+    }
 
-  protected override styleCache = alignCache;
+    protected override styleCache = alignCache;
 }
 
 const alignCache: Map<string, StyleDefinition> = new Map();
 
 const inputs = [
-  'gdGridAlign',
-  'gdGridAlign.xs', 'gdGridAlign.sm', 'gdGridAlign.md', 'gdGridAlign.lg', 'gdGridAlign.xl',
-  'gdGridAlign.lt-sm', 'gdGridAlign.lt-md', 'gdGridAlign.lt-lg', 'gdGridAlign.lt-xl',
-  'gdGridAlign.gt-xs', 'gdGridAlign.gt-sm', 'gdGridAlign.gt-md', 'gdGridAlign.gt-lg'
+    'gdGridAlign',
+    'gdGridAlign.xs', 'gdGridAlign.sm', 'gdGridAlign.md', 'gdGridAlign.lg', 'gdGridAlign.xl',
+    'gdGridAlign.lt-sm', 'gdGridAlign.lt-md', 'gdGridAlign.lt-lg', 'gdGridAlign.lt-xl',
+    'gdGridAlign.gt-xs', 'gdGridAlign.gt-sm', 'gdGridAlign.gt-md', 'gdGridAlign.gt-lg'
 ];
 
 const selector = `
@@ -64,51 +64,51 @@ const selector = `
  *  @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-justify-self
  *  @see https://css-tricks.com/snippets/css/complete-guide-grid/#prop-align-self
  */
-@Directive({selector, inputs})
+@Directive({ selector, inputs })
 export class DefaultGridAlignDirective extends GridAlignDirective {
-  protected override inputs = inputs;
+    protected override inputs = inputs;
 }
 
 function buildCss(align: string = '') {
-  const css: {[key: string]: string} = {}, [rowAxis, columnAxis] = align.split(' ');
+    const css: { [key: string]: string } = {}, [rowAxis, columnAxis] = align.split(' ');
 
-  // Row axis
-  switch (rowAxis) {
-    case 'end':
-      css['justify-self'] = 'end';
-      break;
-    case 'center':
-      css['justify-self'] = 'center';
-      break;
-    case 'stretch':
-      css['justify-self'] = 'stretch';
-      break;
-    case 'start':
-      css['justify-self'] = 'start';
-      break;
-    default:
-      css['justify-self'] = ROW_DEFAULT;  // default row axis
-      break;
-  }
+    // Row axis
+    switch (rowAxis) {
+        case 'end':
+            css['justify-self'] = 'end';
+            break;
+        case 'center':
+            css['justify-self'] = 'center';
+            break;
+        case 'stretch':
+            css['justify-self'] = 'stretch';
+            break;
+        case 'start':
+            css['justify-self'] = 'start';
+            break;
+        default:
+            css['justify-self'] = ROW_DEFAULT;  // default row axis
+            break;
+    }
 
-  // Column axis
-  switch (columnAxis) {
-    case 'end':
-      css['align-self'] = 'end';
-      break;
-    case 'center':
-      css['align-self'] = 'center';
-      break;
-    case 'stretch':
-      css['align-self'] = 'stretch';
-      break;
-    case 'start':
-      css['align-self'] = 'start';
-      break;
-    default:
-      css['align-self'] = COL_DEFAULT;  // default column axis
-      break;
-  }
+    // Column axis
+    switch (columnAxis) {
+        case 'end':
+            css['align-self'] = 'end';
+            break;
+        case 'center':
+            css['align-self'] = 'center';
+            break;
+        case 'stretch':
+            css['align-self'] = 'stretch';
+            break;
+        case 'start':
+            css['align-self'] = 'start';
+            break;
+        default:
+            css['align-self'] = COL_DEFAULT;  // default column axis
+            break;
+    }
 
-  return css;
+    return css;
 }

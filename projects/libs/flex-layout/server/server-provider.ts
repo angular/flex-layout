@@ -8,14 +8,14 @@
 import {DOCUMENT} from '@angular/common';
 import {BEFORE_APP_SERIALIZED} from '@angular/platform-server';
 import {
-  BREAKPOINTS,
-  CLASS_NAME,
-  SERVER_TOKEN,
-  BreakPoint,
-  ɵMatchMedia as MatchMedia,
-  StylesheetMap,
-  sortAscendingPriority,
-  MediaMarshaller,
+    BREAKPOINTS,
+    CLASS_NAME,
+    SERVER_TOKEN,
+    BreakPoint,
+    ɵMatchMedia as MatchMedia,
+    StylesheetMap,
+    sortAscendingPriority,
+    MediaMarshaller,
 } from 'ng-flex-layout/core';
 
 import {ServerMatchMedia} from './server-match-media';
@@ -30,34 +30,34 @@ import {ServerMatchMedia} from './server-match-media';
  * @param mediaMarshaller the MediaMarshaller service to disable fallback styles dynamically
  */
 export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
-                                               mediaController: ServerMatchMedia,
-                                               breakpoints: BreakPoint[],
-                                               mediaMarshaller: MediaMarshaller) {
-  // Store the custom classes in the following map, that way only
-  // one class gets allocated per HTMLElement, and each class can
-  // be referenced in the static media queries
-  const classMap = new Map<HTMLElement, string>();
+    mediaController: ServerMatchMedia,
+    breakpoints: BreakPoint[],
+    mediaMarshaller: MediaMarshaller) {
+    // Store the custom classes in the following map, that way only
+    // one class gets allocated per HTMLElement, and each class can
+    // be referenced in the static media queries
+    const classMap = new Map<HTMLElement, string>();
 
-  // Get the initial stylings for all the directives,
-  // and initialize the fallback block of stylings.
-  const defaultStyles = new Map(serverSheet.stylesheet);
-  // Reset the class counter, otherwise class numbers will
-  // increase with each server render.
-  nextId = 0;
-  let styleText = generateCss(defaultStyles, 'all', classMap);
-  mediaMarshaller.useFallbacks = false;
+    // Get the initial stylings for all the directives,
+    // and initialize the fallback block of stylings.
+    const defaultStyles = new Map(serverSheet.stylesheet);
+    // Reset the class counter, otherwise class numbers will
+    // increase with each server render.
+    nextId = 0;
+    let styleText = generateCss(defaultStyles, 'all', classMap);
+    mediaMarshaller.useFallbacks = false;
 
-  [...breakpoints].sort(sortAscendingPriority).forEach((bp) => {
-    serverSheet.clearStyles();
-    mediaController.activateBreakpoint(bp);
-    const stylesheet = new Map(serverSheet.stylesheet);
-    if (stylesheet.size > 0) {
-      styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
-    }
-    mediaController.deactivateBreakpoint(bp);
-  });
+    [...breakpoints].sort(sortAscendingPriority).forEach((bp) => {
+        serverSheet.clearStyles();
+        mediaController.activateBreakpoint(bp);
+        const stylesheet = new Map(serverSheet.stylesheet);
+        if (stylesheet.size > 0) {
+            styleText += generateCss(stylesheet, bp.mediaQuery, classMap);
+        }
+        mediaController.deactivateBreakpoint(bp);
+    });
 
-  return styleText;
+    return styleText;
 }
 
 /**
@@ -65,46 +65,46 @@ export function generateStaticFlexLayoutStyles(serverSheet: StylesheetMap,
  * components and attach it to the head of the DOM
  */
 export function FLEX_SSR_SERIALIZER_FACTORY(serverSheet: StylesheetMap,
-                                            mediaController: ServerMatchMedia,
-                                            _document: Document,
-                                            breakpoints: BreakPoint[],
-                                            mediaMarshaller: MediaMarshaller) {
-  return () => {
+    mediaController: ServerMatchMedia,
+    _document: Document,
+    breakpoints: BreakPoint[],
+    mediaMarshaller: MediaMarshaller) {
+    return () => {
     // This is the style tag that gets inserted into the head of the DOM,
     // populated with the manual media queries
-    const styleTag = _document.createElement('style');
-    const styleText = generateStaticFlexLayoutStyles(
-      serverSheet, mediaController, breakpoints, mediaMarshaller);
-    styleTag.classList.add(`${CLASS_NAME}ssr`);
-    styleTag.textContent = styleText;
-    _document.head!.appendChild(styleTag);
-  };
+        const styleTag = _document.createElement('style');
+        const styleText = generateStaticFlexLayoutStyles(
+            serverSheet, mediaController, breakpoints, mediaMarshaller);
+        styleTag.classList.add(`${CLASS_NAME}ssr`);
+        styleTag.textContent = styleText;
+        _document.head!.appendChild(styleTag);
+    };
 }
 
 /**
  *  Provider to set static styles on the server
  */
 export const SERVER_PROVIDERS = [
-  {
-    provide: BEFORE_APP_SERIALIZED,
-    useFactory: FLEX_SSR_SERIALIZER_FACTORY,
-    deps: [
-      StylesheetMap,
-      MatchMedia,
-      DOCUMENT,
-      BREAKPOINTS,
-      MediaMarshaller,
-    ],
-    multi: true,
-  },
-  {
-    provide: SERVER_TOKEN,
-    useValue: true
-  },
-  {
-    provide: MatchMedia,
-    useClass: ServerMatchMedia
-  }
+    {
+        provide: BEFORE_APP_SERIALIZED,
+        useFactory: FLEX_SSR_SERIALIZER_FACTORY,
+        deps: [
+            StylesheetMap,
+            MatchMedia,
+            DOCUMENT,
+            BREAKPOINTS,
+            MediaMarshaller,
+        ],
+        multi: true,
+    },
+    {
+        provide: SERVER_TOKEN,
+        useValue: true
+    },
+    {
+        provide: MatchMedia,
+        useClass: ServerMatchMedia
+    }
 ];
 
 
@@ -124,23 +124,23 @@ export type ClassMap = Map<HTMLElement, string>;
  * @param classMap the map of HTML elements to class names to avoid duplications
  */
 function generateCss(stylesheet: StyleSheet, mediaQuery: string, classMap: ClassMap) {
-  let css = '';
-  stylesheet.forEach((styles, el) => {
-    let keyVals = '';
-    let className = getClassName(el, classMap);
+    let css = '';
+    stylesheet.forEach((styles, el) => {
+        let keyVals = '';
+        let className = getClassName(el, classMap);
 
-    styles.forEach((v, k) => {
-      keyVals += v ? format(`${k}:${v};`) : '';
+        styles.forEach((v, k) => {
+            keyVals += v ? format(`${k}:${v};`) : '';
+        });
+
+        if (keyVals) {
+            // Build list of CSS styles; each with a className
+            css += format(`.${className} {`, keyVals, '}');
+        }
     });
 
-    if (keyVals) {
-      // Build list of CSS styles; each with a className
-      css += format(`.${className} {`, keyVals, '}');
-    }
-  });
-
-  // Group 1 or more styles (each with className) in a specific mediaQuery
-  return format(`@media ${mediaQuery} {`, css, '}');
+    // Group 1 or more styles (each with className) in a specific mediaQuery
+    return format(`@media ${mediaQuery} {`, css, '}');
 }
 
 /**
@@ -148,15 +148,15 @@ function generateCss(stylesheet: StyleSheet, mediaQuery: string, classMap: Class
   * debugging purposes.
  */
 function format(...list: string[]): string {
-  let result = '';
-  list.forEach((css, i) => {
-    result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
-  });
-  return result;
+    let result = '';
+    list.forEach((css, i) => {
+        result += IS_DEBUG_MODE ? formatSegment(css, i !== 0) : css;
+    });
+    return result;
 }
 
 function formatSegment(css: string, asPrefix: boolean = true): string {
-  return asPrefix ? `\n${css}` : `${css}\n`;
+    return asPrefix ? `\n${css}` : `${css}\n`;
 }
 
 /**
@@ -165,12 +165,12 @@ function formatSegment(css: string, asPrefix: boolean = true): string {
  * association.
  */
 function getClassName(element: HTMLElement, classMap: Map<HTMLElement, string>) {
-  let className = classMap.get(element);
-  if (!className) {
-    className = `${CLASS_NAME}${nextId++}`;
-    classMap.set(element, className);
-  }
-  element.classList.add(className);
+    let className = classMap.get(element);
+    if (!className) {
+        className = `${CLASS_NAME}${nextId++}`;
+        classMap.set(element, className);
+    }
+    element.classList.add(className);
 
-  return className;
+    return className;
 }

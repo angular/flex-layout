@@ -8,51 +8,51 @@
 import {Directive, ElementRef, OnChanges, Injectable, Inject} from '@angular/core';
 import {Directionality} from '@angular/cdk/bidi';
 import {
-  MediaMarshaller,
-  BaseDirective2,
-  StyleBuilder,
-  StyleDefinition,
-  StyleUtils,
-  ɵmultiply as multiply,
-  LAYOUT_CONFIG,
-  LayoutConfigOptions,
+    MediaMarshaller,
+    BaseDirective2,
+    StyleBuilder,
+    StyleDefinition,
+    StyleUtils,
+    ɵmultiply as multiply,
+    LAYOUT_CONFIG,
+    LayoutConfigOptions,
 } from 'ng-flex-layout/core';
 import {isFlowHorizontal} from 'ng-flex-layout/_private-utils';
 import {takeUntil} from 'rxjs/operators';
 
 
 export interface FlexOffsetParent {
-  layout: string;
-  isRtl: boolean;
+    layout: string
+    isRtl: boolean
 }
 
 @Injectable({providedIn: 'root'})
 export class FlexOffsetStyleBuilder extends StyleBuilder {
-  constructor(@Inject(LAYOUT_CONFIG) private _config: LayoutConfigOptions) {
-    super();
-  }
-
-  buildStyles(offset: string, parent: FlexOffsetParent) {
-    offset ||= '0';
-    offset = multiply(offset, this._config.multiplier);
-    const isPercent = String(offset).indexOf('%') > -1;
-    const isPx = String(offset).indexOf('px') > -1;
-    if (!isPx && !isPercent && !isNaN(+offset)) {
-      offset = `${offset}%`;
+    constructor(@Inject(LAYOUT_CONFIG) private _config: LayoutConfigOptions) {
+        super();
     }
-    const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
-    const styles: StyleDefinition = isFlowHorizontal(parent.layout) ?
-      {[horizontalLayoutKey]: offset} : {'margin-top': offset};
 
-    return styles;
-  }
+    buildStyles(offset: string, parent: FlexOffsetParent) {
+        offset ||= '0';
+        offset = multiply(offset, this._config.multiplier);
+        const isPercent = String(offset).indexOf('%') > -1;
+        const isPx = String(offset).indexOf('px') > -1;
+        if (!isPx && !isPercent && !isNaN(+offset)) {
+            offset = `${offset}%`;
+        }
+        const horizontalLayoutKey = parent.isRtl ? 'margin-right' : 'margin-left';
+        const styles: StyleDefinition = isFlowHorizontal(parent.layout) ?
+            {[horizontalLayoutKey]: offset} : {'margin-top': offset};
+
+        return styles;
+    }
 }
 
 const inputs = [
-  'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
-  'fxFlexOffset.lg', 'fxFlexOffset.xl', 'fxFlexOffset.lt-sm', 'fxFlexOffset.lt-md',
-  'fxFlexOffset.lt-lg', 'fxFlexOffset.lt-xl', 'fxFlexOffset.gt-xs', 'fxFlexOffset.gt-sm',
-  'fxFlexOffset.gt-md', 'fxFlexOffset.gt-lg'
+    'fxFlexOffset', 'fxFlexOffset.xs', 'fxFlexOffset.sm', 'fxFlexOffset.md',
+    'fxFlexOffset.lg', 'fxFlexOffset.xl', 'fxFlexOffset.lt-sm', 'fxFlexOffset.lt-md',
+    'fxFlexOffset.lt-lg', 'fxFlexOffset.lt-xl', 'fxFlexOffset.gt-xs', 'fxFlexOffset.gt-sm',
+    'fxFlexOffset.gt-md', 'fxFlexOffset.gt-lg'
 ];
 const selector = `
   [fxFlexOffset], [fxFlexOffset.xs], [fxFlexOffset.sm], [fxFlexOffset.md],
@@ -67,53 +67,53 @@ const selector = `
  */
 @Directive()
 export class FlexOffsetDirective extends BaseDirective2 implements OnChanges {
-  protected override DIRECTIVE_KEY = 'flex-offset';
+    protected override DIRECTIVE_KEY = 'flex-offset';
 
-  constructor(elRef: ElementRef,
-              protected directionality: Directionality,
-              styleBuilder: FlexOffsetStyleBuilder,
-              marshal: MediaMarshaller,
-              styler: StyleUtils) {
-    super(elRef, styleBuilder, styler, marshal);
-    this.init([this.directionality.change]);
-    // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
-    if (this.parentElement) {
-      this.marshal
-        .trackValue(this.parentElement, 'layout-gap')
-        .pipe(takeUntil(this.destroySubject))
-        .subscribe(this.triggerUpdate.bind(this));
+    constructor(elRef: ElementRef,
+        protected directionality: Directionality,
+        styleBuilder: FlexOffsetStyleBuilder,
+        marshal: MediaMarshaller,
+        styler: StyleUtils) {
+        super(elRef, styleBuilder, styler, marshal);
+        this.init([this.directionality.change]);
+        // Parent DOM `layout-gap` with affect the nested child with `flex-offset`
+        if (this.parentElement) {
+            this.marshal
+                .trackValue(this.parentElement, 'layout-gap')
+                .pipe(takeUntil(this.destroySubject))
+                .subscribe(this.triggerUpdate.bind(this));
+        }
     }
-  }
 
-  // *********************************************
-  // Protected methods
-  // *********************************************
+    // *********************************************
+    // Protected methods
+    // *********************************************
 
-  /**
+    /**
    * Using the current fxFlexOffset value, update the inline CSS
    * NOTE: this will assign `margin-left` if the parent flex-direction == 'row',
    *       otherwise `margin-top` is used for the offset.
    */
-  protected override updateWithValue(value: string|number = ''): void {
+    protected override updateWithValue(value: string|number = ''): void {
     // The flex-direction of this element's flex container. Defaults to 'row'.
-    const layout = this.getFlexFlowDirection(this.parentElement!, true);
-    const isRtl = this.directionality.value === 'rtl';
-    if (layout === 'row' && isRtl) {
-      this.styleCache = flexOffsetCacheRowRtl;
-    } else if (layout === 'row' && !isRtl) {
-      this.styleCache = flexOffsetCacheRowLtr;
-    } else if (layout === 'column' && isRtl) {
-      this.styleCache = flexOffsetCacheColumnRtl;
-    } else if (layout === 'column' && !isRtl) {
-      this.styleCache = flexOffsetCacheColumnLtr;
+        const layout = this.getFlexFlowDirection(this.parentElement!, true);
+        const isRtl = this.directionality.value === 'rtl';
+        if (layout === 'row' && isRtl) {
+            this.styleCache = flexOffsetCacheRowRtl;
+        } else if (layout === 'row' && !isRtl) {
+            this.styleCache = flexOffsetCacheRowLtr;
+        } else if (layout === 'column' && isRtl) {
+            this.styleCache = flexOffsetCacheColumnRtl;
+        } else if (layout === 'column' && !isRtl) {
+            this.styleCache = flexOffsetCacheColumnLtr;
+        }
+        this.addStyles(value + '', {layout, isRtl});
     }
-    this.addStyles(value + '', {layout, isRtl});
-  }
 }
 
 @Directive({selector, inputs})
 export class DefaultFlexOffsetDirective extends FlexOffsetDirective {
-  protected override inputs = inputs;
+    protected override inputs = inputs;
 }
 
 const flexOffsetCacheRowRtl: Map<string, StyleDefinition> = new Map();

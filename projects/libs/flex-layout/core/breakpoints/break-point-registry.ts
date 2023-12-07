@@ -20,64 +20,64 @@ export type OptionalBreakPoint = BreakPoint | null;
  */
 @Injectable({providedIn: 'root'})
 export class BreakPointRegistry {
-  readonly items: BreakPoint[];
+    readonly items: BreakPoint[];
 
-  constructor(@Inject(BREAKPOINTS) list: BreakPoint[]) {
-    this.items = [...list].sort(sortAscendingPriority);
-  }
+    constructor(@Inject(BREAKPOINTS) list: BreakPoint[]) {
+        this.items = [...list].sort(sortAscendingPriority);
+    }
 
-  /**
+    /**
    * Search breakpoints by alias (e.g. gt-xs)
    */
-  findByAlias(alias: string): OptionalBreakPoint {
-    return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias === alias);
-  }
+    findByAlias(alias: string): OptionalBreakPoint {
+        return !alias ? null : this.findWithPredicate(alias, (bp) => bp.alias === alias);
+    }
 
-  findByQuery(query: string): OptionalBreakPoint {
-    return this.findWithPredicate(query, (bp) => bp.mediaQuery === query);
-  }
+    findByQuery(query: string): OptionalBreakPoint {
+        return this.findWithPredicate(query, (bp) => bp.mediaQuery === query);
+    }
 
-  /**
+    /**
    * Get all the breakpoints whose ranges could overlapping `normal` ranges;
    * e.g. gt-sm overlaps md, lg, and xl
    */
-  get overlappings(): BreakPoint[] {
-    return this.items.filter(it => it.overlapping);
-  }
+    get overlappings(): BreakPoint[] {
+        return this.items.filter(it => it.overlapping);
+    }
 
-  /**
+    /**
    * Get list of all registered (non-empty) breakpoint aliases
    */
-  get aliases(): string[] {
-    return this.items.map(it => it.alias);
-  }
+    get aliases(): string[] {
+        return this.items.map(it => it.alias);
+    }
 
-  /**
+    /**
    * Aliases are mapped to properties using suffixes
    * e.g.  'gt-sm' for property 'layout'  uses suffix 'GtSm'
    * for property layoutGtSM.
    */
-  get suffixes(): string[] {
-    return this.items.map(it => it?.suffix ?? '');
-  }
+    get suffixes(): string[] {
+        return this.items.map(it => it?.suffix ?? '');
+    }
 
-  /**
+    /**
    * Memoized lookup using custom predicate function
    */
-  private findWithPredicate(key: string,
-      searchFn: (bp: BreakPoint) => boolean): OptionalBreakPoint {
-    let response = this.findByMap.get(key);
-    if (!response) {
-      response = this.items.find(searchFn) ?? null;
-      this.findByMap.set(key, response);
+    private findWithPredicate(key: string,
+        searchFn: (bp: BreakPoint) => boolean): OptionalBreakPoint {
+        let response = this.findByMap.get(key);
+        if (!response) {
+            response = this.items.find(searchFn) ?? null;
+            this.findByMap.set(key, response);
+        }
+        return response ?? null;
+
     }
-    return response ?? null;
 
-  }
-
-  /**
+    /**
    * Memoized BreakPoint Lookups
    */
-  private readonly findByMap = new Map<String, OptionalBreakPoint>();
+    private readonly findByMap = new Map<String, OptionalBreakPoint>();
 }
 

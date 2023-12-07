@@ -16,9 +16,9 @@ export * from './add-alias';
 export * from './base/index';
 export * from './breakpoints/index';
 export {
-  MatchMedia as ɵMatchMedia,
-  MockMatchMedia as ɵMockMatchMedia,
-  MockMatchMediaProvider as ɵMockMatchMediaProvider,
+    MatchMedia as ɵMatchMedia,
+    MockMatchMedia as ɵMockMatchMedia,
+    MockMatchMediaProvider as ɵMockMatchMediaProvider,
 } from './match-media/index';
 export * from './media-observer/index';
 export * from './media-trigger/index';

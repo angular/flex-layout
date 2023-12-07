@@ -8,47 +8,47 @@
 import {Directive, ElementRef, Inject, PLATFORM_ID, Injectable, Input} from '@angular/core';
 import {isPlatformServer} from '@angular/common';
 import {
-  MediaMarshaller,
-  BaseDirective2,
-  SERVER_TOKEN,
-  StyleBuilder,
-  StyleDefinition,
-  StyleUtils,
+    MediaMarshaller,
+    BaseDirective2,
+    SERVER_TOKEN,
+    StyleBuilder,
+    StyleDefinition,
+    StyleUtils,
 } from 'ng-flex-layout/core';
 
 @Injectable({providedIn: 'root'})
 export class ImgSrcStyleBuilder extends StyleBuilder {
-  buildStyles(url: string) {
-    return {'content': url ? `url(${url})` : ''};
-  }
+    buildStyles(url: string) {
+        return {'content': url ? `url(${url})` : ''};
+    }
 }
 
 @Directive()
 export class ImgSrcDirective extends BaseDirective2 {
-  protected override DIRECTIVE_KEY = 'img-src';
-  protected defaultSrc = '';
+    protected override DIRECTIVE_KEY = 'img-src';
+    protected defaultSrc = '';
 
-  @Input('src')
-  set src(val: string) {
-    this.defaultSrc = val;
-    this.setValue(this.defaultSrc, '');
-  }
-
-  constructor(elementRef: ElementRef,
-              styleBuilder: ImgSrcStyleBuilder,
-              styler: StyleUtils,
-              marshal: MediaMarshaller,
-              @Inject(PLATFORM_ID) protected platformId: Object,
-              @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
-    super(elementRef, styleBuilder, styler, marshal);
-    this.init();
-    this.setValue(this.nativeElement.getAttribute('src') || '', '');
-    if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
-      this.nativeElement.setAttribute('src', '');
+    @Input('src')
+    set src(val: string) {
+        this.defaultSrc = val;
+        this.setValue(this.defaultSrc, '');
     }
-  }
 
-  /**
+    constructor(elementRef: ElementRef,
+        styleBuilder: ImgSrcStyleBuilder,
+        styler: StyleUtils,
+        marshal: MediaMarshaller,
+        @Inject(PLATFORM_ID) protected platformId: Object,
+        @Inject(SERVER_TOKEN) protected serverModuleLoaded: boolean) {
+        super(elementRef, styleBuilder, styler, marshal);
+        this.init();
+        this.setValue(this.nativeElement.getAttribute('src') || '', '');
+        if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+            this.nativeElement.setAttribute('src', '');
+        }
+    }
+
+    /**
    * Use the [responsively] activated input value to update
    * the host img src attribute or assign a default `img.src=''`
    * if the src has not been defined.
@@ -56,24 +56,24 @@ export class ImgSrcDirective extends BaseDirective2 {
    * Do nothing to standard `<img src="">` usages, only when responsive
    * keys are present do we actually call `setAttribute()`
    */
-  protected override updateWithValue(value?: string) {
-    const url = value || this.defaultSrc;
-    if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
-      this.addStyles(url);
-    } else {
-      this.nativeElement.setAttribute('src', url);
+    protected override updateWithValue(value?: string) {
+        const url = value || this.defaultSrc;
+        if (isPlatformServer(this.platformId) && this.serverModuleLoaded) {
+            this.addStyles(url);
+        } else {
+            this.nativeElement.setAttribute('src', url);
+        }
     }
-  }
 
-  protected override styleCache = imgSrcCache;
+    protected override styleCache = imgSrcCache;
 }
 
 const imgSrcCache: Map<string, StyleDefinition> = new Map();
 
 const inputs = [
-  'src.xs', 'src.sm', 'src.md', 'src.lg', 'src.xl',
-  'src.lt-sm', 'src.lt-md', 'src.lt-lg', 'src.lt-xl',
-  'src.gt-xs', 'src.gt-sm', 'src.gt-md', 'src.gt-lg'
+    'src.xs', 'src.sm', 'src.md', 'src.lg', 'src.xl',
+    'src.lt-sm', 'src.lt-md', 'src.lt-lg', 'src.lt-xl',
+    'src.gt-xs', 'src.gt-sm', 'src.gt-md', 'src.gt-lg'
 ];
 
 const selector = `
@@ -93,5 +93,5 @@ const selector = `
  */
 @Directive({selector, inputs})
 export class DefaultImgSrcDirective extends ImgSrcDirective {
-  protected override inputs = inputs;
+    protected override inputs = inputs;
 }

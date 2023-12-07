@@ -7,25 +7,25 @@
  */
 import {Directive, ElementRef, OnChanges, Injectable} from '@angular/core';
 import {
-  BaseDirective2,
-  StyleBuilder,
-  StyleDefinition,
-  StyleUtils,
-  MediaMarshaller,
+    BaseDirective2,
+    StyleBuilder,
+    StyleDefinition,
+    StyleUtils,
+    MediaMarshaller,
 } from 'ng-flex-layout/core';
 
 @Injectable({providedIn: 'root'})
 export class FlexOrderStyleBuilder extends StyleBuilder {
-  buildStyles(value: string) {
-    return {order: (value && parseInt(value, 10)) || ''};
-  }
+    buildStyles(value: string) {
+        return {order: (value && parseInt(value, 10)) || ''};
+    }
 }
 
 const inputs = [
-  'fxFlexOrder', 'fxFlexOrder.xs', 'fxFlexOrder.sm', 'fxFlexOrder.md',
-  'fxFlexOrder.lg', 'fxFlexOrder.xl', 'fxFlexOrder.lt-sm', 'fxFlexOrder.lt-md',
-  'fxFlexOrder.lt-lg', 'fxFlexOrder.lt-xl', 'fxFlexOrder.gt-xs', 'fxFlexOrder.gt-sm',
-  'fxFlexOrder.gt-md', 'fxFlexOrder.gt-lg'
+    'fxFlexOrder', 'fxFlexOrder.xs', 'fxFlexOrder.sm', 'fxFlexOrder.md',
+    'fxFlexOrder.lg', 'fxFlexOrder.xl', 'fxFlexOrder.lt-sm', 'fxFlexOrder.lt-md',
+    'fxFlexOrder.lt-lg', 'fxFlexOrder.lt-xl', 'fxFlexOrder.gt-xs', 'fxFlexOrder.gt-sm',
+    'fxFlexOrder.gt-md', 'fxFlexOrder.gt-lg'
 ];
 const selector = `
   [fxFlexOrder], [fxFlexOrder.xs], [fxFlexOrder.sm], [fxFlexOrder.md],
@@ -42,22 +42,22 @@ const selector = `
 @Directive()
 export class FlexOrderDirective extends BaseDirective2 implements OnChanges {
 
-  protected override DIRECTIVE_KEY = 'flex-order';
+    protected override DIRECTIVE_KEY = 'flex-order';
 
-  constructor(elRef: ElementRef,
-              styleUtils: StyleUtils,
-              styleBuilder: FlexOrderStyleBuilder,
-              marshal: MediaMarshaller) {
-    super(elRef, styleBuilder, styleUtils, marshal);
-    this.init();
-  }
+    constructor(elRef: ElementRef,
+        styleUtils: StyleUtils,
+        styleBuilder: FlexOrderStyleBuilder,
+        marshal: MediaMarshaller) {
+        super(elRef, styleBuilder, styleUtils, marshal);
+        this.init();
+    }
 
-  protected override styleCache = flexOrderCache;
+    protected override styleCache = flexOrderCache;
 }
 
 const flexOrderCache: Map<string, StyleDefinition> = new Map();
 
 @Directive({selector, inputs})
 export class DefaultFlexOrderDirective extends FlexOrderDirective {
-  protected override inputs = inputs;
+    protected override inputs = inputs;
 }

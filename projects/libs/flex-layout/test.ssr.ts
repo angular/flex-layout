@@ -3,22 +3,22 @@ import 'zone.js/testing';
 
 import { getTestBed } from '@angular/core/testing';
 import {
-  ServerTestingModule,
-  platformServerTesting,
+    ServerTestingModule,
+    platformServerTesting,
 } from '@angular/platform-server/testing';
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(ServerTestingModule, platformServerTesting());
 
 declare const require: {
-  context(
-    path: string,
-    deep?: boolean,
-    filter?: RegExp
-  ): {
-    keys(): string[];
-    <T>(id: string): T;
-  };
+    context(
+        path: string,
+        deep?: boolean,
+        filter?: RegExp
+    ): {
+        keys(): string[]
+        <T>(id: string): T
+    }
 };
 
 // Then we find all the tests.

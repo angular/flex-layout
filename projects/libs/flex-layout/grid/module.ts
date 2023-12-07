@@ -22,17 +22,17 @@ import {DefaultGridRowsDirective} from './rows/rows';
 
 
 const ALL_DIRECTIVES = [
-  DefaultGridAlignDirective,
-  DefaultGridAlignColumnsDirective,
-  DefaultGridAlignRowsDirective,
-  DefaultGridAreaDirective,
-  DefaultGridAreasDirective,
-  DefaultGridAutoDirective,
-  DefaultGridColumnDirective,
-  DefaultGridColumnsDirective,
-  DefaultGridGapDirective,
-  DefaultGridRowDirective,
-  DefaultGridRowsDirective,
+    DefaultGridAlignDirective,
+    DefaultGridAlignColumnsDirective,
+    DefaultGridAlignRowsDirective,
+    DefaultGridAreaDirective,
+    DefaultGridAreasDirective,
+    DefaultGridAutoDirective,
+    DefaultGridColumnDirective,
+    DefaultGridColumnsDirective,
+    DefaultGridGapDirective,
+    DefaultGridRowDirective,
+    DefaultGridRowsDirective,
 ];
 
 /**
@@ -42,9 +42,9 @@ const ALL_DIRECTIVES = [
  */
 
 @NgModule({
-  imports: [CoreModule],
-  declarations: [...ALL_DIRECTIVES],
-  exports: [...ALL_DIRECTIVES]
+    imports: [CoreModule],
+    declarations: [...ALL_DIRECTIVES],
+    exports: [...ALL_DIRECTIVES]
 })
 export class GridModule {
 }

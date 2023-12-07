@@ -10,9 +10,9 @@ import {extendObject} from 'ng-flex-layout/_private-utils';
 
 const ALIAS_DELIMITERS = /(\.|-|_)/g;
 function firstUpperCase(part: string) {
-  let first = part.length > 0 ? part.charAt(0) : '';
-  let remainder = (part.length > 1) ? part.slice(1) : '';
-  return first.toUpperCase() + remainder;
+    let first = part.length > 0 ? part.charAt(0) : '';
+    let remainder = (part.length > 1) ? part.slice(1) : '';
+    return first.toUpperCase() + remainder;
 }
 
 /**
@@ -20,11 +20,11 @@ function firstUpperCase(part: string) {
  * @param name Text to UpperCamelCase
  */
 function camelCase(name: string): string {
-  return name
-      .replace(ALIAS_DELIMITERS, '|')
-      .split('|')
-      .map(firstUpperCase)
-      .join('');
+    return name
+        .replace(ALIAS_DELIMITERS, '|')
+        .split('|')
+        .map(firstUpperCase)
+        .join('');
 }
 
 /**
@@ -32,13 +32,13 @@ function camelCase(name: string): string {
  * fallback to UpperCamelCase the unique Alias value
  */
 export function validateSuffixes(list: BreakPoint[]): BreakPoint[] {
-  list.forEach((bp: BreakPoint) => {
-    if (!bp.suffix) {
-      bp.suffix = camelCase(bp.alias);   // create Suffix value based on alias
-      bp.overlapping = !!bp.overlapping; // ensure default value
-    }
-  });
-  return list;
+    list.forEach((bp: BreakPoint) => {
+        if (!bp.suffix) {
+            bp.suffix = camelCase(bp.alias);   // create Suffix value based on alias
+            bp.overlapping = !!bp.overlapping; // ensure default value
+        }
+    });
+    return list;
 }
 
 /**
@@ -47,18 +47,18 @@ export function validateSuffixes(list: BreakPoint[]): BreakPoint[] {
  *  - Items are merged with the custom override if the alias exists in the default list
  */
 export function mergeByAlias(defaults: BreakPoint[], custom: BreakPoint[] = []): BreakPoint[] {
-  const dict: {[key: string]: BreakPoint} = {};
-  defaults.forEach(bp => {
-    dict[bp.alias] = bp;
-  });
-  // Merge custom breakpoints
-  custom.forEach((bp: BreakPoint) => {
-    if (dict[bp.alias]) {
-      extendObject(dict[bp.alias], bp);
-    } else {
-      dict[bp.alias] = bp;
-    }
-  });
+    const dict: {[key: string]: BreakPoint} = {};
+    defaults.forEach(bp => {
+        dict[bp.alias] = bp;
+    });
+    // Merge custom breakpoints
+    custom.forEach((bp: BreakPoint) => {
+        if (dict[bp.alias]) {
+            extendObject(dict[bp.alias], bp);
+        } else {
+            dict[bp.alias] = bp;
+        }
+    });
 
-  return validateSuffixes(Object.keys(dict).map(k => dict[k]));
+    return validateSuffixes(Object.keys(dict).map(k => dict[k]));
 }

@@ -16,39 +16,39 @@ import {Injectable} from '@angular/core';
 @Injectable({providedIn: 'root'})
 export class StylesheetMap {
 
-  readonly stylesheet = new Map<HTMLElement, Map<string, string|number>>();
+    readonly stylesheet = new Map<HTMLElement, Map<string, string|number>>();
 
-  /**
+    /**
    * Add an individual style to an HTML element
    */
-  addStyleToElement(element: HTMLElement, style: string, value: string|number) {
-    const stylesheet = this.stylesheet.get(element);
-    if (stylesheet) {
-      stylesheet.set(style, value);
-    } else {
-      this.stylesheet.set(element, new Map([[style, value]]));
+    addStyleToElement(element: HTMLElement, style: string, value: string|number) {
+        const stylesheet = this.stylesheet.get(element);
+        if (stylesheet) {
+            stylesheet.set(style, value);
+        } else {
+            this.stylesheet.set(element, new Map([[style, value]]));
+        }
     }
-  }
 
-  /**
+    /**
    * Clear the virtual stylesheet
    */
-  clearStyles() {
-    this.stylesheet.clear();
-  }
+    clearStyles() {
+        this.stylesheet.clear();
+    }
 
-  /**
+    /**
    * Retrieve a given style for an HTML element
    */
-  getStyleForElement(el: HTMLElement, styleName: string): string {
-    const styles = this.stylesheet.get(el);
-    let value = '';
-    if (styles) {
-      const style = styles.get(styleName);
-      if (typeof style === 'number' || typeof style === 'string') {
-        value = style + '';
-      }
+    getStyleForElement(el: HTMLElement, styleName: string): string {
+        const styles = this.stylesheet.get(el);
+        let value = '';
+        if (styles) {
+            const style = styles.get(styleName);
+            if (typeof style === 'number' || typeof style === 'string') {
+                value = style + '';
+            }
+        }
+        return value;
     }
-    return value;
-  }
 }

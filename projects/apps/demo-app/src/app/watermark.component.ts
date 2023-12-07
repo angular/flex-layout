@@ -16,7 +16,6 @@ export class WatermarkComponent {
   constructor(private _sanitizer: DomSanitizer) {
   }
 
-  /* tslint:disable:max-line-length */
   get backgroundImage() {
     const rawSVG = `
        <svg id="diagonalWatermark"

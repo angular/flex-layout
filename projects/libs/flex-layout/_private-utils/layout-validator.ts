@@ -12,8 +12,8 @@ export const LAYOUT_VALUES = ['row', 'column', 'row-reverse', 'column-reverse'];
  * Validate the direction|'direction wrap' value and then update the host's inline flexbox styles
  */
 export function buildLayoutCSS(value: string) {
-  let [direction, wrap, isInline] = validateValue(value);
-  return buildCSS(direction, wrap, isInline);
+    let [direction, wrap, isInline] = validateValue(value);
+    return buildCSS(direction, wrap, isInline);
 }
 
 /**
@@ -21,20 +21,20 @@ export function buildLayoutCSS(value: string) {
   * Use default fallback of 'row'
   */
 export function validateValue(value: string): [string, string, boolean] {
-  value = value?.toLowerCase() ?? '';
-  let [direction, wrap, inline] = value.split(' ');
+    value = value?.toLowerCase() ?? '';
+    let [direction, wrap, inline] = value.split(' ');
 
-  // First value must be the `flex-direction`
-  if (!LAYOUT_VALUES.find(x => x === direction)) {
-    direction = LAYOUT_VALUES[0];
-  }
+    // First value must be the `flex-direction`
+    if (!LAYOUT_VALUES.find(x => x === direction)) {
+        direction = LAYOUT_VALUES[0];
+    }
 
-  if (wrap === INLINE) {
-    wrap = (inline !== INLINE) ? inline : '';
-    inline = INLINE;
-  }
+    if (wrap === INLINE) {
+        wrap = (inline !== INLINE) ? inline : '';
+        inline = INLINE;
+    }
 
-  return [direction, validateWrapValue(wrap), !!inline];
+    return [direction, validateWrapValue(wrap), !!inline];
 }
 
 /**
@@ -42,35 +42,35 @@ export function validateValue(value: string): [string, string, boolean] {
  * a horizontal/row flow.
  */
 export function isFlowHorizontal(value: string): boolean {
-  let [flow, ] = validateValue(value);
-  return flow.indexOf('row') > -1;
+    let [flow, ] = validateValue(value);
+    return flow.indexOf('row') > -1;
 }
 
 /**
  * Convert layout-wrap='<value>' to expected flex-wrap style
  */
 export function validateWrapValue(value: string) {
-  if (!!value) {
-    switch (value.toLowerCase()) {
-      case 'reverse':
-      case 'wrap-reverse':
-      case 'reverse-wrap':
-        value = 'wrap-reverse';
-        break;
+    if (!!value) {
+        switch (value.toLowerCase()) {
+            case 'reverse':
+            case 'wrap-reverse':
+            case 'reverse-wrap':
+                value = 'wrap-reverse';
+                break;
 
-      case 'no':
-      case 'none':
-      case 'nowrap':
-        value = 'nowrap';
-        break;
+            case 'no':
+            case 'none':
+            case 'nowrap':
+                value = 'nowrap';
+                break;
 
-      // All other values fallback to 'wrap'
-      default:
-        value = 'wrap';
-        break;
+                // All other values fallback to 'wrap'
+            default:
+                value = 'wrap';
+                break;
+        }
     }
-  }
-  return value;
+    return value;
 }
 
 /**
@@ -83,10 +83,10 @@ export function validateWrapValue(value: string) {
  *  laid out and drawn inside that element's specified width and height.
  */
 function buildCSS(direction: string, wrap: string | null = null, inline = false) {
-  return {
-    display: inline ? 'inline-flex' : 'flex',
-    'box-sizing': 'border-box',
-    'flex-direction': direction,
-    'flex-wrap': wrap || null,
-  };
+    return {
+        display: inline ? 'inline-flex' : 'flex',
+        'box-sizing': 'border-box',
+        'flex-direction': direction,
+        'flex-wrap': wrap || null,
+    };
 }

@@ -1,5 +1,10 @@
 # Angular Flex-Layout
 
+*** 
+  - Updated to Angular 17.*
+  - Migrated from tslint to eslint
+***
+
 [![npm version](https://badge.fury.io/js/%40angular%2Fflex-layout.svg)](https://www.npmjs.com/package/%40angular%2Fflex-layout)
 [![Build status](https://circleci.com/gh/angular/flex-layout.svg?style=svg)](https://circleci.com/gh/angular/flex-layout)
 [![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)

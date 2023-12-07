@@ -16,7 +16,7 @@ import {BROWSER_PROVIDER} from './browser-provider';
  * *****************************************************************
  */
 @NgModule({
-  providers: [BROWSER_PROVIDER]
+    providers: [BROWSER_PROVIDER]
 })
 export class CoreModule {
 }
