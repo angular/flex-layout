@@ -74,19 +74,19 @@ inherited styles, **ShadowDOM** styles and even ShadowDOM tree stylings on the e
 Flex-Layout also has a huge set of responsive features that enable developers to easily change the UX layout 
 configurations for different display devices. See the our documentation on the [Responsive API page][Responsive].
 
-[fxLayout]: https://github.com/angular/flex-layout/wiki/fxLayout-API
-[fxLayoutAlign]: https://github.com/angular/flex-layout/wiki/fxLayoutAlign-API
-[fxLayoutGap]: https://github.com/angular/flex-layout/wiki/fxLayoutGap-API
-[fxFlex]: https://github.com/angular/flex-layout/wiki/fxFlex-API
-[fxFlexOrder]: https://github.com/angular/flex-layout/wiki/fxFlexOrder-API
-[fxFlexOffset]: https://github.com/angular/flex-layout/wiki/fxFlexOffset-API
-[fxFlexAlign]: https://github.com/angular/flex-layout/wiki/fxFlexAlign-API
-[fxFlexFill]: https://github.com/angular/flex-layout/wiki/fxFlexFill-API
-[fxHide]: https://github.com/angular/flex-layout/wiki/fxHide-API
-[fxShow]: https://github.com/angular/flex-layout/wiki/fxShow-API
-[ngClass]: https://github.com/angular/flex-layout/wiki/ngClass-API
-[ngStyle]: https://github.com/angular/flex-layout/wiki/ngStyle-API
+[fxLayout]: https://github.com/alessiobianchini/flex-layout/wiki/fxLayout-API
+[fxLayoutAlign]: https://github.com/alessiobianchini/flex-layout/wiki/fxLayoutAlign-API
+[fxLayoutGap]: https://github.com/alessiobianchini/flex-layout/wiki/fxLayoutGap-API
+[fxFlex]: https://github.com/alessiobianchini/flex-layout/wiki/fxFlex-API
+[fxFlexOrder]: https://github.com/alessiobianchini/flex-layout/wiki/fxFlexOrder-API
+[fxFlexOffset]: https://github.com/alessiobianchini/flex-layout/wiki/fxFlexOffset-API
+[fxFlexAlign]: https://github.com/alessiobianchini/flex-layout/wiki/fxFlexAlign-API
+[fxFlexFill]: https://github.com/alessiobianchini/flex-layout/wiki/fxFlexFill-API
+[fxHide]: https://github.com/alessiobianchini/flex-layout/wiki/fxHide-API
+[fxShow]: https://github.com/alessiobianchini/flex-layout/wiki/fxShow-API
+[ngClass]: https://github.com/alessiobianchini/flex-layout/wiki/ngClass-API
+[ngStyle]: https://github.com/alessiobianchini/flex-layout/wiki/ngStyle-API
 [aioNgClass]: https://angular.io/api/common/NgClass
 [aioNgStyle]: https://angular.io/api/common/NgStyle
-[Responsive]: https://github.com/angular/flex-layout/wiki/Responsive-API
-[imgSrc]: https://github.com/angular/flex-layout/wiki/imgSrc-API
+[Responsive]: https://github.com/alessiobianchini/flex-layout/wiki/Responsive-API
+[imgSrc]: https://github.com/alessiobianchini/flex-layout/wiki/imgSrc-API

@@ -2,8 +2,8 @@
 
 Developers should see the Universal Demo app source for details:
 
-*  [main.server.ts](https://github.com/angular/flex-layout/blob/95a6e83bc9ce67a218d0b14e994ad41229b3ee75/src/apps/universal-app/src/main.server.ts)
-*  [app.server.module.ts](https://github.com/angular/flex-layout/blob/95a6e83bc9ce67a218d0b14e994ad41229b3ee75/src/apps/universal-app/src/app/app.server.module.ts)
+*  [main.server.ts](https://github.com/alessiobianchini/flex-layout/blob/95a6e83bc9ce67a218d0b14e994ad41229b3ee75/src/apps/universal-app/src/main.server.ts)
+*  [app.server.module.ts](https://github.com/alessiobianchini/flex-layout/blob/95a6e83bc9ce67a218d0b14e994ad41229b3ee75/src/apps/universal-app/src/app/app.server.module.ts)
 
 >  The `app.server.module` uses the *FlexLayoutServerModule* (instead of the FlexLayoutModule). 
 

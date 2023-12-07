@@ -32,5 +32,5 @@ is transformed (at runtime) with inline, injected styles:
 </div>
 ```
 
-Developers should consult the [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation) for 
+Developers should consult the [API Documentation](https://github.com/alessiobianchini/flex-layout/wiki/API-Documentation) for 
 more details.

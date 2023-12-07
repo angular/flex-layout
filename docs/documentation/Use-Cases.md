@@ -35,4 +35,4 @@ or used as fallback
   * Custom set of breakpoints can be defined as a Provider
   * Custom breakpoints will override ALL default breakpoints (no merging)
  
-[Demo]: https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/responsive/responsive-flex-order/responsive-flex-order.component.ts#L59
+[Demo]: https://github.com/alessiobianchini/flex-layout/blob/master/src/apps/demo-app/src/app/responsive/responsive-flex-order/responsive-flex-order.component.ts#L59

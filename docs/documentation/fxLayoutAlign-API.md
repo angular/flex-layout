@@ -39,4 +39,4 @@ container
 |  `stretch`       | `max-width: 100% if flex-direction: column; else max-height: 100%` |
 
 
-[Layout]: https://github.com/angular/flex-layout/blob/master/src/lib/flex/layout-align/layout-align.ts#L47
+[Layout]: https://github.com/alessiobianchini/flex-layout/blob/master/src/lib/flex/layout-align/layout-align.ts#L47

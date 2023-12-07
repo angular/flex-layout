@@ -14,4 +14,4 @@ The [**imgSrc** directive][imgSrc] is a responsive extension of the HTML <img> `
 The initial value will be used as the default and fallback when a responsive alias is not defined
 
 
-[imgSrc]: https://github.com/angular/flex-layout/blob/master/src/lib/extended/img-src/img-src.ts#L38
+[imgSrc]: https://github.com/alessiobianchini/flex-layout/blob/master/src/lib/extended/img-src/img-src.ts#L38

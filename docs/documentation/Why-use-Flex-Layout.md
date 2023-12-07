@@ -41,7 +41,7 @@ AngularJS Material clearly demonstrated the limitations of a FlexBox-solution im
 significant of these was the limitations with using parameterized values. 
 
 Consider the **allowed values** listed in the 
-[Static API tables](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview#api-for-dom-containers). 
+[Static API tables](https://github.com/alessiobianchini/flex-layout/wiki/Declarative-API-Overview#api-for-dom-containers). 
 Support for even a limited set of **Allowed Value** variations lead to a combinatorial explosion of required CSS 
 classes... 
 

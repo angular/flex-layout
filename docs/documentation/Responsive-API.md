@@ -7,7 +7,7 @@ content reflows on different screens, and a description of how an app can scale 
 ## Enhancing the Static API
 
 Developers should consult the **angular/flex-layout** 
-[HTML Declarative API](https://github.com/angular/flex-layout/wiki/API-Documentation#html-api-declarative) for specific 
+[HTML Declarative API](https://github.com/alessiobianchini/flex-layout/wiki/API-Documentation#html-api-declarative) for specific 
 Static API details, then simply extend the HTML  markup usages by adding the responsive suffixes (as discussed below)!
 
 `ng-flex-layout` will automatically handle all the details listening for mediaQuery activations and applying the 
@@ -16,7 +16,7 @@ responsive values to the hosting DOM elements.
 ## Responsive Features
 
 To extend the **ng-flex-layout** 
-[static API](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) with responsive features, we will 
+[static API](https://github.com/alessiobianchini/flex-layout/wiki/Declarative-API-Overview) with responsive features, we will 
 first associate specific breakpoint **aliases** with mediaQuery values. 
 
 ### MediaQueries and Aliases

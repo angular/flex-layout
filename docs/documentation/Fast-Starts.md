@@ -1,7 +1,7 @@
 ### NPM Install
 
 ```terminal
-npm install https://github.com/angular/flex-layout-builds --save
+npm install https://github.com/alessiobianchini/flex-layout-builds --save
 ```
 
 > Note: this installs a nightly build required for Angular 4.x; until Beta.9 is released.

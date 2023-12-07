@@ -16,7 +16,7 @@
 
 ## Integration within your project
 
-Developers should read the [Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts) for alternate 
+Developers should read the [Fast Start](https://github.com/alessiobianchini/flex-layout/wiki/Fast-Starts) for alternate 
 integration instructions
 
 ### Running tests

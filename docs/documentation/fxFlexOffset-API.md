@@ -26,4 +26,4 @@ styling
 > RTL support is coming soon, which will automatically apply `margin-right` instead of `margin-left`
 
 
-[Offset]: https://github.com/angular/flex-layout/blob/master/src/lib/flex/flex-offset/flex-offset.ts#L41
+[Offset]: https://github.com/alessiobianchini/flex-layout/blob/master/src/lib/flex/flex-offset/flex-offset.ts#L41

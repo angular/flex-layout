@@ -21,7 +21,7 @@ Flexbox CSS to browser view hierarchies. This automation also addresses many of 
 complexities and workarounds encountered with the traditional, manual, CSS-only application of box CSS.
 
 The **real** power of Flex Layout, however, is its **responsive** engine. The
-[Responsive API](https://github.com/angular/flex-layout/wiki/Responsive-API) enables developers to easily specify
+[Responsive API](https://github.com/alessiobianchini/flex-layout/wiki/Responsive-API) enables developers to easily specify
 different layouts, sizing, visibilities for different viewport sizes and display devices.
 
 ---
@@ -53,19 +53,19 @@ After that is configured, you can use the Angular Layout attributes in your HTML
 </div>
 ```
 
-Check out [all of the available options](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) for using Angular Layout in your application.
+Check out [all of the available options](https://github.com/alessiobianchini/flex-layout/wiki/Declarative-API-Overview) for using Angular Layout in your application.
 
 ---
 
 ### Quick Links
 
-*  [ChangeLog](https://github.com/angular/flex-layout/blob/master/CHANGELOG.md)
-*  [Wiki Documentation](https://github.com/angular/flex-layout/wiki)
+*  [ChangeLog](https://github.com/alessiobianchini/flex-layout/blob/master/CHANGELOG.md)
+*  [Wiki Documentation](https://github.com/alessiobianchini/flex-layout/wiki)
 
 ### Demos
 
 *  [Explore Examples Online](https://tburleson-layouts-demos.firebaseapp.com/)
-*  [Demo Source Code](https://github.com/angular/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
+*  [Demo Source Code](https://github.com/alessiobianchini/flex-layout/blob/master/src/apps/demo-app/src/app/app.module.ts)
 
 ### StackBlitz Templates
 
@@ -74,10 +74,10 @@ Check out [all of the available options](https://github.com/angular/flex-layout/
 
 ### Developers
 
-*  [API Documentation](https://github.com/angular/flex-layout/wiki/API-Documentation)
-*  [Developer Setup](https://github.com/angular/flex-layout/wiki/Developer-Setup)
-*  [Builds + Fast Start](https://github.com/angular/flex-layout/wiki/Fast-Starts)
-*  [Integration with Angular CLI](https://github.com/angular/flex-layout/wiki/Using-Angular-CLI)
+*  [API Documentation](https://github.com/alessiobianchini/flex-layout/wiki/API-Documentation)
+*  [Developer Setup](https://github.com/alessiobianchini/flex-layout/wiki/Developer-Setup)
+*  [Builds + Fast Start](https://github.com/alessiobianchini/flex-layout/wiki/Fast-Starts)
+*  [Integration with Angular CLI](https://github.com/alessiobianchini/flex-layout/wiki/Using-Angular-CLI)
 
 
 ----
@@ -94,7 +94,7 @@ Check out [all of the available options](https://github.com/angular/flex-layout/
 
 ### License
 
-The sources for this package are in the [Flex Layout](https://github.com/angular/flex-layout) repository. <br/>
+The sources for this package are in the [Flex Layout](https://github.com/alessiobianchini/flex-layout) repository. <br/>
 Please file issues and pull requests against that repo.
 
 License: MIT
