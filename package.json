@@ -2,14 +2,11 @@
   "name": "ng-flex-layout",
   "description": "Angular Flex Layout (DOIT fork)",
   "version": "17.0.0-beta.1",
-  "homepage": "https://github.com/angular/flex-layout",
-  "bugs": "https://github.com/angular/flex-layout/issues",
+  "homepage": "https://github.com/alessiobianchini/flex-layout",
+  "bugs": "https://github.com/alessiobianchini/flex-layout/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alessiobianchini/flex-layout"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "license": "MIT",
   "engines": {
@@ -19,6 +16,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build ng-flex-layout",
+    "publish": "cd dist/releases/flex-layout && pnpm publish --access public --no-git-checks",
     "demo:serve": "ng serve demo-app",
     "stamp": "ts-node tools/package-tools/version-placeholders.ts --module=commonjs",
     "build:universal-demo-app": "ng run universal-demo-app:build:production && ng run universal-demo-app:server",
