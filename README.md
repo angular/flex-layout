@@ -1,16 +1,11 @@
-# Angular Flex-Layout
+# ng-flex-layout
 
 *** 
   - Updated to Angular 17.*
   - Migrated from tslint to eslint
 ***
 
-[![npm version](https://badge.fury.io/js/%40angular%2Fflex-layout.svg)](https://www.npmjs.com/package/%40angular%2Fflex-layout)
-[![Build status](https://circleci.com/gh/angular/flex-layout.svg?style=svg)](https://circleci.com/gh/angular/flex-layout)
-[![Gitter](https://badges.gitter.im/angular/flex-layout.svg)](https://gitter.im/angular/flex-layout)
-
-**NOTE: The Angular team no longer publishes new releases of this project. Please review [this blog post](https://blog.angular.io/modern-css-in-angular-layouts-4a259dca9127) 
-for alternatives, and [this article](https://medium.com/@caerus.karu/farewell-flex-layout-aaa567023769) for the explanation and next steps.**
+[![npm version](https://badge.fury.io/js/%40angular%2Fflex-layout.svg)](https://www.npmjs.com/package/ng-flex-layout)
 
 Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery.
 This module provides Angular developers with component layout features using a
