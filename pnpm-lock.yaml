@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  browser-sync-client: 2.26.13
+  browser-sync-client: 2.29.3
   https-proxy-agent: 5.0.0
 
 dependencies:
@@ -5228,14 +5228,13 @@ packages:
       fill-range: 7.0.1
     dev: true
 
-  /browser-sync-client@2.26.13:
-    resolution: {integrity: sha1-7l+j7Db+KgP5iHVTysaEZ1HIIy0=}
+  /browser-sync-client@2.29.3:
+    resolution: {integrity: sha1-kwC5f0KrwsT5XKKbWpeBtcSS8Uo=}
     engines: {node: '>=8.0.0'}
     dependencies:
       etag: 1.8.1
       fresh: 0.5.2
       mitt: 1.2.0
-      rxjs: 5.5.12
     dev: true
 
   /browser-sync-ui@2.29.3:
@@ -5259,7 +5258,7 @@ packages:
     engines: {node: '>= 8.0.0'}
     hasBin: true
     dependencies:
-      browser-sync-client: 2.26.13
+      browser-sync-client: 2.29.3
       browser-sync-ui: 2.29.3
       bs-recipes: 1.3.4
       chalk: 4.1.2
@@ -11074,13 +11073,6 @@ packages:
     resolution: {integrity: sha1-pfE/957zt0D+MKqAP7CfmIBdR4I=}
     dev: true
 
-  /rxjs@5.5.12:
-    resolution: {integrity: sha1-b6YbinfD15PbrycL7i9D9lLXQcw=}
-    engines: {npm: '>=2.0.0'}
-    dependencies:
-      symbol-observable: 1.0.1
-    dev: true
-
   /rxjs@7.8.1:
     resolution: {integrity: sha1-b289meqARCke/ZLnx/z1YsQFdUM=}
     dependencies:
@@ -11915,11 +11907,6 @@ packages:
 
   /svg-tags@1.0.0:
     resolution: {integrity: sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=}
-    dev: true
-
-  /symbol-observable@1.0.1:
-    resolution: {integrity: sha1-g0D8RwLDEi310iKI+IKD9RPT/dQ=}
-    engines: {node: '>=0.10.0'}
     dev: true
 
   /symbol-observable@4.0.0:
