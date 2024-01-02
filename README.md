@@ -1,9 +1,18 @@
-# ng-flex-layout
+<h3 align="center">
+ng-flex-layout
+</h3>
+<h5 align="center">
+ <a href="https://github.com/sponsors/alessiobianchini" target="_blank">
+  Support my open-source code as a sponsor
+ </a>
+</h5>
 
 *** 
+
   - Updated to Angular 17.*
   - Migrated from tslint to eslint
 ***
+
 
 [![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&r=r&ts=1683906897&type=6e&v=17.0.1-beta.2&x2=0)](https://www.npmjs.com/package/ng-flex-layout)
 
@@ -79,7 +88,7 @@ Check out [all of the available options](https://github.com/alessiobianchini/fle
 
 ### Browser Support
 &nbsp;
-<a href="http://caniuse.com/#feat=flexbox" target="_blank">
+<a href="https://caniuse.com/?search=ng-flex-layout" target="_blank">
 ![caniuseflexbox](https://cloud.githubusercontent.com/assets/210413/21288118/917e3faa-c440-11e6-9b08-28aff590c7ae.png)
 </a>
 
