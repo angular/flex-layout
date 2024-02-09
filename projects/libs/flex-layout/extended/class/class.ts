@@ -37,15 +37,13 @@ export class ClassDirective extends BaseDirective2 implements DoCheck {
     constructor(elementRef: ElementRef,
         styler: StyleUtils,
         marshal: MediaMarshaller,
-        iterableDiffers: IterableDiffers,
-        keyValueDiffers: KeyValueDiffers,
         renderer2: Renderer2,
         @Optional() @Self() protected readonly ngClassInstance: NgClass) {
         super(elementRef, null!, styler, marshal);
         if (!this.ngClassInstance) {
             // Create an instance NgClass Directive instance only if `ngClass=""` has NOT been defined on
             // the same host element; since the responsive variations may be defined...
-            this.ngClassInstance = new NgClass(iterableDiffers, keyValueDiffers, elementRef, renderer2);
+            this.ngClassInstance = new NgClass(elementRef,renderer2);
         }
         this.init();
         this.setValue('', '');
