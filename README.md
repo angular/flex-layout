@@ -14,7 +14,7 @@ ng-flex-layout
 ***
 
 
-[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&r=r&ts=1683906897&type=6e&v=17.0.1-beta.2&x2=0)](https://www.npmjs.com/package/ng-flex-layout)
+[![npm version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&r=r&ts=1683906897&type=6e&v=17.1.3-beta.1&x2=0)](https://www.npmjs.com/package/ng-flex-layout)
 
 Angular Flex Layout provides a sophisticated layout API using Flexbox CSS + mediaQuery.
 This module provides Angular developers with component layout features using a
