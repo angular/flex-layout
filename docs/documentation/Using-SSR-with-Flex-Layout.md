@@ -1,4 +1,4 @@
-`@angular/flex-layout` now supports server-side rendering (SSR). 
+`@eresearchqut/flex-layout` now supports server-side rendering (SSR). 
 
 Developers should see the Universal Demo app source for details:
 
@@ -15,7 +15,7 @@ The `FlexLayoutServerModule`, can be imported into a server modulefile, e.g. `ap
 
 ```typescript
 import {NgModule} from '@angular/core';
-import {FlexLayoutServerModule} from '@angular/flex-layout/server';
+import {FlexLayoutServerModule} from '@eresearchqut/flex-layout/server';
 
 @NgModule(({
   imports: [

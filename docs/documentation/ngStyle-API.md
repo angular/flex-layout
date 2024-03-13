@@ -1,4 +1,4 @@
-The *@angular/flex-layout* [**ngStyle**][ngStyle] directive is a subclass of the *@angular/common* 
+The *@eresearchqut/flex-layout* [**ngStyle**][ngStyle] directive is a subclass of the *@angular/common* 
 [**ngStyle**][aioNgStyle] directive. 
 
 ### ngStyle Enhancements 

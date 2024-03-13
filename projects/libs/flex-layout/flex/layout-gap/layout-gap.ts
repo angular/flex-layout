@@ -25,8 +25,8 @@ import {
   LAYOUT_CONFIG,
   LayoutConfigOptions,
   ɵmultiply as multiply,
-} from '@angular/flex-layout/core';
-import {LAYOUT_VALUES} from '@angular/flex-layout/_private-utils';
+} from '@eresearchqut/flex-layout/core';
+import {LAYOUT_VALUES} from '@eresearchqut/flex-layout/_private-utils';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 

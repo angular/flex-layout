@@ -7,7 +7,7 @@
  */
 import {NgModule} from '@angular/core';
 import {BidiModule} from '@angular/cdk/bidi';
-import {CoreModule} from '@angular/flex-layout/core';
+import {CoreModule} from '@eresearchqut/flex-layout/core';
 
 import {DefaultLayoutDirective} from './layout/layout';
 import {DefaultLayoutGapDirective} from './layout-gap/layout-gap';

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {TestBed, inject} from '@angular/core/testing';
-import {BreakPoint} from '@angular/flex-layout/core';
+import {BreakPoint} from '@eresearchqut/flex-layout/core';
 import {Subscription} from 'rxjs';
 
 import {MediaChange} from '../media-change';

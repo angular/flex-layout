@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {BreakPoint} from './break-point';
-import {extendObject} from '@angular/flex-layout/_private-utils';
+import {extendObject} from '@eresearchqut/flex-layout/_private-utils';
 
 const ALIAS_DELIMITERS = /(\.|-|_)/g;
 function firstUpperCase(part: string) {

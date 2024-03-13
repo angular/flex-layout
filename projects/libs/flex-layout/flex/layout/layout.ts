@@ -14,9 +14,9 @@ import {
   MediaMarshaller,
   LAYOUT_CONFIG,
   LayoutConfigOptions,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
-import {buildLayoutCSS} from '@angular/flex-layout/_private-utils';
+import {buildLayoutCSS} from '@eresearchqut/flex-layout/_private-utils';
 
 export interface LayoutStyleDisplay {
   readonly display: string;

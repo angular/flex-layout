@@ -14,11 +14,11 @@ import {
   CoreModule,
   ɵMockMatchMedia as MockMatchMedia,
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
-} from '@angular/flex-layout/core';
-import {DefaultClassDirective} from '@angular/flex-layout/extended';
+} from '@eresearchqut/flex-layout/core';
+import {DefaultClassDirective} from '@eresearchqut/flex-layout/extended';
 
-import {customMatchers, expect} from '@angular/flex-layout/_private-utils/testing';
-import {makeCreateTestComponent, expectNativeEl, queryFor} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers, expect} from '@eresearchqut/flex-layout/_private-utils/testing';
+import {makeCreateTestComponent, expectNativeEl, queryFor} from '@eresearchqut/flex-layout/_private-utils/testing';
 
 
 describe('class directive', () => {

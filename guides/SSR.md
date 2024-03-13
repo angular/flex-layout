@@ -28,7 +28,7 @@ generally called `app.server.module.ts`:
 
 ```typescript
 import {NgModule} from '@angular/core';
-import {FlexLayoutServerModule} from '@angular/flex-layout/server';
+import {FlexLayoutServerModule} from '@eresearchqut/flex-layout/server';
 
 @NgModule(({
   imports: [
@@ -59,7 +59,7 @@ warning won't be logged on the client side
 2. DO import the `SERVER_TOKEN` and provide it in your app as follows:
 
 ```typescript
-import {SERVER_TOKEN} from '@angular/flex-layout';
+import {SERVER_TOKEN} from '@eresearchqut/flex-layout';
 
 {provide: SERVER_TOKEN, useValue: true}
 ```

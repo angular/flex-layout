@@ -12,7 +12,7 @@ import {
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 const ROW_DEFAULT = 'stretch';
 const COL_DEFAULT = 'stretch';

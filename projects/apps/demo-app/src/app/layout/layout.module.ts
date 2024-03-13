@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 
 import {DocsLayoutComponent} from './docs-layout/docs-layout.component';
 import {LayoutAlignmentComponent} from './layout-alignment/layout-alignment.component';

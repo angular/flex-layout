@@ -3,7 +3,7 @@ import { ServerModule } from '@angular/platform-server';
 
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
-import {FlexLayoutServerModule} from '@angular/flex-layout/server';
+import {FlexLayoutServerModule} from '@eresearchqut/flex-layout/server';
 
 @NgModule({
   imports: [

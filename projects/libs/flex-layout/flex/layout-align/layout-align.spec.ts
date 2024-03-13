@@ -16,11 +16,11 @@ import {
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {extendObject} from '@angular/flex-layout/_private-utils';
-import {customMatchers, makeCreateTestComponent, expectNativeEl} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule, LayoutAlignStyleBuilder} from '@angular/flex-layout/flex';
+} from '@eresearchqut/flex-layout/core';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
+import {extendObject} from '@eresearchqut/flex-layout/_private-utils';
+import {customMatchers, makeCreateTestComponent, expectNativeEl} from '@eresearchqut/flex-layout/_private-utils/testing';
+import {FlexModule, LayoutAlignStyleBuilder} from '@eresearchqut/flex-layout/flex';
 
 
 describe('layout-align directive', () => {

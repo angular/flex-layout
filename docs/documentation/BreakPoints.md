@@ -1,9 +1,9 @@
-The token **BREAKPOINTS** is an injection token in **@angular/flex-layout** that is used to build a **Provider** for a 
+The token **BREAKPOINTS** is an injection token in **@eresearchqut/flex-layout** that is used to build a **Provider** for a 
 raw list of breakpoints.
 
 ```typescript
 import {InjectionToken, NgModule} from '@angular/core';
-import {BREAKPOINTS, DEFAULT_BREAKPOINTS} from '@angular/flex-layout';
+import {BREAKPOINTS, DEFAULT_BREAKPOINTS} from '@eresearchqut/flex-layout';
 
 export const BreakPointsProvider = { 
   provide: BREAKPOINTS,
@@ -37,7 +37,7 @@ For example to add mediaQueries that activate when printing:
 ##### `custom-breakpoints.ts`
 
 ```typescript
-import {BREAKPOINT} from '@angular/flex-layout';
+import {BREAKPOINT} from '@eresearchqut/flex-layout';
 
 const PRINT_BREAKPOINTS = [{
   alias: 'xs.print',
@@ -57,7 +57,7 @@ export const CustomBreakPointsProvider = {
 
 ```typescript
 import {CommonModule, NgModule} from '@angular/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 import {CustomBreakPointsProvider} from './custom-breakpoints.ts';
 
 @NgModule({
@@ -89,7 +89,7 @@ all you need.
 To disable the default breakpoints, you simply provide the new **DISABLE_DEFAULT_BREAKPOINTS** token as follows:
 
 ```typescript
-import {DISABLE_DEFAULT_BREAKPOINTS} from '@angular/flex-layout';
+import {DISABLE_DEFAULT_BREAKPOINTS} from '@eresearchqut/flex-layout';
 
 {provide: DISABLE_DEFAULT_BREAKPOINTS, useValue: true}
 ```
@@ -104,7 +104,7 @@ Layout has a set of these that conform to the Material Design spec built-in to t
 `ADD_ORIENTATION_BREAKPOINTS` to your app as follows:
 
 ```typescript
-import {ADD_ORIENTATION_BREAKPOINTS} from '@angular/flex-layout';
+import {ADD_ORIENTATION_BREAKPOINTS} from '@eresearchqut/flex-layout';
 
 {provide: ADD_ORIENTATION_BREAKPOINTS, useValue: true}
 ```
@@ -142,7 +142,7 @@ To enable these custom, **responsive selectors**, developers must **extend** the
 
 ```typescript
 import {Directive, ElementRef, Input, Renderer2} from '@angular/core';
-import {ShowHideDirective, MediaMonitor, negativeOf} from '@angular/flex-layout';
+import {ShowHideDirective, MediaMonitor, negativeOf} from '@eresearchqut/flex-layout';
 
 @Directive({
   selector: `[fxHide.xs.print]`

@@ -5,7 +5,7 @@ Other Flexbox CSS libraries are implementations of:
 * pure CSS-only implementations, or 
 * JS+CSS stylesheets. An implementation of this is available in AngularJS Material Layouts API.
 
-In contrast, @angular/flex-layout is a pure-Typescript UI Layout engine with an implementation that: 
+In contrast, @eresearchqut/flex-layout is a pure-Typescript UI Layout engine with an implementation that: 
 
 * uses HTML markup (aka Layout API) to specify the layout configurations
 * is independent of Angular Material (v1 or v2).

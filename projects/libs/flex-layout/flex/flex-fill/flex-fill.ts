@@ -12,7 +12,7 @@ import {
   StyleDefinition,
   StyleUtils,
   MediaMarshaller,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 const FLEX_FILL_CSS = {
   'margin': 0,

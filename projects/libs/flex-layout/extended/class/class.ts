@@ -17,7 +17,7 @@ import {
   Self,
 } from '@angular/core';
 import {NgClass} from '@angular/common';
-import {BaseDirective2, StyleUtils, MediaMarshaller} from '@angular/flex-layout/core';
+import {BaseDirective2, StyleUtils, MediaMarshaller} from '@eresearchqut/flex-layout/core';
 
 @Directive()
 export class ClassDirective extends BaseDirective2 implements DoCheck {

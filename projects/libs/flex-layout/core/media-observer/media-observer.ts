@@ -45,7 +45,7 @@ import {coerceArray} from '../utils/array';
  *
  *  // RxJS
  *  import { filter } from 'rxjs/operators';
- *  import { MediaObserver } from '@angular/flex-layout';
+ *  import { MediaObserver } from '@eresearchqut/flex-layout';
  *
  *  @Component({ ... })
  *  export class AppComponent {

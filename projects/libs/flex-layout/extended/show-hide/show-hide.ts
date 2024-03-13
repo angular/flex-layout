@@ -24,7 +24,7 @@ import {
   SERVER_TOKEN,
   StyleUtils,
   StyleBuilder,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 import {takeUntil} from 'rxjs/operators';
 

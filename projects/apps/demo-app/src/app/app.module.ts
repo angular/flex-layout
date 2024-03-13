@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FlexLayoutModule, BREAKPOINT} from '@angular/flex-layout';
+import {FlexLayoutModule, BREAKPOINT} from '@eresearchqut/flex-layout';
 
 import {RoutingModule} from './routing.module';
 import {AppComponent} from './app.component';

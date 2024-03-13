@@ -1,0 +1,16 @@
+name: Node.js Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - run: yarn cache clean
+      - run: yarn install
+      - run: yarn build
+      - run: yarn lint
+      - run: yarn ng build demo-app
+

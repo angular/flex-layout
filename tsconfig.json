@@ -3,11 +3,11 @@
   "compileOnSave": false,
   "compilerOptions": {
     "paths": {
-      "@angular/flex-layout": [
+      "@eresearchqut/flex-layout": [
         "dist/releases/flex-layout/angular-flex-layout",
         "dist/releases/flex-layout"
       ],
-      "@angular/flex-layout/*": [
+      "@eresearchqut/flex-layout/*": [
         "dist/releases/flex-layout/angular-flex-layout-*",
         "dist/releases/flex-layout/*"
       ]

@@ -12,7 +12,7 @@ import {
   MediaMarshaller,
   StyleBuilder,
   StyleDefinition,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 const DEFAULT_VALUE = 'auto';
 

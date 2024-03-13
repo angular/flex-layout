@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {MediaChange, MediaObserver} from '@angular/flex-layout';
+import {MediaChange, MediaObserver} from '@eresearchqut/flex-layout';
 import {Observable} from 'rxjs';
 
 @Component({

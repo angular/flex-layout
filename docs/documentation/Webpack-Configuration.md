@@ -1,11 +1,11 @@
 ### Install the Angular Flex-Layout Library  
 
 ```bash
-npm install --save @angular/flex-layout
+npm install --save @eresearchqut/flex-layout
 ```
 **or...**
 ```bash
-yarn add @angular/flex-layout
+yarn add @eresearchqut/flex-layout
 ```
 
 ### Import the Angular Flex-Layout Module
@@ -14,7 +14,7 @@ yarn add @angular/flex-layout
 ```typescript
 ...
 import {NgModule} from '@angular/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 ...
 
 @NgModule({

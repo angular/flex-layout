@@ -14,16 +14,16 @@ import {
   SERVER_TOKEN,
   StyleBuilder,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+} from '@eresearchqut/flex-layout/core';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 import {
   customMatchers,
   makeCreateTestComponent,
   queryFor,
   expectEl,
   expectNativeEl,
-} from '@angular/flex-layout/_private-utils/testing';
-import {FlexModule, FlexOffsetStyleBuilder} from '@angular/flex-layout/flex';
+} from '@eresearchqut/flex-layout/_private-utils/testing';
+import {FlexModule, FlexOffsetStyleBuilder} from '@eresearchqut/flex-layout/flex';
 
 
 describe('flex-offset directive', () => {

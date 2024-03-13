@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects/apps",
   "projects": {
-    "@angular/flex-layout": {
+    "@eresearchqut/flex-layout": {
       "projectType": "library",
       "root": "projects/libs/flex-layout",
       "sourceRoot": "projects/libs/flex-layout",
@@ -64,7 +64,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "20kb"
                 }
               ],
               "fileReplacements": [

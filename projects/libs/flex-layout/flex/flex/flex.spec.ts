@@ -15,9 +15,9 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   StyleBuilder,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {DefaultFlexDirective, DefaultLayoutDirective, FlexStyleBuilder} from '@angular/flex-layout/flex';
+} from '@eresearchqut/flex-layout/core';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
+import {DefaultFlexDirective, DefaultLayoutDirective, FlexStyleBuilder} from '@eresearchqut/flex-layout/flex';
 import {
   customMatchers,
   expect,
@@ -25,7 +25,7 @@ import {
   expectNativeEl,
   queryFor,
   expectEl,
-} from '@angular/flex-layout/_private-utils/testing';
+} from '@eresearchqut/flex-layout/_private-utils/testing';
 
 
 describe('flex directive', () => {
@@ -481,9 +481,7 @@ describe('flex directive', () => {
       } else if (!(platform.FIREFOX || platform.EDGE)) {
         expectNativeEl(fixture).toHaveStyle({
           'box-sizing': 'border-box',
-          'flex-grow': '1',
-          'flex-shrink': '1',
-          'flex-basis': 'calc(30vw - 10px)'
+          'flex': '1 1 calc(-10px + 30vw)',
         }, styler);
       }
     });

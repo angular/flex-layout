@@ -10,12 +10,12 @@ Developers should consult the **angular/flex-layout**
 [HTML Declarative API](https://github.com/angular/flex-layout/wiki/API-Documentation#html-api-declarative) for specific 
 Static API details, then simply extend the HTML  markup usages by adding the responsive suffixes (as discussed below)!
 
-`@angular/flex-layout` will automatically handle all the details listening for mediaQuery activations and applying the 
+`@eresearchqut/flex-layout` will automatically handle all the details listening for mediaQuery activations and applying the 
 responsive values to the hosting DOM elements.
 
 ## Responsive Features
 
-To extend the **@angular/flex-layout** 
+To extend the **@eresearchqut/flex-layout** 
 [static API](https://github.com/angular/flex-layout/wiki/Declarative-API-Overview) with responsive features, we will 
 first associate specific breakpoint **aliases** with mediaQuery values. 
 

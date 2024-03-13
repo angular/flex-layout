@@ -88,7 +88,6 @@
     "validate-decorators": [true, {
       "Component": {
         "encapsulation": "\\.None$",
-        "moduleId": "^module\\.id$",
         "preserveWhitespaces": "false$",
         "changeDetection": "\\.OnPush$",
         "!styles": ".*"

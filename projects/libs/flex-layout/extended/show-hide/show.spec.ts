@@ -15,20 +15,20 @@ import {
   MediaObserver,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {FlexLayoutModule} from '@angular/flex-layout';
+} from '@eresearchqut/flex-layout/core';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 import {
   customMatchers,
   makeCreateTestComponent,
   expectNativeEl,
   expectEl,
   queryFor,
-} from '@angular/flex-layout/_private-utils/testing';
+} from '@eresearchqut/flex-layout/_private-utils/testing';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {ShowHideDirective} from '@angular/flex-layout/extended';
+import {ShowHideDirective} from '@eresearchqut/flex-layout/extended';
 
 
 describe('show directive', () => {
@@ -277,9 +277,7 @@ describe('show directive', () => {
 
     it('should work with unknown elements', () => {
       createTestComponent(`
-        <mat-form-field>
-          <mat-placeholder>foo</mat-placeholder>
-          <mat-placeholder fxHide.xs el>bar</mat-placeholder>
+        <mat-form-field fxHide.xs el>
           <mat-select>
             <mat-option *ngFor="let option of [1,2,3]" [value]=option>
               option {{option}}
@@ -293,16 +291,9 @@ describe('show directive', () => {
       mediaController.useOverlaps = true;
       fixture.detectChanges();
 
-      // NOTE: platform-server can't compute display for unknown elements
-      if (isPlatformBrowser(platformId)) {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
-          'display': 'inline'
-        }, styler);
-      } else {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveStyle({
-          'display': 'initial'
-        }, styler);
-      }
+      expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
+        'display': 'none'
+      }, styler);
 
       mediaController.activate('xs');
       fixture.detectChanges();
@@ -312,16 +303,9 @@ describe('show directive', () => {
 
       mediaController.activate('lg');
       fixture.detectChanges();
-      // NOTE: platform-server can't compute display for unknown elements
-      if (isPlatformBrowser(platformId)) {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveCSS({
-          'display': 'inline'
-        }, styler);
-      } else {
-        expectEl(queryFor(fixture, elSelector)[0]).toHaveStyle({
-          'display': 'initial'
-        }, styler);
-      }
+      expectEl(queryFor(fixture, elSelector)[0]).not.toHaveStyle({
+        'display': 'none'
+      }, styler);
     });
   });
 

@@ -1,7 +1,7 @@
 ## Install Latest NPM Release
 
 ```bash
-npm install --save @angular/flex-layout@latest
+npm install --save @eresearchqut/flex-layout@latest
 ```
 
 > For recent fixes and code merges that have **not yet been released to NPM**, you should install from HEAD.

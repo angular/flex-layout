@@ -311,7 +311,7 @@ NOTE: This feature is marked as experimental and is subject to change unless pos
 the new SASS file as follows:
 
 ```sass
-@import '~@angular/flex-layout/mq';
+@import '~@eresearchqut/flex-layout/mq';
 
 // This translates to (min-width: 0) and (max-width: 599px) {}
 @include layout-bp(xs) {
@@ -792,7 +792,7 @@ This **@angular/flex-layout** release provides full support for Angular 4.x; alo
 * **api:** Previously releases used FlexLayoutModule.forRoot(). This has been deprecated and removed.
 
 ```js
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 
 @NgModule({
   imports: [
@@ -820,7 +820,7 @@ constructor(private media:ObservableMedia) { ... }
 ##### Example
 
 ```js
-import {ObservableMedia, MediaChange} from '@angular/flex-layout';
+import {ObservableMedia, MediaChange} from '@eresearchqut/flex-layout';
 
 @Component({ ... })
 export class MyComponent {
@@ -1028,7 +1028,7 @@ constructor(private media:ObservableMedia) { ... }
 ```js
 // RxJS
 import 'rxjs/add/operator/map';
-import {ObservableMedia} from '@angular/flex-layout';
+import {ObservableMedia} from '@eresearchqut/flex-layout';
 
 @Component({ ... })
 export class MyComponent {

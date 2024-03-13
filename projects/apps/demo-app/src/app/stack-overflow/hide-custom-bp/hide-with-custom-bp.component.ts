@@ -1,5 +1,5 @@
 import {Component, Directive} from '@angular/core';
-import {BREAKPOINT, ShowHideDirective} from '@angular/flex-layout';
+import {BREAKPOINT, ShowHideDirective} from '@eresearchqut/flex-layout';
 
 const YBA_BREAKPOINT = {
   alias: 'yba',

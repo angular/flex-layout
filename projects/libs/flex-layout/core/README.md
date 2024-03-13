@@ -7,7 +7,7 @@ from the root module to take advantage of tree shaking.
 
 ```typescript
 import {NgModule} from '@angular/core';
-import {CoreModule} from '@angular/flex-layout/core';
+import {CoreModule} from '@eresearchqut/flex-layout/core';
 
 @NgModule(({
   imports: [
@@ -19,7 +19,7 @@ export class AppModule {}
 ```
 
 ```typescript
-import {BaseDirective2} from '@angular/flex-layout/core';
+import {BaseDirective2} from '@eresearchqut/flex-layout/core';
 
 export class NewLayoutDirective extends BaseDirective2 {}
 ```

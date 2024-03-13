@@ -1,11 +1,11 @@
 #### Performance considerations with Tables
 
-**@angular/flex-layout** performs extremely well for most usage scenarios EXCEPT large tables.
+**@eresearchqut/flex-layout** performs extremely well for most usage scenarios EXCEPT large tables.
 
 Developers generating dynamic tables (using `*ngFor`) should be aware of performance impacts using Flex-Layout 
 directives. 
 
-For small number of rows (e.g. < 100), @angular/flex-layout is a excellent choice for layouts. Consider the table 
+For small number of rows (e.g. < 100), @eresearchqut/flex-layout is a excellent choice for layouts. Consider the table 
 definition below were each row has column elements; each using a `fxFlex`. Since the directives apply styles inline for 
 each element in each row, large tables may manifest performance impacts with dynamic inline stylings.
 

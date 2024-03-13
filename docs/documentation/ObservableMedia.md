@@ -38,7 +38,7 @@ regarding mediaQuery activations.
 ```typescript
 import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, ObservableMedia} from '@eresearchqut/flex-layout';
 
 @Component({
    selector : 'responsive-component'
@@ -94,7 +94,7 @@ import {Component} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 import {filter} from 'rxjs/operators/filter';
 
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, ObservableMedia} from '@eresearchqut/flex-layout';
 
 @Component({
    selector : 'responsive-component'
@@ -129,7 +129,7 @@ For example:
 
 ```typescript
 import {Component, OnInit} from '@angular/core';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, ObservableMedia} from '@eresearchqut/flex-layout';
 
 const PRINT_MOBILE = 'print and (max-width: 600px)';
 

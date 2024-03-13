@@ -13,7 +13,7 @@ import {
   BREAKPOINTS,
   LAYOUT_CONFIG,
   LayoutConfigOptions
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 /**
  * Special server-only class to simulate a MediaQueryList and

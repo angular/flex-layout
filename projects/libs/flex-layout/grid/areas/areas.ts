@@ -12,7 +12,7 @@ import {
   StyleBuilder,
   MediaMarshaller,
   StyleDefinition,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 import {coerceBooleanProperty} from '@angular/cdk/coercion';
 
 const DEFAULT_VALUE = 'none';

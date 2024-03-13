@@ -1,5 +1,5 @@
 {
-  "name": "@angular/flex-layout",
+  "name": "@eresearchqut/flex-layout",
   "version": "0.0.0-PLACEHOLDER",
   "exports": {
     "./mq": {

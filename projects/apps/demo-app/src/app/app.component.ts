@@ -1,6 +1,6 @@
 import {Component, ViewEncapsulation} from '@angular/core';
 
-import {VERSION} from '@angular/flex-layout';
+import {VERSION} from '@eresearchqut/flex-layout';
 
 @Component({
   selector: 'demo-root',

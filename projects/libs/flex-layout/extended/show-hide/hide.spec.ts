@@ -15,13 +15,13 @@ import {
   MediaObserver,
   SERVER_TOKEN,
   StyleUtils
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 
-import {customMatchers, expect, NgMatchers} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers, expect, NgMatchers} from '@eresearchqut/flex-layout/_private-utils/testing';
 import {
   makeCreateTestComponent, expectNativeEl, queryFor
-} from '@angular/flex-layout/_private-utils/testing';
+} from '@eresearchqut/flex-layout/_private-utils/testing';
 import {FlexLayoutModule} from '../../module';
 
 

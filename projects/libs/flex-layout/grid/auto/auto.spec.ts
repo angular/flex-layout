@@ -15,9 +15,9 @@ import {
   ɵMockMatchMediaProvider as MockMatchMediaProvider,
   SERVER_TOKEN,
   StyleUtils,
-} from '@angular/flex-layout/core';
-import {GridModule} from '@angular/flex-layout/grid';
-import {customMatchers, expectNativeEl, makeCreateTestComponent} from '@angular/flex-layout/_private-utils/testing';
+} from '@eresearchqut/flex-layout/core';
+import {GridModule} from '@eresearchqut/flex-layout/grid';
+import {customMatchers, expectNativeEl, makeCreateTestComponent} from '@eresearchqut/flex-layout/_private-utils/testing';
 
 
 describe('grid auto parent directive', () => {

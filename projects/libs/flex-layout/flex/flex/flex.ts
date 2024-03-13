@@ -16,11 +16,11 @@ import {
   StyleDefinition,
   MediaMarshaller,
   ElementMatcher,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 import {takeUntil} from 'rxjs/operators';
 
-import {extendObject} from '@angular/flex-layout/_private-utils';
-import {isFlowHorizontal} from '@angular/flex-layout/_private-utils';
+import {extendObject} from '@eresearchqut/flex-layout/_private-utils';
+import {isFlowHorizontal} from '@eresearchqut/flex-layout/_private-utils';
 
 interface FlexBuilderParent {
   direction: string;

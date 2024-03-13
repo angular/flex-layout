@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 import {NgModule} from '@angular/core';
-import {CoreModule} from '@angular/flex-layout/core';
+import {CoreModule} from '@eresearchqut/flex-layout/core';
 
 import {DefaultGridAlignDirective} from './grid-align/grid-align';
 import {DefaultGridAlignColumnsDirective} from './align-columns/align-columns';

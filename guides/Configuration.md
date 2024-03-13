@@ -12,7 +12,7 @@ The specific configurable behaviors, and how to turn them off, are detailed belo
 To configure Angular Layout, initialize the top-level module using the `withConfig` method as follows:
 
 ```ts
-import {FlexLayoutModule} from '@angular/flex-layout';
+import {FlexLayoutModule} from '@eresearchqut/flex-layout';
 
 FlexLayoutModule.withConfig(configOptions, [breakpoints]);
 ```

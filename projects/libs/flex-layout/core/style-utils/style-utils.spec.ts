@@ -9,8 +9,8 @@ import {Component, PLATFORM_ID} from '@angular/core';
 import {CommonModule, isPlatformServer} from '@angular/common';
 import {ComponentFixture, inject, TestBed} from '@angular/core/testing';
 
-import {customMatchers} from '@angular/flex-layout/_private-utils/testing';
-import {makeCreateTestComponent, expectNativeEl} from '@angular/flex-layout/_private-utils/testing';
+import {customMatchers} from '@eresearchqut/flex-layout/_private-utils/testing';
+import {makeCreateTestComponent, expectNativeEl} from '@eresearchqut/flex-layout/_private-utils/testing';
 import {StyleUtils} from './style-utils';
 
 describe('styler', () => {

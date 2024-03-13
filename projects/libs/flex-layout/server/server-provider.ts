@@ -16,7 +16,7 @@ import {
   StylesheetMap,
   sortAscendingPriority,
   MediaMarshaller,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 import {ServerMatchMedia} from './server-match-media';
 

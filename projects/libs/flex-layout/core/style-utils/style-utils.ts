@@ -8,7 +8,7 @@
 import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser, isPlatformServer} from '@angular/common';
 
-import {applyCssPrefixes} from '@angular/flex-layout/_private-utils';
+import {applyCssPrefixes} from '@eresearchqut/flex-layout/_private-utils';
 import {StylesheetMap} from '../stylesheet-map/stylesheet-map';
 import {SERVER_TOKEN} from '../tokens/server-token';
 import {LAYOUT_CONFIG, LayoutConfigOptions} from '../tokens/library-config';

@@ -14,7 +14,7 @@ import {
   StyleBuilder,
   StyleDefinition,
   StyleUtils,
-} from '@angular/flex-layout/core';
+} from '@eresearchqut/flex-layout/core';
 
 @Injectable({providedIn: 'root'})
 export class ImgSrcStyleBuilder extends StyleBuilder {
