@@ -6,7 +6,7 @@
   "bugs": "https://github.com/alessiobianchini/flex-layout/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alessiobianchini/flex-layout"
+    "url": "https://github.com/alessiobianchini/flex-layout"
   },
   "license": "MIT",
   "engines": {
@@ -28,7 +28,6 @@
     "release": "yarn build && yarn stamp",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
   },
-  "private": true,
   "requiredAngularVersion": ">=18.0.0",
   "dependencies": {
     "@angular/animations": "~18.1.1",
