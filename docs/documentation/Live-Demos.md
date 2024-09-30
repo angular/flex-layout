@@ -28,4 +28,4 @@ available publically, but can be run with the following command:
 `npm run universal:serve`
 
 **Note**: This server, unlike the demo-app, does **not** live reload. In order to incorporate build
-changes into the universal-app, it will need to be re-built/re-served each time.
+changes into the universal-demo-app, it will need to be re-built/re-served each time.

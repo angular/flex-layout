@@ -28,12 +28,10 @@ testem.log
 /.chrome
 !/test/karma.conf.js
 
-src/apps/universal-app/package-lock.json
-src/apps/universal-app/yarn.lock
-src/apps/demo-app/yarn.lock
-src/apps/demo-app/package-lock.json
-src/apps/hello-world/package-lock.json
-src/apps/hello-world/yarn.lock
+projects/apps/universal-demo-app/package-lock.json
+projects/apps/universal-demo-app/yarn.lock
+projects/apps/demo-app/yarn.lock
+projects/apps/demo-app/package-lock.json
 yarn-error.log
 .angular/cache
 out-tsc
